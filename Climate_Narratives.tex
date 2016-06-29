@@ -1,0 +1,239 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\title{Is the global temperature increasing?}
+\author{Marc Los Huertos}
+\date{}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how is this value derived? How reliable is the value?  
+
+\subsection{Learning Goals}
+
+For this project, you will evaluate determine if the Earth's temperature has in fact changed, and if so, by how much?
+
+\subsection{Driving Question}
+
+Is my region's climate changing?
+
+\subsection{Public Product}
+
+Narrative Blog...with professional graphics and statistics.
+
+\subsection{Approach}
+
+
+\section{Procedures}
+
+\subsection{How is temperature data collected?}
+
+\subsection{How are the data store, curated and checked for quality?}
+
+
+\subsection{Compressed Files}
+
+ftpsource = ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/v3/ghcnm.tmax.latest.qca.tar.gz
+
+
+untar(tarfile, files = NULL, list = FALSE, exdir = ".",
+      compressed = NA, extras = NULL, verbose = FALSE,
+      restore_times =  TRUE, tar = Sys.getenv("TAR"))
+      
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{tarfile} \hlkwb{=} \hlstr{"C:\textbackslash{}\textbackslash{}workspace\textbackslash{}\textbackslash{}GitHub\textbackslash{}\textbackslash{}RTricks\textbackslash{}\textbackslash{}300_Global_Warming\textbackslash{}\textbackslash{}Raw Data\textbackslash{}\textbackslash{}ghcnd_all.tar.gz"}
+
+\hlstd{tarfile} \hlkwb{=} \hlstr{"C:\textbackslash{}\textbackslash{}workspace\textbackslash{}\textbackslash{}GitHub\textbackslash{}\textbackslash{}RTricks\textbackslash{}\textbackslash{}300_Global_Warming\textbackslash{}\textbackslash{}Raw Data\textbackslash{}\textbackslash{}ghcnm.tmax.latest.qca.tar.gz"}
+\hlkwd{untar}\hlstd{(tarfile)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in gzfile(path.expand(tarfile), "{}rb"{}): cannot open compressed file 'C:\textbackslash{}workspace\textbackslash{}GitHub\textbackslash{}RTricks\textbackslash{}300\_Global\_Warming\textbackslash{}Raw Data\textbackslash{}ghcnm.tmax.latest.qca.tar.gz', probable reason 'No such file or directory'}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in gzfile(path.expand(tarfile), "{}rb"{}): cannot open the connection}}\end{kframe}
+\end{knitrout}
+
+%stationfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnd-stations.txt"
+
+read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
+
+read.fwf(file, widths, header = FALSE, sep = "\t",
+         skip = 0, row.names, col.names, n = -1,
+         buffersize = 2000, fileEncoding = "", ...)
+         
+AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680        
+         
+stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
+names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
+head(stations)
+str(stations)
+stations[stations$ID=="US1AZMR0013",]
+head(stations[stations$HCN_CRN==" CRN",])
+
+
+%file = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\ghcnd_all\\US1COAR0288.dly"
+
+ID            1-11   Character
+YEAR         12-15   Integer
+MONTH        16-17   Integer
+ELEMENT      18-21   Character
+VALUE1       22-26   Integer
+MFLAG1       27-27   Character
+QFLAG1       28-28   Character
+SFLAG1       29-29   Character
+VALUE2       30-34   Integer
+MFLAG2       35-35   Character
+QFLAG2       36-36   Character
+SFLAG2       37-37   Character
+  .           .          .
+  .           .          .
+  .           .          .
+VALUE31    262-266   Integer
+MFLAG31    267-267   Character
+QFLAG31    268-268   Character
+SFLAG31    269-269   Character
+
+for (year in c(2010,2011,2012,2013,2014,2015)){
+  print(paste("The year is", year))
+
+MFLAG=NA; QFLAG=NA; SFLAG=NA; VALUE=NA
+for (i in 1:31){
+VALUE[i] = paste("DATE", i, sep="")
+MFLAG[i] = paste("MFLAG", i, sep="")
+QFLAG[i] = paste("QFLAG", i, sep="")
+SFLAG[i] = paste("SFLAG", i, sep="")
+}
+QFLAG
+
+tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
+Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
+
+test = read.fwf(file,widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
+str(test)
+names(test)= Names; test
+
+head(test)
+
+%setwd("C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\ghcnd_all")
+
+temp = list.files(pattern="*.dly"); head(temp)
+#for (i in 1:length(temp)) 
+for (i in 1:2){
+tmp <- read.fwf(temp[i], widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
+names(tmp) <- Names
+assign(temp[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, length.out=31))))
+}
+
+library(tidyr)
+library(dplyr)
+library(stringr)
+str(AGM00060515.dly)
+gather(AGM00060515.dly, "Temp", VALUE1)
+
+library(reshape)
+tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
+head(tmp1)
+tmp1$Day = as.numeric(str_sub(tmp1$variable,6,7)); head(tmp1)
+tmp1$value[tmp1$value==-9999] = NA; head(tmp1)
+tmp1$Temperature = tmp1$value/10
+
+drops <- c("variable","value")
+tmp1[ , !(names(tmp1) %in% drops)]
+tmp1$DECADE = round(tmp1$YEAR, -1)
+
+test1 = aggregate(Temperature ~ DECADE, tmp1, sd)
+test2 = aggregate(Temperature ~ DECADE, tmp1, mean)
+head(test2)
+names(test2[,2]) = "Mean"
+
+test2$Range = test1$Mean + test2$Temperature
+
+plot(test2$DECADE, test2$Mean)
+
+points(test1$DECADE, test1$Temperature)
+
+
+#full_join(test1, test2, by = list("MONTH", "DECADE"))
+
+
+
+
+
+
+
+%http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/
+
+
+New NOAA Directory -- ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
+
+
+library(raster)
+library(XML)
+
+coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",widths=c(6,1,5,1,38,7,1,8,9,8,1,8),sep=";",skip=22,fill=T)
+Names = c("USAF", "X1", "WBAN", "X2", "STATION_NAME", "X3", "CTRY", "X4", "ST", "X5", "CALL", "X6", "LAT", "X7", "LON", "X8", "ELEV", "X9", "BEGIN", "X10", "END")
+Widths = c(6,       1,    5,      1,        29,         1,    2,      3,    2,    1,    4,      1,    8,     1,     8,    1,    7,     1,     8,      1,    8)
+
+coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",widths=Widths,sep=";",skip=22,fill=T); names(coords.fwt)=Names; coords.fwt[c(30,4000,20000),]
+
+coords <- data.frame(ID=paste(as.factor(coords.fwt[,1])),WBAN=paste(as.factor(coords.fwt[,3])),Lat=as.numeric(paste(coords.fwt$LAT)),Lon=as.numeric(paste(coords.fwt$LON)));  coords[c(30,4000,20000),]
+
+
+plot()
+
+
+\end{document}
