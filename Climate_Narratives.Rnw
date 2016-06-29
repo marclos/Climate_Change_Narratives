@@ -22,7 +22,9 @@ Is my region's climate changing?
 
 \subsection{Public Product}
 
-Narrative Blog...with professional graphics and statistics.
+Narrative Blog...
+
+with professional graphics and statistics.
 
 \subsection{Approach}
 
@@ -33,31 +35,34 @@ Narrative Blog...with professional graphics and statistics.
 
 \subsection{How are the data store, curated and checked for quality?}
 
+\section{Data Source}
+
 
 \subsection{Compressed Files}
 
-ftpsource = ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/v3/ghcnm.tmax.latest.qca.tar.gz
 
+<<Setting Up the Datasets>>=
+# Uncompress the files.
+# ghcnd_all
 
-untar(tarfile, files = NULL, list = FALSE, exdir = ".",
-      compressed = NA, extras = NULL, verbose = FALSE,
-      restore_times =  TRUE, tar = Sys.getenv("TAR"))
-      
-<<>>=
 tarfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnd_all.tar.gz"
 
+#ftpsource = ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/v3/ghcnm.tmax.latest.qca.tar.gz
+
+
+#ghcnm.tmax.latests.qca.tar.qz
 tarfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnm.tmax.latest.qca.tar.gz"
-untar(tarfile)
+# untar(tarfile)
 @
 
+
+<<label=readdata >>=
 %stationfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnd-stations.txt"
+@
 
 read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
 
-read.fwf(file, widths, header = FALSE, sep = "\t",
-         skip = 0, row.names, col.names, n = -1,
-         buffersize = 2000, fileEncoding = "", ...)
-         
+
 AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680        
          
 stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
