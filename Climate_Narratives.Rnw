@@ -57,23 +57,29 @@ tarfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnm.t
 
 
 <<label=readdata >>=
-%stationfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnd-stations.txt"
+#stationfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnd-stations.txt"
 @
 
-read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
+\subsection{Uptain Locations}
 
+<<>>=
+# read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
+stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
+names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
+
+head(stations)
+str(stations)
+
+@
+
+Example of data:
 
 AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680        
          
-stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
-names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
-head(stations)
-str(stations)
-stations[stations$ID=="US1AZMR0013",]
-head(stations[stations$HCN_CRN==" CRN",])
 
+subsection{Selecting and Example Location}
 
-%file = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\ghcnd_all\\US1COAR0288.dly"
+Here's what the data look like:
 
 ID            1-11   Character
 YEAR         12-15   Integer
@@ -95,9 +101,24 @@ MFLAG31    267-267   Character
 QFLAG31    268-268   Character
 SFLAG31    269-269   Character
 
+Arizona, let's chech import process for the sites...
+
+stations[stations$ID=="US1AZMR0013",] 
+# head(stations[stations$HCN_CRN==" CRN",])
+@
+
+Let's get the arizona data into R
+<<>>=
+file = "C:\\workspace\\GitHub\\RTricks\\Climate_Change_Narratives\\Data\\ghcnd-stations.txt"
+@ 
+
+<<>>=
+# practicing loops
 for (year in c(2010,2011,2012,2013,2014,2015)){
   print(paste("The year is", year))
+}
 
+# Create New Varible Names
 MFLAG=NA; QFLAG=NA; SFLAG=NA; VALUE=NA
 for (i in 1:31){
 VALUE[i] = paste("DATE", i, sep="")
@@ -105,18 +126,24 @@ MFLAG[i] = paste("MFLAG", i, sep="")
 QFLAG[i] = paste("QFLAG", i, sep="")
 SFLAG[i] = paste("SFLAG", i, sep="")
 }
-QFLAG
 
+print(QFLAG)
+
+# Vector of variable names converted from a transposed matrix
 tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
 Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
 
+# Read the file
 test = read.fwf(file,widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
 str(test)
 names(test)= Names; test
 
 head(test)
+@
 
-%setwd("C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\ghcnd_all")
+
+
+setwd("C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\ghcnd_all")
 
 temp = list.files(pattern="*.dly"); head(temp)
 #for (i in 1:length(temp)) 
