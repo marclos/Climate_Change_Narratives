@@ -59,7 +59,7 @@ tarfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnm.t
 
 
 <<label=readdata >>=
-#stationfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnd-stations.txt"
+stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
 @
 
 \subsection{Uptain Locations}
@@ -105,14 +105,19 @@ SFLAG31    269-269   Character
 
 Arizona, let's chech import process for the sites...
 <<>>=
-stations[stations$ID=="US1AZMR0013",] 
+stations[stations$ID=="US1AZMR0019",] 
 # head(stations[stations$HCN_CRN==" CRN",])
 @
 
 Let's get the arizona data into R
+
 <<>>=
-file = "C:\\workspace\\GitHub\\RTricks\\Climate_Change_Narratives\\Data\\ghcnd-stations.txt"
-@ 
+
+# Read the file
+
+test = read.fwf(file,widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
+str(test)
+@
 
 <<>>=
 # practicing loops
@@ -131,13 +136,13 @@ SFLAG[i] = paste("SFLAG", i, sep="")
 
 print(QFLAG)
 
+
+
 # Vector of variable names converted from a transposed matrix
 tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
 Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
 
-# Read the file
-test = read.fwf(file,widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
-str(test)
+
 names(test)= Names; test
 
 head(test)
