@@ -20,7 +20,7 @@ For this project, you will evaluate determine if the Earth's temperature has in 
 
 Is my region's climate changing?
 
-How does climate change impact my community?
+How is climate change impacting my community?
 
 \subsection{Public Product}
 
@@ -42,7 +42,6 @@ with professional graphics and statistics.
 
 \subsection{Compressed Files}
 
-
 <<Setting Up the Datasets>>=
 # Uncompress the files.
 # ghcnd_all
@@ -62,7 +61,7 @@ tarfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnm.t
 stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
 @
 
-\subsection{Uptain Locations}
+\subsection{Obtain Locations}
 
 <<>>=
 # read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
@@ -134,7 +133,7 @@ QFLAG[i] = paste("QFLAG", i, sep="")
 SFLAG[i] = paste("SFLAG", i, sep="")
 }
 
-print(QFLAG)
+#print(QFLAG)
 
 
 
@@ -143,7 +142,7 @@ tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
 Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
 
 
-names(test)= Names; test
+names(test)= Names; #test
 
 head(test)
 @
@@ -164,11 +163,11 @@ assign(dly_list[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, le
 library(tidyr)
 library(dplyr)
 library(stringr)
-str(US1AZCN0021.dly)
-gather(US1AZCN0021.dly, "Temp", VALUE1)
+#str(AGM00060515.dly)
+#gather(US1AZCN0021.dly, "Temp", VALUE1)
 
 library(reshape2)
-tmp1 = melt(US1AZCN0021.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
+tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
 head(tmp1)
 tmp1$Day = as.numeric(str_sub(tmp1$variable,6,7)); head(tmp1)
 tmp1$value[tmp1$value==-9999] = NA; head(tmp1)
@@ -177,25 +176,17 @@ tmp1$Temperature = tmp1$value/10
 drops <- c("variable","value")
 tmp1[ , !(names(tmp1) %in% drops)]
 tmp1$DECADE = round(tmp1$YEAR, -1)
+# names(tmp1)
 
-test1 = aggregate(Temperature ~ DECADE, tmp1, sd)
-test2 = aggregate(Temperature ~ DECADE, tmp1, mean)
-head(test2)
-names(test2[,2]) = "Mean"
+# call summarySE function....somehow...
+library(ggplot2)
 
-test2$Range = test1$Mean + test2$Temperature
+summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
+  
+ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) 
++ geom_point() + geom_errorbar(limits, width=0.2)
 
-plot(test2$DECADE, test2$Mean)
-
-points(test1$DECADE, test1$Temperature)
-
-
-#full_join(test1, test2, by = list("MONTH", "DECADE"))
-
-
-
-
-<<>>=
+ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(aes(ymin=Temperature-se, ymax=Temperature+se), width=.2) + geom_line() + geom_point()
 
 @
 
@@ -203,9 +194,11 @@ points(test1$DECADE, test1$Temperature)
 %http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/
 
 
+\subsection{NOAA dataset}
+
 New NOAA Directory -- ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
 
-
+<<>>=
 library(raster)
 library(XML)
 
@@ -216,9 +209,11 @@ Widths = c(6,       1,    5,      1,        29,         1,    2,      3,    2,  
 coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",widths=Widths,sep=";",skip=22,fill=T); names(coords.fwt)=Names; coords.fwt[c(30,4000,20000),]
 
 coords <- data.frame(ID=paste(as.factor(coords.fwt[,1])),WBAN=paste(as.factor(coords.fwt[,3])),Lat=as.numeric(paste(coords.fwt$LAT)),Lon=as.numeric(paste(coords.fwt$LON)));  coords[c(30,4000,20000),]
+@
 
-
-plot()
-
+NOAA Locations
+<<label = NOAApoints, Figure = TRUE>>=
+#plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
+@
 
 \end{document}
