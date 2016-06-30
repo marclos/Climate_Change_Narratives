@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\title{Is the global temperature increasing?}
+\title{How are temperatures increasing and what are the implications?}
 \author{Marc Los Huertos}
 \date{} 
 
@@ -10,7 +10,7 @@
 
 \section{Introduction}
 
-According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how is this value derived? How reliable is the value?  
+According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these values "map" onto our communities?  Can we find out how these changes will affect specific people in communities we care about?
 
 \subsection{Learning Goals}
 
@@ -20,7 +20,7 @@ For this project, you will evaluate determine if the Earth's temperature has in 
 
 Is my region's climate changing?
 
-How is climate change impacting my community?
+How is climate change affecting my community?
 
 \subsection{Public Product}
 
@@ -45,6 +45,7 @@ with professional graphics and statistics.
 <<Setting Up the Datasets>>=
 # Uncompress the files.
 # ghcnd_all
+source("summarySE.R")
 
 tarfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnd_all.tar.gz"
 
@@ -174,11 +175,19 @@ tmp1$value[tmp1$value==-9999] = NA; head(tmp1)
 tmp1$Temperature = tmp1$value/10
 
 drops <- c("variable","value")
-tmp1[ , !(names(tmp1) %in% drops)]
+tmp1 <-tmp1[ , !(names(tmp1) %in% drops)]
 tmp1$DECADE = round(tmp1$YEAR, -1)
 # names(tmp1)
 
+@
+
+
+\section{Presenting the Results}
+
+<<>>=
 # call summarySE function....somehow...
+
+
 library(ggplot2)
 
 summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
@@ -213,7 +222,7 @@ coords <- data.frame(ID=paste(as.factor(coords.fwt[,1])),WBAN=paste(as.factor(co
 
 NOAA Locations
 <<label = NOAApoints, Figure = TRUE>>=
-#plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
+plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
 @
 
 \end{document}
