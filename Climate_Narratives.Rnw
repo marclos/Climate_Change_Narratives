@@ -114,7 +114,7 @@ Let's get the arizona data into R
 <<>>=
 
 # Read the file
-dlyfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/US1AZCN0021.dly"
+dlyfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/AGM00060515"
 test = read.fwf(dlyfile,widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
 str(test)
 @
