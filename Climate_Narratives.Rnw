@@ -20,6 +20,8 @@ For this project, you will evaluate determine if the Earth's temperature has in 
 
 Is my region's climate changing?
 
+How does climate change impact my community?
+
 \subsection{Public Product}
 
 Narrative Blog...
@@ -102,7 +104,7 @@ QFLAG31    268-268   Character
 SFLAG31    269-269   Character
 
 Arizona, let's chech import process for the sites...
-
+<<>>=
 stations[stations$ID=="US1AZMR0013",] 
 # head(stations[stations$HCN_CRN==" CRN",])
 @

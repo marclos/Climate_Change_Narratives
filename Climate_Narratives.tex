@@ -69,9 +69,13 @@ For this project, you will evaluate determine if the Earth's temperature has in 
 
 Is my region's climate changing?
 
+How does climate change impact my community?
+
 \subsection{Public Product}
 
-Narrative Blog...with professional graphics and statistics.
+Narrative Blog...
+
+with professional graphics and statistics.
 
 \subsection{Approach}
 
@@ -82,50 +86,75 @@ Narrative Blog...with professional graphics and statistics.
 
 \subsection{How are the data store, curated and checked for quality?}
 
+\section{Data Source}
+
 
 \subsection{Compressed Files}
 
-ftpsource = ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/v3/ghcnm.tmax.latest.qca.tar.gz
 
-
-untar(tarfile, files = NULL, list = FALSE, exdir = ".",
-      compressed = NA, extras = NULL, verbose = FALSE,
-      restore_times =  TRUE, tar = Sys.getenv("TAR"))
-      
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlcom{# Uncompress the files.}
+\hlcom{# ghcnd_all}
+
 \hlstd{tarfile} \hlkwb{=} \hlstr{"C:\textbackslash{}\textbackslash{}workspace\textbackslash{}\textbackslash{}GitHub\textbackslash{}\textbackslash{}RTricks\textbackslash{}\textbackslash{}300_Global_Warming\textbackslash{}\textbackslash{}Raw Data\textbackslash{}\textbackslash{}ghcnd_all.tar.gz"}
 
+\hlcom{#ftpsource = ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/v3/ghcnm.tmax.latest.qca.tar.gz}
+
+
+\hlcom{#ghcnm.tmax.latests.qca.tar.qz}
 \hlstd{tarfile} \hlkwb{=} \hlstr{"C:\textbackslash{}\textbackslash{}workspace\textbackslash{}\textbackslash{}GitHub\textbackslash{}\textbackslash{}RTricks\textbackslash{}\textbackslash{}300_Global_Warming\textbackslash{}\textbackslash{}Raw Data\textbackslash{}\textbackslash{}ghcnm.tmax.latest.qca.tar.gz"}
-\hlkwd{untar}\hlstd{(tarfile)}
+\hlcom{# untar(tarfile)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#stationfile = "C:\textbackslash{}\textbackslash{}workspace\textbackslash{}\textbackslash{}GitHub\textbackslash{}\textbackslash{}RTricks\textbackslash{}\textbackslash{}300_Global_Warming\textbackslash{}\textbackslash{}Raw Data\textbackslash{}\textbackslash{}ghcnd-stations.txt"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Uptain Locations}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)}
+\hlstd{stations} \hlkwb{=} \hlstd{(}\hlkwd{read.fwf}\hlstd{(stationfile,} \hlkwc{fill}\hlstd{=T,} \hlkwc{widths}\hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{11}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{32}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{9}\hlstd{), ))}
 \end{alltt}
 
 
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in gzfile(path.expand(tarfile), "{}rb"{}): cannot open compressed file 'C:\textbackslash{}workspace\textbackslash{}GitHub\textbackslash{}RTricks\textbackslash{}300\_Global\_Warming\textbackslash{}Raw Data\textbackslash{}ghcnm.tmax.latest.qca.tar.gz', probable reason 'No such file or directory'}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in read.fwf(stationfile, fill = T, widths = c(11, 9, 10, 7, 3, 32, : object 'stationfile' not found}}\begin{alltt}
+\hlkwd{names}\hlstd{(stations)}\hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"ID"}\hlstd{,} \hlstr{"LAT"}\hlstd{,} \hlstr{"LONG"}\hlstd{,} \hlstr{"ELEV"}\hlstd{,} \hlstr{"STATE"}\hlstd{,} \hlstr{"NAME"}\hlstd{,} \hlstr{"GSN"}\hlstd{,} \hlstr{"HCN_CRN"}\hlstd{,} \hlstr{"WHOID"}\hlstd{)}
+\end{alltt}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in gzfile(path.expand(tarfile), "{}rb"{}): cannot open the connection}}\end{kframe}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(stations) = c("{}ID"{}, "{}LAT"{}, "{}LONG"{}, "{}ELEV"{}, "{}STATE"{}, "{}NAME"{}, : object 'stations' not found}}\begin{alltt}
+\hlkwd{head}\hlstd{(stations)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in head(stations): object 'stations' not found}}\begin{alltt}
+\hlkwd{str}\hlstd{(stations)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in str(stations): object 'stations' not found}}\end{kframe}
 \end{knitrout}
 
-%stationfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnd-stations.txt"
+Example of data:
 
-read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
-
-read.fwf(file, widths, header = FALSE, sep = "\t",
-         skip = 0, row.names, col.names, n = -1,
-         buffersize = 2000, fileEncoding = "", ...)
-         
 AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680        
          
-stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
-names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
-head(stations)
-str(stations)
-stations[stations$ID=="US1AZMR0013",]
-head(stations[stations$HCN_CRN==" CRN",])
 
+subsection{Selecting and Example Location}
 
-%file = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\ghcnd_all\\US1COAR0288.dly"
+Here's what the data look like:
 
 ID            1-11   Character
 YEAR         12-15   Integer
@@ -147,28 +176,103 @@ MFLAG31    267-267   Character
 QFLAG31    268-268   Character
 SFLAG31    269-269   Character
 
-for (year in c(2010,2011,2012,2013,2014,2015)){
-  print(paste("The year is", year))
+Arizona, let's chech import process for the sites...
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{stations[stations}\hlopt{$}\hlstd{ID}\hlopt{==}\hlstr{"US1AZMR0013"}\hlstd{,]}
+\end{alltt}
 
-MFLAG=NA; QFLAG=NA; SFLAG=NA; VALUE=NA
-for (i in 1:31){
-VALUE[i] = paste("DATE", i, sep="")
-MFLAG[i] = paste("MFLAG", i, sep="")
-QFLAG[i] = paste("QFLAG", i, sep="")
-SFLAG[i] = paste("SFLAG", i, sep="")
-}
-QFLAG
 
-tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
-Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'stations' not found}}\begin{alltt}
+\hlcom{# head(stations[stations$HCN_CRN==" CRN",])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
-test = read.fwf(file,widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
-str(test)
-names(test)= Names; test
+Let's get the arizona data into R
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{file} \hlkwb{=} \hlstr{"C:\textbackslash{}\textbackslash{}workspace\textbackslash{}\textbackslash{}GitHub\textbackslash{}\textbackslash{}RTricks\textbackslash{}\textbackslash{}Climate_Change_Narratives\textbackslash{}\textbackslash{}Data\textbackslash{}\textbackslash{}ghcnd-stations.txt"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
-head(test)
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# practicing loops}
+\hlkwa{for} \hlstd{(year} \hlkwa{in} \hlkwd{c}\hlstd{(}\hlnum{2010}\hlstd{,}\hlnum{2011}\hlstd{,}\hlnum{2012}\hlstd{,}\hlnum{2013}\hlstd{,}\hlnum{2014}\hlstd{,}\hlnum{2015}\hlstd{))\{}
+  \hlkwd{print}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"The year is"}\hlstd{, year))}
+\hlstd{\}}
+\end{alltt}
+\begin{verbatim}
+## [1] "The year is 2010"
+## [1] "The year is 2011"
+## [1] "The year is 2012"
+## [1] "The year is 2013"
+## [1] "The year is 2014"
+## [1] "The year is 2015"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Create New Varible Names}
+\hlstd{MFLAG}\hlkwb{=}\hlnum{NA}\hlstd{; QFLAG}\hlkwb{=}\hlnum{NA}\hlstd{; SFLAG}\hlkwb{=}\hlnum{NA}\hlstd{; VALUE}\hlkwb{=}\hlnum{NA}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{31}\hlstd{)\{}
+\hlstd{VALUE[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(}\hlstr{"DATE"}\hlstd{, i,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
+\hlstd{MFLAG[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(}\hlstr{"MFLAG"}\hlstd{, i,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
+\hlstd{QFLAG[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(}\hlstr{"QFLAG"}\hlstd{, i,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
+\hlstd{SFLAG[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(}\hlstr{"SFLAG"}\hlstd{, i,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
+\hlstd{\}}
 
-%setwd("C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\ghcnd_all")
+\hlkwd{print}\hlstd{(QFLAG)}
+\end{alltt}
+\begin{verbatim}
+##  [1] "QFLAG1"  "QFLAG2"  "QFLAG3"  "QFLAG4"  "QFLAG5"  "QFLAG6"  "QFLAG7" 
+##  [8] "QFLAG8"  "QFLAG9"  "QFLAG10" "QFLAG11" "QFLAG12" "QFLAG13" "QFLAG14"
+## [15] "QFLAG15" "QFLAG16" "QFLAG17" "QFLAG18" "QFLAG19" "QFLAG20" "QFLAG21"
+## [22] "QFLAG22" "QFLAG23" "QFLAG24" "QFLAG25" "QFLAG26" "QFLAG27" "QFLAG28"
+## [29] "QFLAG29" "QFLAG30" "QFLAG31"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Vector of variable names converted from a transposed matrix}
+\hlstd{tmp} \hlkwb{=} \hlkwd{as.vector}\hlstd{(}\hlkwd{t}\hlstd{(}\hlkwd{matrix}\hlstd{(}\hlkwc{data}\hlstd{=}\hlkwd{c}\hlstd{(VALUE, MFLAG, QFLAG, SFLAG),} \hlkwc{ncol}\hlstd{=}\hlnum{4}\hlstd{)))}
+\hlstd{Names} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"ID"}\hlstd{,} \hlstr{"YEAR"}\hlstd{,} \hlstr{"MONTH"}\hlstd{,} \hlstr{"ELEMENT"}\hlstd{, tmp);} \hlkwd{length}\hlstd{(Names)}
+\end{alltt}
+\begin{verbatim}
+## [1] 128
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Read the file}
+\hlstd{test} \hlkwb{=} \hlkwd{read.fwf}\hlstd{(file,}\hlkwc{widths} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{11}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}\hlnum{31}\hlstd{)))}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in file(file, "{}rt"{}): cannot open file 'C:\textbackslash{}workspace\textbackslash{}GitHub\textbackslash{}RTricks\textbackslash{}Climate\_Change\_Narratives\textbackslash{}Data\textbackslash{}ghcnd-stations.txt': No such file or directory}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection}}\begin{alltt}
+\hlkwd{str}\hlstd{(test)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in str(test): object 'test' not found}}\begin{alltt}
+\hlkwd{names}\hlstd{(test)}\hlkwb{=} \hlstd{Names; test}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(test) = Names: object 'test' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'test' not found}}\begin{alltt}
+\hlkwd{head}\hlstd{(test)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in head(test): object 'test' not found}}\end{kframe}
+\end{knitrout}
+
+
+
+setwd("C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\ghcnd_all")
 
 temp = list.files(pattern="*.dly"); head(temp)
 #for (i in 1:length(temp)) 
