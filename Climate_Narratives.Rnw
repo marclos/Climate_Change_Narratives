@@ -114,8 +114,8 @@ Let's get the arizona data into R
 <<>>=
 
 # Read the file
-
-test = read.fwf(file,widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
+dlyfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/US1AZCN0021.dly"
+test = read.fwf(dlyfile,widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
 str(test)
 @
 
@@ -148,26 +148,27 @@ names(test)= Names; test
 head(test)
 @
 
+\subsection{Process Selected Data Files}
 
+<<>>=
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data")
 
-setwd("C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\ghcnd_all")
-
-temp = list.files(pattern="*.dly"); head(temp)
-#for (i in 1:length(temp)) 
-for (i in 1:2){
-tmp <- read.fwf(temp[i], widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
+dly_list = list.files(pattern="*.dly"); head(dly_list)
+#for (i in 1:length(dly_list)) 
+for (i in 1:1){
+tmp <- read.fwf(dly_list[i], widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
 names(tmp) <- Names
-assign(temp[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, length.out=31))))
+assign(dly_list[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, length.out=31))))
 }
 
 library(tidyr)
 library(dplyr)
 library(stringr)
-str(AGM00060515.dly)
-gather(AGM00060515.dly, "Temp", VALUE1)
+str(US1AZCN0021.dly)
+gather(US1AZCN0021.dly, "Temp", VALUE1)
 
-library(reshape)
-tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
+library(reshape2)
+tmp1 = melt(US1AZCN0021.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
 head(tmp1)
 tmp1$Day = as.numeric(str_sub(tmp1$variable,6,7)); head(tmp1)
 tmp1$value[tmp1$value==-9999] = NA; head(tmp1)
