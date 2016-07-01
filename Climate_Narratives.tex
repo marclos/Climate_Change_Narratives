@@ -425,7 +425,7 @@ New NOAA Directory -- ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
 ##       CALL X6    LAT X7     LON X8  ELEV X9    BEGIN X10      END
 ## 30         NA     NA NA      NA NA    NA NA 20091027  NA 20100104
 ## 4000       NA 55.467 NA  18.167 NA  46.0 NA 20141127  NA 20141127
-## 20000 KGGI NA 41.717 NA -92.700 NA 307.2 NA 20060831  NA 20160628
+## 20000 KGGI NA 41.717 NA -92.700 NA 307.2 NA 20060831  NA 20160629
 \end{verbatim}
 \begin{alltt}
 \hlstd{coords} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{ID}\hlstd{=}\hlkwd{paste}\hlstd{(}\hlkwd{as.factor}\hlstd{(coords.fwt[,}\hlnum{1}\hlstd{])),}\hlkwc{WBAN}\hlstd{=}\hlkwd{paste}\hlstd{(}\hlkwd{as.factor}\hlstd{(coords.fwt[,}\hlnum{3}\hlstd{])),}\hlkwc{Lat}\hlstd{=}\hlkwd{as.numeric}\hlstd{(}\hlkwd{paste}\hlstd{(coords.fwt}\hlopt{$}\hlstd{LAT)),}\hlkwc{Lon}\hlstd{=}\hlkwd{as.numeric}\hlstd{(}\hlkwd{paste}\hlstd{(coords.fwt}\hlopt{$}\hlstd{LON)));  coords[}\hlkwd{c}\hlstd{(}\hlnum{30}\hlstd{,}\hlnum{4000}\hlstd{,}\hlnum{20000}\hlstd{),]}
