@@ -105,19 +105,22 @@ Students will have the following tools available.
 
 \subsubsection{Marine Based}
 
-\subsection{How are the data store, curated and checked for quality?}
+\subsection{Day 2: How are the data store, curated and checked for quality?}
 
-\section{Data Sources}
+\section{Data 3: Data Sources}
 
 \subsection{NOAA}
 
-\subsubsection{Downloading Compressed Files}
+\subsection{Others}
+
+\subsection{File Types and Software Tools}
 
 
 \section{Using RStudio}
 
 \subsection{Why R, Why Rstudio, and Why Open Source}
 
+Excel was not designed to handle large datasets, i.e. over ~1 million rows. For most purposes, this might be enough. However, in many climate science data often exceed this number of samples. 
 
 \section{R Coding an Analysis}
 
@@ -133,6 +136,7 @@ Students will have the following tools available.
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'dplyr'\\\#\# \\\#\# The following objects are masked from 'package:stats':\\\#\# \\\#\#\ \ \ \  filter, lag\\\#\# \\\#\# The following objects are masked from 'package:base':\\\#\# \\\#\#\ \ \ \  intersect, setdiff, setequal, union}}\begin{alltt}
 \hlkwd{library}\hlstd{(stringr)}
 \hlkwd{library}\hlstd{(reshape2)}
+\hlkwd{source}\hlstd{(}\hlstr{"summarySE.R"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -141,16 +145,6 @@ Students will have the following tools available.
 \begin{alltt}
 \hlcom{# Uncompress the files.}
 \hlcom{# ghcnd_all}
-\hlkwd{source}\hlstd{(}\hlstr{"summarySE.R"}\hlstd{)}
-
-\hlstd{tarfile} \hlkwb{=} \hlstr{"C:\textbackslash{}\textbackslash{}workspace\textbackslash{}\textbackslash{}GitHub\textbackslash{}\textbackslash{}RTricks\textbackslash{}\textbackslash{}300_Global_Warming\textbackslash{}\textbackslash{}Raw Data\textbackslash{}\textbackslash{}ghcnd_all.tar.gz"}
-
-\hlcom{#ftpsource = ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/v3/ghcnm.tmax.latest.qca.tar.gz}
-
-
-\hlcom{#ghcnm.tmax.latests.qca.tar.qz}
-\hlstd{tarfile} \hlkwb{=} \hlstr{"C:\textbackslash{}\textbackslash{}workspace\textbackslash{}\textbackslash{}GitHub\textbackslash{}\textbackslash{}RTricks\textbackslash{}\textbackslash{}300_Global_Warming\textbackslash{}\textbackslash{}Raw Data\textbackslash{}\textbackslash{}ghcnm.tmax.latest.qca.tar.gz"}
-\hlcom{# untar(tarfile)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -164,7 +158,7 @@ Students will have the following tools available.
 \end{kframe}
 \end{knitrout}
 
-\subsection{Obtain Stations}
+\subsection{Read Station Data into R}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -190,21 +184,6 @@ Students will have the following tools available.
 ## 4  DUBAI INTL                                  41194
 ## 5  ABU DHABI INTL                              41217
 ## 6  AL AIN INTL                                 41218
-\end{verbatim}
-\begin{alltt}
-\hlkwd{str}\hlstd{(stations)}
-\end{alltt}
-\begin{verbatim}
-## 'data.frame':	100747 obs. of  9 variables:
-##  $ ID     : Factor w/ 100747 levels "ACW00011604",..: 1 2 3 4 5 6 7 8 9 10 ...
-##  $ LAT    : num  17.1 17.1 25.3 25.3 24.4 ...
-##  $ LONG   : num  -61.8 -61.8 55.5 55.4 54.7 ...
-##  $ ELEV   : num  10.1 19.2 34 10.4 26.8 ...
-##  $ STATE  : Factor w/ 76 levels "   "," AB"," AK",..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ NAME   : Factor w/ 93968 levels " 'S HEERENHOEK                  ",..: 79235 79234 76245 23599 287 949 61012 36770 41695 42069 ...
-##  $ GSN    : Factor w/ 3 levels "","   ","GSN": 2 2 3 2 2 2 3 2 2 2 ...
-##  $ HCN_CRN: Factor w/ 4 levels "","    "," CRN",..: 2 2 2 2 2 2 2 2 2 2 ...
-##  $ WHOID  : num  NA NA 41196 41194 41217 ...
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -257,25 +236,6 @@ Here's an example of data from Arizona...
 \end{knitrout}
 
 Let's get the a different site into R
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Read the file}
-\hlstd{dlyfile} \hlkwb{=} \hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/AGM00060515"}
-\hlstd{test} \hlkwb{=} \hlkwd{read.fwf}\hlstd{(dlyfile,}\hlkwc{widths} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{11}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}\hlnum{31}\hlstd{)))}
-\end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in file(file, "{}rt"{}): cannot open file '/home/CAMPUS/mwl04747/github/Climate\_Change\_Narratives/AGM00060515': No such file or directory}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection}}\begin{alltt}
-\hlkwd{str}\hlstd{(test)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in str(test): object 'test' not found}}\end{kframe}
-\end{knitrout}
 
 I often forget how to make loops, so I often use simple examples that help me remember, for example, 
 
@@ -408,7 +368,7 @@ Since the data have a re-occuring set of variable names, I decided to create a v
 \hlkwd{ggplot}\hlstd{(summarydf,} \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=Temperature,} \hlkwc{x}\hlstd{=DECADE,} \hlkwc{color}\hlstd{= DECADE))} \hlopt{+} \hlkwd{geom_errorbar}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{ymin}\hlstd{=Temperature}\hlopt{-}\hlstd{se,} \hlkwc{ymax}\hlstd{=Temperature}\hlopt{+}\hlstd{se),} \hlkwc{width}\hlstd{=}\hlnum{.2}\hlstd{)} \hlopt{+} \hlkwd{geom_line}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 
 \end{knitrout}
 
