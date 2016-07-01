@@ -20,3 +20,7 @@ As a project based learning activity, I try to ensure that students:
 1. Pull each time you begin to work on various resources
 2. Push each time you make changes
 3. Check milestones and issues each session 
+
+## Note on Pushing
+
+To push you need to get a ssh key. It took me hours to figure out this, but you have to work within both Rstudio AND Github to get the key and then copy it into the other, I can't remember the order, so if you figure it out, write it down and enter it here!
