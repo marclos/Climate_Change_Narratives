@@ -1,4 +1,4 @@
-# Climate_Change_Narratives
+# Climate_Change_Narratives -- Read this First
 This is a project for Pomona's Environmental Analysis Course EA030. I designed so students could evaluate the temperature and percipitation changes in a community that is important to them, most likely where they grew up. 
 
 As a project based learning activity, I try to ensure that students:
