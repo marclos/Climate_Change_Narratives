@@ -1,8 +1,8 @@
 \documentclass{article}
 
-\title{How are temperatures increasing and what are the implications?}
+\title{Do weather changes matter?}
 \author{Marc Los Huertos}
-\date{} 
+%\date{} 
 
 \begin{document}
 
@@ -10,11 +10,18 @@
 
 \section{Introduction}
 
-According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these values "map" onto our communities?  Can we find out how these changes will affect specific people in communities we care about?
+According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these changes "map" onto a community that you care about?  Can we find out how these changes will affect specific communities we care about? In other words, do weather changes matter to you?
 
 \subsection{Learning Goals}
 
-For this project, you will evaluate determine if the Earth's temperature has in fact changed, and if so, by how much?
+For this project, you will use weather station data to answer the questions above. How you answer the question is largely up to you, however, there are some learning goals associated with this project:
+
+\begin{itemize}
+  \item Learn how to download and process weather data;
+  \item Evaluate the trends in weather data;
+  \item Determine the impact of weather in a human or non-human community; and
+  \item Communicate your conclusions to the public.
+\end{itemize}
 
 \subsection{Driving Question}
 
@@ -28,19 +35,49 @@ Narrative Blog...
 
 with professional graphics and statistics.
 
+shiny apps
+
 \subsection{Approach}
 
+Students will have the following tools available.
 
-\section{Procedures}
+\begin{itemize}
+  \item NOAA website where data can be downloaded...
+  \item R Studio Server with some scripts to help you develop analyses.
+  \item Gighub to store project codes
+  \item Shiny app templates that might be used as a container for interactive content
+\end{itemize}
 
-\subsection{How is temperature data collected?}
+\section{Project Stages (i.e. Scafolding)}
+
+\subsection{Day 1: How is temperature data collected?}
+
+\subsubsection{Land Based}
+
+\subsubsection{Marine Based}
 
 \subsection{How are the data store, curated and checked for quality?}
 
-\section{Data Source}
+\section{Data Sources}
+
+\subsection{NOAA}
+
+\subsubsection{Downloading Compressed Files}
 
 
-\subsection{Compressed Files}
+\section{Using RStudio}
+
+\subsection{Why R, Why Rstudio, and Why Open Source}
+
+
+\section{R Coding an Analysis}
+
+
+<<>>=
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(reshape2)
 
 <<Setting Up the Datasets>>=
 # Uncompress the files.
@@ -62,7 +99,7 @@ tarfile = "C:\\workspace\\GitHub\\RTricks\\300_Global_Warming\\Raw Data\\ghcnm.t
 stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
 @
 
-\subsection{Obtain Locations}
+\subsection{Obtain Stations}
 
 <<>>=
 # read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
@@ -79,7 +116,7 @@ Example of data:
 AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680        
          
 
-subsection{Selecting and Example Location}
+\subsection{Selecting and Example Location}
 
 Here's what the data look like:
 
@@ -103,28 +140,32 @@ MFLAG31    267-267   Character
 QFLAG31    268-268   Character
 SFLAG31    269-269   Character
 
-Arizona, let's chech import process for the sites...
+Here's an example of data from Arizona...
 <<>>=
 stations[stations$ID=="US1AZMR0019",] 
 # head(stations[stations$HCN_CRN==" CRN",])
 @
 
-Let's get the arizona data into R
+Let's get the a different site into R
 
 <<>>=
-
 # Read the file
 dlyfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/AGM00060515"
 test = read.fwf(dlyfile,widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
 str(test)
 @
 
-<<>>=
+I often forget how to make loops, so I often use simple examples that help me remember, for example, 
+
+<<label=practiceloops>>=
 # practicing loops
 for (year in c(2010,2011,2012,2013,2014,2015)){
   print(paste("The year is", year))
 }
+@
 
+Since the data have a re-occuring set of variable names, I decided to create a vector of variable names, many of which are nearly the same. So, as you'll see, I had to create a loop to avoid having to type a ton (or 31 :-)) of different variables.
+<<label=names>>=
 # Create New Varible Names
 MFLAG=NA; QFLAG=NA; SFLAG=NA; VALUE=NA
 for (i in 1:31){
@@ -134,18 +175,9 @@ QFLAG[i] = paste("QFLAG", i, sep="")
 SFLAG[i] = paste("SFLAG", i, sep="")
 }
 
-#print(QFLAG)
-
-
-
 # Vector of variable names converted from a transposed matrix
 tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
 Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
-
-
-names(test)= Names; #test
-
-head(test)
 @
 
 \subsection{Process Selected Data Files}
@@ -161,13 +193,7 @@ names(tmp) <- Names
 assign(dly_list[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, length.out=31))))
 }
 
-library(tidyr)
-library(dplyr)
-library(stringr)
-#str(AGM00060515.dly)
-#gather(US1AZCN0021.dly, "Temp", VALUE1)
 
-library(reshape2)
 tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
 head(tmp1)
 tmp1$Day = as.numeric(str_sub(tmp1$variable,6,7)); head(tmp1)
@@ -191,9 +217,6 @@ tmp1$DECADE = round(tmp1$YEAR, -1)
 library(ggplot2)
 
 summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
-  
-ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) 
-+ geom_point() + geom_errorbar(limits, width=0.2)
 
 ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(aes(ymin=Temperature-se, ymax=Temperature+se), width=.2) + geom_line() + geom_point()
 

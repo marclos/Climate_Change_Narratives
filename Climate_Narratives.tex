@@ -49,9 +49,9 @@
 
 \usepackage{alltt}
 
-\title{How are temperatures increasing and what are the implications?}
+\title{Do weather changes matter?}
 \author{Marc Los Huertos}
-\date{}
+%\date{}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -59,11 +59,18 @@
 
 \section{Introduction}
 
-According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these values "map" onto our communities?  Can we find out how these changes will affect specific people in communities we care about?
+According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these changes "map" onto a community that you care about?  Can we find out how these changes will affect specific communities we care about? In other words, do weather changes matter to you?
 
 \subsection{Learning Goals}
 
-For this project, you will evaluate determine if the Earth's temperature has in fact changed, and if so, by how much?
+For this project, you will use weather station data to answer the questions above. How you answer the question is largely up to you, however, there are some learning goals associated with this project:
+
+\begin{itemize}
+  \item Learn how to download and process weather data;
+  \item Evaluate the trends in weather data;
+  \item Determine the impact of weather in a human or non-human community; and
+  \item Communicate your conclusions to the public.
+\end{itemize}
 
 \subsection{Driving Question}
 
@@ -77,20 +84,58 @@ Narrative Blog...
 
 with professional graphics and statistics.
 
+shiny apps
+
 \subsection{Approach}
 
+Students will have the following tools available.
 
-\section{Procedures}
+\begin{itemize}
+  \item NOAA website where data can be downloaded...
+  \item R Studio Server with some scripts to help you develop analyses.
+  \item Gighub to store project codes
+  \item Shiny app templates that might be used as a container for interactive content
+\end{itemize}
 
-\subsection{How is temperature data collected?}
+\section{Project Stages (i.e. Scafolding)}
+
+\subsection{Day 1: How is temperature data collected?}
+
+\subsubsection{Land Based}
+
+\subsubsection{Marine Based}
 
 \subsection{How are the data store, curated and checked for quality?}
 
-\section{Data Source}
+\section{Data Sources}
+
+\subsection{NOAA}
+
+\subsubsection{Downloading Compressed Files}
 
 
-\subsection{Compressed Files}
+\section{Using RStudio}
 
+\subsection{Why R, Why Rstudio, and Why Open Source}
+
+
+\section{R Coding an Analysis}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(tidyr)}
+\hlkwd{library}\hlstd{(dplyr)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'dplyr'\\\#\# \\\#\# The following objects are masked from 'package:stats':\\\#\# \\\#\#\ \ \ \  filter, lag\\\#\# \\\#\# The following objects are masked from 'package:base':\\\#\# \\\#\#\ \ \ \  intersect, setdiff, setequal, union}}\begin{alltt}
+\hlkwd{library}\hlstd{(stringr)}
+\hlkwd{library}\hlstd{(reshape2)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -119,7 +164,7 @@ with professional graphics and statistics.
 \end{kframe}
 \end{knitrout}
 
-\subsection{Obtain Locations}
+\subsection{Obtain Stations}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -169,7 +214,7 @@ Example of data:
 AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680        
          
 
-subsection{Selecting and Example Location}
+\subsection{Selecting and Example Location}
 
 Here's what the data look like:
 
@@ -193,7 +238,7 @@ MFLAG31    267-267   Character
 QFLAG31    268-268   Character
 SFLAG31    269-269   Character
 
-Arizona, let's chech import process for the sites...
+Here's an example of data from Arizona...
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -211,7 +256,7 @@ Arizona, let's chech import process for the sites...
 \end{kframe}
 \end{knitrout}
 
-Let's get the arizona data into R
+Let's get the a different site into R
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -232,6 +277,8 @@ Let's get the arizona data into R
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in str(test): object 'test' not found}}\end{kframe}
 \end{knitrout}
 
+I often forget how to make loops, so I often use simple examples that help me remember, for example, 
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -248,6 +295,12 @@ Let's get the arizona data into R
 ## [1] "The year is 2014"
 ## [1] "The year is 2015"
 \end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Since the data have a re-occuring set of variable names, I decided to create a vector of variable names, many of which are nearly the same. So, as you'll see, I had to create a loop to avoid having to type a ton (or 31 :-)) of different variables.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# Create New Varible Names}
 \hlstd{MFLAG}\hlkwb{=}\hlnum{NA}\hlstd{; QFLAG}\hlkwb{=}\hlnum{NA}\hlstd{; SFLAG}\hlkwb{=}\hlnum{NA}\hlstd{; VALUE}\hlkwb{=}\hlnum{NA}
@@ -258,10 +311,6 @@ Let's get the arizona data into R
 \hlstd{SFLAG[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(}\hlstr{"SFLAG"}\hlstd{, i,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
 \hlstd{\}}
 
-\hlcom{#print(QFLAG)}
-
-
-
 \hlcom{# Vector of variable names converted from a transposed matrix}
 \hlstd{tmp} \hlkwb{=} \hlkwd{as.vector}\hlstd{(}\hlkwd{t}\hlstd{(}\hlkwd{matrix}\hlstd{(}\hlkwc{data}\hlstd{=}\hlkwd{c}\hlstd{(VALUE, MFLAG, QFLAG, SFLAG),} \hlkwc{ncol}\hlstd{=}\hlnum{4}\hlstd{)))}
 \hlstd{Names} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"ID"}\hlstd{,} \hlstr{"YEAR"}\hlstd{,} \hlstr{"MONTH"}\hlstd{,} \hlstr{"ELEMENT"}\hlstd{, tmp);} \hlkwd{length}\hlstd{(Names)}
@@ -269,17 +318,7 @@ Let's get the arizona data into R
 \begin{verbatim}
 ## [1] 128
 \end{verbatim}
-\begin{alltt}
-\hlkwd{names}\hlstd{(test)}\hlkwb{=} \hlstd{Names;} \hlcom{#test}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(test) = Names: object 'test' not found}}\begin{alltt}
-\hlkwd{head}\hlstd{(test)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in head(test): object 'test' not found}}\end{kframe}
+\end{kframe}
 \end{knitrout}
 
 \subsection{Process Selected Data Files}
@@ -302,17 +341,7 @@ Let's get the arizona data into R
 \hlkwd{assign}\hlstd{(dly_list[i],} \hlkwd{subset}\hlstd{(tmp, ELEMENT}\hlopt{==}\hlstr{"TMAX"}\hlstd{,} \hlkwc{select}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlkwd{seq}\hlstd{(}\hlnum{5}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{4}\hlstd{,} \hlkwc{length.out}\hlstd{=}\hlnum{31}\hlstd{))))}
 \hlstd{\}}
 
-\hlkwd{library}\hlstd{(tidyr)}
-\hlkwd{library}\hlstd{(dplyr)}
-\end{alltt}
 
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'dplyr'\\\#\# \\\#\# The following objects are masked from 'package:stats':\\\#\# \\\#\#\ \ \ \  filter, lag\\\#\# \\\#\# The following objects are masked from 'package:base':\\\#\# \\\#\#\ \ \ \  intersect, setdiff, setequal, union}}\begin{alltt}
-\hlkwd{library}\hlstd{(stringr)}
-\hlcom{#str(AGM00060515.dly)}
-\hlcom{#gather(US1AZCN0021.dly, "Temp", VALUE1)}
-
-\hlkwd{library}\hlstd{(reshape2)}
 \hlstd{tmp1} \hlkwb{=} \hlkwd{melt}\hlstd{(AGM00060515.dly,} \hlkwc{id}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"ID"}\hlstd{,} \hlstr{"YEAR"}\hlstd{,} \hlstr{"MONTH"}\hlstd{,} \hlstr{"ELEMENT"}\hlstd{))}
 \hlkwd{head}\hlstd{(tmp1)}
 \end{alltt}
@@ -376,20 +405,10 @@ Let's get the arizona data into R
 
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# -------------------------------------------------------------------------\\\#\# You have loaded plyr after dplyr - this is likely to cause problems.\\\#\# If you need functions from both plyr and dplyr, please load plyr first, then dplyr:\\\#\# library(plyr); library(dplyr)\\\#\# -------------------------------------------------------------------------\\\#\# \\\#\# Attaching package: 'plyr'\\\#\# \\\#\# The following objects are masked from 'package:dplyr':\\\#\# \\\#\#\ \ \ \  arrange, count, desc, failwith, id, mutate, rename, summarise,\\\#\#\ \ \ \  summarize}}\begin{alltt}
-\hlkwd{ggplot}\hlstd{(summarydf,} \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=Temperature,} \hlkwc{x}\hlstd{=DECADE,} \hlkwc{color}\hlstd{= DECADE))}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
-\begin{kframe}\begin{alltt}
-\hlopt{+} \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_errorbar}\hlstd{(limits,} \hlkwc{width}\hlstd{=}\hlnum{0.2}\hlstd{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in +geom\_point(): invalid argument to unary operator}}\begin{alltt}
 \hlkwd{ggplot}\hlstd{(summarydf,} \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=Temperature,} \hlkwc{x}\hlstd{=DECADE,} \hlkwc{color}\hlstd{= DECADE))} \hlopt{+} \hlkwd{geom_errorbar}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{ymin}\hlstd{=Temperature}\hlopt{-}\hlstd{se,} \hlkwc{ymax}\hlstd{=Temperature}\hlopt{+}\hlstd{se),} \hlkwc{width}\hlstd{=}\hlnum{.2}\hlstd{)} \hlopt{+} \hlkwd{geom_line}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-2} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
 
 \end{knitrout}
 
