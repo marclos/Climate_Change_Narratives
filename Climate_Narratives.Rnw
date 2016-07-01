@@ -14,11 +14,12 @@ According the the IPCC, the temperature has been changing about 0.X degrees per 
 
 \subsection{Goals of this Documents}
 
-1. Describe the goals and approach for the project
+\begin{enumerate}
+  \item Describe the goals and approach for the project;
+  \item Provide or point to resources to prepare for and conduct the project; and
+  \item Describe how we will evaluate the projects.
+\end{enumerate}
 
-2. Provide or point to resources to prepare for and conduct the project
-
-3. Describe how we will evaluate the projects.
 
 \subsection{Learning Goals}
 
@@ -212,6 +213,8 @@ library(ggplot2)
 
 summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
 
+# Think the color=DECADE thing can be deleted, but I haven't tried it yet. In any case, the legend is lame and I need to get rid of it!
+
 ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(aes(ymin=Temperature-se, ymax=Temperature+se), width=.2) + geom_line() + geom_point()
 
 @
@@ -242,4 +245,17 @@ NOAA Locations
 plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
 @
 
+
+\section{Evaluating Narratives}
+
+\subsection{Examples}
+
+% I'm not sure how to get Rstudio server to use various packages...
+%\url{https://uasnap.shinyapps.io/ak_station_cru_eda/}
+
+\subsection{Developing Criteria for Project Models}
+
+\subsection{}
+
+\subsection{}
 \end{document}

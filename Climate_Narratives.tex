@@ -63,11 +63,12 @@ According the the IPCC, the temperature has been changing about 0.X degrees per 
 
 \subsection{Goals of this Documents}
 
-1. Describe the goals and approach for the project
+\begin{enumerate}
+  \item Describe the goals and approach for the project;
+  \item Provide or point to resources to prepare for and conduct the project; and
+  \item Describe how we will evaluate the projects.
+\end{enumerate}
 
-2. Provide or point to resources to prepare for and conduct the project
-
-3. Describe how we will evaluate the projects.
 
 \subsection{Learning Goals}
 
@@ -373,6 +374,8 @@ Since the data have a re-occuring set of variable names, I decided to create a v
 
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# -------------------------------------------------------------------------\\\#\# You have loaded plyr after dplyr - this is likely to cause problems.\\\#\# If you need functions from both plyr and dplyr, please load plyr first, then dplyr:\\\#\# library(plyr); library(dplyr)\\\#\# -------------------------------------------------------------------------\\\#\# \\\#\# Attaching package: 'plyr'\\\#\# \\\#\# The following objects are masked from 'package:dplyr':\\\#\# \\\#\#\ \ \ \  arrange, count, desc, failwith, id, mutate, rename, summarise,\\\#\#\ \ \ \  summarize}}\begin{alltt}
+\hlcom{# Think the color=DECADE thing can be deleted, but I haven't tried it yet. In any case, the legend is lame and I need to get rid of it!}
+
 \hlkwd{ggplot}\hlstd{(summarydf,} \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=Temperature,} \hlkwc{x}\hlstd{=DECADE,} \hlkwc{color}\hlstd{= DECADE))} \hlopt{+} \hlkwd{geom_errorbar}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{ymin}\hlstd{=Temperature}\hlopt{-}\hlstd{se,} \hlkwc{ymax}\hlstd{=Temperature}\hlopt{+}\hlstd{se),} \hlkwc{width}\hlstd{=}\hlnum{.2}\hlstd{)} \hlopt{+} \hlkwd{geom_line}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()}
 \end{alltt}
 \end{kframe}
@@ -441,4 +444,17 @@ NOAA Locations
 
 \end{knitrout}
 
+
+\section{Evaluating Narratives}
+
+\subsection{Examples}
+
+% I'm not sure how to get Rstudio server to use various packages...
+%\url{https://uasnap.shinyapps.io/ak_station_cru_eda/}
+
+\subsection{Developing Criteria for Project Models}
+
+\subsection{}
+
+\subsection{}
 \end{document}
