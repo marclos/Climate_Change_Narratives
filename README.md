@@ -7,3 +7,16 @@ As a project based learning activity, I try to ensure that students:
 2. Ensure the project is authentic;
 3. Provide a mechanism to make the results public;
 4. 
+
+## Resources to needed for collaborators
+
+1. Github account (free and if associated with a teaching institution free access to private accounts too.);
+2. R program;
+3. Access to Rstudio Server OR desktop Rstudio;
+4. Some basic understanding of R and LaTeX.
+
+## Collaborator Best Practices
+
+1. Pull each time you begin to work on various resources
+2. Push each time you make changes
+3. Check milestones and issues each session 
