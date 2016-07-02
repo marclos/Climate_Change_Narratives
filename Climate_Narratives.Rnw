@@ -10,9 +10,9 @@
 
 \section{Introduction}
 
-According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these changes "map" onto a community that you care about?  Can we find out how these changes will affect specific communities we care about? In other words, do weather changes matter to you?
+According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these changes "map" onto a community that you care about?  Can we find out how these changes will affect specific communities we care about? In other words, do weather changes matter?
 
-\subsection{Goals of this Documents}
+\subsection{Goals of this Document}
 
 \begin{enumerate}
   \item Describe the goals and approach for the project;
@@ -23,7 +23,7 @@ According the the IPCC, the temperature has been changing about 0.X degrees per 
 
 \subsection{Learning Goals}
 
-For this project, you will use weather station data to answer the questions above. How you answer the question is largely up to you, however, there are some learning goals associated with this project:
+For this project, you will use weather data to the question "do weather changes matter". How you answer the question is largely up to you, however, there are some learning goals associated with this project:
 
 \begin{itemize}
   \item Learn how to download and process weather data;
@@ -32,29 +32,39 @@ For this project, you will use weather station data to answer the questions abov
   \item Communicate your conclusions to the public.
 \end{itemize}
 
+Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and preset the results ot the public.
+
 \subsection{Driving Question}
 
-Is my region's climate changing?
+Projects can often be structured as questions, but sometimes it it worth phrasing the questions in a number of ways -- this might help you find ways that you might find the question more provactive and interesting, For example,
 
-How is climate change affecting my community?
+\begin{itemize}
+  \item Is my region's climate changing?
+  \item How is climate change affecting my community?
+\end{itemize}
+
+
+
 
 \subsection{Public Product}
 
-Narrative Blog...
+Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
 
-with professional graphics and statistics.
-
-shiny apps
+\begin{itemize}
+  \item appropriate and thoughful statistical analysis;
+  \item Professionally appearing graphics; and 
+  \item provide interactive graphics as part of a public presentation.
+\end{itemize}
 
 \subsection{Approach}
 
 Students will have the following tools available.
 
 \begin{itemize}
-  \item NOAA website where data can be downloaded...
-  \item R Studio Server with some scripts to help you develop analyses.
-  \item Gighub to store project codes
-  \item Shiny app templates that might be used as a container for interactive content
+  \item NOAA website where data can be downloaded;
+  \item R Studio Server with some scripts to help you develop analyses;
+  \item Gighub to store project codes; and
+  \item Shiny app templates that might be used as a container for interactive content.
 \end{itemize}
 
 \section{Project Stages (i.e. Scafolding)}
@@ -84,15 +94,33 @@ Excel was not designed to handle large datasets, i.e. over ~1 million rows. For 
 
 \section{R Coding an Analysis}
 
+For this code, I suggest the using the R base package plus some libraries for assorted specialized tools. When these are used, I can explain them, but for now, I suggest you make sure these files are 1) conveinient and 2) useful. 
 
 <<>>=
 library(tidyr)
 library(dplyr)
 library(stringr)
 library(reshape2)
+@
+
+We will also use a customized function, which can be called automatically if you have the source code in your directory with the following: 
+
+<<>>=
 source("summarySE.R")
+@
+
+Or you can download this file from http:... and run code to create the function manually. 
 
 
+\subsection{Accessing the Data}
+
+First, we you may find you need to download the data...
+
+Once you have downloaded it, the files will need to be pre-processed to be imported into R and/or post-process to create a useful dataset. 
+
+One preprocessing task might be to uncompress the data for example:
+
+<<>>=
 <<Setting Up the Datasets>>=
 # Uncompress the files.
 # ghcnd_all
