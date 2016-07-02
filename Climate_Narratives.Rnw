@@ -20,7 +20,6 @@ According the the IPCC, the temperature has been changing about 0.X degrees per 
   \item Describe how we will evaluate the projects.
 \end{enumerate}
 
-
 \subsection{Learning Goals}
 
 For this project, you will use weather data to the question "do weather changes matter". How you answer the question is largely up to you, however, there are some learning goals associated with this project:
@@ -43,7 +42,7 @@ Projects can often be structured as questions, but sometimes it it worth phrasin
   \item How is climate change affecting my community?
 \end{itemize}
 
-
+But you can modify these questions to develop the project that you might find compelling.
 
 
 \subsection{Public Product}
@@ -51,9 +50,9 @@ Projects can often be structured as questions, but sometimes it it worth phrasin
 Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
 
 \begin{itemize}
-  \item appropriate and thoughful statistical analysis;
-  \item Professionally appearing graphics; and 
-  \item provide interactive graphics as part of a public presentation.
+  \item Appropriate and thoughful statistical analysis;
+  \item Professionally appearing and interactive graphics; and 
+  \item Narrative that describe the climate and climate implications to the region.
 \end{itemize}
 
 \subsection{Approach}
@@ -71,28 +70,67 @@ Students will have the following tools available.
 
 \subsection{Day 1: How is temperature data collected?}
 
-\subsubsection{Land Based}
+Research how climate data are collected?
 
-\subsubsection{Marine Based}
+Create a wiki that describe how data are collected for the following categories
+
+\begin{itemize}
+  \item Land-based Temperatures
+  \item Sea surface Temperatures
+  \item Satillite Collected 
+\end{itemize}
 
 \subsection{Day 2: How are the data store, curated and checked for quality?}
+
+Watch this video
+
+Write a wiki that describes: 
+
+\begin{enumerate}
+  \item How as data storage changed in the last 100 years;
+  \item how data are curated; 
+  \item how are data checked for quality
+\end{enumerate}
+
 
 \section{Data 3: Data Sources}
 
 \subsection{NOAA}
+
+Create a data dictionary...
 
 \subsection{Others}
 
 \subsection{File Types and Software Tools}
 
 
-\section{Using RStudio}
+\section{Obtaining and Analyzing Data}
 
-\subsection{Why R, Why Rstudio, and Why Open Source}
+\subsection{Why R, Why Rstudio, and Why Open Source?}
 
 Excel was not designed to handle large datasets, i.e. over ~1 million rows. For most purposes, this might be enough. However, in many climate science data often exceed this number of samples. 
 
-\section{R Coding an Analysis}
+\subsection{Stages of Analysis}
+
+\begin{enumerate}
+  \item Download data (easier) or create a link to a database (preferrred);
+  \item Pre-process data (uncompress, remove headers, etc.);
+  \item Import data into R;
+  \item Process data (converting values to NA, naming variables, reshaping data);
+  \item Analyze data for patterns (e.g. trends);
+  \item Create compelling graphics (easier); or an interactive shiny app (perferred).
+  \item Write blog to describe results
+  \item Search peer reviewed articles to evaluate ecological, economic, and sociological implications of climate patterns.
+  
+\end{enumerate}
+
+\section{R Resources}
+
+\subsection{R Programming Language}
+
+\subsection{RStudio and Github}
+
+\subsection{R libraries}
 
 For this code, I suggest the using the R base package plus some libraries for assorted specialized tools. When these are used, I can explain them, but for now, I suggest you make sure these files are 1) conveinient and 2) useful. 
 
