@@ -1,0 +1,193 @@
+---
+title: "Using R to Process Weather Data"
+author: "Marc Los Huertos"
+date: "7/8/2016"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(reshape2)
+
+source("summarySE.R")
+```
+
+
+# Accessing the Data
+
+What sites are available for downloading the data?
+
+## How to download data
+
+
+## Pre-Processing Data
+
+Once we have downloaded data, the files will need to be pre-processed to be imported into R and/or post-process to create a useful dataset. 
+
+One preprocessing task might be to uncompress the data for example:
+
+### How to Uncompress Data
+
+```{r uncompress}
+# Uncompress the files.
+# ghcnd_all
+
+```
+
+# Reading Data into R
+
+## What is the data format?
+Example of data:
+
+AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680
+
+```{r readinginputfiles}
+stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
+
+# read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
+stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
+```
+
+## Creating Variable Names
+
+```{r creatingvariablenames}
+names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
+
+head(stations)
+```
+
+# Selecting and Example Location
+
+Here's what the data look like:
+
+ID            1-11   Character
+YEAR         12-15   Integer
+MONTH        16-17   Integer
+ELEMENT      18-21   Character
+VALUE1       22-26   Integer
+MFLAG1       27-27   Character
+QFLAG1       28-28   Character
+SFLAG1       29-29   Character
+VALUE2       30-34   Integer
+MFLAG2       35-35   Character
+QFLAG2       36-36   Character
+SFLAG2       37-37   Character
+  .           .          .
+  .           .          .
+  .           .          .
+VALUE31    262-266   Integer
+MFLAG31    267-267   Character
+QFLAG31    268-268   Character
+SFLAG31    269-269   Character
+
+Here's an example of data from Arizona...
+
+```{r Arizona}
+stations[stations$ID=="US1AZMR0019",] 
+# head(stations[stations$HCN_CRN==" CRN",])
+```
+
+Let's get the a different site into R
+
+I often forget how to make loops, so I often use simple examples that help me remember, for example, 
+
+```{r practiceloops}
+# practicing loops
+for (year in c(2010,2011,2012,2013,2014,2015)){
+  print(paste("The year is", year))
+}
+```
+
+Since the data have a re-occuring set of variable names, I decided to create a vector of variable names, many of which are nearly the same. So, as you'll see, I had to create a loop to avoid having to type a ton (or 31 :-)) of different variables.
+
+```{r newvariables}
+# Create New Varible Names
+MFLAG=NA; QFLAG=NA; SFLAG=NA; VALUE=NA
+for (i in 1:31){
+VALUE[i] = paste("DATE", i, sep="")
+MFLAG[i] = paste("MFLAG", i, sep="")
+QFLAG[i] = paste("QFLAG", i, sep="")
+SFLAG[i] = paste("SFLAG", i, sep="")
+}
+
+# Vector of variable names converted from a transposed matrix
+tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
+Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
+```
+
+# Process Selected Data Files
+
+```{r processing}
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data")
+
+dly_list = list.files(pattern="*.dly"); head(dly_list)
+#for (i in 1:length(dly_list)) 
+for (i in 1:1){
+tmp <- read.fwf(dly_list[i], widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
+names(tmp) <- Names
+assign(dly_list[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, length.out=31))))
+}
+```
+
+
+```{r}
+tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
+head(tmp1)
+tmp1$Day = as.numeric(str_sub(tmp1$variable,6,7)); head(tmp1)
+tmp1$value[tmp1$value==-9999] = NA; head(tmp1)
+tmp1$Temperature = tmp1$value/10
+
+drops <- c("variable","value")
+tmp1 <-tmp1[ , !(names(tmp1) %in% drops)]
+tmp1$DECADE = round(tmp1$YEAR, -1)
+# names(tmp1)
+```
+
+
+# Presenting the Results
+
+```{r presenting}
+# call summarySE function....somehow...
+
+
+library(ggplot2)
+
+summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
+
+# Think the color=DECADE thing can be deleted, but I haven't tried it yet. In any case, the legend is lame and I need to get rid of it!
+
+ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(aes(ymin=Temperature-se, ymax=Temperature+se), width=.2) + geom_line() + geom_point()
+
+```
+
+
+%http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/
+
+
+## NOAA dataset
+
+New NOAA Directory -- ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
+
+```{r otherstuff}
+library(raster)
+library(XML)
+
+coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",widths=c(6,1,5,1,38,7,1,8,9,8,1,8),sep=";",skip=22,fill=T)
+Names = c("USAF", "X1", "WBAN", "X2", "STATION_NAME", "X3", "CTRY", "X4", "ST", "X5", "CALL", "X6", "LAT", "X7", "LON", "X8", "ELEV", "X9", "BEGIN", "X10", "END")
+Widths = c(6,       1,    5,      1,        29,         1,    2,      3,    2,    1,    4,      1,    8,     1,     8,    1,    7,     1,     8,      1,    8)
+
+coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",widths=Widths,sep=";",skip=22,fill=T); names(coords.fwt)=Names; coords.fwt[c(30,4000,20000),]
+
+coords <- data.frame(ID=paste(as.factor(coords.fwt[,1])),WBAN=paste(as.factor(coords.fwt[,3])),Lat=as.numeric(paste(coords.fwt$LAT)),Lon=as.numeric(paste(coords.fwt$LON)));  coords[c(30,4000,20000),]
+```
+
+
+# NOAA Locations
+
+```{r NOAApoints}
+plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
+```
+

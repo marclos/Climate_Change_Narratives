@@ -12,12 +12,44 @@
 
 According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these changes "map" onto a community that you care about?  Can we find out how these changes will affect specific communities we care about? In other words, do weather changes matter?
 
+\subsection{Project Description}
+
+\subsection{Driving Question(s)}
+
+Projects can often be structured as questions, but sometimes it it worth phrasing the questions in a number of ways -- this might help you find ways that you might find the question more provactive and interesting, For example,
+
+\begin{itemize}
+  \item Is my region's climate changing?
+  \item How is climate change affecting my community?
+\end{itemize}
+
+But you can modify these questions to develop the project that you might find compelling.
+
+In addition, we may develop "sub-questions" that can be developed or answered as chunks, which will be used to answer the main question or questions. For example, 
+
+\begin{itemize}
+  \item Are there biases in weather data? Can these biases be corrected? If so, how?
+  \item How can we evaluate trends? What are the most appropriate statistical tools to test for trends?
+  \item What is the best way to display visual data?  Are there best practices to guide a public product to make it more compelling or interactive?
+\end{itemize}
+
+\subsection{Public Product}
+
+Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
+
+\begin{itemize}
+  \item Appropriate and thoughtful statistical analysis;
+  \item Professionally appearing and interactive graphics; and 
+  \item Narrative that describe the climate and climate implications to the region.
+\end{itemize}
+
+
 \subsection{Goals of this Document}
 
 \begin{enumerate}
   \item Describe the goals and approach for the project;
   \item Provide or point to resources to prepare for and conduct the project; and
-  \item Describe how we will evaluate the projects.
+  \item Describe how we will evaluate the project process and products.
 \end{enumerate}
 
 \subsection{Learning Goals}
@@ -33,29 +65,8 @@ For this project, you will use weather data to the question "do weather changes 
 
 Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and preset the results ot the public.
 
-\subsection{Driving Question}
 
-Projects can often be structured as questions, but sometimes it it worth phrasing the questions in a number of ways -- this might help you find ways that you might find the question more provactive and interesting, For example,
-
-\begin{itemize}
-  \item Is my region's climate changing?
-  \item How is climate change affecting my community?
-\end{itemize}
-
-But you can modify these questions to develop the project that you might find compelling.
-
-
-\subsection{Public Product}
-
-Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
-
-\begin{itemize}
-  \item Appropriate and thoughful statistical analysis;
-  \item Professionally appearing and interactive graphics; and 
-  \item Narrative that describe the climate and climate implications to the region.
-\end{itemize}
-
-\subsection{Approach}
+\section{Approach}
 
 Students will have the following tools available.
 
@@ -66,9 +77,13 @@ Students will have the following tools available.
   \item Shiny app templates that might be used as a container for interactive content.
 \end{itemize}
 
+\subsection{Expert Groups}
+
+
+
 \section{Project Stages (i.e. Scafolding)}
 
-\subsection{Day 1: How is temperature data collected?}
+\subsection{Session 1: How are temperature data collected?}
 
 Research how climate data are collected?
 
@@ -80,7 +95,7 @@ Create a wiki that describe how data are collected for the following categories
   \item Satillite Collected 
 \end{itemize}
 
-\subsection{Day 2: How are the data store, curated and checked for quality?}
+\subsection{Session 2: How are the data store, curated and checked for quality?}
 
 Watch this video
 
@@ -93,29 +108,29 @@ Write a wiki that describes:
 \end{enumerate}
 
 
-\section{Data 3: Data Sources}
+\subsection{Session 3: Data Sources and Importation}
 
-\subsection{NOAA}
+Each team will research and evaluate various sources of data.
 
-Create a data dictionary...
+\subsubsection{Sources of Data}
 
-\subsection{Others}
+Students will create a Wiki that describes the each data set, it sources and how it might become usuable using open sources of software.
 
-\subsection{File Types and Software Tools}
+\subsubsection{File Types and Software Tools}
 
 
-\section{Obtaining and Analyzing Data}
+\subsection{Session 4: Obtaining and Analyzing Data}
 
-\subsection{Why R, Why Rstudio, and Why Open Source?}
+\subsubsection{Why R, Why Rstudio, and Why Open Source?}
 
 Excel was not designed to handle large datasets, i.e. over ~1 million rows. For most purposes, this might be enough. However, in many climate science data often exceed this number of samples. 
 
-\subsection{Stages of Analysis}
+\section{Project Stages}
 
 \begin{enumerate}
   \item Download data (easier) or create a link to a database (preferrred);
   \item Pre-process data (uncompress, remove headers, etc.);
-  \item Import data into R;
+  \item Import data into open source software programs;
   \item Process data (converting values to NA, naming variables, reshaping data);
   \item Analyze data for patterns (e.g. trends);
   \item Create compelling graphics (easier); or an interactive shiny app (perferred).
@@ -124,7 +139,7 @@ Excel was not designed to handle large datasets, i.e. over ~1 million rows. For 
   
 \end{enumerate}
 
-\section{R Resources}
+\section{Computing Resources}
 
 \subsection{R Programming Language}
 
@@ -134,183 +149,25 @@ Excel was not designed to handle large datasets, i.e. over ~1 million rows. For 
 
 For this code, I suggest the using the R base package plus some libraries for assorted specialized tools. When these are used, I can explain them, but for now, I suggest you make sure these files are 1) conveinient and 2) useful. 
 
-<<>>=
-library(tidyr)
-library(dplyr)
-library(stringr)
-library(reshape2)
-@
+For example, here is a list of useful library packages that might be helpful:
+
+\begin{description}
+  \item[tidyr] \ldots
+  \item[dplyr]
+  \item[stringr]
+  \item[reshape2]
+  \item[??]
+\end{description}
+
+\subsection{Customized Functions}
 
 We will also use a customized function, which can be called automatically if you have the source code in your directory with the following: 
+\begin{description}
+  \item[\texttt{summarySE.R}] Can be downloaded...
+\end{description}
 
-<<>>=
-source("summarySE.R")
-@
 
 Or you can download this file from http:... and run code to create the function manually. 
-
-
-\subsection{Accessing the Data}
-
-First, we you may find you need to download the data...
-
-Once you have downloaded it, the files will need to be pre-processed to be imported into R and/or post-process to create a useful dataset. 
-
-One preprocessing task might be to uncompress the data for example:
-
-<<>>=
-<<Setting Up the Datasets>>=
-# Uncompress the files.
-# ghcnd_all
-@
-
-
-<<label=readdata >>=
-stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
-@
-
-\subsection{Read Station Data into R}
-
-<<>>=
-# read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
-stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
-names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
-
-head(stations)
-@
-
-Example of data:
-
-AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680        
-         
-
-\subsection{Selecting and Example Location}
-
-Here's what the data look like:
-
-ID            1-11   Character
-YEAR         12-15   Integer
-MONTH        16-17   Integer
-ELEMENT      18-21   Character
-VALUE1       22-26   Integer
-MFLAG1       27-27   Character
-QFLAG1       28-28   Character
-SFLAG1       29-29   Character
-VALUE2       30-34   Integer
-MFLAG2       35-35   Character
-QFLAG2       36-36   Character
-SFLAG2       37-37   Character
-  .           .          .
-  .           .          .
-  .           .          .
-VALUE31    262-266   Integer
-MFLAG31    267-267   Character
-QFLAG31    268-268   Character
-SFLAG31    269-269   Character
-
-Here's an example of data from Arizona...
-<<>>=
-stations[stations$ID=="US1AZMR0019",] 
-# head(stations[stations$HCN_CRN==" CRN",])
-@
-
-Let's get the a different site into R
-
-I often forget how to make loops, so I often use simple examples that help me remember, for example, 
-
-<<label=practiceloops>>=
-# practicing loops
-for (year in c(2010,2011,2012,2013,2014,2015)){
-  print(paste("The year is", year))
-}
-@
-
-Since the data have a re-occuring set of variable names, I decided to create a vector of variable names, many of which are nearly the same. So, as you'll see, I had to create a loop to avoid having to type a ton (or 31 :-)) of different variables.
-<<label=names>>=
-# Create New Varible Names
-MFLAG=NA; QFLAG=NA; SFLAG=NA; VALUE=NA
-for (i in 1:31){
-VALUE[i] = paste("DATE", i, sep="")
-MFLAG[i] = paste("MFLAG", i, sep="")
-QFLAG[i] = paste("QFLAG", i, sep="")
-SFLAG[i] = paste("SFLAG", i, sep="")
-}
-
-# Vector of variable names converted from a transposed matrix
-tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
-Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
-@
-
-\subsection{Process Selected Data Files}
-
-<<>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data")
-
-dly_list = list.files(pattern="*.dly"); head(dly_list)
-#for (i in 1:length(dly_list)) 
-for (i in 1:1){
-tmp <- read.fwf(dly_list[i], widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
-names(tmp) <- Names
-assign(dly_list[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, length.out=31))))
-}
-
-
-tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
-head(tmp1)
-tmp1$Day = as.numeric(str_sub(tmp1$variable,6,7)); head(tmp1)
-tmp1$value[tmp1$value==-9999] = NA; head(tmp1)
-tmp1$Temperature = tmp1$value/10
-
-drops <- c("variable","value")
-tmp1 <-tmp1[ , !(names(tmp1) %in% drops)]
-tmp1$DECADE = round(tmp1$YEAR, -1)
-# names(tmp1)
-
-@
-
-
-\section{Presenting the Results}
-
-<<>>=
-# call summarySE function....somehow...
-
-
-library(ggplot2)
-
-summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
-
-# Think the color=DECADE thing can be deleted, but I haven't tried it yet. In any case, the legend is lame and I need to get rid of it!
-
-ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(aes(ymin=Temperature-se, ymax=Temperature+se), width=.2) + geom_line() + geom_point()
-
-@
-
-
-%http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/
-
-
-\subsection{NOAA dataset}
-
-New NOAA Directory -- ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
-
-<<>>=
-library(raster)
-library(XML)
-
-coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",widths=c(6,1,5,1,38,7,1,8,9,8,1,8),sep=";",skip=22,fill=T)
-Names = c("USAF", "X1", "WBAN", "X2", "STATION_NAME", "X3", "CTRY", "X4", "ST", "X5", "CALL", "X6", "LAT", "X7", "LON", "X8", "ELEV", "X9", "BEGIN", "X10", "END")
-Widths = c(6,       1,    5,      1,        29,         1,    2,      3,    2,    1,    4,      1,    8,     1,     8,    1,    7,     1,     8,      1,    8)
-
-coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",widths=Widths,sep=";",skip=22,fill=T); names(coords.fwt)=Names; coords.fwt[c(30,4000,20000),]
-
-coords <- data.frame(ID=paste(as.factor(coords.fwt[,1])),WBAN=paste(as.factor(coords.fwt[,3])),Lat=as.numeric(paste(coords.fwt$LAT)),Lon=as.numeric(paste(coords.fwt$LON)));  coords[c(30,4000,20000),]
-@
-
-NOAA Locations
-<<label = NOAApoints, Figure = TRUE>>=
-plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
-@
-
 
 \section{Evaluating Narratives}
 

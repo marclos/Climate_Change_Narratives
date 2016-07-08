@@ -61,12 +61,44 @@
 
 According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these changes "map" onto a community that you care about?  Can we find out how these changes will affect specific communities we care about? In other words, do weather changes matter?
 
+\subsection{Project Description}
+
+\subsection{Driving Question(s)}
+
+Projects can often be structured as questions, but sometimes it it worth phrasing the questions in a number of ways -- this might help you find ways that you might find the question more provactive and interesting, For example,
+
+\begin{itemize}
+  \item Is my region's climate changing?
+  \item How is climate change affecting my community?
+\end{itemize}
+
+But you can modify these questions to develop the project that you might find compelling.
+
+In addition, we may develop "sub-questions" that can be developed or answered as chunks, which will be used to answer the main question or questions. For example, 
+
+\begin{itemize}
+  \item Are there biases in weather data? Can these biases be corrected? If so, how?
+  \item How can we evaluate trends? What are the most appropriate statistical tools to test for trends?
+  \item What is the best way to display visual data?  Are there best practices to guide a public product to make it more compelling or interactive?
+\end{itemize}
+
+\subsection{Public Product}
+
+Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
+
+\begin{itemize}
+  \item Appropriate and thoughtful statistical analysis;
+  \item Professionally appearing and interactive graphics; and 
+  \item Narrative that describe the climate and climate implications to the region.
+\end{itemize}
+
+
 \subsection{Goals of this Document}
 
 \begin{enumerate}
   \item Describe the goals and approach for the project;
   \item Provide or point to resources to prepare for and conduct the project; and
-  \item Describe how we will evaluate the projects.
+  \item Describe how we will evaluate the project process and products.
 \end{enumerate}
 
 \subsection{Learning Goals}
@@ -82,29 +114,8 @@ For this project, you will use weather data to the question "do weather changes 
 
 Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and preset the results ot the public.
 
-\subsection{Driving Question}
 
-Projects can often be structured as questions, but sometimes it it worth phrasing the questions in a number of ways -- this might help you find ways that you might find the question more provactive and interesting, For example,
-
-\begin{itemize}
-  \item Is my region's climate changing?
-  \item How is climate change affecting my community?
-\end{itemize}
-
-But you can modify these questions to develop the project that you might find compelling.
-
-
-\subsection{Public Product}
-
-Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
-
-\begin{itemize}
-  \item Appropriate and thoughful statistical analysis;
-  \item Professionally appearing and interactive graphics; and 
-  \item Narrative that describe the climate and climate implications to the region.
-\end{itemize}
-
-\subsection{Approach}
+\section{Approach}
 
 Students will have the following tools available.
 
@@ -115,9 +126,13 @@ Students will have the following tools available.
   \item Shiny app templates that might be used as a container for interactive content.
 \end{itemize}
 
+\subsection{Expert Groups}
+
+
+
 \section{Project Stages (i.e. Scafolding)}
 
-\subsection{Day 1: How is temperature data collected?}
+\subsection{Session 1: How are temperature data collected?}
 
 Research how climate data are collected?
 
@@ -129,7 +144,7 @@ Create a wiki that describe how data are collected for the following categories
   \item Satillite Collected 
 \end{itemize}
 
-\subsection{Day 2: How are the data store, curated and checked for quality?}
+\subsection{Session 2: How are the data store, curated and checked for quality?}
 
 Watch this video
 
@@ -142,29 +157,29 @@ Write a wiki that describes:
 \end{enumerate}
 
 
-\section{Data 3: Data Sources}
+\subsection{Session 3: Data Sources and Importation}
 
-\subsection{NOAA}
+Each team will research and evaluate various sources of data.
 
-Create a data dictionary...
+\subsubsection{Sources of Data}
 
-\subsection{Others}
+Students will create a Wiki that describes the each data set, it sources and how it might become usuable using open sources of software.
 
-\subsection{File Types and Software Tools}
+\subsubsection{File Types and Software Tools}
 
 
-\section{Obtaining and Analyzing Data}
+\subsection{Session 4: Obtaining and Analyzing Data}
 
-\subsection{Why R, Why Rstudio, and Why Open Source?}
+\subsubsection{Why R, Why Rstudio, and Why Open Source?}
 
 Excel was not designed to handle large datasets, i.e. over ~1 million rows. For most purposes, this might be enough. However, in many climate science data often exceed this number of samples. 
 
-\subsection{Stages of Analysis}
+\section{Project Stages}
 
 \begin{enumerate}
   \item Download data (easier) or create a link to a database (preferrred);
   \item Pre-process data (uncompress, remove headers, etc.);
-  \item Import data into R;
+  \item Import data into open source software programs;
   \item Process data (converting values to NA, naming variables, reshaping data);
   \item Analyze data for patterns (e.g. trends);
   \item Create compelling graphics (easier); or an interactive shiny app (perferred).
@@ -173,7 +188,7 @@ Excel was not designed to handle large datasets, i.e. over ~1 million rows. For 
   
 \end{enumerate}
 
-\section{R Resources}
+\section{Computing Resources}
 
 \subsection{R Programming Language}
 
@@ -183,338 +198,25 @@ Excel was not designed to handle large datasets, i.e. over ~1 million rows. For 
 
 For this code, I suggest the using the R base package plus some libraries for assorted specialized tools. When these are used, I can explain them, but for now, I suggest you make sure these files are 1) conveinient and 2) useful. 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{library}\hlstd{(tidyr)}
-\hlkwd{library}\hlstd{(dplyr)}
-\end{alltt}
+For example, here is a list of useful library packages that might be helpful:
 
+\begin{description}
+  \item[tidyr] \ldots
+  \item[dplyr]
+  \item[stringr]
+  \item[reshape2]
+  \item[??]
+\end{description}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'dplyr'\\\#\# \\\#\# The following objects are masked from 'package:stats':\\\#\# \\\#\#\ \ \ \  filter, lag\\\#\# \\\#\# The following objects are masked from 'package:base':\\\#\# \\\#\#\ \ \ \  intersect, setdiff, setequal, union}}\begin{alltt}
-\hlkwd{library}\hlstd{(stringr)}
-\hlkwd{library}\hlstd{(reshape2)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
+\subsection{Customized Functions}
 
 We will also use a customized function, which can be called automatically if you have the source code in your directory with the following: 
+\begin{description}
+  \item[\texttt{summarySE.R}] Can be downloaded...
+\end{description}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{source}\hlstd{(}\hlstr{"summarySE.R"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
 
 Or you can download this file from http:... and run code to create the function manually. 
-
-
-\subsection{Accessing the Data}
-
-First, we you may find you need to download the data...
-
-Once you have downloaded it, the files will need to be pre-processed to be imported into R and/or post-process to create a useful dataset. 
-
-One preprocessing task might be to uncompress the data for example:
-
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Uncompress the files.}
-\hlcom{# ghcnd_all}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{stationfile} \hlkwb{=} \hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\subsection{Read Station Data into R}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)}
-\hlstd{stations} \hlkwb{=} \hlstd{(}\hlkwd{read.fwf}\hlstd{(stationfile,} \hlkwc{fill}\hlstd{=T,} \hlkwc{widths}\hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{11}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{32}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{9}\hlstd{), ))}
-\hlkwd{names}\hlstd{(stations)}\hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"ID"}\hlstd{,} \hlstr{"LAT"}\hlstd{,} \hlstr{"LONG"}\hlstd{,} \hlstr{"ELEV"}\hlstd{,} \hlstr{"STATE"}\hlstd{,} \hlstr{"NAME"}\hlstd{,} \hlstr{"GSN"}\hlstd{,} \hlstr{"HCN_CRN"}\hlstd{,} \hlstr{"WHOID"}\hlstd{)}
-
-\hlkwd{head}\hlstd{(stations)}
-\end{alltt}
-\begin{verbatim}
-##            ID     LAT     LONG  ELEV STATE
-## 1 ACW00011604 17.1167 -61.7833  10.1      
-## 2 ACW00011647 17.1333 -61.7833  19.2      
-## 3 AE000041196 25.3330  55.5170  34.0      
-## 4 AEM00041194 25.2550  55.3640  10.4      
-## 5 AEM00041217 24.4330  54.6510  26.8      
-## 6 AEM00041218 24.2620  55.6090 264.9      
-##                               NAME GSN HCN_CRN WHOID
-## 1  ST JOHNS COOLIDGE FLD                          NA
-## 2  ST JOHNS                                       NA
-## 3  SHARJAH INTER. AIRP             GSN         41196
-## 4  DUBAI INTL                                  41194
-## 5  ABU DHABI INTL                              41217
-## 6  AL AIN INTL                                 41218
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-Example of data:
-
-AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680        
-         
-
-\subsection{Selecting and Example Location}
-
-Here's what the data look like:
-
-ID            1-11   Character
-YEAR         12-15   Integer
-MONTH        16-17   Integer
-ELEMENT      18-21   Character
-VALUE1       22-26   Integer
-MFLAG1       27-27   Character
-QFLAG1       28-28   Character
-SFLAG1       29-29   Character
-VALUE2       30-34   Integer
-MFLAG2       35-35   Character
-QFLAG2       36-36   Character
-SFLAG2       37-37   Character
-  .           .          .
-  .           .          .
-  .           .          .
-VALUE31    262-266   Integer
-MFLAG31    267-267   Character
-QFLAG31    268-268   Character
-SFLAG31    269-269   Character
-
-Here's an example of data from Arizona...
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{stations[stations}\hlopt{$}\hlstd{ID}\hlopt{==}\hlstr{"US1AZMR0019"}\hlstd{,]}
-\end{alltt}
-\begin{verbatim}
-##                ID     LAT      LONG  ELEV STATE
-## 48124 US1AZMR0019 33.5902 -111.9712 418.5    AZ
-##                                   NAME GSN HCN_CRN WHOID
-## 48124  SCOTTSDALE 8.8 SW                              NA
-\end{verbatim}
-\begin{alltt}
-\hlcom{# head(stations[stations$HCN_CRN==" CRN",])}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-Let's get the a different site into R
-
-I often forget how to make loops, so I often use simple examples that help me remember, for example, 
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# practicing loops}
-\hlkwa{for} \hlstd{(year} \hlkwa{in} \hlkwd{c}\hlstd{(}\hlnum{2010}\hlstd{,}\hlnum{2011}\hlstd{,}\hlnum{2012}\hlstd{,}\hlnum{2013}\hlstd{,}\hlnum{2014}\hlstd{,}\hlnum{2015}\hlstd{))\{}
-  \hlkwd{print}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"The year is"}\hlstd{, year))}
-\hlstd{\}}
-\end{alltt}
-\begin{verbatim}
-## [1] "The year is 2010"
-## [1] "The year is 2011"
-## [1] "The year is 2012"
-## [1] "The year is 2013"
-## [1] "The year is 2014"
-## [1] "The year is 2015"
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-Since the data have a re-occuring set of variable names, I decided to create a vector of variable names, many of which are nearly the same. So, as you'll see, I had to create a loop to avoid having to type a ton (or 31 :-)) of different variables.
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Create New Varible Names}
-\hlstd{MFLAG}\hlkwb{=}\hlnum{NA}\hlstd{; QFLAG}\hlkwb{=}\hlnum{NA}\hlstd{; SFLAG}\hlkwb{=}\hlnum{NA}\hlstd{; VALUE}\hlkwb{=}\hlnum{NA}
-\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{31}\hlstd{)\{}
-\hlstd{VALUE[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(}\hlstr{"DATE"}\hlstd{, i,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
-\hlstd{MFLAG[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(}\hlstr{"MFLAG"}\hlstd{, i,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
-\hlstd{QFLAG[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(}\hlstr{"QFLAG"}\hlstd{, i,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
-\hlstd{SFLAG[i]} \hlkwb{=} \hlkwd{paste}\hlstd{(}\hlstr{"SFLAG"}\hlstd{, i,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
-\hlstd{\}}
-
-\hlcom{# Vector of variable names converted from a transposed matrix}
-\hlstd{tmp} \hlkwb{=} \hlkwd{as.vector}\hlstd{(}\hlkwd{t}\hlstd{(}\hlkwd{matrix}\hlstd{(}\hlkwc{data}\hlstd{=}\hlkwd{c}\hlstd{(VALUE, MFLAG, QFLAG, SFLAG),} \hlkwc{ncol}\hlstd{=}\hlnum{4}\hlstd{)))}
-\hlstd{Names} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"ID"}\hlstd{,} \hlstr{"YEAR"}\hlstd{,} \hlstr{"MONTH"}\hlstd{,} \hlstr{"ELEMENT"}\hlstd{, tmp);} \hlkwd{length}\hlstd{(Names)}
-\end{alltt}
-\begin{verbatim}
-## [1] 128
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-\subsection{Process Selected Data Files}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{setwd}\hlstd{(}\hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data"}\hlstd{)}
-
-\hlstd{dly_list} \hlkwb{=} \hlkwd{list.files}\hlstd{(}\hlkwc{pattern}\hlstd{=}\hlstr{"*.dly"}\hlstd{);} \hlkwd{head}\hlstd{(dly_list)}
-\end{alltt}
-\begin{verbatim}
-## [1] "AGM00060515.dly" "US1AZCN0021.dly"
-\end{verbatim}
-\begin{alltt}
-\hlcom{#for (i in 1:length(dly_list)) }
-\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{1}\hlstd{)\{}
-\hlstd{tmp} \hlkwb{<-} \hlkwd{read.fwf}\hlstd{(dly_list[i],} \hlkwc{widths} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{11}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),}\hlnum{31}\hlstd{)))}
-\hlkwd{names}\hlstd{(tmp)} \hlkwb{<-} \hlstd{Names}
-\hlkwd{assign}\hlstd{(dly_list[i],} \hlkwd{subset}\hlstd{(tmp, ELEMENT}\hlopt{==}\hlstr{"TMAX"}\hlstd{,} \hlkwc{select}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlkwd{seq}\hlstd{(}\hlnum{5}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{4}\hlstd{,} \hlkwc{length.out}\hlstd{=}\hlnum{31}\hlstd{))))}
-\hlstd{\}}
-
-
-\hlstd{tmp1} \hlkwb{=} \hlkwd{melt}\hlstd{(AGM00060515.dly,} \hlkwc{id}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"ID"}\hlstd{,} \hlstr{"YEAR"}\hlstd{,} \hlstr{"MONTH"}\hlstd{,} \hlstr{"ELEMENT"}\hlstd{))}
-\hlkwd{head}\hlstd{(tmp1)}
-\end{alltt}
-\begin{verbatim}
-##            ID YEAR MONTH ELEMENT variable value
-## 1 AGM00060515 1984     3    TMAX    DATE1 -9999
-## 2 AGM00060515 1984     4    TMAX    DATE1   190
-## 3 AGM00060515 1984     5    TMAX    DATE1 -9999
-## 4 AGM00060515 1984     6    TMAX    DATE1 -9999
-## 5 AGM00060515 1984     7    TMAX    DATE1   430
-## 6 AGM00060515 1984     8    TMAX    DATE1 -9999
-\end{verbatim}
-\begin{alltt}
-\hlstd{tmp1}\hlopt{$}\hlstd{Day} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(}\hlkwd{str_sub}\hlstd{(tmp1}\hlopt{$}\hlstd{variable,}\hlnum{6}\hlstd{,}\hlnum{7}\hlstd{));} \hlkwd{head}\hlstd{(tmp1)}
-\end{alltt}
-\begin{verbatim}
-##            ID YEAR MONTH ELEMENT variable value Day
-## 1 AGM00060515 1984     3    TMAX    DATE1 -9999  NA
-## 2 AGM00060515 1984     4    TMAX    DATE1   190  NA
-## 3 AGM00060515 1984     5    TMAX    DATE1 -9999  NA
-## 4 AGM00060515 1984     6    TMAX    DATE1 -9999  NA
-## 5 AGM00060515 1984     7    TMAX    DATE1   430  NA
-## 6 AGM00060515 1984     8    TMAX    DATE1 -9999  NA
-\end{verbatim}
-\begin{alltt}
-\hlstd{tmp1}\hlopt{$}\hlstd{value[tmp1}\hlopt{$}\hlstd{value}\hlopt{==-}\hlnum{9999}\hlstd{]} \hlkwb{=} \hlnum{NA}\hlstd{;} \hlkwd{head}\hlstd{(tmp1)}
-\end{alltt}
-\begin{verbatim}
-##            ID YEAR MONTH ELEMENT variable value Day
-## 1 AGM00060515 1984     3    TMAX    DATE1    NA  NA
-## 2 AGM00060515 1984     4    TMAX    DATE1   190  NA
-## 3 AGM00060515 1984     5    TMAX    DATE1    NA  NA
-## 4 AGM00060515 1984     6    TMAX    DATE1    NA  NA
-## 5 AGM00060515 1984     7    TMAX    DATE1   430  NA
-## 6 AGM00060515 1984     8    TMAX    DATE1    NA  NA
-\end{verbatim}
-\begin{alltt}
-\hlstd{tmp1}\hlopt{$}\hlstd{Temperature} \hlkwb{=} \hlstd{tmp1}\hlopt{$}\hlstd{value}\hlopt{/}\hlnum{10}
-
-\hlstd{drops} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"variable"}\hlstd{,}\hlstr{"value"}\hlstd{)}
-\hlstd{tmp1} \hlkwb{<-}\hlstd{tmp1[ ,} \hlopt{!}\hlstd{(}\hlkwd{names}\hlstd{(tmp1)} \hlopt{%in%} \hlstd{drops)]}
-\hlstd{tmp1}\hlopt{$}\hlstd{DECADE} \hlkwb{=} \hlkwd{round}\hlstd{(tmp1}\hlopt{$}\hlstd{YEAR,} \hlopt{-}\hlnum{1}\hlstd{)}
-\hlcom{# names(tmp1)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-
-\section{Presenting the Results}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# call summarySE function....somehow...}
-
-
-\hlkwd{library}\hlstd{(ggplot2)}
-
-\hlstd{summarydf} \hlkwb{<-} \hlkwd{summarySE}\hlstd{(tmp1,} \hlstr{"Temperature"}\hlstd{,} \hlstr{"DECADE"}\hlstd{,} \hlkwc{na.rm}\hlstd{=T)}
-\end{alltt}
-
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -------------------------------------------------------------------------\\\#\# You have loaded plyr after dplyr - this is likely to cause problems.\\\#\# If you need functions from both plyr and dplyr, please load plyr first, then dplyr:\\\#\# library(plyr); library(dplyr)\\\#\# -------------------------------------------------------------------------\\\#\# \\\#\# Attaching package: 'plyr'\\\#\# \\\#\# The following objects are masked from 'package:dplyr':\\\#\# \\\#\#\ \ \ \  arrange, count, desc, failwith, id, mutate, rename, summarise,\\\#\#\ \ \ \  summarize}}\begin{alltt}
-\hlcom{# Think the color=DECADE thing can be deleted, but I haven't tried it yet. In any case, the legend is lame and I need to get rid of it!}
-
-\hlkwd{ggplot}\hlstd{(summarydf,} \hlkwd{aes}\hlstd{(}\hlkwc{y}\hlstd{=Temperature,} \hlkwc{x}\hlstd{=DECADE,} \hlkwc{color}\hlstd{= DECADE))} \hlopt{+} \hlkwd{geom_errorbar}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{ymin}\hlstd{=Temperature}\hlopt{-}\hlstd{se,} \hlkwc{ymax}\hlstd{=Temperature}\hlopt{+}\hlstd{se),} \hlkwc{width}\hlstd{=}\hlnum{.2}\hlstd{)} \hlopt{+} \hlkwd{geom_line}\hlstd{()} \hlopt{+} \hlkwd{geom_point}\hlstd{()}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
-
-\end{knitrout}
-
-
-%http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/
-
-
-\subsection{NOAA dataset}
-
-New NOAA Directory -- ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{library}\hlstd{(raster)}
-\end{alltt}
-
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: sp\\\#\# \\\#\# Attaching package: 'raster'\\\#\# \\\#\# The following object is masked from 'package:dplyr':\\\#\# \\\#\#\ \ \ \  select\\\#\# \\\#\# The following object is masked from 'package:tidyr':\\\#\# \\\#\#\ \ \ \  extract}}\begin{alltt}
-\hlkwd{library}\hlstd{(XML)}
-
-\hlstd{coords.fwt} \hlkwb{<-} \hlkwd{read.fwf}\hlstd{(}\hlstr{"ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt"}\hlstd{,}\hlkwc{widths}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{6}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{38}\hlstd{,}\hlnum{7}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,}\hlnum{9}\hlstd{,}\hlnum{8}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{),}\hlkwc{sep}\hlstd{=}\hlstr{";"}\hlstd{,}\hlkwc{skip}\hlstd{=}\hlnum{22}\hlstd{,}\hlkwc{fill}\hlstd{=T)}
-\hlstd{Names} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"USAF"}\hlstd{,} \hlstr{"X1"}\hlstd{,} \hlstr{"WBAN"}\hlstd{,} \hlstr{"X2"}\hlstd{,} \hlstr{"STATION_NAME"}\hlstd{,} \hlstr{"X3"}\hlstd{,} \hlstr{"CTRY"}\hlstd{,} \hlstr{"X4"}\hlstd{,} \hlstr{"ST"}\hlstd{,} \hlstr{"X5"}\hlstd{,} \hlstr{"CALL"}\hlstd{,} \hlstr{"X6"}\hlstd{,} \hlstr{"LAT"}\hlstd{,} \hlstr{"X7"}\hlstd{,} \hlstr{"LON"}\hlstd{,} \hlstr{"X8"}\hlstd{,} \hlstr{"ELEV"}\hlstd{,} \hlstr{"X9"}\hlstd{,} \hlstr{"BEGIN"}\hlstd{,} \hlstr{"X10"}\hlstd{,} \hlstr{"END"}\hlstd{)}
-\hlstd{Widths} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{6}\hlstd{,}       \hlnum{1}\hlstd{,}    \hlnum{5}\hlstd{,}      \hlnum{1}\hlstd{,}        \hlnum{29}\hlstd{,}         \hlnum{1}\hlstd{,}    \hlnum{2}\hlstd{,}      \hlnum{3}\hlstd{,}    \hlnum{2}\hlstd{,}    \hlnum{1}\hlstd{,}    \hlnum{4}\hlstd{,}      \hlnum{1}\hlstd{,}    \hlnum{8}\hlstd{,}     \hlnum{1}\hlstd{,}     \hlnum{8}\hlstd{,}    \hlnum{1}\hlstd{,}    \hlnum{7}\hlstd{,}     \hlnum{1}\hlstd{,}     \hlnum{8}\hlstd{,}      \hlnum{1}\hlstd{,}    \hlnum{8}\hlstd{)}
-
-\hlstd{coords.fwt} \hlkwb{<-} \hlkwd{read.fwf}\hlstd{(}\hlstr{"ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt"}\hlstd{,}\hlkwc{widths}\hlstd{=Widths,}\hlkwc{sep}\hlstd{=}\hlstr{";"}\hlstd{,}\hlkwc{skip}\hlstd{=}\hlnum{22}\hlstd{,}\hlkwc{fill}\hlstd{=T);} \hlkwd{names}\hlstd{(coords.fwt)}\hlkwb{=}\hlstd{Names; coords.fwt[}\hlkwd{c}\hlstd{(}\hlnum{30}\hlstd{,}\hlnum{4000}\hlstd{,}\hlnum{20000}\hlstd{),]}
-\end{alltt}
-\begin{verbatim}
-##         USAF X1  WBAN X2                  STATION_NAME X3 CTRY  X4 ST X5
-## 30      8409 NA 99999 NA XM13                                           
-## 4000  120010 NA 99999 NA PETROBALTIC BETA                   PL          
-## 20000 725292 NA 14976 NA GRINNELL REGIONAL AIRPORT          US     IA   
-##       CALL X6    LAT X7     LON X8  ELEV X9    BEGIN X10      END
-## 30         NA     NA NA      NA NA    NA NA 20091027  NA 20100104
-## 4000       NA 55.467 NA  18.167 NA  46.0 NA 20141127  NA 20141127
-## 20000 KGGI NA 41.717 NA -92.700 NA 307.2 NA 20060831  NA 20160630
-\end{verbatim}
-\begin{alltt}
-\hlstd{coords} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{ID}\hlstd{=}\hlkwd{paste}\hlstd{(}\hlkwd{as.factor}\hlstd{(coords.fwt[,}\hlnum{1}\hlstd{])),}\hlkwc{WBAN}\hlstd{=}\hlkwd{paste}\hlstd{(}\hlkwd{as.factor}\hlstd{(coords.fwt[,}\hlnum{3}\hlstd{])),}\hlkwc{Lat}\hlstd{=}\hlkwd{as.numeric}\hlstd{(}\hlkwd{paste}\hlstd{(coords.fwt}\hlopt{$}\hlstd{LAT)),}\hlkwc{Lon}\hlstd{=}\hlkwd{as.numeric}\hlstd{(}\hlkwd{paste}\hlstd{(coords.fwt}\hlopt{$}\hlstd{LON)));  coords[}\hlkwd{c}\hlstd{(}\hlnum{30}\hlstd{,}\hlnum{4000}\hlstd{,}\hlnum{20000}\hlstd{),]}
-\end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in data.frame(ID = paste(as.factor(coords.fwt[, 1])), WBAN = paste(as.factor(coords.fwt[, : NAs introduced by coercion}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in data.frame(ID = paste(as.factor(coords.fwt[, 1])), WBAN = paste(as.factor(coords.fwt[, : NAs introduced by coercion}}\begin{verbatim}
-##           ID  WBAN    Lat     Lon
-## 30      8409 99999     NA      NA
-## 4000  120010 99999 55.467  18.167
-## 20000 725292 14976 41.717 -92.700
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-NOAA Locations
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{plot}\hlstd{(Lat} \hlopt{~} \hlstd{Lon,} \hlkwc{data}\hlstd{=coords,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{180}\hlstd{,} \hlnum{180}\hlstd{) )}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/NOAApoints-1} 
-
-\end{knitrout}
-
 
 \section{Evaluating Narratives}
 
