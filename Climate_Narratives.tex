@@ -59,9 +59,21 @@
 
 \section{Introduction}
 
-According the the IPCC, the temperature has been changing about 0.X degrees per XX years -- but how do these changes "map" onto a community that you care about?  Can we find out how these changes will affect specific communities we care about? In other words, do weather changes matter?
+According the the Inter-Governmental Panel on Climate Change or IPCC, the temperature has been changing about 0.X degrees per XX years -- but this global average is not evenly distributed accross the globe. 
 
-\subsection{Project Description}
+How can we appreciate potential changes accross the whole globe?  Perhaps, we can begin to appreciate how temperature (and/or rainfall) might be changing on local scales.
+
+Thus, let's begin to understand how do temperature changes "map" onto a community that we care about? In other words, do weather changes matter?
+
+\subsection{Goals of this Document}
+
+\begin{enumerate}
+  \item Describe the goals and approach for the project;
+  \item Provide or point to resources to prepare for and conduct the project; and
+  \item Describe how we will evaluate the project process and products.
+\end{enumerate}
+
+\section{Project Description}
 
 \subsection{Driving Question(s)}
 
@@ -82,55 +94,57 @@ In addition, we may develop "sub-questions" that can be developed or answered as
   \item What is the best way to display visual data?  Are there best practices to guide a public product to make it more compelling or interactive?
 \end{itemize}
 
+\subsection{Learning Goals}
+
+For this project, you will use weather data to the question "do weather changes matter". How you answer the question is largely up to you, however, there are some learning goals associated with this project:
+
+\begin{itemize}
+  \item Ability to download and process weather data;
+  \item quantify temporal trends in weather data;
+  \item evaluate environmental impacts on human or non-human communities; and
+  \item communicate conclusions to the public.
+\end{itemize}
+
+Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and preset the results ot the public.
+
 \subsection{Public Product}
 
 Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
 
 \begin{itemize}
   \item Appropriate and thoughtful statistical analysis;
-  \item Professionally appearing and interactive graphics; and 
-  \item Narrative that describe the climate and climate implications to the region.
+  \item professionally appearing and interactive graphics; and 
+  \item narrative that describes the climate and climate implications for a community.
 \end{itemize}
-
-
-\subsection{Goals of this Document}
-
-\begin{enumerate}
-  \item Describe the goals and approach for the project;
-  \item Provide or point to resources to prepare for and conduct the project; and
-  \item Describe how we will evaluate the project process and products.
-\end{enumerate}
-
-\subsection{Learning Goals}
-
-For this project, you will use weather data to the question "do weather changes matter". How you answer the question is largely up to you, however, there are some learning goals associated with this project:
-
-\begin{itemize}
-  \item Learn how to download and process weather data;
-  \item Evaluate the trends in weather data;
-  \item Determine the impact of weather in a human or non-human community; and
-  \item Communicate your conclusions to the public.
-\end{itemize}
-
-Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and preset the results ot the public.
-
 
 \section{Approach}
 
-Students will have the following tools available.
+Students will have the following tools available:
 
 \begin{itemize}
-  \item NOAA website where data can be downloaded;
-  \item R Studio Server with some scripts to help you develop analyses;
+  \item Servers where stored weather data can be downloaded;
+  \item R Studio Server with some scripts to help develop analyses;
   \item Gighub to store project codes; and
   \item Shiny app templates that might be used as a container for interactive content.
 \end{itemize}
 
 \subsection{Expert Groups}
 
+Each of us form an essential component for the effort. Organized as teams and expert groups, we will disassemble the project into chunks that each of us will contribute in specific and effective ways. 
 
 
-\section{Project Stages (i.e. Scafolding)}
+\section{Project Stages}
+
+\begin{enumerate}
+  \item Download data (easier) or create a link to a database (preferrred);
+  \item pre-process data (uncompress, remove headers, etc.);
+  \item import data into open source software programs;
+  \item process data (converting values to NA, naming variables, reshaping data);
+  \item analyze data for patterns (e.g. temporal trends);
+  \item create compelling graphics (easier); or an interactive shiny app (perferred);
+  \item search peer reviewed articles to evaluate ecological, economic, and sociological implications of climate patterns; and
+  \item write blog to describe results. 
+\end{enumerate}
 
 \subsection{Session 1: How are temperature data collected?}
 
@@ -140,9 +154,11 @@ Create a wiki that describe how data are collected for the following categories
 
 \begin{itemize}
   \item Land-based Temperatures
-  \item Sea surface Temperatures
-  \item Satillite Collected 
+  \item Sea-surface Temperatures
+  \item Remotely Sensed Data (e.g. Satellite) 
 \end{itemize}
+
+\subsubsection{Evaluation Criteria for Session 2}
 
 \subsection{Session 2: How are the data store, curated and checked for quality?}
 
@@ -156,6 +172,8 @@ Write a wiki that describes:
   \item how are data checked for quality
 \end{enumerate}
 
+\subsubsection{Evaluation Criteria for Session 2}
+
 
 \subsection{Session 3: Data Sources and Importation}
 
@@ -167,26 +185,18 @@ Students will create a Wiki that describes the each data set, it sources and how
 
 \subsubsection{File Types and Software Tools}
 
+\subsubsection{Evaluation Criteria for Session 4}
+
 
 \subsection{Session 4: Obtaining and Analyzing Data}
 
 \subsubsection{Why R, Why Rstudio, and Why Open Source?}
 
-Excel was not designed to handle large datasets, i.e. over ~1 million rows. For most purposes, this might be enough. However, in many climate science data often exceed this number of samples. 
+Excel was not designed to handle large datasets, i.e. over ~1 million rows. For most purposes, this might be enough. However, in many climate science data often exceed this number of samples.
 
-\section{Project Stages}
+\subsubsection{Evaluation Criteria for Session 5}
 
-\begin{enumerate}
-  \item Download data (easier) or create a link to a database (preferrred);
-  \item Pre-process data (uncompress, remove headers, etc.);
-  \item Import data into open source software programs;
-  \item Process data (converting values to NA, naming variables, reshaping data);
-  \item Analyze data for patterns (e.g. trends);
-  \item Create compelling graphics (easier); or an interactive shiny app (perferred).
-  \item Write blog to describe results
-  \item Search peer reviewed articles to evaluate ecological, economic, and sociological implications of climate patterns.
-  
-\end{enumerate}
+
 
 \section{Computing Resources}
 
