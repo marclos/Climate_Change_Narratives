@@ -13,6 +13,7 @@ As a project based learning activity, I try to ensure that students:
 1. Github account (free and if associated with a teaching institution free access to private accounts too.);
 2. R program;
 3. Access to Rstudio Server OR desktop Rstudio;
+ - In addition, several R packages and libraries need to be installed: shiny, etc.
 4. Some basic understanding of R and LaTeX.
 
 ## Collaborator Best Practices
