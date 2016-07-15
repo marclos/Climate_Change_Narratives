@@ -1,4 +1,5 @@
 \documentclass{article}
+%\documentclass{tufte-handout}
 \usepackage{hyperref}
 
 \title{Do weather changes matter?}
@@ -46,19 +47,6 @@ In addition, we may develop "sub-questions" that can be developed or answered as
   \item What is the best way to display visual data?  Are there best practices to guide a public product to make it more compelling or interactive?
 \end{itemize}
 
-\subsection{Learning Goals}
-
-For this project, you will use weather data to the question "do weather changes matter". How you answer the question is largely up to you, however, there are some learning goals associated with this project:
-
-\begin{itemize}
-  \item Ability to download and process weather data;
-  \item quantify temporal trends in weather data;
-  \item evaluate environmental impacts on human or non-human communities; and
-  \item communicate conclusions to the public.
-\end{itemize}
-
-Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and preset the results ot the public.
-
 \subsection{Public Product}
 
 Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
@@ -84,31 +72,49 @@ Students will have the following tools available:
 
 Each of us form an essential component for the effort. Organized as teams and expert groups, we will disassemble the project into chunks that each of us will contribute in specific and effective ways. 
 
+\subsection{Learning Goals}
+
+For this project, you will use weather data to the question "do weather changes matter". How you answer the question is largely up to you, however, there are some learning goals associated with this project:
+
+\begin{itemize}
+  \item Ability to download and process weather data;
+  \item quantify temporal trends in weather data;
+  \item evaluate environmental impacts on human or non-human communities; and
+  \item communicate conclusions to the public.
+\end{itemize}
+
+Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and present the results ot the public.
 
 \section{Project Stages}
 
 \begin{enumerate}
-  \item Download data (easier) or create a link to a database (preferrred);
-  \item pre-process data (uncompress, remove headers, etc.);
-  \item import data into open source software programs;
-  \item process data (converting values to NA, naming variables, reshaping data);
-  \item analyze data for patterns (e.g. temporal trends);
-  \item create compelling graphics (easier); or an interactive shiny app (perferred);
+  \item Decide what makes a good public product;
+  \item Understand how weather data is stored, curated, and evaluated; 
+  \item download and analyze data to create an public product;
   \item search peer reviewed articles to evaluate ecological, economic, and sociological implications of climate patterns; and
   \item write blog to describe results. 
 \end{enumerate}
 
 \subsection{Session 1: Components of a Public Product}
 
-Here's a tool that might be you might find helpful:
+As the first component of the project, please review the following pages to develop a set of standards and criteria that we can use to measure our success:
 
-\href{http://www.ncdc.noaa.gov/cag/}{NOAA Interactive Site}
+\begin{itemize}
+  \item \href{http://www.ncdc.noaa.gov/cag/}{NOAA Interactive Site}
+  \item \href{http://blog.nycdatascience.com/student-works/visualizing-global-warming-through-shiny/}{NYC Science Data -- Visualizing Global Warming}
+  \item \href{http://www.rpubs.com/dvbelyaev/GlobalWarming}{Description of Development of a Visualization}
+  \item \href{http://www.r-bloggers.com/search/climate}{Climate Data and R}
+  \item \href{https://uasnap.shinyapps.io/temp_wind_events/}{Visualizing GCM Outputs}
+  \item \href{https://uasnap.shinyapps.io/cc4liteFinal/}{Community Charts v4 Lite}
 
-\subsection{Session X: How are temperature data collected?}
+  \item \href{https://uasnap.shinyapps.io/ak_station_cru_eda/}{Climate Data for 32 Alaskan Cities}
+\end{itemize}  
 
-Research how climate data are collected?
+\subsection{Session 2: How are temperature data collected?}
 
-Use Github Wiki that describes how data are collected for the following categories:
+How are temperature data collected? This turns out to be a more complicated question that we might imagine at first. Let's begin by discussion what are the potential data quality issues with temperature data? We might begin by thinking about the data in terms of precision and accuracy.
+
+Use Github Wiki\footnote{For information about how to use Wikis see \href{https://net.educause.edu/ir/library/pdf/ELI7004.pdf}{7 Things to know about Wikis}.} that describes how data are collected for the following categories:
 
 \begin{itemize}
   \item Land-based Temperatures
@@ -116,89 +122,42 @@ Use Github Wiki that describes how data are collected for the following categori
   \item Remotely Sensed Data (e.g. Satellite) 
 \end{itemize}
 
-Note: \href{https://net.educause.edu/ir/library/pdf/ELI7004.pdf}{7 Things to know about Wikis}
 \subsubsection{Evaluation Criteria}
 
 Evaluation criteria will be proposed by an "Expert Team" and inserted in Wiki. 
 
-\subsection{Session X: How are the data store, curated and checked for quality?}
+\subsection{Session 3: How are the data store, curated and checked for quality?}
 
 Watch this video
 
-Write a wiki that describes: 
+Develop a Wiki that describes: 
 
 \begin{enumerate}
-  \item How as data storage changed in the last 100 years;
-  \item how data are curated; 
-  \item how are data checked for quality
+  \item How as data storage changed in the last 500 years?
+  \item how data are curated? 
+  \item how are data checked for quality?
 \end{enumerate}
 
 \subsubsection{Evaluation Criteria}
 
+\subsection{Session 3: Data!!!}
 
-\subsection{Session 3: Data Sources and Importation}
-
-Each team will research and evaluate various sources of data.
-
-\subsubsection{Sources of Data}
-
-Students will create a Wiki that describes the each data set, it sources and how it might become usuable using open sources of software.
-
-\subsubsection{File Types and Software Tools}
-
-\subsubsection{Evaluation Criteria for Session 4}
+\begin{description}
+  \item[Identify Data Sources] Each team will research and evaluate various sources of data. Create a Wiki that describes the each data set, it sources and how it might become usuable using open sources of software. Develop scripts to download data (easier) or create a link to a database (preferrred). 
+  \item[Pre-process data] Large data set are often compressed using a vareity of protocols (e.g. zip, tar, gz). So, we we often have to "unzip", "untar", or "ungz". Once files are uncompressed, we need to look at the strcture of the files -- that might entail figuring how how columns have been separated or if there are long headers that might get in the way of the importing process. We will have to come up with various methods to deal with these data file strutures. 
+  \item[Import data] requires a good understanding of the data structure and how a various software programs import data. We will use an open source software program called R.\footnote{Excel was not designed to handle large datasets, i.e. over ~1 million rows. For most purposes, this might be enough -- Many climate science data often exceed the number of observations that business programs like Excel was designed to do. However, even more compelling is that we are trying to create dataset that can be analyzed by anyone use a range of tools that are at our disposal as educated people. As such, I argue that we should be looking to open source. See the pdf on \href{https://rstudio.campus.pomona.edu/s/c2d027b9f6ba35ba4d250/files/github/Climate_Change_Narratives/Data/Liberation_via_Open_Source_Software.pdf}{Liberation through Open Source Software}.} There are many resources to use R, including some handouts I have made. The functions to read files into R, include \texttt{read.csv()}, \texttt{read.table()}, etc. We will create some tools for us to use to make this process as painless as possible. 
+  \item[Process data] Convert missing values to NA, naming variables, reshaping data);
+  \item[Analyze] data for patterns (e.g. temporal trends); and
+  \item[Create] compelling graphics (easier); or an interactive shiny app (perferred).
+\end{description}
 
 
-\subsection{Session 4: Obtaining and Analyzing Data}
-
-\subsubsection{Why R, Why Rstudio, and Why Open Source?}
-
-Excel was not designed to handle large datasets, i.e. over ~1 million rows. For most purposes, this might be enough. However, in many climate science data often exceed this number of samples.
 
 \subsubsection{Evaluation Criteria for Session 5}
 
 
-
-\section{Computing Resources}
-
-\subsection{R Programming Language}
-
-\subsection{RStudio and Github}
-
-\subsection{R libraries}
-
-For this code, I suggest the using the R base package plus some libraries for assorted specialized tools. When these are used, I can explain them, but for now, I suggest you make sure these files are 1) conveinient and 2) useful. 
-
-For example, here is a list of useful library packages that might be helpful:
-
-\begin{description}
-  \item[tidyr] \ldots
-  \item[dplyr]
-  \item[stringr]
-  \item[reshape2]
-  \item[??]
-\end{description}
-
-\subsection{Customized Functions}
-
-We will also use a customized function, which can be called automatically if you have the source code in your directory with the following: 
-\begin{description}
-  \item[\texttt{summarySE.R}] Can be downloaded...
-\end{description}
-
-
-Or you can download this file from http:... and run code to create the function manually. 
-
 \section{Evaluating Narratives}
-
-\subsection{Examples}
-
-% I'm not sure how to get Rstudio server to use various packages...
-%\url{https://uasnap.shinyapps.io/ak_station_cru_eda/}
 
 \subsection{Developing Criteria for Project Models}
 
-\subsection{}
-
-\subsection{}
 \end{document}
