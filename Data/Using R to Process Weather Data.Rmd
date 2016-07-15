@@ -2,7 +2,9 @@
 title: "Using R to Process Weather Data"
 author: "Marc Los Huertos"
 date: "7/8/2016"
-output: slidy_presentation
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
 ---
 
 ```{r setup, include=FALSE}
@@ -11,57 +13,48 @@ library(tidyr)
 library(dplyr)
 library(stringr)
 library(reshape2)
-
 source("summarySE.R")
 ```
+# Processing Weather Data with R
 
+Contributions by 
+
+-Marc Los Huertos
+-??
 
 # Accessing the Data
 
-What sites are available for downloading the data?
+## What sites are available for downloading the data?
+
+URLs where we can download data!
 
 ## How to download data
 
+# Pre-Processing Data
 
-## Pre-Processing Data
+## How to Uncompress Data?
 
-Once we have downloaded data, the files will need to be pre-processed to be imported into R and/or post-process to create a useful dataset. 
-
-One preprocessing task might be to uncompress the data for example:
-
-### How to Uncompress Data
+Examples of functions to uncompress data:
 
 ```{r uncompress}
 # Uncompress the files.
-# ghcnd_all
-
+#untar(??)
 ```
 
 # Reading Data into R
 
 ## What is the data format?
-Example of data:
+
+Before reading data, we need to determine the file structure. For example, XX data has the following format...
 
 AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680
 
-```{r readinginputfiles}
+## Identifying the file path
+```{r findfilepath}
 stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
-
-# read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
-stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
 ```
 
-## Creating Variable Names
-
-```{r creatingvariablenames}
-names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
-
-head(stations)
-```
-
-# Selecting and Example Location
-
-Here's what the data look like:
+## Reading Data into R
 
 ID            1-11   Character
 YEAR         12-15   Integer
@@ -83,6 +76,32 @@ MFLAG31    267-267   Character
 QFLAG31    268-268   Character
 SFLAG31    269-269   Character
 
+```{r readinginputdata}
+# read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
+stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
+```
+
+# Processing Imported Data
+
+## Creating Variable Names
+
+```{r creatingvariablenames}
+names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
+
+head(stations)
+```
+
+# Selecting and Example Location
+
+## What is the structure of imported data?
+
+Here's what the data look like:
+
+```{r dataframestructure}
+str(stations)
+```
+
+## Records from One Location
 Here's an example of data from Arizona...
 
 ```{r Arizona}
@@ -92,6 +111,9 @@ stations[stations$ID=="US1AZMR0019",]
 
 Let's get the a different site into R
 
+# Processing Data
+
+## Creating Loops
 I often forget how to make loops, so I often use simple examples that help me remember, for example, 
 
 ```{r practiceloops}
@@ -149,10 +171,12 @@ tmp1$DECADE = round(tmp1$YEAR, -1)
 
 # Presenting the Results
 
+## Using ggplot2
+
+Very popular graphic library -- that I have NEVER used!
+
 ```{r presenting}
 # call summarySE function....somehow...
-
-
 library(ggplot2)
 
 summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
