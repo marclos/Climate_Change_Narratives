@@ -1,7 +1,7 @@
 ---
 title: "Using R to Process Weather Data"
 author: "Marc Los Huertos"
-date: "7/8/2016"
+date: "7/20/2016"
 output:
   ioslides_presentation: default
   slidy_presentation: default
@@ -21,6 +21,15 @@ Contributions by
 
 -Marc Los Huertos
 -??
+# R Resources for Climate Data
+
+## Tutorials and Libraries
+
+There are a number of resources to help us (beside this document!)
+
+* [R Blogger to Access, Clean, and Plot NOAA tempeature data](http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/)
+* Next...
+
 
 # Accessing the Data
 
@@ -32,15 +41,28 @@ URLs where we can download data!
 
 ### Identify URL for data source
 
-These will be either a ftp or http site. Copy the URL into a clipboard.
+Once finding data sources, you might find URLs with ftp or http protocols -- it shouldn't matter which type you find. 
+For example, using the NOAA's website, I found the following URL, \url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/}, to download data from the Global Historical Climatalogical Network (GHCDN).
+
+These will be either a ftp or http site. Copy the URL into a clipboard and then create a object with the link:
+
+```{r sourcefile}
+sourcefile =""
+```
 
 ### Create a Folder for Data
 Once a site URL has been identified, we can use R to download the data into a specific directory. I suggest you create a subdirectory within Data that you can track and store your data. 
 
 ### Download the Data
 
-Once finding data sources, you might find URLs with ftp or http protocols -- it shouldn't matter which type you find. 
-For example, using the NOAA's website, I found the following URL, \url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all/}, to download data from the Global Historical Climatalogical Network (GHCDN). The site can stall, so we should probably find a more reliable site.
+Note: The site can stall, so be careful when trying to download large files via web browers.
+
+Alternatively, you could choose to download the entire dataset, which I have done already -- and this is how:
+
+```{r tarfile}
+tarfile = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz"
+```
+
 
 # Pre-Processing Data
 
@@ -156,6 +178,9 @@ Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
 
 # Process Selected Data Files
 
+## Reading .dly file into R
+
+Now that we have a good idea of what these files look like, I have created a loop to read the files and select the rows where the maximum temperature was recorded ("TMAX"). 
 ```{r processing}
 setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data")
 
@@ -168,6 +193,7 @@ assign(dly_list[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, le
 }
 ```
 
+Once the file has been read, then I modiefied the file to make it useful, where I needed to re-arrange the file so we don't have a months across the top, but as rows. 
 
 ```{r}
 tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
@@ -182,28 +208,37 @@ tmp1$DECADE = round(tmp1$YEAR, -1)
 # names(tmp1)
 ```
 
+Now the data is ready to be visualized!
 
 # Presenting the Results
 
+## Summarizing the Results
+
+```{r summarySE}
+# called summarySE function
+summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
+```
+
 ## Using ggplot2
 
-Very popular graphic library -- that I have NEVER used!
+The ggplot2 library is relatively new to me, so I am sure we can make some icremental improvements as the semester progresses. First, let's load the library.
+
+```{r ggplot2library}
+library(ggplot2)
+```
+
+## Creating a Figure 
 
 ```{r presenting}
-# call summarySE function....somehow...
-library(ggplot2)
-
-summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
-
 # Think the color=DECADE thing can be deleted, but I haven't tried it yet. In any case, the legend is lame and I need to get rid of it!
 
 ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(aes(ymin=Temperature-se, ymax=Temperature+se), width=.2) + geom_line() + geom_point()
 
 ```
 
-Now we need to create a shiny app!
+# Creating a Shiny App
 
-%http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/
+Now we need to create a shiny app!
 
 
 ## NOAA dataset
