@@ -30,9 +30,23 @@ URLs where we can download data!
 
 ## How to download data
 
+### Identify URL for data source
+
+These will be either a ftp or http site. Copy the URL into a clipboard.
+
+### Create a Folder for Data
+Once a site URL has been identified, we can use R to download the data into a specific directory. I suggest you create a subdirectory within Data that you can track and store your data. 
+
+### Download the Data
+
+Once finding data sources, you might find URLs with ftp or http protocols -- it shouldn't matter which type you find. 
+For example, using the NOAA's website, I found the following URL, \url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all/}, to download data from the Global Historical Climatalogical Network (GHCDN). The site can stall, so we should probably find a more reliable site.
+
 # Pre-Processing Data
 
 ## How to Uncompress Data?
+
+Files storing centuries of weather data from thousands of sites can become quite large. Thus, the files are compressed. There are a number of compression methods, available, e.g. zip, gz, and tar. Fortunately, we can use R to uncompress a range of compressed file types.
 
 Examples of functions to uncompress data:
 

@@ -106,9 +106,23 @@
 
 </article></slide><slide class=''><hgroup><h2>How to download data</h2></hgroup><article  id="how-to-download-data">
 
+<h3>Identify URL for data source</h3>
+
+<p>These will be either a ftp or http site. Copy the URL into a clipboard.</p>
+
+<h3>Create a Folder for Data</h3>
+
+<p>Once a site URL has been identified, we can use R to download the data into a specific directory. I suggest you create a subdirectory within Data that you can track and store your data.</p>
+
+<h3>Download the Data</h3>
+
+<p>Once finding data sources, you might find URLs with ftp or http protocols &#8211; it shouldn&#39;t matter which type you find.For example, using the NOAA&#39;s website, I found the following URL, , to download data from the Global Historical Climatalogical Network (GHCDN). The site can stall, so we should probably find a more reliable site.</p>
+
 </article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Pre-Processing Data</h2></hgroup><article  id="pre-processing-data">
 
 </article></slide><slide class=''><hgroup><h2>How to Uncompress Data?</h2></hgroup><article  id="how-to-uncompress-data">
+
+<p>Files storing centuries of weather data from thousands of sites can become quite large. Thus, the files are compressed. There are a number of compression methods, available, e.g. zip, gz, and tar. Fortunately, we can use R to uncompress a range of compressed file types.</p>
 
 <p>Examples of functions to uncompress data:</p>
 
@@ -220,6 +234,10 @@
 
 </article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Presenting the Results</h2></hgroup><article  id="presenting-the-results">
 
+</article></slide><slide class=''><hgroup><h2>Using ggplot2</h2></hgroup><article  id="using-ggplot2">
+
+<p>Very popular graphic library &#8211; that I have NEVER used!</p>
+
 <pre >## -------------------------------------------------------------------------</pre>
 
 <pre >## You have loaded plyr after dplyr - this is likely to cause problems.
@@ -262,11 +280,11 @@
 <pre >##         USAF X1  WBAN X2                  STATION_NAME X3 CTRY  X4 ST X5
 ## 30      8409 NA 99999 NA XM13                                           
 ## 4000  120010 NA 99999 NA PETROBALTIC BETA                   PL          
-## 20000 725292 NA 14976 NA GRINNELL REGIONAL AIRPORT          US     IA   
-##       CALL X6    LAT X7     LON X8  ELEV X9    BEGIN X10      END
-## 30         NA     NA NA      NA NA    NA NA 20091027  NA 20100104
-## 4000       NA 55.467 NA  18.167 NA  46.0 NA 20141127  NA 20141127
-## 20000 KGGI NA 41.717 NA -92.700 NA 307.2 NA 20060831  NA 20160713</pre>
+## 20000 725291 NA 99999 NA RIDGELY AIRPARK                    US     MD   
+##       CALL X6    LAT X7     LON X8 ELEV X9    BEGIN X10      END
+## 30         NA     NA NA      NA NA   NA NA 20091027  NA 20100104
+## 4000       NA 55.467 NA  18.167 NA 46.0 NA 20141127  NA 20141127
+## 20000 KRJD NA 38.970 NA -75.866 NA 19.5 NA 20070521  NA 20090701</pre>
 
 <pre >## Warning in data.frame(ID = paste(as.factor(coords.fwt[, 1])), WBAN =
 ## paste(as.factor(coords.fwt[, : NAs introduced by coercion
@@ -277,7 +295,7 @@
 <pre >##           ID  WBAN    Lat     Lon
 ## 30      8409 99999     NA      NA
 ## 4000  120010 99999 55.467  18.167
-## 20000 725292 14976 41.717 -92.700</pre>
+## 20000 725291 99999 38.970 -75.866</pre>
 
 </article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>NOAA Locations</h2></hgroup><article  id="noaa-locations">
 
