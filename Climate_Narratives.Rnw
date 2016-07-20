@@ -97,31 +97,20 @@ Throughout this project, your team and instructor will develop the strategies an
 
 \subsection{Session 1: Components of a Public Product}
 
-As the first component of the project, please review the following pages to develop a set of standards and criteria that we can use to measure our success:
+Team Exercise: As the first component of the project, search for webpages that use data to describe temperature changes on Earth's surface. The Github Wiki has a link to the Collaborative Documents for our project. Document each site you evaluation in Google Doc to evaluate the public product. 
 
-\begin{itemize}
-  \item \href{http://www.ncdc.noaa.gov/cag/}{NOAA Interactive Site}
-  \item \href{https://www.youtube.com/watch?v=XEcnJFTxQcU}{Dr Fred Goldberg Squashes Climate Alarmism}
-  \item \href{http://blog.nycdatascience.com/student-works/visualizing-global-warming-through-shiny/}{NYC Science Data -- Visualizing Global Warming}
-  \item \href{http://www.newsmax.com/Finance/MKTNews/Global-Warming-climate-change/2014/11/17/id/607827/}{The Cold Truth Initiative}
-  \item \href{http://www.rpubs.com/dvbelyaev/GlobalWarming}{Description of Development of a Visualization}
-  \item \href{http://www.breitbart.com/big-government/2015/08/08/climate-change-the-hoax-that-costs-us-4-billion-a-day/}{Climate change: the Hoax that Costs Us \$4 Billion a Day}
-  \item \href{http://www.r-bloggers.com/search/climate}{Climate Data and R}
-  \item \href{https://uasnap.shinyapps.io/temp_wind_events/}{Visualizing GCM Outputs}
-  \item \href{http://www.friendsofscience.org/index.php?id=3}{Providing insight into climate change -- Myths/Facts}
-  \item \href{https://uasnap.shinyapps.io/cc4liteFinal/}{Community Charts v4 Lite}
-  \item \href{http://www.friendsofscience.org/index.php?id=226}{Temperature Records}
-  \item \href{https://uasnap.shinyapps.io/ak_station_cru_eda/}{Climate Data for 32 Alaskan Cities}
-
-\end{itemize}  
+As you evaluate the pages to develop a set of standards and criteria that we can use to measure our own success.
 
 \paragraph{Evaluation Criteria}
+
+Each team will work to develop criteria that we can use to evaluate the public products, which will be further developed to evaluate each public product produced for our project.
 
 \subsection{Session 2: How is the Earth's Temperature Taken?}
 
 How are temperature data collected? This turns out to be a more complicated question that we might imagine at first. Let's begin by discussion what are the potential data quality issues with temperature data? We might begin by thinking about the data in terms of precision and accuracy.
 
-Use Github Wiki\footnote{For information about how to use Wikis see \href{https://net.educause.edu/ir/library/pdf/ELI7004.pdf}{7 Things to know about Wikis}.} that describes land-base Temperature data:
+
+that describes land-base Temperature data:
 
 \begin{itemize}
   \item Land-based Temperatures
@@ -133,13 +122,11 @@ Use Github Wiki\footnote{For information about how to use Wikis see \href{https:
 
 Evaluation criteria will be proposed by an "Expert Team" and inserted in Wiki. 
 
-\subsection{Session 3: How are the data store, curated and checked for quality?}
+\subsection{Session 3: Where's [sic] the data!!!}
 
 Watch this video
 
 Develop a Wiki that describes:
-
-
 
 \begin{enumerate}
   \item How as data storage changed in the last 500 years?
@@ -149,25 +136,33 @@ Develop a Wiki that describes:
 
 \subsubsection{Evaluation Criteria}
 
-\subsection{Session 4: Where's [sic] the data!!!}
+How are the data store, curated and checked for quality?
+
+\subsection{Session 4: Getting Data in a Reliable Way}
 
 \begin{description}
-  \item[Identify Data Sources] Each team will research and evaluate various sources of data. Create a Wiki that describes the each data set, it sources and how it might become usuable using open sources of software. Develop scripts to download data (easier) or create a link to a database (preferrred). 
-  \item[Pre-process data] Once we have downloaded data, the files will need to be pre-processed to be imported into R and/or post-process to create a useful dataset. Large data set are often compressed using a vareity of protocols (e.g. zip, tar, gz). So, we we often have to "unzip", "untar", or "ungz". Once files are uncompressed, we need to look at the strcture of the files -- that might entail figuring how how columns have been separated or if there are long headers that might get in the way of the importing process. We will have to come up with various methods to deal with these data file strutures. 
+  \item[Identify Data Sources] Each team will research and evaluate various sources of data. Create a Rmd file that describes the each data set, it sources and how it might become usuable using open sources of software. Develop scripts to download data (easier) or create a link to a database (preferrred). 
+  \item[Pre-process data] Once the team has downloaded data, the files will need to be pre-processed to be imported into R and/or post-process to create a useful dataset. Large data set are often compressed using a vareity of protocols (e.g. zip, tar, gz). So, we we often have to "unzip", "untar", or "ungz". Once files are uncompressed, we need to look at the strcture of the files -- that might entail figuring how how columns have been separated or if there are long headers that might get in the way of the importing process. We will have to come up with various methods to deal with these data file strutures. 
   \item[Import data] requires a good understanding of the data structure and how a various software programs import data. We will use an open source software program called R.\footnote{Excel was not designed to handle large datasets, i.e. over ~1 million rows. For most purposes, this might be enough -- Many climate science data often exceed the number of observations that business programs like Excel was designed to do. However, even more compelling is that we are trying to create dataset that can be analyzed by anyone use a range of tools that are at our disposal as educated people. As such, I argue that we should be looking to open source. See the pdf on \href{https://rstudio.campus.pomona.edu/s/c2d027b9f6ba35ba4d250/files/github/Climate_Change_Narratives/Data/Liberation_via_Open_Source_Software.pdf}{Liberation through Open Source Software}.
 } There are many resources to use R, including some handouts I have made. The functions to read files into R, include \texttt{read.csv()}, \texttt{read.table()}, etc. We will create some tools for us to use to make this process as painless as possible. 
   \item[Process data] Convert missing values to NA, naming variables, reshaping data);
-  \item[Analyze] data for patterns (e.g. temporal trends); and
-  \item[Create] compelling graphics (easier); or an interactive shiny app (perferred).
 \end{description}
 
 
 \subsubsection{Evaluation Criteria for Session 5}
 
-\subsection{Session X: Inference and Causation}
+\subsection{Session X: Is there a case for Inference and Causation?}
 
   \begin{itemize}
   		\item Artiola, J, Pepper, IL, Brusseau, M. 2004. Environmental Monitoring and Characterization. Chapter 3. Environmental Statistics (pp. 30-48).
+\end{itemize}
+
+Each student will use a data source to create the public product where we can 
+\begin{description}
+  \item[Analyze] data for patterns (e.g. temporal trends); and
+  \item[Create] compelling graphics (easier); or an interactive shiny app (perferred).
+\end{description}
+
 
 \section{Evaluating Narratives}
 
