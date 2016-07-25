@@ -34,75 +34,6 @@ Here is a preliminary list:
 
 For this project, the Global Historical Climate Network may be the most useful data, which can be downloaded from the following an [ftp site](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/).
 
-## How to download data
-
-### Identify URL for data source
-
-Once finding data sources, you might find URLs with ftp or http protocols -- it shouldn't matter which type you find. 
-
-For example, using the NOAA's website, I found the following URL, [ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/), to download data from the Global Historical Climatalogical Network (GHCDN), where an entire dataset can be downloaded. 
-
-Alternatively, another [NCDC-NOAA Directory](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/) seems to have data by year. But please look at the [readme.txt](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/readme.txt) that describes the data and let me know and I will make a note of what it contains.
-
-## Regional Datasets
-
-Since we are interested in a more regional approach, you may want to find a less daunting file.
-
-Copy the URL into a clipboard and then create a object with the link:
-
-```{r sourcefile}
-sourcefile ="TBD??"
-```
-
-### Create a Folder for Data
-Once a site URL has been identified, we can use R to download the data into a specific directory. I suggest you create a subdirectory within Data that you can track and store your data. 
-
-### Download the Data
-
-Note: The site can stall, so be careful when trying to download large files via web browers.
-
-Alternatively, you could choose to download the entire dataset, as I have already done. First, I downloaded the file to my computer, then uploaded it into the R project Data directory.
-
-```{r tarfile, echo=T}
-tarfile = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz"
-```
-
-But this file needs to have some pre-processing before we can do anything with it.
-
-# Pre-Processing Data
-
-## How to Uncompress Data?
-
-Files storing centuries of weather data from thousands of sites can become quite large. Thus, the files are compressed. There are a number of compression methods, available, e.g. zip, gz, and tar. Fortunately, we can use R to uncompress a range of compressed file types.
-
-Examples of functions to uncompress data:
-
-```{r uncompress, eval=FALSE}
-# Uncompress the files.
-untar(tarfile, files="Data")
-```
-
-It takes a while (2+ hours) to uncompress (first gz -> tar -> readable files), so I have done that already and loaded some of the data into the github site.
-
-```{r listdlys, echo=F}
-list.files("../Climate_Change_Narratives/Data", pattern= "*.dly")
-```
-
-# Reading Data into R
-
-## What is the data format?
-
-Before reading data, we need to determine the file structure. For example, XX data has the following format, where headers are lost and each column is separated by tabs that are lost in text rendions. Thus, we'll need a key to intepret the data.
-
-
-AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680
-
-Thankfully, there is a [readme.tex file](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt) that provides a key to the file structure. I suggest you read it carefully and to understand what is in the database.
-
-## Identifying Stations to Download
-
-Instead of analyzing the entire dataset, we'll select some specific stations. But first, we need a way to sort through the avaiable stations.
-
 # Stations in NOAA Database
 
 NOAA has a list of sites in the [isd-history](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt) , but I have not investigated the source of the data.
@@ -127,35 +58,25 @@ coords <- data.frame(ID=paste(as.factor(coords.fwt[,1])),WBAN=paste(as.factor(co
 plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
 ```
 
-## Selecting Regional Stations
+# Download Weather Data
 
-Next we need to select a stations that represent an area of interest.
+## Identify URL for data source
+
+Once finding data sources, you might find URLs with ftp or http protocols -- it shouldn't matter which type you find. 
+
+For example, using the NOAA's website, I found the following URL, [ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/), to download data from the Global Historical Climatalogical Network (GHCDN), where an entire dataset can be downloaded. 
+
+Alternatively, another [NCDC-NOAA Directory](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/) seems to have data by year. But please look at the [readme.txt](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/readme.txt) that describes the data and let me know and I will make a note of what it contains.
+
 
 ```{r stationfile}
 stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
 ```
 
-## Reading Data into R
 
-ID            1-11   Character
-YEAR         12-15   Integer
-MONTH        16-17   Integer
-ELEMENT      18-21   Character
-VALUE1       22-26   Integer
-MFLAG1       27-27   Character
-QFLAG1       28-28   Character
-SFLAG1       29-29   Character
-VALUE2       30-34   Integer
-MFLAG2       35-35   Character
-QFLAG2       36-36   Character
-SFLAG2       37-37   Character
-  .           .          .
-  .           .          .
-  .           .          .
-VALUE31    262-266   Integer
-MFLAG31    267-267   Character
-QFLAG31    268-268   Character
-SFLAG31    269-269   Character
+## Regional Datasets--Finding Stations
+
+Since we are interested in a more regional approach, you may want to find a less daunting file.
 
 ```{r readinginputdata}
 # read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
@@ -166,31 +87,110 @@ stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9
 
 ## Creating Variable Names
 
-```{r creatingvariablenames}
-names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
+Since the data don't come with headers (variable names), we need to assign them. This can be a long and frustating activity. Below, I did some mettling to attempt this.
 
+```{r creatingvariablenames, echo=T}
+names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
+```
+## Stations with Assign Variable Names
+```{r stationheader}
 head(stations)
 ```
 
-# Selecting and Example Location
+## Structure of imported data
 
-## What is the structure of imported data?
-
-Here's what the data look like:
+The structure of the object we created is shown below. Note the object is a dataframe with 100747 daily observations.
 
 ```{r dataframestructure}
 str(stations)
 ```
 
 ## Records from One Location
-Here's an example of data from Arizona...
+Here's an example of data from Arizona
 
 ```{r Arizona}
 stations[stations$ID=="US1AZMR0019",] 
 # head(stations[stations$HCN_CRN==" CRN",])
 ```
 
-Let's get the a different site into R
+## Getting Weather Data from Specific Locations
+
+Copy the URL into a clipboard and then create a object with the link:
+
+```{r sourcefile}
+sourcefile ="TBD??"
+```
+
+### Create a Folder for Data
+Once a site URL has been identified, we can use R to download the data into a specific directory. I suggest you create a subdirectory within Data that you can track and store your data. 
+
+### Download the Data
+
+Note: The site can stall, so be careful when trying to download large files via web browers.
+
+## GHCN Data -- Available Upon Request
+Alternatively, you could choose to download the entire dataset, as I have already done. First, I downloaded the file to my computer, then uploaded it into the R project Data directory.
+
+```{r tarfile, echo=T}
+tarfile = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz"
+```
+
+But the file required some pre-processing, in particular, they were highly compressed.
+
+## How to Uncompress Data
+
+Files storing centuries of weather data from thousands of sites can become quite large. Thus, the files are compressed. There are a number of compression methods, available, e.g. zip, gz, and tar. Fortunately, we can use R to uncompress a range of compressed file types.
+
+Examples of functions to uncompress data:
+
+```{r uncompress, eval=FALSE}
+# Uncompress the files.
+untar(tarfile, files="Data")
+```
+
+It takes a while (2+ hours) to uncompress (first gz -> tar -> readable files), so I have done that already and loaded some of the data into the github site.
+
+```{r listdlys, echo=F}
+list.files("../Climate_Change_Narratives/Data", pattern= "*.dly")
+```
+
+# Reading Data into R
+
+## What is the data format?
+
+Before reading data, we need to determine the file structure. For example, XX data has the following format, where headers are lost and each column is separated by tabs that are lost in text rendions. Thus, we'll need a key to intepret the data.
+
+AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680
+
+Thankfully, there is a [readme.tex file](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt) that provides a key to the file structure. I suggest you read it carefully and to understand what is in the database.
+
+## File Structure Keys
+
+Although these keys are a bit daunting to read at first, we will appreciate the consistancy soon! Below is the structure of dly files, which is cut off, so be sure the check out the readme.txt file for a complete list: 
+
+| Parameter   | Columns | Variable Type |
+|-------------|---------|---------------|
+|ID           | 1-11    | Character     |
+|YEAR         | 12-15   |Integer |
+|MONTH        |16-17    |Integer |
+|ELEMENT      |18-21    |Character |
+|VALUE1       |22-26    |Integer |
+|MFLAG1       |27-27    |Character |
+|QFLAG1       |28-28  | Character|
+|SFLAG1       |29-29 |  Character|
+|VALUE2       |30-34  | Integer|
+|MFLAG2       |35-35 |  Character|
+|QFLAG2       |36-36  | Character|
+|SFLAG2       |37-37 |  Character|
+|  .          | .         | .|
+|  .          | .        |  .|
+|  .          | .       |   .|
+|VALUE31    |262-266   |Integer|
+|MFLAG31    |267-267   |Character|
+|QFLAG31    |268-268   |Character|
+|SFLAG31    |269-269   |Character|
+
+
 
 # Processing Data
 
