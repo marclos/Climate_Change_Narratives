@@ -85,7 +85,7 @@ untar(tarfile, files="Data")
 It takes a while (2+ hours) to uncompress (first gz -> tar -> readable files), so I have done that already and loaded some of the data into the github site.
 
 ```{r listdlys, echo=F}
-list.files("../../Climate_Change_Narratives/Data", pattern= "*.dly")
+list.files("../Climate_Change_Narratives/Data", pattern= "*.dly")
 ```
 
 # Reading Data into R
@@ -103,14 +103,17 @@ Thankfully, there is a [readme.tex file](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/d
 
 Instead of analyzing the entire dataset, we'll select some specific stations. But first, we need a way to sort through the avaiable stations.
 
-## NOAA dataset
+# Stations in NOAA Database
 
+NOAA has a list of sites in the [isd-history](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt) , but I have not investigated the source of the data.
 
-```{r otherstuff}
+```{r otherstuff, echo=F}
 library(raster)
 library(XML)
 
-coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",widths=c(6,1,5,1,38,7,1,8,9,8,1,8),sep=";",skip=22,fill=T)
+# Data installed from ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt
+
+coords.fwt <- read.fwf("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/isd-history.txt",widths=c(6,1,5,1,38,7,1,8,9,8,1,8),sep=";",skip=22,fill=T)
 Names = c("USAF", "X1", "WBAN", "X2", "STATION_NAME", "X3", "CTRY", "X4", "ST", "X5", "CALL", "X6", "LAT", "X7", "LON", "X8", "ELEV", "X9", "BEGIN", "X10", "END")
 Widths = c(6,       1,    5,      1,        29,         1,    2,      3,    2,    1,    4,      1,    8,     1,     8,    1,    7,     1,     8,      1,    8)
 
@@ -119,14 +122,14 @@ coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",w
 coords <- data.frame(ID=paste(as.factor(coords.fwt[,1])),WBAN=paste(as.factor(coords.fwt[,3])),Lat=as.numeric(paste(coords.fwt$LAT)),Lon=as.numeric(paste(coords.fwt$LON)));  coords[c(30,4000,20000),]
 ```
 
-
-### NOAA Locations
-Map of Weather Stations (source??)
+## Map of Weather Stations (source: NOAA ISD??)
 ```{r NOAApoints}
 plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
 ```
 
-## Selecting a Station
+## Selecting Regional Stations
+
+Next we need to select a stations that represent an area of interest.
 
 ```{r stationfile}
 stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
@@ -280,7 +283,8 @@ ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(a
 
 # Creating a Shiny App
 
-Now we need to create a shiny app!
+Guides to create a Shiny App will be explored with another resource.
+
 
 
 
