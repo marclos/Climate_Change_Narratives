@@ -92,36 +92,42 @@
           </hgroup>
   </slide>
 
-<slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Processing Weather Data with R</h2></hgroup><article  id="processing-weather-data-with-r">
-
-<p>Contributions by</p>
-
-<p>-Marc Los Huertos-??</p>
-
-</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>R Resources for Climate Data</h2></hgroup><article  id="r-resources-for-climate-data">
+<slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>R Resources for Climate Data</h2></hgroup><article  id="r-resources-for-climate-data">
 
 </article></slide><slide class=''><hgroup><h2>Tutorials and Libraries</h2></hgroup><article  id="tutorials-and-libraries">
 
-<p>There are a number of resources to help us (beside this document!)</p>
+<p>Numerous resources are available that might help us (beside this document!) access and process weather data.</p>
+
+<p>Here is a preliminary list:</p>
 
 <ul>
 <li><a href='http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/' title=''>R Blogger to Access, Clean, and Plot NOAA tempeature data</a></li>
-<li>Next&#8230;</li>
+<li>Next&#8230;suggestions?</li>
 </ul>
 
 </article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Accessing the Data</h2></hgroup><article  id="accessing-the-data">
 
 </article></slide><slide class=''><hgroup><h2>What sites are available for downloading the data?</h2></hgroup><article  id="what-sites-are-available-for-downloading-the-data">
 
-<p>URLs where we can download data!</p>
+<ul>
+<li><a href='https://www.ncdc.noaa.gov/cdo-web/datasets' title=''>NCDC&#8211;NOAA Datasets</a></li>
+</ul>
+
+<p>For this project, the Global Historical Climate Network may be the most useful data, which can be downloaded from the following an <a href='ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/' title=''>ftp site</a>.</p>
 
 </article></slide><slide class=''><hgroup><h2>How to download data</h2></hgroup><article  id="how-to-download-data">
 
 <h3>Identify URL for data source</h3>
 
-<p>Once finding data sources, you might find URLs with ftp or http protocols &#8211; it shouldn&#39;t matter which type you find.For example, using the NOAA&#39;s website, I found the following URL, <a href='ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/' title=''>ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/</a>, to download data from the Global Historical Climatalogical Network (GHCDN).</p>
+<p>Once finding data sources, you might find URLs with ftp or http protocols &#8211; it shouldn&#39;t matter which type you find.</p>
 
-<p>These will be either a ftp or http site. Copy the URL into a clipboard and then create a object with the link:</p>
+<p>For example, using the NOAA&#39;s website, I found the following URL, <a href='ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/' title=''>ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/</a>, to download data from the Global Historical Climatalogical Network (GHCDN), where an entire dataset can be downloaded.</p>
+
+</article></slide><slide class=''><hgroup><h2>Regional Datasets</h2></hgroup><article  id="regional-datasets">
+
+<p>Since we are interested in a more regional approach, you may want to find a less daunting file.</p>
+
+<p>Copy the URL into a clipboard and then create a object with the link:</p>
 
 <h3>Create a Folder for Data</h3>
 
@@ -131,7 +137,11 @@
 
 <p>Note: The site can stall, so be careful when trying to download large files via web browers.</p>
 
-<p>Alternatively, you could choose to download the entire dataset, which I have done already &#8211; and this is how:</p>
+<p>Alternatively, you could choose to download the entire dataset, as I have already done. First, I downloaded the file to my computer, then uploaded it into the R project Data directory.</p>
+
+<pre class = 'prettyprint lang-r'>tarfile = &quot;ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz&quot;</pre>
+
+<p>But this file needs to have some pre-processing before we can do anything with it.</p>
 
 </article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Pre-Processing Data</h2></hgroup><article  id="pre-processing-data">
 
@@ -141,11 +151,13 @@
 
 <p>Examples of functions to uncompress data:</p>
 
+<p>It takes a while (2+ hours) to uncompress, so I have done that already and loaded some of the data into the github site.</p>
+
 </article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Reading Data into R</h2></hgroup><article  id="reading-data-into-r">
 
 </article></slide><slide class=''><hgroup><h2>What is the data format?</h2></hgroup><article  id="what-is-the-data-format">
 
-<p>Before reading data, we need to determine the file structure. For example, XX data has the following format&#8230;</p>
+<p>Before reading data, we need to determine the file structure. For example, XX data has the following format where each column is separated by tabs, which are lost in text rendions, so it looks a bit chaotic.</p>
 
 <p>AG000060680 22.8000 5.4331 1362.0 TAMANRASSET GSN 60680</p>
 
@@ -225,7 +237,7 @@
 
 <p>Now that we have a good idea of what these files look like, I have created a loop to read the files and select the rows where the maximum temperature was recorded (&quot;TMAX&quot;).</p>
 
-<pre >## [1] &quot;AGM00060515.dly&quot; &quot;US1AZCN0021.dly&quot;</pre>
+<pre >## [1] &quot;AGM00060515.dly&quot; &quot;US1AZCN0021.dly&quot; &quot;US1AZMR0019.dly&quot; &quot;US1AZMR0026.dly&quot;</pre>
 
 <p>Once the file has been read, then I modiefied the file to make it useful, where I needed to re-arrange the file so we don&#39;t have a months across the top, but as rows.</p>
 
@@ -307,11 +319,11 @@
 <pre >##         USAF X1  WBAN X2                  STATION_NAME X3 CTRY  X4 ST X5
 ## 30      8409 NA 99999 NA XM13                                           
 ## 4000  120010 NA 99999 NA PETROBALTIC BETA                   PL          
-## 20000 725291 NA 99999 NA RIDGELY AIRPARK                    US     MD   
-##       CALL X6    LAT X7     LON X8 ELEV X9    BEGIN X10      END
-## 30         NA     NA NA      NA NA   NA NA 20091027  NA 20100104
-## 4000       NA 55.467 NA  18.167 NA 46.0 NA 20141127  NA 20141127
-## 20000 KRJD NA 38.970 NA -75.866 NA 19.5 NA 20070521  NA 20090701</pre>
+## 20000 725290 NA 14768 NA GREATER ROCHESTER INTERNATION      US     NY   
+##       CALL X6    LAT X7     LON X8  ELEV X9    BEGIN X10      END
+## 30         NA     NA NA      NA NA    NA NA 20091027  NA 20100104
+## 4000       NA 55.467 NA  18.167 NA  46.0 NA 20141127  NA 20141127
+## 20000 KROC NA 43.117 NA -77.677 NA 164.3 NA 19730101  NA 20160723</pre>
 
 <pre >## Warning in data.frame(ID = paste(as.factor(coords.fwt[, 1])), WBAN =
 ## paste(as.factor(coords.fwt[, : NAs introduced by coercion
@@ -322,7 +334,7 @@
 <pre >##           ID  WBAN    Lat     Lon
 ## 30      8409 99999     NA      NA
 ## 4000  120010 99999 55.467  18.167
-## 20000 725291 99999 38.970 -75.866</pre>
+## 20000 725290 14768 43.117 -77.677</pre>
 
 </article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>NOAA Locations</h2></hgroup><article  id="noaa-locations">
 

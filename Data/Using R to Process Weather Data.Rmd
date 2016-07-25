@@ -15,40 +15,41 @@ library(stringr)
 library(reshape2)
 source("summarySE.R")
 ```
-# Processing Weather Data with R
-
-Contributions by 
-
--Marc Los Huertos
--??
-
 # R Resources for Climate Data
 
 ## Tutorials and Libraries
 
-There are a number of resources to help us (beside this document!)
+Numerous resources are available that might help us (beside this document!) access and process weather data. 
+
+Here is a preliminary list: 
 
 * [R Blogger to Access, Clean, and Plot NOAA tempeature data](http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/)
-* Next...
-
+* Next...suggestions?
 
 # Accessing the Data
 
 ## What sites are available for downloading the data?
 
-URLs where we can download data!
+* [NCDC--NOAA Datasets](https://www.ncdc.noaa.gov/cdo-web/datasets)
+
+For this project, the Global Historical Climate Network may be the most useful data, which can be downloaded from the following an [ftp site](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/).
 
 ## How to download data
 
 ### Identify URL for data source
 
 Once finding data sources, you might find URLs with ftp or http protocols -- it shouldn't matter which type you find. 
-For example, using the NOAA's website, I found the following URL, ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/, to download data from the Global Historical Climatalogical Network (GHCDN).
 
-These will be either a ftp or http site. Copy the URL into a clipboard and then create a object with the link:
+For example, using the NOAA's website, I found the following URL, [ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/), to download data from the Global Historical Climatalogical Network (GHCDN), where an entire dataset can be downloaded.  
+
+## Regional Datasets
+
+Since we are interested in a more regional approach, you may want to find a less daunting file.
+
+Copy the URL into a clipboard and then create a object with the link:
 
 ```{r sourcefile}
-sourcefile =""
+sourcefile ="TBD??"
 ```
 
 ### Create a Folder for Data
@@ -58,12 +59,13 @@ Once a site URL has been identified, we can use R to download the data into a sp
 
 Note: The site can stall, so be careful when trying to download large files via web browers.
 
-Alternatively, you could choose to download the entire dataset, which I have done already -- and this is how:
+Alternatively, you could choose to download the entire dataset, as I have already done. First, I downloaded the file to my computer, then uploaded it into the R project Data directory.
 
-```{r tarfile}
+```{r tarfile, echo=T}
 tarfile = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz"
 ```
 
+But this file needs to have some pre-processing before we can do anything with it.
 
 # Pre-Processing Data
 
@@ -73,10 +75,12 @@ Files storing centuries of weather data from thousands of sites can become quite
 
 Examples of functions to uncompress data:
 
-```{r uncompress}
+```{r uncompress, eval=FALSE}
 # Uncompress the files.
-#untar(??)
+untar(tarfile, files="Data")
 ```
+
+It takes a while (2+ hours) to uncompress, so I have done that already and loaded some of the data into the github site.
 
 # Reading Data into R
 
