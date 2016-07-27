@@ -1,6 +1,6 @@
 ---
 title: "Using R to Process Weather Data"
-author: "Marc Los Huertos"
+author: "Marc Los Huertos, EA30 Fall 2016"
 date: "7/20/2016"
 output:
   ioslides_presentation: default
@@ -32,13 +32,16 @@ Here is a preliminary list:
 
 * [NCDC--NOAA Datasets](https://www.ncdc.noaa.gov/cdo-web/datasets)
 
-For this project, the Global Historical Climate Network may be the most useful data, which can be downloaded from the following an [ftp site](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/).
+For this project, the Global Historical Climate Network may be the most useful data, which can be downloaded from the following an [ftp site](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/), where I downloaded the entire dataset for the class!
 
 # Stations in NOAA Database
 
-NOAA has a list of sites in the [isd-history](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt) , but I have not investigated the source of the data.
+## NOAA isd-history 
+NOAA has a list of sites in the [isd-history](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt) , but I have not investigated the source of the data or how this fits with other datasets.
 
-```{r otherstuff, echo=F}
+Note: read.fwf generates unknown variable "X1", "X2", etc.
+
+```{r otherstuff, echo=F, warning=F, message=F}
 library(raster)
 library(XML)
 
@@ -60,7 +63,7 @@ plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
 
 # Download Weather Data
 
-## Identify URL for data source
+## Identify URLs for data source
 
 Once finding data sources, you might find URLs with ftp or http protocols -- it shouldn't matter which type you find. 
 
@@ -68,11 +71,39 @@ For example, using the NOAA's website, I found the following URL, [ftp://ftp.ncd
 
 Alternatively, another [NCDC-NOAA Directory](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/) seems to have data by year. But please look at the [readme.txt](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/readme.txt) that describes the data and let me know and I will make a note of what it contains.
 
+## GHCND Data
+
+One major source of data is the GHCND. I downloaded the file to my computer, then uploaded some example data into the R project Data directory.
+
+```{r tarfile, echo=T}
+gzfile = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz"
+```
+
+The file source URL is `r gzfile`. There are two things  you should note about this file. 
+
+1. It's located on an ftp ("file transfer protocol"), where one can create automatic update scripts to avoid analyzing out of date files.
+2. It is compressed (gz and tar are compression methods.) Thus, the file required some pre-processing, in particular, to uncompressed.
+
+## How to Uncompress Data
+
+Files storing centuries of weather data from thousands of sites can become quite large. Thus, the files are compressed. There are a number of compression methods, available, e.g. zip, gz, and tar. Fortunately, we can use R to uncompress a range of compressed file types.
+
+Examples of functions to uncompress data:
+
+```{r uncompress, eval=FALSE}
+# Uncompress the files.
+untar(gzfile, files="Data")
+```
+
+It takes a while (2+ hours) to uncompress (first gz -> tar -> readable files), so I have done that already and loaded some of the data into the github site.
+
+```{r listdlys, echo=F}
+list.files("../Climate_Change_Narratives/Data", pattern= "*.dly")
+```
 
 ```{r stationfile}
 stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
 ```
-
 
 ## Regional Datasets--Finding Stations
 
@@ -112,10 +143,11 @@ Here's an example of data from Arizona
 stations[stations$ID=="US1AZMR0019",] 
 # head(stations[stations$HCN_CRN==" CRN",])
 ```
+Now we can locate the site location from this file.
 
 ## Getting Weather Data from Specific Locations
 
-Copy the URL into a clipboard and then create a object with the link:
+Copy the URL into a clipboard and then create a object with the link, so let's download the Arizona file. 
 
 ```{r sourcefile}
 sourcefile ="TBD??"
@@ -127,32 +159,6 @@ Once a site URL has been identified, we can use R to download the data into a sp
 ### Download the Data
 
 Note: The site can stall, so be careful when trying to download large files via web browers.
-
-## GHCN Data -- Available Upon Request
-Alternatively, you could choose to download the entire dataset, as I have already done. First, I downloaded the file to my computer, then uploaded it into the R project Data directory.
-
-```{r tarfile, echo=T}
-tarfile = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz"
-```
-
-But the file required some pre-processing, in particular, they were highly compressed.
-
-## How to Uncompress Data
-
-Files storing centuries of weather data from thousands of sites can become quite large. Thus, the files are compressed. There are a number of compression methods, available, e.g. zip, gz, and tar. Fortunately, we can use R to uncompress a range of compressed file types.
-
-Examples of functions to uncompress data:
-
-```{r uncompress, eval=FALSE}
-# Uncompress the files.
-untar(tarfile, files="Data")
-```
-
-It takes a while (2+ hours) to uncompress (first gz -> tar -> readable files), so I have done that already and loaded some of the data into the github site.
-
-```{r listdlys, echo=F}
-list.files("../Climate_Change_Narratives/Data", pattern= "*.dly")
-```
 
 # Reading Data into R
 
@@ -228,19 +234,19 @@ Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
 Now that we have a good idea of what these files look like, I have created a loop to read the files and select the rows where the maximum temperature was recorded ("TMAX"). 
 ```{r processing}
 setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data")
-
+getwd()
 dly_list = list.files(pattern="*.dly"); head(dly_list)
 #for (i in 1:length(dly_list)) 
-for (i in 1:1){
+for (i in 2:2){
 tmp <- read.fwf(dly_list[i], widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
 names(tmp) <- Names
 assign(dly_list[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, length.out=31))))
 }
 ```
 
-Once the file has been read, then I modiefied the file to make it useful, where I needed to re-arrange the file so we don't have a months across the top, but as rows. 
+Once the file has been read, then I modified the file to make it useful, where I needed to re-arrange the file so we don't have a months across the top, but as rows. 
 
-```{r}
+```{r melt, warning=F}
 tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
 head(tmp1)
 tmp1$Day = as.numeric(str_sub(tmp1$variable,6,7)); head(tmp1)
@@ -259,7 +265,7 @@ Now the data is ready to be visualized!
 
 ## Summarizing the Results
 
-```{r summarySE}
+```{r summarySE, warning=F, message=F}
 # called summarySE function
 summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
 ```
@@ -283,6 +289,7 @@ ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(a
 
 # Creating a Shiny App
 
+## Developing a Shiny App -- Next Steps
 Guides to create a Shiny App will be explored with another resource.
 
 
