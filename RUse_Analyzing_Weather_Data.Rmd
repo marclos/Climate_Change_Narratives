@@ -319,8 +319,10 @@ yrmin = 1990
 yrmax = 2000
 
 #tmp1 %>% filter(DECADE > min, na.rm=T)
-head(filter(tmp1, YEAR >= 2014))
+#head(filter(tmp1, YEAR >= 2014))
 tmp2 = filter(tmp1, YEAR >= yrmin & YEAR <= yrmax)
+tmp2 <- tmp2[!is.na(tmp2$Date),]
+head(tmp2)
 ```
 
 ## Create Update-able Plot
@@ -342,6 +344,14 @@ text(xcoord, ycoord, delta)
 ## Developing a Shiny App
 
 1. Pass Data to Shiny
+
+```{r writecsv}
+filename = "Data/XYZ_dly.csv"
+write.csv(tmp1, filename)
+```
+
+## Create Reactive Inputs
+
 2. Create Input Slider for min and max years
 3. Create text to decribe results that are readable!
 4. Add "output" to html text.
