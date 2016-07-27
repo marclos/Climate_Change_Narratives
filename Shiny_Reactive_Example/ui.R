@@ -16,11 +16,13 @@ yrmax = max(station1$YEAR, na.rm=T)
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("Title"),
+  titlePanel("Are Weather Changes are Ambiguous?"),
   
-  tags$h2("Header 2"),
+  tags$h2("Maximum Daily Temperatures"),
   
-  tags$code("Welcome to simple Shiny App that we can use to as a template for our Project blog.  Before you spend too much time playing with Shiny, I suggest you look at this", tags$a(href = "http://shiny.rstudio.com/tutorial/", "tutorial")),
+  "Can I right text without tags?",
+  
+  tags$body("The weather in XX has only been collected since XX. This weather station is... ", tags$a(href = "http://shiny.rstudio.com/tutorial/", "tutorial")),
   
   #tags$hr,
   # Sidebar with a slider input for number of bins 
@@ -37,7 +39,7 @@ shinyUI(fluidPage(
     mainPanel(
        plotOutput("distPlot")
     )
-  )
+  ), "more text? with R outputs"
 ))
 
 
