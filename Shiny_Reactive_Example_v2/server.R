@@ -26,7 +26,7 @@ shinyServer(function(input, output, session) {
     abline(coef(bestfit), col="red", lwd=2)
     xcoord = min(tmp2$Date, na.rm=T); ycoord=min(tmp2$Temperature, na.rm=T)+10
     
-    delta = round(coef(bestfit)[2]/(yrmax-yrmin)*100, 3)
+    delta = round(coef(bestfit)[2]/(yrmax-yrmin)*100, 4)
     text(xcoord, ycoord, delta)
     })
   
