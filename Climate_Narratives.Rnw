@@ -132,32 +132,56 @@ Team Exercise: As the first component of the project, search for webpages that u
 
 As you evaluate the pages to develop a set of standards and criteria that we can use to measure our own success.
 
-\paragraph{Evaluation Criteria}
-
 Each team will work to develop criteria that we can use to evaluate the public products, which will be further developed to evaluate each public product produced for our project.
+
+To accomplish this, each student will evaluate 2 public products and answer the following questions:
+
+\begin{enumerate}
+  \item What is the goals of the product?
+  \item Was the goal met?
+  \item If the goal was met, describe 2-3 ways that this was accomplished. If the goal was not met, describe 2-3 ways that prevented the goal from being met.
+  \item Describe 2 characteristics that seem like important or valuable ways for a public product to be evaluated.
+  \item Describe how these characteristics were used in the team's product evaluation criteria. 
+\end{enumerate}
+
+Once these have been developed, the instructor will collate these into a grading structure for our own public product. 
+
+\paragraph{Session Evaluation Criteria}
+
+The contribution will be graded based on the depth and clarity in which the above questions were answered and how these were effectively translated into our product   
 
 \subsection{Session 2: How is the Earth's Temperature Taken?}
 
 How are temperature data collected? This turns out to be a more complicated question that we might imagine at first. Let's begin by discussion what are the potential data quality issues with temperature data? We might begin by thinking about the data in terms of precision and accuracy.
 
-
-that describes land-base Temperature data:
+There are three typical measures of temperature associated with the Earth: 
 
 \begin{itemize}
   \item Land-based Temperatures
-  %\item Sea-surface Temperatures
-  %\item Remotely Sensed Data (e.g. Satellite) 
+  \item Sea-surface Temperatures
+  \item Remotely Sensed Data (e.g. Satellite) 
 \end{itemize}
 
-\subsubsection{Evaluation Criteria}
+Since we will only be evaluating land-based measurments, please focus on these. For this session, read and summarize the following questions:
 
-Evaluation criteria will be proposed by an "Expert Team" and inserted in Wiki. 
+\begin{enumerate}
+  \item How is land-based temperature taken?
+  \item How have these methods changed over time?
+  \item How are different sources of data combined?
+  \item What is the geographic range of temperature readings?
+\end{enumerate}
+
+Write a paragraph that describes source of bias and inaccuracies in land-based temperature measurements. 
+
+\subsubsection{Session Evaluation Criteria}
+
+These contributions will be evaluated based on completness, accuracy, and clarity. Once these have been submitted, work with your team members to create a document that can be put into the ``Collaborative Documents``.
 
 \subsection{Session 3: Where's [sic] the data!!!}
 
 Watch this video
 
-Use the Collaborative Documents to describe how weather is stored and made accessible. As part of this, we might need to better appreciate the sublties of how these data are stored, so we know our conclusions are reasonable.
+We might need to better appreciate the sublties of how these data are stored, so we know our conclusions are reasonable. Write a 1-2 paragraph summary that answers the following questions: 
 
 \begin{enumerate*}
   \item How as data storage changed in the last 500 years?
@@ -165,9 +189,11 @@ Use the Collaborative Documents to describe how weather is stored and made acces
   \item how are data checked for quality?
 \end{enumerate*}
 
-\subsubsection{Evaluation Criteria}
+Once you have submitted the document, use the Collaborative Documents to describe how weather is stored and made accessible as a team. 
 
-How are the data store, curated and checked for quality?
+\subsubsection{Session Evaluation Criteria}
+
+These contributions will be evaluated based on completness, accuracy, and clarity. 
 
 \subsection{Session 4: Getting Data Effectively}
 
@@ -183,14 +209,24 @@ Once you have defined the characteristics of the collecting process, I suggest y
   \item[Process data] Convert missing values to NA, naming variables, reshaping data);
 \end{description}
 
+Create a Rmd file that describes the importing process and data fields.
 
-\subsubsection{Evaluation Criteria for Session 5}
+\subsubsection{Session Evaluation Criteria}
 
-\subsection{Session X: Is there a case for Inference and Causation?}
+Once the data has been posted, I will run the Rmd file which will be evaluated based on completness, accuracy, and clarity.  
+
+\subsection{Session 5: Is there a case for Inference and Causation?}
+
+Read the introduction to statistics by Artiola, et al. (2004). 
 
   \begin{itemize*}
   		\item Artiola, J, Pepper, IL, Brusseau, M. 2004. Environmental Monitoring and Characterization. Chapter 3. Environmental Statistics (pp. 30-48).
 \end{itemize*}
+
+For this session, we will analyze the data using a number of tools, but largely linear regression (via linear models in R). 
+
+
+\subsection{Session 6: Creating an Interactive Public Product}
 
 Each student will use a data source to create the public product where we can 
 \begin{description}
@@ -198,10 +234,9 @@ Each student will use a data source to create the public product where we can
   \item[Create] compelling graphics (easier); or an interactive shiny app (perferred).
 \end{description}
 
+\subsubsection{Evaluating Narratives}
 
-\section{Evaluating Narratives}
-
-\subsection{Developing Criteria for Project Models}
+We will evaluate the public product based on the following criteria:
 
 \begin{itemize*}
   \item Team Work Contribution -- Did you fulfill the contract? Submit documentation that of your contribution to the team collaboration.
@@ -209,6 +244,7 @@ Each student will use a data source to create the public product where we can
     \begin{itemize}
       \item Were the analysis methods and results described effectively?
       \item Would stakeholders be find the page compelling? (Describe the evidence that might be used to demonstrate this.)
+      \item How dies this product align with the matrix we developed as a class at the beginning of the semester?
     \end{itemize}
 
 \end{itemize*}
