@@ -24,7 +24,7 @@
 
 \section{Introduction}
 
-According the the Inter-Governmental Panel on Climate Change or IPCC, the temperature has been changing about 0.X degrees C per 100 years -- but this global average is not evenly distributed accross the globe. 
+According the the Inter-Governmental Panel on Climate Change or IPCC, the temperature has been changing about 2 degrees C per 100 years -- but this global average is not evenly distributed accross the globe. 
 
 How can we appreciate potential changes accross the whole globe? An average temperture increse for the globe is somewhat abstract.   Perhaps, we should evaluate how temperature (and/or rainfall) might be changing on local scales. 
 
@@ -90,13 +90,22 @@ For this project, the following students have been assigned to the teams below:
 
 <<echo=F, results = 'asis'>>=
 library(xtable)
-students = c("Jon", "Jean", "Gene", "Jorge", "Kim", "Betty", "Fran")
-team = c("1", "1", "2", "2", "3", "3", "3")
+students = c("Frank", "Leah", "David", "Olivia", "Wendy", "Sophia", "Erin", "Val", "Ana?", "Clare")
+team = c("1", "1", "2", "2", "3", "3", "4", "4", "5", "5")
 project1teams <- data.frame(Member=students, Team=team)
 xtable(project1teams)
 @
 
-We will develop expert groups on an ad hoc, as-needed basis.
+We will develop expert groups on to present the following topics:
+
+\begin{enumerate}
+  \item Temperature Record
+  \item Radiative Gases
+  \item Emissions 
+  \item Water
+  \item Warming 
+\end{enumerate}
+
 
 \subsection{Learning Goals}
 
