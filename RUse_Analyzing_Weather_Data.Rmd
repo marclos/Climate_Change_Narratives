@@ -244,6 +244,10 @@ assign(dly_list[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, le
 }
 ```
 
+file.choose()
+file = ""
+tmp <- read.fwf(file, widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
+
 Once the file has been read, then I modified the file to make it useful, where I needed to re-arrange the file so we don't have a months across the top, but as rows. 
 
 ```{r melt, warning=F}
