@@ -1,0 +1,154 @@
+\documentclass{article}
+%\documentclass{tufte-handout}
+\usepackage{hyperref}
+
+\newenvironment{itemize*}%
+  {\begin{itemize}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{itemize}}
+	
+\newenvironment{enumerate*}%
+  {\begin{enumerate}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{enumerate}}
+
+\title{Do weather changes matter?}
+\author{Marc Los Huertos}
+%\date{} 
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+According the the Inter-Governmental Panel on Climate Change or IPCC, the temperature has been changing about 2 degrees C per 100 years (check this) -- but this global average is not evenly distributed accross the globe. 
+
+How can we appreciate potential changes accross the whole globe? An average temperture increse for the globe is somewhat abstract.   Perhaps, we should evaluate how temperature (and/or rainfall) might be changing on local scales. 
+
+Thus, for this project, we'll try to understand how temperature changes "map" onto a community that we care about? But to do this we need obtain and analyze tempterature data and determine if weather changes have compelling impacts on local communities.
+
+In other words, do weather changes matter?
+
+\subsection{Goals of this Document}
+
+\begin{enumerate*}
+  \item Describe the goals and approach for the project;
+  \item Provide or point to resources to prepare for and conduct the project; and
+  \item Describe how we will evaluate the project process and products.
+\end{enumerate*}
+
+\section{Project Description}
+
+\subsection{Driving Question(s)}
+
+Projects can often be structured as questions, but sometimes it it worth phrasing the questions in a number of ways -- this might help you find ways that you might find the question more provactive and interesting, For example,
+
+\begin{itemize*}
+  \item Is my region's climate changing?
+  \item How is climate change affecting my community?
+\end{itemize*}
+
+But you can modify these questions to develop the project that you might find compelling.
+
+In addition, we may develop "sub-questions" that can be developed or answered as chunks, which will be used to answer the main question or questions. For example, 
+
+\begin{itemize*}
+  \item Are there biases in weather data? Can these biases be corrected? If so, how?
+  \item How can we evaluate trends? What are the most appropriate statistical tools to test for trends?
+  \item What is the best way to display visual data?  Are there best practices to guide a public product to make it more compelling or interactive?
+\end{itemize*}
+
+\subsection{Public Product}
+
+Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
+
+\begin{itemize*}
+  %\item Appropriate and thoughtful statistical analysis;
+  \item time series data in a plot using R; 
+  \item description of what the data tells about about the region, 
+  \item a few short paragraphs describing how data can be interpretted; pitfalls of unintentional and intentional misinterpretations; and 
+  \item narrative that describes the climate and climate implications for a community that you care about.
+\end{itemize*}
+
+\section{Approach}
+
+Students will have the following tools available:
+
+\begin{itemize*}
+  \item Servers where stored weather data can be downloaded;
+  \item R Studio Server with some scripts \& libraries to help develop analyses;
+  \item Gighub to store project codes; and
+  \item Student presentations on various climate change criticisms. 
+  %\item Shiny app templates that might be used as a container for interactive content.
+\end{itemize*}
+
+\subsection{Expert Groups}
+
+Each of us form an essential component for the effort. Organized as teams and expert groups, we will disassemble the project into chunks that each of us will contribute in specific and effective ways.
+
+For this project, the following students have been assigned to the teams below:
+
+<<echo=F, results = 'asis'>>=
+library(xtable)
+students = c("Frank", "Leah", "David", "Olivia", "Wendy", "Sophia", "Erin", "Val", "Ana?", "Clare")
+team = c("1", "1", "2", "2", "3", "3", "4", "4", "5", "5")
+project1teams <- data.frame(Member=students, Team=team)
+xtable(project1teams)
+@
+
+We will develop expert groups on to present the following topics:
+
+\begin{enumerate}
+  \item Temperature Record
+  \item Radiative Gases
+  \item Emissions 
+  \item Water
+  \item Warming 
+\end{enumerate}
+
+\subsection{Learning Goals}
+
+For this project, you will use weather data to the question "do weather changes matter". How you answer the question is largely up to you, however, there are some learning goals associated with this project:
+
+\paragraph{Skills}
+
+\begin{itemize*}
+  \item Ability to download and process weather data;
+  \item evaluate temporal trends in weather data;
+  \item evaluate environmental impacts on human or non-human communities; and
+  \item communicate conclusions to the public with special attention to guide how data misinterpretations should be considered.
+\end{itemize*}
+
+\paragraph{Content}
+\begin{itemize*}
+  \item Understand how data climate data is currated;
+  \item Analyze climate impacts from around the world.
+\end{itemize*}
+
+Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and present the results ot the public.
+
+\section{Project Stages}
+
+\begin{enumerate*}
+
+  \item download and analyze data (i.e. make inferences) to create an public product;
+  \item search peer reviewed articles to evaluate ecological, economic, and sociological implications of climate patterns; 
+  \item write blog to describe results; and
+  \item Propose what makes a good public product with respect to criticisms of climate science debates and criticisms.
+\end{enumerate*}
+
+\section{Product}
+
+\begin{itemize}
+  \item Time series graph of temperture data from a specific region using R; 
+  \item Evaluation of data to determine if trends exists;
+  \item Compare results to model pridictions and possible ecological and economic implications to the region; 
+  \item Describe how the data should be presented, e.g. how the data should be interpreted, and how to avoid misinterpretations that are present in the popular culture.
+  
+\end{itemize}
+
+
+\end{document}
