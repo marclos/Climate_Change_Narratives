@@ -1,0 +1,124 @@
+---
+title: "Importing and Processing CSV Files"
+author: "Marc Los Huertos"
+date: "12/6/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Importing CSV Files
+
+First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
+```{r importingCSV}
+#Importing Scripts
+
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Nicole/Marshfield climate.csv"
+import = read.csv(file)
+```
+
+## Checking the Data
+
+```{r checking}
+plot(TMAX~DATE, import)
+```
+
+What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!
+
+```{r missings}
+import$TMAX[import$TMAX==-9999] = NA
+```
+
+Okay, now we'll check again, for dates less then Dec. 31, 1913:
+```{r}
+plot(TMAX~DATE, import[import$DATE<19132131,], ty='l')
+```
+
+Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
+
+191231 -> 190102, if you use these as numbers it should be 121232, 12121233, etc. You see we are missing lots numbers!
+
+
+```{r}
+plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+```
+
+## Fixing the Dates
+
+First, we convert the date a string or character values. Next, we'll convert the strings to a data format. 
+
+```{r}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+## Checking the New Dates
+```{r}
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+```
+
+## A new plot
+```{r}
+plot(TMAX~NewDate, import, ty='l')
+```
+
+## Evaluating the trend
+
+Creating a linear model and then evaluate the rate (slope). 
+```{r}
+# Linear Model
+import.lm <- lm(TMAX~NewDate, data=import)
+summary(import.lm)
+plot(TMAX~NewDate, import, ty='l')
+abline(coef(import.lm), col='red')
+```
+
+## Time Series
+
+Time series data require specific statistical methods. I started thiking about how to do this in R, but didn't finish... so this is superfolous for now.
+```{r}
+
+#2.906*10-5 degrees/year or 2.9*10-2 per year.
+
+# Moving Average!
+# average of current sample and 19 previous samples (red)
+f20 <- rep(1/600, 600)
+y_lag <- filter(import$TMAX, f20, sides=1)
+plot(y_lag)
+
+# Create a time series
+Tmax = ts(import$TMAX)
+```
+
+## Creating Months and Year
+
+So, let's figure out how to see how changes happen for individual months.
+```{r}
+# Get months
+import$Month = months(import$NewDate)
+import$Year = format(import$NewDate, format="%Y")
+
+MonthlyMean = aggregate(TMAX ~ Month + Year, import, mean)
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+head(MonthlyMean)
+plot(MonthlyMean$TMAX, ty='l')
+
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="May"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+
+Now, the change is 0.0078 (0.008/year), or 0.8/100 years.
+
+## Next Steps
+
+I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
+
+
