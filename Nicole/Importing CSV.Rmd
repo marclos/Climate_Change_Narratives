@@ -121,4 +121,16 @@ Now, the change is 0.0078 (0.008/year), or 0.8/100 years.
 
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
 
+## Lets try Dec
+
+```{r}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="December"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+```
+
+
 
