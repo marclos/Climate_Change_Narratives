@@ -127,6 +127,8 @@ file.choose()
 
 ```{r}
 file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Wendy/USW00013874.dly"
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Clare/USW00013777.dly"
+
 dly <- read.fwf(file, widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
 names(dly) <- Names; str(dly)
 
@@ -137,9 +139,17 @@ Once the file has been read, then I modified the file to make it useful, where I
 Using a library reshape2, where the melt command converts all unlisted columns into a new column called 'variable'. 
 
 ```{r melt, warning=F}
-tmp1 = melt(dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
+tmp1 = melt(dly, id=c("ID", "YEAR", "MONTH", "ELEMENT")); head(tmp1)
+```
+
+Now, we are going to select just TMAX
+```{r}
 tmp1 = subset(tmp1, ELEMENT=="TMAX", select=c(ID, YEAR, MONTH, variable, ELEMENT, value))
 head(tmp1)
+```
+
+Converting the variable (DATE1...DATE31) to numeric values
+```{r}
 unique(tmp1$variable)
 tmp1$end = nchar(as.character(tmp1$variable))
 tmp1$regexpr = as.vector(regexpr('DATE', as.character(tmp1$variable))); head(tmp1)
@@ -166,6 +176,30 @@ Now the data is ready to be visualized!
 # Presenting the Results
 
 ## Summarizing the Results
+
+plot(TMAX ~ YEAR, TMAX[TMAX$ELEMENT=="TMAX",])
+
+monthlymeans = aggregate(TMAX[TMAX$ELEMENT=="TMAX",], list(TMAX$YEAR, TMAX$MONTH), mean)
+
+monthlymeans <- aggregate(TMAX ~ YEAR + MONTH, data=TMAX[TMAX$ELEMENT=="TMAX",], mean)
+
+head(monthlymeans)
+monthlymeans$YM <- monthlymeans$YEAR + (monthlymeans$MONTH - 1)/12
+
+plot(TMAX ~ YM, data=monthlymeans)
+
+monthly.lm <- lm(TMAX ~ YM, data=monthlymeans)
+summary(monthly.lm)
+
+abline(coef(monthly.lm), col="blue")
+
+plot(TMAX ~ YM, data=monthlymeans, ty='l')
+
+jan.lm <- lm(TMAX ~ YM, data=monthlymeans[monthlymeans$MONTH==7,])
+summary(jan.lm)
+
+abline(coef(jan.lm), col="blue")
+
 
 ```{r summarySE, warning=F, message=F}
 # called summarySE function
