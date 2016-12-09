@@ -18,6 +18,11 @@ tail(strDates)
 
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 #Checking the New Dates
+
+#checking the weird gap
+
+
+
 #PROB STARST HERE
 plot(TMAX~NewDate, import[import$DATE<18930901,], ty='l')
 
@@ -26,9 +31,11 @@ plot(TMAX~NewDate, import, ty='l')
 import.lm <- lm(TMAX~NewDate, data=import)
 summary(import.lm)
 
-#[**
+#[** doing for individual months? 
 jan.lm = lm(TMAX~NewDate, data=monthlymeans[month[ymeans$month==1]])
 #]
+
+
 
 plot(TMAX~NewDate, import, ty='l')
 abline(coef(import.lm), col='red')
@@ -36,13 +43,19 @@ abline(coef(import.lm), col='red')
 
 # create months and years
 import$Month = months(import$NewDate)
-#^missing format = "%M"? Like the one below
 
 import$Year = format(import$NewDate, format="%Y")
 
 MonthlyMean = aggregate(TMAX ~ Month + Year, import, mean)
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
 head(MonthlyMean)
+tail(MonthlyMean)
+
+YearlyMean = aggregate(TMAX ~ Year, import, mean)
+##MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+
+head(MonthlyMean)
+fs
 -----
 #eh i think it ended up not working 
-monthly means = aggregate(TMAX[TMAX$ELEMENT=="TMAX",], list(TMAX$YEAR, MONTH), mean)
+monthlymeans = aggregate(TMAX[TMAX$ELEMENT=="TMAX",], list(TMAX$YEAR, MONTH), mean)
