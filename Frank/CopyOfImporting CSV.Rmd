@@ -2,9 +2,7 @@
 title: "Importing and Processing CSV Files"
 author: "Marc Los Huertos"
 date: "12/6/2016"
-output:
-  pdf_document: default
-  html_document: default
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -42,7 +40,7 @@ plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 
 Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
 
-19132131 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
+19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
 
 
 ```{r}
@@ -98,7 +96,8 @@ abline(coef(poughkeepsie.lm), col='red')
 So, let's figure out how to see how changes happen for individual months.
 ```{r}
 # Get months
-poughkeepsie$Month = months(poughkeepsie$NewDate)
+poughkeepsie$Month = months(poughkeepsie$NewDate) # Creates problems.
+poughkeepsie$Month = format(as.Date(poughkeepsie$NewDate), format = "%m")
 poughkeepsie$Year = format(poughkeepsie$NewDate, format="%Y")
 ```
 
@@ -107,12 +106,35 @@ poughkeepsie$Year = format(poughkeepsie$NewDate, format="%Y")
 MonthlyMean = aggregate(TMAX ~ Month + Year, poughkeepsie, mean)
 
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
-head(MonthlyMean)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(TMAX ~ Month + Year, poughkeepsie, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
 ```
 
 
 ```{r plottingMonthyMeans}
 plot(MonthlyMean$TMAX, ty='l')
+
+```
+below is sd
+```{r plottingMonthyMeans}
+plot(MonthlySD$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
 ```
 
 ### Selecting for 1 Month -- May
