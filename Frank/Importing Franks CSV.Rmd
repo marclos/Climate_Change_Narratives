@@ -213,11 +213,50 @@ abline(h=PRCP_mean, col="blue")
 ```
 
 ```{r}
-
 YearlySum = aggregate(PRCP ~ Year, FAIRPLEX, sum)
-
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
 YearlyMean = mean(YearlySum$PRCP)
-                  
+
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+Other attempts that didn't work!
+```{r}
+YearlySum2 = subset(YearlySum, select=c(PRCP))
+YearlyMean = mean(YearlySum2$PRCP)
+
+#filter(YearlySum2)
+
+
+
+#Doesn't work...
+# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
+# ma(YearlySum$PRCP)  
+
+
+yearlyts =ts(YearlySum2) 
+str(yearlyts)
+
+
+
+
+
+yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
+
+plot(yearlyts, lty = 1, col = 3)
+
+lines(yearlyts.lag)
+
 YearlySum$Departure = YearlyMean - YearlySum$PRCP
 YearlySum$YEAR = as.numeric(YearlySum$Year)
 
