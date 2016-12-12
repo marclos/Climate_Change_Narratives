@@ -72,7 +72,7 @@ unique(import$STATION_NAME)
 Let's choose the POUGHKEEPSIE NY US because the record is longer than the airport.
 
 ```{r}
-poughkeepsie <- subset(import, STATION_NAME=="POUGHKEEPSIE NY US", select=c(STATION, STATION_NAME, LONGITUDE, LATITUDE, ELEVATION, DATE, NewDate, TMIN, TMAX))
+poughkeepsie <- subset(import, STATION_NAME=="POUGHKEEPSIE NY US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 
 
 ## A new plot
@@ -200,5 +200,11 @@ abline(coef(Dec.lm), col="red")
 
 4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
 
+
+# Departure from Mean
+
+mean(poughkeepsie$PRCP)
+
+plot(PRCP~NewDate, data=poughkeepsie)
 
 
