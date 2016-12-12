@@ -85,29 +85,7 @@ Students will have the following tools available:
   %\item Shiny app templates that might be used as a container for interactive content.
 \end{itemize*}
 
-\subsection{Expert Groups}
 
-Each of us form an essential component for the effort. Organized as teams and expert groups, we will disassemble the project into chunks that each of us will contribute in specific and effective ways.
-
-For this project, the following students have been assigned to the teams below:
-
-<<echo=F, results = 'asis'>>=
-library(xtable)
-students = c("Frank", "Leah", "David", "Olivia", "Wendy", "Sophia", "Erin", "Val", "Ana?", "Clare")
-team = c("1", "1", "2", "2", "3", "3", "4", "4", "5", "5")
-project1teams <- data.frame(Member=students, Team=team)
-xtable(project1teams)
-@
-
-We will develop expert groups on to present the following topics:
-
-\begin{enumerate}
-  \item Temperature Record
-  \item Radiative Gases
-  \item Emissions 
-  \item Water
-  \item Warming 
-\end{enumerate}
 
 \subsection{Learning Goals}
 
@@ -132,23 +110,129 @@ Throughout this project, your team and instructor will develop the strategies an
 
 \section{Project Stages}
 
+\subsection{Expert Groups}
+
+NOTE: We already did this with our short presentations on the 1st of December. (The topics below were place holders before each of you selected topics of interest.)
+
+Each of us form an essential component for the effort. Organized as teams and expert groups, we will disassemble the project into chunks that each of us will contribute in specific and effective ways.
+
+For this project, the following students have been assigned to the teams below:
+
+<<echo=F, results = 'asis'>>=
+library(xtable)
+students = c("Frank", "Leah", "David", "Olivia", "Wendy", "Sophia", "Erin", "Val", "Ana?", "Clare", "Nicole")
+team = c("1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "5")
+project1teams <- data.frame(Member=students, Team=team)
+xtable(project1teams)
+@
+
+We will develop expert groups on to present the following topics:
+
+\begin{enumerate}
+  \item Temperature Record
+  \item Radiative Gases
+  \item Emissions 
+  \item Water
+  \item Warming 
+\end{enumerate}
+
+\subsection{Regional Climate Analysis}
+
 \begin{enumerate*}
 
-  \item download and analyze data (i.e. make inferences) to create an public product;
-  \item search peer reviewed articles to evaluate ecological, economic, and sociological implications of climate patterns; 
-  \item write blog to describe results; and
-  \item Propose what makes a good public product with respect to criticisms of climate science debates and criticisms.
+  \item Download and analyze data (i.e. make inferences) to create an public product;
+  \item Evaluate peer reviewed articles to determine potential ecological, economic, and sociological implications of climate patterns; 
+  \item Write report to describe results; and
+  \item Propose what makes a good public product with respect to criticisms of climate science debates and criticisms. In other words, describe (2-3) ways that climate change skeptisism might misuse the data analysis and how one might prevent the misuse.
 \end{enumerate*}
 
 \section{Product}
 
+The Project Report will be due 2 pm, December 13th! :-)
+
 \begin{itemize}
   \item Time series graph of temperture data from a specific region using R; 
   \item Evaluation of data to determine if trends exists;
-  \item Compare results to model pridictions and possible ecological and economic implications to the region; 
+  \item Compare results to model predictions and possible ecological and economic implications to the region; 
   \item Describe how the data should be presented, e.g. how the data should be interpreted, and how to avoid misinterpretations that are present in the popular culture.
   
 \end{itemize}
+
+\section{Grading}
+
+\begin{table}
+\begin{tabular}{lll}\hline
+Product                   & \% of Project   & Due Date \\\hline\hline
+Background Presentation   & 15\%            & Dec. 1st \\
+Report                    & 85\%            & Dec. 13th \\ \hline
+
+\end{tabular}
+\end{table}
+
+\subsection{Background Presentation}
+
+\begin{itemize}
+  \item Prepare an outline to summarize the data and citations as a reference for peers (2017);
+  \item Make an organized presentation that effectively communicates how various scientific arguments have been distorted and politicized;
+  \item Identify how conventional scientific standards have been comprimised; and
+  \item Use the allotted time effectively. 
+  
+\end{itemize}
+
+
+\subsection{Report (2016)}
+
+\begin{itemize}
+  \item Describe the economic, cultural, and physical geography of the region;
+  \item Describe climate patterns;
+  \item Effectively display climate patterns from NOAA repositories, with at least 6 decades of data. Be sure all graphics are appropriate labeled and have captions that the reader can use to intrepret the data;
+  \item Analyze the data using a linear model using R (i.e. lm);
+  \item Describe the methods used to obtain and analyze the data; and
+  \item Evaluate peer review literature to determine potential regional impacts from climate change -- be sure to include ecological and economic impacts; 
+  \item Cite instances of how various scientific arguments have been distorted and politicized;
+  \item Identify how conventional scientific standards have been compromised and how arguments that might be based on distortions can be countered.
+\end{itemize}
+
+
+\subsection{Blog (2017)}
+
+To be developed
+
+\subsection{Letter to Editor (2017)}
+
+To be developed
+
+\newpage
+\subsection{Oral Presentation--Peer Evaluation}
+
+\bigskip
+Evaluator: \rule{7cm}{0.4pt}
+
+\bigskip
+
+\noindent Presenter: \rule{7cm}{0.4pt}
+
+\begin{enumerate}
+ \setlength\itemsep{4em}
+  \item Describe two items you learned.
+  \item Describe one concept or fact you would like to learn in more detail.
+\end{enumerate}
+
+
+\begin{table}[ht!]
+\caption{Please circle the best response, where one is inadequate and five is outstanding---i.e. should be teaching the topic!}
+\begin{tabular}{|p{4in}|ccccc|}\hline
+How clear was the presentation?     & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Did the analysis seem valid?        & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Was information missing?            & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+\end{tabular}
+\end{table}
 
 
 \end{document}
