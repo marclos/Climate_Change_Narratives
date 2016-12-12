@@ -13,9 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
 ```{r importingCSV}
-#Importing Scripts
+# Importing Scripts
 
-file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Frank/856083.csv"
+file = "/home/CAMPUS/fcl02013/Climate_Change_Narratives/Frank/POfairplex.csv"
 
 import = read.csv(file)
 ```
