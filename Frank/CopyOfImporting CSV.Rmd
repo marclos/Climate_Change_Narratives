@@ -69,15 +69,16 @@ Olivia has two sites in here data, so, we need to subset it.
 unique(import$STATION_NAME)
 ```
 
-Let's choose the POUGHKEEPSIE NY US because the record is longer than the airport.
+Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 ```{r}
-poughkeepsie <- subset(import, STATION_NAME=="POUGHKEEPSIE NY US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+FAIRPLEX <- subset(import, STATION_NAME=="POMONA FAIRPLEX CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
 
 
 ## A new plot
 ```{r}
-plot(TMAX~NewDate, poughkeepsie, ty='l')
+plot(TMAX~NewDate, FAIRPLEX, ty='l')
 ```
 
 ## Evaluating the trend
@@ -85,10 +86,10 @@ plot(TMAX~NewDate, poughkeepsie, ty='l')
 Creating a linear model and then evaluate the rate (slope). 
 ```{r}
 # Linear Model
-poughkeepsie.lm <- lm(TMAX~NewDate, data=poughkeepsie)
-summary(poughkeepsie.lm)
-plot(TMAX~NewDate, poughkeepsie, ty='l')
-abline(coef(poughkeepsie.lm), col='red')
+FAIRPLEX.lm <- lm(TMAX~NewDate, data=FAIRPLEX)
+summary(FAIRPLEX.lm)
+plot(TMAX~NewDate, FAIRPLEX, ty='l')
+abline(coef(FAIRPLEX.lm), col='red')
 ```
 
 ## Creating Month and Year Variables
@@ -96,14 +97,14 @@ abline(coef(poughkeepsie.lm), col='red')
 So, let's figure out how to see how changes happen for individual months.
 ```{r}
 # Get months
-poughkeepsie$Month = months(poughkeepsie$NewDate) # Creates problems.
-poughkeepsie$Month = format(as.Date(poughkeepsie$NewDate), format = "%m")
-poughkeepsie$Year = format(poughkeepsie$NewDate, format="%Y")
+FAIRPLEX$Month = months(FAIRPLEX$NewDate) # Creates problems.
+FAIRPLEX$Month = format(as.Date(FAIRPLEX$NewDate), format = "%m")
+FAIRPLEX$Year = format(FAIRPLEX$NewDate, format="%Y")
 ```
 
 ### Creating Monthly Means
 ```{r creatingmonthlymeans}
-MonthlyMean = aggregate(TMAX ~ Month + Year, poughkeepsie, mean)
+MonthlyMean = aggregate(TMAX ~ Month + Year, FAIRPLEX, mean)
 
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
 MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
@@ -111,7 +112,7 @@ MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
 
 # Frank -- change mean to sd and you'll get standard deviation for each month/year.
 
-MonthlySD = aggregate(TMAX ~ Month + Year, poughkeepsie, sd)
+MonthlySD = aggregate(TMAX ~ Month + Year, FAIRPLEX, sd)
 
 MonthlySD$YEAR = as.numeric(MonthlySD$Year)
 MonthlySD$MONTH = as.numeric(MonthlySD$Month)
@@ -126,7 +127,7 @@ plot(MonthlyMean$TMAX, ty='l')
 
 ```
 below is sd
-```{r plottingMonthyMeans}
+```{r plottingMonthySD}
 plot(MonthlySD$TMAX, ty='l')
 
 plot(TMAX~ NewDate, data=MonthlySD, ty='l')
@@ -142,9 +143,9 @@ abline(coef(SD.lm), col="red")
 Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
 
 ```{r May}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="May"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",], ty='l') 
-May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",])
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
 summary(May.lm)
 
 abline(coef(May.lm), col="red")
@@ -160,9 +161,9 @@ I think you should evaluate every month and see what happens. You might also con
 ## Lets try Dec
 
 ```{r}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="December"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",], ty='l') 
-Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",])
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
 summary(Dec.lm)
 
 abline(coef(Dec.lm), col="red")
@@ -174,7 +175,7 @@ abline(coef(Dec.lm), col="red")
 1. We create a monthly mean for each month.
 
 ```{r}
-MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, poughkeepsie, mean)
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, FAIRPLEX, mean)
 
 MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
@@ -185,10 +186,10 @@ head(MonthlyMeanTMIN)
 ```{r}
 plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="December"], ty='l')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="December",], ty='l') 
-Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="December",])
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
 summary(Dec.lm)
 
 abline(coef(Dec.lm), col="red")
@@ -203,8 +204,26 @@ abline(coef(Dec.lm), col="red")
 
 # Departure from Mean
 
-mean(poughkeepsie$PRCP)
+```{r}
+PRCP_mean = mean(FAIRPLEX$PRCP, na.rm=T)
 
-plot(PRCP~NewDate, data=poughkeepsie)
+plot(PRCP~NewDate, data=FAIRPLEX)
+abline(h=PRCP_mean, col="blue")
 
+```
 
+```{r}
+
+YearlySum = aggregate(PRCP ~ Year, FAIRPLEX, sum)
+
+YearlyMean = mean(YearlySum$PRCP)
+                  
+YearlySum$Departure = YearlyMean - YearlySum$PRCP
+YearlySum$YEAR = as.numeric(YearlySum$Year)
+
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+abline(h=YearlyMean, col="blue")
+
+lines(Departure ~ YEAR, data=YearlySum, col="red")
+
+```
