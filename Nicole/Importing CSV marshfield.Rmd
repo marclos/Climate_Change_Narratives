@@ -13,7 +13,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
 ```{r importingCSV}
+<<<<<<< HEAD:David/CopyOfImporting Franks CSV.Rmd
+# Importing Scripts
+
+file = "/home/CAMPUS/fcl02013/Climate_Change_Narratives/David Wagner/Hagerstown Maryland NOAA data.csv"
+=======
 #Importing Scripts
+>>>>>>> 87366cfb51d599c2a8821456a32daf84199e6282:Nicole/Importing CSV marshfield.Rmd
 
 file = "/home/CAMPUS/nllk2015/Climate_Change_Narratives/Nicole/Marshfield climate.csv"
 import = read.csv(file)
@@ -70,11 +76,15 @@ plot(TMAX~NewDate, import, ty='l')
 
 Creating a linear model and then evaluate the rate (slope). 
 ```{r}
+<<<<<<< HEAD:David/CopyOfImporting Franks CSV.Rmd
+FAIRPLEX <- subset(import, STATION_NAME=="HAGERSTOWN MD US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+=======
 # Linear Model
 import.lm <- lm(TMAX~NewDate, data=import)
 summary(import.lm)
 plot(TMAX~NewDate, import, ty='l')
 abline(coef(import.lm), col='red')
+>>>>>>> 87366cfb51d599c2a8821456a32daf84199e6282:Nicole/Importing CSV marshfield.Rmd
 ```
 
 ## Time Series

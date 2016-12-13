@@ -7,26 +7,18 @@ import = read.csv(file)
 plot(TMAX~DATE, import)
 
 import$TMAX[import$TMAX==-9999] = NA
-plot(TMAX~DATE, import[import$DATE<18930101,], ty='l')
-
-strDates <- as.character(import$DATE)
-
-#check
-head(strDates)
-tail(strDates)
-
+plot(TMAX~DATE, import[import$DATE>18930101,], ty='l')
 
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 #Checking the New Dates
-
+plot(TMAX~NewDate, import[import$DATE>18930101,], ty='l', ylab = "Max. Temp. Recorded" , xlab = "Date")
+#Checking the New Dates? nah this doesn't work :///
+head(NewDate)
 #checking the weird gap
 
+#same difference as date limited one lol:
+plot(TMAX~NewDate, import, ty='l', ylab = "Max. Temp. Recorded" , xlab = "Date")
 
-
-#PROB STARST HERE
-plot(TMAX~NewDate, import[import$DATE<18930901,], ty='l')
-
-plot(TMAX~NewDate, import, ty='l')
 
 import.lm <- lm(TMAX~NewDate, data=import)
 summary(import.lm)
@@ -35,12 +27,14 @@ summary(import.lm)
 plot(TMAX~NewDate, import, ty='l')
 abline(coef(import.lm), col='red')
 
-
-# CREATE VARIABLE MONTHS AND YEARS
+#####SKIP 
+----------------------------------------------------------------
 
 import$TMAX_cor <- import$TMAX
 import$TMAX_cor[import$Year<1995 & import$Year>1990] <- NA
 
+------------------------------------------------------------------
+# CREATE VARIABLE MONTHS AND YEARS
 
 import$Month = months(import$NewDate)
 
@@ -48,12 +42,14 @@ import$Year = as.numeric (format(import$NewDate, format="%Y"))
 
 MonthlyMean = aggregate(TMAX ~ Month + Year, import, mean)
 
-#dont thinkneed MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+#dont thinkneed 
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
 head(MonthlyMean)
 tail(MonthlyMean)
 
+###SCREW THIS DONT NEED IT 
 YearlyMean = aggregate(TMAX_cor ~ Year, import, mean)
-head(YearlyMean)
+##head(YearlyMean)
 ##need something like: MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)?
 #probably not
 
@@ -61,11 +57,12 @@ head(YearlyMean)
 #PLOT THESE AGGREGRATIONS
 #PLOT MONTHLY
 
-plot(MonthlyMean$TMAX, ty='l')
+plot(MonthlyMean$TMAX, ty='l', ylab = "Max. Temp. Recorded" , xlab = "Date")
 
 #Plot yearly?
 
-plot(YearlyMean$TMAX, ty='l')
+plot(YearlyMean$TMAX, ty='l', ylab = "Max. Temp. Recorded" , xlab = "Year Number")
+
 
 
 #plot SPECIFIC MONTH
@@ -73,7 +70,10 @@ plot(MonthlyMean$TMAX[MonthlyMean$Month=="May"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",], ty='l') 
 
 
------
+
+
+#AGAIN, not working, ignore:
+-------------------------------------------------------
 #DROP SOME OBSERVATIONS
 
   #idk why NEed a string but it's here:
@@ -84,26 +84,54 @@ sum(import$Year>1990)
 sum(import$Year<1995)
 
 import$TMAX_cor <- import$TMAX
+
 import$TMAX_cor[import$Year<1995 & import$Year>1990] <- NA
   
 #just check lenght
-length(import$Year<1995)
+length(import$Year<1995 & import$Year>1990)
+
+
+##Error in eval(expr, envir, enclos) : object 'TMAX_cor' not found
+
 --------
 
+  
+  
+  
+  
 #LINEAR REGRESSIONS
-  
-#Yearly 
-#notdone
+#from sophie's?
 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",])
+summary(May.lm)
+
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",], ty='l', ylab = "Max Temp", xlab="YEAR", main= "May Monthly Av", las=1) 
+
+abline(coef(May.lm), col="red")
+
+#old one:
   
-  
-Monthly.lm = lm(TMAX_cor ~ MonthlyMean)
+Monthly.lm = lm(TMAX~MonthlyMean)
+YearlyMean$Year = as.numeric(YearlyMean$Year)
+Yearly.lm = lm(TMAX_cor~ Year, data = YearlyMean)
+summary(Yearly.lm)
+
+
+#IGNORE THIS TOO:
+plot(TMAX~ Year, data = YearlyMean, ty="l", las=1, ylab="temperature")
+abline(coef(Yearly.lm), col="green")
+
+####Soo I'm just gonna do it with the old "Date" variable }:/
+
+Monthly.lm = lm(TMAX ~ MonthlyMean)
 YearlyMean$Year = as.numeric(YearlyMean$Year)
 Yearly.lm = lm(TMAX_cor~ Year, data = YearlyMean)
 summary(Yearly.lm)
 
 plot(TMAX_cor~ Year, data = YearlyMean, ty="l", las=1, ylab="temperature")
 abline(coef(Yearly.lm), col="green")
+
+
 #Montly?
 
 May.lm <- lm(TMAX_cor~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",]) 
