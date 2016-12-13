@@ -59,7 +59,7 @@ import$NewDate <- as.Date(strDates, "%Y%m%d")
 
 ## Checking the New Dates
 ```{r}
-plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+plot(TMAX~NewDate, import[import$DATE<19931031,], ty='l')
 ```
 ## Subset Sites
 
@@ -72,13 +72,13 @@ unique(import$STATION_NAME)
 Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 ```{r}
-FAIRPLEX <- subset(import, STATION_NAME=="HAGERSTOWN MD US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+HAGERSTOWN MD US <- subset(import, STATION_NAME=="HAGERSTOWN MD US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 ```
 
 
 ## A new plot
 ```{r}
-plot(TMAX~NewDate, FAIRPLEX, ty='l')
+plot(TMAX~NewDate, HAGERSTOWN MD US, ty='l')
 ```
 
 ## Evaluating the trend
