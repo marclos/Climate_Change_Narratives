@@ -1,0 +1,181 @@
+---
+title: "Georgia Climate Change"
+author: "Leah Ho-Israel"
+date: "12/12/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Climate Change in the Atlanta, GA Region
+```{r importingCSV}
+file="/home/CAMPUS/lmh12014/github/Climate Change Narratives/Leah/856924.csv"
+import=read.csv(file)
+plot(TMAX~DATE, import)
+```
+
+```{r missings}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+
+```{r}
+plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+```
+
+```{r}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+```{r}
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+```
+
+```{r}
+unique(import$STATION_NAME)
+```
+
+```{r}
+GAINESVILLE <- subset(import, STATION_NAME=="GAINESVILLE GA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+
+```{r}
+plot(TMAX~NewDate, GAINESVILLE, ty='l')
+```
+
+```{r}
+# Linear Model
+GAINESVILLE.lm <- lm(TMAX~NewDate, data=GAINESVILLE)
+summary(GAINESVILLE.lm)
+plot(TMAX~NewDate, GAINESVILLE, ty='l')
+abline(coef(GAINESVILLE.lm), col='red')
+```
+
+```{r}
+# Get months
+GAINESVILLE$Month = months(GAINESVILLE$NewDate) 
+GAINESVILLE$Month = format(as.Date(GAINESVILLE$NewDate), format = "%m")
+GAINESVILLE$Year = format(GAINESVILLE$NewDate, format="%Y")
+```
+
+```{r creatingmonthlymeans}
+MonthlyMean = aggregate(TMAX ~ Month + Year, GAINESVILLE, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(TMAX ~ Month + Year, GAINESVILLE, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+
+```{r plottingMonthyMeans}
+plot(MonthlyMean$TMAX, ty='l')
+
+```
+
+```{r plottingMonthySD}
+plot(MonthlySD$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+
+```{r May}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+
+## Lets try Dec
+
+```{r}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+```{r}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, GAINESVILLE, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+```{r}
+PRCP_mean = mean(GAINESVILLE$PRCP, na.rm=T)
+
+plot(PRCP~NewDate, data=GAINESVILLE)
+abline(h=PRCP_mean, col="blue")
+
+```
+
+```{r missings}
+import$PRCP[import$PRCP==-9999] = NA
+```
+
+```{r}
+plot(TMAX~DATE, import, ty='l')
+```
+
+```{r}
+
+YearlySum = aggregate(PRCP ~ Year, GAINESVILLE, sum)
+
+YearlyMean = mean(YearlySum$PRCP)
+                  
+YearlySum$Departure = YearlyMean - YearlySum$PRCP
+YearlySum$YEAR = as.numeric(YearlySum$Year)
+
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+abline(h=YearlyMean, col="blue")
+
+lines(Departure ~ YEAR, data=YearlySum, col="red")
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
