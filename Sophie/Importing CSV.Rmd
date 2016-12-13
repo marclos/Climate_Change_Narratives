@@ -179,5 +179,64 @@ abline(coef(Dec.lm), col="red")
 
 4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
 
+```{r}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="May"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+
+```{r}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="November"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="November",], ty='l') 
+November.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="November",])
+summary(November.lm)
+
+abline(coef(November.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="February"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="February",], ty='l') 
+February.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="February",])
+summary(February.lm)
+
+abline(coef(February.lm), col="red")
+
+```
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="July"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="July",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="July",])
+summary(July.lm)
+
+abline(coef(July.lm), col="red")
+
+```
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="November"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="November",], ty='l') 
+November.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="November",])
+summary(November.lm)
+
+abline(coef(November.lm), col="red")
+
+```
+
+
+
 
 
