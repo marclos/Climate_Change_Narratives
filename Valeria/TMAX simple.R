@@ -18,9 +18,13 @@ MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
 head(MonthlyMean)
 tail(MonthlyMean)
 
-
-  #LINEAR REGRESSIONS
-  #from sophie's?
+------------------------------------------------------------------------------------------------------
+  #LINEAR REGRESSIONS - not working for July, Aug, OCT , dec ...
+  #Response from R: 
+#Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",])
+#Error in is.data.frame(data) : object 'MonthlyMean' not found
+#summary(Dec.lm)
+#Error in summary(Dec.lm) : object 'Dec.lm' not found""
   
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",])
 summary(Dec.lm)
