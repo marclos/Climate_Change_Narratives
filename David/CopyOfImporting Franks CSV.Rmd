@@ -15,7 +15,7 @@ First, we will import the CSV file. In most cases, we don't need to preprocess t
 ```{r importingCSV}
 # Importing Scripts
 
-file = "/home/CAMPUS/fcl02013/Climate_Change_Narratives/Frank/POfairplex.csv"
+file = "/home/CAMPUS/fcl02013/Climate_Change_Narratives/David Wagner/Hagerstown Maryland NOAA data.csv"
 
 import = read.csv(file)
 ```
@@ -72,7 +72,7 @@ unique(import$STATION_NAME)
 Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 ```{r}
-FAIRPLEX <- subset(import, STATION_NAME=="POMONA FAIRPLEX CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+FAIRPLEX <- subset(import, STATION_NAME=="HAGERSTOWN MD US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 ```
 
 
