@@ -1,10 +1,10 @@
 ---
-title: "Importing and Processing CSV Files"
-author: "Marc Los Huertos"
-date: "12/6/2016"
+title: "Upstate New York Weather Changes"
+author: "Olivia Howie"
+date: "12/12/16"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -13,7 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Importing CSV Files
 
-First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
 ```{r importingCSV}
 #Importing Scripts
 
@@ -115,9 +114,55 @@ head(MonthlyMean)
 plot(MonthlyMean$TMAX, ty='l')
 ```
 
-### Selecting for 1 Month -- May
+### Selecting for Each Month 
 
-Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
+```{r January}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="January"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="January",], ty='l') 
+January.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="January",])
+summary(January.lm)
+
+abline(coef(January.lm), col="red")
+
+```
+
+Now, the change is `r coef(January.lm)[2]` degress/year or `r round(coef(January.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(January.lm)$coefficients[2,4],4)`.
+
+```{r February}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="February"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="February",], ty='l') 
+February.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="February",])
+summary(February.lm)
+
+abline(coef(February.lm), col="red")
+
+```
+
+Now, the change is `r coef(February.lm)[2]` degress/year or `r round(coef(February.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(February.lm)$coefficients[2,4],4)`.
+
+```{r March}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="March"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="March",], ty='l') 
+March.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="March",])
+summary(March.lm)
+
+abline(coef(March.lm), col="red")
+
+```
+
+Now, the change is `r coef(March.lm)[2]` degress/year or `r round(coef(March.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(March.lm)$coefficients[2,4],4)`.
+
+```{r April}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="April"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="April",], ty='l') 
+April.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="April",])
+summary(April.lm)
+
+abline(coef(April.lm), col="red")
+
+```
+
+Now, the change is `r coef(January.lm)[2]` degress/year or `r round(coef(April.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(April.lm)$coefficients[2,4],4)`.
 
 ```{r May}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="May"], ty='l')
@@ -127,25 +172,89 @@ summary(May.lm)
 
 abline(coef(May.lm), col="red")
 
+```{r June}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="June"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="June",], ty='l') 
+June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="June",])
+summary(January.lm)
+
+abline(coef(June.lm), col="red")
+
 ```
 
-Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
+Now, the change is `r coef(June.lm)[2]` degress/year or `r round(coef(June.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(June.lm)$coefficients[2,4],4)`.
 
-## Next Steps
+```{r July}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="July"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="July",], ty='l') 
+July.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="July",])
+summary(July.lm)
 
-I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
+abline(coef(July.lm), col="red")
 
-## Lets try Dec
+```
 
-```{r}
+Now, the change is `r coef(July.lm)[2]` degress/year or `r round(coef(July.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(July.lm)$coefficients[2,4],4)`.
+
+```{r August}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="August"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="August",], ty='l') 
+August.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="August",])
+summary(August.lm)
+
+abline(coef(August.lm), col="red")
+
+```
+
+Now, the change is `r coef(August.lm)[2]` degress/year or `r round(coef(August.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(August.lm)$coefficients[2,4],4)`.
+
+```{r September}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="September"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="September",], ty='l') 
+September.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="September",])
+summary(September.lm)
+
+abline(coef(September.lm), col="red")
+
+```
+
+Now, the change is `r coef(September.lm)[2]` degress/year or `r round(coef(September.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(September.lm)$coefficients[2,4],4)`.
+
+```{r October}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="October"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="October",], ty='l') 
+October.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="October",])
+summary(October.lm)
+
+abline(coef(October.lm), col="red")
+
+```
+
+Now, the change is `r coef(October.lm)[2]` degress/year or `r round(coef(October.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(October.lm)$coefficients[2,4],4)`.
+
+```{r November}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="November"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="November",], ty='l') 
+November.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="November",])
+summary(November.lm)
+
+abline(coef(November.lm), col="red")
+
+```
+
+Now, the change is `r coef(November.lm)[2]` degress/year or `r round(coef(November.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(November.lm)$coefficients[2,4],4)`.
+
+```{r December}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="December"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",], ty='l') 
-Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",])
-summary(Dec.lm)
+December.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",])
+summary(December.lm)
 
-abline(coef(Dec.lm), col="red")
+abline(coef(December.lm), col="red")
 
 ```
+
+Now, the change is `r coef(December.lm)[2]` degress/year or `r round(coef(December.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(December.lm)$coefficients[2,4],4)`.
 
 ## TMIN
 
@@ -159,6 +268,171 @@ head(MonthlyMeanTMIN)
 ```
 
 2. Now we plot the mins, and again, find tons of scatter.
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="January"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="January",], ty='l') 
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="January",])
+summary(Jan.lm)
+
+abline(coef(Jan.lm), col="red")
+
+```
+
+We get a slope, `r coef(Jan.lm)[2]` degress/year and a probability of `r round(summary(Jan.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Jan.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="February"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="February",], ty='l') 
+Feb.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="February",])
+summary(Feb.lm)
+
+abline(coef(Feb.lm), col="red")
+
+```
+
+We get a slope, `r coef(Feb.lm)[2]` degress/year and a probability of `r round(summary(Feb.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Feb.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="March"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="March",], ty='l') 
+Mar.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="March",])
+summary(Mar.lm)
+
+abline(coef(Mar.lm), col="red")
+
+```
+
+We get a slope, `r coef(Mar.lm)[2]` degress/year and a probability of `r round(summary(Mar.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Mar.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="April"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="April",], ty='l') 
+Apr.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="April",])
+summary(Apr.lm)
+
+abline(coef(Apr.lm), col="red")
+
+```
+
+We get a slope, `r coef(Apr.lm)[2]` degress/year and a probability of `r round(summary(Apr.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Apr.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="May"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="May",], ty='l') 
+May.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="May",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+
+We get a slope, `r coef(May.lm)[2]` degress/year and a probability of `r round(summary(May.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(May.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="June"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="June",], ty='l') 
+Jun.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="June",])
+summary(Jun.lm)
+
+abline(coef(Jun.lm), col="red")
+
+```
+
+We get a slope, `r coef(Jun.lm)[2]` degress/year and a probability of `r round(summary(Jun.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Jun.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="July"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="July",], ty='l') 
+Jul.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="July",])
+summary(Jul.lm)
+
+abline(coef(Jul.lm), col="red")
+
+```
+
+We get a slope, `r coef(Jul.lm)[2]` degress/year and a probability of `r round(summary(Jul.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Jul.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="August"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="August",], ty='l') 
+Aug.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="August",])
+summary(Aug.lm)
+
+abline(coef(Aug.lm), col="red")
+
+```
+
+We get a slope, `r coef(Aug.lm)[2]` degress/year and a probability of `r round(summary(Aug.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Aug.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="September"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="September",], ty='l') 
+Sep.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="September",])
+summary(Sep.lm)
+
+abline(coef(Sep.lm), col="red")
+
+```
+
+We get a slope, `r coef(Sep.lm)[2]` degress/year and a probability of `r round(summary(Sep.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Sep.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="October"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="October",], ty='l') 
+Oct.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="October",])
+summary(Oct.lm)
+
+abline(coef(Oct.lm), col="red")
+
+```
+
+We get a slope, `r coef(Oct.lm)[2]` degress/year and a probability of `r round(summary(Oct.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Oct.lm)$r.squared, 3)`
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="November"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="November",], ty='l') 
+Nov.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="November",])
+summary(Nov.lm)
+
+abline(coef(Nov.lm), col="red")
+
+```
+
+We get a slope, `r coef(Nov.lm)[2]` degress/year and a probability of `r round(summary(Nov.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Nov.lm)$r.squared, 3)`
 
 ```{r}
 plot(MonthlyMeanTMIN$TMIN, ty='l')
@@ -177,6 +451,3 @@ abline(coef(Dec.lm), col="red")
 3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
 
 4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
-
-
-
