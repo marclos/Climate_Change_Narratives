@@ -22,10 +22,10 @@ tail(MonthlyMean)
   #LINEAR REGRESSIONS
   #from sophie's?
   
-May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",])
-summary(May.lm)
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",])
+summary(Dec.lm)
 
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="May",], ty='l', ylab = "Max Temp", xlab="YEAR", main= "May Monthly Av-Slope = .03, Not Sig", las=1) 
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="December",], ty='l', ylab = "Max Temp", xlab="YEAR", main= "May Monthly Av-Slope = .03, Not Sig", las=1) 
 
-abline(coef(May.lm), col="red")
+abline(coef(May.lm), col="Dark Green")
 
