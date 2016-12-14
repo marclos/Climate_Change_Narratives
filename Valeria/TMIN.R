@@ -2,14 +2,15 @@
 
 
 file.choose() 
-file = "/home/CAMPUS/vesj2015/Climate_Change_Narratives/Valeria/HOTSPRINGSVA24445.csv"
+file = "/home/CAMPUS/vesj2015/Climate_Change_Narratives/Valeria/GOODHOTSPRINGSVA24445.csv"
 import = read.csv(file)
 #Checking the Data
 plot(TMIN~DATE, import)
 
 
-import$TMIN[import$TMIN==-9999] = NA
-plot(TMIN~DATE, import[import$DATE<18930101,], ty='l')
+#skipped^alreadyearased9999
+
+plot(TMIN~DATE, import[import$DATE>18930101,], ty='l')
 
 
 strDates <- as.character(import$DATE)
@@ -21,20 +22,20 @@ tail(strDates)
 
 
 
-
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 #Checking the New Dates
 
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 
 #checking the weird gap
 
-
+head(NewDate)
 
 
 
 
 #PROB STARST HERE
-plot(TMIN~NewDate, import[import$DATE<18930901,], ty='l')
+plot(TMIN~NewDate, import[import$DATE>18930101,], ty='l')
 
 
 plot(TMIN~NewDate, import, ty='l')
@@ -42,7 +43,6 @@ plot(TMIN~NewDate, import, ty='l')
 
 import.lm <- lm(TMIN~NewDate, data=import)
 summary(import.lm)
-
 
 
 
@@ -94,6 +94,7 @@ plot(MonthlyMean$TMIN, ty='l')
 
 
 plot(YearlyMean$TMIN, ty='l')
+abline(coef(Yearly.lm), col="blue")
 
 
 
