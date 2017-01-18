@@ -1,53 +1,4 @@
-\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
-\makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
-\makeatother
-
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
-\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
-
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
-\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-
-\usepackage{alltt}
+\documentclass{article}
 %\documentclass{tufte-handout}
 \usepackage{hyperref}
 
@@ -65,8 +16,8 @@
 
 \title{Do weather changes matter?}
 \author{Marc Los Huertos}
-%\date{}
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+%\date{} 
+
 \begin{document}
 
 \maketitle
@@ -122,6 +73,8 @@ Science is a social project. From the questions we ask, to the results and their
   \item narrative that describes the climate and climate implications for a community that you care about.
 \end{itemize*}
 
+In addition, we will hold a Q \&A session with public school teachers to help them implement NGSS standards on weather and climate.
+
 \section{Approach}
 
 Students will have the following tools available:
@@ -133,8 +86,6 @@ Students will have the following tools available:
   \item Student presentations on various climate change criticisms. 
   %\item Shiny app templates that might be used as a container for interactive content.
 \end{itemize*}
-
-
 
 \subsection{Learning Goals}
 
@@ -167,29 +118,13 @@ Each of us form an essential component for the effort. Organized as teams and ex
 
 For this project, the following students have been assigned to the teams below:
 
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Dec 19 09:34:51 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rll}
-  \hline
- & Member & Team \\ 
-  \hline
-1 & Frank & 1 \\ 
-  2 & Leah & 1 \\ 
-  3 & David & 2 \\ 
-  4 & Olivia & 2 \\ 
-  5 & Wendy & 3 \\ 
-  6 & Sophia & 3 \\ 
-  7 & Erin & 4 \\ 
-  8 & Val & 4 \\ 
-  9 & Ana? & 5 \\ 
-  10 & Clare & 5 \\ 
-  11 & Nicole & 5 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
+<<echo=F, results = 'asis'>>=
+library(xtable)
+students = c("Claudia", "Katharine", "Khalil", "Kelli", "Theadorea", "Viraj", "Mireya", "Marisa", "Olivia", "Yuxin", "Marc")
+team = c("1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "5")
+project1teams <- data.frame(Member=students, Team=team)
+xtable(project1teams)
+@
 
 We will develop expert groups on to present the following topics:
 
@@ -216,7 +151,7 @@ Useful sites: \href{http://www.climatecentral.org/news/the-heat-is-on}{http://ww
 
 \section{Product}
 
-The Project Report will be due 2 pm, December 13th! :-)
+The Blog will be due XX pm, Feb. XX :-)
 
 \begin{itemize}
   \item Time series graph of temperture data from a specific region using R; 
@@ -230,10 +165,11 @@ The Project Report will be due 2 pm, December 13th! :-)
 
 \begin{table}
 \begin{tabular}{lll}\hline
-Product                   & \% of Project   & Due Date \\\hline\hline
-Background Presentation   & 15\%            & Dec. 1st \\
-Written Report            & 60\%            & Dec. 13th \\
-Oral Presentation         & 25\%            & May XXth \\ \hline
+Product                 & \% of Project   & Due Date \\\hline\hline
+Background Presentation & 25\%            & Feb. 6th \\
+Blog                    & 25\%            & Feb. 13th \\
+Op Ed                   & 25\%            & Feb. 20th \\
+Q \& A Session          & 25\%            & TBD \\ \hline
 
 \end{tabular}
 \end{table}
@@ -249,7 +185,7 @@ Oral Presentation         & 25\%            & May XXth \\ \hline
 \end{itemize}
 
 
-\subsection{Report (2016)}
+\subsection{Blog (2016)}
 
 \begin{itemize}
   \item Describe the economic, cultural, and physical geography of the region;
@@ -267,7 +203,7 @@ Oral Presentation         & 25\%            & May XXth \\ \hline
 
 To be developed
 
-\subsection{Letter to Editor (2017)}
+\subsection{Op Ed (2017)}
 
 To be developed
 
