@@ -1,243 +1,266 @@
 ---
-title: "Using R to Process Weather Data"
-author: "Marc Los Huertos, EA30 Spring 2017"
-date: "7/20/2016"
-output:
-  ioslides_presentation: default
-  slidy_presentation: default
+title: "Importing and Processing CSV Files"
+author: "Marc Los Huertos"
+date: "12/6/2016"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-library(tidyr)
-library(dplyr)
-library(stringr)
-library(reshape2)
-source("summarySE.R")
-```
-# R Resources for Climate Data
-
-## Tutorials and Libraries
-
-Numerous resources are available that might help us (beside this document!) access and process weather data. 
-
-Here is a preliminary list: 
-
-* [R Blogger to Access, Clean, and Plot NOAA tempeature data](http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/)
-* If you find more resources, please let me know.
-
-# Accessing the Data
-
-## What sites are available for downloading the data?
-
-* [NCDC--NOAA Datasets](https://www.ncdc.noaa.gov/cdo-web/datasets)
-
-For this project, the Global Historical Climate Network may be the most useful data, which can be downloaded from the following an [ftp site](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/), where I downloaded the entire dataset for the class!
-
-I have loaded these into a class server, but can't see to give you access to it at this point (Nov. 29th). 
-
-# Stations in NOAA Database
-
-The first thing we need to do is to identify locations that we want to evaluate. 
-
-# Download Weather Data
-
-## Identify URLs for data source
-
-Once finding data sources, you might find URLs with ftp or http protocols -- it shouldn't matter which type you find. 
-
-For example, using the NOAA's website, I found the following URL, [ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/), to download data from the Global Historical Climatalogical Network (GHCDN), where an entire dataset can be downloaded. 
-
-Alternatively, another [NCDC-NOAA Directory](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/) seems to have data by year. But please look at the [readme.txt](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/readme.txt) that describes the data and let me know and I will make a note of what it contains.
-
-## GHCND Data
-
-One major source of data is the GHCND. I downloaded the file to my computer, then uploaded some example data into the R project Data directory.
-
-# Reading Data into R
-
-## What is the data format?
-
-Before reading data, we need to determine the file structure. For example, dly data files have the following format, where headers are lost and each column is separated by tabs that are lost in text rendions. Thus, we'll need a key to intepret the data.
-
-Thankfully, there is a [readme.tex file](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt) that provides a key to the file structure. I suggest you read it carefully and to understand what is in the database.
-
-## File Structure Keys
-
-Although these keys are a bit daunting to read at first, we will appreciate the consistancy soon! Below is the structure of dly files, which is cut off, so be sure the check out the readme.txt file for a complete list: 
-
-| Parameter   | Columns | Variable Type |
-|-------------|---------|---------------|
-|ID           | 1-11    | Character     |
-|YEAR         | 12-15   |Integer |
-|MONTH        |16-17    |Integer |
-|ELEMENT      |18-21    |Character |
-|VALUE1       |22-26    |Integer |
-|MFLAG1       |27-27    |Character |
-|QFLAG1       |28-28  | Character|
-|SFLAG1       |29-29 |  Character|
-|VALUE2       |30-34  | Integer|
-|MFLAG2       |35-35 |  Character|
-|QFLAG2       |36-36  | Character|
-|SFLAG2       |37-37 |  Character|
-|  .          | .         | .|
-|  .          | .        |  .|
-|  .          | .       |   .|
-|VALUE31    |262-266   |Integer|
-|MFLAG31    |267-267   |Character|
-|QFLAG31    |268-268   |Character|
-|SFLAG31    |269-269   |Character|
-
-
-# Processing Data
-
-Since the data have a re-occuring set of variable names, I decided to create a vector of variable names, many of which are nearly the same. So, as you'll see, I had to create a loop to avoid having to type a ton (or 31 :-)) of different variables.
-
-```{r newvariables}
-# Create New Varible Names
-MFLAG=NA; QFLAG=NA; SFLAG=NA; VALUE=NA
-for (i in 1:31){
-VALUE[i] = paste("DATE", i, sep="")
-MFLAG[i] = paste("MFLAG", i, sep="")
-QFLAG[i] = paste("QFLAG", i, sep="")
-SFLAG[i] = paste("SFLAG", i, sep="")
-}
-
-# Vector of variable names converted from a transposed matrix
-tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
-Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Process Selected Data Files
+## Importing CSV Files
 
-## Reading .dly file into R
+First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
+```{r importingCSV}
+# Importing Scripts
 
-Now that we have a good idea of what these files look like, I have created a loop to read the files and select the rows where the maximum temperature was recorded ("TMAX").
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
 
-USE Internet Explorer
-
-ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all/
-
-file.choose()
-
-tmp <- read.fwf(file, widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
-
-
-Once the file has been read, then I modified the file to make it useful, where I needed to re-arrange the file so we don't have a months across the top, but as rows. 
-
-Using a library reshape2
-
-```{r melt, warning=F}
-tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
-head(tmp1)
-tmp1$Day = as.numeric(str_sub(tmp1$variable,6,7)); head(tmp1)
-tmp1$value[tmp1$value==-9999] = NA; head(tmp1)
-tmp1$Temperature = tmp1$value/10
-
-drops <- c("variable","value")
-tmp1 <-tmp1[ , !(names(tmp1) %in% drops)]
-tmp1$DECADE = round(tmp1$YEAR, -1)
-# names(tmp1)
+import = read.csv(file)
 ```
 
-Now the data is ready to be visualized!
+## Checking the Data
 
-# Presenting the Results
-
-## Summarizing the Results
-
-```{r summarySE, warning=F, message=F}
-# called summarySE function
-summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
+```{r checking}
+plot(TMAX~DATE, import)
 ```
 
-## Using ggplot2
+What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!
 
-The ggplot2 library is relatively new to me, so I am sure we can make some icremental improvements as the semester progresses. First, let's load the library.
-
-```{r ggplot2library}
-library(ggplot2)
+```{r missings}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
 ```
 
-## Creating a Figure 
+Okay, now we'll check again, for dates less then Dec. 31, 1913:
+```{r}
+plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+```
 
-```{r presenting}
-# Think the color=DECADE thing can be deleted, but I haven't tried it yet. In any case, the legend is lame and I need to get rid of it!
+Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
 
-ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(aes(ymin=Temperature-se, ymax=Temperature+se), width=.2) + geom_line() + geom_point()
+19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
+
+
+```{r}
+plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+```
+
+## Fixing the Dates
+
+First, we convert the date a string or character values. Next, we'll convert the strings to a data format. 
+
+```{r}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+## Checking the New Dates
+```{r}
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+```
+## Subset Sites
+
+Olivia has two sites in here data, so, we need to subset it.
+
+```{r}
+unique(import$STATION_NAME)
+```
+
+Let's choose the FAIRPLEX NY US because the record is longer than the airport.
+
+```{r}
+LosAngeles <- subset(import, STATION_NAME=="LOS ANGELES DOWNTOWN USC CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+
+
+## A new plot
+```{r}
+plot(TMAX~NewDate, LosAngeles, ty='l')
+```
+
+## Evaluating the trend
+
+Creating a linear model and then evaluate the rate (slope). 
+```{r}
+# Linear Model
+LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
+summary(LosAngeles.lm)
+plot(TMAX~NewDate, LosAngeles, ty='l')
+abline(coef(LosAngeles.lm), col='red')
+```
+
+## Creating Month and Year Variables
+
+So, let's figure out how to see how changes happen for individual months.
+```{r}
+# Get months
+LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
+LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
+LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
+```
+
+### Creating Monthly Means
+```{r creatingmonthlymeans}
+MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(TMAX ~ Month + Year, LosAngeles, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+
+
+```{r plottingMonthyMeans}
+plot(MonthlyMean$TMAX, ty='l')
+
+```
+below is sd
+```{r plottingMonthySD}
+plot(MonthlySD$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
 
 ```
 
-# Creating a Shiny App
+### Selecting for 1 Month -- May
 
-## Create a Regression Line 
+Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
 
-```{r PreparingRegressionData}
-names(tmp1)
+```{r May}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
+summary(May.lm)
 
-tmp1$Date = as.Date(with(tmp1, paste(MONTH, Day, YEAR, sep="/")), "%m/%d/%Y"); names(tmp1)
-```
-
-## Draft Plot
-
-```{r draftregression}
-plot(Temperature ~ Date, data=tmp1, las=1, pch=20, col="gray")
-
-bestfit = lm(Temperature ~ Date, data=tmp1)
-abline(coef(bestfit), col="red", lwd=2)
-xcoord = min(tmp1$Date, na.rm=T); ycoord=min(tmp1$Temperature, na.rm=T)+10
-
-text(xcoord, ycoord, coef(bestfit)[2])
-```
-
-## Creating Flexible Dates
-
-Create a range of inputs -- by year.
-
-```{r FlexibleInputs}
-
-yrmin = 1990
-yrmax = 2000
-
-#tmp1 %>% filter(DECADE > min, na.rm=T)
-#head(filter(tmp1, YEAR >= 2014))
-tmp2 = filter(tmp1, YEAR >= yrmin & YEAR <= yrmax)
-tmp2 <- tmp2[!is.na(tmp2$Date),]
-head(tmp2)
-```
-
-## Create Update-able Plot
-
-```{r plot2}
-plot(Temperature ~ Date, data=tmp2, las=1, pch=20, col="gray")
-
-bestfit = lm(Temperature ~ Date, data=tmp2)
-abline(coef(bestfit), col="red", lwd=2)
-xcoord = min(tmp2$Date, na.rm=T); ycoord=min(tmp2$Temperature, na.rm=T)+10
-
-delta = coef(bestfit)[2]/(yrmax-yrmin)*100
-text(xcoord, ycoord, delta)
+abline(coef(May.lm), col="red")
 
 ```
 
-# Next Steps
+Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
 
-## Developing a Shiny App
+## Next Steps
 
-1. Pass Data to Shiny
+I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
 
-```{r writecsv}
-filename = "Data/XYZ_dly.csv"
-write.csv(tmp1, filename)
+## Lets try Dec
+
+```{r}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
 ```
 
-## Create Reactive Inputs
+## TMIN
 
-2. Create Input Slider for min and max years
-3. Create text to decribe results that are readable!
-4. Add "output" to html text.
+1. We create a monthly mean for each month.
+
+```{r}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
+
+2. Now we plot the mins, and again, find tons of scatter.
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+
+3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
+
+4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
+
+
+# Departure from Mean
+
+```{r}
+PRCP_mean = mean(LosAngeles$PRCP, na.rm=T)
+
+plot(PRCP~NewDate, data=LosAngeles)
+abline(h=PRCP_mean, col="blue")
+
+```
+
+```{r}
+YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$PRCP)
+
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+Other attempts that didn't work!
+```{r}
+YearlySum2 = subset(YearlySum, select=c(PRCP))
+YearlyMean = mean(YearlySum2$PRCP)
+
+#filter(YearlySum2)
+
+
+
+#Doesn't work...
+# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
+# ma(YearlySum$PRCP)  
+
+
+yearlyts =ts(YearlySum2) 
+str(yearlyts)
 
 
 
 
+```
+yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
 
+plot(yearlyts, lty = 1, col = 3)
+
+lines(yearlyts.lag)
+
+YearlySum$Departure = YearlyMean - YearlySum$PRCP
+YearlySum$YEAR = as.numeric(YearlySum$Year)
+
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+abline(h=YearlyMean, col="blue")
+
+lines(Departure ~ YEAR, data=YearlySum, col="red")
