@@ -212,12 +212,32 @@ abline(h=PRCP_mean, col="blue")
 
 ```
 
+
+## Experimental Portion --- Precipitation
+
+Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
+
+First, we need a "mean" -- The IPCC uses 1961-1990 as a norm, I don't know what is the standard for California, so we should look that up.
+
+Second, we need to remove the missing values and evalaute which years have complete years. If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season?  
+
+Third, we will need to decide what level of aggredation -- monthly, yearly, etc. 
+
+Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
+
+
 ```{r}
+LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
 YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
 YearlySum$YEAR = as.numeric(YearlySum$Year) 
 YearlyMean = mean(YearlySum$PRCP)
+```
 
-plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
+
+Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
+```{r}
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
 abline(h=YearlyMean, col="blue")
 YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
 abline(coef(YearlySum.lm), col="green")
@@ -228,6 +248,12 @@ k
 
 y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
 lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+The model suggests that the precipitation is declines at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
+
+```{r}
+summary(YearlySum.lm)
 ```
 
 Other attempts that didn't work!
