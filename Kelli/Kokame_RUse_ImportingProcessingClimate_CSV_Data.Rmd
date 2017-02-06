@@ -175,7 +175,7 @@ abline(coef(Dec.lm), col="red")
 1. We create a monthly mean for each month.
 
 ```{r}
-MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, Ewa, mean)
 
 MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
