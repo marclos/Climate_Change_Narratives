@@ -56,15 +56,19 @@ for (i in unique(A$x_1)) {
 }   # Works!!!
 ```
 
-```{r}
+```{r WORKING CODE}
 
-data.frame("1", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12")
-{month=c("1", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12")
-  temp= (10 20 30 40 50 60 70 80 90 100)}
+A=data.frame(month=c("January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"),
+  temp= c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120))
 
-for (i in c("1", "2", "3", "4", "5", "6","7", "8", "9", "10", "11", "12"))
-  print(month$temp)
+for (i in 1:12){
+  temp2= subset(MonthlyMeanTMIN, subset=month==i)
+  plot(temp2$YEAR, temp2$TMIN, main=i) 
+  print(i)
 
+print(A$temp[i])
+
+}
 ```
 
 
