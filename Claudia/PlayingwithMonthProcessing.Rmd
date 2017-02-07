@@ -1,0 +1,42 @@
+---
+title: "PlayingWithMonthProcessing"
+author: "Leah Ho-Israel"
+date: "2/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+```{r Playing with Loops}
+#+ results='asis', echo = FALSE
+for (i in 1:5) {
+    cat("## This is a heading for ", i, "\n")
+    cat("<!-- This is a comment for ", i, "-->\n")
+    print(i)    
+}
+```
+
+```{r}
+#+ results='asis', echo = FALSE
+for (i in 1:5) {
+    cat("## This is a heading for ", i, "\n")
+    cat("<!-- This is a comment for ", i, "-->\n")
+    print(i)    
+}
+```
+
