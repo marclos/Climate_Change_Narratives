@@ -1,17 +1,18 @@
 ---
-title: "Importing and Processing CSV Files"
+title: "Temperature Changes at Ewa Plantation on O`ahu"
 author: "Kelli Kokame"
 date: "2/6/2017"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Importing CSV Files
+## First, let's introduce data for the Ewa Plantation Station on O`ahu
 
-First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
+After downloading a dataset off of NOAA's climate database, we inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. 
+
 ```{r importingCSV}
 # Importing Scripts
 
@@ -20,13 +21,13 @@ file = "/home/CAMPUS/kak22013/Climate_Change_Narratives/Kelli/Kokame.csv"
 import = read.csv(file)
 ```
 
-## Checking the Data
+## Now let's check our data.
 
 ```{r checking}
 plot(TMAX~DATE, import)
 ```
 
-What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!
+As you can see, there are several values that don't make sense. How could the maximum temperature be almost -10000 degrees? It's actually not—the value -9999 is used to represent having no data. We can change these values to "NA" to ensure that the big negative values do not skew our data. 
 
 ```{r missings}
 import$TMAX[import$TMAX==-9999] = NA
@@ -79,16 +80,37 @@ Ewa <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION
 ## A new plot
 ```{r}
 plot(TMAX~NewDate, Ewa, ty='l')
+Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
+summary(Ewa.lm)
+plot(TMAX~NewDate, Ewa, ty='l')
+abline(coef(Ewa.lm), col='red')
+summary(Ewa.lm)
 ```
+
+
+Since there's a lot of missing data beginning at roughly 1980, let us focus on the trend from roughly 1900 up until that point to see if the missing data has an effect on the trend slope. 
+
+
+```{r}
+plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
+```
+
 
 ## Evaluating the trend
 
 Creating a linear model and then evaluate the rate (slope). 
 ```{r}
 # Linear Model
-Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
+Ewa.lm <- lm(TMAX~NewDate, data=Ewa[Ewa$DATE< 19780101,])
 summary(Ewa.lm)
-plot(TMAX~NewDate, Ewa, ty='l')
+plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
+abline(coef(Ewa.lm), col='red')
+```
+```{r}
+# Linear Model
+Ewa.lm <- lm(TMIN~NewDate, data=Ewa[Ewa$DATE< 19780101,])
+summary(Ewa.lm)
+plot(TMIN~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
 abline(coef(Ewa.lm), col='red')
 ```
 
