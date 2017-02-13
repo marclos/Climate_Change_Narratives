@@ -79,16 +79,18 @@ Ewa <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION
 ## A new plot
 ```{r}
 plot(TMAX~NewDate, Ewa, ty='l')
+plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
 ```
+
 
 ## Evaluating the trend
 
 Creating a linear model and then evaluate the rate (slope). 
 ```{r}
 # Linear Model
-Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
+Ewa.lm <- lm(TMAX~NewDate, data=Ewa[Ewa$DATE< 19780101,])
 summary(Ewa.lm)
-plot(TMAX~NewDate, Ewa, ty='l')
+plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
 abline(coef(Ewa.lm), col='red')
 ```
 
