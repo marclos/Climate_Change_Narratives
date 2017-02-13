@@ -93,6 +93,13 @@ summary(Ewa.lm)
 plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
 abline(coef(Ewa.lm), col='red')
 ```
+```{r}
+# Linear Model
+Ewa.lm <- lm(TMIN~NewDate, data=Ewa[Ewa$DATE< 19780101,])
+summary(Ewa.lm)
+plot(TMIN~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
+abline(coef(Ewa.lm), col='red')
+```
 
 ## Creating Month and Year Variables
 
