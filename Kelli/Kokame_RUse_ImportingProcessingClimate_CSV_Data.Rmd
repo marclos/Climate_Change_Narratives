@@ -1,7 +1,7 @@
 ---
 title: "Importing and Processing CSV Files"
 author: "Kelli Kokame"
-date: "12/6/2016"
+date: "2/6/2017"
 output: html_document
 ---
 
@@ -15,7 +15,7 @@ First, we will import the CSV file. In most cases, we don't need to preprocess t
 ```{r importingCSV}
 # Importing Scripts
 
-file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Kokame.csv"
+file = "/home/CAMPUS/kak22013/Climate_Change_Narratives/Kelli/Kokame.csv"
 
 import = read.csv(file)
 ```
@@ -63,7 +63,7 @@ plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
 ## Subset Sites
 
-Olivia has two sites in here data, so, we need to subset it.
+Kelli has two sites in here data, so, we need to subset it.
 
 ```{r}
 unique(import$STATION_NAME)
@@ -72,13 +72,13 @@ unique(import$STATION_NAME)
 Let's choose EWA PLANTATION 741 HI US as the station name...
 
 ```{r}
-LosAngeles <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+Ewa <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 ```
 
 
 ## A new plot
 ```{r}
-plot(TMAX~NewDate, LosAngeles, ty='l')
+plot(TMAX~NewDate, Ewa, ty='l')
 ```
 
 ## Evaluating the trend
@@ -86,10 +86,10 @@ plot(TMAX~NewDate, LosAngeles, ty='l')
 Creating a linear model and then evaluate the rate (slope). 
 ```{r}
 # Linear Model
-LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
-summary(LosAngeles.lm)
-plot(TMAX~NewDate, LosAngeles, ty='l')
-abline(coef(LosAngeles.lm), col='red')
+Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
+summary(Ewa.lm)
+plot(TMAX~NewDate, Ewa, ty='l')
+abline(coef(Ewa.lm), col='red')
 ```
 
 ## Creating Month and Year Variables
@@ -97,14 +97,14 @@ abline(coef(LosAngeles.lm), col='red')
 So, let's figure out how to see how changes happen for individual months.
 ```{r}
 # Get months
-LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
-LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
-LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
+Ewa$Month = months(Ewa$NewDate) # Creates problems.
+Ewa$Month = format(as.Date(Ewa$NewDate), format = "%m")
+Ewa$Year = format(Ewa$NewDate, format="%Y")
 ```
 
 ### Creating Monthly Means
 ```{r creatingmonthlymeans}
-MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
+MonthlyMean = aggregate(TMAX ~ Month + Year, Ewa, mean)
 
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
 MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
@@ -112,7 +112,7 @@ MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
 
 # Frank -- change mean to sd and you'll get standard deviation for each month/year.
 
-MonthlySD = aggregate(TMAX ~ Month + Year, LosAngeles, sd)
+MonthlySD = aggregate(TMAX ~ Month + Year, Ewa, sd)
 
 MonthlySD$YEAR = as.numeric(MonthlySD$Year)
 MonthlySD$MONTH = as.numeric(MonthlySD$Month)
@@ -154,6 +154,16 @@ abline(coef(May.lm), col="red")
 
 Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
 
+```{r December}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+December.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(December.lm)
+
+abline(coef(December.lm), col="red")
+
+```
+
 ## Next Steps
 
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
@@ -175,7 +185,7 @@ abline(coef(Dec.lm), col="red")
 1. We create a monthly mean for each month.
 
 ```{r}
-MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, Ewa, mean)
 
 MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
@@ -205,9 +215,9 @@ abline(coef(Dec.lm), col="red")
 # Departure from Mean
 
 ```{r}
-PRCP_mean = mean(LosAngeles$PRCP, na.rm=T)
+PRCP_mean = mean(Ewa$PRCP, na.rm=T)
 
-plot(PRCP~NewDate, data=LosAngeles)
+plot(PRCP~NewDate, data=Ewa)
 abline(h=PRCP_mean, col="blue")
 
 ```
@@ -227,8 +237,8 @@ Fourth, in CA the water year starts in Oct 1. Should we follow the same conventi
 
 
 ```{r}
-LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
-YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
+Ewa$PRCP[Ewa$PRCP==-9999] <- NA
+YearlySum = aggregate(PRCP ~ Year, Ewa, sum)
 YearlySum$YEAR = as.numeric(YearlySum$Year) 
 YearlyMean = mean(YearlySum$PRCP)
 ```
