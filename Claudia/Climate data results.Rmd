@@ -137,6 +137,15 @@ summary(SD.lm)
 abline(coef(SD.lm), col="red")
 
 ```
+```{r TestingTAvg}
+
+plot(TAVG~ NewDate, import, ty='l')
+TAVG.lm <- lm(TAVG~NewDate, import)
+summary(TAVG.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
 
 ### Selecting for 1 Month -- May
 
@@ -225,25 +234,31 @@ abline(coef(Dec.lm), col="red")
 
 4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
 
-# Monthly Mean Maximum Temperature - August
+# Monthly Mean Minimum Temperature - August
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-```{r August}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="08"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",], ty='l') 
-May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",])
-summary(May.lm)
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="8"], ty='l')
 
-abline(coef(May.lm), col="green")
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="8",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="green")
+
 ```
+
+
+
 
 # Monthly Mean Maximum Temperature - November
 
 ```{r November}
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
-May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
-summary(May.lm)
+November.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
+summary(November.lm)
 
-abline(coef(May.lm), col="yellow")
+abline(coef(November.lm), col="yellow")
 ```
 
 # Departure from Mean
