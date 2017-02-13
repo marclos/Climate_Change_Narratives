@@ -1,5 +1,5 @@
 ---
-title: "Importing and Processing CSV Files"
+title: "Temperature Changes at Ewa Plantation on O`ahu"
 author: "Kelli Kokame"
 date: "2/6/2017"
 output: html_document
@@ -9,9 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Importing CSV Files
+## Introducing data for Ewa Plantation on O`ahu
 
-First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
+After downloading a dataset off of NOAA's climate database, we inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation.  
 ```{r importingCSV}
 # Importing Scripts
 
