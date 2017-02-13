@@ -148,6 +148,22 @@ plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l')
 May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
 summary(May.lm)
 
+
+
+
+
+abline(coef(May.lm), col="red")
+
+
+
+```
+
+```{r June}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+summary(May.lm)
+
 abline(coef(May.lm), col="red")
 
 ```
