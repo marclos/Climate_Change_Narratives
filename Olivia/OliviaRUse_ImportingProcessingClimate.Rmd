@@ -1,7 +1,7 @@
 ---
 title: "Importing and Processing CSV Files"
-author: "Marc Los Huertos"
-date: "12/6/2016"
+author: "Olivia"
+date: "2/6/2017"
 output: html_document
 ---
 
@@ -146,6 +146,22 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
 May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
+summary(May.lm)
+
+
+
+
+
+abline(coef(May.lm), col="red")
+
+
+
+```
+
+```{r June}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
 summary(May.lm)
 
 abline(coef(May.lm), col="red")
