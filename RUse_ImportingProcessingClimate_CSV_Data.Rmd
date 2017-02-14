@@ -1,0 +1,254 @@
+---
+title: "Denver Temperature Changes"
+author: "Thea Piccone"
+date: "12/6/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Importing CSV Files
+
+```{r importingCSV}
+# Importing Scripts
+
+file = "/home/CAMPUS/tgpv2015/github/Climate Change Narratives/Data/denver1-TP.csv"
+
+import = read.csv(file)
+```
+
+
+```{r checking, include=FALSE}
+#plot(TMAX~DATE, import)
+```
+
+
+```{r missings, include=FALSE}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+
+```{r, include=FALSE}
+#plot(TMAX~DATE, import[import$DATE<19501231,], ty='l')
+```
+
+
+```{r, include=FALSE}
+#plot(TMAX~DATE, import[import$DATE<19500102,], ty='l')
+```
+
+
+```{r, include=FALSE}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+```{r, include=FALSE}
+#plot(TMAX~NewDate, import[import$DATE<19500102,], ty='l')
+```
+
+```{r, include=FALSE}
+unique(import$STATION_NAME)
+```
+
+
+```{r, include=FALSE}
+LosAngeles <- subset(import, STATION_NAME=="DENVER STAPLETON CO US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+
+
+```{r, include=FALSE}
+#plot(TMAX~NewDate, LosAngeles, ty='l')
+```
+
+
+```{r, include=FALSE}
+# Linear Model
+LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
+summary(LosAngeles.lm)
+plot(TMAX~NewDate, LosAngeles, ty='l')
+abline(coef(LosAngeles.lm), col='red')
+```
+
+```{r, include=FALSE}
+# Get months
+LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
+LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
+LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
+```
+
+
+```{r creatingmonthlymeans, include=FALSE}
+MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(TMAX ~ Month + Year, LosAngeles, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+
+
+```{r plottingMonthyMeans, include=FALSE}
+plot(MonthlyMean$TMAX, ty='l')
+
+```
+
+```{r plottingMonthySD, include=FALSE}
+plot(MonthlySD$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+
+### Average Max Temperatures by Month
+
+
+```{r Mar}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='l') 
+Mar.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",])
+summary(Mar.lm)
+
+abline(coef(Mar.lm), col="red")
+```
+
+```{r June}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+summary(June.lm)
+
+abline(coef(June.lm), col="red")
+```
+
+
+```{r Jul}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='l') 
+Jul.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
+summary(Jul.lm)
+
+abline(coef(Jul.lm), col="red")
+```
+
+
+```{r, include=FALSE}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='l') 
+Mar.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",])
+summary(Mar.lm)
+
+abline(coef(Mar.lm), col="red")
+
+```
+
+
+
+```{r, include=FALSE}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
+
+
+```{r, include=FALSE}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+
+```{r, include=FALSE}
+PRCP_mean = mean(LosAngeles$PRCP, na.rm=T)
+
+plot(PRCP~NewDate, data=LosAngeles)
+abline(h=PRCP_mean, col="blue")
+
+```
+
+
+```{r, include=FALSE}
+LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
+YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$PRCP)
+```
+
+
+```{r, include=FALSE}
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+
+```{r, include=FALSE}
+summary(YearlySum.lm)
+```
+
+
+```{r}
+YearlySum2 = subset(YearlySum, select=c(PRCP))
+YearlyMean = mean(YearlySum2$PRCP)
+
+#filter(YearlySum2)
+
+
+
+#Doesn't work...
+# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
+# ma(YearlySum$PRCP)  
+
+
+yearlyts =ts(YearlySum2) 
+str(yearlyts)
+
+
+
+
+```
+yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
+
+plot(yearlyts, lty = 1, col = 3)
+
+lines(yearlyts.lag)
+
+YearlySum$Departure = YearlyMean - YearlySum$PRCP
+YearlySum$YEAR = as.numeric(YearlySum$Year)
+
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+abline(h=YearlyMean, col="blue")
+
+lines(Departure ~ YEAR, data=YearlySum, col="red")
