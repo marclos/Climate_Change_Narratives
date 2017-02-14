@@ -158,28 +158,28 @@ Now, the change is `r coef(July.lm)[2]` degress/year or `r round(coef(July.lm)[2
 
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
 
-## Lets try Jan
+## Lets try June
 
 ```{r}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
-Jan.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
-summary(Jan.lm)
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+summary(June.lm)
 
-abline(coef(Jan.lm), col="red")
+abline(coef(June.lm), col="red")
 
 ```
 
 ```{r}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
-Feb.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
-summary(Jan.lm)
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+summary(June.lm)
 
-abline(coef(Jan.lm), col="red")
+abline(coef(June.lm), col="red")
 
 ```
-Now, the change is `r coef(Jan.lm)[2]` degress/year or `r round(coef(Jan.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(Jan.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
+Now, the change is `r coef(June.lm)[2]` degress/year or `r round(coef(June.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(June.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
 
 ## TMIN
 
@@ -207,7 +207,7 @@ plot(MonthlyMeanTMIN$TMIN, ty='l')
 plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="01"], ty='l')
 
 plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",], ty='l') 
-Feb.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",])
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",])
 summary(Jan.lm)
 
 abline(coef(Jan.lm), col="red")
