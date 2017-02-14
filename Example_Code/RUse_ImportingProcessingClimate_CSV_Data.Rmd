@@ -15,7 +15,7 @@ First, we will import the CSV file. In most cases, we don't need to preprocess t
 ```{r importingCSV}
 # Importing Scripts
 
-file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
+file = "/home/CAMPUS/tgpv2015/github/Climate Change Narratives/Data/denver1-TP.csv"
 
 import = read.csv(file)
 ```
@@ -35,7 +35,7 @@ import$TMIN[import$TMIN==-9999] = NA
 
 Okay, now we'll check again, for dates less then Dec. 31, 1913:
 ```{r}
-plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+plot(TMAX~DATE, import[import$DATE<19501231,], ty='l')
 ```
 
 Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
@@ -44,7 +44,7 @@ Yikes! What's wrong? As it turns it the problem is that with how the dates are s
 
 
 ```{r}
-plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+plot(TMAX~DATE, import[import$DATE<19500102,], ty='l')
 ```
 
 ## Fixing the Dates
@@ -59,7 +59,7 @@ import$NewDate <- as.Date(strDates, "%Y%m%d")
 
 ## Checking the New Dates
 ```{r}
-plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+plot(TMAX~NewDate, import[import$DATE<19500102,], ty='l')
 ```
 ## Subset Sites
 
@@ -72,7 +72,7 @@ unique(import$STATION_NAME)
 Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 ```{r}
-LosAngeles <- subset(import, STATION_NAME=="LOS ANGELES DOWNTOWN USC CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+LosAngeles <- subset(import, STATION_NAME=="DENVER STAPLETON CO US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 ```
 
 
@@ -149,7 +149,106 @@ May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
 summary(May.lm)
 
 abline(coef(May.lm), col="red")
+```
 
+
+```{r Sep}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="09"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="09",], ty='l') 
+Sep.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="09",])
+summary(Sep.lm)
+
+abline(coef(Sep.lm), col="red")
+
+```
+```{r June}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+summary(June.lm)
+
+abline(coef(June.lm), col="red")
+```
+
+```{r Mar}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='l') 
+Mar.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",])
+summary(Mar.lm)
+
+abline(coef(Mar.lm), col="red")
+```
+
+```{r Apr}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="04"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="04",], ty='l') 
+Apr.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="04",])
+summary(Apr.lm)
+
+abline(coef(Apr.lm), col="red")
+```
+
+```{r Aug}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="08"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",], ty='l') 
+Aug.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",])
+summary(Aug.lm)
+
+abline(coef(Aug.lm), col="red")
+```
+
+```{r Oct}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="10"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",], ty='l') 
+Oct.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",])
+summary(Oct.lm)
+
+abline(coef(Oct.lm), col="red")
+```
+
+```{r Jul}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='l') 
+Jul.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
+summary(Jul.lm)
+
+abline(coef(Jul.lm), col="red")
+```
+
+```{r Jan}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
+Jan.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
+summary(Jan.lm)
+
+abline(coef(Jan.lm), col="red")
+```
+
+```{r Nov}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
+Nov.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
+summary(Nov.lm)
+
+abline(coef(Nov.lm), col="red")
+```
+
+```{r Feb}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="02"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="02",], ty='l') 
+Feb.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="02",])
+summary(Feb.lm)
+
+abline(coef(Feb.lm), col="red")
+```
+
+```{r Dec}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
 ```
 
 Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
@@ -169,6 +268,7 @@ summary(Dec.lm)
 abline(coef(Dec.lm), col="red")
 
 ```
+
 
 ## TMIN
 
