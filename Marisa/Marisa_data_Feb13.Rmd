@@ -1,7 +1,7 @@
 ---
 title: "Importing and Processing CSV Files"
-author: "Olivia"
-date: "2/6/2017"
+author: "Marc Los Huertos"
+date: "12/6/2016"
 output: html_document
 ---
 
@@ -15,7 +15,7 @@ First, we will import the CSV file. In most cases, we don't need to preprocess t
 ```{r importingCSV}
 # Importing Scripts
 
-file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Olivia/Ojai Temperatures - EA30.csv"
+file = "/home/CAMPUS/mawd2015/github/Climate_Change_Narratives/Data/87804MAW3.csv"
 
 import = read.csv(file)
 ```
@@ -35,7 +35,7 @@ import$TMIN[import$TMIN==-9999] = NA
 
 Okay, now we'll check again, for dates less then Dec. 31, 1913:
 ```{r}
-plot(TMAX~DATE, import[import$DATE<19181231,], ty='l')
+plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 ```
 
 Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
@@ -44,7 +44,7 @@ Yikes! What's wrong? As it turns it the problem is that with how the dates are s
 
 
 ```{r}
-plot(TMAX~DATE, import[import$DATE<19180102,], ty='l')
+plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
 ```
 
 ## Fixing the Dates
@@ -59,20 +59,20 @@ import$NewDate <- as.Date(strDates, "%Y%m%d")
 
 ## Checking the New Dates
 ```{r}
-plot(TMAX~NewDate, import[import$DATE<19180102,], ty='l')
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
 ## Subset Sites
 
-Olivia has two sites in here data, so, we need to subset it.
+Olivia has two sites in her data, so, we need to subset it.
 
 ```{r}
 unique(import$STATION_NAME)
 ```
 
-Let's choose the BARROW W POST W ROGERS AIRPORT AK US because the record is longer than the airport.
+Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 ```{r}
-LosAngeles <- subset(import, STATION_NAME=="OJAI CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+LosAngeles <- subset(import, STATION_NAME=="LODI CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 ```
 
 
@@ -138,57 +138,59 @@ abline(coef(SD.lm), col="red")
 
 ```
 
-### Selecting for 1 Month -- May
+### Selecting for 1 Month -- July
 
 Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
 
 ```{r May}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
-May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
-summary(May.lm)
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='l') 
+July.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
+summary(July.lm)
 
-
-
-
-
-abline(coef(May.lm), col="red")
-
-
+abline(coef(July.lm), col="red")
 
 ```
 
-```{r June}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
-May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
-summary(May.lm)
-
-abline(coef(May.lm), col="red")
-
-```
-
-Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
+Now, the change is `r coef(July.lm)[2]` degress/year or `r round(coef(July.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(July.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
 
 ## Next Steps
 
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
 
-## Lets try Dec
+## Lets try June
 
 ```{r}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
-Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
-summary(Dec.lm)
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+summary(June.lm)
 
-abline(coef(Dec.lm), col="red")
+abline(coef(June.lm), col="red")
 
 ```
+
+```{r}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+summary(June.lm)
+
+abline(coef(June.lm), col="red")
+
+```
+Now, the change is `r coef(June.lm)[2]` degress/year or `r round(coef(June.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(June.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
 
 ## TMIN
 
 1. We create a monthly mean for each month.
+
+```{r}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
 
 ```{r}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
@@ -202,18 +204,18 @@ head(MonthlyMeanTMIN)
 ```{r}
 plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="01"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
-Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
-summary(Dec.lm)
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",], ty='l') 
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",])
+summary(Jan.lm)
 
-abline(coef(Dec.lm), col="red")
+abline(coef(Jan.lm), col="red")
 
 ```
 
 
-3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
+3. In this case, in the month of Febuary, we get a slope, `r coef(Jan.lm)[2]` degress/year and a probability of `r round(summary(Jan.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Jan.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
 
 4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
 

@@ -1,7 +1,7 @@
 ---
 title: "Importing and Processing CSV Files"
-author: "Olivia"
-date: "2/6/2017"
+author: "Marc Los Huertos"
+date: "12/6/2016"
 output: html_document
 ---
 
@@ -15,7 +15,7 @@ First, we will import the CSV file. In most cases, we don't need to preprocess t
 ```{r importingCSV}
 # Importing Scripts
 
-file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Olivia/Ojai Temperatures - EA30.csv"
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
 
 import = read.csv(file)
 ```
@@ -35,7 +35,7 @@ import$TMIN[import$TMIN==-9999] = NA
 
 Okay, now we'll check again, for dates less then Dec. 31, 1913:
 ```{r}
-plot(TMAX~DATE, import[import$DATE<19181231,], ty='l')
+plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 ```
 
 Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
@@ -44,7 +44,7 @@ Yikes! What's wrong? As it turns it the problem is that with how the dates are s
 
 
 ```{r}
-plot(TMAX~DATE, import[import$DATE<19180102,], ty='l')
+plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
 ```
 
 ## Fixing the Dates
@@ -59,7 +59,7 @@ import$NewDate <- as.Date(strDates, "%Y%m%d")
 
 ## Checking the New Dates
 ```{r}
-plot(TMAX~NewDate, import[import$DATE<19180102,], ty='l')
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
 ## Subset Sites
 
@@ -69,10 +69,10 @@ Olivia has two sites in here data, so, we need to subset it.
 unique(import$STATION_NAME)
 ```
 
-Let's choose the BARROW W POST W ROGERS AIRPORT AK US because the record is longer than the airport.
+Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 ```{r}
-LosAngeles <- subset(import, STATION_NAME=="OJAI CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+LosAngeles <- subset(import, STATION_NAME=="LOS ANGELES DOWNTOWN USC CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 ```
 
 
@@ -137,6 +137,15 @@ summary(SD.lm)
 abline(coef(SD.lm), col="red")
 
 ```
+```{r TestingTAvg}
+
+plot(TAVG~ NewDate, import, ty='l')
+TAVG.lm <- lm(TAVG~NewDate, import)
+summary(TAVG.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
 
 ### Selecting for 1 Month -- May
 
@@ -157,7 +166,6 @@ abline(coef(May.lm), col="red")
 
 
 ```
-
 ```{r June}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
@@ -165,7 +173,6 @@ May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
 summary(May.lm)
 
 abline(coef(May.lm), col="red")
-
 ```
 
 Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
@@ -175,6 +182,16 @@ Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
 
 ## Lets try Dec
+
+```{r Dec}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(May.lm)
+
+abline(coef(May.lm), col="blue")
+```
+
 
 ```{r}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
@@ -217,6 +234,32 @@ abline(coef(Dec.lm), col="red")
 
 4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
 
+# Monthly Mean Minimum Temperature - August
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="8"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="8",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="green")
+
+```
+
+
+
+
+# Monthly Mean Maximum Temperature - November
+
+```{r November}
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
+November.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
+summary(November.lm)
+
+abline(coef(November.lm), col="yellow")
+```
 
 # Departure from Mean
 
@@ -306,3 +349,8 @@ plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
 abline(h=YearlyMean, col="blue")
 
 lines(Departure ~ YEAR, data=YearlySum, col="red")
+
+
+
+
+
