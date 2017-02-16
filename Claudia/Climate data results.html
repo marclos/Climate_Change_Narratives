@@ -236,11 +236,11 @@ abline(coef(Dec.lm), col="red")
 
 # Monthly Mean Minimum Temperature - August
 ```{r}
-plot(MonthlyMeanTMIN$TMIN, ty='l')
+plot(MonthlyMeanTMIN$TMIN, ty='p')
 
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="8"], ty='l')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="8"], ty='p')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="8",], ty='l') 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="8",], ty='p') 
 Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
 summary(Dec.lm)
 
