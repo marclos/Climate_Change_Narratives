@@ -1,0 +1,282 @@
+---
+title: "Maximum Temperatures in Alvin, TX"
+author: "Mireya Valencia"
+date: "2/13/2017"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r importingCSV, echo=FALSE}
+# Importing Scripts
+
+file = "/home/CAMPUS/mvxu2015/Climate_Change_Narratives/Mireya/HoustonWeather.csv"
+
+import = read.csv(file)
+```
+
+
+
+```{r checking, include=FALSE}
+plot(TMAX~DATE, import)
+```
+
+
+```{r missings, include=FALSE}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+
+
+```{r, include=FALSE}
+plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+```
+
+
+
+```{r, include=FALSE}
+plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+```
+
+
+
+
+
+```{r, include=FALSE}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+
+```{r, include=FALSE}
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+```
+
+
+
+```{r, include=FALSE}
+unique(import$STATION)
+```
+
+
+
+```{r, include=FALSE}
+Alvin <- subset(import, STATION=="GHCND:USC00410204", select=c(STATION, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+
+
+```{r, include=FALSE}
+plot(TMAX~NewDate, Alvin, ty='l')
+```
+
+
+
+```{r, include=FALSE}
+# Linear Model
+Alvin.lm <- lm(TMAX~NewDate, data=Alvin)
+# summary(Alvin.lm)
+# plot(TMAX~NewDate, Alvin, ty='l')
+# abline(coef(Alvin.lm), col='red')
+```
+
+
+
+
+```{r, include=FALSE}
+# Get months
+Alvin$Month = months(Alvin$NewDate) # Creates problems.
+Alvin$Month = format(as.Date(Alvin$NewDate), format = "%m")
+Alvin$Year = format(Alvin$NewDate, format="%Y")
+```
+
+```{r creatingmonthlymeans, include=FALSE, results='hide'}
+MonthlyMean = aggregate(TMAX ~ Month + Year, Alvin, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(TMAX ~ Month + Year, Alvin, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+
+
+```{r plottingMonthyMeans, include=FALSE, results='hide'}
+plot(MonthlyMean$TMAX, ty='l')
+
+```
+Alternative Hypothesis: The maximum temperature in Alvin, TX has decreased from 1998-2013.
+
+Null hypothesis: The maximum temperature in Alvin, TX has increased from 1998-2013. 
+
+Here are the yearly maximum temperatures in Alvin, TX. As you can see, there is an overall decreasing trend (p=value: 0.006735). We would thus reject our null hypothesis, meaning that temperature has decreased from 1998-1998. 
+```{r plottingMonthySD}
+# plot(MonthlySD$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlySD, ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year")
+SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+# summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+Looking at this graph, we would be inclined to believe the maximum temperature in Alvin, TX has decreased over the last century or so. But how does this change when we look at monthly average temperatures?
+
+Our new hypotheses are:
+Alternative Hypothesis: The maximum temperature in Alvin, TX has increased from 1998-2013.
+
+Null hypothesis: The maximum temperature in Alvin, TX has decreased from 1998-2013. 
+
+```{r May, include=FALSE}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+In the month of December, the maximum mothly temperature increased (p=.015). We reject the null hypothesis, meaning that the maximum temperature increased from 1998-2013. 
+```{r}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="December") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+The months of October (p=.00405) and March (p=.0466) show similar trends of increasing maximum temperature and are statistically significant, therby rejecting the null hypothesis. 
+```{r}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="10"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="October") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+
+```{r}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="March") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+
+
+```{r, include=FALSE}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, Alvin, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
+
+
+
+```{r, include=FALSE}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+
+
+
+
+
+```{r, include=FALSE}
+PRCP_mean = mean(Alvin$PRCP, na.rm=T)
+
+plot(PRCP~NewDate, data=Alvin)
+abline(h=PRCP_mean, col="blue")
+
+```
+
+
+```{r, include=FALSE}
+Alvin$PRCP[Alvin$PRCP==-9999] <- NA
+YearlySum = aggregate(PRCP ~ Year, Alvin, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$PRCP)
+```
+
+
+```{r, include=FALSE}
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+
+```{r, include=FALSE}
+summary(YearlySum.lm)
+```
+
+
+```{r, include=FALSE}
+YearlySum2 = subset(YearlySum, select=c(PRCP))
+YearlyMean = mean(YearlySum2$PRCP)
+
+#filter(YearlySum2)
+
+
+
+#Doesn't work...
+# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
+# ma(YearlySum$PRCP)  
+
+
+yearlyts =ts(YearlySum2) 
+str(yearlyts)
+
+
+
+
+```
+yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
+
+plot(yearlyts, lty = 1, col = 3)
+
+lines(yearlyts.lag)
+
+YearlySum$Departure = YearlyMean - YearlySum$PRCP
+YearlySum$YEAR = as.numeric(YearlySum$Year)
+
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+abline(h=YearlyMean, col="blue")
+
+lines(Departure ~ YEAR, data=YearlySum, col="red")

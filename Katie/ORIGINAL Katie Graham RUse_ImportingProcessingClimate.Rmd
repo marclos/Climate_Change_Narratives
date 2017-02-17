@@ -1,7 +1,7 @@
 ---
-title: "Importing and Processing CSV Files"
+title: "Climate Trends in Barrow, Alaska"
 author: "Katie Graham"
-date: "2/6/2017"
+date: "2/13/2017"
 output: html_document
 ---
 
@@ -9,10 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Importing CSV Files
-
-First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
-```{r importingCSV}
+```{r importingCSV, include=FALSE}
 # Importing Scripts
 
 file = "/home/CAMPUS/kygj2015/Climate_Change_Narratives/Data/KatieGraham - Barrow, Alaska.csv"
@@ -20,71 +17,48 @@ file = "/home/CAMPUS/kygj2015/Climate_Change_Narratives/Data/KatieGraham - Barro
 import = read.csv(file)
 ```
 
-## Checking the Data
-
-```{r checking}
-plot(TMAX~DATE, import)
+```{r checking, include=FALSE} 
+#plot(TMAX~DATE, import)
 ```
-
-What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!
 
 ```{r missings}
 import$TMAX[import$TMAX==-9999] = NA
 import$TMIN[import$TMIN==-9999] = NA
+
+import$SNOW[import$SNOW==-9999] = NA
+import$SNWD[import$SNWD==-9999] = NA
 ```
 
-Okay, now we'll check again, for dates less then Dec. 31, 1913:
-```{r}
-plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+```{r, include=FALSE}
+#plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 ```
 
-Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
-
-19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
-
-
-```{r}
-plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+```{r, include=FALSE}
+#plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
 ```
 
-## Fixing the Dates
-
-First, we convert the date a string or character values. Next, we'll convert the strings to a data format. 
-
-```{r}
+```{r, include=FALSE}
 strDates <- as.character(import$DATE)
 head(strDates)
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
-
-## Checking the New Dates
-```{r}
+```{r, include=FALSE}
 plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
-## Subset Sites
 
-Olivia has two sites in here data, so, we need to subset it.
-
-```{r}
-unique(import$STATION_NAME)
+```{r, include=FALSE}
+#unique(import$STATION_NAME)
 ```
 
-Let's choose the BARROW W POST W ROGERS AIRPORT AK US because the record is longer than the airport.
-
-```{r}
-BarrowAlaska <- subset(import, STATION_NAME=="BARROW W POST W ROGERS AIRPORT AK US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```{r, include=FALSE}
+BarrowAlaska <- subset(import, STATION_NAME=="BARROW W POST W ROGERS AIRPORT AK US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP, SNOW, SNWD))
 ```
 
-
-## A new plot
-```{r}
+```{r, include=FALSE}
 plot(TMAX~NewDate, BarrowAlaska, ty='l')
 ```
 
-## Evaluating the trend
-
-Creating a linear model and then evaluate the rate (slope). 
-```{r}
+```{r, include=FALSE}
 # Linear Model
 BarrowAlaska.lm <- lm(TMAX~NewDate, data=BarrowAlaska)
 summary(BarrowAlaska.lm)
@@ -92,18 +66,14 @@ plot(TMAX~NewDate, BarrowAlaska, ty='l')
 abline(coef(BarrowAlaska.lm), col='red')
 ```
 
-## Creating Month and Year Variables
-
-So, let's figure out how to see how changes happen for individual months.
-```{r}
+```{r, include=FALSE}
 # Get months
 BarrowAlaska$Month = months(BarrowAlaska$NewDate) # Creates problems.
 BarrowAlaska$Month = format(as.Date(BarrowAlaska$NewDate), format = "%m")
 BarrowAlaska$Year = format(BarrowAlaska$NewDate, format="%Y")
 ```
 
-### Creating Monthly Means
-```{r creatingmonthlymeans}
+```{r creatingmonthlymeans, include=FALSE}
 MonthlyMean = aggregate(TMAX ~ Month + Year, BarrowAlaska, mean)
 
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
@@ -122,12 +92,11 @@ head(MonthlySD)
 ```
 
 
-```{r plottingMonthyMeans}
+```{r plottingMonthyMeans, include=FALSE}
 plot(MonthlyMean$TMAX, ty='l')
 
 ```
-below is sd
-```{r plottingMonthySD}
+```{r plottingMonthySD, include=FALSE}
 plot(MonthlySD$TMAX, ty='l')
 
 plot(TMAX~ NewDate, data=MonthlySD, ty='l')
@@ -198,6 +167,37 @@ plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
 
 plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
 Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+
+3. In this case, we get a slope, `r coef(Dec.lm)[2]` degrees/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-squared of `r round(summary(Dec.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temperature, that year is one, is quite problematic.
+
+4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
+
+## TMAX
+
+1. We create a monthly mean for each month.
+
+```{r}
+MonthlyMeanTMAX = aggregate(TMAX ~ Month + Year, BarrowAlaska, mean)
+
+MonthlyMeanTMAX$YEAR = as.numeric(MonthlyMeanTMAX$Year)
+head(MonthlyMeanTMAX)
+```
+
+2. Now we plot the maximums, and again, find tons of scatter.
+
+```{r}
+plot(MonthlyMeanTMAX$TMAX, ty='l')
+
+plot(MonthlyMeanTMAX$TMAX[MonthlyMeanTMAX$Month=="12"], ty='l')
+
+plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="12",])
 summary(Dec.lm)
 
 abline(coef(Dec.lm), col="red")
@@ -298,3 +298,135 @@ plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
 abline(h=YearlyMean, col="blue")
 
 lines(Departure ~ YEAR, data=YearlySum, col="red")
+
+
+## SNWD - Snow Depth (mm)
+
+1. We create a monthly mean for each month.
+
+```{r} 
+plot(SNWD~DATE, import)
+```
+```{r} 
+plot(SNOW~DATE, import)
+```
+
+
+
+```{r}
+plot(SNWD~DATE, import[import$DATE<19131231,], ty='l')
+```
+
+```{r}
+plot(SNOW~DATE, import[import$DATE<19130102,], ty='l')
+```
+
+```{r}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+```{r}
+plot(SNWD~NewDate, import[import$DATE<19130102,], ty='l')
+```
+
+```{r}
+# Linear Model
+BarrowAlaska.lm <- lm(SNOW~NewDate, data=BarrowAlaska)
+summary(BarrowAlaska.lm)
+plot(SNOW~NewDate, BarrowAlaska, ty='l')
+abline(coef(BarrowAlaska.lm), col='red')
+```
+
+```{r}
+MonthlyMeanSNWD = aggregate(SNWD ~ Month + Year, BarrowAlaska, mean)
+
+MonthlyMeanSNWD$YEAR = as.numeric(MonthlyMeanSNWD$Year)
+head(MonthlyMeanSNWD)
+```
+
+```{r}
+plot(SNOW~NewDate, BarrowAlaska, ty='l')
+```
+
+```{r}
+# Linear Model
+BarrowAlaska.lm <- lm(SNOW~NewDate, data=BarrowAlaska)
+summary(BarrowAlaska.lm)
+plot(SNOW~NewDate, BarrowAlaska, ty='l')
+abline(coef(BarrowAlaska.lm), col='red')
+```
+
+```{r}
+# Get months
+BarrowAlaska$Month = months(BarrowAlaska$NewDate) # Creates problems.
+BarrowAlaska$Month = format(as.Date(BarrowAlaska$NewDate), format = "%m")
+BarrowAlaska$Year = format(BarrowAlaska$NewDate, format="%Y")
+```
+
+```{r}
+MonthlyMean = aggregate(SNOW ~ Month + Year, BarrowAlaska, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(SNOW ~ Month + Year, BarrowAlaska, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+
+
+```{r}
+plot(MonthlyMean$SNOW, ty='l')
+
+```
+
+```{r}
+plot(MonthlySD$SNOW, ty='l')
+
+plot(SNOW~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(SNOW~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+
+### Selecting for 3 Months -- December, January, February
+
+```{r December2}
+plot(MonthlyMean$SNOW[MonthlyMean$Month=="12"], ty='l')
+plot(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+December.lm <- lm(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(December.lm)
+
+abline(coef(December.lm), col="red")
+
+```
+
+```{r January2}
+plot(MonthlyMean$SNOW[MonthlyMean$Month=="01"], ty='l')
+plot(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
+January.lm <- lm(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
+summary(January.lm)
+
+abline(coef(January.lm), col="red")
+
+```
+
+```{r February2}
+plot(MonthlyMean$SNOW[MonthlyMean$Month=="02"], ty='l')
+plot(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="02",], ty='l') 
+February.lm <- lm(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="02",])
+summary(February.lm)
+
+abline(coef(February.lm), col="red")
+
+```
