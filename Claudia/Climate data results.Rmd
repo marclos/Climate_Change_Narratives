@@ -249,7 +249,19 @@ abline(coef(Dec.lm), col="yellow")
 
 ```
 
+TMIN May 
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
 
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="05"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="yellow")
+
+```
 
 # Monthly Mean Maximum Temperature - November
 
