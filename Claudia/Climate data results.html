@@ -125,7 +125,6 @@ head(MonthlySD)
 ```{r plottingMonthyMeans}
 plot(MonthlyMean$TMAX, ty='l')
 
-
 ```
 below is sd
 ```{r plottingMonthySD}
@@ -195,12 +194,12 @@ abline(coef(May.lm), col="blue")
 
 
 ```{r}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
-Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
 summary(Dec.lm)
 
-abline(coef(Dec.lm), col="blue")
+abline(coef(Dec.lm), col="red")
 
 ```
 
@@ -226,7 +225,7 @@ plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l')
 Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
 summary(Dec.lm)
 
-abline(coef(Dec.lm), col="yellow")
+abline(coef(Dec.lm), col="red")
 
 ```
 
@@ -235,19 +234,20 @@ abline(coef(Dec.lm), col="yellow")
 
 4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
 
-TMIN NOVEMBER 
+# Monthly Mean Minimum Temperature - August
 ```{r}
-plot(MonthlyMeanTMIN$TMIN, ty='l')
+plot(MonthlyMeanTMIN$TMIN, ty='p')
 
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="11"], ty='l')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="8"], ty='p')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",], ty='l') 
-Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",])
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="8",], ty='p') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
 summary(Dec.lm)
 
-abline(coef(Dec.lm), col="yellow")
+abline(coef(Dec.lm), col="green")
 
 ```
+
 
 
 
