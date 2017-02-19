@@ -240,6 +240,7 @@ abline(coef(Dec.lm), col="red")
 # Departure from Mean
 
 ```{r}
+Ewa$PRCP[Ewa$PRCP==-9999] <- NA
 PRCP_mean = mean(Ewa$PRCP, na.rm=T)
 
 plot(PRCP~NewDate, data=Ewa)
