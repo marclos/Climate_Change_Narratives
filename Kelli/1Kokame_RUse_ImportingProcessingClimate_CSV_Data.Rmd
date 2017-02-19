@@ -9,9 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## First, let's introduce data for the Ewa Plantation Station on O`ahu
-
-After downloading a dataset off of NOAA's climate database, we inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. 
+After downloading a dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, we inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. This blog will explore trends in temperature and precipitation at this specific station.  
 
 ```{r importingCSV}
 # Importing Scripts
@@ -21,7 +19,7 @@ file = "/home/CAMPUS/kak22013/Climate_Change_Narratives/Kelli/Kokame.csv"
 import = read.csv(file)
 ```
 
-## Now let's check our data.
+## When we first import the data, it is not yet in a form that we can use and visualize well. 
 
 ```{r checking}
 plot(TMAX~DATE, import)
@@ -34,14 +32,13 @@ import$TMAX[import$TMAX==-9999] = NA
 import$TMIN[import$TMIN==-9999] = NA
 ```
 
-Okay, now we'll check again, for dates less then Dec. 31, 1913:
+After changing the -9999 values to NA, we can check to see if our data is now usable:
+
 ```{r}
 plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 ```
 
-Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
-
-19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
+Even though we removed the missing values, the data is still unusable. The reason why has to do with how data used to be recorded. Instead of chronologically entering data in a way that Excel could read and turn into a continous timeline, dates used to be inputted in the format of YYYYMMDD. This means that, for example, 19131231 (December 31, 1913) would then turn into 19140101 (January 1, 1914). Chronologically, there are several missing values in between which is why there are so many gaps. The data still needs to be chaned into a form in which dates are continuous and numerically consecutive. In this way, it is true scientists have to manipulate data--but it not so much the content of the data as the format.  
 
 
 ```{r}
@@ -50,7 +47,7 @@ plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
 
 ## Fixing the Dates
 
-First, we convert the date a string or character values. Next, we'll convert the strings to a data format. 
+To get the data to organize like we want, we first need to convert the date to string or character values. After that, we can convert the strings to a data format. 
 
 ```{r}
 strDates <- as.character(import$DATE)
@@ -64,7 +61,7 @@ plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
 ## Subset Sites
 
-Kelli has two sites in here data, so, we need to subset it.
+I have two sites in this data, so, we need to subset it.
 
 ```{r}
 unique(import$STATION_NAME)
@@ -86,11 +83,11 @@ plot(TMAX~NewDate, Ewa, ty='l')
 abline(coef(Ewa.lm), col='red')
 summary(Ewa.lm)
 ```
+As you can see, the maximum temperature each year has had a slight upward trend from 1905 when the records began until 2006. The slope is about 3.1e-05 (a very tiny slope). However, we can see that there is a lot of missing data beginning at roughly 1980. While I tried to look into why there were no available measurements for about a 20 year span, no explanations were offered online.  
 
+But since there's a lot of missing data beginning at roughly 1980, let us focus on the trend from roughly 1900 up until that point to see if the missing data has an effect on the trend slope. 
 
-Since there's a lot of missing data beginning at roughly 1980, let us focus on the trend from roughly 1900 up until that point to see if the missing data has an effect on the trend slope. 
-
-
+Here is the graph of maximum temperatures from 1905 up to 1978: 
 ```{r}
 plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
 ```
@@ -98,7 +95,7 @@ plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
 
 ## Evaluating the trend
 
-Creating a linear model and then evaluate the rate (slope). 
+Now, let us analyze the trend of the maxmimum temperature data.  
 ```{r}
 # Linear Model
 Ewa.lm <- lm(TMAX~NewDate, data=Ewa[Ewa$DATE< 19780101,])
@@ -106,6 +103,9 @@ summary(Ewa.lm)
 plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
 abline(coef(Ewa.lm), col='red')
 ```
+
+Let's do the same with minimum temperature measurements. 
+
 ```{r}
 # Linear Model
 Ewa.lm <- lm(TMIN~NewDate, data=Ewa[Ewa$DATE< 19780101,])
@@ -113,6 +113,10 @@ summary(Ewa.lm)
 plot(TMIN~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
 abline(coef(Ewa.lm), col='red')
 ```
+
+
+
+
 
 ## Creating Month and Year Variables
 
