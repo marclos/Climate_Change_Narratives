@@ -227,7 +227,7 @@ head(MonthlyMeanTMIN)
 
 2. Now we plot the mins, and again, find tons of scatter.
 
-```{r}(echo = False)
+```{r}(include = False)
 plot(MonthlyMeanTMIN$TMIN, ty='l')
 
 plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
