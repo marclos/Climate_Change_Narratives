@@ -2,7 +2,9 @@
 title: "Importing and Processing CSV Files"
 author: "Katie Graham"
 date: "2/6/2017"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -31,6 +33,9 @@ What's going on?  What is the deal with the -9999? These are used for missing da
 ```{r missings}
 import$TMAX[import$TMAX==-9999] = NA
 import$TMIN[import$TMIN==-9999] = NA
+
+import$SNOW[import$SNOW==-9999] = NA
+import$SNWD[import$SNWD==-9999] = NA
 ```
 
 Okay, now we'll check again, for dates less then Dec. 31, 1913:
@@ -63,8 +68,6 @@ plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
 ## Subset Sites
 
-Olivia has two sites in here data, so, we need to subset it.
-
 ```{r}
 unique(import$STATION_NAME)
 ```
@@ -72,7 +75,7 @@ unique(import$STATION_NAME)
 Let's choose the BARROW W POST W ROGERS AIRPORT AK US because the record is longer than the airport.
 
 ```{r}
-BarrowAlaska <- subset(import, STATION_NAME=="BARROW W POST W ROGERS AIRPORT AK US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+BarrowAlaska <- subset(import, STATION_NAME=="BARROW W POST W ROGERS AIRPORT AK US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP, SNOW, SNWD))
 ```
 
 
@@ -91,6 +94,7 @@ summary(BarrowAlaska.lm)
 plot(TMAX~NewDate, BarrowAlaska, ty='l')
 abline(coef(BarrowAlaska.lm), col='red')
 ```
+
 
 ## Creating Month and Year Variables
 
@@ -189,6 +193,13 @@ MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
 ```
 
+```{r}
+MonthlyMeanSNWD = aggregate(SNWD ~ Month + Year, BarrowAlaska, mean)
+
+MonthlyMeanSNWD$YEAR = as.numeric(MonthlyMeanSNWD$Year)
+head(MonthlyMeanTMIN)
+```
+
 2. Now we plot the mins, and again, find tons of scatter.
 
 ```{r}
@@ -220,6 +231,13 @@ abline(h=PRCP_mean, col="blue")
 
 ```
 
+```{r}
+SNOW_mean = mean(BarrowAlaska$SNOW, na.rm=T)
+
+plot(SNOW~NewDate, data=BarrowAlaska)
+abline(h=SNOW_mean, col="blue")
+
+```
 
 ## Experimental Portion --- Precipitation
 
@@ -298,3 +316,67 @@ plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
 abline(h=YearlyMean, col="blue")
 
 lines(Departure ~ YEAR, data=YearlySum, col="red")
+
+## Experimental Portion --- Snow
+
+```{r}
+BarrowAlaska$SNOW[BarrowAlaska$SNOW==-9999] <- NA
+YearlySum = aggregate(SNOW ~ Year, BarrowAlaska, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$SNOW)
+```
+
+A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
+
+Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
+```{r}
+plot(SNOW~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(SNOW~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$SNOW, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+The model suggests that the precipitation is declines at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
+
+```{r}
+summary(YearlySum.lm)
+```
+
+## Experimental Portion --- Snow Depth
+
+```{r}
+BarrowAlaska$SNWD[BarrowAlaska$SNWD==-9999] <- NA
+YearlySum = aggregate(SNWD ~ Year, BarrowAlaska, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$SNWD)
+```
+
+A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
+
+Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
+```{r}
+plot(SNWD~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(SNWD~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$SNWD, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+The model suggests that the precipitation is declines at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
+
+```{r}
+summary(YearlySum.lm)
+```

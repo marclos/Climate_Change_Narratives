@@ -1,11 +1,11 @@
 ---
 title: "Climate Trends in Barrow, Alaska"
 author: "Katie Graham"
-date: "2/20/2017"
+date: "2/13/2017"
 output: html_document
 ---
 
-Barrow is located at the northernmost tip of the state of Alaska and sits entirely on top of frozen permafrost. This small city is home to 4,384 residents, most of whom are Iñupiaq Alaska Natives. With warming temperatures, however, the permafrost underlying Barrow is thawing, placing residents at severe risk of infrastructure damage. In addition to warming permafrost, melting sea ice and glaciers, coastal erosion, earlier spring snowmelt, and reduced snow fall have also been consequences of the recent warming trends.
+Barrow is located at the northernmost tip of the state of Alaska and sits entirely on top of frozen permafrost. This small city is home to 4,384 residents, most of whom are Iñupiaq Alaska Natives. With warming temperatures, however, the permafrost underlying Barrow is thawing, placing residents at severe risk of infrastructure damage. In addition to warming permafrost, melting sea ice and glaciers, coastal erosion, earlier spring snowmelt, and reduced snow fall have also been documented.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -29,7 +29,6 @@ import$TMIN[import$TMIN==-9999] = NA
 
 import$SNOW[import$SNOW==-9999] = NA
 import$SNWD[import$SNWD==-9999] = NA
-import$PRCP[import$SNWD==-9999] = NA
 ```
 
 ```{r, include=FALSE}
@@ -113,8 +112,6 @@ abline(coef(SD.lm), col="red")
 
 ### Warming Trends in Monthly Maximum Temperatures: December, January, and February
 
-In particular, December, January, and February have been affected most significantly by climate warming. According to data collected by the National Oceanic and Atmospheric Administration (NOAA), over the past 115 years, January in Barrow, Alaska has warmed at a rate of 0.0651892 degrees per year or 6.519 degrees per 100 years. Correspondingly, December has warmed at a rate of 0.0559809 degrees per year or 5.598 per 100 years. And, February has warmed at a rate of 0.0485416 degrees per year or 4.854 degrees per 100 years.
-
 ```{r December}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
@@ -153,11 +150,6 @@ abline(coef(February.lm), col="red")
 Now, the change is `r coef(February.lm)[2]` degrees/year or `r round(coef(February.lm)[2]*100, 3)` degrees/100 years with a probability of `r round(summary(February.lm)$coefficients[2,4],4)`. We can reject the null hypothesis that there is no relationship, since the p value is less than 0.05. In other words, the observed warming trend is statistically significant for the month of February.
 
 Based on the above figures, it is evident that over the past 115 years winters in Barrow, Alaska have gotten significantly warmer. For residents of Barrow, this warming has been visible in the form of thawing permafrost and melting snow, sea ice, and glaciers.
-
-The surface air temperatures observed in late 2016 and early 2017 are some of the highest on record, with 2017 marking the hottest January since the late 1920s. While rising winter temperatures in Barrow have resulted in some benefits such as a longer growing season, repercussions have also been making their presence known. 
-
-For one thing, sea ice has been melting, leading to rising sea levels, coastal erosion, and infrastructure and habitat damage. Furthermore, as permafrost thaws, organic matter decomposes, releasing huge amounts of carbon dioxide and methane into the atmosphere. This has transformed the Arctic tundra from a net sink for carbon into a major source of carbon. This is compounded by the growing issue of wildfires in Alaska, which is thawing even more permafrost, and thus sending more heat-trapping gases into the atmosphere.
-
 
 ```{r, include=FALSE}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, BarrowAlaska, mean)
@@ -284,9 +276,20 @@ lines(Departure ~ YEAR, data=YearlySum, col="red")
 ```{r} 
 plot(SNWD~DATE, import)
 ```
+```{r} 
+plot(SNOW~DATE, import)
+```
+
+
+
 ```{r, include=FALSE}
 plot(SNWD~DATE, import[import$DATE<19131231,], ty='l')
 ```
+
+```{r, include=FALSE}
+plot(SNOW~DATE, import[import$DATE<19130102,], ty='l')
+```
+
 ```{r, include=FALSE}
 strDates <- as.character(import$DATE)
 head(strDates)
@@ -297,9 +300,10 @@ plot(SNWD~NewDate, import[import$DATE<19130102,], ty='l')
 ```
 
 ```{r}
-BarrowAlaska.lm <- lm(SNWD~NewDate, data=BarrowAlaska)
+# Linear Model
+BarrowAlaska.lm <- lm(SNOW~NewDate, data=BarrowAlaska)
 summary(BarrowAlaska.lm)
-plot(SNWD~NewDate, BarrowAlaska, ty='l')
+plot(SNOW~NewDate, BarrowAlaska, ty='l')
 abline(coef(BarrowAlaska.lm), col='red')
 ```
 
@@ -311,10 +315,75 @@ head(MonthlyMeanSNWD)
 ```
 
 ```{r}
+plot(SNOW~NewDate, BarrowAlaska, ty='l')
+```
+
+```{r}
+# Linear Model
+BarrowAlaska.lm <- lm(SNOW~NewDate, data=BarrowAlaska)
+summary(BarrowAlaska.lm)
+plot(SNOW~NewDate, BarrowAlaska, ty='l')
+abline(coef(BarrowAlaska.lm), col='red')
+```
+
+```{r}
+# Get months
+BarrowAlaska$Month = months(BarrowAlaska$NewDate) # Creates problems.
+BarrowAlaska$Month = format(as.Date(BarrowAlaska$NewDate), format = "%m")
+BarrowAlaska$Year = format(BarrowAlaska$NewDate, format="%Y")
+```
+
+```{r}
+MonthlyMean = aggregate(SNOW ~ Month + Year, BarrowAlaska, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(SNOW ~ Month + Year, BarrowAlaska, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+
+
+```{r}
+plot(MonthlyMean$SNOW, ty='l')
+
+```
+
+```{r}
+plot(MonthlySD$SNOW, ty='l')
+
+plot(SNOW~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(SNOW~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+
+
+
+# Get months SNWD
+BarrowAlaska$Month = months(BarrowAlaska$NewDate) # Creates problems.
+BarrowAlaska$Month = format(as.Date(BarrowAlaska$NewDate), format = "%m")
+BarrowAlaska$Year = format(BarrowAlaska$NewDate, format="%Y")
+```
+
+```{r}
 MonthlyMean = aggregate(SNWD ~ Month + Year, BarrowAlaska, mean)
 
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
 MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
 
 MonthlySD = aggregate(SNWD ~ Month + Year, BarrowAlaska, sd)
 
@@ -326,73 +395,65 @@ head(MonthlySD)
 ```
 
 
+```{r}
+plot(MonthlyMean$SNWD, ty='l')
 
-```{r} 
-plot(SNOW~DATE, import)
-```
-```{r, include=FALSE}
-plot(SNOW~DATE, import[import$DATE<19131231,], ty='l')
-```
-```{r, include=FALSE}
-strDates <- as.character(import$DATE)
-head(strDates)
-import$NewDate <- as.Date(strDates, "%Y%m%d")
-```
-```{r, include=FALSE}
-plot(SNOW~NewDate, import[import$DATE<19130102,], ty='l')
 ```
 
 ```{r}
-BarrowAlaska.lm <- lm(SNOW~NewDate, data=BarrowAlaska)
-summary(BarrowAlaska.lm)
-plot(SNOW~NewDate, BarrowAlaska, ty='l')
-abline(coef(BarrowAlaska.lm), col='red')
+plot(MonthlySD$SNWD, ty='l')
+
+plot(SNOW~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(SNOW~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
 ```
 
-```{r}
-MonthlyMeanSNOW = aggregate(SNOW ~ Month + Year, BarrowAlaska, mean)
 
-MonthlyMeanSNOW$YEAR = as.numeric(MonthlyMeanSNOW$Year)
-head(MonthlyMeanSNWD)
+
+
+### Snowfall Trends in December, January, February
+
+```{r December2}
+plot(MonthlyMean$SNOW[MonthlyMean$Month=="12"], ty='l')
+plot(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+December.lm <- lm(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(December.lm)
+
+abline(coef(December.lm), col="red")
+
 ```
 
-```{r}
-MonthlyMean = aggregate(SNOW ~ Month + Year, BarrowAlaska, mean)
+```{r January2}
+plot(MonthlyMean$SNOW[MonthlyMean$Month=="01"], ty='l')
+plot(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
+January.lm <- lm(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
+summary(January.lm)
 
-MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
-MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+abline(coef(January.lm), col="red")
 
-MonthlySD = aggregate(SNOW ~ Month + Year, BarrowAlaska, sd)
-
-MonthlySD$YEAR = as.numeric(MonthlySD$Year)
-MonthlySD$MONTH = as.numeric(MonthlySD$Month)
-MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
-
-head(MonthlySD)
-```
-
-```{r}
-# Get months
-BarrowAlaska$Month = months(BarrowAlaska$NewDate) # Creates problems.
-BarrowAlaska$Month = format(as.Date(BarrowAlaska$NewDate), format = "%m")
-BarrowAlaska$Year = format(BarrowAlaska$NewDate, format="%Y")
-```
-
-### Snowfall Trend in February
-
-```{r}
-MonthlyMeanSNOW = aggregate(SNOW ~ Month + Year, BarrowAlaska, mean)
-
-MonthlyMeanSNOW$YEAR = as.numeric(MonthlyMeanSNOW$Year)
-head(MonthlyMeanSNOW)
 ```
 
 ```{r February2}
-plot(MonthlyMeanSNOW$SNOW[MonthlyMeanSNOW$Month=="02"], ty='l')
-plot(SNOW~YEAR, data=MonthlyMeanSNOW[MonthlyMeanSNOW$Month=="02",], ty='l') 
-February.lm <- lm(SNOW~YEAR, data=MonthlyMeanSNOW[MonthlyMeanSNOW$Month=="02",])
+plot(MonthlyMean$SNOW[MonthlyMean$Month=="02"], ty='l')
+plot(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="02",], ty='l') 
+February.lm <- lm(SNOW~YEAR, data=MonthlyMean[MonthlyMean$Month=="02",])
 summary(February.lm)
 
 abline(coef(February.lm), col="red")
+
+```
+
+### Snow Depth Trends in December, January, February
+
+```{r January3}
+plot(MonthlyMean$SNWD[MonthlyMean$Month=="12"], ty='l')
+plot(SNWD~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+January.lm <- lm(SNWD~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(January.lm)
+
+abline(coef(January.lm), col="red")
 
 ```
