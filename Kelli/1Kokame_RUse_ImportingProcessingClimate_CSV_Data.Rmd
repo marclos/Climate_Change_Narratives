@@ -234,7 +234,12 @@ abline(coef(Dec.lm), col="red")
 
 3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
 
-4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
+### Discussion
+
+While the data at the Ewa Plantation station is incomplete, it does undoubtedly point to a trend that we would expect to come with climate change. Both the minimum and maximum temperature trends increase over the years. Also, both months in the summer as well as in the winter see this upward climbing trend. 
+
+Though the trend line is not very steep, any change has to be considered over long periods of time. If the temperature follow along this same trend for a longer period of time, the temperature could then increase significant amounts. Also, this data unfortunately does not include data from the most recent years, so it could be missing trends in temperature caused by increases in carbon dioxide levels since 2006. If the station had included readings from 2015 and onward,    
+
 
 
 # Departure from Mean
