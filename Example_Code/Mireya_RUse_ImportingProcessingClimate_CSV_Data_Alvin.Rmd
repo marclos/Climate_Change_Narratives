@@ -1,7 +1,7 @@
 ---
-title: "Maximum Temperatures in Alvin, TX"
+title: "Blog: Climate Change in Alvin, TX"
 author: "Mireya Valencia"
-date: "2/13/2017"
+date: "2/20/2017"
 output:
   html_document: default
 ---
@@ -86,8 +86,6 @@ Alvin.lm <- lm(TMAX~NewDate, data=Alvin)
 ```
 
 
-
-
 ```{r, include=FALSE}
 # Get months
 Alvin$Month = months(Alvin$NewDate) # Creates problems.
@@ -95,7 +93,7 @@ Alvin$Month = format(as.Date(Alvin$NewDate), format = "%m")
 Alvin$Year = format(Alvin$NewDate, format="%Y")
 ```
 
-```{r creatingmonthlymeans, include=FALSE, results='hide'}
+```{r creatingmonthlymeans, include=FALSE}
 MonthlyMean = aggregate(TMAX ~ Month + Year, Alvin, mean)
 
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
@@ -104,13 +102,13 @@ MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
 
 # Frank -- change mean to sd and you'll get standard deviation for each month/year.
 
-MonthlySD = aggregate(TMAX ~ Month + Year, Alvin, sd)
+# MonthlySD = aggregate(TMAX ~ Month + Year, Alvin, sd)
 
-MonthlySD$YEAR = as.numeric(MonthlySD$Year)
-MonthlySD$MONTH = as.numeric(MonthlySD$Month)
-MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+# MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+# MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlyMean$NewDate = MonthlyMean$YEAR + (MonthlyMean$MONTH - 1)/12
 
-head(MonthlySD)
+# head(MonthlySD)
 ```
 
 
@@ -118,28 +116,39 @@ head(MonthlySD)
 plot(MonthlyMean$TMAX, ty='l')
 
 ```
-Alternative Hypothesis: The maximum temperature in Alvin, TX has decreased from 1998-2013.
+Alternative Hypothesis: The maximum temperature in Alvin, TX has increaesd from 1998-2013.
 
-Null hypothesis: The maximum temperature in Alvin, TX has increased from 1998-2013. 
+Null hypothesis: The maximum temperature in Alvin, TX has decreased from 1998-2013. 
 
-Here are the yearly maximum temperatures in Alvin, TX. As you can see, there is an overall decreasing trend (p=value: 0.006735). We would thus reject our null hypothesis, meaning that temperature has decreased from 1998-1998. 
-```{r plottingMonthySD}
-# plot(MonthlySD$TMAX, ty='l')
+Below are the monthly mean temperatures in Alvin, TX from 1998-2013. There is an overall increasing trend in the data. However, with p=0.3042, we cannot reject nor accept our null hypothesis because the data is not statistically.
+```{r plottingMonthlyMean}
+# plot(Monthly$TMAX, ty='l')
 
-plot(TMAX~ NewDate, data=MonthlySD, ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year")
-SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+plot(TMAX~ NewDate, data=MonthlyMean, ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year")
+SD.lm <- lm(TMAX~NewDate, data=MonthlyMean)
 # summary(SD.lm)
 
 abline(coef(SD.lm), col="red")
 
 ```
-Looking at this graph, we would be inclined to believe the maximum temperature in Alvin, TX has decreased over the last century or so. But how does this change when we look at monthly average temperatures?
+As shown in the graph above, there is a huge portion of missing data from about 1920-1960. A gap in data this large poses questions about the validity of the data set. To see if the trend exists independently of this missing data, we can look only at the data collected after 1960. 
+### Subsetting the Data
+```{r}
+MonthlyMean2=subset(MonthlyMean, subset=YEAR>1962)
 
-Our new hypotheses are:
-Alternative Hypothesis: The maximum temperature in Alvin, TX has increased from 1998-2013.
+```
 
-Null hypothesis: The maximum temperature in Alvin, TX has decreased from 1998-2013. 
+```{r plottingMonthySD}
+# plot(MonthlySD$TMAX, ty='l')
 
+plot(TMAX~ NewDate, data=MonthlyMean2, ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year")
+MonthlyMean2.lm <- lm(TMAX~NewDate, data=MonthlyMean2)
+# summary(MonthlyMean2.lm)
+
+abline(coef(MonthlyMean2.lm), col="red")
+
+```
+As shown above, the mean monthly temperatures from 1970-2013 are still increasing, but with a smaller slope than the complete data set. With p-value=0.6986, we cannot reject or support the hypethesis. However, looking at the graph from 1970 on shows us that the increasng trend of max. temperatures persists regardless of missing data. 
 ```{r May, include=FALSE}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
@@ -149,7 +158,9 @@ summary(May.lm)
 abline(coef(May.lm), col="red")
 
 ```
-In the month of December, the maximum mothly temperature increased (p=.015). We reject the null hypothesis, meaning that the maximum temperature increased from 1998-2013. 
+In order to analyze statistically significant data, we can look at maximum temperatures for each month rather than the entire year. 
+
+In the month of December, for instance, the maximum monthly temperature increased(p=.015). We reject the null hypothesis, meaning that the maximum temperature of December increased from 1998-2013. 
 ```{r}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="December") 
@@ -159,11 +170,30 @@ Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
 abline(coef(Dec.lm), col="red")
 
 ```
+```{r}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="12",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="December") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="12",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
 The months of October (p=.00405) and March (p=.0466) show similar trends of increasing maximum temperature and are statistically significant, therby rejecting the null hypothesis. 
 ```{r}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="10"], ty='p')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="October") 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+```{r}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="10",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="October") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="10",])
 # summary(Dec.lm)
 
 abline(coef(Dec.lm), col="red")
@@ -175,6 +205,15 @@ abline(coef(Dec.lm), col="red")
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='p')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="March") 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+```{r}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="03",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="March") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="03",])
 # summary(Dec.lm)
 
 abline(coef(Dec.lm), col="red")
