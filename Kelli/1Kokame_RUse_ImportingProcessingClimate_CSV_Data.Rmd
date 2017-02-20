@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+
 After downloading a dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, we inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. This blog will explore trends in temperature and precipitation at this specific station.  
 
 ```{r importingCSV}
@@ -25,7 +26,7 @@ import = read.csv(file)
 plot(TMAX~DATE, import)
 ```
 
-When we first import the data, it is not yet in a form that we can use and visualize well.As you can see, there are several values that don't make sense. How could the maximum temperature be almost -10000 degrees? It's actually not—the value -9999 is used to represent having no data. We can change these values to "NA" to ensure that the big negative values do not skew our data. 
+When we first import the data, it is not yet in a form that we can use and visualize well. As you can see, there are several values that don't make sense. How could the maximum temperatures be almost -10000 degrees? It's actually not--the value -9999 is used to represent having no data. We can change these values to "NA" to ensure that the big negative values do not skew our data. 
 
 ```{r missings}
 import$TMAX[import$TMAX==-9999] = NA
@@ -83,9 +84,9 @@ plot(TMAX~NewDate, Ewa, ty='l')
 abline(coef(Ewa.lm), col='red')
 summary(Ewa.lm)
 ```
-As you can see, the maximum temperature each year has had a slight upward trend from 1905 when the records began until 2006. The slope is about 3.1e-05 (a very tiny slope). However, we can see that there is a lot of missing data beginning at roughly 1980. While I tried to look into why there were no available measurements for about a 20 year span, no explanations were offered online.  
+As shown, the maximum temperature annually has had a slight upward trend from 1905 when the records began until 2006. The slope is about 3.1e-05 (a very tiny slope). However, we can see that there is a lot of missing data beginning at roughly 1980. While I tried to look into why there were no available measurements for about a 20 year span, no explanations were offered online. 
 
-But since there's a lot of missing data beginning at roughly 1980, let us focus on the trend from roughly 1900 up until that point to see if the missing data has an effect on the trend slope. 
+But since there's a lot of missing data beginning at about 1980, let us focus on the trend from roughly 1900 up until that point to see if the missing data has an effect on the trend slope. 
 
 Here is the graph of maximum temperatures from 1905 up to 1978: 
 ```{r}
@@ -95,7 +96,7 @@ plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l')
 
 ## Evaluating the trend
 
-Now, let us analyze the trend of the maxmimum temperature data.  
+Now, let us analyze the trend of the maxmimum temperature data from 1905 to 1978.  
 ```{r}
 # Linear Model
 Ewa.lm <- lm(TMAX~NewDate, data=Ewa[Ewa$DATE< 19780101,])
@@ -117,12 +118,13 @@ abline(coef(Ewa.lm), col='red')
 ```
 
 
-As you can see, minimum temperatures also have an upward trend, with a slope of roughly 5.8e-05. 
+As you can see, minimum temperatures also have an upward trend, with a slope of about 5.8e-05. 
 
 
 ## Creating Month and Year Variables
 
-While Hawaii's temperatures are relatively constant year-round, let's still take a look at individual months and their data across different years. 
+While Hawaii's temperatures are relatively constant year-round, let's still take a look at individual months and their data across different years.
+
 ```{r}
 # Get months
 Ewa$Month = months(Ewa$NewDate) # Creates problems.
@@ -138,7 +140,7 @@ MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
 MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
 
 
-# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+# Change mean to sd and you'll get standard deviation for each month/year.
 
 MonthlySD = aggregate(TMAX ~ Month + Year, Ewa, sd)
 
@@ -156,6 +158,8 @@ plot(MonthlyMean$TMAX, ty='l')
 ```
 
 below is the standard deviation. 
+
+
 ```{r plottingMonthySD}
 plot(MonthlySD$TMAX, ty='l')
 
@@ -167,14 +171,14 @@ abline(coef(SD.lm), col="red")
 
 ```
 
-### Selecting for 1 Month -- May
+### Selecting for 1 Month -- July
 
-Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
+Let's now look at the trend of temperatures in July, a summer month, throughout the years. 
 
 ```{r May}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
-May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
 summary(May.lm)
 
 abline(coef(May.lm), col="red")
@@ -183,17 +187,10 @@ abline(coef(May.lm), col="red")
 
 Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
 
-```{r December}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
-December.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
-summary(December.lm)
 
-abline(coef(December.lm), col="red")
+### Selecting for 1 Month -- December
 
-```
-
-## Lets try Dec
+Now let's try the same thing with December, a winter month. 
 
 ```{r}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
@@ -216,7 +213,7 @@ MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
 ```
 
-2. Now we plot the mins, and again, find tons of scatter.
+Here's a graphic showing the trend of minimum temperatures in December over the years: 
 
 ```{r}
 plot(MonthlyMeanTMIN$TMIN, ty='l')
@@ -233,6 +230,21 @@ abline(coef(Dec.lm), col="red")
 
 
 3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
+
+Let's look at the trends of minimum temperature throughout the years for the month of July. 
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="7"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="7",], ty='l') 
+July.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="7",])
+summary(July.lm)
+
+abline(coef(July.lm), col="red")
+
+```
 
 ## Discussion
 
