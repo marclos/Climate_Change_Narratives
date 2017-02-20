@@ -236,10 +236,10 @@ Let's look at the trends of minimum temperature throughout the years for the mon
 ```{r}
 plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="7"], ty='l')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="07"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="7",], ty='l') 
-July.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="7",])
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",], ty='l') 
+July.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",])
 summary(July.lm)
 
 abline(coef(July.lm), col="red")
