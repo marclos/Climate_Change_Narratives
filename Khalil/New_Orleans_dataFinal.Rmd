@@ -119,12 +119,12 @@ head(MonthlySD)
 ```
 
 
-```{r plottingMonthyMeans, include=False}
+```{r plottingMonthyMeans, include=F}
 plot(MonthlyMean$TMAX, ty='l')
 
 ```
 below is sd
-```{r plottingMonthySD, include=False}
+```{r plottingMonthySD, include=F}
 plot(MonthlySD$TMAX, ty='l')
 
 plot(TMAX~ NewDate, data=MonthlySD, ty='l')
@@ -224,11 +224,7 @@ head(MonthlyMeanTMIN)
 
 2. Now we plot the mins, and again, find tons of scatter.
 
-<<<<<<< HEAD
-```{r}(include = False)
-=======
 ```{r setup14, echo=FALSE}
->>>>>>> 590bbd3b32c603e07389572d2dac3ccefedf0a26
 plot(MonthlyMeanTMIN$TMIN, ty='l')
 
 plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
