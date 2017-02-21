@@ -1,7 +1,7 @@
 ---
-title: "Importing and Processing CSV Files"
-author: "Marc Los Huertos"
-date: "12/6/2016"
+title: "Climate Data and Analysis for Lodi, California"
+author: "Marisa Weinstock"
+date: "02/20/2017"
 params: 
 data: "30years"
 output: html_document
@@ -18,55 +18,55 @@ file = "/home/CAMPUS/mawd2015/github/Climate_Change_Narratives/Data/87804MAW3.cs
 import = read.csv(file)
 ```
 
-```{r checking, echo=FALSE, results='hide'}
+```{r checking, include=FALSE}
 plot(TMAX~DATE, import)
 ```
 
 
-```{r missings, echo=FALSE, results='hide'}
+```{r missings, include=FALSE}
 import$TMAX[import$TMAX==-9999] = NA
 import$TMIN[import$TMIN==-9999] = NA
 ```
 
-```{r setup4, echo=FALSE, results='hide'}
+```{r setup4, include=FALSE}
 plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 ```
 
 
 
-```{r, echo=FALSE, results='hide'}
+```{r, include=FALSE}
 plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
 ```
 
-```{r, echo=FALSE, results='hide'}
+```{r, include=FALSE}
 strDates <- as.character(import$DATE)
 head(strDates)
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
 
-```{r, echo=FALSE, results='hide'}
+```{r, include=FALSE}
 plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
 
 
-```{r, echo=FALSE, results='hide'}
+```{r, include=FALSE}
 unique(import$STATION_NAME)
 ```
 
 
-```{r, echo=FALSE, results='hide'}
+```{r, include=FALSE}
 LosAngeles <- subset(import, STATION_NAME=="LODI CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 ```
 
-```{r, echo=FALSE, results='hide'}
+```{r, include=FALSE}
 plot(TMAX~NewDate, LosAngeles, ty='l')
 ```
 
-```{r, echo=FALSE, results='hide'}
+```{r, include=FALSE}
 LosAngeles=subset(LosAngeles, subset=DATE>19300101)
 ```
 
-```{r, echo=FALSE, results='hide'}
+```{r, include=FALSE}
 # Linear Model
 LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
 summary(LosAngeles.lm)
@@ -74,14 +74,14 @@ plot(TMAX~NewDate, LosAngeles, ty='l')
 abline(coef(LosAngeles.lm), col='red')
 ```
 
-```{r, echo=FALSE, results='hide'}
+```{r, include=FALSE}
 # Get months
 LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
 LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
 LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
 ```
 
-```{r creatingmonthlymeans, echo=FALSE, results='hide'}
+```{r creatingmonthlymeans, include=FALSE}
 MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
 
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
@@ -100,12 +100,12 @@ head(MonthlySD)
 ```
 
 
-```{r plottingMonthyMeans, echo=FALSE, results='hide'}
+```{r plottingMonthyMeans, include=FALSE}
 plot(MonthlyMean$TMAX, ty='l')
 
 ```
 
-```{r plottingMonthySD, echo=FALSE, results='hide'}
+```{r plottingMonthySD, include=FALSE}
 plot(MonthlySD$TMAX, ty='l')
 
 plot(TMAX~ NewDate, data=MonthlySD, ty='l')
@@ -116,19 +116,24 @@ abline(coef(SD.lm), col="red")
 
 ```
 
-## Introduction to Lodi
+## Introduction to Lodi and its Water
 Lodi is a city located in San Joaquin County, California, in the northern portion of California's Central Valley. Lodi is best known for being a center of winegrape production (the "Zinfandel Capital of the World”). Today, the Lodi area is home to several large manufacturing, general services, and agricultural companies.
 
-![Through Lodi is the Mokelumne River and Bear Creek. The city has been in an agreement with the Woodbridge Irrigation District since 2003 and extending until 2047 to purchase an average annual delivery of 2.345 billion gallons of surface water from the Mokelumne River per year for the city.](LODI.jpg)
+![Through Lodi is the Mokelumne River and Bear Creek. Through an agreement with the Woodbridge Irrigation District made in 2003 and extending until 2047, Lodi purchases an average annual delivery of 2.345 billion gallons of surface water from the Mokelumne River per year for the city.](LODI.jpg)
 
-## Water's Impact on Lodi
-The Sacramento-San Joaquin Delta is a network of channels fed by freshwater flow from rivers, especially the San Joaquin Rivers and Sacramento Rivers. In connection to the San Joaquin River is Mokelumne River, which travels from the Sierra Nevada to curl along the city of Lodi and then connect with the mouth of the Sacramento-San Joaquin Delta. With the Sierra Nevada’s snowpack declining, earlier runoff, and reduced spring and summer streamflows affecting fresh surface water supplies, further reliance on the already overdrafted groundwater resources is expected (Cayan, 2004). Groundwater depletion from 1960 to 2012 occurred mostly in the Tulare Basin, totalled to 80 km3, and sped up in times of drought (Scanlon, 2012). Increased temperature and evapotranspiration will result in increased domestic water use within the city, as well. Although Lodi’s primary source of water is groundwater, which is collected through wells, the city has been in an agreement with the Woodbridge Irrigation District since 2003 and extending until 2047 to purchase an average annual delivery of 2.345 billion gallons of surface water from the Mokelumne River per year for the city. As said in the 2015 Lodi Water Plan, “While the City does not provide water to agriculture, increased evapotranspiration will increase agricultural water demand in the area” (AR4). Curtailments in surface water pumping to the Central Valley for agriculture increase unemployment among farm workers.
-The physicality of the water is changing due to climate change, as well. Sea level rise will induce intrusion of saline water into the Delta, endangering water supply and agriculture in the reclaimed regions like Lodi that lie west and north west of the Delta region. The protective levees also threaten massive flooding with raising sea level (Vanderwarker, 2009).
-Water temperatures provide an important constraint on ecological function, such as fish spawning, swimming performance, metabolism, effects of aquatic invertebrates, and mortality (Source). One species of concern within the Sacramento-San Joaquin Delta that is sensitive to water temperatures at various points in the life cycles is the Sacramento winter run Chinook salmon, which is threatened by water temperatures and drought years (Yates, 2008). These and other salmon in the Mokelumne River, transport biomass and nitrogen comparable to the Pacific Northwest salmon streams, which is key to stream and riparian ecosystem function (Merz, 2006). In fact, the studied native riparian vegetation in the Mokelumne River close to spawning sites received 18-25% of foliar nitrogen from marine sources (Merz, 2006). Loss of Pacific salmon also damages the local economy because riparian vegetation and local agriculture, especially that of grape production, are dependent on this ecosystem (Merz, 2006). Different species of Fairy shrimp are threatened within the Central Valley due to climate changes, as well (Puke, 2005).
+The Sacramento-San Joaquin Delta is a network of channels fed by freshwater flow from rivers, especially from the San Joaquin Rivers and Sacramento Rivers. In connection to the San Joaquin River is Mokelumne River, which travels from the Sierra Nevada mountain range to curl along the city of Lodi in order to eventually connect with the mouth of the Sacramento-San Joaquin Delta.
 
-### Minimum Temperatures
+Despite Lodi's deal with the Woodbridge Irrigation District, groundwater is the city's primary source of water. Groundwater, which is water held underground in the soil or in pores and crevices in rock, is irrigated for the city's usage through wells.
 
-The statistically signifiant increase in minimum temperatures in August, September, and October illustrate warming in Lodi. This anthropogenic warming dries up groundwater reserve, which is water held underground in the soil or in pores and crevices in rock. Although seemingly insignificant, groundwater holds grave importance for Lodi and the city's surroundings. Lodi uses groundwater for its water supply and the depletion of groundwater in the Central Valley caused the majority of the major water loss in the Sacramento and San Joaquin River Basins. Between October of 2003 and March of 2010, this showed a loss of 31.0 ± 2.7 mm/yr−1 equivalent in water height, resulting in an overall loss of 30.9 km3 for the entire study period of 78 months. The Central Valley lost 20.4 ± 3.9 mm yr−1 of groundwater during the 78-month period, or 20.3 km3 in volume. Given the already naturally low rates of groundwater recharge in the San Joaquin Valley and population growth, a continuance of groundwater depletion is expected (Famiglietti, 2011). Lodi’s surrounding San Joaquin Valley relies more heavily on groundwater than its Sacramento counterpart because it’s drier climate results in more limited natural surface water available.
+Streamflow within the Central Valley, an important factor in recharging the aquifer system, is influenced by precipitation in the mountains surrounding the valley. Ground-water pumpage, which greatly exceeds the natural recharge rate, has dramatically altered the ground-water flow in the Central Valley. With the Sierra Nevada’s snowpack declining, earlier runoff, and reduced spring and summer streamflows affecting fresh surface water supplies due to anthropogenic warming, further reliance on the already overdrafted groundwater resources is expected (Cayan, 2004).
+
+![Comparing Sierra Nevada snowpack in two Januaries, illustrating the extremely dry conditions in early 2014. Source: NASA](Sierra Nevada.png)
+
+Increased temperature and evapotranspiration will result in increased domestic water use within the city, as well. While the City itself does not provide water to agriculture, increased evapotranspiration will increase agricultural water demand in the area, which will in turn affect groundwater supplies and economic growth.
+
+## Anthropogenic Warming on Water Supply
+
+Although seemingly insignificant, groundwater holds grave importance for Lodi and the city's surroundings and anthropogenic warming dries up groundwater reserve. Lodi uses groundwater for its water supply and the depletion of groundwater in the Central Valley caused the majority of the major water loss in the Sacramento and San Joaquin River Basins. Between October of 2003 and March of 2010, this showed a loss of 31.0 ± 2.7 mm/yr−1 equivalent in water height, resulting in an overall loss of 30.9 km3 for the entire study period of 78 months. The Central Valley lost 20.4 ± 3.9 mm yr−1 of groundwater during the 78-month period, or 20.3 km3 in volume. Given the already naturally low rates of groundwater recharge in the San Joaquin Valley and population growth, a continuance of groundwater depletion is expected (Famiglietti, 2011). Lodi’s surrounding San Joaquin Valley relies more heavily on groundwater than its Sacramento counterpart because it’s drier climate results in more limited natural surface water available.
 
 With significant cuts in managed water allocations in response to the drought, farmers, particularly those in the San Joaquin Valley, are forced to tap heavily into the already heavily depended on groundwater reserves in order to meet irrigation demands. The depletion of groundwater in the Central Valley caused the majority of the major water loss in the Sacramento and San Joaquin River Basins, which showed a loss of 31.0 ± 2.7 mm/yr−1 equivalent in water height, between October of 2003 and March of 2010 and an overall loss of 30.9 km3 for the entire study period of 78 months. The Central Valley lost 20.4 ± 3.9 mm yr−1 of groundwater during the 78-month period, or 20.3 km3 in volume. Given the already naturally low rates of groundwater recharge in the San Joaquin Valley and population growth, a continuance of groundwater depletion is expected (Famiglietti, 2011).
 
@@ -136,7 +141,21 @@ As farmers’ irrigation systems are threatened due to a lack of groundwater, so
 
 Through anthropogenic warming, the regional climate of the Central Valley hits extremes, in particular with high extremes during the growing season (White, 2006). This change in the frequency of extreme temperatures has an extreme effect on biological and agricultural systems than changes in mean climate. This holds especially true for viticulture, which is dramatically affected by environmental factors and is a source of cultural pride for Lodi (White, 2006). A 2013 study shows that areas suitable for viticulture are predicted to decrease 25% to 73% in all major wine producing regions by 2050 (Hannah, 2013). This result is driven mostly by changes in minimum temperatures throughout the year (White, 2006). In response, attempts to maintain wine grape productivity and quality in the face of warming may be associated with increased water use for irrigation and the use of misting or sprinkling water in order to cool grapes.
 
+Anthropogenic warming causes the Cascade Range and Sierra Navada mountain ranges to experience a decline in snowpack, earlier runoff, and reduced spring and summer streamflows. This affects fresh surface water supplies, contributing to a further reliance on the already drafted groundwater resources (Cayan, 2004). 
 
+## Anthropogenic Warming Affecting Water Physicality
+
+The physicality of the water is changing due to climate change, as well. Sea level rise will induce intrusion of saline water into the Delta, endangering water supply and agriculture in the reclaimed regions like Lodi that lie west and north west of the Delta region. The protective levees also threaten massive flooding with raising sea level (Vanderwarker, 2009).
+
+Water temperatures provide an important constraint on ecological function, such as fish spawning, swimming performance, metabolism, effects of aquatic invertebrates, and mortality (Source). One species of concern within the Sacramento-San Joaquin Delta that is sensitive to water temperatures at various points in the life cycles is the Sacramento winter run Chinook salmon, which is threatened by water temperatures and drought years (Yates, 2008). These and other salmon in the Mokelumne River, transport biomass and nitrogen comparable to the Pacific Northwest salmon streams, which is key to stream and riparian ecosystem function (Merz, 2006). In fact, the studied native riparian vegetation in the Mokelumne River close to spawning sites received 18-25% of foliar nitrogen from marine sources (Merz, 2006). Loss of Pacific salmon also damages the local economy because riparian vegetation and local agriculture, especially that of grape production, are dependent on this ecosystem (Merz, 2006). Different species of Fairy shrimp are threatened within the Central Valley due to climate changes, as well (Puke, 2005).
+
+## Anthropogenic Warming on Viticulture
+
+
+
+### Minimum Temperatures
+
+The statistically signifiant increase in minimum temperatures in August, September, and October illustrate warming in Lodi.
 
 
 ```{r, echo=FALSE, results='hide'}
@@ -153,73 +172,62 @@ MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
 ```
 
-```{r, echo=FALSE, results='hide'}
-plot(MonthlyMeanTMIN$TMIN, ty='l')
+```{r, include=FALSE}
+##plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="02"], ty='l')
+##plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="02"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="02",], ty='l') 
-Feb.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="02",])
-summary(Feb.lm)
+##plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="02",], ty='l') 
+##Feb.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="02",])
+##summary(Feb.lm)
 
-abline(coef(Feb.lm), col="red")
+##abline(coef(Feb.lm), col="red")
 
-## Minimum Temperatures in August
-
-```{r}
-plot(MonthlyMeanTMIN$TMIN, ty='l')
-
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="08"], ty='l')
-
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="08",], ty='l') 
-Aug.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="08",])
-summary(Aug.lm)
-
-abline(coef(Aug.lm), col="red")
+##Minimum Temperatures in August
 
 ```
 
 ## Minimum Temperature Increase in December
 ```{r, echo=FALSE, results='hide'}
-#plot(MonthlyMeanTMIN$TMIN, ty='l')
+##plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
+##plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
 
 plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
 Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
 summary(Dec.lm)
 
-abline(coef(Dec.lm), col="red")
+abline(coef(Dec.lm), col="orange")
 
 ```
-The minimum temperatures within the month of January increase at a slope of `r coef(Dec.lm)[2]` degress per year, with a statistically insignificant probability of `r round(summary(Dec.lm)$coefficients[2,4],7)`. However, the 0.05 cut-off for statistic significance is arbitrary. In addition, this rise in minimum temperatures may be illustrating a trend that will continue with time to potentially create statistical signifiance down the line.
+The minimum temperatures within the month of December increase at a slope of `r coef(Dec.lm)[2]` degress per year, with a statistically insignificant probability of `r round(summary(Dec.lm)$coefficients[2,4],7)`. However, the 0.05 cut-off for statistic significance that this data almost reaches is arbitrary. In addition, this rise in minimum temperatures may be illustrating a trend that will continue with time to potentially create statistical signifiance down the line. As a trend, this heightening in minimum temperature in December relates to wine production because the cooling time in the coldest months holds great importance. An increase in minimum temperatures cripples grape production during a vital time.
 
 ## Minimum Temperature Increase in October
 ```{r, echo=FALSE, results='hide'}
-plot(MonthlyMeanTMIN$TMIN, ty='l')
+#plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], ty='l')
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], ty='l')
 
 plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], ty='l') 
 Oct.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",])
 summary(Oct.lm)
 
-abline(coef(Oct.lm), col="purple")
+abline(coef(Oct.lm), col="green")
 
 ```
 The minimum temperatures within the month of January increase at a slope of `r coef(Oct.lm)[2]` degress per year, with a very statistically significant probability of `r round(summary(Oct.lm)$coefficients[2,4],7)`.
 
 ## Minimum Temperature Increase in September
 ```{r, echo=FALSE, results='hide'}
-plot(MonthlyMeanTMIN$TMIN, ty='l')
+#plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], ty='l')
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], ty='l')
 
 plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], ty='l') 
 Sep.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",])
 summary(Sep.lm)
 
-abline(coef(Sep.lm), col="red")
+abline(coef(Sep.lm), col="purple")
 
 ```
-The minimum temperatures within the month of January increase at a slope of `r coef(Sep.lm)[2]` degress per year, with a high statistically significant probability of `r round(summary(Sep.lm)$coefficients[2,4],7)`. 
+The minimum temperatures within the month of January increase at a slope of `r coef(Sep.lm)[2]` degrees per year, with a high statistically significant probability of `r round(summary(Sep.lm)$coefficients[2,4],7)`. 
