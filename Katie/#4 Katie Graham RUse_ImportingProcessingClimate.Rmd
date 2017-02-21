@@ -1,11 +1,13 @@
 ---
 title: "Climate Trends in Barrow, Alaska"
 author: "Katie Graham"
-date: "2/20/2017"
-output: html_document
+date: "2/13/2017"
+output:
+  pdf_document: default
+  html_document: default
 ---
 
-Barrow is located at the northernmost tip of the state of Alaska and sits entirely on top of frozen permafrost. This small city is home to 4,384 residents, most of whom are Iñupiaq Alaska Natives. With warming temperatures, however, the permafrost underlying Barrow is thawing, placing residents at severe risk of infrastructure damage. In addition to warming permafrost, melting sea ice and glaciers, coastal erosion, earlier spring snowmelt, and reduced snow fall have also been consequences of the recent warming trends.
+Barrow is located at the northernmost tip of the state of Alaska and sits entirely on top of frozen permafrost. This small city is home to 4,384 residents, most of whom are Iñupiaq Alaska Natives. With warming temperatures, however, the permafrost underlying Barrow is thawing, placing residents at severe risk of infrastructure damage. In addition to warming permafrost, melting sea ice and glaciers, coastal erosion, earlier spring snowmelt, and reduced snow fall have also been documented.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -29,7 +31,7 @@ import$TMIN[import$TMIN==-9999] = NA
 
 import$SNOW[import$SNOW==-9999] = NA
 import$SNWD[import$SNWD==-9999] = NA
-import$PRCP[import$SNWD==-9999] = NA
+import$PRCP[import$PRCP==-9999] = NA
 ```
 
 ```{r, include=FALSE}
@@ -113,8 +115,6 @@ abline(coef(SD.lm), col="red")
 
 ### Warming Trends in Monthly Maximum Temperatures: December, January, and February
 
-In particular, December, January, and February have been affected most significantly by climate warming. According to data collected by the National Oceanic and Atmospheric Administration (NOAA), over the past 115 years, January in Barrow, Alaska has warmed at a rate of 0.0651892 degrees per year or 6.519 degrees per 100 years. Correspondingly, December has warmed at a rate of 0.0559809 degrees per year or 5.598 per 100 years. And, February has warmed at a rate of 0.0485416 degrees per year or 4.854 degrees per 100 years.
-
 ```{r December}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
@@ -153,11 +153,6 @@ abline(coef(February.lm), col="red")
 Now, the change is `r coef(February.lm)[2]` degrees/year or `r round(coef(February.lm)[2]*100, 3)` degrees/100 years with a probability of `r round(summary(February.lm)$coefficients[2,4],4)`. We can reject the null hypothesis that there is no relationship, since the p value is less than 0.05. In other words, the observed warming trend is statistically significant for the month of February.
 
 Based on the above figures, it is evident that over the past 115 years winters in Barrow, Alaska have gotten significantly warmer. For residents of Barrow, this warming has been visible in the form of thawing permafrost and melting snow, sea ice, and glaciers.
-
-The surface air temperatures observed in late 2016 and early 2017 are some of the highest on record, with 2017 marking the hottest January since the late 1920s. While rising winter temperatures in Barrow have resulted in some benefits such as a longer growing season, repercussions have also been making their presence known. 
-
-For one thing, sea ice has been melting, leading to rising sea levels, coastal erosion, and infrastructure and habitat damage. Furthermore, as permafrost thaws, organic matter decomposes, releasing huge amounts of carbon dioxide and methane into the atmosphere. This has transformed the Arctic tundra from a net sink for carbon into a major source of carbon. This is compounded by the growing issue of wildfires in Alaska, which is thawing even more permafrost, and thus sending more heat-trapping gases into the atmosphere.
-
 
 ```{r, include=FALSE}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, BarrowAlaska, mean)
@@ -241,27 +236,69 @@ The model suggests that the precipitation is declines at a rate of `r coef(Yearl
 summary(YearlySum.lm)
 ```
 
-Other attempts that didn't work!
 ```{r}
-YearlySum2 = subset(YearlySum, select=c(PRCP))
-YearlyMean = mean(YearlySum2$PRCP)
-
-#filter(YearlySum2)
-
-
-
-#Doesn't work...
-# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
-# ma(YearlySum$PRCP)  
-
-
-yearlyts =ts(YearlySum2) 
-str(yearlyts)
-
-
-
-
+BarrowAlaska$SNOW[BarrowAlaska$SNOW==-9999] <- NA
+YearlySum = aggregate(SNOW ~ Year, BarrowAlaska, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$SNOW)
 ```
+
+A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
+
+Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average.
+```{r}
+plot(SNOW~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(SNOW~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$SNOW, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+The model suggests that the precipitation is declines at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
+
+```{r}
+summary(YearlySum.lm)
+```
+
+
+
+```{r}
+BarrowAlaska$SNWD[BarrowAlaska$PRCP==-9999] <- NA
+YearlySum = aggregate(SNWD ~ Year, BarrowAlaska, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$SNWD)
+```
+
+A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
+
+Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average.
+```{r}
+plot(SNWD~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(SNWD~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$SNWD, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+The model suggests that the precipitation is declines at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
+
+```{r}
+summary(YearlySum.lm)
+```
+
+
 yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
 
 plot(yearlyts, lty = 1, col = 3)
@@ -353,7 +390,7 @@ abline(coef(BarrowAlaska.lm), col='red')
 MonthlyMeanSNOW = aggregate(SNOW ~ Month + Year, BarrowAlaska, mean)
 
 MonthlyMeanSNOW$YEAR = as.numeric(MonthlyMeanSNOW$Year)
-head(MonthlyMeanSNWD)
+head(MonthlyMeanSNOW)
 ```
 
 ```{r}
@@ -371,28 +408,57 @@ MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
 head(MonthlySD)
 ```
 
+
+
+```{r} 
+plot(PRCP~DATE, import)
+```
+```{r, include=FALSE}
+plot(PRCP~DATE, import[import$DATE<19131231,], ty='l')
+```
+```{r, include=FALSE}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+```{r, include=FALSE}
+plot(PRCP~NewDate, import[import$DATE<19130102,], ty='l')
+```
+
+```{r}
+BarrowAlaska.lm <- lm(PRCP~NewDate, data=BarrowAlaska)
+summary(BarrowAlaska.lm)
+plot(PRCP~NewDate, BarrowAlaska, ty='l')
+abline(coef(BarrowAlaska.lm), col='red')
+```
+
+```{r}
+MonthlyMeanPRCP = aggregate(PRCP ~ Month + Year, BarrowAlaska, mean)
+
+MonthlyMeanPRCP$YEAR = as.numeric(MonthlyMeanPRCP$Year)
+head(MonthlyMeanPRCP)
+```
+
+```{r}
+MonthlyMean = aggregate(PRCP ~ Month + Year, BarrowAlaska, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+MonthlySD = aggregate(PRCP ~ Month + Year, BarrowAlaska, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+
+
+
 ```{r}
 # Get months
 BarrowAlaska$Month = months(BarrowAlaska$NewDate) # Creates problems.
 BarrowAlaska$Month = format(as.Date(BarrowAlaska$NewDate), format = "%m")
 BarrowAlaska$Year = format(BarrowAlaska$NewDate, format="%Y")
-```
-
-### Snowfall Trend in February
-
-```{r}
-MonthlyMeanSNOW = aggregate(SNOW ~ Month + Year, BarrowAlaska, mean)
-
-MonthlyMeanSNOW$YEAR = as.numeric(MonthlyMeanSNOW$Year)
-head(MonthlyMeanSNOW)
-```
-
-```{r February2}
-plot(MonthlyMeanSNOW$SNOW[MonthlyMeanSNOW$Month=="02"], ty='l')
-plot(SNOW~YEAR, data=MonthlyMeanSNOW[MonthlyMeanSNOW$Month=="02",], ty='l') 
-February.lm <- lm(SNOW~YEAR, data=MonthlyMeanSNOW[MonthlyMeanSNOW$Month=="02",])
-summary(February.lm)
-
-abline(coef(February.lm), col="red")
-
 ```
