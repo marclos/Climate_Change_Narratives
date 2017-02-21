@@ -44,7 +44,7 @@ Yikes! What's wrong? As it turns it the problem is that with how the dates are s
 
 
 ```{r}
-plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+plot(TMAX~DATE, import[import$DATE<19300102,], ty='l')
 ```
 
 ## Fixing the Dates
@@ -142,10 +142,10 @@ abline(coef(SD.lm), col="red")
 
 Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
 
-```{r May}
+```{r July}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='l') 
-July.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
+July.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07"])
 summary(July.lm)
 
 abline(coef(July.lm), col="red")
