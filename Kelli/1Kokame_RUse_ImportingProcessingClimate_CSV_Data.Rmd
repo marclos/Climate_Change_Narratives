@@ -10,7 +10,18 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-After downloading a dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, we inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. This blog will explore trends in temperature and precipitation at this specific station.  
+
+  ![Above: Location of Ewa Beach on O`ahu](Ewa_Plantation.png)
+  
+  
+  
+  ![Above: Ewa Plantation as an active mill](Ewa_Plantation1.jpg) 
+
+## About our station 
+
+Ewa Plantation began in 1890 as a sugarcane plantation mill. Through the 1920s and 1930s, Ewa Plantation was a booming and growing business. Perhaps the plantation began monitoring climate because of climate's impacts on sugarcane, but in any case, they had a climatic dataset beginning in 1905. Currently, sugar plantations in Hawai`i are no longer in operation; therefore, the Ewa Plantation now serves as a historic landmark. However, they continued collecting climatic data even after they were no longer a functioning plantation, collecting data up until the year 2006.  
+
+After downloading their dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, we inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. This blog will explore trends in temperature and precipitation at this specific station.  
 
 ```{r importingCSV}
 # Importing Scripts
@@ -19,8 +30,7 @@ file = "/home/CAMPUS/kak22013/Climate_Change_Narratives/Kelli/Kokame.csv"
 
 import = read.csv(file)
 ```
-
-## Let's take a look at our data. 
+## Let's take a look at our data 
 
 ```{r checking}
 plot(TMAX~DATE, import)
@@ -247,16 +257,6 @@ abline(coef(July.lm), col="red")
 
 The minimum temperatures in the month of July are increasing as well, with a slope of .025. This means that at the current trend, temperatures are increasing at a rate of .025 degrees fahrenheit per year, or 2.5 degrees fahrenheit per century. The understood goal is to keep climate change within 2 degrees celcius or 3.6 degrees fahrenheit above preindustrial levels, and while we can by no means generalize the trends of Ewa Station to the entire globe, this is still a concerning rate. 
 
-## Discussion
-
-While the data at the Ewa Plantation station is incomplete, it does undoubtedly point to a trend that we would expect to come with climate change. Both the minimum and maximum temperature trends increase over the years. Also, both months in the summer as well as in the winter see this upward climbing trend. 
-
-Though the trend line is not very steep, any change has to be considered over long periods of time. If the temperature follow along this same trend for a much longer period of time, the temperature could then have an overall significant increase. Also, this data unfortunately does not include data from the most recent years, so it could be missing trends in temperature caused by increases in carbon dioxide levels since 2006. If the station had included readings from 2015 and onward, we could possibly see the effects of carbon dioxide in the atmosphere reaching over 400 parts per million for the first time in recorded history. 
-
-
-
-
-
 # Precipitation 
 
 Here we will try to analyze ///
@@ -282,12 +282,13 @@ Now let's try /..
 
 #plot(MonthlyMeanPRCP$PRCP[MonthlyMeanPRCP$Month=="07"], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
 
-plot(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="07",], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
+plot(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
 
-JulyPRCP.lm <- lm(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="07",])
+JulyPRCP.lm <- lm(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",])
 summary(JulyPRCP.lm)
 abline(coef(JulyPRCP.lm), col="blue")
 ```
+
 
 ```{r}
 MonthlyMeanPRCP = aggregate(PRCP ~ Month + Year, Ewa, mean)
@@ -298,80 +299,11 @@ plot(MonthlyMeanPRCP$PRCP, ty='l')
 ```
 
 
-## Experimental Portion --- Precipitation
+## Discussion
 
-Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
+While the data at the Ewa Plantation station is incomplete, it does undoubtedly point to a trend that we would expect to come with climate change. Both the minimum and maximum temperature trends increase over the years. Also, both months in the summer as well as in the winter see this upward climbing trend. 
 
-First, we need a "mean" -- The IPCC uses 1961-1990 as a norm, I don't know what is the standard for California, so we should look that up.
-
-Second, we need to remove the missing values and evalaute which years have complete years. If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season?  
-
-Third, we will need to decide what level of aggredation -- monthly, yearly, etc. 
-
-Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
-
-
-```{r}
-Ewa$PRCP[Ewa$PRCP==-9999] <- NA
-YearlySum = aggregate(PRCP ~ Year, Ewa, sum)
-YearlySum$YEAR = as.numeric(YearlySum$Year) 
-YearlyMean = mean(YearlySum$PRCP)
-```
-
-A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
-
-Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
-```{r}
-plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
-abline(h=YearlyMean, col="blue")
-YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
-abline(coef(YearlySum.lm), col="green")
-
-n <- 5
-k <- rep(1/n, n)
-k
-
-y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
-lines(YearlySum$YEAR, y_lag, col="red")
-```
-
-The model suggests that the precipitation is declines at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
-
-```{r}
-summary(YearlySum.lm)
-```
-
-Other attempts that didn't work!
-```{r}
-YearlySum2 = subset(YearlySum, select=c(PRCP))
-YearlyMean = mean(YearlySum2$PRCP)
-
-#filter(YearlySum2)
+Though the trend line is not very steep, any change has to be considered over long periods of time. If the temperature follow along this same trend for a much longer period of time, the temperature could then have an overall significant increase. Also, this data unfortunately does not include data from the most recent years, so it could be missing trends in temperature caused by increases in carbon dioxide levels since 2006. If the station had included readings from 2015 and onward, we could possibly see the effects of carbon dioxide in the atmosphere reaching over 400 parts per million for the first time in recorded history. 
 
 
 
-#Doesn't work...
-# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
-# ma(YearlySum$PRCP)  
-
-
-yearlyts =ts(YearlySum2) 
-str(yearlyts)
-
-
-
-
-```
-yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
-
-plot(yearlyts, lty = 1, col = 3)
-
-lines(yearlyts.lag)
-
-YearlySum$Departure = YearlyMean - YearlySum$PRCP
-YearlySum$YEAR = as.numeric(YearlySum$Year)
-
-plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
-abline(h=YearlyMean, col="blue")
-
-lines(Departure ~ YEAR, data=YearlySum, col="red")
