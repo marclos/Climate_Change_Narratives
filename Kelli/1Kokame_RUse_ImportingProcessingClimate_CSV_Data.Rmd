@@ -154,7 +154,6 @@ head(MonthlySD)
 
 ```{r plottingMonthyMeans}
 plot(MonthlyMean$TMAX, ty='l')
-
 ```
 
 below is the standard deviation. 
@@ -246,6 +245,8 @@ abline(coef(July.lm), col="red")
 
 ```
 
+The minimum temperatures in the month of July are increasing as well, with a slope of .025. This means that at the current trend, temperatures are increasing at a rate of .025 degrees fahrenheit per year, or 2.5 degrees fahrenheit per century. The understood goal is to keep climate change within 2 degrees celcius or 3.6 degrees fahrenheit above preindustrial levels, and while we can by no means generalize the trends of Ewa Station to the entire globe, this is still a concerning rate. 
+
 ## Discussion
 
 While the data at the Ewa Plantation station is incomplete, it does undoubtedly point to a trend that we would expect to come with climate change. Both the minimum and maximum temperature trends increase over the years. Also, both months in the summer as well as in the winter see this upward climbing trend. 
@@ -263,8 +264,25 @@ Ewa$PRCP[Ewa$PRCP==-9999] <- NA
 PRCP_mean = mean(Ewa$PRCP, na.rm=T)
 
 plot(PRCP~NewDate, data=Ewa)
-abline(h=PRCP_mean, col="blue")
+abline(h=PRCP_mean, col="green")
 
+```
+```{r}
+plot(MonthlyMeanPRCP$PRCP, ty='l')
+
+plot(MonthlyMeanPRCP$PRCP[MonthlyMeanPRCP$Month=="07"], ty='l')
+
+JulyPRCP.lm <- lm(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="07",])
+summary(JulyPRCP.lm)
+abline(coef(JulyPRCP.lm), col="blue")
+```
+
+```{r}
+MonthlyMeanPRCP = aggregate(PRCP ~ Month + Year, Ewa, mean)
+
+MonthlyMeanPRCP$YEAR = as.numeric(MonthlyMeanPRCP$Year)
+head(MonthlyMeanPRCP)
+plot(MonthlyMeanPRCP$PRCP, ty='l')
 ```
 
 
