@@ -257,7 +257,9 @@ Though the trend line is not very steep, any change has to be considered over lo
 
 
 
-# Departure from Mean
+# Precipitation 
+
+Here we will try to analyze ///
 
 ```{r}
 Ewa$PRCP[Ewa$PRCP==-9999] <- NA
@@ -268,9 +270,19 @@ abline(h=PRCP_mean, col="green")
 
 ```
 ```{r}
-plot(MonthlyMeanPRCP$PRCP, ty='l')
+MonthlyMeanPRCP = aggregate(PRCP ~ Month + Year, Ewa, mean)
 
-plot(MonthlyMeanPRCP$PRCP[MonthlyMeanPRCP$Month=="07"], ty='l')
+MonthlyMeanPRCP$YEAR = as.numeric(MonthlyMeanPRCP$Year)
+head(MonthlyMeanPRCP)
+```
+
+Now let's try /..
+```{r}
+#plot(MonthlyMeanPRCP$PRCP, ty='l')
+
+#plot(MonthlyMeanPRCP$PRCP[MonthlyMeanPRCP$Month=="07"], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
+
+plot(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="07",], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
 
 JulyPRCP.lm <- lm(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="07",])
 summary(JulyPRCP.lm)
