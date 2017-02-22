@@ -69,6 +69,14 @@ This astounding figure made me wonder why people doubted global warming. Perhaps
 
 Last year marked the closing of the El Nino weather pattern. Regardless of this, scientists still predict temperature rises for the next 5 years. For Oklahoma, annual mean temperatures are expected to rise by approximately 2.5°F by 2040 (Karl). This number nearly doubles the 1.3°F increase in mean temperature that occurred between 1993 and 2008. In future summers, temperature increases are predicted to be slightly higher at 2.7 - 2.9°F. These predictions are backed up by EPA whose research also forecasts the number of days over 100°F  to quadruple by mid century. Although my data shows a trend that closely aligns to this prediction, there are substantial gaps in my data set. There is a lack of observations as concrete data has only been collected for the past 2 decades. Thus, future predictions cannot be perfect. 
 
+Other things to mention: 
+
+Logical fallacies: cannot assume that all climate changes are the same / equalized everywhere in the world. Acknowledge that this is a hasty generalization. 
+Null hypothesis : because probability is less than 0.05, we have to say that there isnt a trend. Trend line is too vague. 
+Tulsa international airport 
+4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
+
+
 ##Average TMAX - May 
 ```{r May, echo=FALSE}
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
