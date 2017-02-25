@@ -1,90 +1,72 @@
 ---
-title: "Importing and Processing CSV Files"
-author: "Marc Los Huertos"
-date: "12/6/2016"
+title: "Climate Data and Analysis for Lodi, California"
+author: "Marisa Weinstock"
+date: "02/20/2017"
+params: 
+data: "30years"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r, echo=FALSE, results='hide'}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Importing CSV Files
-
-First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
-```{r importingCSV}
-# Importing Scripts
+```{r importingCSV, echo=FALSE, results='hide'}
 
 file = "/home/CAMPUS/mawd2015/github/Climate_Change_Narratives/Data/87804MAW3.csv"
 
 import = read.csv(file)
 ```
 
-## Checking the Data
-
-```{r checking}
+```{r checking, include=FALSE}
 plot(TMAX~DATE, import)
 ```
 
-What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!
 
-```{r missings}
+```{r missings, include=FALSE}
 import$TMAX[import$TMAX==-9999] = NA
 import$TMIN[import$TMIN==-9999] = NA
 ```
 
-Okay, now we'll check again, for dates less then Dec. 31, 1913:
-```{r}
+```{r setup4, include=FALSE}
 plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 ```
 
-Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
-
-19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
 
 
-```{r}
+```{r, include=FALSE}
 plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
 ```
 
-## Fixing the Dates
-
-First, we convert the date a string or character values. Next, we'll convert the strings to a data format. 
-
-```{r}
+```{r, include=FALSE}
 strDates <- as.character(import$DATE)
 head(strDates)
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
 
-## Checking the New Dates
-```{r}
+```{r, include=FALSE}
 plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
-## Subset Sites
 
-Olivia has two sites in her data, so, we need to subset it.
 
-```{r}
+```{r, include=FALSE}
 unique(import$STATION_NAME)
 ```
 
-Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
-```{r}
+```{r, include=FALSE}
 LosAngeles <- subset(import, STATION_NAME=="LODI CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 ```
 
-
-## A new plot
-```{r}
+```{r, include=FALSE}
 plot(TMAX~NewDate, LosAngeles, ty='l')
 ```
 
-## Evaluating the trend
+```{r, include=FALSE}
+LosAngeles=subset(LosAngeles, subset=DATE>19300101)
+```
 
-Creating a linear model and then evaluate the rate (slope). 
-```{r}
+```{r, include=FALSE}
 # Linear Model
 LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
 summary(LosAngeles.lm)
@@ -92,18 +74,14 @@ plot(TMAX~NewDate, LosAngeles, ty='l')
 abline(coef(LosAngeles.lm), col='red')
 ```
 
-## Creating Month and Year Variables
-
-So, let's figure out how to see how changes happen for individual months.
-```{r}
+```{r, include=FALSE}
 # Get months
 LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
 LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
 LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
 ```
 
-### Creating Monthly Means
-```{r creatingmonthlymeans}
+```{r creatingmonthlymeans, include=FALSE}
 MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
 
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
@@ -122,12 +100,12 @@ head(MonthlySD)
 ```
 
 
-```{r plottingMonthyMeans}
+```{r plottingMonthyMeans, include=FALSE}
 plot(MonthlyMean$TMAX, ty='l')
 
 ```
-below is sd
-```{r plottingMonthySD}
+
+```{r plottingMonthySD, include=FALSE}
 plot(MonthlySD$TMAX, ty='l')
 
 plot(TMAX~ NewDate, data=MonthlySD, ty='l')
@@ -138,173 +116,93 @@ abline(coef(SD.lm), col="red")
 
 ```
 
-### Selecting for 1 Month -- July
 
-Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
 
-```{r May}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='l') 
-July.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
-summary(July.lm)
-
-abline(coef(July.lm), col="red")
-
-```
-
-Now, the change is `r coef(July.lm)[2]` degress/year or `r round(coef(July.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(July.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
-
-## Next Steps
-
-I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
-
-## Lets try Jan
-
-```{r}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
-Jan.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
-summary(Jan.lm)
-
-abline(coef(Jan.lm), col="red")
-
-```
-
-```{r}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
-Feb.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
-summary(Jan.lm)
-
-abline(coef(Jan.lm), col="red")
-
-```
-Now, the change is `r coef(Jan.lm)[2]` degress/year or `r round(coef(Jan.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(Jan.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
-
-## TMIN
-
-1. We create a monthly mean for each month.
-
-```{r}
+```{r, echo=FALSE, results='hide'}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
 
 MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
 ```
 
-```{r}
+```{r, echo=FALSE, results='hide'}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
 
 MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
 ```
 
-2. Now we plot the mins, and again, find tons of scatter.
+```{r, include=FALSE}
+##plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-```{r}
-plot(MonthlyMeanTMIN$TMIN, ty='l')
+##plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="02"], ty='l')
 
-plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="01"], ty='l')
+##plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="02",], ty='l') 
+##Feb.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="02",])
+##summary(Feb.lm)
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",], ty='l') 
-Feb.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",])
-summary(Jan.lm)
+##abline(coef(Feb.lm), col="red")
 
-abline(coef(Jan.lm), col="red")
-
-```
-
-
-3. In this case, in the month of Febuary, we get a slope, `r coef(Jan.lm)[2]` degress/year and a probability of `r round(summary(Jan.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Jan.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
-
-4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
-
-
-# Departure from Mean
-
-```{r}
-PRCP_mean = mean(LosAngeles$PRCP, na.rm=T)
-
-plot(PRCP~NewDate, data=LosAngeles)
-abline(h=PRCP_mean, col="blue")
+##Minimum Temperatures in August
 
 ```
 
+## Methodology
+Station USC00045032 in Lodi, California recorded minimum and maximum temperatures year-round from January 1st, 1893 to January 31st, 1970. This data has been cut to represent January 1st of 1930 to January 31st, 1970 due to a large gap in data. My manipulation of the raw data focuses only on minimum temperature. Specifically, monthly mean temperatures (y-axis) were plotted by years (x-axis). This was done in order to illustrate a particular aspect of climate change’s impact on viticulture. Below will illustrate statistically significant months that have a p-value of less than 0.05.
 
-## Experimental Portion --- Precipitation
+## Data
 
-Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
+### Minimum Temperature Increase in October
+```{r, echo=FALSE, results='hide'}
+#plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-First, we need a "mean" -- The IPCC uses 1961-1990 as a norm, I don't know what is the standard for California, so we should look that up.
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], ty='l')
 
-Second, we need to remove the missing values and evalaute which years have complete years. If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season?  
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], ty='l') 
+Oct.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",])
+summary(Oct.lm)
 
-Third, we will need to decide what level of aggredation -- monthly, yearly, etc. 
-
-Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
-
-
-```{r}
-LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
-YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
-YearlySum$YEAR = as.numeric(YearlySum$Year) 
-YearlyMean = mean(YearlySum$PRCP)
-```
-
-A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
-
-Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
-```{r}
-plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
-abline(h=YearlyMean, col="blue")
-YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
-abline(coef(YearlySum.lm), col="green")
-
-n <- 5
-k <- rep(1/n, n)
-k
-
-y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
-lines(YearlySum$YEAR, y_lag, col="red")
-```
-
-The model suggests that the precipitation is declines at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
-
-```{r}
-summary(YearlySum.lm)
-```
-
-Other attempts that didn't work!
-```{r}
-YearlySum2 = subset(YearlySum, select=c(PRCP))
-YearlyMean = mean(YearlySum2$PRCP)
-
-#filter(YearlySum2)
-
-
-
-#Doesn't work...
-# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
-# ma(YearlySum$PRCP)  
-
-
-yearlyts =ts(YearlySum2) 
-str(yearlyts)
-
-
-
+abline(coef(Oct.lm), col="green")
 
 ```
-yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
+The minimum temperatures within the month of January increase at a slope of `r coef(Oct.lm)[2]` degress per year, with a very statistically significant probability of `r round(summary(Oct.lm)$coefficients[2,4],7)`.
 
-plot(yearlyts, lty = 1, col = 3)
+### Minimum Temperature Increase in September
+```{r, echo=FALSE, results='hide'}
+#plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-lines(yearlyts.lag)
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], ty='l')
 
-YearlySum$Departure = YearlyMean - YearlySum$PRCP
-YearlySum$YEAR = as.numeric(YearlySum$Year)
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], ty='l') 
+Sep.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",])
+summary(Sep.lm)
 
-plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
-abline(h=YearlyMean, col="blue")
+abline(coef(Sep.lm), col="purple")
 
-lines(Departure ~ YEAR, data=YearlySum, col="red")
+```
+The minimum temperatures within the month of January increase at a slope of `r coef(Sep.lm)[2]` degrees per year, with a high statistically significant probability of `r round(summary(Sep.lm)$coefficients[2,4],7)`. 
+
+## The City of Lodi and its Water
+Lodi is a city located in San Joaquin County, California, in the northern portion of California’s Central Valley. Lodi is best known for being a center of winegrape production (the “Zinfandel Capital of the World”). Today, the Lodi area is home to several large manufacturing, general services, and agricultural companies.
+
+![Lodi Winegrape Commission, 2015](LODI.jpg)
+
+East of Lodi is the Sacramento-San Joaquin Delta, a network of channels fed by freshwater flow from rivers, especially from the San Joaquin Rivers and Sacramento Rivers. In connection to the San Joaquin River is Mokelumne River, which travels from the Sierra Nevada mountain range to then curl along the city of Lodi. This eventually connects with the mouth of the Sacramento-San Joaquin Delta. Through an agreement with the Woodbridge Irrigation District made in 2003 and extending until 2047, Lodi purchases an average annual delivery of 2.345 billion gallons of surface water from the Mokelumne River per year for the city. Despite Lodi’s deal with the Woodbridge Irrigation District, groundwater is the city’s primary source of water. Groundwater, which is water held underground in the soil or in pores and crevices in rock, is irrigated for the city’s usage through wells and also diverted for the purpose of agricultural irrigation.
+
+![Comparing Sierra Nevada snowpack in two Januaries, illustrating the extremely dry conditions in early 2014. Source: NASA](Sierra Nevada.png)
+
+## Impact on Water Supply
+
+Lodi and the city’s surroundings use groundwater as their main source of water, which is used for residential and irrigational purposes. Anthropogenic warming dries up groundwater reserve and, in conjunction, ground-water pumpage, which greatly exceeds the natural recharge rate, has dramatically altered the ground-water flow in the Central Valley, as well. With significant cuts in managed water allocations in response to the drought, farmers, particularly those in the San Joaquin Valley, are forced to tap heavily into the already heavily depended on groundwater reserves in order to meet irrigation demands. The depletion of groundwater in the Central Valley caused the majority of the major water loss in the Sacramento and San Joaquin River Basins. Between October of 2003 and March of 2010, this showed a loss of 31.0 ± 2.7 mm/yr−1 equivalent in water height, resulting in an overall loss of 30.9 km3 for the entire study period of 78 months. The Central Valley lost 20.4 ± 3.9 mm yr−1 of groundwater during the 78-month period, or 20.3 km3 in volume. Given the already naturally low rates of groundwater recharge in the San Joaquin Valley and population growth, a continuance of groundwater depletion is expected (Famiglietti, 2011). Lodi’s surrounding San Joaquin Valley relies more heavily on groundwater than its Sacramento counterpart because the drier climate results in more limited natural surface water available.
+Streamflow within the Central Valley, an important factor in recharging the aquifer system, is influenced by precipitation in the mountains surrounding the valley. Due to the Sierra Nevada experiencing snowpack decline, earlier runoff, and reduced spring and summer streamflows, the Central Valley’s reliance on the already overdrafted groundwater resource furthers (Cayan, 2004). Increased temperature and evapotranspiration will result in increased domestic water use within the city, as well.
+Through anthropogenic warming, the regional climate of the Central Valley hits extremes, in particular with high extremes during the growing season (White, 2006). This change in the frequency of extreme temperatures has an extreme effect on biological and agricultural systems than changes in mean climate. As farmers’ irrigation systems are threatened due to a lack of groundwater, soil moisture suffers. Soil moisture is an important control for heat and water transfer between the land and atmosphere, which in turn affects the development of extreme heat events (Lobell, 2008). Reduction in soil moisture has been shown to slow warming within the region, so this cutback of water usage actually contributes further to the local warming contributing to the drought in the first place (Lobell, 2008).
+
+## Impact on Water Quality
+
+Sea level rise induces intrusion of saline water into the Delta, endangering water supply and agriculture in the reclaimed regions like Lodi that lie west and north west of the Delta region. The protective levees also threaten massive flooding with raising sea level (Vanderwarker, 2009). In addition, the temperature of surface water is rising. Water temperatures provide an important constraint on ecological function, such as fish spawning, swimming performance, metabolism, effects of aquatic invertebrates, and mortality (Source). Within the Sacramento-San Joaquin Delta, Chinook salmon are threatened by increased temperatures and drought years (Yates, 2008). These salmon, once in the Mokelumne River, transport biomass and nitrogen; this is key to stream and riparian ecosystem function (Merz, 2006). In fact, the studied native riparian vegetation in the Mokelumne River close to spawning sites received 18-25% of foliar nitrogen from marine sources (Merz, 2006). Loss of Pacific salmon damages riparian vegetation and local agriculture dependent on this ecosystem, affecting grape production in particular (Merz, 2006).
+
+### Impact on Viticulture
+
+As previously stated, the limited supply of irrigation water and foliar nitrogen negatively impacts viticulture. Not yet mentioned is the impact a decline in particularly minimum temperatures holds for wine quantity and quality. A rise in minimum temperatures illustrates a rise in temperatures during the night. Unfortunately, wide diurnal temperature swings are key to wine production and quality. The metabolism in grapes run quickly only under the optimal environmental conditions that are now at risk, which require warm dry days and cool nights. Heat of day promotes ripeness and sugar development in the grapes and the cooler nights help the grapes to retain acidity and freshness, resulting in beautifully balanced flavors. To offset the sweetness given off by the warm sun, wines need the acidity metabolized when the cool night slows grape metabolism. This supplies the tangy bite that helps cut the fatty taste when you eat steak. In addition, the brisk weather also promotes anthocyanins, which give wine both its red hue and astringency.
+In response to generally increased temperatures and increased prevalence of heat waves, attempts to maintain wine grape productivity and quality in the face of warming may be associated with increased water use for irrigation and the use of misting or sprinkling water in order to cool grapes.
+Lodi’s rise in minimum temperature from 1930 to 1960 is only the beginning of climate change’s effects on the area. Climate change, with its generosity for heat waves, drought, and many other detrimental contributions, builds a stronger and stronger presence within the Central Valley with growing speed everyday. Without mitigating our world’s emission of greenhouse gasses, not only will our wine quality and quantity suffer, but the entirety of the Central Valley, the agricultural hub of our nation, will continue to be increasingly compromised, as well.

@@ -1,0 +1,296 @@
+---
+title: ""
+author: "Khalil Johnson"
+date: "2/19/2016"
+output: html_document
+---
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set
+```
+
+## Why Should We Care About Temperature Change?
+
+First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
+```{r importingCSV}
+# Importing Scripts
+
+file = "/home/CAMPUS/kaj41925/Climate_Change_Narratives/Khalil/NewOrleansNOAAdata.csv"
+
+import = read.csv(file)
+```
+
+## Checking the Data(echo = False)
+
+```{r setup2}
+plot(TMAX~DATE, import)
+```
+
+What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!(echo = False)
+
+```{r missings, echo=FALSE}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+
+Okay, now we'll check again, for dates less then Dec. 31, 1913
+```{r setup3, echo=FALSE}
+plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+```
+
+
+```{r}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+
+Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition
+
+19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
+
+
+```{r setup4, echo=FALSE}
+plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+```
+
+## Fixing the Dates
+
+First, we convert the date a string or character values. Next, we'll convert the strings to a data format.
+
+## Subset Sites
+
+Olivia has two sites in here data, so, we need to subset it.
+
+```{r setup7, echo=FALSE}
+unique(import$STATION_NAME)
+```
+
+Let's choose the FAIRPLEX NY US because the record is longer than the airport.
+
+```{r setup8, echo=FALSE}
+LosAngeles <- subset(import, STATION_NAME=="NEW ORLEANS AUDUBON LA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+
+## A new plot
+```{r setup9, echo=FALSE}
+plot(TMAX~NewDate, LosAngeles, ty='l')
+```
+
+## Evaluating the trend
+
+Creating a linear model and then evaluate the rate (slope). 
+```{r setup10, echo=FALSE}
+# Linear Model
+LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
+summary(LosAngeles.lm)
+plot(TMAX~NewDate, LosAngeles, ty='l')
+abline(coef(LosAngeles.lm), col='red')
+```
+
+## Creating Month and Year Variables
+
+So, let's figure out how to see how changes happen for individual months.
+```{r setup11, echo=FALSE}
+# Get months
+LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
+LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
+LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
+```
+
+### Creating Monthly Means
+```{r creatingmonthlymeans, include=FALSE}
+MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(TMAX ~ Month + Year, LosAngeles, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+
+
+```{r plottingMonthyMeans, include=F}
+plot(MonthlyMean$TMAX, ty='l')
+
+```
+below is sd
+```{r plottingMonthySD, include=F}
+plot(MonthlySD$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+
+  New Orleans is famous for its cuisine, authentic music, and culture, but most recently its been more famous for is temperature. 12 years ago Hurricane Katrina sobered us all, apprising us of the coming behemoth of Climate Change. Since then, the city has recovered, and is on the look out for future attacks from the surrounding oceans that will plague the birth place of jazz. However, New Orleans has overlooked a very prevalent danger that is non ocean based--temperature change. The city is known for its particularly warm and humid weather, but as of late we have been fried like frog legs by record breaking weather. Our ignorance of these spikes have made our underserved communities more vulnerable and as a region that is sensitive to climate change we must pay attention to these changes. The summer months have extended their stays, and dangerous heat has influenced moths that are known to be cooler. Our weather is changing and we have to change with it if we are to adapt to the quickly increasing temperatures.   
+
+### Selecting for 1 Month -- June 
+
+Perhaps, we can can understand the temperature change in New Orleans if we analyze for just one month at a time!
+This is June
+
+```{r June}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+```
+
+The Times-Picayune reported in 2015 that June brought 21 days of heatwave weather (Schleifstein,2015). New Orleans also had the hottest day on record in 2009 on June 24th of 104 degrees (Kamenitz, 2009).  Without a doubt patterns of that nature have contributed to the overall rise in temperatures in June. Overtime, one can see a sharp incline in the summer month.  
+
+```{r July}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+```
+
+The same Ne Orleans based newspaper reported that July reported 31 days, an entire month, of abnormally high temperatures. July, while a summer month, historically has not reached these hights in temperature. There is a clear trend here that indicates a more dangerous summer in the city. 
+
+```{r August}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="08"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+```
+
+August has a less dramatic incline, but still requires attention. This month saw a 25 day heatwave, that gave a bang to the end of the summer. 
+
+```{r September}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="09"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="09",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="09",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+```
+
+This month is what should alarm residents of New Orleans. The summer concludes in August and the high temperatures should subside in September. This month cools  the city down and prepares and residents usually prepare themselves for fall temperatures. Interestingly, the tren shows rising temperatures in this month, thus extending the the summer to unfamiliar territory.  
+
+```{r October}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="10"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+```
+
+October experiences the same unfortunate weather. Halloween, a wildly popular holiday in New Orleans, was the hottest on record. Summer has officially extended deep into the fall, close to winter temperatures.
+
+This will have an enourmous impact on vulnerable communities. Eliot Kamenitz of The Times-Picayune details the drastic efforts that the city must take to protect underserved citizens from the heat. 
+
+Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
+
+```{r setup12, echo=FALSE}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+## TMIN
+
+1. We create a monthly mean for each month.
+
+```{r setup13, echo=FALSE}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
+
+2. Now we plot the mins, and again, find tons of scatter.
+
+```{r setup14, echo=FALSE}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+# Departure from Mean
+
+```{r setup16, echo=FALSE}
+PRCP_mean = mean(LosAngeles$PRCP, na.rm=T)
+
+plot(PRCP~NewDate, data=LosAngeles)
+abline(h=PRCP_mean, col="blue")
+
+```{r setup17, echo=FALSE}
+LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
+YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$PRCP)
+```
+
+```{r setup18, include=FALSE}
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+```{r setup19, echo=FALSE}
+summary(YearlySum.lm)
+```
+
+Other attempts that didn't work!
+```{r setup20, echo=FALSE}
+YearlySum2 = subset(YearlySum, select=c(PRCP))
+YearlyMean = mean(YearlySum2$PRCP)
+
+#filter(YearlySum2)
+
+
+
+#Doesn't work...
+# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
+# ma(YearlySum$PRCP)  
+
+
+yearlyts =ts(YearlySum2) 
+str(yearlyts)
+
+
+
+
+```
+yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
+
+plot(yearlyts, lty = 1, col = 3)
+
+lines(yearlyts.lag)
+
+YearlySum$Departure = YearlyMean - YearlySum$PRCP
+YearlySum$YEAR = as.numeric(YearlySum$Year)
+
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+abline(h=YearlyMean, col="blue")
+
+lines(Departure ~ YEAR, data=YearlySum, col="red")
