@@ -1,4 +1,4 @@
----
+jk---
 title: 'Blog: Climate Change in Alvin, TX'
 author: "Mireya Valencia"
 date: "2/20/2017"
@@ -10,8 +10,13 @@ output:
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+
 #### Introduction
-Alvin, a small city in the Houston metropolitan area of Texas, is home to a weather station that has collected data since 1898, longer than any other weather station in Western Texas. Available online through the National Oceanic and Atmospheric Adminsitration (NOAA), this data can be helpful in analyzing local weather and climate trends in Houston to determine how we are being impacted by climate change.
+START TALKING ABOUT TEXAS Alvin, a small city in the Houston metropolitan area of Texas, is home to a weather station that has collected data since 1898, longer than any other weather station in Western Texas. 
+
+The data, available online through the National Oceanic and Atmospheric Adminsitration (NOAA), can be helpful in analyzing local weather and climate trends in nearby Houston and Galveston.WHAT WEATHER TRENS, WHAT DOES TEMP AFFECT
+
 ```{r importingCSV, echo=FALSE}
 # Importing Scripts
 
@@ -20,11 +25,16 @@ file = "/home/CAMPUS/mvxu2015/Climate_Change_Narratives/Mireya/HoustonWeather.cs
 import = read.csv(file)
 ```
 
+```{r}
+#!(map.png)
+```
 
 
 ```{r checking, echo=FALSE}
 # plot(TMAX~DATE, import)
 ```
+
+
 
 
 ```{r missings, echo=FALSE}
@@ -36,6 +46,7 @@ import$TMIN[import$TMIN==-9999] = NA
 ```{r, echo=FALSE}
 # plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 ```
+
 
 
 
@@ -115,6 +126,8 @@ MonthlyMean$NewDate = MonthlyMean$YEAR + (MonthlyMean$MONTH - 1)/12
 # plot(MonthlyMean$TMAX, ty='l')
 ```
 #### Hypotheses
+Following scientific protocol, we have come up with these hypotheses blah blah
+
 Alternative Hypothesis: The maximum temperature in Alvin, TX has increased from 1998-2013.
 
 Null hypothesis: The maximum temperature in Alvin, TX has decreased from 1998-2013. 
@@ -122,6 +135,8 @@ Null hypothesis: The maximum temperature in Alvin, TX has decreased from 1998-20
 #### Analyzing the Data: Maximum Temperatures
 
 Below are the monthly mean temperatures in Alvin, TX from 1998-2013. There is an overall increasing trend in the data. However, with p=0.3042, we cannot reject nor accept our null hypothesis because the data is not statistically significant.
+
+p value is a rejection of the null hypothesis. what does this mean, this is an arbitrary number, reduces chance. nu
 ```{r plottingMonthlyMean, echo=FALSE}
 # plot(Monthly$TMAX, ty='l')
 
@@ -151,7 +166,7 @@ abline(coef(MonthlyMean2.lm), col="red")
 
 ```
 
-As shown above, the mean monthly temperatures from 1960-2013 are still increasing. With a p-value of 0.6986 we cannot reject or support the hypethesis. However, looking at the graph from 1970 on shows us that the increasing trend of temperatures persists regardless of the missing data. 
+As shown above, the mean monthly temperatures from 1960-2013 are still increasing. With a p-value of 0.6986 we cannot reject or support the hypothesis. However, looking at the graph from 1970 on shows us that the increasing trend of temperatures persists regardless of the missing data. 
 
 ```{r May, echo=FALSE}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
@@ -162,10 +177,9 @@ May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
 abline(coef(May.lm), col="red")
 
 ```
-
 In order to analyze statistically significant data, we can look at maximum temperatures for each month rather than the entire year. 
 
-In the month of December, for instance, the maximum monthly temperature increased (p=.015). We reject the null hypothesis, meaning that the maximum temperature of December increased from 1898-2013. 
+In the month of December, for instance, the maximum monthly temperature increased (p=.015). We reject the null hypothesis, meaning that there is evidence to support the hypothesis that maximum temperature of December increased from 1898-2013. 
 ```{r, echo=FALSE}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='p', pch=20, ylab="Maximum Temperature", xlab= "Year", main="December") 
@@ -227,7 +241,7 @@ Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="03",])
 abline(coef(Dec.lm), col="red")
 
 ```
-
+TALK ABOUT LIMITS OF DATA
 
 #### Implications
 The graphs of maximum temperatures show us that Texas is generally warming, and this is signifacntly significant when looking at the months of March, October, and December. Albeit Spring begins at the tailend of March, these are all Winter months. Warming winters can have drastic effects for Alvin and the surrounding metropolitan areas of Houston and Galveston. Even a change of a few degrees can drastically effect how organisms, partulcarly small species, interact with their environment. 
