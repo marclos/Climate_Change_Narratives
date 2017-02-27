@@ -150,6 +150,7 @@ SD.lm <- lm(TMAX~NewDate, data=MonthlyMean)
 
 abline(coef(SD.lm), col="red")
 
+
 ```
 
 As shown in the graph above, there is a huge portion of missing data from about 1920-1960. A gap in data this large poses questions about the validity of the data set. To see if the trend exists independently of this missing data, we can look only at the data collected after 1960. 
