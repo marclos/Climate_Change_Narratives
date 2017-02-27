@@ -148,7 +148,7 @@ head(MonthlyMeanTMIN)
 ```
 
 ## Methodology
-Station USC00045032 in Lodi, California recorded minimum and maximum temperatures year-round from January 1st, 1893 to January 31st, 1970. This data has been cut to represent January 1st of 1930 to January 31st, 1970 due to a large gap in data. My manipulation of the raw data focuses only on minimum temperature. Specifically, monthly mean temperatures (y-axis) were plotted by years (x-axis). This was done in order to illustrate a particular aspect of climate change’s impact on viticulture. Below will illustrate statistically significant months that have a p-value of less than 0.05.
+Station USC00045032 in Lodi, California recorded minimum and maximum temperatures year-round from January 1st, 1893 to January 31st, 1970. This data has been cut to represent January 1st of 1930 to January 31st, 1970 due to a large gap in data. My manipulation of the raw data focuses only on minimum temperature. Specifically, monthly mean temperatures (y-axis) were plotted by years (x-axis). This was done in order to illustrate a particular aspect of climate change’s impact on viticulture. A statistical hypothesis test was performed, which is used to test the validity of a claim that is made about a population. This claim that is on trial, in essence, is called the null hypothesis. This creates a p-value that helps to determine the signifiance of the results. All hypothesis tests ultimately use a p-value to weigh the strength of the evidence (what the data are telling you about the population). A small p-value (typically ≤ 0.05) indicates strong evidence against the null hypothesis, so you reject the null hypothesis and a large p-value (> 0.05) indicates weak evidence against the null hypothesis, so you fail to reject the null hypothesis. Both September and October have strong evidence against the null hypothesis.
 
 ## Data
 
@@ -165,7 +165,7 @@ summary(Oct.lm)
 abline(coef(Oct.lm), col="green")
 
 ```
-The minimum temperatures within the month of January increase at a slope of `r coef(Oct.lm)[2]` degress per year, with a very statistically significant probability of `r round(summary(Oct.lm)$coefficients[2,4],7)`.
+The minimum temperatures within the month of January increase at a slope of `r coef(Oct.lm)[2]` degress per year, with a very statistically significant probability of `r round(summary(Oct.lm)$coefficients[2,4],7)`. This indicates strong evidence against the null hypothesis.
 
 ### Minimum Temperature Increase in September
 ```{r, echo=FALSE, results='hide'}
@@ -180,7 +180,7 @@ summary(Sep.lm)
 abline(coef(Sep.lm), col="purple")
 
 ```
-The minimum temperatures within the month of January increase at a slope of `r coef(Sep.lm)[2]` degrees per year, with a high statistically significant probability of `r round(summary(Sep.lm)$coefficients[2,4],7)`. 
+The minimum temperatures within the month of January increase at a slope of `r coef(Sep.lm)[2]` degrees per year, with a high statistically significant probability of `r round(summary(Sep.lm)$coefficients[2,4],7)`. This indicates strong evidence against the null hypothesis.
 
 ## The City of Lodi and its Water
 Lodi is a city located in San Joaquin County, California, in the northern portion of California’s Central Valley. Lodi is best known for being a center of winegrape production (the “Zinfandel Capital of the World”). Today, the Lodi area is home to several large manufacturing, general services, and agricultural companies.
@@ -199,10 +199,35 @@ Through anthropogenic warming, the regional climate of the Central Valley hits e
 
 ## Impact on Water Quality
 
-Sea level rise induces intrusion of saline water into the Delta, endangering water supply and agriculture in the reclaimed regions like Lodi that lie west and north west of the Delta region. The protective levees also threaten massive flooding with raising sea level (Vanderwarker, 2009). In addition, the temperature of surface water is rising. Water temperatures provide an important constraint on ecological function, such as fish spawning, swimming performance, metabolism, effects of aquatic invertebrates, and mortality (Source). Within the Sacramento-San Joaquin Delta, Chinook salmon are threatened by increased temperatures and drought years (Yates, 2008). These salmon, once in the Mokelumne River, transport biomass and nitrogen; this is key to stream and riparian ecosystem function (Merz, 2006). In fact, the studied native riparian vegetation in the Mokelumne River close to spawning sites received 18-25% of foliar nitrogen from marine sources (Merz, 2006). Loss of Pacific salmon damages riparian vegetation and local agriculture dependent on this ecosystem, affecting grape production in particular (Merz, 2006).
+Sea level rise induces intrusion of saline water into the Delta, endangering water supply and agriculture in the reclaimed regions like Lodi that lie west and north west of the Delta region. The protective levees also threaten massive flooding with raising sea level (Vanderwarker, 2009). In addition, the temperature of surface water is rising. Water temperatures provide an important constraint on ecological function, such as fish spawning, swimming performance, metabolism, effects of aquatic invertebrates, and mortality (Wagner, 2011). Within the Sacramento-San Joaquin Delta, Chinook salmon are threatened by increased temperatures and drought years (Yates, 2008). These salmon, once in the Mokelumne River, transport biomass and nitrogen; this is key to stream and riparian ecosystem function (Merz, 2006). In fact, the studied native riparian vegetation in the Mokelumne River close to spawning sites received 18-25% of foliar nitrogen from marine sources (Merz, 2006). Loss of Pacific salmon damages riparian vegetation and local agriculture dependent on this ecosystem, affecting grape production in particular (Merz, 2006).
 
 ### Impact on Viticulture
 
 As previously stated, the limited supply of irrigation water and foliar nitrogen negatively impacts viticulture. Not yet mentioned is the impact a decline in particularly minimum temperatures holds for wine quantity and quality. A rise in minimum temperatures illustrates a rise in temperatures during the night. Unfortunately, wide diurnal temperature swings are key to wine production and quality. The metabolism in grapes run quickly only under the optimal environmental conditions that are now at risk, which require warm dry days and cool nights. Heat of day promotes ripeness and sugar development in the grapes and the cooler nights help the grapes to retain acidity and freshness, resulting in beautifully balanced flavors. To offset the sweetness given off by the warm sun, wines need the acidity metabolized when the cool night slows grape metabolism. This supplies the tangy bite that helps cut the fatty taste when you eat steak. In addition, the brisk weather also promotes anthocyanins, which give wine both its red hue and astringency.
 In response to generally increased temperatures and increased prevalence of heat waves, attempts to maintain wine grape productivity and quality in the face of warming may be associated with increased water use for irrigation and the use of misting or sprinkling water in order to cool grapes.
-Lodi’s rise in minimum temperature from 1930 to 1960 is only the beginning of climate change’s effects on the area. Climate change, with its generosity for heat waves, drought, and many other detrimental contributions, builds a stronger and stronger presence within the Central Valley with growing speed everyday. Without mitigating our world’s emission of greenhouse gasses, not only will our wine quality and quantity suffer, but the entirety of the Central Valley, the agricultural hub of our nation, will continue to be increasingly compromised, as well.
+Lodi’s rise in minimum temperature from 1930 to 1960 is only the beginning of climate change’s effects on the area. Climate change, with its generosity for heat waves, drought, and many other detrimental contributions, builds a stronger and stronger presence within the Central Valley with growing speed everyday. Without mitigating our world’s emission of greenhouse gasses, not only will our wine quality and quantity suffer, but the entirety of the Central Valley, the agricultural hub of our nation, will continue to be increasingly compromised, as well. 
+
+Cayan, Daniel, Katharine Hayhoe, Christopher Field, and Peter Frumhoff. "Emissions Pathways, Climate Change, and Impacts on California." Proceedings of the National Academy of Sciences. N.p., June 2004. Web. 10 Feb. 2017.
+
+Pyke, Christopher R. "Interactions between Habitat Loss and Climate Change: Implications for Fairy Shrimp in the Central Valley Ecoregion of California, Usa." Climatic Change 68.1-2 (2005): 199-218. Web. 12 Feb. 2017.
+
+"3.5.1 How Will Climate Change Affect the Balance of Water Demand and Water Availability?" 3.5.1 How Will Climate Change Affect the Balance of Water Demand and Water Availability? - AR4 WGII Chapter 3: Freshwater Resources and Their Management. N.p., n.d. Web. 13 Feb. 2017.
+
+Scanlon, B. R., C. C. Faunt, L. Longue-vergne, R. C. Reedy, W. M. Alley, V. L. Mcguire, and P. B. Mcmahon. "Groundwater Depletion and Sustainability of Irrigation in the US High Plains and Central Valley." Proceedings of the National Academy of Sciences 109.24 (2012): 9320-325. Web. 12 Feb. 2017.
+
+Wagner, R. Wayne, Mark Stacey, Larry R. Brown, and Michael Dettinger. "Statistical Models of Temperature in the Sacramento San Joaquin Delta Under Climate-Change Scenarios and Ecological Implications." Estuaries and Coasts 34.3 (2011): 544-56. Web.
+
+Pyke, Christopher R. “Habitat Loss Confounds Climate Change Impacts.” Frontiers in Ecology and the Environment, vol. 2, no. 4, 2004, pp. 178–182. www.jstor.org/stable/3868312.
+
+Vanderwarker, Amy. “Central Valley Water Woes.” Race, Poverty & the Environment, vol. 16, no. 2, 2009, pp. 72–74. www.jstor.org/stable/41555183.
+
+White, M. A., N. S. Diffenbaugh, G. V. Jones, J. S. Pal, and F. Giorgi. "Extreme Heat Reduces and Shifts United States Premium Wine Production in the 21st Century." Proceedings of the National Academy of Sciences 103.30 (2006): 11217-1222. Web. 10 Feb. 2017.
+
+Wagner, R. Wayne, Mark Stacey, Larry R. Brown, and Michael Dettinger. "Statistical Models of Temperature in the Sacramento San Joaquin Delta Under Climate-Change Scenarios and Ecological Implications." Estuaries and Coasts 34.3 (2011): 544-56. Web. 25 Feb. 2017.
+
+Famiglietti, J. S., M. Lo, S. L. Ho, J. Bethune, K. J. Anderson, T. H. Syed, S. C. Swenson, C. R. de Linage, and M. Rodell (2011), Satellites measure recent rates of groundwater depletion in California's Central Valley, Geophys. Res. Lett., 38, L03403, doi:10.1029/2010GL046442.
+
+Cayan, D., E. P. Maurer, M. D. Dettinger, M. Tyree, and K. Hayhoe (2006), Climate scenarios for California, Rep. CEC-500-2005-203-SF, 52 pp., Calif. Clim. Change Cent., Sacramento.
+
+Scanlon, B. R., C. C. Faunt, L. Longuevergne, R. C. Reedy, W. M. Alley, V. L. Mcguire, and P. B. Mcmahon. "Groundwater Depletion and Sustainability of Irrigation in the US High Plains and Central Valley." Proceedings of the National Academy of Sciences 109.24 (2012): 9320-325. Web. 10 Feb. 2017.
+
