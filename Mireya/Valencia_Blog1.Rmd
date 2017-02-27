@@ -24,9 +24,8 @@ import = read.csv(file)
 ```
 
 ```{r}
-# !(map.png)
+# ! [](map.png)
 ```
-
 
 ```{r checking, echo=FALSE}
 # plot(TMAX~DATE, import)
@@ -123,17 +122,22 @@ MonthlyMean$NewDate = MonthlyMean$YEAR + (MonthlyMean$MONTH - 1)/12
 ```{r plottingMonthyMeans, echo=FALSE}
 # plot(MonthlyMean$TMAX, ty='l')
 ```
-#### Hypotheses
-In order to determine whether or not temperature has increased in Texas over the past century, we will analyze the NOAA data and perform a series of statistical tests to determine the validity of the data. 
+#### Is Texas warming or cooling, and how do we know?
+
+INVITE THE READER
+
+Using statistical tests, 
+To determine whether or not temperature has increased in Texas over the past century, we will analyze the NOAA data and perform a series of statistical tests to determine their validity.
 
 Alternative Hypothesis: The maximum temperature in Alvin, TX has increased from 1998-2013.
 
 Null hypothesis: The maximum temperature in Alvin, TX has decreased from 1998-2013. 
 
-In accordance with the scientific method, the null hypothesis predicts that there is no observed relationship between variables. Generally, scientists hope to disprove the null hyptheses and, consequently, accept the alternative hypothesis. P-value is used to calculate the probability of an event happening by chance; the smaller the p-value, the lower the probability. A p-value of <.05 leads to a rejection of the null hypothesis.
+In accordance with the scientific method, the null hypothesis predicts that there is no observed relationship between variables. Generally, scientists hope to disprove the null hyptheses and, consequently, accept the alternative hypothesis. (connect to hypothesis testing) P-value is used to calculate the probability of an event happening by chance; the smaller the p-value, the lower the probability. A p-value of <.05 leads to a rejection of the null hypothesis.
 
-#### Analyzing the Data: Maximum Temperatures
+#### An increasing trend, but missing data
 
+headers: give preview to what theyre going to see
 Below are the maximum mean temperatures in Alvin, TX from 1998-2013. There is an overall increasing trend in the data. However, with p=0.30, we cannot reject nor accept our null hypothesis because the data is not statistically significant.
 
 The red line represents the slope of the data. 
@@ -170,7 +174,7 @@ As shown above, the mean monthly temperatures from 1960-2013 are still increasin
 
 
 #### Monthly Data
-In order to analyze statistically significant data, we can look at maximum temperatures for each month rather than the entire year. 
+To analyze statistically significant data, we can look at maximum temperatures for each month rather than the entire year. 
 
 In the month of December, for instance, the maximum monthly temperature increased (p=.015). We reject the null hypothesis, meaning that there is evidence to support the hypothesis that maximum temperature of December increased from 1898-2013. 
 ```{r, echo=FALSE}
@@ -182,7 +186,8 @@ Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
 abline(coef(Dec.lm), col="red")
 
 ```
-
+PUT THE GRAPHS NEXT TO EACHOTHER
+OR DO TRENDLINE SEPARATE
 The data from 1960 to 2013 shows a similar increasing slope. With a p-value of 0.02, we reject the null hypothesis.
 ```{r, echo=FALSE}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
@@ -241,10 +246,10 @@ The public debate between climate change 'believers' and 'skeptics' revolves aro
 While skeptics remain unconvinced that climate change is a result of increased CO2 levels, climate scientists believe climate change is being brought on anthropogenically through increased greenhouse gas emissions. Skeptics argue that the weather systems that effect climate are too complex and we still do not know enough about them to draw conclusions. Scienti
 
 #### Implications
-The graphs of maximum temperatures show us that Texas is generally warming, and this is signifacntly significant when looking at the months of March, October, and December. Albeit Spring begins at the tailend of March, these are all Winter months. Warming winters can have drastic effects for Alvin and the surrounding metropolitan areas of Houston and Galveston. Even a change of a few degrees can drastically effect how organisms, partulcarly small species, interact with their environment. EXPAND UPON TEMPERATURE AND WHY THIS IS IMPORTANT AND WHY WE COLLECTED THIS DATA 
+The graphs of maximum temperatures show us that Texas is generally warming, and this is signifacntly significant when looking at the months of March, October, and December. Albeit Spring begins at the tailend of March, these are all Winter months. Warming winters can have drastic effects for Alvin and the surrounding metropolitan areas of Houston and Galveston. Even a change of a few degrees can drastically effect how organisms, partulcarly small species, interact with their environment. EXPAND UPON TEMPERATURE AND WHY THIS IS IMPORTANT AND WHY WE COLLECTED THIS DATA  
 
 Although a temperature rise of a few degrees is unlikely to dramatically impact humans, it is the indirect impacts of rising temperature that will create challenges for us. 
-
+EXPLAIN ALVIN 
 Take for instance, the issue of rising sea levels. As temperatures increase, the EPA estimates that Texas can expect sea levels to rise anywhere from two to five feet within the next century (“What Climate Change Means for Texas”). Texas's rising sea levels are exacerbated by the effects of local groundwater pumping, which causes the land to sink. Subsidence and rising sea levels are a recipe for floods, and historical data has shown that oil drilling and groundwater pumping are causing Texas to surpass its historical subsidence rates (Paine). (TALK MORE ABOUT OIL DRILLING AND AQUIFIERS. USE SOURCES IN LIT REVIEW) In practical terms, this means billions of dollars’ worth of flooding. A recent study cross-examined maps released by the National Oceanic Atmospheric Administration (NOAA) with house values in coastal areas across the United States. The study reveals that, with a sea level rise of six feet by 2100, 40 percent of homes in Galveston will be flooded, totaling a loss of $2.9 billion (“Climate Change and Housing”). 
 
 economy: how its effecting us on an indivudal level (Houses) but also state-wide economy/farming/drought
