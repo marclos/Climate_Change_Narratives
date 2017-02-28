@@ -11,17 +11,21 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 
-  ![Above: Location of Ewa Beach on O`ahu](Ewa_Plantation.png)
+  ![Above: Location of Ewa Plantation on O`ahu](Ewa_Plantation.png)
   
   
   
   ![Above: Ewa Plantation as an active mill](Ewa_Plantation1.jpg) 
+  
+# Is there climate change in Hawaii?
+Hawaii is the island home to a multitude of people, cultures, and biodiversity. For many people, this blend of culture and environment makes Hawaii a highly sought after vacation destination. However, for about 1.5 million people, it is also home. But the characteristics and elements that truly make Hawaii the special place that it is are being put in jeopardy by changing climate. Some individuals claim that they are not observing any change of climate in Hawaii, however, a robust evaluation of climate cannot be based solely on individual observation. Climate trends must be monitored over extended periods of time, “extended periods” being preferably at least half of a century or more. Only over longer periods of time does an observable trend emerge. Therefore, conducting a climate analysis requires datasets that provide regular climatic measurements. The National Oceanic and Atmospheric Administration provides climatic datasets collected by several stations nationwide. To focus on climate trends in Hawaii, I selected a dataset from a station on the island of O`ahu, the island where I was born and raised, that took climate readings from the years 1905–2006, specifically focusing on temperature and precipitation. The goal of this data analysis was to determine if there could be a relationship between temperature or precipitation trends and time, which could then point to the presence of climate change in this specific region. 
+
 
 ## About our station 
 
 Ewa Plantation began in 1890 as a sugarcane plantation mill. Through the 1920s and 1930s, Ewa Plantation was a booming and growing business. Perhaps the plantation began monitoring climate because of climate's impacts on sugarcane, but in any case, they had a climatic dataset beginning in 1905. Currently, sugar plantations in Hawai`i are no longer in operation; therefore, the Ewa Plantation now serves as a historic landmark. However, they continued collecting climatic data even after they were no longer a functioning plantation, collecting data up until the year 2006.  
 
-After downloading their dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, we inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. This blog will explore trends in temperature and precipitation at this specific station.  
+After downloading their dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, I inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. As said before, this blog will explore trends in temperature and precipitation at this specific station.  
 
 ```{r importingCSV}
 # Importing Scripts
@@ -86,7 +90,7 @@ Ewa <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION
 
 ## The adjusted plot 
 ```{r}
-#plot(TMAX~NewDate, Ewa, ty='l')
+#plot(TMAX~NewDate, Ewa, ty='p')
 Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
 #summary(Ewa.lm)
 plot(TMAX~NewDate, Ewa, ty='l', xlab = "Year", ylab = "Maximum Temperature (Fahrenheit)")
@@ -284,6 +288,7 @@ Let's try looking at trends in precipitation during a specific month. Let's take
 
 #plot(MonthlyMeanPRCP$PRCP[MonthlyMeanPRCP$Month=="05"], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
 
+#MonthlyMean$TMAX[MonthlyMean$TMAX==0]<-NA 
 plot(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
 
 MayPRCP.lm <- lm(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",])
@@ -309,5 +314,26 @@ There are also trends in precipitiation. Though most of the trends in precipitat
 
 This dataset unfortunately does not include data from the most recent years, so it could be missing trends in temperature caused by increases in carbon dioxide levels since 2006. If the station had included readings from 2015 and onward, we could possibly see the effects of carbon dioxide in the atmosphere reaching over 400 parts per million for the first time in recorded history. 
 
+## What could happen as a result of climate change in Hawaii? 
+
+As an island chain in the Pacific Ocean teeming with biodiversity and culture, Hawaii is very susceptible to the effects of rising greenhouse gas levels and subsequent climate change. One way that changing climate could affect Hawaii is through changes in extreme weather incidents. A study conducted by Knutson et al. (2010) acknowledges the uncertainties associated with predicting trends in extreme weather events. However, the study also says that based on robust theory and high-resolution modeling, studies consistently predict a decrease in frequency of tropical cyclones by 6–34%, but an increase in tropical storm intensities by 2–11% (Knutson, 2010). The increased intensity of winds and flooding could easily pose risks to both inhabitants and biodiversity. 
+
+Much of the native flora and fauna that contribute to Hawaiian culture will be put in jeopardy by climate change. Already, several native species are teetering on the edge of extinction. A study by Benning et al. (2002) looked at different habitats of native Hawaiian birds to observe and anticipate the effects of climate change. The study concluded that habitats such as those on the island of Kauai “offers the least hope for maintaining endemic honeycreepers in the face of malaria and climate change” (Benning et al., 2002). The rising temperatures will translate into the prevalence of Plasmodium in mosquitoes, which then translates to increased disease. The rising temperatures will also force forests to move up in elevation to reach cooler temperatures, resulting in the reduction of forest habitat for several animal species as well. The rare native silversword plant located at high elevations like on Haleakala thrives in cooler temperatures with plentiful precipitation, therefore if climate trends point towards warmer temperatures and less precipitation, this could be disastrous for the silversword.
+
+The rising sea levels could also put coastal-dwelling biota at risk. The Black-footed Albatross and Laysan Albatross are threatened bird species living on sandy beaches on the coasts of islands. When climate change causes stronger storm surges, these surges pose large threats to the albatross’ nests (Arata et al., 2009). 
+
+But rising sea levels and storm surges do not only affect other animals’ habitats—they also will undoubtedly affect humans as well. Economically, a study by Toy (2008) estimated that the demand for hotel rooms in Waikiki, Hawaii’s hospitality center and economic hub, would decrease by 2.9 million occupied nights if beaches were to be eroded by climate change. This would result in at least a $503.8 million loss in revenue in room revenue, but this does not even take into account other costs that potential guests would have spent if they stayed in that room (Toy, 2008).  
+
+Higher water levels caused both by general rising waters and storm surges could also affect infrastructure and agriculture on the islands, which will be disastrous for Hawaii both in terms of necessity and because of the large costs it will incur. Moreover, since rising sea levels will negatively impact Hawaii’s tourism, which provides much of its revenue, it will have less means to fix these problems (Leong and Marra et al., 2014).
+
+Hawaii is equally defined by its water as it is by its land. Marine life will also be heavily affected by climate change. A study by Harvell et al. (2002) describes the disastrous effects on disease that climate warming could have on both terrestrial and marine biodiversity. The study discusses how warmer temperatures could increase “pathogen development and survival rates, disease transmission, and host susceptibility” (Harvell et al., 2002). The study looks at the warming caused by El Niño events to indicate possible impacts on biodiversity by warming, and they found that El Niño warming caused a spike in diseases for both terrestrial and marine life.  
+
+A study by Hoegh-Guldberg in 1999 took a closer look into these rising ocean temperatures and their effects on coral. While the study did say that coral has the capacity to adapt to warmer conditions, it also says that the adaption process is not fast enough to keep up with the rapid rate of warming that could happen as a result of “unrestrained warming” (Hoegh-Guldberg, 1999). 
+
+Finally, climate change poses a very concerning threat to Hawaii’s watershed and groundwater sources. Much of Hawaii’s watershed relies on forests—but as mentioned earlier, forests may be threatened by the changing climate. According to a study conducted by the Department of Land and Natural Resources in Hawaii in 2011, scientists predict that climate change will decrease our usable supply of water. The rising sea levels threaten to taint fresh water with brackish water, and this could lead to water shortages and rationing in future generations (DLNR, 2011).
+
+# Conclusions 
+
+While the data analyzed in this blog is only from one station with limited data and should by no means be understood as "proof" that global warming is occurring at alarming rates, it does point out some concerning trends in climatic data that, if left unchecked, could certainly lead us to disastrous outcomes. Specifically in Hawaii, the effects of climate change would lead to serious economic, cultural, natural, health, and other consequences. If there is even a chance that we can avoid these terrible consequences, and humans definitely can impact the climate, shouldn't we take this chance?  
 
 
