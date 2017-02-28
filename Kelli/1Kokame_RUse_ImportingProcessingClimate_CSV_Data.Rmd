@@ -94,13 +94,13 @@ Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
 #summary(Ewa.lm)
 plot(TMAX~NewDate, Ewa, ty='l', xlab = "Year", ylab = "Maximum Temperature (Fahrenheit)")
 abline(coef(Ewa.lm), col='red')
-summary(Ewa.lm)
+#summary(Ewa.lm)
 ```
 As shown, the maximum temperature annually has had a slight upward trend from 1905 when the records began until 2006. The slope is about 3.1e-05 (a very tiny slope). This means that, according to the trend, maximum temperatures increase about .000031 degrees per year, or .0031 degrees per century. This increase in maximum temperature is very statistically signficant, with a p-value of 2.2e-16 (a p-value of 0.05 or less would be statistically significant). This means that we can reject the null hypothesis that there is no relationship between change in temperature and time. However, we can see that there is a lot of missing data beginning at roughly 1980. While I tried to look into why there were no available measurements for about a 20 year span, no plausible explanations were offered online. 
 
 But since there's a lot of missing data beginning at about 1980, let's focus on the trend from 1905 up until that point to see if the missing data has an effect on the trend slope. 
 
-Here is the graph of maximum temperatures from 1905 up to 1978: 
+### Here is the graph of maximum temperatures from 1905 up to 1978: 
 ```{r}
 #plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Maxmimum Temperature (Fahrenheit)")
 ```
@@ -127,12 +127,7 @@ abline(coef(EwaMin.lm), col='red')
 ```
 
 
-As you can see, minimum temperatures also have an upward trend, with a slope of about 5.8e-05. This translates into a .000058 degree increase per year, or a .0058 degree increase each century. This increase in minimum temperatures is also statistically significant, with a significant p-value again less than .001. 
-
-
-## What are the trends 
-
-While Hawaii's temperatures are relatively constant year-round, let's still take a look at individual months and their data across different years.
+As you can see, minimum temperatures also have an upward trend, with a slope of about 6e-05. This translates into a .00006 degree increase per year, or a .006 degree increase each century. This increase in minimum temperatures is also statistically significant, with a significant p-value again less than .001. 
 
 ```{r}
 # Get months
@@ -178,7 +173,7 @@ MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
 
 ```
 
-### Selecting for 1 Month -- January
+## Are there any trends in January maximum temperatures year to year? 
 
 Let's now look at the trend of temperatures in January throughout the years. 
 
@@ -186,7 +181,7 @@ Let's now look at the trend of temperatures in January throughout the years.
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
 January.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
-summary(January.lm)
+#summary(January.lm)
 
 abline(coef(January.lm), col="red")
 
@@ -194,7 +189,7 @@ abline(coef(January.lm), col="red")
 
 Now, the change is `r coef(January.lm)[2]` degress/year or `r round(coef(January.lm)[2]*100, 3)` degress/100 years with a p-value of `r round(summary(January.lm)$coefficients[2,4],4)`. 
 
-### Selecting for 1 Month -- November
+## Are there any trends in November maximum temperatures year to year?
 
 Now let's try the same thing with November. 
 
@@ -202,7 +197,7 @@ Now let's try the same thing with November.
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
 November.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
-summary(November.lm)
+#summary(November.lm)
 
 abline(coef(November.lm), col="red")
 
@@ -232,7 +227,7 @@ Here's a graphic showing the trend of minimum temperatures in November over the 
 
 plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",], ty='l') 
 Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",])
-summary(Dec.lm)
+#summary(Dec.lm)
 
 abline(coef(Dec.lm), col="red")
 
@@ -250,7 +245,7 @@ Let's look at the trends of minimum temperature throughout the years for the mon
 
 plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",], ty='l', xlab = "Year", ylab = "TMIN") 
 July.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",])
-summary(July.lm)
+#summary(July.lm)
 
 abline(coef(July.lm), col="red")
 
@@ -288,7 +283,7 @@ Let's try looking at trends in precipitation during a specific month. Let's take
 plot(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
 
 MayPRCP.lm <- lm(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",])
-summary(MayPRCP.lm)
+#summary(MayPRCP.lm)
 abline(coef(MayPRCP.lm), col="blue")
 ```
 
