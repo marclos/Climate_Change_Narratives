@@ -28,6 +28,28 @@ Climate change science is complex. As a class we have spent six weeks learning h
 
 As a class, we decided to evaluate temperature records for individual locations in the USA and determine if there was a trend. 
 
+Although political debate about the causes of climate change, we limited our project to the evaluation of observed temperatures and tried to avoid making definitive statements about cause and effect. Nevertheless, based on a number forms of evidence, we know that greenhouse gases do influence the planet's climate. Furthermore, as a major greenhouse gas, carbon dioxide concentrations are increasing as a result of our use of fossil fuels.
+
+```{r maunaloa, echo=FALSE}
+address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
+download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
+
+maunaloa <- read.table("maunaloa", skip=70)
+names(maunaloa) <- c("year", "month", "decimal.date", "average", "interpolated", "trend", "days")
+maunaloa$average[maunaloa$average==-99.99] <- NA
+maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=maunaloa$decimal.date, average=maunaloa$average)
+#head(maunaloa)
+#str(maunaloa)
+#write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
+```
+
+```{r fig-margin, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations have been steadily increasing since we have begun measuring them in the 1950s. Note that the slope (rate of increase) is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
+par(las=1)
+plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab="ppm", xlab="Year", 
+main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
+abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
+```
+
 ## Evaluating Data and Communicating Science
 
 Once we completed this, we researched information from the literature about what were the predicted impacts of climate change on these locations. 
