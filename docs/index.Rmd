@@ -63,7 +63,7 @@ By incorporating more parameters, we can create a line (in green) that better fi
 
 ```{r fig-margin2, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations and modelled with a polynomial equation.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
-plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab="ppm", xlab="Year", 
+plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab="CO2 (ppm)", xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
 lines(maunaloa$decimal.date,as.numeric(predicted.intervals[,1]),col='darkgreen',lwd=2)
 ```
