@@ -87,7 +87,7 @@ Ewa <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION
 ```
 
 
-## The adjusted plot 
+## What are the maximum temperature trends over the years? 
 ```{r}
 #plot(TMAX~NewDate, Ewa, ty='p')
 Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
@@ -109,28 +109,28 @@ Here is the graph of maximum temperatures from 1905 up to 1978:
 ```{r}
 # Linear Model
 EwaMax.lm <- lm(TMAX~NewDate, data=Ewa[Ewa$DATE< 19780101,])
-summary(EwaMax.lm)
+#summary(EwaMax.lm)
 plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Maxmimum Temperature (Fahrenheit)")
 abline(coef(EwaMax.lm), col='red')
 ```
 
-The trend of maxmimum temperatures has a steeper slope of 6.565e-05 when excluding all of the missing data, indicating a .0000656 degree increase each year, or a .00656 degree increase per century. This increase is also statistically significant, with a p-value of 2.2e-16.   
+The trend of maxmimum temperatures has a steeper slope of 7e-05 when excluding all of the missing data, indicating a .00007 degree increase each year, or a .007 degree increase per century. This increase is also statistically significant, with a p-value less than .001. 
 
-Let's do the same with minimum temperature measurements. 
+### Let's do the same with minimum temperature measurements. 
 
 ```{r}
 # Linear Model
 EwaMin.lm <- lm(TMIN~NewDate, data=Ewa[Ewa$DATE< 19780101,])
-summary(EwaMin.lm)
+#summary(EwaMin.lm)
 plot(TMIN~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Minimum Temperature (Fahrenheit)")
 abline(coef(EwaMin.lm), col='red')
 ```
 
 
-As you can see, minimum temperatures also have an upward trend, with a slope of about 5.8e-05. This translates into a .000058 degree increase per year, or a .0058 degree increase each century. This increase in minimum temperatures is also statistically significant, with a p-value of again 2.2e-16. 
+As you can see, minimum temperatures also have an upward trend, with a slope of about 5.8e-05. This translates into a .000058 degree increase per year, or a .0058 degree increase each century. This increase in minimum temperatures is also statistically significant, with a significant p-value again less than .001. 
 
 
-# Looking at individual months
+## What are the trends 
 
 While Hawaii's temperatures are relatively constant year-round, let's still take a look at individual months and their data across different years.
 
