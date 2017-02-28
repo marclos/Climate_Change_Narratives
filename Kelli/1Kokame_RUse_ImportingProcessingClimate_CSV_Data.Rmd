@@ -18,12 +18,12 @@ knitr::opts_chunk$set(echo = FALSE)
   ![Above: Ewa Plantation as an active mill](Ewa_Plantation1.jpg) 
   
 # Is there climate change in Hawaii?
-Hawaii is the island home to a multitude of people, cultures, and biodiversity. For many people, this blend of culture and environment makes Hawaii a highly sought after vacation destination. However, for about 1.5 million people, it is also home. But the characteristics and elements that truly make Hawaii the special place that it is are being put in jeopardy by changing climate. Some individuals claim that they are not observing any change of climate in Hawaii, however, a robust evaluation of climate cannot be based solely on individual observation. Climate trends must be monitored over extended periods of time, “extended periods” being preferably at least half of a century or more. Only over longer periods of time does an observable trend emerge. Therefore, conducting a climate analysis requires datasets that provide regular climatic measurements. The National Oceanic and Atmospheric Administration provides climatic datasets collected by several stations nationwide. To focus on climate trends in Hawaii, I selected a dataset from a station on the island of O`ahu, the island where I was born and raised, that took climate readings from the years 1905–2006, specifically focusing on temperature and precipitation. The goal of this data analysis was to determine if there could be a relationship between temperature or precipitation trends and time, which could then point to the presence of climate change in this specific region. 
+Hawaii is the island home to a multitude of people, cultures, and biodiversity. For many people, this blend of culture and environment makes Hawaii a highly sought after vacation destination. However, for about 1.5 million people, it is also home. But the characteristics and elements that truly make Hawaii the special place that it is are being put in jeopardy by changing climate. Some individuals claim that they are not observing any change of climate in Hawaii, however, a robust evaluation of climate cannot be based solely on individual observation. Climate trends must be monitored over extended periods of time, “extended periods” being preferably at least half of a century or more. Only over longer periods of time does an observable trend emerge. Therefore, conducting a climate analysis requires datasets that provide regular climatic measurements. The National Oceanic and Atmospheric Administration provides climatic datasets collected by several stations nationwide. To focus on climate trends in Hawaii, I selected a dataset from a station on the island of O`ahu, the island where I was born and raised. This dataset took climate readings from the years 1905–2006, specifically focusing on temperature and precipitation. The goal of this data analysis was to determine if there could be a relationship between temperature or precipitation trends and time, which could then point to the presence of climate change in this region. 
 
 
-## About our station 
+## About our selected station: Ewa Plantation
 
-Ewa Plantation began in 1890 as a sugarcane plantation mill. Through the 1920s and 1930s, Ewa Plantation was a booming and growing business. Perhaps the plantation began monitoring climate because of climate's impacts on sugarcane, but in any case, they had a climatic dataset beginning in 1905. Currently, sugar plantations in Hawai`i are no longer in operation; therefore, the Ewa Plantation now serves as a historic landmark. However, they continued collecting climatic data even after they were no longer a functioning plantation, collecting data up until the year 2006.  
+Ewa Plantation began in 1890 as a sugarcane plantation mill. Through the 1920s and 1930s, Ewa Plantation was a booming and growing business. Perhaps the plantation began monitoring climate because of its impacts on sugarcane, but in any case, they had a climatic dataset beginning in 1905. Currently, sugar plantations in Hawai`i are no longer in operation; therefore, the Ewa Plantation now serves as a historic landmark. However, they continued collecting climatic data even after they were no longer a functioning plantation, collecting data up until the year 2006.  
 
 After downloading their dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, I inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. As said before, this blog will explore trends in temperature and precipitation at this specific station.  
 
@@ -56,7 +56,7 @@ Even though we removed the missing values, the data is still unusable. The reaso
 
 
 ```{r}
-plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+#plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
 ```
 
 ## Fixing the Dates
@@ -65,7 +65,7 @@ To get the data to organize like we want, we first need to convert the date to s
 
 ```{r}
 strDates <- as.character(import$DATE)
-head(strDates)
+#head(strDates)
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
 
