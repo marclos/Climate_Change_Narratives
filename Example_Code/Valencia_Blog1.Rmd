@@ -1,0 +1,257 @@
+---
+title: 'Blog: Climate Change in Alvin, TX'
+author: "Mireya Valencia"
+date: "2/20/2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#### Introduction
+
+Texas's large coast and overpumping of groundwater has made it particularly vulnerable to climate change. The Environmental Protection Agency has estimated that much of the state has warmed .5-1°F in the past century. Although this number may seem underwhelming, even a minimal increase in temperature of the atmosphere can exacerbate problems such as rising sea levels, extreme weather events, drought, and floods.
+
+Alvin, a small city in the Houston metropolitan area of Texas, is home to a weather station that has collected data since 1898, longer than any other weather station in Western Texas. The data, available online through the National Oceanic and Atmospheric Adminsitration (NOAA), can be helpful in analyzing local weather and climate trends in nearby Houston and Galveston. 
+```{r importingCSV, echo=FALSE}
+# Importing Scripts
+
+file = "/home/CAMPUS/mvxu2015/Climate_Change_Narratives/Mireya/HoustonWeather.csv"
+
+import = read.csv(file)
+```
+
+```{r}
+# !(map.png)
+```
+
+
+```{r checking, echo=FALSE}
+# plot(TMAX~DATE, import)
+```
+
+
+
+
+```{r missings, echo=FALSE}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+
+
+```{r, echo=FALSE}
+# plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+```
+
+
+
+
+```{r, echo=FALSE}
+# plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+```
+
+
+
+
+
+```{r, echo=FALSE}
+strDates <- as.character(import$DATE)
+# head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+
+```{r, echo=FALSE}
+# plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+```
+
+
+
+```{r, echo=FALSE}
+# unique(import$STATION)
+```
+
+
+
+```{r, echo=FALSE}
+Alvin <- subset(import, STATION=="GHCND:USC00410204", select=c(STATION, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+
+
+```{r, echo=FALSE}
+# plot(TMAX~NewDate, Alvin, ty='l')
+```
+
+
+
+```{r, echo=FALSE}
+# Linear Model
+Alvin.lm <- lm(TMAX~NewDate, data=Alvin)
+# summary(Alvin.lm)
+# plot(TMAX~NewDate, Alvin, ty='l')
+# abline(coef(Alvin.lm), col='red')
+```
+
+
+```{r, echo=FALSE}
+# Get months
+Alvin$Month = months(Alvin$NewDate) # Creates problems.
+Alvin$Month = format(as.Date(Alvin$NewDate), format = "%m")
+Alvin$Year = format(Alvin$NewDate, format="%Y")
+```
+
+```{r creatingmonthlymeans, echo=FALSE}
+MonthlyMean = aggregate(TMAX ~ Month + Year, Alvin, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+# MonthlySD = aggregate(TMAX ~ Month + Year, Alvin, sd)
+
+# MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+# MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlyMean$NewDate = MonthlyMean$YEAR + (MonthlyMean$MONTH - 1)/12
+
+# head(MonthlySD)
+```
+
+```{r plottingMonthyMeans, echo=FALSE}
+# plot(MonthlyMean$TMAX, ty='l')
+```
+#### Hypotheses
+In order to determine whether or not temperature has increased in Texas over the past century, we will analyze the NOAA data and perform a series of statistical tests to determine the validity of the data. 
+
+Alternative Hypothesis: The maximum temperature in Alvin, TX has increased from 1998-2013.
+
+Null hypothesis: The maximum temperature in Alvin, TX has decreased from 1998-2013. 
+
+In accordance with the scientific method, the null hypothesis predicts that there is no observed relationship between variables. Generally, scientists hope to disprove the null hyptheses and, consequently, accept the alternative hypothesis. P-value is used to calculate the probability of an event happening by chance; the smaller the p-value, the lower the probability. A p-value of <.05 leads to a rejection of the null hypothesis.
+
+#### Analyzing the Data: Maximum Temperatures
+
+Below are the maximum mean temperatures in Alvin, TX from 1998-2013. There is an overall increasing trend in the data. However, with p=0.30, we cannot reject nor accept our null hypothesis because the data is not statistically significant.
+
+The red line represents the slope of the data. 
+```{r plottingMonthlyMean, echo=FALSE}
+# plot(Monthly$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlyMean, ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year")
+SD.lm <- lm(TMAX~NewDate, data=MonthlyMean)
+# summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+
+As shown in the graph above, there is a huge portion of missing data from about 1920-1960. A gap in data this large poses questions about the validity of the data set. To see if the trend exists independently of this missing data, we can look only at the data collected after 1960. 
+
+```{r, echo=FALSE}
+MonthlyMean2=subset(MonthlyMean, subset=YEAR>1962)
+
+```
+
+```{r plottingMonthySD, echo=FALSE}
+# plot(MonthlySD$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlyMean2, ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year")
+MonthlyMean2.lm <- lm(TMAX~NewDate, data=MonthlyMean2)
+# summary(MonthlyMean2.lm)
+
+abline(coef(MonthlyMean2.lm), col="red")
+
+```
+
+As shown above, the mean monthly temperatures from 1960-2013 are still increasing slightly. With a p-value of 0.70 we cannot reject or support the hypothesis. However, looking at the graph from 1970 on shows us that the increasing trend of temperatures persists regardless of the missing data.
+
+
+#### Monthly Data
+In order to analyze statistically significant data, we can look at maximum temperatures for each month rather than the entire year. 
+
+In the month of December, for instance, the maximum monthly temperature increased (p=.015). We reject the null hypothesis, meaning that there is evidence to support the hypothesis that maximum temperature of December increased from 1898-2013. 
+```{r, echo=FALSE}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='p', pch=20, ylab="Maximum Temperature  (°F)", xlab= "Year", main="December") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+#summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+The data from 1960 to 2013 shows a similar increasing slope. With a p-value of 0.02, we reject the null hypothesis.
+```{r, echo=FALSE}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="12",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="December") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="12",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+``` 
+
+The months of October (p=.004) and March (p=.047) from 1898-2013 show similar trends of increasing maximum temperature and are statistically significant, thereby rejecting the null hypothesis. The corresponding graphs from 1960-2013 are not statistically significant, but they assure as that there is still warming occuring despite the missing data. ab
+```{r, echo=FALSE}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="10"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="October") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+```{r, echo=FALSE}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="10",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="October") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="10",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+
+```{r, echo=FALSE}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="March") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+```{r, echo=FALSE}
+# plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='p')
+plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="03",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="March") 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="03",])
+# summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+#### Assessing the Data
+The public debate between climate change 'believers' and 'skeptics' revolves around two major disagreements: (italic)what is causing climate change, and the reliability of climate data. 
+
+While skeptics remain unconvinced that climate change is a result of increased CO2 levels, climate scientists believe climate change is being brought on anthropogenically through increased greenhouse gas emissions. Skeptics argue that the weather systems that effect climate are too complex and we still do not know enough about them to draw conclusions. Scienti
+
+#### Implications
+The graphs of maximum temperatures show us that Texas is generally warming, and this is signifacntly significant when looking at the months of March, October, and December. Albeit Spring begins at the tailend of March, these are all Winter months. Warming winters can have drastic effects for Alvin and the surrounding metropolitan areas of Houston and Galveston. Even a change of a few degrees can drastically effect how organisms, partulcarly small species, interact with their environment. EXPAND UPON TEMPERATURE AND WHY THIS IS IMPORTANT AND WHY WE COLLECTED THIS DATA 
+
+Although a temperature rise of a few degrees is unlikely to dramatically impact humans, it is the indirect impacts of rising temperature that will create challenges for us. 
+
+Take for instance, the issue of rising sea levels. As temperatures increase, the EPA estimates that Texas can expect sea levels to rise anywhere from two to five feet within the next century (“What Climate Change Means for Texas”). Texas's rising sea levels are exacerbated by the effects of local groundwater pumping, which causes the land to sink. Subsidence and rising sea levels are a recipe for floods, and historical data has shown that oil drilling and groundwater pumping are causing Texas to surpass its historical subsidence rates (Paine). (TALK MORE ABOUT OIL DRILLING AND AQUIFIERS. USE SOURCES IN LIT REVIEW) In practical terms, this means billions of dollars’ worth of flooding. A recent study cross-examined maps released by the National Oceanic Atmospheric Administration (NOAA) with house values in coastal areas across the United States. The study reveals that, with a sea level rise of six feet by 2100, 40 percent of homes in Galveston will be flooded, totaling a loss of $2.9 billion (“Climate Change and Housing”). 
+
+economy: how its effecting us on an indivudal level (Houses) but also state-wide economy/farming/drought
+
+Climate change is not only a danger to the wellbeing of our natural environment, but also to public health. A recent study assessed the linkages between rising temperatures and the presence of mosquito-transmitted dengue disease in Matamoros, Tamaulipas, Mexico, a town that shares a border with Texas. Although it does not study the impact of climate change on dengue directly, per say, it did find that “every 1ºC increase in sea surface temperatures…was followed by a 19.4% increase in dengue incidence (18 weeks later)" (Brunkard). Other studies suggest that rising temperatures can lead to the emergence of mosquito-borne diseases, including malaria, dengue, and viral encephalitis, and rising SST and sea levels can foster growth of diseases such as cholera and shellfish poisoning (Patz). Even a minimal increase of one degree celsius has dramatic impacts on the spread of disease and, consequently, our heatlh. talk about texas sepecifically.
+
+national secrurity issues; border; climate refugees
+
+#### Conclusion
+In brief, warming temperatures and secondary impacts of climate change pose a threat to Texas's natural environment, safety, and economic wellbeing. The data collected from Alvin, TX demonstrates that there are trends of significant warming throughout the last century, particularly in winter months. Texas is vulnerable to property damage, national security threats, flooding, drought, and more if this evidence is not met with the proper legislation. 

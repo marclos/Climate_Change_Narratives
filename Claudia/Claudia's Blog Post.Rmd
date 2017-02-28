@@ -1,0 +1,228 @@
+---
+title: "A Look at Climate Change in Oklahoma"
+author: "Claudia Chandra"
+date: "02/20/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r importingCSV, echo=FALSE, results='hide'}
+# Importing Scripts
+
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
+
+import = read.csv(file)
+```
+
+
+```{r checking, echo=FALSE, results='hide'}
+#plot(TMAX~DATE, import)
+```
+
+
+```{r missings, echo=FALSE}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+
+
+
+
+```{r, echo=FALSE, results='hide'}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+
+
+
+```{r, echo=FALSE, results='hide'}
+unique(import$STATION_NAME)
+```
+
+
+```{r, echo=FALSE}
+LosAngeles <- subset(import, STATION_NAME=="LOS ANGELES DOWNTOWN USC CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+ 
+
+```{r, echo=FALSE, results='hide'}
+LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
+LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
+LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
+```
+
+```{r creatingmonthlymeans, echo=FALSE, results='hide'}
+MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+```
+
+All environmental changes observed in the last 150 years have been caused by a 2°F increase in global land and sea temperature. Extensive climate change research has been undertaken for different regions of the United States to avoid logical fallacies. Science now understand that equalizing the magnitude of climate change across the globe is a hasty generalization as different areas are affected by global warming in individual ways and extents. 
+
+Nevertheless, although results and predictions vary, there is unanimity in the belief that for Oklahoma, the “magnitude of expected changes will exceed those experienced in the last century (Ojima). Despite this, 25% of Oklahoma’s residents believe global warming to be a myth. This percentage is even higher, reaching 42% in more skeptical counties such as Woodward County (Sutter). 
+
+This astounding figure made me wonder why people doubted global warming. Perhaps the results found by the climate researchers in Oklahoma did not compel its citizens because they did not experience its effects, such as increasing temperatures and decreasing precipitation, for themselves in their day to day lives. To test my hypothesis, I collected temperature data for Oklahoma’s Tulsa International Airport from 1920 - 2017 and compared my results to the data published by associations such as The Oklahoma Climatological Survey (OCS) and The Environmental Protection Agency (EPA). 
+
+What I found was that, unsurprisingly, Oklahoma’s average minimum and maximum temperatures are rising along with the global trend. Unfortunately, this finding on its own does not confirm the reason for Oklahoma’s skepticism; a deeper analysis of Oklahoma’s sociological make-up is needed to understand the exact causes of such strong climate change denial in this region. This attitude of doubt towards global warming must be halted as current adaptation methods will be insufficient in responding to the more intense consequences of climate change that are projected to arise. 
+
+Last year marked the closing of the El Nino weather pattern. Despite this, scientists still predict temperature rises for the next 5 years. For Oklahoma, annual mean temperatures are expected to rise by approximately 2.5°F by 2040 (Karl). This number nearly doubles the 1.3°F increase in mean temperature that occurred between 1993 and 2008. 
+
+In future summers, Karl et al. predict that temperature increases will be slightly higher at 2.7 - 2.9°F. These predictions are backed up by EPA whose research also forecasts the number of days over 100°F  to quadruple by mid century. Karl et al. also believe that by the end of the century, annual mean temperatures will increase a total of 9 - 14.6°F. These numbers are substantially different to those found by the Southern Climate Impacts Planning Program (SCIPP), which states that “temperatures in the southern Great plains are projected to increase another 3 - 9°F by 2100.” This discrepancy may have occurred as a result of the differing methodologies that the SCIPP and Karl et al. have employed. It is also important to note that there is a lack of observations as concrete weather data has only been collected for the past 2 decades. Thus, future predictions cannot be absolutely perfect. 
+
+Lenihan et al. projected changes in maximum changes for each state encompassing the Great Plains region and predicted that by 2100, the average monthly maximum temperature in Oklahoma will increase by 7 - 13°F. This claim is supported by the SCIPP’s models, which also anticipate that “droughts will become more frequent, last longer, and be more intense” due to higher maximum temperatures. 
+
+
+##Average TMAX - May 
+```{r May, echo=FALSE}
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
+
+abline(coef(May.lm), col="red")
+```
+
+##Average TMAX - June 
+```{r June, echo=FALSE}
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+
+abline(coef(June.lm), col="red")
+```
+
+Change (degrees / year) : `r coef(May.lm)[2]` 
+Degrees / 100 years :  `r round(coef(May.lm)[2]*100, 3)` 
+Probability of `r round(summary(May.lm)$coefficients[2,4],4)`. 
+
+The two graphs above show the maximum average temperatures for the months of May and June from the dataset gathered at Tulsa International Airport. Both data sets show upward trends and confirm the positive relationship between time (year) and temperature increases (tmax) in the summer months. Between 1920 and 2017, the average maximum temperature for June rose 4.227°F. 
+
+Keeping in mind the knowledge that the rate of climate change is predicted to quicken in the future, an increase of 7 - 13°F as predicted by Lenihan et al. seems viable. Nevertheless, it is important to recognize the probability of this actually happening. The P-value (probability) of the graph is 0; since it is below 0.05 we cannot reject the null hypothesis as the trend line is too vague. What the graphs demonstrate is a rise in temperature, but not its causes or effects. 
+
+##Average TMAX - November 
+```{r Nov, echo=FALSE}
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
+Nov.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
+abline(coef(Nov.lm), col="blue")
+
+```
+
+##Average TMAX - December
+```{r Dec, echo=FALSE}
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+abline(coef(Dec.lm), col="blue")
+```
+
+These graphs illustrate the average maximum temperature for the winter months of November and December. We observe the same upward trend and positive relationship between time and temperature in these two graphs as we with the previous graphs for May and June. However, notice that the slope of these winter graphs is less steep than the graphs for the summer graphs. 
+
+This means that the relationship between time and temperature is weaker in the winter months than the summer months. Although temperatures are rising year-round, they are rising more quickly in the summer. 
+
+```{r, echo=FALSE, results='hide'}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
+
+##Average TMIN - November 
+```{r Nov2, echo=FALSE}
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",], ty='l') 
+Nov.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",])
+
+abline(coef(Nov.lm), col="purple")
+
+```
+
+##Average TMIN - December 
+```{r Dec2, echo=FALSE}
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+#summary(Dec.lm)
+
+abline(coef(Dec.lm), col="purple")
+
+```
+
+
+Slope: `r coef(Dec.lm)[2]` 
+probability: `r round(summary(Dec.lm)$coefficients[2,4],7)`
+r-squared: `r round(summary(Dec.lm)$r.squared, 3)`. 
+
+
+##Average TMIN - May 
+```{r May2, echo=FALSE}
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",], ty='l') 
+May.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",])
+#summary(May.lm)
+
+abline(coef(May.lm), col="orange")
+
+```
+
+
+
+##Average TMIN - June
+```{r, echo=FALSE}
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",], ty='l') 
+June.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",])
+#summary(June.lm)
+
+abline(coef(June.lm), col="orange")
+
+```
+
+Now we take a look at the average minimum temperatures for the months we have observed previously. The graphs of the summer months, May and June, demonstrate a strong positive relationship between time and average minimum temperature increases. The increases for both months are between 4 - 5°F and are indicative of the warmer summers that Oklahoma has been experiencing over the past century. 
+
+What we see for November is a very slight increase in average minimum temperatures but in December, minimum temperatures have actually decreased. From these results, and the knowledge that maximum temperatures throughout the year are rising, we can see how temperatures ranges in Oklahoma have enlarged. The increase of extreme weather events will have an unforeseeable effect on Oklahoma, which highlights the need for immediate action and mitigation. 
+
+
+##Precipitation
+
+
+```{r, echo=FALSE}
+LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
+YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$PRCP)
+```
+
+each dot is a yearly mean calculated from the sum of all rainfall recorded that year 
+
+blue line = mean 
+
+red line = trend line 
+
+Precipitation declining at -0.0085364 cm yr$^{-1}~$ or -0.09cm decade$^{-1}$ 
+
+
+```{r, echo=FALSE}
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="red")
+
+n <- 5 
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+#lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+
+
+START AT BULLET POINT 18 
+
+Talk about precipitation 
+
+Solutions and conclusions 
+
+Future predictions are difficult to create because we cannot accurately predict how public attitude and behaviours towards global warming will change. The Oklahoma Climatological Survey (OCS) affirmed that “much of the global average temperature increases over the last 50 years can be attributed to human activities. Thus, the SCIPP adds that the extent of temperature increases will, in part, be determined by the level of GHG released into the atmosphere. Thus, if Oklahoma’s citizens were to initiate more action and collaboration to mitigate the effects of climate change, they may potentially lessen its impacts in the future. However, this statement is in direct opposition with Ojima et al. whose research found that temperatures will continue to rise to their projected values “even under a scenario of substantial reductions in heat-trapping (GHG) emissions. It is difficult to determine the value of the Ojima and the SCIPP’s claims as neither specifically state the amount of GHG emissions that need to be reduced to moderate temperature rises. 
+
+
+
