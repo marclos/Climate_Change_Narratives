@@ -215,7 +215,7 @@ First we should create monthly mean for each month.
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, Ewa, mean)
 
 MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
-head(MonthlyMeanTMIN)
+#head(MonthlyMeanTMIN)
 ```
 
 Here's a graphic showing the trend of minimum temperatures in November over the years: 
@@ -269,7 +269,7 @@ PRCP_mean = mean(Ewa$PRCP, na.rm=T)
 MonthlyMeanPRCP = aggregate(PRCP ~ Month + Year, Ewa, mean)
 
 MonthlyMeanPRCP$YEAR = as.numeric(MonthlyMeanPRCP$Year)
-head(MonthlyMeanPRCP)
+#head(MonthlyMeanPRCP)
 ```
 
 Let's try looking at trends in precipitation during a specific month. Let's take a look at the month of May. 
