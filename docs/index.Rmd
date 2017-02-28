@@ -27,9 +27,6 @@ options(htmltools.dir.version = FALSE)
 Climate change science is complex. As a class we have spent six weeks learning how scientists evaluate the earth's climate systems and learned that even determine changes of the Earth's temperature incorporates some uncertainty. 
 
 As a class, we decided to evaluate temperature records for individual locations in the USA and determine if there was a trend. 
-
-Although political debate about the causes of climate change, we limited our project to the evaluation of observed temperatures and tried to avoid making definitive statements about cause and effect. Nevertheless, based on a number forms of evidence, we know that greenhouse gases do influence the planet's climate. Furthermore, as a major greenhouse gas, carbon dioxide concentrations are increasing as a result of our use of fossil fuels.
-
 ```{r maunaloa, echo=FALSE}
 address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
 download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
@@ -43,11 +40,32 @@ maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=ma
 #write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
 ```
 
+Although political debate about the causes of climate change, we limited our project to the evaluation of observed temperatures and tried to avoid making definitive statements about cause and effect. Nevertheless, based on a number forms of evidence, we know that greenhouse gases do influence the planet's climate. Furthermore, as a major greenhouse gas, carbon dioxide concentrations are increasing as a result of our use of fossil fuels.
+
 ```{r fig-margin, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations have been steadily increasing since we have begun measuring them in the 1950s. Note that the slope (rate of increase) is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
+par(las=1)
+plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab="CO2 (ppm)", xlab="Year", 
+main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
+abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
+```
+
+Although the fitted line (in red) follows the trend, signficant variation exists the data. As an alternative, we might fit a line captures some of the seasonal variation and the changing rate of change. 
+
+```{r polynomial, echo=FALSE, results='hide'}
+new.lm <- lm(average~poly(decimal.date,2) + cos(decimal.date) + sin(decimal.date), data=maunaloa, na.action = na.exclude)
+
+summary(new.lm)
+
+predicted.intervals <- predict(new.lm, #data.frame(x=maunaloa$decimal.date), 
+  interval='confidence', level=0.99)
+```  
+By incorporating more parameters, we can create a line (in green) that better fits the data. However, we loss the simplicity of estimating concentrations changes as a single, simple, number. 
+
+```{r fig-margin2, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations and modelled with a polynomial equation.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
 plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab="ppm", xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
-abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
+lines(maunaloa$decimal.date,as.numeric(predicted.intervals[,1]),col='darkgreen',lwd=2)
 ```
 
 ## Evaluating Data and Communicating Science
