@@ -69,13 +69,12 @@ strDates <- as.character(import$DATE)
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
 
-## Checking the New Dates
+## Checking our date-corrected graph
 ```{r}
 plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
-## Subset Sites
 
-I have two sites in this data, so, we need to subset it.
+As you can see, there is still a lot of missing temperature data. 
 
 ```{r}
 unique(import$STATION_NAME)
@@ -103,13 +102,10 @@ But since there's a lot of missing data beginning at about 1980, let's focus on 
 
 Here is the graph of maximum temperatures from 1905 up to 1978: 
 ```{r}
-plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Maxmimum Temperature (Fahrenheit)")
+#plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Maxmimum Temperature (Fahrenheit)")
 ```
 
 
-## Evaluating the trend
-
-Now, let us analyze the trend of the maxmimum temperature data from 1905 to 1978.  
 ```{r}
 # Linear Model
 EwaMax.lm <- lm(TMAX~NewDate, data=Ewa[Ewa$DATE< 19780101,])
