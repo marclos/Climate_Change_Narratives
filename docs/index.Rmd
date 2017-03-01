@@ -40,7 +40,7 @@ maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=ma
 #write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
 ```
 
-Although political debate about the causes of climate change, we limited our project to the evaluation of observed temperatures and tried to avoid making definitive statements about cause and effect. Nevertheless, based on a number forms of evidence, we know that greenhouse gases do influence the planet's climate[@pachauri2015ipcc]. Furthermore, as a major greenhouse gas, carbon dioxide (CO<sub>2</sub>) concentrations are increasing as a result of our use of fossil fuels.
+Although political debate about the causes of climate change, we limited our project to the evaluation of observed temperatures and tried to avoid making definitive statements about cause and effect. Nevertheless, based on a numerous types of evidence, we know that greenhouse gases do influence the planet's climate[@pachauri2015ipcc]. Furthermore, as a major greenhouse gas, carbon dioxide (CO<sub>2</sub>) concentrations are increasing as a result of our use of fossil fuels and already influences the planet's climate.
 
 ```{r fig-margin, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope (rate of increase) is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
@@ -49,21 +49,25 @@ main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
 abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
 ```
 
-Although the fitted line follows the trend, significant variation exists the data. Some of this intraannual variation is due seasonality of CO<sub>2</sub> uptake and release by plants. As an alternative, we might fit a line captures some of the seasonal variation and the changing rate of change. 
+Although the fitted line follows the trend, significant variation exists the data. Some of this intraannual variation is due seasonality of CO<sub>2</sub> uptake and release by plants. 
+
+Scientists use models to explore patterns or develop predictions. Since a straight line doesn't fit the data very well, we might fit a line captures some of the seasonal variation and the changing rate of change. 
 
 ```{r polynomial, echo=FALSE, results='hide'}
-new.lm <- lm(average~poly(decimal.date,2) + cos(decimal.date) + sin(decimal.date), data=maunaloa, na.action = na.exclude)
+new.lm <- lm(average~poly(decimal.date,2) + cos(month/12) + sin(month/12), data=maunaloa, na.action = na.exclude)
 
 summary(new.lm)
 
 predicted.intervals <- predict(new.lm, #data.frame(x=maunaloa$decimal.date), 
   interval='confidence', level=0.99)
-```  
-By incorporating more parameters, we can create a line (in green) that better fits the data. However, we loss the simplicity of estimating concentrations changes as a single, simple, number. 
 
-```{r fig-margin2, fig.margin = FALSE, fig.cap = "The carbon dioxide concentrations and modelled with a polynomial equation (purple)", cache=TRUE, echo=FALSE}
+```  
+
+By incorporating more parameters (polynomial and a sin/cos function), we can create a curved line that better fits the data. However, we loss the simplicity of estimating concentrations changes as a single, simple, number.
+
+```{r fig-margin2, fig.margin = FALSE, fig.cap = "The carbon dioxide concentrations and modelled with a polynomial equation (purple).", cache=TRUE, echo=FALSE}
 par(las=1)
-plot(maunaloa$decimal.date, maunaloa$average, type="l", lwd=.5, ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
+plot(maunaloa$decimal.date, maunaloa$average, type="l", lwd=2, col="grey40", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
 lines(maunaloa$decimal.date,as.numeric(predicted.intervals[,1]),col='blueviolet',lwd=2)
 ```
@@ -72,7 +76,7 @@ lines(maunaloa$decimal.date,as.numeric(predicted.intervals[,1]),col='blueviolet'
 
 After collecting climate data (temperature, precipitation, etc) for a specific station, we used a few open source resources to process [@R-base], analyze, and communicate the data [@R-rmarkdown].
 
-Once we completed , we researched information from the literature about what were the predicted impacts of climate change on these locations. 
+Once we completed the analysis of a single location, we evaluated research papers about the implications of climate change for the regional in question. 
 
 Finally, we combined this information into a series of blogs that might can be used to help understand local and regional climate change implications. 
 
