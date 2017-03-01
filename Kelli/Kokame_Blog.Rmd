@@ -289,9 +289,10 @@ abline(coef(MayPRCP.lm), col="blue")
 temp = MonthlyMeanPRCP[-c(29, 17),]
 temp.lm <- lm(PRCP~YEAR,data=temp[temp$Month=="05",])
 abline(coef(temp.lm), col="darkgreen")
-summary(temp.lm)
+#summary(temp.lm)
 ```
 
+In the above figure, the blue line represents the trend when taking into account the large outlier values in the early 1900s. A quick look into the tropical storm history of Hawaii reveals that the unusal spike could be caused by the enormous amount of rainfall caused by a hurricane. While the blue line represents a statistically significant (p=.04) downward trend, the green line represents the trend when excluding the two outlier values. While it is still a downward trend, it is no longer statistically significant (p=0.7), meaning that we cannot reject the null hypothesis that there is no relationship between precipitation amounts in May and time. 
 
 ```{r}
 #MonthlyMeanPRCP = aggregate(PRCP ~ Month + Year, Ewa, mean)
@@ -330,6 +331,6 @@ Finally, climate change poses a very concerning threat to Hawaii’s watershed a
 
 # Conclusions 
 
-While the data analyzed in this blog is only from one station with limited data and should by no means be understood as "proof" that global warming is occurring at alarming rates, it does point out some concerning trends in climatic data that, if left unchecked, could certainly lead us to disastrous outcomes. Specifically in Hawaii, the effects of climate change would lead to serious economic, cultural, natural, health, and other consequences. If there is even a chance that we can avoid these terrible consequences, and humans definitely can impact the climate, shouldn't we take this chance?  
+While the data analyzed in this blog is only from one station with limited data and should by no means be understood as "proof" that global warming is occurring at alarming rates, it does point out some concerning trends in climatic data that, if left unchecked, could certainly lead us to disastrous outcomes. Specifically in Hawaii, the effects of climate change would lead to serious economic, cultural, natural, health, and other consequences. If there is even a chance that we can do something to avoid these terrible consequences, shouldn't we take this chance?  
 
 
