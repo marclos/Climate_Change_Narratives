@@ -1,0 +1,95 @@
+---
+title: "Climate Narratives"
+subtitle: "How does weather change locally?"
+author: "Environmental Analysis 30 Students, Pomona College"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_html: default
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: xelatex
+bibliography: skeleton.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+# Defining a Project
+
+Climate change science is complex. As a class we have spent six weeks learning how scientists evaluate the earth's climate systems and learned that even determine changes of the Earth's temperature incorporates some uncertainty. 
+
+As a class, we decided to evaluate temperature records for individual locations in the USA and determine if there was a trend. 
+```{r maunaloa, echo=FALSE}
+address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
+download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
+
+maunaloa <- read.table("maunaloa", skip=70)
+names(maunaloa) <- c("year", "month", "decimal.date", "average", "interpolated", "trend", "days")
+maunaloa$average[maunaloa$average==-99.99] <- NA
+maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=maunaloa$decimal.date, average=maunaloa$average)
+#head(maunaloa)
+#str(maunaloa)
+#write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
+```
+
+Although political debate about the causes of climate change, we limited our project to the evaluation of observed temperatures and tried to avoid making definitive statements about cause and effect. Nevertheless, based on a number forms of evidence, we know that greenhouse gases do influence the planet's climate. Furthermore, as a major greenhouse gas, carbon dioxide concentrations are increasing as a result of our use of fossil fuels.
+
+```{r fig-margin, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations have been steadily increasing since we have begun measuring them in the 1950s. Note that the slope (rate of increase) is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
+par(las=1)
+plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
+main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
+abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
+```
+
+Although the fitted line (in red) follows the trend, signficant variation exists the data. As an alternative, we might fit a line captures some of the seasonal variation and the changing rate of change. 
+
+```{r polynomial, echo=FALSE, results='hide'}
+new.lm <- lm(average~poly(decimal.date,2) + cos(decimal.date) + sin(decimal.date), data=maunaloa, na.action = na.exclude)
+
+summary(new.lm)
+
+predicted.intervals <- predict(new.lm, #data.frame(x=maunaloa$decimal.date), 
+  interval='confidence', level=0.99)
+```  
+By incorporating more parameters, we can create a line (in green) that better fits the data. However, we loss the simplicity of estimating concentrations changes as a single, simple, number. 
+
+```{r fig-margin2, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations and modelled with a polynomial equation.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
+par(las=1)
+plot(maunaloa$decimal.date, maunaloa$average, type="l", lwd=.5, ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
+main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
+lines(maunaloa$decimal.date,as.numeric(predicted.intervals[,1]),col='blueviolet',lwd=2)
+```
+
+## Evaluating Data and Communicating Science
+
+Once we completed this, we researched information from the literature about what were the predicted impacts of climate change on these locations. 
+
+Finally, we combined this information into a series of blogs that might can be used to help understand local and regional climate change implications. 
+
+## 2017 Blogs
+
+[Lodi California by Marisa Weinstock](Weinstock_Blog.html)
+
+[Oklahoma by Claudia Chandra](Claudia_s_Blog_Post.html)
+
+[O'ahu, Hawai'i by Kelli Kokame](Kokame_Blog.html)
+
+[Alvin, Texas by Mireya Valencia](Valencia_Blog1.html)
+
+[Monroe County, Florida by Viraj Singh](Singh_Blog.html)
+
+[Barrow, Alaska by Katie Graham](Graham_Blog.html)
+
+[Ojai, California by Olivia Whitener](Whitener_Blog.html)
+
+[Denver, Colorado by Thea Piccone](Piccone_Blog.html)
+
+[New Orleans, Louisiana by Khalil Johnson](Johnson_Blog.html)
