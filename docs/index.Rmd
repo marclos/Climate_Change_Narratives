@@ -44,7 +44,7 @@ Although political debate about the causes of climate change, we limited our pro
 
 ```{r fig-margin, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations have been steadily increasing since we have begun measuring them in the 1950s. Note that the slope (rate of increase) is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
-plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab="CO2 (ppm)", xlab="Year", 
+plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
 abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
 ```
@@ -63,9 +63,9 @@ By incorporating more parameters, we can create a line (in green) that better fi
 
 ```{r fig-margin2, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations and modelled with a polynomial equation.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
-plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab="CO2 (ppm)", xlab="Year", 
+plot(maunaloa$decimal.date, maunaloa$average, type="l", lwd=.5, ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
-lines(maunaloa$decimal.date,as.numeric(predicted.intervals[,1]),col='darkgreen',lwd=2)
+lines(maunaloa$decimal.date,as.numeric(predicted.intervals[,1]),col='blueviolet',lwd=2)
 ```
 
 ## Evaluating Data and Communicating Science
