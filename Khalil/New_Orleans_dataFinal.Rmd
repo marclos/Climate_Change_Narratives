@@ -1,18 +1,17 @@
 ---
-title: ""
+title: "New Orleans and the Changing Climate"
 author: "Khalil Johnson"
 date: "2/19/2016"
 output: html_document
 ---
-
+![New Orleans Heat](New_Orleans_Temp.jpg)
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set
 ```
 
-## Why Should We Care About Temperature Change?
+## Where Do We See the Most Temperature Change in New Orleans?
 
-First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
-```{r importingCSV}
+```{r importingCSV, echo=FALSE}
 # Importing Scripts
 
 file = "/home/CAMPUS/kaj41925/Climate_Change_Narratives/Khalil/NewOrleansNOAAdata.csv"
@@ -20,24 +19,18 @@ file = "/home/CAMPUS/kaj41925/Climate_Change_Narratives/Khalil/NewOrleansNOAAdat
 import = read.csv(file)
 ```
 
-## Checking the Data(echo = False)
-
-```{r setup2}
+```{r setup2,results='hide'}
 plot(TMAX~DATE, import)
 ```
-
-What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!(echo = False)
 
 ```{r missings, echo=FALSE}
 import$TMAX[import$TMAX==-9999] = NA
 import$TMIN[import$TMIN==-9999] = NA
 ```
 
-Okay, now we'll check again, for dates less then Dec. 31, 1913
 ```{r setup3, echo=FALSE}
 plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 ```
-
 
 ```{r}
 strDates <- as.character(import$DATE)
@@ -45,42 +38,22 @@ head(strDates)
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
 
-
-Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition
-
-19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
-
-
 ```{r setup4, echo=FALSE}
 plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
 ```
-
-## Fixing the Dates
-
-First, we convert the date a string or character values. Next, we'll convert the strings to a data format.
-
-## Subset Sites
-
-Olivia has two sites in here data, so, we need to subset it.
 
 ```{r setup7, echo=FALSE}
 unique(import$STATION_NAME)
 ```
 
-Let's choose the FAIRPLEX NY US because the record is longer than the airport.
-
 ```{r setup8, echo=FALSE}
 LosAngeles <- subset(import, STATION_NAME=="NEW ORLEANS AUDUBON LA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 ```
 
-## A new plot
 ```{r setup9, echo=FALSE}
 plot(TMAX~NewDate, LosAngeles, ty='l')
 ```
 
-## Evaluating the trend
-
-Creating a linear model and then evaluate the rate (slope). 
 ```{r setup10, echo=FALSE}
 # Linear Model
 LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
@@ -89,9 +62,6 @@ plot(TMAX~NewDate, LosAngeles, ty='l')
 abline(coef(LosAngeles.lm), col='red')
 ```
 
-## Creating Month and Year Variables
-
-So, let's figure out how to see how changes happen for individual months.
 ```{r setup11, echo=FALSE}
 # Get months
 LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
@@ -99,7 +69,6 @@ LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
 LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
 ```
 
-### Creating Monthly Means
 ```{r creatingmonthlymeans, include=FALSE}
 MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
 
@@ -118,12 +87,11 @@ MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
 head(MonthlySD)
 ```
 
-
 ```{r plottingMonthyMeans, include=F}
 plot(MonthlyMean$TMAX, ty='l')
 
 ```
-below is sd
+
 ```{r plottingMonthySD, include=F}
 plot(MonthlySD$TMAX, ty='l')
 
@@ -135,23 +103,24 @@ abline(coef(SD.lm), col="red")
 
 ```
 
-  New Orleans is famous for its cuisine, authentic music, and culture, but most recently its been more famous for is temperature. 12 years ago Hurricane Katrina sobered us all, apprising us of the coming behemoth of Climate Change. Since then, the city has recovered, and is on the look out for future attacks from the surrounding oceans that will plague the birth place of jazz. However, New Orleans has overlooked a very prevalent danger that is non ocean based--temperature change. The city is known for its particularly warm and humid weather, but as of late we have been fried like frog legs by record breaking weather. Our ignorance of these spikes have made our underserved communities more vulnerable and as a region that is sensitive to climate change we must pay attention to these changes. The summer months have extended their stays, and dangerous heat has influenced moths that are known to be cooler. Our weather is changing and we have to change with it if we are to adapt to the quickly increasing temperatures.   
+In August of 2005 most of the nation watched as Hurricane Katrina devastated New Orleans. Suddenly, most of the nation came to the sobering realization that not only was climate change real, but a phenomenon that we would see much more of as time passed. The city of New Orleans has recovered since then, and is consistently on guard against inevitable threatening weather events as a result of climate change. In fact, over recent months The Picayune Times has repeatedly featured articles cautioning the public to prepare for unprecedented heat waves. The city is known for its particularly warm and humid weather, but as of late the birthplace of jazz has been fried like frog legs by record-breaking temperatures. Weather stations in and around the city have collected relevant data since 1900, and suggest an upward trend in temperatures, especially in the summer months. The hottest months have extended their stays, and that influence has caused fall months to warm. These spikes have made the city’s underserved communities more vulnerable, and as a region that is particularly sensitive to climate change, attention must be paid to these changes.   
 
 ### Selecting for 1 Month -- June 
 
 Perhaps, we can can understand the temperature change in New Orleans if we analyze for just one month at a time!
+
 This is June
 
 ```{r June}
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+#plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l',ylab = "Temperature (degrees Farenheit") 
 May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
 summary(May.lm)
 
 abline(coef(May.lm), col="red")
 ```
 
-The Times-Picayune reported in 2015 that June brought 21 days of heatwave weather (Schleifstein,2015). New Orleans also had the hottest day on record in 2009 on June 24th of 104 degrees (Kamenitz, 2009).  Without a doubt patterns of that nature have contributed to the overall rise in temperatures in June. Overtime, one can see a sharp incline in the summer month.  
+The Times-Picayune reported in 2015 that June brought a heatwave of 21 days (Schleifstein,2015). New Orleans also had the hottest day on record in 2009 on June 24th of 104 degrees (Kamenitz, 2009). Without a doubt patterns of that nature have contributed to the overall rise in temperatures in June. Overtime, one can see a sharp incline in the summer month. Pvalue, here it is highlighy significant because it is less that p<.05  
 
 ```{r July}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
@@ -162,7 +131,7 @@ summary(May.lm)
 abline(coef(May.lm), col="red")
 ```
 
-The same Ne Orleans based newspaper reported that July reported 31 days, an entire month, of abnormally high temperatures. July, while a summer month, historically has not reached these hights in temperature. There is a clear trend here that indicates a more dangerous summer in the city. 
+The same New Orleans based newspaper reported that July reported 31 days, an entire month, of abnormally high temperatures. July, while a summer month, historically has not reached these hights in temperature. There is a clear trend here that indicates a more dangerous summer in the city. 
 
 ```{r August}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="08"], ty='l')
@@ -173,7 +142,7 @@ summary(May.lm)
 abline(coef(May.lm), col="red")
 ```
 
-August has a less dramatic incline, but still requires attention. This month saw a 25 day heatwave, that gave a bang to the end of the summer. 
+August has a less dramatic incline, but still is significant given the temperatures in July. This month saw a 25 day heatwave as well in (year). 
 
 ```{r September}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="09"], ty='l')
@@ -184,7 +153,7 @@ summary(May.lm)
 abline(coef(May.lm), col="red")
 ```
 
-This month is what should alarm residents of New Orleans. The summer concludes in August and the high temperatures should subside in September. This month cools  the city down and prepares and residents usually prepare themselves for fall temperatures. Interestingly, the tren shows rising temperatures in this month, thus extending the the summer to unfamiliar territory.  
+This month is what should alarm residents of New Orleans. The summer concludes in August and the high temperatures should subside in September. This month cools the city down and prepares New Orleanians for fall temperatures. The trend shows rising temperatures in this month, thus extending the the summer to unfamiliar territory.  
 
 ```{r October}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="10"], ty='l')
@@ -195,12 +164,15 @@ summary(May.lm)
 abline(coef(May.lm), col="red")
 ```
 
-October experiences the same unfortunate weather. Halloween, a wildly popular holiday in New Orleans, was the hottest on record. Summer has officially extended deep into the fall, close to winter temperatures.
+October experiences the same upward trend. Halloween, a wildly popular holiday in New Orleans, was the hottest on record. Summer has officially extended deep into the fall, close to the winter season.
 
 This will have an enourmous impact on vulnerable communities. Eliot Kamenitz of The Times-Picayune details the drastic efforts that the city must take to protect underserved citizens from the heat. 
 
-Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
+Heatwaves are the most dangerous weather events, and the number of deaths they claim are steadily on the rise. The dangerous mixture of both heat and moisture make for incredibly dangerous temperatures and humidity levels that all but ensure an emergency room full of heat stricken patients. Patrick Kinney, director of Climate and Health Program at Columbia Univresity, reported that heat-related deaths in the city of Manhatten for example may rise about 20% over the next decade as a result of climate change (Peeples,2013). This weather is descrimintatory in its impacts as well, especially in heat prone environments. African Americans are 50 times more likely than their white counterparts to live in such environments, therefore, having higher cases of heat related illnesses (Peeples, 2013). Socioeconomically depressed communities are also at a higher susceptibility to heatwaves because of their fear of high energy bills. 
 
+While the share of New Orleans' poor residents living in neighborhoods dropped from 38% in 2000 to 30% in 2013 (Holmes,2015). There remains a heavy concentration of low income groups in places like the Orleans Parish. This socioeconomic disadvantage opens the doors for others as well, like health issues for example. Heatwaves excacerbate problems like these, and even create new ones: rashes, strokes, etc. The city of New Orleans must pay close attention to these temperature changes as climate changes progresses. 
+
+![Poverty Concentration](PovertyConcentration.png)
 ```{r setup12, echo=FALSE}
 plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
@@ -213,7 +185,7 @@ abline(coef(Dec.lm), col="red")
 
 ## TMIN
 
-1. We create a monthly mean for each month.
+We create a monthly mean for each month.
 
 ```{r setup13, echo=FALSE}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
@@ -221,8 +193,6 @@ MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
 MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
 ```
-
-2. Now we plot the mins, and again, find tons of scatter.
 
 ```{r setup14, echo=FALSE}
 plot(MonthlyMeanTMIN$TMIN, ty='l')
@@ -236,12 +206,14 @@ summary(Dec.lm)
 abline(coef(Dec.lm), col="red")
 
 # Departure from Mean
+```
 
 ```{r setup16, echo=FALSE}
 PRCP_mean = mean(LosAngeles$PRCP, na.rm=T)
 
 plot(PRCP~NewDate, data=LosAngeles)
 abline(h=PRCP_mean, col="blue")
+```
 
 ```{r setup17, echo=FALSE}
 LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
@@ -255,24 +227,20 @@ plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
 abline(h=YearlyMean, col="blue")
 YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
 abline(coef(YearlySum.lm), col="green")
+```
 
 ```{r setup19, echo=FALSE}
 summary(YearlySum.lm)
 ```
 
-Other attempts that didn't work!
 ```{r setup20, echo=FALSE}
 YearlySum2 = subset(YearlySum, select=c(PRCP))
 YearlyMean = mean(YearlySum2$PRCP)
 
 #filter(YearlySum2)
-
-
-
 #Doesn't work...
 # ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
 # ma(YearlySum$PRCP)  
-
 
 yearlyts =ts(YearlySum2) 
 str(yearlyts)
@@ -281,16 +249,3 @@ str(yearlyts)
 
 
 ```
-yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
-
-plot(yearlyts, lty = 1, col = 3)
-
-lines(yearlyts.lag)
-
-YearlySum$Departure = YearlyMean - YearlySum$PRCP
-YearlySum$YEAR = as.numeric(YearlySum$Year)
-
-plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
-abline(h=YearlyMean, col="blue")
-
-lines(Departure ~ YEAR, data=YearlySum, col="red")

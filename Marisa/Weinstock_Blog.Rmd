@@ -29,13 +29,13 @@ import$TMIN[import$TMIN==-9999] = NA
 ```
 
 ```{r setup4, include=FALSE}
-plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+plot(TMAX~DATE, import[import$DATE<19131231,], ty='p', pch=20)
 ```
 
 
 
 ```{r, include=FALSE}
-plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+plot(TMAX~DATE, import[import$DATE<19130102,], ty='p', pch=20)
 ```
 
 ```{r, include=FALSE}
@@ -45,7 +45,7 @@ import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
 
 ```{r, include=FALSE}
-plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='p', pch=20)
 ```
 
 
@@ -59,7 +59,7 @@ LosAngeles <- subset(import, STATION_NAME=="LODI CA US", select=c(STATION, STATI
 ```
 
 ```{r, include=FALSE}
-plot(TMAX~NewDate, LosAngeles, ty='l')
+plot(TMAX~NewDate, LosAngeles, ty='p', pch=20)
 ```
 
 ```{r, include=FALSE}
@@ -70,7 +70,7 @@ LosAngeles=subset(LosAngeles, subset=DATE>19300101)
 # Linear Model
 LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
 summary(LosAngeles.lm)
-plot(TMAX~NewDate, LosAngeles, ty='l')
+plot(TMAX~NewDate, LosAngeles, ty='p', pch=20)
 abline(coef(LosAngeles.lm), col='red')
 ```
 
@@ -101,14 +101,14 @@ head(MonthlySD)
 
 
 ```{r plottingMonthyMeans, include=FALSE}
-plot(MonthlyMean$TMAX, ty='l')
+plot(MonthlyMean$TMAX, ty='p', pch=20)
 
 ```
 
 ```{r plottingMonthySD, include=FALSE}
-plot(MonthlySD$TMAX, ty='l')
+plot(MonthlySD$TMAX, ty='p')
 
-plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+plot(TMAX~ NewDate, data=MonthlySD, ty='p', pch=20)
 SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
 summary(SD.lm)
 
@@ -133,11 +133,11 @@ head(MonthlyMeanTMIN)
 ```
 
 ```{r, include=FALSE}
-##plot(MonthlyMeanTMIN$TMIN, ty='l')
+##plot(MonthlyMeanTMIN$TMIN, ty='p', pch=20)
 
-##plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="02"], ty='l')
+##plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="02"], ty='p', pch=20)
 
-##plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="02",], ty='l') 
+##plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="02",], ty='p', pch=20) 
 ##Feb.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="02",])
 ##summary(Feb.lm)
 
@@ -146,66 +146,73 @@ head(MonthlyMeanTMIN)
 ##Minimum Temperatures in August
 
 ```
+## Introduction
+
+The city of Lodi is located in the Central Valley of California, our nation’s agricultural hub. The Central Valley acts as one large watershed divided into two valleys: the Sacramento Valley in the North and San Joaquin Valley in the South, with alluvial fans emanating from the Cascade Range and the Northern Sierra Nevada. Lodi resides in the San Joaquin Valley, just North of Modesto. The San Joaquin Valley’s San Joaquin River flows roughly northwest while picking up tributaries such as the most prominent river flowing through Lodi, the Mokelumne River. The many rivers of the Central Valley converge in the Sacramento-San Joaquin Delta, a complex network of marshy channels, distributaries and sloughs that wind around islands mainly used for agriculture. It is the Central Valley’s water network, fertile soil, and extended growing season that make agriculture the primary industry within the Central Valley and one of the major agricultural regions in the entire nation (AMNH). Lodi, in particular, is best known for being a center of winegrape production (the “Zinfandel Capital of the World”). Unfortunately, Lodi’s trend of rising minimum temperatures for October and September from 1930 to 1970, illustrated below, signify increasing threats to Lodi’s economic reliance on wine production and its providence of cultural pride. Warmer minimum temperatures reduces water supply, reduces the transportation of foliar nitrogen to the riparian agriculture that often grows wine grapes, and damages the balance of winegrape’s flavors.
+
+![Lodi Winegrape Commission, 2015](LODI.jpg)
 
 ## Methodology
-Station USC00045032 in Lodi, California recorded minimum and maximum temperatures year-round from January 1st, 1893 to January 31st, 1970. This data has been cut to represent January 1st of 1930 to January 31st, 1970 due to a large gap in data. My manipulation of the raw data focuses only on minimum temperature. Specifically, monthly mean temperatures (y-axis) were plotted by years (x-axis). This was done in order to illustrate a particular aspect of climate change’s impact on viticulture. A statistical hypothesis test was performed, which is used to test the validity of a claim that is made about a population. This claim that is on trial, in essence, is called the null hypothesis. This creates a p-value that helps to determine the signifiance of the results. All hypothesis tests ultimately use a p-value to weigh the strength of the evidence (what the data are telling you about the population). A small p-value (typically ≤ 0.05) indicates strong evidence against the null hypothesis, so you reject the null hypothesis and a large p-value (> 0.05) indicates weak evidence against the null hypothesis, so you fail to reject the null hypothesis. Both September and October have strong evidence against the null hypothesis.
+The National Oceanic and Atmospheric Administration provides free and accessible data for Lodi, California (at Station USC00045032), holding records of minimum and maximum temperatures year-round from January 1st, 1893 to January 31st, 1970. This data has been cut to represent January 1st of 1930 to January 31st, 1970 due to a large gap in data. I focus only on minimum temperature to illustrate a particular aspect of climate change’s impact on viticulture. A statistical hypothesis test evaluates the validity of a claim made about a population. This claim that is on trial, in essence, is called the null hypothesis. This creates a p-value that helps to determine the significance of the results. All hypothesis tests ultimately use a p-value to weigh the strength of the evidence (what the data are telling you about the population). A small p-value (typically ≤ 0.05) indicates strong evidence against the null hypothesis, so you reject the null hypothesis and a large p-value (> 0.05) indicates weak evidence against the null hypothesis, so you fail to reject the null hypothesis. Both September and October have strong evidence rejecting the null hypothesis and therefore illustrate significance minimum temperature changes.
 
 ## Data
 
 ### Minimum Temperature Increase in October
 ```{r, echo=FALSE, results='hide'}
-#plot(MonthlyMeanTMIN$TMIN, ty='l')
+#plot(MonthlyMeanTMIN$TMIN, ty='p', pch=20)
 
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], ty='l')
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], ty='p', pch=20)
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], ty='l') 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], ty='p', pch=20) 
 Oct.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",])
 summary(Oct.lm)
 
-abline(coef(Oct.lm), col="green")
+abline(coef(Oct.lm), col="purple")
 
 ```
-The minimum temperatures within the month of January increase at a slope of `r coef(Oct.lm)[2]` degress per year, with a very statistically significant probability of `r round(summary(Oct.lm)$coefficients[2,4],7)`. This indicates strong evidence against the null hypothesis.
+
+The minimum temperatures within the month of October increase at a slope of 0.13 degress Fahrenheit per year, with a very statistically significant probability  of <.001. This indicates strong evidence against the null hypothesis.
 
 ### Minimum Temperature Increase in September
 ```{r, echo=FALSE, results='hide'}
-#plot(MonthlyMeanTMIN$TMIN, ty='l')
+#plot(MonthlyMeanTMIN$TMIN, ty='p', pch=20)
 
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], ty='l')
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], ty='p', pch=20)
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], ty='l') 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], ty='p', pch=20) 
 Sep.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",])
 summary(Sep.lm)
 
 abline(coef(Sep.lm), col="purple")
 
 ```
-The minimum temperatures within the month of January increase at a slope of `r coef(Sep.lm)[2]` degrees per year, with a high statistically significant probability of `r round(summary(Sep.lm)$coefficients[2,4],7)`. This indicates strong evidence against the null hypothesis.
 
-## The City of Lodi and its Water
-Lodi is a city located in San Joaquin County, California, in the northern portion of California’s Central Valley. Lodi is best known for being a center of winegrape production (the “Zinfandel Capital of the World”). Today, the Lodi area is home to several large manufacturing, general services, and agricultural companies.
+The minimum temperatures within the month of September increase at a slope of 0.18 degrees Fahrenheit per year, with a high statistically significant probability of <.001. This indicates strong evidence against the null hypothesis.
 
-![Lodi Winegrape Commission, 2015](LODI.jpg)
+## Minimum Temperatures Diminish Water Supply
 
-East of Lodi is the Sacramento-San Joaquin Delta, a network of channels fed by freshwater flow from rivers, especially from the San Joaquin Rivers and Sacramento Rivers. In connection to the San Joaquin River is Mokelumne River, which travels from the Sierra Nevada mountain range to then curl along the city of Lodi. This eventually connects with the mouth of the Sacramento-San Joaquin Delta. Through an agreement with the Woodbridge Irrigation District made in 2003 and extending until 2047, Lodi purchases an average annual delivery of 2.345 billion gallons of surface water from the Mokelumne River per year for the city. Despite Lodi’s deal with the Woodbridge Irrigation District, groundwater is the city’s primary source of water. Groundwater, which is water held underground in the soil or in pores and crevices in rock, is irrigated for the city’s usage through wells and also diverted for the purpose of agricultural irrigation.
+Lodi and the city’s surroundings use groundwater as their main source of water, which is used for residential and irrigational purposes. The anthropogenic warming illustrated above in the September and October months dries up groundwater reserve. With significant cuts in managed water allocations in response to the California drought, farmers particularly in the San Joaquin Valley are forced to tap heavily into the already heavily depended on groundwater reserves to meet irrigation demands. This furthers the Central Valley’s excession of the groundwater natural recharge rate. Given the already naturally low rates of groundwater recharge in the San Joaquin Valley and population growth, a continuance of groundwater depletion is expected (Famiglietti, 2011). Unfortunately for Lodi’s drying groundwater, the city’s surrounding San Joaquin Valley relies more heavily on groundwater than its Sacramento counterpart because the drier climate results in more limited natural surface water availability. Increased temperature and evapotranspiration results in increased domestic water use within the city, as well. This thereby limits water sources even further.
 
-![Comparing Sierra Nevada snowpack in two Januaries, illustrating the extremely dry conditions in early 2014. Source: NASA](Sierra Nevada.png)
+### How this Affects Lodi’s Viticulture
 
-## Impact on Water Supply
+As farmers’ irrigation systems are threatened due to a lack of groundwater, soil moisture suffers. The first impact of water deficit is reduced winegrape yield, because of a smaller berry size and reduced bud fertility (Leeuwen, 2016). In Mediterranean or other very dry climates, such as the Central Valley and Lodi in particular, quality may also suffer from excessive water stress (Leeuwen, 2016). In addition, soil moisture is an important control for heat and water transfer between the land and atmosphere, which in turn affects the development of extreme heat events (Lobell, 2008). This therefore may worsen climate change.
 
-Lodi and the city’s surroundings use groundwater as their main source of water, which is used for residential and irrigational purposes. Anthropogenic warming dries up groundwater reserve and, in conjunction, ground-water pumpage, which greatly exceeds the natural recharge rate, has dramatically altered the ground-water flow in the Central Valley, as well. With significant cuts in managed water allocations in response to the drought, farmers, particularly those in the San Joaquin Valley, are forced to tap heavily into the already heavily depended on groundwater reserves in order to meet irrigation demands. The depletion of groundwater in the Central Valley caused the majority of the major water loss in the Sacramento and San Joaquin River Basins. Between October of 2003 and March of 2010, this showed a loss of 31.0 ± 2.7 mm/yr−1 equivalent in water height, resulting in an overall loss of 30.9 3 km^3^ for the entire study period of 78 months. The Central Valley lost 20.4 ± 3.9 mm/yr^−1^ of groundwater during the 78-month period, or 20.3 km^3^ in volume. Given the already naturally low rates of groundwater recharge in the San Joaquin Valley and population growth, a continuance of groundwater depletion is expected (Famiglietti, 2011). Lodi’s surrounding San Joaquin Valley relies more heavily on groundwater than its Sacramento counterpart because the drier climate results in more limited natural surface water available.
-Streamflow within the Central Valley, an important factor in recharging the aquifer system, is influenced by precipitation in the mountains surrounding the valley. Due to the Sierra Nevada experiencing snowpack decline, earlier runoff, and reduced spring and summer streamflows, the Central Valley’s reliance on the already overdrafted groundwater resource furthers (Cayan, 2004). Increased temperature and evapotranspiration will result in increased domestic water use within the city, as well.
-Through anthropogenic warming, the regional climate of the Central Valley hits extremes, in particular with high extremes during the growing season (White, 2006). This change in the frequency of extreme temperatures has an extreme effect on biological and agricultural systems than changes in mean climate. As farmers’ irrigation systems are threatened due to a lack of groundwater, soil moisture suffers. Soil moisture is an important control for heat and water transfer between the land and atmosphere, which in turn affects the development of extreme heat events (Lobell, 2008). Reduction in soil moisture has been shown to slow warming within the region, so this cutback of water usage actually contributes further to the local warming contributing to the drought in the first place (Lobell, 2008).
+## Impact on Riparian Ecosystems
 
-## Impact on Water Quality
+Anthropogenic warming endangers riparian ecosystems because this affects the salmon population vital to Lodi's riverside vineyards. Water temperatures provide an important constraint on ecological function, such as fish spawning, swimming performance, metabolism, effects of aquatic invertebrates, and mortality (Wagner, 2011). Within the Sacramento-San Joaquin Delta, Chinook salmon are threatened by increased temperatures and drought years (Yates, 2008). These salmon, once in the Mokelumne River, transport biomass and nitrogen; this is key to stream and riparian ecosystem function (Merz, 2006). In fact, the studied native riparian vegetation, including vineyards, in the Mokelumne River that resided close to spawning sites received 18-25% of foliar nitrogen from marine sources (Merz, 2006). With animals feeding on salmon carcasses in the Mokelumne and salmon jawbones scattered in riparian vineyards alongside the river, researchers pointed to salmon as the source for the grape leaves’ total nitrogen. These data suggest that robust salmon runs continue to provide important ecological services with high economic value, even in impaired watersheds. Loss of Pacific salmon can not only negatively affect stream and riparian ecosystem function, but can also affect local economies where agriculture and salmon streams coexist, thereby affecting grape production in particular (Merz, 2006). In addition, even beyond this highly altered river that flow through agricultural areas, salmon also fertilize vineyards in other areas through irrigation water being pumped from spawning rivers (Merz, 2006).
 
-Sea level rise induces intrusion of saline water into the Delta, endangering water supply and agriculture in the reclaimed regions like Lodi that lie west and north west of the Delta region. The protective levees also threaten massive flooding with raising sea level (Vanderwarker, 2009). In addition, the temperature of surface water is rising. Water temperatures provide an important constraint on ecological function, such as fish spawning, swimming performance, metabolism, effects of aquatic invertebrates, and mortality (Wagner, 2011). Within the Sacramento-San Joaquin Delta, Chinook salmon are threatened by increased temperatures and drought years (Yates, 2008). These salmon, once in the Mokelumne River, transport biomass and nitrogen; this is key to stream and riparian ecosystem function (Merz, 2006). In fact, the studied native riparian vegetation in the Mokelumne River close to spawning sites received 18-25% of foliar nitrogen from marine sources (Merz, 2006). Loss of Pacific salmon damages riparian vegetation and local agriculture dependent on this ecosystem, affecting grape production in particular (Merz, 2006).
+### Diminished Cooling Period
 
-### Impact on Viticulture
+A decline in particularly minimum temperatures puts wine quantity and quality at jeopardy. A rise in minimum temperatures illustrates a rise in temperatures during the night. Unfortunately, wide diurnal temperature swings are key to wine production and quality. The metabolism in grapes run quickly only under the optimal environmental conditions that are now at risk, which require warm dry days and cool nights. Heat of day promotes ripeness and sugar development in the grapes and the cooler nights help the grapes to retain acidity and freshness, resulting in beautifully balanced flavors. To offset the sweetness given off by the warm sun, wines need the acidity metabolized when the cool night slows grape metabolism. This supplies the tangy bite that helps cut the fatty taste when you eat steak. In addition, the brisk weather also promotes anthocyanins, which give wine both its red hue and astringency. Farmers likely exacerbate diminishing groundwater supply in their efforts to maintain wine grape productivity and quality in the face of temperature increases through an increase water use for irrigation and the misting of water to cool down grapes. 
 
-As previously stated, the limited supply of irrigation water and foliar nitrogen negatively impacts viticulture. Not yet mentioned is the impact a decline in particularly minimum temperatures holds for wine quantity and quality. A rise in minimum temperatures illustrates a rise in temperatures during the night. Unfortunately, wide diurnal temperature swings are key to wine production and quality. The metabolism in grapes run quickly only under the optimal environmental conditions that are now at risk, which require warm dry days and cool nights. Heat of day promotes ripeness and sugar development in the grapes and the cooler nights help the grapes to retain acidity and freshness, resulting in beautifully balanced flavors. To offset the sweetness given off by the warm sun, wines need the acidity metabolized when the cool night slows grape metabolism. This supplies the tangy bite that helps cut the fatty taste when you eat steak. In addition, the brisk weather also promotes anthocyanins, which give wine both its red hue and astringency.
-In response to generally increased temperatures and increased prevalence of heat waves, attempts to maintain wine grape productivity and quality in the face of warming may be associated with increased water use for irrigation and the use of misting or sprinkling water in order to cool grapes.
-Lodi’s rise in minimum temperature from 1930 to 1960 is only the beginning of climate change’s effects on the area. Climate change, with its generosity for heat waves, drought, and many other detrimental contributions, builds a stronger and stronger presence within the Central Valley with growing speed everyday. Without mitigating our world’s emission of greenhouse gasses, not only will our wine quality and quantity suffer, but the entirety of the Central Valley, the agricultural hub of our nation, will continue to be increasingly compromised, as well. 
+## Conclusion
+Even though the data draws from a short thirty-year span, the sharp increase in degrees Fahrenheit for both September and October signify a steep climb in anthropogenic warming. This warming holds significance beyond surface value; it holds further implications than just the warming of the climate from 1930 to 1960 in Lodi. This increase in temperature creates both direct and indirect impacts on viticulture. By diminishing groundwater supply, damaging riparian ecosystems, and reducing the vital cooling period, climate change threatens Lodi’s cultural and economic ties to viticulture.
+
+## Work Cited
+
+"California Central Valley." AMNH. N.p., n.d. Web. 27 Feb. 2017. <http://www.amnh.org/explore/curriculum-collections/grace/grace-tracking-water-from-space/california-central-valley>.
+
+"Agenda Item G-1." (2012): n. pag. Public Documents for the City of Lodi. 2012. Web. 27 Feb. 2017.
 
 Cayan, Daniel, Katharine Hayhoe, Christopher Field, and Peter Frumhoff. "Emissions Pathways, Climate Change, and Impacts on California." Proceedings of the National Academy of Sciences. N.p., June 2004. Web. 10 Feb. 2017.
 
@@ -231,3 +238,4 @@ Cayan, D., E. P. Maurer, M. D. Dettinger, M. Tyree, and K. Hayhoe (2006), Climat
 
 Scanlon, B. R., C. C. Faunt, L. Longuevergne, R. C. Reedy, W. M. Alley, V. L. Mcguire, and P. B. Mcmahon. "Groundwater Depletion and Sustainability of Irrigation in the US High Plains and Central Valley." Proceedings of the National Academy of Sciences 109.24 (2012): 9320-325. Web. 10 Feb. 2017.
 
+"Home." Vine to Wine Circle. N.p., n.d. Web. 27 Feb. 2017. <http://www.vinetowinecircle.com/en/>.
