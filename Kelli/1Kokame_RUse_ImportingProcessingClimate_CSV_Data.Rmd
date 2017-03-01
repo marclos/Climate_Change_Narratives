@@ -18,12 +18,12 @@ knitr::opts_chunk$set(echo = FALSE)
   ![Above: Ewa Plantation as an active mill](Ewa_Plantation1.jpg) 
   
 # Is there climate change in Hawaii?
-Hawaii is the island home to a multitude of people, cultures, and biodiversity. For many people, this blend of culture and environment makes Hawaii a highly sought after vacation destination. However, for about 1.5 million people, it is also home. But the characteristics and elements that truly make Hawaii the special place that it is are being put in jeopardy by changing climate. Some individuals claim that they are not observing any change of climate in Hawaii, however, a robust evaluation of climate cannot be based solely on individual observation. Climate trends must be monitored over extended periods of time, “extended periods” being preferably at least half of a century or more. Only over longer periods of time does an observable trend emerge. Therefore, conducting a climate analysis requires datasets that provide regular climatic measurements. The National Oceanic and Atmospheric Administration provides climatic datasets collected by several stations nationwide. To focus on climate trends in Hawaii, I selected a dataset from a station on the island of O`ahu, the island where I was born and raised, that took climate readings from the years 1905–2006, specifically focusing on temperature and precipitation. The goal of this data analysis was to determine if there could be a relationship between temperature or precipitation trends and time, which could then point to the presence of climate change in this specific region. 
+Hawaii is the island home to a multitude of people, cultures, and biodiversity. For many people, this blend of culture and environment makes Hawaii a highly sought after vacation destination. However, for about 1.5 million people, it is also home. But the characteristics and elements that truly make Hawaii the special place that it is are being put in jeopardy by changing climate. Some individuals claim that they are not observing any change of climate in Hawaii, however, a robust evaluation of climate cannot be based solely on individual observation. Climate trends must be monitored over extended periods of time, “extended periods” being preferably at least half of a century or more. Only over longer periods of time does an observable trend emerge. Therefore, conducting a climate analysis requires datasets that provide regular climatic measurements. The National Oceanic and Atmospheric Administration provides climatic datasets collected by several stations nationwide. To focus on climate trends in Hawaii, I selected a dataset from a station on the island of O`ahu, the island where I was born and raised. This dataset took climate readings from the years 1905–2006, specifically focusing on temperature and precipitation. The goal of this data analysis was to determine if there could be a relationship between temperature or precipitation trends and time, which could then point to the presence of climate change in this region. 
 
 
-## About our station 
+## About our selected station: Ewa Plantation
 
-Ewa Plantation began in 1890 as a sugarcane plantation mill. Through the 1920s and 1930s, Ewa Plantation was a booming and growing business. Perhaps the plantation began monitoring climate because of climate's impacts on sugarcane, but in any case, they had a climatic dataset beginning in 1905. Currently, sugar plantations in Hawai`i are no longer in operation; therefore, the Ewa Plantation now serves as a historic landmark. However, they continued collecting climatic data even after they were no longer a functioning plantation, collecting data up until the year 2006.  
+Ewa Plantation began in 1890 as a sugarcane plantation mill. Through the 1920s and 1930s, Ewa Plantation was a booming and growing business. Perhaps the plantation began monitoring climate because of its impacts on sugarcane, but in any case, they had a climatic dataset beginning in 1905. Currently, sugar plantations in Hawai`i are no longer in operation; therefore, the Ewa Plantation now serves as a historic landmark. However, they continued collecting climatic data even after they were no longer a functioning plantation, collecting data up until the year 2006.  
 
 After downloading their dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, I inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. As said before, this blog will explore trends in temperature and precipitation at this specific station.  
 
@@ -56,7 +56,7 @@ Even though we removed the missing values, the data is still unusable. The reaso
 
 
 ```{r}
-plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+#plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
 ```
 
 ## Fixing the Dates
@@ -65,17 +65,16 @@ To get the data to organize like we want, we first need to convert the date to s
 
 ```{r}
 strDates <- as.character(import$DATE)
-head(strDates)
+#head(strDates)
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
 
-## Checking the New Dates
+## Checking our date-corrected graph
 ```{r}
 plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
-## Subset Sites
 
-I have two sites in this data, so, we need to subset it.
+As you can see, there is still a lot of missing temperature data. 
 
 ```{r}
 unique(import$STATION_NAME)
@@ -88,55 +87,47 @@ Ewa <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION
 ```
 
 
-## The adjusted plot 
+## What are the maximum temperature trends over the years? 
 ```{r}
 #plot(TMAX~NewDate, Ewa, ty='p')
 Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
 #summary(Ewa.lm)
 plot(TMAX~NewDate, Ewa, ty='l', xlab = "Year", ylab = "Maximum Temperature (Fahrenheit)")
 abline(coef(Ewa.lm), col='red')
-summary(Ewa.lm)
+#summary(Ewa.lm)
 ```
 As shown, the maximum temperature annually has had a slight upward trend from 1905 when the records began until 2006. The slope is about 3.1e-05 (a very tiny slope). This means that, according to the trend, maximum temperatures increase about .000031 degrees per year, or .0031 degrees per century. This increase in maximum temperature is very statistically signficant, with a p-value of 2.2e-16 (a p-value of 0.05 or less would be statistically significant). This means that we can reject the null hypothesis that there is no relationship between change in temperature and time. However, we can see that there is a lot of missing data beginning at roughly 1980. While I tried to look into why there were no available measurements for about a 20 year span, no plausible explanations were offered online. 
 
 But since there's a lot of missing data beginning at about 1980, let's focus on the trend from 1905 up until that point to see if the missing data has an effect on the trend slope. 
 
-Here is the graph of maximum temperatures from 1905 up to 1978: 
+### Here is the graph of maximum temperatures from 1905 up to 1978: 
 ```{r}
-plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Maxmimum Temperature (Fahrenheit)")
+#plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Maxmimum Temperature (Fahrenheit)")
 ```
 
 
-## Evaluating the trend
-
-Now, let us analyze the trend of the maxmimum temperature data from 1905 to 1978.  
 ```{r}
 # Linear Model
 EwaMax.lm <- lm(TMAX~NewDate, data=Ewa[Ewa$DATE< 19780101,])
-summary(EwaMax.lm)
+#summary(EwaMax.lm)
 plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Maxmimum Temperature (Fahrenheit)")
 abline(coef(EwaMax.lm), col='red')
 ```
 
-The trend of maxmimum temperatures has a steeper slope of 6.565e-05 when excluding all of the missing data, indicating a .0000656 degree increase each year, or a .00656 degree increase per century. This increase is also statistically significant, with a p-value of 2.2e-16.   
+The trend of maxmimum temperatures has a steeper slope of 7e-05 when excluding all of the missing data, indicating a .00007 degree increase each year, or a .007 degree increase per century. This increase is also statistically significant, with a p-value less than .001. 
 
-Let's do the same with minimum temperature measurements. 
+### Let's do the same with minimum temperature measurements. 
 
 ```{r}
 # Linear Model
 EwaMin.lm <- lm(TMIN~NewDate, data=Ewa[Ewa$DATE< 19780101,])
-summary(EwaMin.lm)
+#summary(EwaMin.lm)
 plot(TMIN~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Minimum Temperature (Fahrenheit)")
 abline(coef(EwaMin.lm), col='red')
 ```
 
 
-As you can see, minimum temperatures also have an upward trend, with a slope of about 5.8e-05. This translates into a .000058 degree increase per year, or a .0058 degree increase each century. This increase in minimum temperatures is also statistically significant, with a p-value of again 2.2e-16. 
-
-
-# Looking at individual months
-
-While Hawaii's temperatures are relatively constant year-round, let's still take a look at individual months and their data across different years.
+As you can see, minimum temperatures also have an upward trend, with a slope of about 6e-05. This translates into a .00006 degree increase per year, or a .006 degree increase each century. This increase in minimum temperatures is also statistically significant, with a significant p-value again less than .001. 
 
 ```{r}
 # Get months
@@ -182,7 +173,7 @@ MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
 
 ```
 
-### Selecting for 1 Month -- January
+## Are there any trends in January maximum temperatures year to year? 
 
 Let's now look at the trend of temperatures in January throughout the years. 
 
@@ -190,7 +181,7 @@ Let's now look at the trend of temperatures in January throughout the years.
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
 January.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
-summary(January.lm)
+#summary(January.lm)
 
 abline(coef(January.lm), col="red")
 
@@ -198,7 +189,7 @@ abline(coef(January.lm), col="red")
 
 Now, the change is `r coef(January.lm)[2]` degress/year or `r round(coef(January.lm)[2]*100, 3)` degress/100 years with a p-value of `r round(summary(January.lm)$coefficients[2,4],4)`. 
 
-### Selecting for 1 Month -- November
+## Are there any trends in November maximum temperatures year to year?
 
 Now let's try the same thing with November. 
 
@@ -206,7 +197,7 @@ Now let's try the same thing with November.
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='l')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
 November.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
-summary(November.lm)
+#summary(November.lm)
 
 abline(coef(November.lm), col="red")
 
@@ -224,7 +215,7 @@ First we should create monthly mean for each month.
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, Ewa, mean)
 
 MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
-head(MonthlyMeanTMIN)
+#head(MonthlyMeanTMIN)
 ```
 
 Here's a graphic showing the trend of minimum temperatures in November over the years: 
@@ -236,7 +227,7 @@ Here's a graphic showing the trend of minimum temperatures in November over the 
 
 plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",], ty='l') 
 Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",])
-summary(Dec.lm)
+#summary(Dec.lm)
 
 abline(coef(Dec.lm), col="red")
 
@@ -254,7 +245,7 @@ Let's look at the trends of minimum temperature throughout the years for the mon
 
 plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",], ty='l', xlab = "Year", ylab = "TMIN") 
 July.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",])
-summary(July.lm)
+#summary(July.lm)
 
 abline(coef(July.lm), col="red")
 
@@ -278,7 +269,7 @@ PRCP_mean = mean(Ewa$PRCP, na.rm=T)
 MonthlyMeanPRCP = aggregate(PRCP ~ Month + Year, Ewa, mean)
 
 MonthlyMeanPRCP$YEAR = as.numeric(MonthlyMeanPRCP$Year)
-head(MonthlyMeanPRCP)
+#head(MonthlyMeanPRCP)
 ```
 
 Let's try looking at trends in precipitation during a specific month. Let's take a look at the month of May. 
@@ -292,7 +283,7 @@ Let's try looking at trends in precipitation during a specific month. Let's take
 plot(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
 
 MayPRCP.lm <- lm(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",])
-summary(MayPRCP.lm)
+#summary(MayPRCP.lm)
 abline(coef(MayPRCP.lm), col="blue")
 ```
 
