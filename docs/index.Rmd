@@ -1,6 +1,6 @@
 ---
 title: "Climate Narratives"
-subtitle: "How does weather change locally?"
+subtitle: "How do the average weather conditions change locally? What are the implications of climate change?"
 author: "Environmental Analysis 30 Students, Pomona College"
 date: "`r Sys.Date()`"
 output:
@@ -24,9 +24,12 @@ options(htmltools.dir.version = FALSE)
 
 # Defining a Project
 
-Climate change science is complex. As a class we have spent six weeks learning how scientists evaluate the earth's climate systems and learned that even determine changes of the Earth's temperature incorporates some uncertainty. 
+Climate is average weather. But climate is dynamic; in other words, it can change over a range of time periods for many different and interacing reasons. Thus, climate change science is complex. 
+
+As a class we have spent six weeks learning how scientists evaluate the earth's climate systems. For example, to determine if the Earth's temperature is changing requires a range of analytical skills and sources of data, of which have certain levels of uncertainty. 
 
 As a class, we decided to evaluate temperature records for individual locations in the USA and determine if there was a trend. 
+
 ```{r maunaloa, echo=FALSE}
 address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
 download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
