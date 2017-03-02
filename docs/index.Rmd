@@ -57,7 +57,7 @@ Although the fitted line follows the trend, significant variation exists the dat
 Scientists use models to explore patterns or develop predictions. Since a straight line doesn't fit the data very well, we might fit a line captures some of the seasonal variation and the changing rate of change. 
 
 ```{r polynomial, echo=FALSE, results='hide'}
-new.lm <- lm(average~poly(decimal.date,2) + cos(month/12) + sin(month/12), data=maunaloa, na.action = na.exclude)
+new.lm <- lm(average~poly(2*pi*decimal.date,2) + cos(2*pi*month/12) + sin(month/12), data=maunaloa, na.action = na.exclude)
 
 summary(new.lm)
 
