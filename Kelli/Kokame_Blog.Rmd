@@ -9,14 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-
-
-  ![Above: Location of Ewa Plantation on O`ahu](Ewa_Plantation.png)
-  
-  
-  
-  ![Above: Ewa Plantation as an active mill](Ewa_Plantation1.jpg) 
-  
 # Is there climate change in Hawaii?
 Hawaii is the island home to a multitude of people, cultures, and biodiversity. For many people, this blend of culture and environment makes Hawaii a highly sought after vacation destination. However, for about 1.5 million people, it is also home. But the characteristics and elements that truly make Hawaii the special place that it is are being put in jeopardy by changing climate. Some individuals claim that they are not observing any change of climate in Hawaii, however, a robust evaluation of climate cannot be based solely on individual observation. Climate trends must be monitored over extended periods of time, “extended periods” being preferably at least half of a century or more. Only over longer periods of time does an observable trend emerge. Therefore, conducting a climate analysis requires datasets that provide regular climatic measurements. The National Oceanic and Atmospheric Administration provides climatic datasets collected by several stations nationwide. To focus on climate trends in Hawaii, I selected a dataset from a station on the island of O`ahu, the island where I was born and raised. This dataset took climate readings from the years 1905–2006, specifically focusing on temperature and precipitation. The goal of this data analysis was to determine if there could be a relationship between temperature or precipitation trends and time, which could then point to the presence of climate change in this region. 
 
@@ -25,7 +17,14 @@ Hawaii is the island home to a multitude of people, cultures, and biodiversity. 
 
 Ewa Plantation began in 1890 as a sugarcane plantation mill. Through the 1920s and 1930s, Ewa Plantation was a booming and growing business. Perhaps the plantation began monitoring climate because of its impacts on sugarcane, but in any case, they had a climatic dataset beginning in 1905. Currently, sugar plantations in Hawai`i are no longer in operation; therefore, the Ewa Plantation now serves as a historic landmark. However, they continued collecting climatic data even after they were no longer a functioning plantation, collecting data up until the year 2006.  
 
+![Above: Location of Ewa Plantation on O`ahu](Ewa_Plantation.png)
+  
+  
+  
+  ![Above: Ewa Plantation as an active mill](Ewa_Plantation1.jpg) 
+
 After downloading their dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, I inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. As said before, this blog will explore trends in temperature and precipitation at this specific station.  
+
 
 ```{r importingCSV}
 # Importing Scripts
@@ -39,7 +38,7 @@ import = read.csv(file)
 plot(TMAX~DATE, import)
 ```
 
-When we first import the data, it is not yet in a form that we can use and visualize well. As you can see, there are several values that don't make sense. How could the maximum temperatures be almost -10000 degrees? It's actually not--the value -9999 is used to represent having no data. We can change these values to "NA" to ensure that the big negative values do not skew our data. 
+When we first import the data, it is not yet in a form that we can use and visualize well. As you can see, there are several values that don't make sense. How could the maximum temperatures be almost -10000 degrees fahrenheit? It's actually not--the value -9999 is used to represent having no data. We can change these values to "NA" to ensure that the large negative values do not skew our data. 
 
 ```{r missings}
 import$TMAX[import$TMAX==-9999] = NA
@@ -52,7 +51,7 @@ After changing the -9999 values to NA, we can check to see if our data is now us
 plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
 ```
 
-Even though we removed the missing values, the data is still unusable. The reason why has to do with how data used to be recorded. Instead of chronologically entering data in a way that Excel could read and turn into a continous timeline, dates used to be inputted in the format of YYYYMMDD. This means that, for example, 19131231 (December 31, 1913) would then turn into 19140101 (January 1, 1914). Chronologically, there are several missing values in between which is why there are so many gaps. The data still needs to be chaned into a form in which dates are continuous and numerically consecutive. In this way, it is true scientists have to manipulate data--but it is not so much the content of the data as the format.  
+Even though we removed the missing values, the data is still unusable. The reason why has to do with how data used to be recorded. Instead of chronologically entering data in a way that Excel could read and turn into a continous timeline, dates used to be inputted in the format of YYYYMMDD. This means that, for example, 19131231 (December 31, 1913) would then turn into 19140101 (January 1, 1914). Chronologically, there are several missing values in between which is why there are so many gaps. The data still needs to be changed into a form in which dates are continuous and numerically consecutive. In this way, it is true scientists have to manipulate data--but it is not so much the content of the data as the format.  
 
 
 ```{r}
@@ -69,12 +68,12 @@ strDates <- as.character(import$DATE)
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
 
-## Checking our date-corrected graph
+### Checking our date-corrected graph
 ```{r}
 plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
 ```
 
-As you can see, there is still a lot of missing temperature data. 
+As you can see, there is still unfortunately a lot of missing temperature data. 
 
 ```{r}
 unique(import$STATION_NAME)
@@ -127,7 +126,7 @@ abline(coef(EwaMin.lm), col='red')
 ```
 
 
-As you can see, minimum temperatures also have an upward trend, with a slope of about 6e-05. This translates into a .00006 degree increase per year, or a .006 degree increase each century. This increase in minimum temperatures is also statistically significant, with a significant p-value again less than .001. 
+As you can see, minimum temperatures also have an upward trend, with a slope of about 6e-05. This translates into a .00006 degree increase per year, or a .006 degree increase each century. This increase in minimum temperatures is also statistically significant, with a p-value again less than .001. 
 
 ```{r}
 # Get months
@@ -175,7 +174,7 @@ MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
 
 ## Are there any trends in January maximum temperatures year to year? 
 
-Let's now look at the trend of temperatures in January throughout the years. 
+Let's now look at the trend of temperatures in January specifically throughout the years. 
 
 ```{r January}
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
@@ -191,7 +190,7 @@ Now, the change is `r coef(January.lm)[2]` degress/year or `r round(coef(January
 
 ## Are there any trends in November maximum temperatures year to year?
 
-Now let's try the same thing with November. 
+Let's try the same thing with November. 
 
 ```{r November}
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='l')
@@ -208,8 +207,6 @@ abline(coef(November.lm), col="red")
 Now, the change is `r coef(November.lm)[2]` degress/year or `r round(coef(November.lm)[2]*100, 3)` degress/100 years with a p-value of `r round(summary(November.lm)$coefficients[2,4],4)`. 
 
 ## What about for minimum temperatures? 
-
-First we should create monthly mean for each month.
 
 ```{r}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, Ewa, mean)
@@ -234,9 +231,10 @@ abline(coef(Dec.lm), col="red")
 ```
 
 
-3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
+3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. As we might expect, the a small amount of the variance is explained by the "Month". Many things can affect temperature, including the time of the year. 
 
-Let's look at the trends of minimum temperature throughout the years for the month of July. 
+### Are there trends in minimum temperature throughout the years in July?
+Let's look at the trends of minimum temperature throughout the years for the month of July, a summer month. 
 
 ```{r}
 #plot(MonthlyMeanTMIN$TMIN, ty='l')
