@@ -71,7 +71,7 @@ predicted.intervals <- predict(new.lm, data.frame(decimal.date=c(maunaloa$decima
 
 By incorporating more parameters (polynomial and a sin/cos function), we can create a curved line that better fits the data. However, we loss the simplicity of estimating concentrations changes as a single, simple number.
 
-```{r fig-margin2, fig.margin = FALSE, fig.cap = "CO~2~ concentrations and modelled with a polynomial equation (purple): $CO_2 = date + date^2 +  cos(2\\pi*month/12) + \\\\sin(2\\pi*month/12) + \\epsilon.$", cache=TRUE, echo=FALSE}
+```{r fig-margin2, fig.margin = FALSE, fig.cap = "CO~2~ concentrations and modelled with a polynomial equation (purple): $CO_2 = date + (date)^2 +  cos(2\\pi*month/12) + \\\\sin(2\\pi*month/12) + \\epsilon.$", cache=TRUE, echo=FALSE}
 par(las=1)
 plot(maunaloa$decimal.date, maunaloa$average, type="l", lwd=2, col="grey40", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
