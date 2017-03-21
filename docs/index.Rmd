@@ -47,7 +47,7 @@ Although political debate about the causes of climate change, we limited our pro
 
 Atmospheric CO<sub>2</sub> concentrations are measured in a continuous fashion from several locations around the world. For this introduction, we downloaded the most recent CO<sub>2</sub> from Mauna Loa, Hawaii. 
 
-```{r fig-margin, fig.margin = TRUE, fig.cap = "The carbon dioxide concentrations have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope (rate of increase) is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
+```{r fig-margin, fig.margin = TRUE, fig.cap = "CO~2~ concentrations have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
 plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
@@ -71,24 +71,24 @@ predicted.intervals <- predict(new.lm, data.frame(decimal.date=c(maunaloa$decima
 
 By incorporating more parameters (polynomial and a sin/cos function), we can create a curved line that better fits the data. However, we loss the simplicity of estimating concentrations changes as a single, simple number.
 
-```{r fig-margin2, fig.margin = FALSE, fig.cap = "The carbon dioxide concentrations and modelled with a polynomial equation (purple).", cache=TRUE, echo=FALSE}
+```{r fig-margin2, fig.margin = FALSE, fig.cap = "CO~2~ concentrations and modelled with a polynomial equation (purple).", cache=TRUE, echo=FALSE}
 par(las=1)
 plot(maunaloa$decimal.date, maunaloa$average, type="l", lwd=2, col="grey40", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
 lines(c(maunaloa$decimal.date, extra.dates),as.numeric(predicted.intervals[,1]),col='blueviolet',lwd=1)
 ```
 
-## Evaluating Data and Communicating Science
+## Climate Science and Potential Regional Impacts
 
 Based on recent surveys, many American's don't believe climate change will affect them locally. In the figure below, residents in specific regional areas in the southwest seem to acknowledge the potential impacts of climate change on themselves.
 
-![Most people acknowledge someone in the US will be impacted by climate change, but few recognize that the impact might be felt personally.](../graphics/LocalImpactClimateSurvey.jpg)
+![](../graphics/LocalImpactClimateSurvey.jpg)`r margin_note("Most people acknowledge someone in the US will be impacted by climate change, but few recognize that they impact might be felt personally.")`
 
 So, as a class, we decided to evalaute the potential for regional impacts and document the evidence of potential changes. Thus, each student selected a region that has a weather station with a relatively long record (i.e. more than 100 years if possible).
 
-After collecting climate data (temperature, precipitation, etc) for a specific station, we used a few open source resources to process [@R-base], analyze, and communicate the data [@R-rmarkdown].
+After collecting climate data (temperature, precipitation, etc) for a specific station, we used a few open source software tools to process [@R-base], analyze, and communicate the data [@R-rmarkdown].
 
-Once we completed the analysis of a single location, we evaluated research papers about the implications of climate change for the regional in question. 
+Once we completed the analysis of a single location, we evaluated the scientific literature on the implications of climate change relevent to the region in question. 
 
 Finally, we combined this information into a series of blogs that might can be used to help understand local and regional climate change implications. 
 
