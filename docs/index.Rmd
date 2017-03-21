@@ -47,7 +47,7 @@ Although political debate about the causes of climate change, we limited our pro
 
 Atmospheric CO<sub>2</sub> concentrations are measured in a continuous fashion from several locations around the world. For this introduction, we downloaded the most recent CO<sub>2</sub> from Mauna Loa, Hawaii. 
 
-```{r fig-margin, fig.margin = TRUE, fig.cap = "CO~2~ concentrations have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
+```{r fig-margin, fig.margin = TRUE, fig.cap = "CO~2~ concentrations have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
 plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
