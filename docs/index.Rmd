@@ -1,5 +1,5 @@
 ---
-title: "Climate Narratives"
+title: "Why Climate Change Will Affect You Personally?"
 subtitle: "How do the average weather conditions change locally? What are the implications of climate change?"
 author: "Environmental Analysis 30 Students, Pomona College"
 date: "`r Sys.Date()`"
@@ -21,15 +21,19 @@ library(tufte)
 knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 ```
+# The On-going Debate
 
-# Defining Our Project
+In early March 2017, the recently confirmed director of the US Environmental Protection Agency, Scott Pruitt reaffirmed his disbelief that carbon dioxide is a major contributor to climate change. Citing the challenge of "measuring with precision human activity on the climate" and "tremendous disagreement", Pruitt's comment is unsurprising. Nevertheless, we wonder what are the implications of Pruitt's views for Americans?
 
-Climate is defined as the average weather condition. But climate is dynamic; so the climate can also change through time. Climate change can occur for a myriad of interacing reasons. Thus, the science of climate change is complex. And yet, we understand quite abit about how climate can change.
+## Climate and Radiative Forcing
 
-As a class we have spent six weeks learning how scientists evaluate the earth's climate systems. For example, to determine if the Earth's temperature is changing requires a range of analytical skills and sources of data, of which have certain levels of uncertainty. 
+Climate is defined as the average weather condition. But climate is dynamic; so the climate can also change through time. Climate change can occur for a myriad of interacing reasons. Thus, the science of climate change is complex. And yet, we know how climate can change and even how sensitive climate is to the composition of the atmosphere.
 
-As a class, we decided to evaluate temperature records for individual locations in the USA and determine if there was a trend. 
+The Earth's temperature is defined by the amount of energy entering and exiting the atmosphere. Some of this energy or radiation is reflected by the Earth's atmosphere, some is absorbed the the atmosphere, and some reaching the Earth's surface where it might also be absorbed or reflected. The reflected energy is trapped by greenhouse gases and keeps our planet warmer than it would be if these gases were not present. In fact, without these gases Earth would be significantly cooler, i.e. frozen! 
 
+## CO~2~ as a Major Greenhouse Gas
+
+Although a host of gases can trap heat, carbon dioxide or CO~2~ concentrations have changed the most due land use changes and combustion of fossil fuels. We even know how much of the CO~2~ in the atmosphere has come from human activity.
 ```{r maunaloa, echo=FALSE}
 address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
 download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
@@ -43,9 +47,14 @@ maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=ma
 #write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
 ```
 
-Although political debate about the causes of climate change, we limited our project to the evaluation of observed temperatures and tried to avoid making definitive statements about cause and effect. Nevertheless, based on a numerous types of evidence, we know that greenhouse gases do influence the planet's climate[@pachauri2015ipcc]. Furthermore, as a major greenhouse gas, carbon dioxide (CO<sub>2</sub>) concentrations are increasing as a result of our use of fossil fuels and already influences the planet's climate.
+Although political debate about the causes of climate change exists as EPA Pruitt correctly points out, the scientific debate is limited to subtle areas of uncertainty -- for example, at what ocean temperatures might methane hydrates from the ocean be released into the atmosphere? Or how quickly will high latitude tundra become a major CO~2~ source? Or when will melting ice shelves contribute to sea level rise?
 
-Atmospheric CO<sub>2</sub> concentrations are measured in a continuous fashion from several locations around the world. For this introduction, we downloaded the most recent CO<sub>2</sub> from Mauna Loa, Hawaii. 
+In contrast to the red herring nature of political debates about climate change, we know greenhouse gases influence the planet's climate from multiple sources of evidence [@pachauri2015ipcc]. Furthermore, as a major greenhouse gas, carbon dioxide (CO<sub>2</sub>) concentrations are increasing as a result of our use of fossil fuels and already influences the planet's climate.
+
+
+## Increasing Carbon Dioxide Concentrations
+
+Atmospheric CO<sub>2</sub> concentrations are measured in a continuous fashion from several locations around the world. The longest record is measured on Mauna Loa, Hawaii. 
 
 ```{r fig-margin, fig.margin = TRUE, fig.cap = "CO~2~ concentrations have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
@@ -84,9 +93,9 @@ Based on recent surveys, many American's don't believe climate change will affec
 
 ![](../graphics/LocalImpactClimateSurvey.jpg)`r margin_note("Most people acknowledge someone in the US will be impacted by climate change, but few recognize that they impact might be felt personally.")`
 
-So, as a class, we decided to evalaute the potential for regional impacts and document the evidence of potential changes. Thus, each student selected a region that has a weather station with a relatively long record (i.e. more than 100 years if possible).
+As a class, we decided to evalaute the potential for regional impacts and document the evidence of potential changes. We spent six weeks learning how scientists evaluate the earth's climate systems. For example, we learned some of the skills to determine if the Earth's temperature has changed and what might be sources of uncertainty. 
 
-After collecting climate data (temperature, precipitation, etc) for a specific station, we used a few open source software tools to process [@R-base], analyze, and communicate the data [@R-rmarkdown].
+Each student selected a region that has a weather station with a relatively long record (i.e. more than 100 years if possible). After downloading on-line climate data (temperature, precipitation, etc) for a specific station, we used a few open source software tools to process [@R-base], analyze, and communicate the data [@R-rmarkdown].To keep it simple, we all evaluated temperature records for an individual location in the USA and determined if there was a trend.
 
 Once we completed the analysis of a single location, we evaluated the scientific literature on the implications of climate change relevent to the region in question. 
 
@@ -112,3 +121,6 @@ Finally, we combined this information into a series of blogs that might can be u
 
 [New Orleans, Louisiana by Khalil Johnson](Johnson_Blog.html)
 
+# Conclusions
+
+We found that temperature trends varied dramatically accross the country. Most areas were warming, but the signal might only be found for a specific monthly means or with minimum temperatures. High latitudes, i.e. Alaska, was changing more dramatically than any place in the conterminous US. However, nearly every region has been experiencing climate change that we believe every person in the US will be personally and directly affected by climate change. Of course, we will also be indirectly affected -- when Floridians become environmental refugees, the impact of their move will be impacted by everyone in the nation, not unlike the impact of Oklahomans moving to the west after the dust bowl. The real question that Amercians should ask, is if their federal government is working to mitigate these impacts and protect its citizens and tax payers? If Scott Pruitt is emblematic, then we have to answer 'no'. 
