@@ -161,9 +161,9 @@ The National Oceanic and Atmospheric Administration provides free and accessible
 ```{r, echo=FALSE, results='hide'}
 #plot(MonthlyMeanTMIN$TMIN, ty='p', pch=20)
 
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], ty='p', pch=20)
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], xlab="Year", ylab="Degrees (F)", ty='p', pch=20)
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], ty='p', pch=20) 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], xlab="Year", ylab="Degrees (F)", ty='p', pch=20) 
 Oct.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",])
 summary(Oct.lm)
 
@@ -177,9 +177,9 @@ The minimum temperatures within the month of October increase at a slope of 0.13
 ```{r, echo=FALSE, results='hide'}
 #plot(MonthlyMeanTMIN$TMIN, ty='p', pch=20)
 
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], ty='p', pch=20)
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], xlab="Year", ylab="Degrees (F)", ty='p', pch=20)
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], ty='p', pch=20) 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], xlab="Year", ylab="Degrees (F)", ty='p', pch=20) 
 Sep.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",])
 summary(Sep.lm)
 

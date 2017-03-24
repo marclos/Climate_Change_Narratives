@@ -356,6 +356,8 @@ BarrowAlaska$Year = format(BarrowAlaska$NewDate, format="%Y")
 
 ### Snowfall Trend in February
 
+According to NOAA, snowfall is the amount of new snow that has fallen in the past 24 hours. It is measured to the nearest tenth of an inch (2.54 mm). 
+
 ```{r, include=FALSE}
 MonthlyMeanSNOW = aggregate(SNOW ~ Month + Year, BarrowAlaska, mean)
 
@@ -375,7 +377,13 @@ summary(February.lm)
 abline(coef(February.lm), col="red")
 
 
+```
 
+The p-value of the above trendline is 0.0295. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in February snowfall.
+
+Below, I plotted the same data, but decided to exclude a single outlier, representing the monthly mean snowfall in February, 1923. During this month, February 9, 1923 received a documented 50.8 mm of snowfall, which is the highest recording among the total 37,157 observations over the past 115 years. Within that same week in February, 1923, 40.6 mm and 45.7 mm of snowfall were also documented on two separate days, while most of the other days in that month received 0 mm of snowfall. While it is entirely possible that these are all accurate recordings, I advise being skeptical of such outliers, which can have a strong influence on the apparent trendline and its corresponding p-value.
+
+```{r February3, echo=FALSE, results='hide'}
 #plot(temp$SNOW[temp$Month=="02"], ty='l')
 plot(SNOW~YEAR, data=temp[temp$Month=="02",], ty='l') 
 February.lm <- lm(SNOW~YEAR, data=temp[temp$Month=="02",])
@@ -385,7 +393,10 @@ abline(coef(February.lm), col="red")
 
 ```
 
-We can reject the null hypothesis that there is no relationship, since the p value is less than 0.05. In other words, the decreasing snowfall trend is statistically significant for the month of February. This decreasing snowfall trend in conjunction with the warming trend in observed in winter contributes to the melting of sea ice and the thinning and thawing of permafrost.
+The p-value of the above trendline is 0.063. In statistics, a p-value of greater than 0.05 indicates that the trend is not statistically significant. Therefore in this case, we accept the null hypothesis, which states that there is no long-term trend in February snowfall. One can also conclude that the exclusion of the single outlier in February, 1923 has a significant effect on the apparent trendline and its p-value. 
+
+It is important to be aware of potential inaccuracies in earlier observations of snowfall. While the decreasing trend in snowfall is not yet statistically significant, trends in snowfall should continuously be observed in the face of climate change. 
+
 
 ### Projected Trends
 
