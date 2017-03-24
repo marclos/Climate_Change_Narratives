@@ -178,7 +178,7 @@ Let's now look at the trend of temperatures in January specifically throughout t
 
 ```{r January}
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l') 
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='l', las = 1) 
 January.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
 #summary(January.lm)
 
