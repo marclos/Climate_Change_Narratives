@@ -117,9 +117,12 @@ abline(coef(SD.lm), col="red")
 Below is the raw climate data collected from the Barrow, AK station of NOAA/Earth System Laboratory, Global Monitoring Division, and NOAA’s Climate Data Center. The following graphs represent the trends in monthly maximum temperatures for December, January, and February over the course of 115 years from September 1, 1901 to January 21, 2017. These three consecutive months have shown the most significant warming trend out of all twelve months. Temperature trends, however, should be viewed with caution given that an estimated 12% of total data points are missing from the Barrow, AK climate dataset.
 
 ### December
+
+Below the graph shows that December maximum temperatures have warmed at a rate of 5.60 degrees per 100 years. The p-value of this upward trendline is 0.0022. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in December maximum temperatures.
+
 ```{r December, echo=FALSE, results='hide'}
 #plot(MonthlyMeanTMAX$TMAX[MonthlyMeanTMAX$Month=="12"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="12",], ty='l') 
+plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="12",], ty='p',pch=20, xlab="Year", ylab="Temperature (F)", main="Average Monthly Maximum Temperature", las=1) 
 December.lm <- lm(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="12",])
 summary(December.lm)
 
@@ -127,12 +130,14 @@ abline(coef(December.lm), col="red")
 
 ```
 
-According to the above graph, December maximum temperatures have warmed at a rate of 0.06 degrees per year or 5.60 degrees per 100 years. The p-value of this upward trendline is 0.0022. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in December maximum temperatures.
-
 ### January
+
+Below the graph shows that January maximum temperatures have warmed at a rate of 6.52 degrees per 100 years. The p-value of this upward trendline is 0.0035. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in January maximum temperatures.
+
 ```{r January, echo=FALSE, results='hide'}
 #plot(MonthlyMeanTMAX$TMAX[MonthlyMeanTMAX$Month=="01"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="01",], ty='l') 
+plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="01",], ty='p', pch=20, 
+xlab="Year", ylab="Temperature (F)", main="Average Monthly Maximum Temperature", las=1)
 January.lm <- lm(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="01",])
 
 summary(January.lm)
@@ -141,12 +146,13 @@ abline(coef(January.lm), col="red")
 
 ```
 
-According to the above graph, January maximum temperatures have warmed at a rate of 0.065 degrees per year or 6.52 degrees per 100 years. The p-value of this upward trendline is 0.0035. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in January maximum temperatures.
-
 ### February
+
+Below the graph shows that February maximum temperatures have warmed at a rate of 4.85 degrees per 100 years. The p-value of this upward trendline is 0.0467. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in February maximum temperatures.
+
 ```{r February, echo=FALSE, results='hide'}
 #plot(MonthlyMeanTMAX$TMAX[MonthlyMeanTMAX$Month=="02"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="02",], ty='l') 
+plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="02",], ty='p', pch=20, xlab="Year", ylab="Temperature (F)", main="Average Monthly Maximum Temperature", las=1) 
 February.lm <- lm(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="02",])
 summary(February.lm)
 
@@ -154,7 +160,6 @@ abline(coef(February.lm), col="red")
 
 ```
 
-According to the above graph, February maximum temperatures have warmed at a rate of 0.049 degrees per year or 4.85 degrees per 100 years. The p-value of this upward trendline is 0.0467. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in February maximum temperatures.
 
 ### Conclusion on Monthly Maximum Temperatures Trends
 
