@@ -73,7 +73,7 @@ import$NewDate <- as.Date(strDates, "%Y%m%d")
 
 ### Let's test out our date-corrected graph: 
 ```{r}
-plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l', xlab = "Year", ylab = "Maximum Temperature (F)", las =1)
 ```
 
 As you can see, there is still unfortunately a lot of missing temperature data. But we will make use of the data that is available to us. 
