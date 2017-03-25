@@ -384,7 +384,7 @@ The p-value of the above trendline is 0.0295. In statistics, a p-value of less t
 Below, I plotted the same data, but decided to exclude a single outlier, representing the monthly mean snowfall in February, 1923. During this month, February 9, 1923 received a documented 50.8 mm of snowfall, which is the highest recording among the total 37,157 observations over the past 115 years. Within that same week in February, 1923, 40.6 mm and 45.7 mm of snowfall were also documented on two separate days, while most of the other days in that month received 0 mm of snowfall. While it is entirely possible that these are all accurate recordings, I advise being skeptical of such outliers, which can have a strong influence on the apparent trendline and its corresponding p-value.
 
 ```{r February3, echo=FALSE, results='hide'}
-#plot(temp$SNOW[temp$Month=="02"], ty='l')
+#plot(temp$SNOW[temp$Mo9nth=="02"], ty='l')
 plot(SNOW~YEAR, data=temp[temp$Month=="02",], ty='l') 
 February.lm <- lm(SNOW~YEAR, data=temp[temp$Month=="02",])
 summary(February.lm)
