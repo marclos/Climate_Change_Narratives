@@ -281,7 +281,7 @@ Let's try looking at trends in precipitation during a specific month. Let's take
 #plot(MonthlyMeanPRCP$PRCP[MonthlyMeanPRCP$Month=="05"], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
 
 #MonthlyMean$TMAX[MonthlyMean$TMAX==0]<-NA 
-plot(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
+plot(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)", main = "Precipitation is May Over Time", las = 1)
 
 MayPRCP.lm <- lm(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",])
 #summary(MayPRCP.lm)
