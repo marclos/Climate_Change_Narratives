@@ -94,7 +94,7 @@ Ewa <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION
 #plot(TMAX~NewDate, Ewa, ty='p')
 Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
 #summary(Ewa.lm)
-plot(TMAX~NewDate, Ewa, ty='l', xlab = "Year", ylab = "Temperature (Fahrenheit)", las = 1, main = "Mean Maximum Temperatures Over Time")
+plot(TMAX~NewDate, Ewa, ty='p', xlab = "Year", ylab = "Temperature (Fahrenheit)", las = 1, main = "Mean Maximum Temperatures Over Time", pch = 20)
 abline(coef(Ewa.lm), col='red')
 #summary(Ewa.lm)
 ```
@@ -112,7 +112,7 @@ But since there's a lot of missing data beginning at about 1980, let's focus on 
 # Linear Model
 EwaMax.lm <- lm(TMAX~NewDate, data=Ewa[Ewa$DATE< 19780101,])
 #summary(EwaMax.lm)
-plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Temperature (Fahrenheit)", las =1, main = "Mean Maximum Temperatures Over Time")
+plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='p', xlab="Year", ylab="Temperature (Fahrenheit)", las =1, main = "Mean Maximum Temperatures Over Time", pch = 20)
 abline(coef(EwaMax.lm), col='red')
 ```
 
@@ -124,7 +124,7 @@ The trend of maxmimum temperatures has a steeper slope of 7e-05 when excluding a
 # Linear Model
 EwaMin.lm <- lm(TMIN~NewDate, data=Ewa[Ewa$DATE< 19780101,])
 #summary(EwaMin.lm)
-plot(TMIN~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Temperature (Fahrenheit)", las = 1, main = "Mean Minimum Temperatures Over Time", pch = 20)
+plot(TMIN~NewDate, Ewa[Ewa$DATE< 19780101,], ty='p', xlab="Year", ylab="Temperature (Fahrenheit)", las = 1, main = "Mean Minimum Temperatures Over Time", pch = 20)
 abline(coef(EwaMin.lm), col='red')
 ```
 
