@@ -120,7 +120,16 @@ summary(Jul.lm)
 
 abline(coef(Jul.lm), col="purple")
 ```
-`
+
+## How can we tell if these trends are significant?
+
+Scientists often rely on statistics to determine if a process is due to random variation or as part of some underlining non-random pattern. In a somewhat confusing way, statistical tests are used to evaluate if the pattern is due to random variation. This is called the "null hypothesis". If the null hypothesis is rejected, then the data suggest that the patterns in non-random. 
+
+We expect these non-random patterns to be the exception, i.e. rare. Thus, most scientists use a probability of 0.05 or 1 in 20 as the threshold to reject the null hypothesis. 
+
+In the case of the data presented in the graphs above, we can reject the null hypothesis, which stipulates that the variation with time is random. Stated another way, that temperature does not change with time. Since we reject these hypotheses, we can claim that evidence suggest that there is a temperature trend with time for March and July in Denver. It's a crazy way of describing data, but this is a way for scientists to reduce the changes of "seeing" a pattern when one doesn't not exist. 
+
+## Thea's text below...
 
 Both of these graphs represent significant data trends that reject the null hypothesis, or the position that there is no relationship between time and temperature rise for March and July in Denver since 1948. We can confidently state that this data rejects the null hypothesis because the data produces a p-value of less than 0.05. The p-value is essentialy the strength of the evidence against the null hypothesis. To be more specific, for the month of March there is a p-value of 0.00015 and for the month of July a p-value of 0.03294. This tells us that we have strong evidence in support of the alternative hypothesis that there is a significant relationship between time and temperature rise for these two months.      
 
