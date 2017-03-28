@@ -78,9 +78,9 @@ In future summers, Karl et al. predict that temperature increases will be slight
 Lenihan et al. projected changes in maximum changes for each state encompassing the Great Plains region and predicted that by 2100, the average monthly maximum temperature in Oklahoma will increase by 7 - 13°F. This claim is supported by the SCIPP’s models, which also anticipate that “droughts will become more frequent, last longer, and be more intense” due to higher maximum temperatures. 
 
 
-##Average TMAX - May 
+##Average Maximum Temperature - May 
 ```{r May, echo=FALSE}
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='p') 
 May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
 
 abline(coef(May.lm), col="red")
@@ -94,9 +94,11 @@ June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
 abline(coef(June.lm), col="red")
 ```
 
-Change (degrees / year) : `r coef(May.lm)[2]` 
-Degrees / 100 years :  `r round(coef(May.lm)[2]*100, 3)` 
-Probability of `r round(summary(May.lm)$coefficients[2,4],4)`. 
+Change (degrees / year) : `r coef(Nov.lm)[2]` 
+
+Degrees / 100 years :  `r round(coef(Nov.lm)[2]*100, 3)`
+
+Probability of `r round(summary(Nov.lm)$coefficients[2,4],4)`. 
 
 The two graphs above show the maximum average temperatures for the months of May and June from the dataset gathered at Tulsa International Airport. Both data sets show upward trends and confirm the positive relationship between time (year) and temperature increases (tmax) in the summer months. Between 1920 and 2017, the average maximum temperature for June rose 4.227°F. 
 
@@ -199,18 +201,17 @@ n <- 5
 k <- rep(1/n, n)
 k
 
-y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
 #lines(YearlySum$YEAR, y_lag, col="red")
 ```
 
 Now we take a look at precipitation levels in Oklahoma over the past century. Each white dot on the graph above is a yearly mean calculated from the sum of all rainfall recorded that year. The blue line represents the mean amount of rainfall in cm, and the red line depicts the trend line of actual rainfall. This graph tells us that precipitation is declining at -0.0085364 cm yr−1 or -0.09cm decade−1. 
 
 
-	Although the data shows a slight downward trend in the amount of rainfall experienced in Oklahoma City, it is also a fact that Oklahoma has experienced increasingly unpredictable rainfalls, oscillating between extreme droughts and intense downpours. Perhaps this explains why Thomas et. al predict that between now and 2040, mean precipitation will increase by 3% in the winter and decrease by 2 - 3% in the summer. Their research adds that by 2100, mean precipitation in the winter would have rise another 8 - 10% and decreased in the summer by 6 - 10%. 
+Although the data shows a slight downward trend in the amount of rainfall experienced in Oklahoma City, it is also a fact that Oklahoma has experienced increasingly unpredictable rainfalls, oscillating between extreme droughts and intense downpours. Perhaps this explains why Thomas et. al predict that between now and 2040, mean precipitation will increase by 3% in the winter and decrease by 2 - 3% in the summer. Their research adds that by 2100, mean precipitation in the winter would have rise another 8 - 10% and decreased in the summer by 6 - 10%. 
 
-	In order have more certainty in Thomas et al.’s predictions, it is important to examine rainfall patterns for more specific times of the year. We need to investigate whether rainfall has decreased in the summer months and increased in the winter months. This way, we will be able to better foreshadow whether the aforementioned forecasts are factual.  
+In order have more certainty in Thomas et al.’s predictions, it is important to examine rainfall patterns for more specific times of the year. We need to investigate whether rainfall has decreased in the summer months and increased in the winter months. This way, we will be able to better foreshadow whether the aforementioned forecasts are factual.  
 
-	In the past 50 years, the amount of rainfall in the 4 wettest days of the year in Oklahoma has increased by 15%. This number will rise even further as temperatures continue to rise. However, according to the SCIPP, the overall precipitation levels will decrease 6 - 20% by 2100; this elucidates how climate change encourages more extreme weather conditions in Oklahoma. In such a scenario, more floods would occur as “rains following droughts will be quick and heavy, causing flash-flooding and destroying aging and vulnerable infrastructure” (SCIPP). However, the SCIPP also add that although climate models predict weather conditions that stimulate thunderstorms and tornadoes, given the location of Oklahoma, the strength and number of such events in the future is unclear. 
+In the past 50 years, the amount of rainfall in the 4 wettest days of the year in Oklahoma has increased by 15%. This number will rise even further as temperatures continue to rise. However, according to the SCIPP, the overall precipitation levels will decrease 6 - 20% by 2100; this elucidates how climate change encourages more extreme weather conditions in Oklahoma. In such a scenario, more floods would occur as “rains following droughts will be quick and heavy, causing flash-flooding and destroying aging and vulnerable infrastructure” (SCIPP). However, the SCIPP also add that although climate models predict weather conditions that stimulate thunderstorms and tornadoes, given the location of Oklahoma, the strength and number of such events in the future is unclear. 
 
 Future predictions are difficult to create because we cannot accurately predict how public attitude and behaviours towards global warming will change. The Oklahoma Climatological Survey (OCS) affirmed that “much of the global average temperature increases over the last 50 years can be attributed to human activities. Thus, the SCIPP adds that the extent of temperature increases will, in part, be determined by the level of GHG released into the atmosphere. Thus, if Oklahoma’s citizens were to initiate more action and collaboration to mitigate the effects of climate change, they may potentially lessen its impacts in the future. However, this statement is in direct opposition with Ojima et al. whose research found that temperatures will continue to rise to their projected values “even under a scenario of substantial reductions in heat-trapping (GHG) emissions. It is difficult to determine the value of the Ojima and the SCIPP’s claims as neither specifically state the amount of GHG emissions that need to be reduced to moderate temperature rises. 
 

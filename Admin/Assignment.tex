@@ -1,0 +1,55 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+\usepackage{amsmath}
+\usepackage{natbib}
+\bibfont{\small} % Doesn't see to work...
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+% \graphicspath{{graphics/}}
+
+% \SweaveOpts{prefix.string=graphics/plot} % Created a "graphics" subdirectory to 
+
+\setsidenotefont{\color{blue}}
+% \setcaptionfont{hfont commandsi}
+% \setmarginnotefont{\color{blue}}
+% \setcitationfont{\color{gray}}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% These commands are used to pretty-print LaTeX commands
+% command name -- adds backslash automatically
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+%\usepackage{Sweave}
+
+\newenvironment{itemize*}%
+  {\begin{itemize}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{itemize}}
+	
+\newenvironment{enumerate*}%
+  {\begin{enumerate}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{enumerate}}
+
+\input{Op-Ed-Description}
+
+%\input{Op-Ed_F15-1}
+
+%\input{Op-Ed_F15-2}
+
+\input{Op-Ed_S17-1}
+
+\end{document}
