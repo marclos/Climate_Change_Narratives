@@ -94,10 +94,11 @@ Ewa <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION
 #plot(TMAX~NewDate, Ewa, ty='p')
 Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
 #summary(Ewa.lm)
-plot(TMAX~NewDate, Ewa, ty='p', xlab = "Year", ylab = "Temperature (Fahrenheit)", las = 1, main = "Mean Maximum Temperatures Over Time", pch = 20)
+plot(TMAX~NewDate, Ewa, ty='p', xlab = "Year", ylab = "Temperature (Fahrenheit)", las = 1, main = "Mean Maximum Temperatures Over Time", pch = '.')
 abline(coef(Ewa.lm), col='red')
 #summary(Ewa.lm)
 ```
+
 As shown, the maximum temperature annually has had a slight upward trend from 1905 when the records began until 2006. The slope is about 3.1e-05 (a very tiny slope). This means that, according to the trend, maximum temperatures will increase about .0031 degrees per century. This increase in maximum temperature is very statistically signficant, with a p-value of 2.2e-16 (a p-value of 0.05 or less would be statistically significant). This means that we can reject the null hypothesis that there is no relationship between change in temperature and time. However, we can see that there is a lot of missing data beginning at roughly 1980. While I tried to look into why there were no available measurements for about a 20 year span, no plausible explanations were offered online. 
 
 But since there's a lot of missing data beginning at about 1980, let's focus on the trend from 1905 up until that point to see if the missing data has an effect on the trend slope. 
