@@ -6,13 +6,13 @@ output: html_document
 ---
 ###**Intro:**
 
-Monroe County, Florida is a coastal community where tourism, coastal infrastructure, and freshwater access are fundamental to economic and social well being. The IPCC asserts that environmental hazards stemming from rising temperature such as increased flood risk, sea level rise, etc threaten the economic and social well being of Southern Florida. In an attempt to understand these claims, I investigated and analyzed the local temperature data of Monroe County.
+Monroe County, Florida is a largely coastal community where tourism, coastal infrastructure, and freshwater access are fundamental to economic and social well being. The Intergovernmental Panel Climate Change (IPCC) asserts that environmental hazards stemming from rising temperature such as increased flood risk, sea level rise, etc threaten the economic and social well being of Southern Florida. The demand for tourism in Southern Florida will decrease as biodiversity in the Everglades is reduced from salt water intrusion and coastal infrastructure is destroyed by more severe weather events. The IPCC links these negative environmental hazards to rising temperatures. In an attempt to understand the reasoning behind these claims, I investigated, analyzed, and visually presented trends in local temperature data of Monroe County.
 
 ###**Methods:**
 
-I downloaded data freely available from NOAA (National Oceanic and Atmospheric Administration) via a weather station in Monroe County (Everglades), Florida. I used RStudio software to summarize, evaluate, and graphically present the data. I analyzed maximum and minimum temperatures (Fahrenheit) by month since 1924 to present to account for daily changes in temperature (night vs day). 
+I downloaded data freely available from NOAA (National Oceanic and Atmospheric Administration) via a weather station in Monroe County (Everglades), Florida. I used RStudio software to summarize, evaluate, and graphically present the data. When processing the data, I filtered out obvious outliers, created a linear model, and developed a trendline. I analyzed maximum and minimum temperatures (Fahrenheit) by month from 1924 to 2016 to account for daily and seasonal fluctuations in temperature. 
 
-I am determining a trend between time and temperature using the null hypothesis method, a standard scientific convention. The null hypothesis states that there is no relationship between temperature and time. Therefore, if the probability value(p-value) calculated is less than .05, the null hypothesis is considered violated and a relationship can be assumed.
+I am determining a trend between time and temperature using the null hypothesis method, a standard scientific convention. The null hypothesis states that there is no relationship between temperature and time. The alternative hypothesis states that there is a relationship between temperature and time. Therefore, if the probability value (p-value) calculated is less than .05, the null hypothesis is considered violated and a relationship can be assumed.
 
 ###**Results:**
 
@@ -179,7 +179,7 @@ May was chosen for the example because there is a trend for both maximum and min
 
 ```{r, echo=F,results='hide'}
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='p',pch=20) 
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",],las=1,main="Maximum Monthly Mean Temperature from 1924-2016", xlab="Year", ylab="Temperature (Degrees F)",ty='p',pch=20) 
 May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
 summary(May.lm)
 
@@ -272,6 +272,17 @@ summary(Dec.lm)
 #Now, the change is `r coef(Dec.lm)[2]` degress/year or `r round(coef(Dec.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(Dec.lm)$coefficients[2,4],4)`. If the p value is less than .05, we can reject the null hypothesis.
 ```
 
+```{r xtable,results="asis", echo=F}
+
+Slope= c(" Slope ",-3.86, -3.62, -2.02, -3.8, -1.92, -1.70, -1.36, -1.91, -1.38, .31, -.1, -.29) 
+Pvalue= c(" P-value ","<.01",.01,.09, "<.01",.02,.049,.02,"<.01",.02,.69,.92,.82) 
+Month=c(" Month ","January","February","March","April","May","June","July","August","September","October","November","December")
+df = data.frame(Month, Slope, Pvalue)       # df is a data frame
+
+library(xtable)
+
+print(xtable(df),type="html",include.rownames=FALSE, columnnames=FALSE)
+```
 ####**Table of Slopes (degrees/100 years) and P-values for maximum temp:**
 ```{r, echo=F}
 slopePvalue <- matrix(c(-3.86,"<.01",-3.62,.01,-2.02,.09,-3.80,"<.01",-1.92,.02,-1.70,.049,-1.36,.02,-1.91,"<.01",-1.38,.02,.31,.69,-.1,.92,-.29,.83),ncol=2,byrow=TRUE)
@@ -348,7 +359,7 @@ May was chosen for the example because there is a trend for both maximum and min
 ```{r, echo=F,results='hide'}
 #plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="05"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",], ty='p', pch=20) 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",],xlab="Years from 1924-2016", ylab="Minimum Temperature in Degrees F", las=1, ty='p',pch=20)  
 May.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",])
 summary(May.lm)
 
@@ -464,3 +475,5 @@ Piccininni, Frank. "Adaptation to Climate Change and the Everglades Ecosystem." 
 Climate Change in Coastal Florida: Economic Impacts of Sea Level Rise (n.d.): n. pag. Bipartisan Policy. Florida State University. Web. 12 Feb. 2017.
 
 Saha, Amartya K., Sonali Saha, Jimi Sadle, Jiang Jiang, Michael S. Ross, René M. Price, Leonel S. L. O. Sternberg, and Kristie S. Wendelberger. "Sea Level Rise and South Florida Coastal Forests." Climatic Change 107.1-2 (2011): 81-108. Web. 12 Feb. 2017.
+
+Blog formatted using R
