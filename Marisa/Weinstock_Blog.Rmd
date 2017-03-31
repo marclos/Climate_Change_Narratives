@@ -166,7 +166,7 @@ Given the statistical relationship between time and increased minimum temperatur
 
 #plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], xlab="Year", ylab="Degrees (F)", ty='p', pch=20)
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], xlab="Year", ylab="Degrees (F)", ty='p', pch=20) 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], xlab="Year", ylab="Degrees (°F)", ty='p', pch=20, las=1) 
 Oct.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",])
 summary(Oct.lm)
 
@@ -182,7 +182,7 @@ The minimum temperatures within the month of October increase at a slope of 0.13
 
 #plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], xlab="Year", ylab="Degrees (F)", ty='p', pch=20)
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], xlab="Year", ylab="Degrees (F)", ty='p', pch=20) 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], xlab="Year", ylab="Degrees (°F)", ty='p', pch=20, las=1) 
 Sep.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",])
 summary(Sep.lm)
 
@@ -195,7 +195,8 @@ The minimum temperatures within the month of September increase at a slope of 0.
 ## What is the significance of this data?
 
 An increase in minimum temperatures in October and September likely signify an increased warmth in nights specifically, as this is when temperature is usually the coldest. This data raises a red flag for the local viticulture through these temperature’s ecologic, economic, and reputational implications for the city of Lodi.
-What is the ecological impact of increased minimum temperatures?
+
+###What is the ecological impact of increased minimum temperatures?
 
 ###Water
 Higher atmospheric temperatures reduce Lodi’s groundwater supply, which is already limited and expected to be depleted (Famiglietti, 2011). Lodi and the city’s surroundings use groundwater as their main source of water, which is used for residential and irrigational purposes. With significant cuts in managed water allocations in response to the California drought, farmers particularly in the San Joaquin Valley are forced to tap heavily into the already heavily depended on groundwater reserves to meet irrigation demands. This furthers the Central Valley’s excession of the groundwater natural recharge rate (Scanlon, 2012). Given the already naturally low rates of groundwater recharge in the San Joaquin Valley and population growth, a continuance of groundwater depletion is expected (Famiglietti, 2011). Unfortunately for Lodi’s drying groundwater, the city’s surrounding San Joaquin Valley relies more heavily on groundwater than its Sacramento counterpart because the drier climate results in more limited natural surface water availability. Increased temperature and evapotranspiration results in increased domestic water use within the city, as well (Abtew, 2013). This thereby limits water sources even further. As is discussed in the next section, water limitations obstructs successful viticulture.
