@@ -1,5 +1,5 @@
 ---
-title: 'Climate Change in Eastern Texas'
+title: 'What does climate change mean for Eastern Texas?'
 author: "Mireya Valencia"
 date: "2/20/2017"
 output:
@@ -10,11 +10,8 @@ output:
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-#### Background Information
 
-Texas's large coast and overreliance on its abundant natural resources render it particularly vulnerable to climate change. The Environmental Protection Agency estimates that the state has warmed .5-1°F in the past century (“What Climate Change Means for Texas”). Although this number may seem underwhelming, even a minimal increase in temperature can exacerbate issues such as rising sea levels, extreme weather events, drought, and floods.
 
-Alvin, a small city in the Houston metropolitan area of Texas, is home to a weather station that has collected local weather data since 1898, longer than any other weather station in Eastern Texas. The data, available online through the National Oceanic and Atmospheric Administration (NOAA), is helpful in analyzing local weather and climate trends in nearby Houston and Galveston. 
 ```{r importingCSV, echo=FALSE}
 # Importing Scripts
 
@@ -22,8 +19,6 @@ file = "/home/CAMPUS/mvxu2015/Climate_Change_Narratives/Mireya/HoustonWeather.cs
 
 import = read.csv(file)
 ```
-
-![Figure 1: Proximity of Alvin (blue marker) to Houston and Galveston](map.png)
 
 
 
@@ -126,30 +121,32 @@ MonthlyMean$NewDate = MonthlyMean$YEAR + (MonthlyMean$MONTH - 1)/12
 ```
 #### Is Texas warming or cooling, and how do we know?
 
-To determine whether temperature has increased in Texas over the past century, we will analyze the NOAA data and perform a series of statistical tests to determine the data's validity. 
+Texas's large coast and overreliance on its abundant natural resources render it particularly vulnerable to climate change. The Environmental Protection Agency estimates that the state has warmed 0.5-1°F in the past century (“What Climate Change Means for Texas”). Although this number may seem underwhelming, even a minimal increase in temperature can exacerbate issues such as rising sea levels, extreme weather events, drought, and floods.
 
-Let us begin by creating hypotheses. In accordance with the scientific method, the null hypothesis predicts that there is no observed relationship between variables. In our case, this would mean that Texas is not warming. Generally, scientists hope to disprove the null hypothesis and, consequently, accept the alternative hypothesis.
+Alvin, a small city in the Houston metropolitan area of Texas, is home to a weather station that has collected local weather data since 1898, longer than any other weather station in Eastern Texas. 
+![Figure 1: Proximity of Alvin (blue marker) to Houston and Galveston](map.png)
 
+The data, available online through the National Oceanic and Atmospheric Administration (NOAA), is helpful in analyzing local weather and climate trends in nearby Houston and Galveston. To determine whether temperature has increased in Texas over the past century, we will analyze the NOAA data and perform a series of statistical tests to determine the data's validity. 
 
-Alternative Hypothesis: The maximum temperature in Alvin, TX has increased from 1898-2013.
-
-Null Hypothesis: The maximum temperature in Alvin, TX has not increased from 1898-2013. 
-
-
-After inputting the data into R, the program will derive a p-value for us. P-value is used to calculate the probability of an event happening by chance; the smaller the p-value, the lower the probability of that event happening by chance. A p-value of <.05 leads to a rejection of the null hypothesis.
+Let us begin by creating hypotheses. In accordance with the scientific method, the null hypothesis predicts that there is no observed relationship between variables. In our case, this would mean that Texas is not warming. Generally, a rejection of the null hypothesis means there is evidence to support the alternative hypothesis.
 
 
+Alternative Hypothesis: The maximum temperature in Alvin, TX from 1898-2013 has increased.
 
+Null Hypothesis: The maximum temperature in Alvin, TX from 1898-2013 has not increased from 1898-2013. 
+
+
+To test the null hypothesis we will input the data into R, an open source statistical computing software. The program will calcuate a p-value, or the probablity of an event happening by chance. A p-value of <0.05 leads to a rejection of the null hypothesis.
 
 #### An increasing trend in temperatures
 
-Below are the maximum mean temperatures in Alvin, TX from 1898-2013. There is an overall increasing trend in the data. However, with p=0.30, we cannot reject nor accept our null hypothesis because the data is not statistically significant.
+Below are the maximum mean temperatures in Alvin, TX from 1898-2013. There is an overall increasing trend in the data. However, with a non-significant p-value of 0.30, we cannot reject the null hypothesis. In other words, although there's an increasing trend in temperatures, we cannot know for sure if it was due to chance. 
 
 Note: the red line represents the slope of the data. 
 ```{r plottingMonthlyMean, echo=FALSE}
 # plot(Monthly$TMAX, ty='l')
 
-plot(TMAX~ NewDate, data=MonthlyMean, ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year")
+plot(TMAX~ NewDate, data=MonthlyMean, ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="Yearly Averages of Maximum Temperature 1960-2013")
 SD.lm <- lm(TMAX~NewDate, data=MonthlyMean)
 # summary(SD.lm)
 
@@ -158,9 +155,9 @@ abline(coef(SD.lm), col="red")
 
 ```
 
-#### Is the data valid?
+#### Are the results valid?
 
-As shown in the previous graph, there is a huge portion of missing data from about 1920-1960. A gap in data this large poses questions about the validity of the data set. To see if the trend exists independently of this missing data, we can look only at the data collected after 1960. 
+As shown in the previous graph, there is a huge portion of missing data from about 1920-1960. A gap in data this large poses questions about the validity of the results. To see if the trend exists independently of this missing data, we can look only at the data collected after 1960. 
 
 ```{r, echo=FALSE}
 MonthlyMean2=subset(MonthlyMean, subset=YEAR>1962)
@@ -170,11 +167,11 @@ MonthlyMean2=subset(MonthlyMean, subset=YEAR>1962)
 ```{r plottingMonthySD, echo=FALSE}
 # plot(MonthlySD$TMAX, ty='l')
 
-plot(TMAX~ NewDate, data=MonthlyMean2, ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year")
+plot(TMAX~ NewDate, data=MonthlyMean2, ty='p', pch=20, las=1, ylab= "Maximum Temperature (°F)", xlab= "Year", main="Yearly Averages of Maximum Temperature 1960-2013")
 MonthlyMean2.lm <- lm(TMAX~NewDate, data=MonthlyMean2)
 # summary(MonthlyMean2.lm)
 
-abline(coef(MonthlyMean2.lm), col="red")
+abline(coef(MonthlyMean2.lm), col= "red")
 
 ```
 
@@ -183,11 +180,11 @@ As shown above, the mean monthly temperatures from 1960-2013 are still increasin
 
 
 
-#### Analyzing individual months
+#### Looking closer: a month by month analysis
 
-To analyze statistically significant data, we can look at maximum temperatures for each month rather than the entire year. 
+To analyze statistically significant data, we can look at montlhy maximum temperatures. 
 
-In the month of December, for instance, the maximum monthly temperatures from 1898-2013 show an increasing trend (p=.02). We can reject the null hypothesis.
+In the month of December, for instance, the maximum monthly temperatures from 1898-2013 show an increasing trend (p=0.02). We can reject the null hypothesis, meaning there is evidence to support that temperature is increasing.
 ```{r, echo=FALSE, include=FALSE}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='p', pch=20, ylab="Maximum Temperature  (°F)", xlab= "Year", main="December") 
@@ -200,7 +197,7 @@ abline(coef(Dec.lm), col="red")
 
 ```{r, echo=FALSE}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="12",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="December") 
+plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="12",], ty='p', las=1, pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="Monthly Averages of Maximum Temperature: December") 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="12",])
 # summary(Dec.lm)
 
@@ -208,7 +205,7 @@ abline(coef(Dec.lm), col="red")
 
 ``` 
 
-The months of October (p=.004) and March (p=.047) from 1898-2013 show similar trends of increasing maximum temperature and are statistically significant, thereby rejecting the null hypothesis. 
+The months of October (p=0.004) and March (p=0.047) from 1898-2013 show similar trends of increasing maximum temperature and are statistically significant. 
 ```{r, echo=FALSE, include=FALSE}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="10"], ty='p')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="10",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="October") 
@@ -221,7 +218,7 @@ abline(coef(Dec.lm), col="red")
 
 ```{r, echo=FALSE}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="10",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="October") 
+plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="10",], ty='p', las=1, pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="Monthly Averages of Maximum Temperature: October") 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="10",])
 # summary(Dec.lm)
 
@@ -232,7 +229,7 @@ abline(coef(Dec.lm), col="red")
 
 ```{r, echo=FALSE, include=FALSE}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="March") 
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='p', las=1, pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="Monthly Averages of Maximum Temperature: March") 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",])
 # summary(Dec.lm)
 
@@ -241,7 +238,7 @@ abline(coef(Dec.lm), col="red")
 ```
 ```{r, echo=FALSE}
 # plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="03",], ty='p', pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="March") 
+plot(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="03",], ty='p', las=1, pch=20, ylab="Maximum Temperature (°F)", xlab= "Year", main="Monthly Averages of Maximum Temperature: March") 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean2[MonthlyMean$Month=="03",])
 # summary(Dec.lm)
 
@@ -253,10 +250,10 @@ abline(coef(Dec.lm), col="red")
 
 #### An increase in heat-related deaths
 
-The data reveals that Texas is generally warming, and this is statistically significant when looking at the months of March, October, and December. Although these are all winter months, the impacts of warming temperatures on the average Texan are most apparent in the summer. According to a study published by Risky Business, the number of days above 95° in Texas will double by mid-century, and there will likely be more than 100 days a year above 95° by 2060. Heat-related deaths in Texas are expected to claim 2,570 lives by 2040, more than any other state in the nation. If this pattern persists, heat-related deaths will claim more lives in Texas than automobile accidents by 2060 (“Come Heat and High Water”).
+The data reveals that Texas is generally warming, and this is statistically significant when looking at the months of March, October, and December. Although these are all winter months, the impacts of warming temperatures on the average Texan will be most apparent in the summer. According to a study published by Risky Business, the number of days above 95° in Texas will double by mid-century, and there will likely be more than 100 days a year above 95° by 2060. Heat-related deaths in Texas are expected to claim 2,570 lives by 2040, more than any other state in the nation. If this pattern persists, heat-related deaths will claim more lives in Texas than automobile accidents by 2060 (“Come Heat and High Water”).
 
-#### Agricultural impacts
-Rising temperatures not only threaten human health, but they also endanger Texas's economy. In 2014, cotton, corn, and hay crops accounted for $4.4 billion in production value. Crops are largely susceptible to changes in heat and precipitation, and it is estimated that corn yields will drop 22% by 2040 (“Come Heat and High Water”). Cattle and calves generated $10.5 billion in 2012, but extreme heat can affect performance, production, production, and fertility of the animals. Extreme droughts in the area have already caused small farmers in the region to relocate or sell their herds (“Come Heat and High Water”). Not only will Texas's economy be hit hard by a loss in agricultural revenue, but the Texan consumer could be subjected to higher prices in the supermarket due to a decrease in supply. 
+#### A vulnerable economy
+Rising temperatures not only threaten human health, but they also endanger Texas's economy. In 2014, cotton, corn, and hay crops accounted for $4.4 billion in production for Texas. Crops are largely susceptible to changes in heat and precipitation, and it is estimated that corn yields will drop 22% by 2040. Cattle and calves generated $10.5 billion in 2012, but extreme heat can affect performance, production, production, and fertility of the animals. Extreme droughts in the area have already caused small farmers in the region to relocate or sell their herds (“Come Heat and High Water”). Not only will Texas's economy be hit hard by a loss in agricultural revenue, but the Texan consumer could be subjected to higher prices in the supermarket due to a decrease in supply. 
 
 #### Flooding and property damage
 
