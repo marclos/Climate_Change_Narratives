@@ -1,20 +1,20 @@
 ---
 title: "Blog: Monroe County Climate Data"
 author: "Viraj Singh"
-date: "2/27/2017"
+date: "3/28/2017"
 output: html_document
 ---
-### Intro:
+### Why Understanding Climate Change is Relevant to Monroe County:
 
 Monroe County, Florida is a largely coastal community where tourism, coastal infrastructure, and freshwater access are fundamental to economic and social well being. The Intergovernmental Panel Climate Change (IPCC) asserts that environmental hazards stemming from rising temperature such as increased flood risk, sea level rise, etc threaten the economic and social well being of Southern Florida. The demand for tourism in Southern Florida will decrease as biodiversity in the Everglades is reduced from salt water intrusion and coastal infrastructure is destroyed by more severe weather events. The IPCC links these negative environmental hazards to rising temperatures. In an attempt to understand the reasoning behind these claims, I investigated, analyzed, and visually presented trends in local temperature data of Monroe County.
 
-### Methods:
+### Methods to Understand Trends in Local Climate:
 
 I downloaded data freely available from NOAA (National Oceanic and Atmospheric Administration) via a weather station in Monroe County (Everglades), Florida. I used RStudio software to summarize, evaluate, and graphically present the data. When processing the data, I filtered out obvious outliers, created a linear model, and developed a trendline. I analyzed maximum and minimum temperatures (Fahrenheit) by month from 1924 to 2016 to account for daily and seasonal fluctuations in temperature. 
 
 I am determining a trend between time and temperature using the null hypothesis method, a standard scientific convention. The null hypothesis states that there is no relationship between temperature and time. The alternative hypothesis states that there is a relationship between temperature and time. Therefore, if the probability value (p-value) calculated is less than .05, the null hypothesis is considered violated and a relationship can be assumed.
 
-### Results:
+### Results-Climate Data Trends:
 
 ```{r setup, include=FALSE, echo=F,results='hide'}
 knitr::opts_chunk$set(echo = TRUE)
@@ -174,8 +174,8 @@ summary(April.lm)
 #Now, the change is `r coef(April.lm)[2]` degress/year or `r round(coef(April.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(April.lm)$coefficients[2,4],4)`. If the p value is less than .05, we can reject the null hypothesis.
 ```
 
-#### Example of maximum temperature data for the month of May 
-May was chosen for the example because there is a trend for both maximum and minimum values (null hypothesis is violated). Temperature is measured in degrees Fahrenheit.
+#### Example of Maximum Temperature Data for the Month of May 
+May was chosen for the example because there is a trend for both maximum and minimum values (null hypothesis is violated). 
 
 ```{r, echo=F,results='hide'}
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
@@ -188,7 +188,7 @@ abline(coef(May.lm), col="red")
 
 ```
 
-The change or slope is -1.9 degress/100 years  with a probability value of .02. Since the probability is less than .05, we can reject the null hypothesis and there is a trend.
+The change or slope is -1.9 degress/100 years  with a probability value of .02. Since the probability is less than .05, we can reject the null hypothesis and there is a trend. Below is a table of slopes and p-value for monthly mean maximum temperature for all 12 months.
 
 ```{r, echo=F,results='hide'}
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
@@ -272,16 +272,14 @@ summary(Dec.lm)
 #Now, the change is `r coef(Dec.lm)[2]` degress/year or `r round(coef(Dec.lm)[2]*100, 3)` degress/100 years with a probability of `r round(summary(Dec.lm)$coefficients[2,4],4)`. If the p value is less than .05, we can reject the null hypothesis.
 ```
 
-#### Table of Slopes (degrees/100 years) and P-values for maximum temp:
+#### Table of Slopes (degrees/100 years) and P-values for Maximum Temperature:
 
-Need text to describe table here... might see if you can add a caption to the table too...I created a table.pdf then pasted it into photoshop to save as a png. Not ideal, but I was wasting too much time trying to sort out the problems...but I like how this looks!
-
-```{r, out.width = "400px", echo=FALSE}
+```{r, out.width = "500px", echo=FALSE}
 knitr::include_graphics("Table.png")
 ```
 
 
-#### Analysis of maximum temperature values: 
+#### Analysis of Maximum Temperature Values: 
 
 January, February, April, May, June, July, August, September(8/12 months) violate the null hypothesis. If the null hypothesis is violated, a negative relationship (as time passes tmax decreases) since 1924 is assumed. While my analysis of the data in the area shows cooling based on the maximum temperature values since 1924, saying that this data invalidates claims that net warming on a global level is causing the melting of land ice and thermal exapnsion of the ocean leading to increased sea level would be a hasty generalization. This data is coming from one weather station in the Everglades of Monroe County. Even though max temperatures in the local area are cooling, the global temperature as reported by the IPCC is increasing which contributes to the melting of ice in from large on land icesheets such as that in Greenland. 
 
@@ -339,13 +337,13 @@ summary(April.lm)
 
 ```
 
-#### Example of minimum temperature data for the month of May 
-May was chosen for the example because there is a trend for both maximum and minimum temperature values (null hypothesis is violated).Temperature is measured in degrees Fahrenheit.
+#### Example of Minimum Temperature Data for the Month of May 
+May was chosen for the example because there is a trend for both maximum and minimum temperature values (null hypothesis is violated).
 
 ```{r, echo=F,results='hide'}
 #plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="05"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",],xlab="Years from 1924-2016", ylab="Minimum Temperature in Degrees F", las=1, ty='p',pch=20)  
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",], main="Minimum Monthly Mean Temperature from 1924-2016",xlab="Year", ylab="Temperature (Degrees F)", las=1, ty='p',pch=20)  
 May.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",])
 summary(May.lm)
 
@@ -354,7 +352,7 @@ abline(coef(May.lm), col="red")
 ```
 
 
-In this case, we get a slope, 3 degress/ 100 years and a probability of <.01.  Since the p-value is less than .05, the null hypothesis is violated and there is a trend. 
+In this case, we get a slope, 3 degress/ 100 years and a probability of <.01.  Since the p-value is less than .05, the null hypothesis is violated and there is a trend. Below is a table of slopes and p-value for monthly mean minimum temperature for all 12 months.
 
 ```{r, echo=F,results='hide'}
 #plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="06"], ty='l')
@@ -431,17 +429,14 @@ summary(December.lm)
 
 ```
 
-#### Table of Slopes (degrees/100 years) and P-values for minimum temperature: 
-```{r, echo=F}
-slopePvalue2 <- matrix(c("-1.9",".26","-.44",".79","1.34",".36",".99",".38","3.13","<.01","3.16","<.01","-1.73",".61","2.5","<.01","2.36","<.01","1.44",".15","2.04",".11","2.97",".08"),ncol=2,byrow=TRUE)
-colnames(slopePvalue2) <- c("Slope","P-Value")
-rownames(slopePvalue2) <- c("January","February","March","April","May","June","July", "August","September","October","November","December")
+#### Table of Slopes (degrees/100 years) and P-values for Minimum Temperature: 
 
-slopePvalue2 <- as.table(slopePvalue2)
-slopePvalue2
-
+```{r, out.width = "375px", echo=FALSE}
+knitr::include_graphics("Table2.png")
 ```
-####**Analysis of minimum temperature values:**
+
+
+####**Analysis of Minimum Temperature Values:**
 
 Out of the 12 months, 4 months (May, June, August, and September) violate the null hypothesis meaning that there is a positive trend between time and minimum temperature.Therefore the range of the temperature values (Range=maximum value-minimum value) is decreasing as the maximum value is cooling/decreasing and the minimum value is warming/increasing. The reduced temperature range could impact amphibean reproduction and agricultural productivity.
 
