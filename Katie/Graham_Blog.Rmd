@@ -1,12 +1,19 @@
 ---
 title: "Climate Trends in Barrow, Alaska"
 author: "Katie Graham"
-date: "2/20/2017"
+date: "4/2/2017"
 output: html_document
 ---
 
-Barrow is located at the northernmost tip of the state of Alaska and is home to 4,384 residents, most of whom are Iñupiaq Alaska Natives. Along with much of Northern Alaska, Barrow sits entirely on top of permafrost, which is frozen ground, most notably defined by its sub-zero temperatures. With warming atmospheric and surface temperatures, however, the permafrost underlying Barrow is thawing from top to bottom, placing residents at severe risk of ground subsidence and infrastructure damage. In addition to warming permafrost, melting sea ice and glaciers, coastal erosion, earlier spring snowmelt, and reduced snow fall have also been consequences of the recent warming trends.
+### Introduction
+   
+Barrow is located at the northernmost tip of the state of Alaska and is home to 4,384 residents, most of whom are Iñupiaq Alaska Natives. Along with much of Northern Alaska, Barrow is located in the Arctic tundra. The tundra is the treeless biome, most notably known for having long, cold winters and short, typically chilly summers. Alaska’s tundra receives very little precipitation and is known to have low biotic diversity.
 
+One distinctive feature of the Arctic tundra is that the ground consists of a thick layer of permafrost (U.S. Global Change Research Program, 2014). Permafrost is frozen subsoil, most notably defined by its sub-zero temperatures. With warming atmospheric and surface temperatures, however, the permafrost underlying Barrow is thawing from top to bottom, placing residents at severe risk of ground subsidence and infrastructure damage (U.S. Global Change Research Program, 2014). 
+
+The warming experienced in the Arctic is amplified by several factors including the increased discharge of carbon dioxide and methane into the atmosphere from thawing permafrost, as well as the snow/ice-albedo feedback (Euskirchen, et al., 2009). As the atmosphere and ocean warms, snow and ice melt, decreasing the reflectivity or albedo of the surface and increasing the amount of heat absorbed by the Earth. This in turn amplifies the warming effect, making the snow/ice-albedo feedback a positive climate feedback (Euskirchen, et al., 2009).
+
+Other observed changes in the region include earlier spring snowmelt, shrinking sea ice and glaciers, coastal erosion, and increased wildfires. And according to current climate models, it is projected that by 2060 the Arctic summer will be nearly free of ice (Overland, 2013).
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -112,14 +119,21 @@ abline(coef(SD.lm), col="red")
 ```
 ![Figure 1. Alaska’s permafrost regions. Source: National Snow & Ice Data Center](image005.png)
 
+### Objectives
+
+The purpose of this data analysis is to identify any possible temperature trends in Barrow, Alaska over the past 115 years. If such temperature trends are found, they will help inform Alaskan communities and policy-makers of the impacts of climate change in the northern Alaska region.
+
 ### Monthly Maximum Temperatures Trends: December, January, and February
 
 Below is the raw climate data collected from the Barrow, AK station of NOAA/Earth System Laboratory, Global Monitoring Division, and NOAA’s Climate Data Center. The following graphs represent the trends in monthly maximum temperatures for December, January, and February over the course of 115 years from September 1, 1901 to January 21, 2017. These three consecutive months have shown the most significant warming trend out of all twelve months. Temperature trends, however, should be viewed with caution given that an estimated 12% of total data points are missing from the Barrow, AK climate dataset.
 
-### December
+###         December
+
+The graph below shows that December maximum temperatures have warmed at a rate of 5.60 degrees per 100 years. The p-value of this upward trendline is 0.0022. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in December maximum temperatures.
+
 ```{r December, echo=FALSE, results='hide'}
 #plot(MonthlyMeanTMAX$TMAX[MonthlyMeanTMAX$Month=="12"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="12",], ty='l') 
+plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="12",], ty='p',pch=20, xlab="Year", ylab="Temperature (F)", main="Average Monthly Maximum Temperature", las=1) 
 December.lm <- lm(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="12",])
 summary(December.lm)
 
@@ -127,12 +141,14 @@ abline(coef(December.lm), col="red")
 
 ```
 
-According to the above graph, December maximum temperatures have warmed at a rate of 0.06 degrees per year or 5.60 degrees per 100 years. The p-value of this upward trendline is 0.0022. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in December maximum temperatures.
+###         January
 
-### January
+The graph below shows that January maximum temperatures have warmed at a rate of 6.52 degrees per 100 years. The p-value of this upward trendline is 0.0035. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in January maximum temperatures.
+
 ```{r January, echo=FALSE, results='hide'}
 #plot(MonthlyMeanTMAX$TMAX[MonthlyMeanTMAX$Month=="01"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="01",], ty='l') 
+plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="01",], ty='p', pch=20, 
+xlab="Year", ylab="Temperature (F)", main="Average Monthly Maximum Temperature", las=1)
 January.lm <- lm(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="01",])
 
 summary(January.lm)
@@ -141,12 +157,13 @@ abline(coef(January.lm), col="red")
 
 ```
 
-According to the above graph, January maximum temperatures have warmed at a rate of 0.065 degrees per year or 6.52 degrees per 100 years. The p-value of this upward trendline is 0.0035. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in January maximum temperatures.
+###        February
 
-### February
+The graph below shows that February maximum temperatures have warmed at a rate of 4.85 degrees per 100 years. The p-value of this upward trendline is 0.0467. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in February maximum temperatures.
+
 ```{r February, echo=FALSE, results='hide'}
 #plot(MonthlyMeanTMAX$TMAX[MonthlyMeanTMAX$Month=="02"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="02",], ty='l') 
+plot(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="02",], ty='p', pch=20, xlab="Year", ylab="Temperature (F)", main="Average Monthly Maximum Temperature", las=1) 
 February.lm <- lm(TMAX~YEAR, data=MonthlyMeanTMAX[MonthlyMeanTMAX$Month=="02",])
 summary(February.lm)
 
@@ -154,13 +171,12 @@ abline(coef(February.lm), col="red")
 
 ```
 
-According to the above graph, February maximum temperatures have warmed at a rate of 0.049 degrees per year or 4.85 degrees per 100 years. The p-value of this upward trendline is 0.0467. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in February maximum temperatures.
 
-### Conclusion on Monthly Maximum Temperatures Trends
+### Discussion
 
-Winters in Barrow, Alaska have gotten significantly warmer over the past 115 years.For residents, this warming has been most visible in the form of thawing permafrost, receding sea ice, and melting snow and glaciers. The surface air temperatures observed in late 2016 and early 2017 are some of the highest on record, with 2017 marking the hottest January since the late 1920s. While rising winter temperatures in Barrow have resulted in some benefits such as a longer growing season, repercussions have also been making their presence known. 
+Winters in Barrow, Alaska have gotten significantly warmer over the past 115 years. For residents, this warming has been most visible in the form of thawing permafrost, receding sea ice, and melting snow and glaciers. The surface air temperatures observed in late 2016 and early 2017 are some of the highest on record, with 2017 marking the hottest January since the late 1920s. While rising winter temperatures in Barrow have resulted in some benefits such as a longer growing season, repercussions have also been making their presence known. 
 
-One notable implication is the melting of sea ice, which has brought about rising sea levels, coastal erosion, and infrastructure and habitat damage. Furthermore, as permafrost thaws, organic matter decomposes, releasing huge amounts of carbon dioxide and methane into the atmosphere. This has transformed the Arctic tundra from a net sink for carbon into a major source of it. This issue of carbon emissions from thawing permafrost is compounded by the increase in wildfires observed throughout Alaska. More wildfires, in turn, will cause even more permafrost to melt, thus exacerbating the issue by sending more heat-trapping gases into the atmosphere.
+One notable implication is the melting of sea ice, which has brought about rising sea levels, coastal erosion, and infrastructure and habitat damage (Hinzman, et al., 2005). Furthermore, as permafrost thaws, organic matter decomposes, releasing huge amounts of carbon dioxide and methane into the atmosphere. This has transformed the Arctic tundra from a net sink for carbon into a major source of it. This issue of carbon emissions from thawing permafrost is compounded by the increase in wildfires observed throughout Alaska. More wildfires, in turn, will cause even more permafrost to melt, thus exacerbating the issue by sending more heat-trapping gases into the atmosphere (Hinzman, et al., 2005).
 
 
 ```{r, include=FALSE}
@@ -354,10 +370,6 @@ BarrowAlaska$Month = format(as.Date(BarrowAlaska$NewDate), format = "%m")
 BarrowAlaska$Year = format(BarrowAlaska$NewDate, format="%Y")
 ```
 
-### Snowfall Trend in February
-
-According to NOAA, snowfall is the amount of new snow that has fallen in the past 24 hours. It is measured to the nearest tenth of an inch (2.54 mm). 
-
 ```{r, include=FALSE}
 MonthlyMeanSNOW = aggregate(SNOW ~ Month + Year, BarrowAlaska, mean)
 
@@ -365,7 +377,7 @@ MonthlyMeanSNOW$YEAR = as.numeric(MonthlyMeanSNOW$Year)
 head(MonthlyMeanSNOW)
 ```
 
-```{r February2, echo=FALSE, results='hide'}
+```{r February2, echo=FALSE, include=FALSE}
 temp=MonthlyMeanSNOW[-82,]
   
   
@@ -379,12 +391,8 @@ abline(coef(February.lm), col="red")
 
 ```
 
-The p-value of the above trendline is 0.0295. In statistics, a p-value of less than 0.05 indicates that the trend is statistically significant. Therefore, we can reject the null hypothesis, which states that there is no long-term trend in February snowfall.
-
-Below, I plotted the same data, but decided to exclude a single outlier, representing the monthly mean snowfall in February, 1923. During this month, February 9, 1923 received a documented 50.8 mm of snowfall, which is the highest recording among the total 37,157 observations over the past 115 years. Within that same week in February, 1923, 40.6 mm and 45.7 mm of snowfall were also documented on two separate days, while most of the other days in that month received 0 mm of snowfall. While it is entirely possible that these are all accurate recordings, I advise being skeptical of such outliers, which can have a strong influence on the apparent trendline and its corresponding p-value.
-
-```{r February3, echo=FALSE, results='hide'}
-#plot(temp$SNOW[temp$Month=="02"], ty='l')
+```{r February3, echo=FALSE, include=FALSE}
+#plot(temp$SNOW[temp$Mo9nth=="02"], ty='l')
 plot(SNOW~YEAR, data=temp[temp$Month=="02",], ty='l') 
 February.lm <- lm(SNOW~YEAR, data=temp[temp$Month=="02",])
 summary(February.lm)
@@ -393,17 +401,12 @@ abline(coef(February.lm), col="red")
 
 ```
 
-The p-value of the above trendline is 0.063. In statistics, a p-value of greater than 0.05 indicates that the trend is not statistically significant. Therefore in this case, we accept the null hypothesis, which states that there is no long-term trend in February snowfall. One can also conclude that the exclusion of the single outlier in February, 1923 has a significant effect on the apparent trendline and its p-value. 
+### Projected Trends for Barrow, Alaska
 
-It is important to be aware of potential inaccuracies in earlier observations of snowfall. While the decreasing trend in snowfall is not yet statistically significant, trends in snowfall should continuously be observed in the face of climate change. 
+Alaska has already warmed more than twice as fast as the rest of the nation(U.S. Global Change Research Program, 2014). According to the U.S. National Climate Assessment, however, if CO2 emissions are not reduced by 2100, temperatures are expected to increase 10°F to 12°F in the Arctic region. Even if emissions are substantially reduced, temperatures in northern Alaska are still projected to increase 6°F to 8°F.
 
+![Figure 2. Alaska is projected to continue warming rapidly. Source: Regional Climate Trends and Scenarios for the U.S. National Climate Assessment: Part 7. Climate of Alaska. NOAA Technical Report NESDIS 142-7](AK_temp_projections_14353_v6.png)
 
-### Projected Trends
+With northern Alaska being entirely underlain by permafrost, the projected warming trends pose significant risks to northern communities such as the Iñupiaq of Barrow, Alaska (U.S. Global Change Research Program, 2014). Melting sea ice and thawing of permafrost are likely to create food and water security challenges and increase the vulnerability of coastal infrastructure and wildlife habitat. Many coastal communities, including Barrow, are considering moving miles inland to protect themselves from coastal dangers. However, relocation is a costly procedure and the state and federal government are reluctant to supply the funds. Additionally, moving inland would only be a temporary solution and would not solve the issues of food and water insecurity and melting permafrost as a threat to infrastructure (U.S. Global Change Research Program, 2014). 
 
-![Figure 2. Alaska is projected to continue warming rapidly. Adapted from: Regional Climate Trends and Scenarios for the U.S. National Climate Assessment: Part 7. Climate of Alaska. NOAA Technical Report NESDIS 142-7](AK_temp_projections_14353_v6.png)
-
-Alaska has already warmed more than twice as fast as the rest of the nation. According the U.S. National Climate Assessment, however, “if global emissions continue to increase during this century, temperatures can be expected to rise 10°F to 12°F in the north.” Even if emissions are substantially reduced, temperatures in northern Alaska are still projected to increase by 6F to 8F.
-
-With northern Alaska being entirely underlain by permafrost, the projected warming trends pose significant risks to northern communities such as the Iñupiaq of Barrow, Alaska. Melting sea ice and thawing of permafrost are likely to create food and water security challenges and increase the vulnerability of coastal infrastructure and wildlife habitat. Many coastal communities, including Barrow, are considering moving miles inland to protect themselves from coastal dangers. However, relocation is a costly procedure and the state and federal government are reluctant to supply the funds. Additionally, moving inland would only be a temporary solution and would not solve the issues of food and water insecurity and melting permafrost as a threat to infrastructure. 
-
-As a result of global greenhouse gas emissions, Barrow and other northern Alaska communities face numerous climactic challenges that are projected to intensify within the 21st century. Researchers and residents worry about the implications of a warming climate and the seemingly inevitable fate of their native land. Every year, conditions are worsening and coastal land is being lost. It is time for the state and federal government to take notice of these communities, to ensure their safety, and to protect their environment.
+As a result of global greenhouse gas emissions, Barrow and other northern Alaska communities face numerous climactic challenges that are projected to intensify within the 21st century. Researchers and residents worry about the implications of a warming climate and the seemingly inevitable fate of their native land. Every year, conditions are worsening and coastal land is being lost (U.S. Global Change Research Program, 2014). It is time for the state and federal government to take notice of these communities, to ensure their safety, and to protect their environment.
