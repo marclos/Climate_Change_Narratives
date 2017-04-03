@@ -1,5 +1,5 @@
 ---
-title: "A Look at Climate Change in Oklahoma"
+title: "Examining Climate Change and its Potential Implications in Oklahoma"
 author: "Claudia Chandra"
 date: "02/20/2017"
 output: html_document
@@ -62,64 +62,84 @@ MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
 MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
 MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
 ```
+##Introduction: 
 
-All environmental changes observed in the last 150 years have been caused by a 2°F increase in global land and sea temperature. Extensive climate change research has been undertaken for different regions of the United States to avoid logical fallacies. Science now understand that equalizing the magnitude of climate change across the globe is a hasty generalization as different areas are affected by global warming in individual ways and extents. 
+Oklahoma covers 181,035km2 of land and is the 20th largest state in the United States. It is located between the Great Plains and the Ozark Plateau, with high plains located on its Western boundaries and low wetlands on its Southeastern borders. Historically, Oklahoma was highly dependent upon its oil industry; however, because of economic downturns, it diversified its production and is now a leading producer of natural gas and agricultural products, as well as oil. For this reason, its economy relies on energy, telecommunications, and biotechnology. Oklahoma City and Tulsa are the state’s leading economic anchors, with nearly two-thirds of their total population living within the metropolitan regions of these two cities. 
 
-Nevertheless, although results and predictions vary, there is unanimity in the belief that for Oklahoma, the “magnitude of expected changes will exceed those experienced in the last century (Ojima). Despite this, 25% of Oklahoma’s residents believe global warming to be a myth. This percentage is even higher, reaching 42% in more skeptical counties such as Woodward County (Sutter). 
+![Source: http://www.state-maps.org/ok-map.htm](http://www.state-maps.org/ok.gif)
 
-This astounding figure made me wonder why people doubted global warming. Perhaps the results found by the climate researchers in Oklahoma did not compel its citizens because they did not experience its effects, such as increasing temperatures and decreasing precipitation, for themselves in their day to day lives. To test my hypothesis, I collected temperature data for Oklahoma’s Tulsa International Airport from 1920 - 2017 and compared my results to the data published by associations such as The Oklahoma Climatological Survey (OCS) and The Environmental Protection Agency (EPA). 
+In recent years, Oklahoma has experienced a significant increase in extreme weather conditions and earthquakes with magnitude 3.0+. In 2010, the state reported 41 of such cases, and in 2016 the number had increased to 623. The number of reports has decreased from 903 in 2015 following the implementation of stricter fracking regulations (earthquakes.ok.gov). 
 
-What I found was that, unsurprisingly, Oklahoma’s average minimum and maximum temperatures are rising along with the global trend. Unfortunately, this finding on its own does not confirm the reason for Oklahoma’s skepticism; a deeper analysis of Oklahoma’s sociological make-up is needed to understand the exact causes of such strong climate change denial in this region. This attitude of doubt towards global warming must be halted as current adaptation methods will be insufficient in responding to the more intense consequences of climate change that are projected to arise. 
+In terms of climate change, annual mean temperatures in Oklahoma are predicted to rise by approximately 2.5°F by 2040. This number nearly doubles the 1.3°F increase in mean temperature that occurred between 1993 and 2008. Despite such evidence, nearly 25% of Oklahoma’s residents believe that global warming is a myth. The percentage is even higher, reaching 42% in more skeptic counties such as Woodward County (Sutter).
 
-Last year marked the closing of the El Nino weather pattern. Despite this, scientists still predict temperature rises for the next 5 years. For Oklahoma, annual mean temperatures are expected to rise by approximately 2.5°F by 2040 (Karl). This number nearly doubles the 1.3°F increase in mean temperature that occurred between 1993 and 2008. 
+##Objectives: 
 
-In future summers, Karl et al. predict that temperature increases will be slightly higher at 2.7 - 2.9°F. These predictions are backed up by EPA whose research also forecasts the number of days over 100°F  to quadruple by mid century. Karl et al. also believe that by the end of the century, annual mean temperatures will increase a total of 9 - 14.6°F. These numbers are substantially different to those found by the Southern Climate Impacts Planning Program (SCIPP), which states that “temperatures in the southern Great plains are projected to increase another 3 - 9°F by 2100.” This discrepancy may have occurred as a result of the differing methodologies that the SCIPP and Karl et al. have employed. It is also important to note that there is a lack of observations as concrete weather data has only been collected for the past 2 decades. Thus, future predictions cannot be absolutely perfect. 
+I wanted to find out whether the citizens of Oklahoma had a reason to doubt climate change. Even though global warming has been proven to occur, science now understands that equalizing the level of climate change across the globe is a hasty generalization. This is because different geographical regions are affected by global warming in unique ways and to different extents. 
 
-Lenihan et al. projected changes in maximum changes for each state encompassing the Great Plains region and predicted that by 2100, the average monthly maximum temperature in Oklahoma will increase by 7 - 13°F. This claim is supported by the SCIPP’s models, which also anticipate that “droughts will become more frequent, last longer, and be more intense” due to higher maximum temperatures. 
+To prove or disprove climate change in Oklahoma, this research aims to:
 
+* Evaluate temperature records from a weather station located at Tulsa International Airport and determine if a trend exists 
+* Assess if average weather conditions have been changing, and if so, in what way 
+* Examine the potential implications of climate change for Oklahoma by looking at current literature and evidence from the past 
 
-##Average TMAX - May 
-```{r May, echo=FALSE}
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
-May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
+##Methodology: 
 
-abline(coef(May.lm), col="red")
-```
+We will look at temperature records gathered at Tulsa International Airport between 1920 and 2015. This weather station has been selected as it provides temperature data for nearly a century, which means that we can more accurately determine a trend in Oklahoma’s climate if one exists. Furthermore, more data will also help us to not misinterpret natural variation in climate as long-term trends. 
+For each day, a minimum and a maximum temperature is recorded in degrees Fahrenheit. To make the data easier to analyze, all the minimum temperature data for a month are averaged to give the minimum average temperature for that month. In the results, the notation “Average Minimum Temperature – (Month)” is used to signify this. The same process is repeated with the daily maximum temperature data to give the average maximum temperature data for that month. The notation “Average Maximum Temperature – (Month)” is used to signify this. 
 
-##Average TMAX - June 
-```{r June, echo=FALSE}
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+A dataset is then created using these average minimum/maximum temperature numbers. The numbers on the data set are then plotted on graphs, with each point marking the average temperature for that month. I will focus on the average minimum and maximum temperatures for June and December as they are one of the hottest and coldest months of the year. This will allow an analysis and comparison of climate changes in the summer and winter. 
+
+If there is a visible trend in the graph, a regression line (or best-fit line) will then be generated and analyzed to find a P-value. P-values are used to test statistical significance in a hypothesis test. It determines how our data supports the null hypothesis being true. The null hypothesis assumes no effect, or in this case no clear evidence that climate change has occurred. In essence: 
+
+* Higher P-values: the data agrees with the null hypothesis 
+* Lower P-values: the data disagrees with the null hypothesis 
+
+The null hypothesis can be rejected if the P-value is lower than 0.05 as this means that a significant difference, or in our case temperature change, does exist. If the P-value is greater than 0.05, the results were statistically insignificant.  
+
+As climate change involves rainfall and water availability, changes in precipitation (measured in cm) will also be analyzed using data collected from the same source. Daily precipitation will be averaged to find annual mean precipitation, and the dataset will be plotted on a graph to find a potential trend line. We should also be able to find the rate at which precipitation is changing in the area. 
+
+##Results and Interpretation: 
+
+#Average Maximum Temperature - June 
+```{r June, echo=FALSE, results='hide'}
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='p', ylab= "Maximum Temperature", xlab= "Year" ) 
 June.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
 
+summary(June.lm)
+
 abline(coef(June.lm), col="red")
-```
-
-Change (degrees / year) : `r coef(May.lm)[2]` 
-Degrees / 100 years :  `r round(coef(May.lm)[2]*100, 3)` 
-Probability of `r round(summary(May.lm)$coefficients[2,4],4)`. 
-
-The two graphs above show the maximum average temperatures for the months of May and June from the dataset gathered at Tulsa International Airport. Both data sets show upward trends and confirm the positive relationship between time (year) and temperature increases (tmax) in the summer months. Between 1920 and 2017, the average maximum temperature for June rose 4.227°F. 
-
-Keeping in mind the knowledge that the rate of climate change is predicted to quicken in the future, an increase of 7 - 13°F as predicted by Lenihan et al. seems viable. Nevertheless, it is important to recognize the probability of this actually happening. The P-value (probability) of the graph is 0; since it is below 0.05 we cannot reject the null hypothesis as the trend line is too vague. What the graphs demonstrate is a rise in temperature, but not its causes or effects. 
-
-##Average TMAX - November 
-```{r Nov, echo=FALSE}
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
-Nov.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
-abline(coef(Nov.lm), col="blue")
 
 ```
 
-##Average TMAX - December
-```{r Dec, echo=FALSE}
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Temperature Change (°F/ year) : `r coef(June.lm)[2]` 
+
+(°F/ 100 years): `r round(coef(June.lm)[2]*100, 3)`
+
+P-value: `r round(summary(June.lm)$coefficients[2,4],4)`. 
+
+Let’s first have a look at the average maximum temperatures for June. The graph shows an upward trend and an increase in temperature of 4.327°F/ 100 years. The p-value for this graph is 3.338e–05 (or 0.00003338), which is less than 0.05 and therefore significant. Consequently, the null hypothesis can be rejected and a relationship between time and temperature is confirmed.    
+
+#Average Maximum Temperature - December 
+```{r Dec, echo=FALSE, results='hide'}
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='p', xlab= "Year", ylab= "Maximum Temperature") 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+
+summary(Dec.lm)
+
 abline(coef(Dec.lm), col="blue")
+
 ```
 
-These graphs illustrate the average maximum temperature for the winter months of November and December. We observe the same upward trend and positive relationship between time and temperature in these two graphs as we with the previous graphs for May and June. However, notice that the slope of these winter graphs is less steep than the graphs for the summer graphs. 
+Temperature Change (°F/ year):  : `r coef(Dec.lm)[2]` 
 
-This means that the relationship between time and temperature is weaker in the winter months than the summer months. Although temperatures are rising year-round, they are rising more quickly in the summer. 
+(°F/ 100 years):  `r round(coef(Dec.lm)[2]*100, 3)`
+
+P-value: `r round(summary(Dec.lm)$coefficients[2,4],4)`. 
+
+In the case of maximum temperatures for December, a slight upward trend of 1.6°F/ 100 years is observed. However, the data’s p-value is 0.1122 and larger than 0.05. As such, the null hypothesis cannot be ignored and a significant relationship between time and temperature cannot be established for this month. 
+
+Comparing the graphs for June and December both show upward trends in temperature averages. However, the gradient of the regression line for June is noticeably steeper than for December. This signifies that although temperatures are rising year-round, they are increasing more quickly in the summer. Nevertheless, as a significant relationship was not established for December, such claims cannot be confirmed. 
+
 
 ```{r, echo=FALSE, results='hide'}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
@@ -128,58 +148,72 @@ MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 head(MonthlyMeanTMIN)
 ```
 
-##Average TMIN - November 
-```{r Nov2, echo=FALSE}
+#Average Minimum Temperature - June 
+```{r, echo=FALSE, results='hide'}
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",], ty='p', xlab= "Year", ylab= "Minimum Temperature") 
+June.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",])
+#summary(June.lm)
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",], ty='l') 
-Nov.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",])
+summary(June.lm)
 
-abline(coef(Nov.lm), col="purple")
+
+abline(coef(June.lm), col="green")
+
 
 ```
 
-##Average TMIN - December 
-```{r Dec2, echo=FALSE}
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Temperature Change (°F/ year): `r coef(June.lm)[2]` 
+
+(°F/ 100 years):  `r round(coef(June.lm)[2]*100, 3)`
+
+P-value: `r round(summary(June.lm)$coefficients[2,4],4)`. 
+
+Now we take a look at the minimum temperature data for June. The graph shows a strong positive relationship between time and temperature, which is confirmed by its p-value. The p-value of 3.338e–05, once again, allows us to reject the null hypothesis and prove a significant relationship between minimum temperatures and time. 
+
+
+#Average Minimum Temperature - December 
+```{r Dec2, echo=FALSE, results='hide'}
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='p', xlab= "Year", ylab= "Minimum Temperature") 
 Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
 #summary(Dec.lm)
+
+summary(Dec.lm)
+
 
 abline(coef(Dec.lm), col="purple")
 
 ```
 
+Temperature Change (°F/ year): `r coef(Dec.lm)[2]` 
 
+(°F/ 100 years):  :  `r round(coef(Dec.lm)[2]*100, 3)`
 
-##Average TMIN - May 
-```{r May2, echo=FALSE}
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",], ty='l') 
-May.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",])
-#summary(May.lm)
+P-value `r round(summary(Dec.lm)$coefficients[2,4],4)`. 
 
-abline(coef(May.lm), col="orange")
+Unlike the previous 3 results, the average minimum temperature for December appears to be slowly decreasing. However, once again, we see that the p-value for the data is 0.3891 making it insignificant. Sine there is no statistically significant relationship between time and temperature, a decreasing trend, although observed, cannot be confirmed. 
 
-```
+Nevertheless, we should explore the observed changes for December as they could potentially have implications for Oklahoma’s climate. Below are the results we have obtained for December: 
 
+Temperature | Change (Degrees Fahrenheit/year) | Change (Degrees Fahrenheit/100 years) | P-value 
+------------- | ------------- | ------------- | ------------- 
+Max temperature – December | 0.0159977 | 1.6 | 0.1122
+Min temperature – December | -0.0068331 | -0.683 | 0.3891
 
+The data shows that maximum temperatures are increasing while minimum temperatures are decreasing. This translates to more extreme climate during the winter season for Oklahoma, as temperatures between day and night will have increasingly larger differences. The statistical insignificances for these data could have resulted from random error or a lack of data, which is why we cannot assume that our observations and trend line are accurate.  
 
-##Average TMIN - June
-```{r, echo=FALSE}
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",], ty='l') 
-June.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",])
-#summary(June.lm)
+Now we repeat this analysis for the minimum and maximum temperatures in June: 
 
-abline(coef(June.lm), col="orange")
+Temperature | Change (Degrees Fahrenheit/year) | Change (Degrees Fahrenheit/100 years) | P-value 
+------------- | ------------- | ------------- | ------------- 
+Max temperature – June | 0.0432686 | 4.327 | 3.338e–05 
+Min temperature – June | 0.0526848 | 5.268 | 8.723e–12 
+ 
+Here, a significant statistical relationship between time and minimum/maximum temperatures can be confirmed due to the P-value being less than 0.05. Notice also how the minimum temperature for June is increasing more per decade than the maximum temperature. This indicates how summers will, even at its coolest, be hotter than what we have experienced so far. 
 
-```
+Now, let’s compare the maximum temperature results for June (4.327 degrees Fahrenheit/100 years) and December (1.6 degrees Fahrenheit/100 years). It is evident that although temperatures are rising year-round, they are rising more quickly in the summer. This could potentially translate into more extreme climate as some days become increasingly hotter, while others become cooler. However, once again, we must acknowledge the uncertainty that lies with our data for December. As we cannot confirm that temperatures for this month are changing, it is impossible to presume that Oklahoma’s climate will become more extreme.
 
-Now we take a look at the average minimum temperatures for the months we have observed previously. The graphs of the summer months, May and June, demonstrate a strong positive relationship between time and average minimum temperature increases. The increases for both months are between 4 - 5°F and are indicative of the warmer summers that Oklahoma has been experiencing over the past century. 
+#Average Yearly Precipitation
 
-What we see for November is a very slight increase in average minimum temperatures but in December, minimum temperatures have actually decreased. From these results, and the knowledge that maximum temperatures throughout the year are rising, we can see how temperatures ranges in Oklahoma have enlarged. The increase of extreme weather events will have an unforeseeable effect on Oklahoma, which highlights the need for immediate action and mitigation. 
-
-
-##Precipitation
-
-#Average Yearly Rainfall
 ```{r, echo=FALSE}
 LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
 YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
@@ -189,8 +223,8 @@ YearlyMean = mean(YearlySum$PRCP)
 
 
 
-```{r, echo=FALSE}
-plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+```{r, echo=FALSE, results='hide'}
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="p", ylab= "Precipitation", xlab= "Year")
 abline(h=YearlyMean, col="blue")
 YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
 abline(coef(YearlySum.lm), col="red")
@@ -199,54 +233,58 @@ n <- 5
 k <- rep(1/n, n)
 k
 
-y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
 #lines(YearlySum$YEAR, y_lag, col="red")
+
 ```
 
-Now we take a look at precipitation levels in Oklahoma over the past century. Each white dot on the graph above is a yearly mean calculated from the sum of all rainfall recorded that year. The blue line represents the mean amount of rainfall in cm, and the red line depicts the trend line of actual rainfall. This graph tells us that precipitation is declining at -0.0085364 cm yr−1 or -0.09cm decade−1. 
+Change in Rainfall (cm/ year): -0.0085364 
+(cm/ decade): -0.09
+
+Here is a scatter plot of the mean annual precipitation data. The blue straight line represents the mean amount of rainfall in cm (constant). The red line is the trend line of actual overserved rainfall. The trend shows a slight negative relationship between precipitation and time, and also that recorded rainfall is slowly decreasing at a rate of 0.09cm per decade. This trend agrees with the Southern Climate Impact Planning Program’s (SCIPP) prediction that “droughts will become more frequent, last longer, and be more intense” for Oklahoma.
+
+#Discussion (Potential Implications for Oklahoma):
+
+What our results have established are positive relationships between time and temperature in June. It confirmed that although both minimum and maximum temperatures are rising, average minimum temperatures are rising faster than maximum temperatures. The results also showed that yearly precipitation is slowly decreasing for Oklahoma. This means that Oklahoma’s summer climate could, as observed, continue to warm.
+
+As the effects of climate change are predicted to compound, Professor Thomas Karl predicts that by 2040 Oklahoma’s summer temperatures will rise another 2.7–2.9°F (Karl et al.) These predictions are backed up by Environmental Protection Agency (EPA) whose research also forecasts the number of days over 100°F to quadruple by mid-century (Smith et al.) Karl also believes that by the end of the century, annual mean temperatures will increase a total of 9 - 14.6°F. 
+
+![Source: Oklahoma Climatological Survey](http://www.wwfblogs.org/climate/sites/default/files/OKclimate-impacts-lores.jpg)
+
+Such drastic changes in temperature will have a profound impact on Oklahoma, especially in the livestock, irrigation, wheat, and forest sectors. According to the Oklahoma Climatological Survey, warmer summers will lead to more extremely hot days, heatwaves, droughts, cooling costs and wildfires. These are climate change implications that will affect all of Oklahoma’s citizens if no mitigation efforts are initiated. 
+
+In terms of agriculture, shortened winters and longer periods without frost could increase the time it takes to harvest many crops, such as wheat, in Oklahoma. The yield of winter wheat is predicted to experience a 27–37% loss as temperatures exceed the climate threshold. Moreover, as droughts will become more frequent and severe, Oklahoma will need more irrigation to produce the same number of crops. 
+
+Climate change will also affect Oklahoma’s wildlife and tourism industry. As temperatures rise, Oklahoma’s wildlife will either adapt or be driven to extinction. Warmer ecosystems will become better environments for invasive species, such as red-imported fire ants. The potential loss of wildlife could impact the tourism industry, which according to the National Wildlife Federation, currently spends more than $1 billion per year on wildlife hunting, viewing, and fishing. 
+
+Our precipitation data shows a slight downward trend in average yearly precipitation. However, according to the Southern Climate Impacts Planning Program (SCIPP), Oklahoma has also been experiencing increasingly unpredictable rainfalls, oscillating between extreme droughts and intense downpours. This increase in extreme weather conditions is supported by Professor Karl whose work also predict that by 2040, average rainfall will increase by 3% in the winter and decrease by 2-3% in the summer. 
+
+In the past 50 years, the amount of rainfall in the 4 wettest days of the year in Oklahoma has increased by 15%. This number will rise even further as temperatures continue to rise. However, according to the SCIPP, the overall precipitation levels will decrease 6 - 20% by 2100; this elucidates how climate change encourages more extreme weather conditions in Oklahoma. In such a scenario, more floods would occur as “rains following droughts will be quick and heavy, causing flash-flooding and destroying aging and vulnerable infrastructure” (SCIPP). 
+
+Water stress is one of the primary climate change concerns for Oklahoma as all its rivers and streams are vulnerable to its effects. The Oklahoma Water Resources Board have documented shifting and shrinking water tables due to prolonged drought, higher temperatures and increased irrigation. Furthermore, the 2014 National Climate Assessment shows that water levels have fallen by over 150ft in some regions of the High Plains Aquifer, which is the main supplier of water in the region. As a result of such observations, the OWRP has designed the Oklahoma Comprehensive Water Plan (OCWP), which proposes strategies and policies that promote water reuse and conservation. This plan could potentially allow Oklahoma to meet its future water demands. 
+
+To find our more about the OCWP, visit http://www.owrb.ok.gov/
 
 
-	Although the data shows a slight downward trend in the amount of rainfall experienced in Oklahoma City, it is also a fact that Oklahoma has experienced increasingly unpredictable rainfalls, oscillating between extreme droughts and intense downpours. Perhaps this explains why Thomas et. al predict that between now and 2040, mean precipitation will increase by 3% in the winter and decrease by 2 - 3% in the summer. Their research adds that by 2100, mean precipitation in the winter would have rise another 8 - 10% and decreased in the summer by 6 - 10%. 
+#Conclusion:
 
-	In order have more certainty in Thomas et al.’s predictions, it is important to examine rainfall patterns for more specific times of the year. We need to investigate whether rainfall has decreased in the summer months and increased in the winter months. This way, we will be able to better foreshadow whether the aforementioned forecasts are factual.  
+Climate change is potentially a threat-multiplier for Oklahoma, as it encourages more intense and frequent hurricanes, heat waves, floods, droughts, and other extreme weather conditions. Nevertheless, it is difficult to incite change as global warming is caused by a multitude of factors. Making it more difficult is the fact that future predictions are rarely accurate because it is impossible to predict how public attitudes and behaviors towards global warming will change. 
 
-	In the past 50 years, the amount of rainfall in the 4 wettest days of the year in Oklahoma has increased by 15%. This number will rise even further as temperatures continue to rise. However, according to the SCIPP, the overall precipitation levels will decrease 6 - 20% by 2100; this elucidates how climate change encourages more extreme weather conditions in Oklahoma. In such a scenario, more floods would occur as “rains following droughts will be quick and heavy, causing flash-flooding and destroying aging and vulnerable infrastructure” (SCIPP). However, the SCIPP also add that although climate models predict weather conditions that stimulate thunderstorms and tornadoes, given the location of Oklahoma, the strength and number of such events in the future is unclear. 
-
-Future predictions are difficult to create because we cannot accurately predict how public attitude and behaviours towards global warming will change. The Oklahoma Climatological Survey (OCS) affirmed that “much of the global average temperature increases over the last 50 years can be attributed to human activities. Thus, the SCIPP adds that the extent of temperature increases will, in part, be determined by the level of GHG released into the atmosphere. Thus, if Oklahoma’s citizens were to initiate more action and collaboration to mitigate the effects of climate change, they may potentially lessen its impacts in the future. However, this statement is in direct opposition with Ojima et al. whose research found that temperatures will continue to rise to their projected values “even under a scenario of substantial reductions in heat-trapping (GHG) emissions. It is difficult to determine the value of the Ojima and the SCIPP’s claims as neither specifically state the amount of GHG emissions that need to be reduced to moderate temperature rises. 
-
-Nevertheless, with the overwhelming evidence of climate change’s impact on Oklahoma, it would be wise for the citizens of this state to take action to reduce its effects immediately. The OCS recommends increasing investments in renewable energy production and technology as a remedy. Increasing education and awareness of global warming as a current problem is also vital in changing the attitudes and behaviors of Oklahoma’s citizens to become more environmentally friendly. And finally, further research and deeper analyses of Oklahoma’s sociological make-up should be undertaken so that the government can create effectual measures to combat rapid climate change. 
+The Oklahoma Climatological Survey (OCS) affirmed that “much of the global average temperature increases over the last 50 years can be attributed to human activities. The SCIPP adds that the extent of climate change will, in part, be determined by the level of GHG released into the atmosphere. Thus, if Oklahoma’s citizens were to initiate more action and collaboration to mitigate the effects of climate change, they may potentially lessen its impacts in the future. 
 	
-##Works Cited 
+#Works Cited 
 
-Karl, Thomas., Melillo, Jerry., Peterson, Thomas. (2009). “3 Projected Climate Change by Geographic Region.” United states Global Research Program (USGCRP). Cambridge University Press, pp 196. 
- 
-Ojima, Dennis., Shafer, Mark., Antle, John., Kluck, Doug., McPherson, Renee. A., Peterson, Sascha., Scanlon, Bridget., Sherman, Kathleen. (2014) “Climate Change Impacts in the United States.” The Third National Climate Assessment. Chapter 19: Great Plains. p 441 – 461.
- 
-Powell, Emily., Keim, Barry. (2015). “Trends in Daily Temperature and Precipitation Extremes for the Southeastern United States: 1948 – 2012.” Journal of Climate. Vol 28.4. p 1592 – 612. 
- 
-Smith, Joel., Tirpak, Dennis. “The Potential Effects of Global Climate Change on The United States.” (1989) United States Environmental Protection Agency, Office of Research and Development. pp 177, 287 – 319.
- 
-Southern Climate Impacts Planning Program. (2004). “Climate Change in Oklahoma.” Oklahoma Dept. of Sustainability and Environment. SCIPP. N.p. Web.
- 
-United States Environmental Protection Agency. (2016) “What Climate Change Means for Oklahoma.” EPA. N.p. Print.
+* Sutter, John D. "Woodward County, Oklahoma: Why Do So Many Here Doubt Climate Change?" CNN. N.p., 24 Nov. 2015. Web. 25 Jan. 2017.
+* "What We Know." Earthquakes in Oklahoma. 2016. Web. 25 Jan. 2017. <https://earthquakes.ok.gov/what-we-know/>.
+* Southern Climate Impacts Planning Program. (2004). “Climate Change in Oklahoma.” Oklahoma Dept. of Sustainability and Environment. SCIPP. N.p. Web.
+* Karl, Thomas., Melillo, Jerry., Peterson, Thomas. (2009). “3 Projected Climate Change by Geographic Region.” United states Global Research Program (USGCRP). Cambridge University Press, pp 196. 
+* Smith, Joel., Tirpak, Dennis. “The Potential Effects of Global Climate Change on The United States.” (1989) United States Environmental Protection Agency, Office of Research and Development. pp 177, 287 – 319.
+* Crawford, Ken, and Gary McManus. "Statement on Climate Change and Its Implications for Oklahoma." Oklahoma Climatological Survey. 2007. Web. 25 Jan. 2017. <https://www.ok.gov/conservation/documents/climate-statement-ocs.pdf>.
+* Wertz, Joe. "Drier, Hotter, More Extreme Weather: How Climate Change Is Already Affecting Oklahoma." NPR. 8 May 2014. Web. 25 Jan. 2017.
+* Powell, Emily., Keim, Barry. (2015). “Trends in Daily Temperature and Precipitation Extremes for the Southeastern United States: 1948 – 2012.” Journal of Climate. Vol 28.4. p 1592 – 612. 
 
-Sutter, John D. "Woodward County, Oklahoma: Why Do So Many Here Doubt Climate Change?" CNN. N.p., 24 Nov. 2015. Web. 25 Jan. 2017.
-  
-McKie, Robin. "Here Is the Weather Forecast for the next Five Years: Even Hotter. “The Observer. Guardian News and Media, 30 Jan. 2016. Web. 25 Jan. 2017.
- 
-Crawford, Ken, and Gary McManus. "Statement on Climate Change and Its Implications for Oklahoma." Oklahoma Climatological Survey. 2007. Web. 25 Jan. 2017. <https://www.ok.gov/conservation/documents/climate-statement-ocs.pdf>.
- 
-“Population Estimates: State Totals: Vintage 2014.” US Census Bureau. Census.gov. 2014. Retrieved 13 Jan. 2017.
-<https://www.census.gov/programs-surveys/popest/data/tables.2016.html>
- 
-"What We Know." Earthquakes in Oklahoma. 2016. Web. 25 Jan. 2017. <https://earthquakes.ok.gov/what-we-know/>.
- 
-Patel, Jugal K. "How 2016 Became Earth’s Hottest Year on Record." The New York Times. N.p., 18 Jan. 2017. Web. 25 Jan. 2017. 
- 
-Shelbourne, Mallory. "Trump Bans EPA Employees from Giving Social Media Updates." The Hill. 24 Jan. 2017. Web. 25 Jan. 2017. 
- 
-Wertz, Joe. "Drier, Hotter, More Extreme Weather: How Climate Change Is Already Affecting Oklahoma." NPR. 8 May 2014. Web. 25 Jan. 2017.
- 
- 
 
- 
+
+
+
+
+
