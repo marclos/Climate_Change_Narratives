@@ -1,25 +1,15 @@
 ---
-title: "The Other Side of Global Warming: Ojai Valley Cooling"
+title: "The Underside of Global Warming: Ojai Valley Cooling"
 author: "Olivia Whitener"
 date: "2/6/2017"
 output: html_document
 ---
 
-The Golden State of California, already known for its sunny skies and year-round palm trees, is warming. Southern California specifically has experienced a temperature increase of about 3 degrees Fahrenheit in the past century (EPA). If this is the case, then why have the maximum temperatures (TMax) for more than half the year in Ojai, California decreased since 1920? 
+For the past few decades, the scientific community has been locked in a fierce debate over the issue of climate change. Those concerned about the future of the environment, known as “alarmists,” warn that increased carbon dioxide emissions and the resulting global temperature increase of about 1.7 degrees Fahrenheit since 1880 (NASA) will have disastrous effects on agriculture, ecosystems, water resources, and human health. With increased temperatures come the risks of heat waves, drought, early snow melt, and extreme weather events (EPA). Although “skeptics” may acknowledge increased temperatures, they deny that there is anything out of the ordinary that should cause humans to change behavior. 
 
-Ojai is a small town of about 7500 people situated in Ventura County, just northwest of Los Angeles and east of Santa Barbara. Its location approximately 15 miles inland from the coast of the Pacific Ocean designates it a coastal city within the California Central Coast region. As this quaint town gains recognition, it is becoming an increasingly popular tourist destination for scenic hikes and spiritual retreats. 
+The Golden State of California, already known for its sunny skies and breezy coasts, has been warming for the past century. Southern California specifically has experienced a dramatic temperature increase of about 3 degrees Fahrenheit in the past century.  If this is the case, then why have the maximum temperatures (TMax) of more than half the year in Ojai, California decreased since 1920?
 
-Ojai is and has historically been, however, a primarily agricultural community. From the original Oak Grove and Chumash peoples to Spanish missionaries and early citrus farmers, Ojai has been home to a variety of crops and growers. Conservation efforts and relatively limited human traffic have sustained a healthy ecosystem that allows vegetation and animals to thrive. Ojai is home to many independently-owned organic farms, many of which have close relationships with their consumers. The produce of these farms, along with other artisan goods, is sold at the weekly Sunday Ojai Valley Farmers' Market. The market attracts both locals and visitors alike, and is a staple of the community. Ojai's most common crops include olives, oranges, and avocados. Ojai Pixies are small tangerines grown in the Ojai Valley exclusively by family-owned farms. Their small size, varied yield, and late season discouraged the production of hybrid Pixie Tangerines as a commercial crop, but a group of farmers in Ojai found that they grow extremely well in Ojai. Ojai Pixies are now sold at Southern California farmers' markets, across the country at grocery outlets, and directly from farmers. Olive oil is also a pride of Ojai, thanks to the Mediterranean climate which is ideal for growing olives. In fact, the Ojai Olive Oil Company was ranked the #1 attraction in Ojai on Trip Advisor. Ojai's abundance of agriculture helps support Ojai's commitment to supporting local businesses and promoting a healthy lifestyle. 
-
-Amidst the concern about rising temperatures, especially with California's recent drought, it may seem as though a trend of cooling would be what Ojai's main agricultural crops need. However, adaption to changing climate is a gradual process, and these plants (citrus in particular) can be very sensitive to different microclimates. Therefore, these temperature changes could have a destructive effect on the agriculture Ojai is founded upon. 
-
-#Methods
-
-The National Oceanic and Atmospheric Association (NOAA) provides a free online archive of historical weather and climate data from stations around the globe. I downloaded the climate data collected from January 1, 1917 to January 1, 2017 of a station in Ojai, California (USC00046399). I then used RStudio software to analyze and graph the maximum and minimum temperatures of the entire 100-year span, as well as inidividual months. I evaluated the data to determine whether or not it rejects the null hypothesis. The null hypothesis states that there is no relationship between temperature change and time. If the probability value (p-value) is found to be less than 0.05, then the data is statistically significant and rejects the null hypothesis.
-
-#Results
-
-According to NOAA climate data, the maximum temperatures in Ojai have decreased for seven out of twelve months of the year since 1917. Five of these seven months are statistically significant, with p-values less than 0.05. The temperatures of four of the five statistically significant months are decreasing.
+Ojai is a small town of about 7500 people situated in Ventura County, just northwest of Los Angeles and east of Santa Barbara. According to National Oceanic and Atmospheric Association climate data, the maximum temperatures in Ojai have decreased for seven out of twelve months of the year. Out of these seven months, five have p-values less than 0.05. Therefore this data is statistically significant, which means that it rejects the null hypothesis that modern climate change is due to natural causes. Four of the statistically significant months have decreasing temperatures.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -38,14 +28,14 @@ import$TMAX[import$TMAX==-9999] = NA
 import$TMIN[import$TMIN==-9999] = NA
 ```
 
-```{r, echo=FALSE}
+```{r}
 strDates <- as.character(import$DATE)
-#head(strDates)
+head(strDates)
 import$NewDate <- as.Date(strDates, "%Y%m%d")
 ```
 
 ```{r}
-#unique(import$STATION_NAME)
+unique(import$STATION_NAME)
 ```
 
 
@@ -57,9 +47,9 @@ LosAngeles <- subset(import, STATION_NAME=="OJAI CA US", select=c(STATION, STATI
 ```{r}
 # Linear Model
 LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
-#summary(LosAngeles.lm)
-#plot(TMAX~NewDate, LosAngeles, ty='l')
-#abline(coef(LosAngeles.lm), col='red')
+summary(LosAngeles.lm)
+plot(TMAX~NewDate, LosAngeles, ty='l')
+abline(coef(LosAngeles.lm), col='red')
 ```
 
 
@@ -86,249 +76,208 @@ MonthlySD$YEAR = as.numeric(MonthlySD$Year)
 MonthlySD$MONTH = as.numeric(MonthlySD$Month)
 MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
 
-#head(MonthlySD)
+head(MonthlySD)
 ```
-##Maximum Temperature Changes
 
-
-###April - describe each of the graphs, time/slope
 ```{r April}
-#plot(MonthlyMean$TMAX[MonthlyMean$Month=="04"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="04",], ty='p',pch=20) 
-April.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="04",])
-#summary(April.lm)
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="04"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="04",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="04",])
+summary(May.lm)
 
-abline(coef(April.lm), col="red")
+abline(coef(May.lm), col="red")
 
 ```
 
-
-p-value: 0.05
-
-The maximum temperatures in April increase at a slope of `r coef(April.lm)` degrees Fahrenehit per year from 1917 to 2017. It is the only statistically significant month with increasing temperatures.
-
-###July
 ```{r July}
-#plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='p',pch=20) 
-July.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
-#summary(July.lm)
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
+summary(May.lm)
 
-abline(coef(July.lm), col="red")
+abline(coef(May.lm), col="red")
 
 ```
 
-p-value: < 0.01
 
-The maximum temperatures in July decrease at a slope of `r coef(July.lm)` degrees Fahrenehit per year from 1917 to 2017. 
-
-###August
 ```{r August}
-#plot(MonthlyMean$TMAX[MonthlyMean$Month=="08"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",], ty='p',pch=20) 
-August.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",])
-#summary(August.lm)
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="08"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",])
+summary(May.lm)
 
-abline(coef(August.lm), col="red")
+abline(coef(May.lm), col="red")
 
 
 ```
 
-p-value: 0.04
 
-The maximum temperatures in August decrease at a slope of `r coef(August.lm)` degrees Fahrenehit per year from 1917 to 2017. 
-
-###November
 ```{r November}
-#plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='p',pch=20) 
-November.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
-#summary(November.lm)
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
+summary(May.lm)
 
-abline(coef(November.lm), col="red")
+abline(coef(May.lm), col="red")
 
 ```
 
-p-value: < 0.01
-
-The maximum temperatures in November decrease at a slope of `r coef(November.lm)` degrees Fahrenehit per year from 1917 to 2017. 
-
-###December
 ```{r December}
-#plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='p',pch=20) 
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
-#summary(Dec.lm)
+summary(Dec.lm)
 
 abline(coef(Dec.lm), col="red")
 
 ```
 
-p-value: 0.01
-
-The maximum temperatures in December decrease at a slope of `r coef(Dec.lm)` degrees Fahrenehit per year from 1917 to 2017. 
-
 ```{r}
 MonthlyMeanTMAX = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
 
 MonthlyMeanTMAX$YEAR = as.numeric(MonthlyMeanTMAX$Year)
-#head(MonthlyMeanTMAX)
+head(MonthlyMeanTMAX)
 ```
 
-Interestingly, while Ojai is experiencing a cooling trend in maximum temperatures for a majority of months of the year, there is an opposite phenomenon occurring with minimum temperatures (TMin). For 11 out of 12 months, Ojai's minimum temperatures have increased since 1917. 8 out of these 11 months are statistically significant, with p-values less than 0.05. The one month with decreasing minimum temperatures, December, is not statistically significant. 
+Interestingly, while Ojai is experiencing a cooling trend in TMax for a majority of months of the year, there is an opposite phenomenon occurring with minimum temperatures (TMin). For 11 out of 12 months, Ojai's minimum temperatures were increasing. 8 out of these 11 months were statistically significant, with p-values less than 0.05. The one month, December, with decreasing TMin was not statistically significant. 
 
-##Minimum Temperature Increase
+## TMIN
+
 ```{r}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
 
 MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
-#head(MonthlyMeanTMIN)
+head(MonthlyMeanTMIN)
 ```
 
-###January
-```{r}
-#plot(MonthlyMeanTMIN$TMIN, ty='p')
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="01"], ty='p')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",], ty='p',pch=20) 
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="01"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",], ty='l') 
 Jan.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",])
-#summary(Jan.lm)
+summary(Jan.lm)
 
 abline(coef(Jan.lm), col="red")
 
 ```
 
-p-value: < 0.01
 
-The minimum temperatures in January increase at a slope of `r coef(Jan.lm)` degrees Fahrenehit per year from 1917 to 2017. It is the only statistically significant month with increasing temperatures.
-
-###March
 ```{r}
-#plot(MonthlyMeanTMIN$TMIN, ty='p')
+plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="03"], ty='p')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="03"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="03",], ty='p',pch=20) 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="03",], ty='l') 
 March.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="03",])
-#summary(March.lm)
+summary(March.lm)
 
 abline(coef(March.lm), col="red")
 
 ```
 
-p-value: < 0.01
 
-The minimum temperatures in March increase at a slope of `r coef(March.lm)` degrees Fahrenehit per year from 1917 to 2017. 
-
-###June
 ```{r}
-#plot(MonthlyMeanTMIN$TMIN, ty='p')
+plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="06"], ty='p')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="05"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",], ty='p',pch=20) 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",], ty='l') 
+May.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="06"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",], ty='l') 
 June.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",])
-#summary(June.lm)
+summary(June.lm)
 
 abline(coef(June.lm), col="red")
 
 ```
 
-p-value: < 0.01
 
-The minimum temperatures in June decrease at a slope of `r coef(June.lm)` degrees Fahrenehit per year from 1917 to 2017.
-
-###August
 ```{r}
-#plot(MonthlyMeanTMIN$TMIN, ty='p')
+plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="08"], ty='p')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="07"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="08",], ty='p',pch=20) 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",], ty='l') 
+July.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",])
+summary(July.lm)
+
+abline(coef(July.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="08"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="08",], ty='l') 
 August.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="08",])
-#summary(August.lm)
+summary(August.lm)
 
 abline(coef(August.lm), col="red")
 
 ```
 
-p-value: < 0.01
 
-The minimum temperatures in August increase at a slope of `r coef(August.lm)` degrees Fahrenehit per year from 1917 to 2017. 
-
-###October
 ```{r}
-#plot(MonthlyMeanTMIN$TMIN, ty='p')
+plot(MonthlyMeanTMIN$TMIN, ty='l')
 
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], ty='p')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], ty='l')
 
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], ty='p',pch=20) 
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], ty='l') 
+Sept.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",])
+summary(Sept.lm)
+
+abline(coef(Sept.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], ty='l') 
 Oct.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",])
-#summary(Oct.lm)
+summary(Oct.lm)
 
 abline(coef(Oct.lm), col="red")
 
 ```
 
-p-value: < 0.01
+What can explain these contrary trends? It is a phenomenon termed "coastal cooling" that occurs along the entire state of California. When inland temperatures increase due to increased concentration of greenhouse gases, coast to inland pressure and temperature gradients are affected. This causes increased sea breeze frequency, intensity, and/or duration. Therefore, the inland temperature increase from greenhouse gases leads to a reverse reaction of cooling summer maximum temperatures in coastal regions. 
 
-The minimum temperatures in October increase at a slope of `r coef(Oct.lm)` degrees Fahrenehit per year from 1917 to 2017. 
+Professor Robert Bornstein of San Jose State University, who is at the forefront of research for coastal cooling in California, has conducted research that reflects the temperature changes Ojai is experiencing. Observations done at both regional and global scales have already found that since the mid-1970s, the rate of asymmetric warming has accelerated. Asymmetric warming occurs when TMin increases at a faster rate than TMax, such as what Ojai's temperature data reveals. Bornstein's data collection for the South Coast Air Basin area and San Francisco Bay Area show that both TMin and TMax have increased for inland sites, while coastal sites in those regions have simultaneously had rising TMins and falling TMaxes. This discrepancy leads to what appears to be an unchanging average temperature. However, relying solely on the average temperature trendline obscures the descreasing temperatures caused by coastal cooling. This neglects the disruption of the seasonal cycle and potentially harmful impacts. Bornstein's study concluded that 1970-2005, the overall trend in degrees Celsius per decade for the South Coast Air Basin was: 
+TMin +0.16 for inland areas, +0.28 for coastal areas
+TMax +0.32 for inland areas, -0.30 for coastal areas
 
-##What can explain these contrary trends? 
+INSERT GRAPHS/PICTURES FROM BORNSTEIN'S PRESENTATION
 
-Some scientists believe the trends result from a phenomenon termed "coastal cooling" that occurs along the entire state of California. When inland temperatures increase due to increased concentration of greenhouse gases, coast to inland pressure and temperature gradients are affected. Curtis Ebbesmeyer found significant warming of the Pacific sea surface temperature over the last few decades, which would contribute to the cooling of coastal California (Ebbesmeyer *et al.* 1990). This causes increased sea breeze frequency, intensity, and/or duration. Therefore, the inland temperature increase leads to a reverse reaction of cooling maximum temperatures in coastal regions. - may not be completely obvious
+So what does this all mean? Amidst the warnings of global warming’s destructive impacts on both humans and the environment, any news of cooling should sound like a blessing. The phenomenon of coastal cooling does mean less energy needed for home and building cooling and lower rates of human heat stress. 
 
-Professor Robert Bornstein of San Jose State University, who specializes in coastal cooling in California, has conducted research that reflects the temperature changes Ojai is experiencing. Observations done at both regional and global scales have found that the rate of asymmetric warming has accelerated since the mid-1970s (Bornstein *et al.* 2008). Asymmetric warming occurs when minimum temperatures increase at a faster rate than maximum temperatures, such as what is occurring in Ojai. Studies done by Moustafa Chahine and Aiguo Dai *et al.* show that asymmetric warming may be due to a "vigorous hydrologic cycle" (Nemani *et al.*), including higher amounts of evaporation, atmospheric water vapor, and precipitation. 
-
-### WHY DOES AVERAGE APPEAR LIKE NO CHANGE? BREAK UP TEXT WITH HEADERS, EACH PARAGRAPH ANSWERS QUESTION
-Bornstein's data collection for the South Coast Air Basin area and San Francisco Bay Area show that both minimum and maximum temperatures have increased for inland sites, while coastal sites in those regions have simultaneously had rising TMins and falling TMaxes. This discrepancy leads to what appears to be an unchanging average temperature. However, REPHRASE TO MAKE CLEARER relying solely on the average temperature trendline obscures the descreasing maximum temperatures caused by coastal cooling. RELYING SOLELY ON THE AVERAGE TEMPERATURE neglects the disruption of the seasonal cycle and potentially harmful impacts. Bornstein's study concluded that from 1970 to 2005, the overall trend in degrees Celsius per decade for the South Coast Air Basin was: 
-Minimum temperature +0.16 for inland areas, +0.28 for coastal areas CONVERT TO FAHRENHEIT
-Maximum temperature +0.32 for inland areas, -0.30 for coastal areas
-
-![This 1950-2000 model of annual summer temperatures (in Celsius) shows decreasing warming rates towards the coast. The dots are National Weather Service Cooperative Observer sites, while the boxes indicate the San Francisco Bay Area and South Coast Air Basin regions.](AnnualSummerTemperatures.png)
+However, for a town like Ojai rich in organic agriculture, this cooling trend could take a big toll. INFO ABOUT AGRICULTURE - seasons, cool days
 
 
-![1970-2005 South Coast Air Basin summer maximum temperature warming and cooling trends (in Celsius). Solid circles show p-values < 0.01, crossed circles show p-values of 0.05, and open circles are not significant.](SoCABTMax.png)
 
-
-![The temperature trends for inland sites in South Coast Air Basin and San Francisco Bay Area show that both minimum temperatures and maximum temperatures increased.](InlandLine.png)
-
-
-![Coastal sites in South Coast Air Basin and San Francisco Bay Area, however, have had rising minimum temperatures and falling maximum temperatures, leading to what appears to be an unchanging average temperature.](CoastalLine.png)
-
-
-So what does this all mean? Amidst the warnings of global warming’s destructive impacts on both humans and the environment, any news of cooling should sound like a blessing. The phenomenon of coastal cooling does mean less energy needed for home and building cooling and lower rates of human heat stress. However, for a town like Ojai rich in agriculture, this cooling trend could take a big toll. Although the scientific discussion has predominantly been focused around negative effects of increased temperatures on crops instead of cooling temperatures, these effects reflect the significant (and potentially dangerous) influences temperature change can have on the world's food supply. Plants are biologically adapted to certain climate conditions, so higher temperatures may exceed the optimum for reproductive development. The USDA Climate Change Science Program 2008 report found that warming temperatures in the western United States have led to "increased summer drought stress, vulnerability to insect pests, and fire hazard" (USDA 2008). Increased minimum temperatures and warmer springs extend the range and lifetime of many pests that can damage crops. Hotter climate also leads to increased evaporation and altered precipation cycles, which contribute to drought, such as the one California has experienced for the past 6 years. Even apparent benefits such as longer growing seasons would simultaneously suffer from effects such as decreased water availability. 
-
-Climate is a significant influence in almost every step of corp production, from temperature variability and humidity levels to frost intensity and duration (Nemani *et al.*). Although more research needs to be done on the effects of cooling temperatures on agricultural production, the unnatural altering of the seasons could influence the growth of Ojai's crops. The ability of plants to adapt to such changes in climate is gradual and can be hindered when changes are so swift. Some of the effects can be inferred from what has been studied about rising temperatures, such as cooler temperatures causing shorter growing seasons, therefore reducing yield. Temperatures that are not warm enough could also directly damage a plant's development. Oranges are particularly susceptible to cold. According to horticulturist Dr. William Johnson, citrus fruits easily freeze at 79 to 82 degrees Fahrenheit. Ojai's variety of citrus fruits are grown through different periods of the year, but temperatures dipping to high 60's, low 70's in November and December could damage many breeds, such as Navel and Valencia oranges, Satsuma mandarins, and Eureka lemons.
-
-Olive oil is also one of Ojai's most popular products, with the Ojai Olive Oil Company being ranked the #1 attraction in Ojai on Trip Advisor (Ojai Olive Oil). Leandro Ravetti, technical director of Australia's largest olive oil producer conducted a study that found frost is one of the most important hazards to the olive industry and caused significant economic losses for Australia. Damage to olive fruits in turn colors olive oil with an unpleasant taste. Though temperatures in California may not fall low enough to produce frost, the trend of decreasing maximum temperatures could cause chilling injuries that would similarly affect the quality of olive oil.
-
-Although a decrease in frost frequency and a longer frost-free growing season due to increased minimum temperatures (Nemani *et al.*) could increase yield for farmers, this could also put a strain on California's soil quality and water demand. Ultimately, more research must be done to evaluate the effects of decreasing maximum temperatures and increasing minimum temperatures in Ojai. Not only is there *asymmetric warming* - don't know/uncertainty, where minimum temperatures is warming at a faster rate than TMax, but there is also general cooling of TMax in the later half of the year. These changes in climate could have significant effects on the agriculture of Ojai, particularly the primary crops of citruses and olives. *thoughtful to adapt agriculture to climate change, mitigate, limit effects*
-
-METHODS (beginning or end) - remove missing values, reformatted dates to scale appropriately, best fit line, p-value/null hypothesis
-NOAA - where collected, how long, data on website
-OBJECTIVES - GOALS/METHODS
-what causing inland temperature increase
-CONVERT TO FAHRENHEIT 
-not as successful in future
-Ojai Pixie Tangerines
-table with slopes - show one
-##Sources
-"Global Climate Change: Effects." NASA. NASA, 16 June 2016. Web. 27 Feb. 2017. 
-
-"What Climate Change Means for California." Climate Change. United States Environmental Protection Agency, Aug. 2016. Web. 27 Feb. 2017.
-
-Cayan, Daniel, Amy Lynd Luers, Guido Franco, Michael Hanemann, and Bart Croes. "Scenarios of Climate Change in California: An Overview." Climatic Change 87.S1 (2008): 1-6. California Energy Commission. California Climate Change Center, Feb. 2006. Web. 27 Feb. 2017.
-
-Vance, Erik. "Scientists Get Wind of Why Coasts Cool as the Globe Warms." Scientific American. N.p., 23 Sept. 2008. Web. 27 Feb. 2017.
-
-Backlund, Peter, Anthony Janetos, and David Schimel. The Effects of Climate Change on Agriculture, Land Resources, Water Resources, and Biodiversity in the United States. Washington, DC: U.S. Climate Change Science Program, 2008. USDA. May 2008. Web. 27 Feb. 2017.
-
-Bornstein, Robert, Jorge Gonzalez, Bereket Lebassi, Haider Taha, Paul Switzer, and Robert Van Buskirk. "Cooling Summer Daytime Temperatures Cooling Summer Daytime Temperatures in Coastal California During 1948 in Coastal California During 1948 -2005: Observations, Modeling, and Implications." (n.d.): n. pag. Chair ’s Air Pollution Seminar, CARB, 19 Aug. 2008. Web. 27 Feb. 2017.http://aggie-horticulture.tamu.edu/newsletters/hortupdate/2011/mar/citrus_freeze.html
-Ojai Olive Oil Company. N.p., 2017. Web. 27 Feb. 2017.
-
-Sergeeva, Vera. "Frost and Chilling Injuries in Olives." (n.d.): n. pag. Pest, Disease and Frost Management. Australian & New Zealand Olivegrower & Processor, July 2010. Web. 27 Feb. 2017.
-
-Nemani, Ramakrishna R., Michael A. White, Daniel R. Cayan, Gregory V. Jones, Steven W. Running, Joseph C. Coughlan, and David L. Peterson. "Asymmetric Warming over Coastal California and Its Impact on the Premium Wine Industry." Climate Research 19 (2001): 25-34. Inter-Research. 22 Nov. 2001. Web. 27 Feb. 2017.
-
-Ebbesmeyer CC, Cayan DR, McLain DR, Nichols FH, Peterson DH, Redmond KT (1990) 1976 step in the Pacific climate: forty environmental changes between 1968–1975 and 1977–1984. In: Betancourt JL, Tharp VL (eds) Proc 7th Annu Pac Clim (PACLIM) Workshop. Interagency Ecol Stud Prog Tech Rep 26, California Department of Water Resources, Sacramento, CA, p 115–126
+```{r}
+# Get months
+LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
+LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
+LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
+```

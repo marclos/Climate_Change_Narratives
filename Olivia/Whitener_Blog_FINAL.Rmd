@@ -15,7 +15,7 @@ Amidst the concern about rising temperatures, especially with California's recen
 
 ##Methods
 
-The National Oceanic and Atmospheric Association (NOAA) provides a free online archive of historical weather and climate data from stations around the globe. I downloaded the climate data collected from January 1, 1917 to January 1, 2017 of a station in Ojai, California (USC00046399). I then used RStudio software to analyze and graph the maximum and minimum temperatures of the entire 100-year span, as well as individual months. I evaluated the data to determine whether or not it rejects the null hypothesis. The null hypothesis states that there is no relationship between temperature change and time. If the probability value (p-value) is found to be less than 0.05, then the data is statistically significant and rejects the null hypothesis.
+The National Oceanic and Atmospheric Association (NOAA) provides a free online archive of historical weather and climate data from stations around the globe. I downloaded the climate data collected from January 1, 1917 to January 1, 2017 of a station in Ojai, California (USC00046399). I then used RStudio software to analyze and graph the maximum and minimum temperatures of the entire 100-year span, as well as inidividual months. I evaluated the data to determine whether or not it rejects the null hypothesis. The null hypothesis states that there is no relationship between temperature change and time. If the probability value (p-value) is found to be less than 0.05, then the data is statistically significant and rejects the null hypothesis.
 
 
 ```{r setup, include=FALSE}
@@ -85,6 +85,7 @@ MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
 
 #head(MonthlySD)
 ```
+
 ##What is happening to maximum temperatures?
 
 According to NOAA climate data, the maximum temperatures in Ojai have decreased for seven out of twelve months of the year since 1917. Five of these seven months are statistically significant, with p-values less than 0.05. The temperatures of four of the five statistically significant months are decreasing.
@@ -102,7 +103,7 @@ abline(coef(April.lm), col="red")
 ```
 
 
-p-value: 0.05, statistically significant
+p-value: 0.05
 
 The maximum temperatures in April increase at a slope of 0.03 degrees Fahrenehit per year from 1917 to 2017. It is the only statistically significant month with increasing temperatures.
 
@@ -117,7 +118,7 @@ abline(coef(July.lm), col="red")
 
 ```
 
-p-value: < 0.01, statistically significant
+p-value: < 0.01
 
 The maximum temperatures in July decrease at a slope of -0.05 degrees Fahrenehit per year from 1917 to 2017. 
 
@@ -133,7 +134,7 @@ abline(coef(August.lm), col="red")
 
 ```
 
-p-value: 0.04, statistically significant
+p-value: 0.04
 
 The maximum temperatures in August decrease at a slope of -0.02 degrees Fahrenehit per year from 1917 to 2017. 
 
@@ -148,7 +149,7 @@ abline(coef(November.lm), col="red")
 
 ```
 
-p-value: < 0.01, statistically significant
+p-value: < 0.01
 
 The maximum temperatures in November decrease at a slope of -0.05 degrees Fahrenehit per year from 1917 to 2017. 
 
@@ -163,7 +164,7 @@ abline(coef(Dec.lm), col="red")
 
 ```
 
-p-value: 0.01, statistically significant
+p-value: 0.01
 
 The maximum temperatures in December decrease at a slope of -0.04 degrees Fahrenehit per year from 1917 to 2017. 
 
@@ -284,7 +285,7 @@ Professor Robert Bornstein of San Jose State University, who specializes in coas
 
 Bornstein's data collection for the South Coast Air Basin area and San Francisco Bay Area show that both minimum and maximum temperatures have increased for inland sites, while coastal sites in those regions have simultaneously had rising minimum temperatures and falling maximum temperatures. This discrepancy leads to what appears to be an unchanging average temperature. 
 
-However, the low average temperature change obscures the descreasing maximum temperatures caused by coastal cooling. Focusing on the average temperature neglects the disruption of natural climate processes and the potentially harmful impacts. Bornstein's study concluded that from 1970 to 2005, the overall trend per decade for the South Coast Air Basin was: 
+However, what appears to be a consistent average temperature obscures the descreasing maximum temperatures caused by coastal cooling. Focusing on the average temperature neglects the disruption of natural climate processes and the potentially harmful impacts. Bornstein's study concluded that from 1970 to 2005, the overall trend per decade for the South Coast Air Basin was: 
 Minimum temperature +0.16 C (+32.29 F) for inland areas, +0.28 C (+32.50 F) for coastal areas
 Maximum temperature +0.32 C (+32.58 F) for inland areas, -0.30 C (-32.54 F) for coastal areas
 
@@ -302,7 +303,7 @@ Maximum temperature +0.32 C (+32.58 F) for inland areas, -0.30 C (-32.54 F) for 
 
 ##What does this mean for Ojai's agriculture? 
 
-Although scientific discussion has predominantly been focused around the negative effects of increased temperatures on crops, these effects reflect the significant impacts cooling temperatures can potentially have on food supply as well. Climate is a significant influence in almost every step of crop production, from temperature variability and humidity levels to frost intensity and duration (Nemani *et al.* 2001). The USDA Climate Change Science Program 2008 report found that warming temperatures in the western United States have led to "increased summer drought stress, vulnerability to insect pests, and fire hazard" (USDA 2008). Increased minimum temperatures and warmer springs extend the range and lifetime of many pests that can damage crops. 
+Although scientific discussion has predominantly been focused around the negative effects of increased temperatures on crops, these effects reflect the significant impacts cooling temperatures can potentially have on food supply as well. Climate is a significant influence in almost every step of corp production, from temperature variability and humidity levels to frost intensity and duration (Nemani *et al.*). The USDA Climate Change Science Program 2008 report found that warming temperatures in the western United States have led to "increased summer drought stress, vulnerability to insect pests, and fire hazard" (USDA 2008). Increased minimum temperatures and warmer springs extend the range and lifetime of many pests that can damage crops. 
 
 Although more research needs to be done on the effects of cooling temperatures on agricultural production, the unnatural altering of the seasons due to asymmetric warming could influence the growth of Ojai's crops. Plants are biologically adapted to certain climate conditions, so the ability of plants to adapt to changes is gradual and can be hindered when changes are so swift. Crops need a certain number of chilling hours to break dormancies and start producing fruit, which may not occur is minimum temperatures are rising. John Adams of Adams Acres in Rialto, California, has already experience decreased yield of stone fruits and nuts due to sensitivity to heat. 
 
