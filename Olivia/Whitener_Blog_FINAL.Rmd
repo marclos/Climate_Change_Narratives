@@ -1,21 +1,21 @@
 ---
 title: "The Other Side of Global Warming: Ojai Valley Cooling"
 author: "Olivia Whitener"
-date: "4/3/2017"
+date: "4/8/2017"
 output: html_document
 ---
 
-The Golden State of California, already known for its sunny skies and year-round palm trees, is warming. Southern California specifically has experienced a temperature increase of about 3 degrees Fahrenheit in the past century (EPA). If this is the case, then why have the maximum temperatures (TMax) for more than half the year in Ojai, California decreased since 1920? 
+The Golden State of California, already known for its sunny skies and year-round palm trees, is warming. Southern California has experienced a temperature increase of about 3 degrees Fahrenheit in the past century (EPA). If this is the case, then why have the maximum temperatures for more than half the year in Ojai, California decreased since 1920 as minimum temperatures continue to rise? More importantly, how will this temperature change impact agriculture in the Ojai region?
 
 Ojai is a small town of about 7500 people situated in Ventura County, just northwest of Los Angeles and east of Santa Barbara. Its location approximately 15 miles inland from the coast of the Pacific Ocean designates it a coastal city within the California Central Coast region. As this quaint town gains recognition, it is becoming an increasingly popular tourist destination for scenic hikes and spiritual retreats. 
 
-Ojai is and has historically been, however, a primarily agricultural community. From the original Oak Grove and Chumash peoples to Spanish missionaries and early citrus farmers, Ojai has been home to a variety of crops and growers. Conservation efforts and relatively limited human traffic have sustained a healthy ecosystem that allows vegetation and animals to thrive. Ojai is home to many independently-owned organic farms, many of which have close relationships with their consumers. The produce of these farms, along with other artisan goods, is sold at the weekly Sunday Ojai Valley Farmers' Market. The market attracts both locals and visitors alike, and is a staple of the community. Ojai's most common crops include olives, oranges, and avocados. Ojai Pixies are small tangerines grown in the Ojai Valley exclusively by family-owned farms. Their small size, varied yield, and late season discouraged the production of hybrid Pixie Tangerines as a commercial crop, but a group of farmers in Ojai found that they grow extremely well in Ojai. Ojai Pixies are now sold at Southern California farmers' markets, across the country at grocery outlets, and directly from farmers. Olive oil is also a pride of Ojai, thanks to the Mediterranean climate which is ideal for growing olives. In fact, the Ojai Olive Oil Company was ranked the #1 attraction in Ojai on Trip Advisor. Ojai's abundance of agriculture helps support Ojai's commitment to supporting local businesses and promoting a healthy lifestyle. 
+Ojai is and has historically been, however, a primarily agricultural community. From the original Oak Grove and Chumash peoples to Spanish missionaries and early citrus farmers, Ojai has been home to a variety of crops and growers. Conservation efforts and relatively low population density have helped maintain these diverse ecosystems. Ojai is also home to many independently-owned organic farms which value close relationships with their consumers. These farms grow produce that is sold, along with other artisan goods, at the weekly Sunday Ojai Valley Farmers' Market. The market attracts both locals and visitors alike, and is a staple of the community. Ojai's most common crops include olives, oranges, and avocados. Ojai Pixies are small tangerines grown exclusively in the Ojai Valley on around 40 family-owned farms. Olive oil is also a pride of Ojai, thanks to the Mediterranean climate which is ideal for growing olives. Ojai's variety of agriculture helps support the town's commitment to supporting local businesses and promoting a healthy lifestyle.
 
-Amidst the concern about rising temperatures, especially with California's recent drought, it may seem as though a trend of cooling would be what Ojai's main agricultural crops need. However, adaption to changing climate is a gradual process, and these plants (citrus in particular) can be very sensitive to different microclimates. Therefore, these temperature changes could have a destructive effect on the agriculture Ojai is founded upon. 
+Amidst the concern about rising temperatures, especially with California's recent drought, it may seem as though a trend of cooling would be what Ojai's main agricultural crops need. However, adaption to changing climate is a gradual process, and plants (citrus in particular) can be very sensitive to different microclimates. In this blog, I analyze long-term climate data in order to evaluate the potential impacts of climate change on Ojai's agriculture. 
 
 ##Methods
 
-The National Oceanic and Atmospheric Association (NOAA) provides a free online archive of historical weather and climate data from stations around the globe. I downloaded the climate data collected from January 1, 1917 to January 1, 2017 of a station in Ojai, California (USC00046399). I then used RStudio software to analyze and graph the maximum and minimum temperatures of the entire 100-year span, as well as inidividual months. I evaluated the data to determine whether or not it rejects the null hypothesis. The null hypothesis states that there is no relationship between temperature change and time. If the probability value (p-value) is found to be less than 0.05, then the data is statistically significant and rejects the null hypothesis.
+The National Oceanic and Atmospheric Association (NOAA) provides a free online archive of historical weather and climate data from stations around the globe. I downloaded the climate data collected from January 1, 1917 to January 1, 2017 at a station in Ojai, California (USC00046399). I then used RStudio software to analyze and graph the maximum and minimum temperatures of the entire 100-year span, as well as inidividual months. I evaluated the data to determine whether or not it rejects the null hypothesis. The null hypothesis states that there is no relationship between temperature change and time. If the probability value (p-value) is found to be less than 0.05, then the data is statistically significant and rejects the null hypothesis.
 
 
 ```{r setup, include=FALSE}
@@ -86,11 +86,14 @@ MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
 #head(MonthlySD)
 ```
 
-##What is happening to maximum temperatures?
+##How have average maximum temperatures changed in Ojai over the past 100 years?
 
 According to NOAA climate data, the maximum temperatures in Ojai have decreased for seven out of twelve months of the year since 1917. Five of these seven months are statistically significant, with p-values less than 0.05. The temperatures of four of the five statistically significant months are decreasing.
 
 ###April
+
+The maximum temperatures in April increase at a slope of 0.03 degrees Fahrenehit per year from 1917 to 2017. It is the only statistically significant month (p-value: 0.05) with increasing temperatures.
+
 ```{r April}
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="04"], ty='p')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="04",], ty='p',pch=20, xlab = "Year", ylab = "Maximum Temperature (Fahrenheit)") 
@@ -103,11 +106,10 @@ abline(coef(April.lm), col="red")
 ```
 
 
-p-value: 0.05
-
-The maximum temperatures in April increase at a slope of 0.03 degrees Fahrenehit per year from 1917 to 2017. It is the only statistically significant month with increasing temperatures.
-
 ###July
+
+The maximum temperatures in July decrease at a slope of -0.05 degrees Fahrenehit per year from 1917 to 2017. The p-value is < 0.01, which is statistically significant.
+
 ```{r July}
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='p')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='p',pch=20, xlab = "Year", ylab = "Maximum Temperature (Fahrenheit)") 
@@ -118,27 +120,10 @@ abline(coef(July.lm), col="red")
 
 ```
 
-p-value: < 0.01
-
-The maximum temperatures in July decrease at a slope of -0.05 degrees Fahrenehit per year from 1917 to 2017. 
-
-###August
-```{r August}
-#plot(MonthlyMean$TMAX[MonthlyMean$Month=="08"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",], ty='p',pch=20, xlab = "Year", ylab = "Maximum Temperature (Fahrenheit)") 
-August.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",])
-#summary(August.lm)
-
-abline(coef(August.lm), col="red")
-
-
-```
-
-p-value: 0.04
-
-The maximum temperatures in August decrease at a slope of -0.02 degrees Fahrenehit per year from 1917 to 2017. 
-
 ###November
+
+The maximum temperatures in November decrease at a slope of -0.05 degrees Fahrenehit per year from 1917 to 2017. The p-value is < 0.01, which is statistically significant.
+
 ```{r November}
 #plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='p')
 plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='p',pch=20, xlab = "Year", ylab = "Maximum Temperature (Fahrenheit)") 
@@ -149,24 +134,6 @@ abline(coef(November.lm), col="red")
 
 ```
 
-p-value: < 0.01
-
-The maximum temperatures in November decrease at a slope of -0.05 degrees Fahrenehit per year from 1917 to 2017. 
-
-###December
-```{r December}
-#plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='p')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='p',pch=20, xlab = "Year", ylab = "Maximum Temperature (Fahrenheit)") 
-Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
-#summary(Dec.lm)
-
-abline(coef(Dec.lm), col="red")
-
-```
-
-p-value: 0.01
-
-The maximum temperatures in December decrease at a slope of -0.04 degrees Fahrenehit per year from 1917 to 2017. 
 
 ```{r}
 MonthlyMeanTMAX = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
@@ -175,9 +142,9 @@ MonthlyMeanTMAX$YEAR = as.numeric(MonthlyMeanTMAX$Year)
 #head(MonthlyMeanTMAX)
 ```
 
-##What is happening to minimum temperatures?
+##How have average minimum temperatures changed in Ojai over the past 100 years?
 
-Interestingly, while Ojai is experiencing a cooling trend in maximum temperatures for a majority of months of the year, there is an opposite phenomenon occurring with minimum temperatures (TMin). For eleven out of twelve months, Ojai's minimum temperatures have increased since 1917. Eight out of these eleven months are statistically significant, with p-values less than 0.05. The one month with decreasing minimum temperatures, December, is not statistically significant. 
+Interestingly, while Ojai is experiencing a cooling trend in maximum temperatures for a majority of months of the year, there is an opposite phenomenon occurring with minimum temperatures. For eleven out of twelve months, Ojai's minimum temperatures have increased since 1917. Eight out of these eleven months are statistically significant, with p-values less than 0.05. The one month with decreasing minimum temperatures, December, is not statistically significant. 
 
 ```{r}
 MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
@@ -186,42 +153,10 @@ MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
 #head(MonthlyMeanTMIN)
 ```
 
-###January
-```{r}
-#plot(MonthlyMeanTMIN$TMIN, ty='p')
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="01"], ty='p')
-
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",], ty='p',pch=20, xlab = "Year", ylab = "Minimum Temperature (Fahrenheit)") 
-Jan.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",])
-#summary(Jan.lm)
-
-abline(coef(Jan.lm), col="red")
-
-```
-
-p-value: < 0.01
-
-The minimum temperatures in January increase at a slope of 0.03 degrees Fahrenehit per year from 1917 to 2017. It is the only statistically significant month with increasing temperatures.
-
-###March
-```{r}
-#plot(MonthlyMeanTMIN$TMIN, ty='p')
-
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="03"], ty='p')
-
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="03",], ty='p',pch=20, xlab = "Year", ylab = "Minimum Temperature (Fahrenheit)") 
-March.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="03",])
-#summary(March.lm)
-
-abline(coef(March.lm), col="red")
-
-```
-
-p-value: < 0.01
-
-The minimum temperatures in March increase at a slope of 0.03 degrees Fahrenehit per year from 1917 to 2017. 
-
 ###June
+
+The minimum temperatures in June decrease at a slope of 0.04 degrees Fahrenehit per year from 1917 to 2017. The p-value is < 0.01, which is statistically significant.
+
 ```{r}
 #plot(MonthlyMeanTMIN$TMIN, ty='p')
 
@@ -235,29 +170,10 @@ abline(coef(June.lm), col="red")
 
 ```
 
-p-value: < 0.01
-
-The minimum temperatures in June decrease at a slope of 0.04 degrees Fahrenehit per year from 1917 to 2017.
-
-###August
-```{r}
-#plot(MonthlyMeanTMIN$TMIN, ty='p')
-
-#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="08"], ty='p')
-
-plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="08",], ty='p',pch=20, xlab = "Year", ylab = "Minimum Temperature (Fahrenheit)") 
-August.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="08",])
-#summary(August.lm)
-
-abline(coef(August.lm), col="red")
-
-```
-
-p-value: < 0.01
-
-The minimum temperatures in August increase at a slope of 0.03 degrees Fahrenehit per year from 1917 to 2017. 
-
 ###October
+
+The minimum temperatures in October increase at a slope of 0.03 degrees Fahrenehit per year from 1917 to 2017. The p-value is < 0.01, which is statistically significant.
+
 ```{r}
 #plot(MonthlyMeanTMIN$TMIN, ty='p')
 
@@ -271,49 +187,37 @@ abline(coef(Oct.lm), col="red")
 
 ```
 
-p-value: < 0.01
 
-The minimum temperatures in October increase at a slope of 0.03 degrees Fahrenehit per year from 1917 to 2017. 
+##How can asymmetric warming be explained?
 
-##How can we explain these contradictory trends?
+As the average global temperature rises, some scientists have observed a phenomenon called "coastal cooling" that occurs along the entire state of California. Inland and sea surface temperature increases affect temperature and pressure gradients that result in increased sea breeze intensity, thereby cooling coastal regions. Curtis Ebbesmeyer found significant warming of the Pacific sea surface temperature over the last few decades, which would increase the cooling effect (Ebbesmeyer et al. 1990). 
 
-As global temperatures rise, some scientists have observed a phenomenon called "coastal cooling" that occurs along the entire state of California. Inland and sea surface temperature increases affect temperature and pressure gradients that result in increased sea breeze intensity, thereby cooling coastal regions. Curtis Ebbesmeyer found significant warming of the Pacific sea surface temperature over the last few decades, which would increase the cooling effect (Ebbesmeyer *et al.* 1990). 
-
-Professor Robert Bornstein of San Jose State University, who specializes in coastal cooling in California, has conducted research that reflects the temperature changes Ojai is experiencing. The rate of asymmetric warming has accelerated since the mid-1970s on both a regional and global scale (Bornstein *et al.* 2008). Asymmetric warming occurs when minimum temperatures increase at a faster rate than maximum temperatures, such as what is occurring in Ojai. Ojai is a more extreme example because maximum temperatures are actually decreasing while minimum temperatures are increasing. Studies done by Moustafa Chahine and Aiguo Dai *et al.* show that asymmetric warming may be due to a "vigorous hydrologic cycle" (Nemani *et al.*) that includes high amounts of evaporation, atmospheric water vapor, and precipitation. 
-
-##Why does average temperature appear to be unchanging? 
-
-Bornstein's data collection for the South Coast Air Basin area and San Francisco Bay Area show that both minimum and maximum temperatures have increased for inland sites, while coastal sites in those regions have simultaneously had rising minimum temperatures and falling maximum temperatures. This discrepancy leads to what appears to be an unchanging average temperature. 
-
-However, what appears to be a consistent average temperature obscures the descreasing maximum temperatures caused by coastal cooling. Focusing on the average temperature neglects the disruption of natural climate processes and the potentially harmful impacts. Bornstein's study concluded that from 1970 to 2005, the overall trend per decade for the South Coast Air Basin was: 
+Professor Robert Bornstein of San Jose State University, who specializes in coastal cooling in California, has conducted research that reflects the temperature changes Ojai is experiencing. Bornstein's data collection for the South Coast Air Basin area and San Francisco Bay Area show that both minimum and maximum temperatures have increased for inland sites, while coastal sites in those regions have simultaneously had rising minimum temperatures and falling maximum temperatures, reflecting a pattern of asymmetric warming along the coast. Bornstein's study concluded that from 1970 to 2005, the overall trend per decade for the South Coast Air Basin was: 
 Minimum temperature +0.16 C (+32.29 F) for inland areas, +0.28 C (+32.50 F) for coastal areas
 Maximum temperature +0.32 C (+32.58 F) for inland areas, -0.30 C (-32.54 F) for coastal areas
 
-![This 1950-2000 model of annual summer temperatures (in Celsius) shows decreasing warming rates towards the coast. The dots are National Weather Service Cooperative Observer sites, while the boxes indicate the San Francisco Bay Area and South Coast Air Basin regions.](AnnualSummerTemperatures.png)
+The rate of asymmetric warming has accelerated since the mid-1970s on both a regional and global scale (Bornstein et al. 2008). Asymmetric warming occurs when minimum temperatures increase at a faster rate than maximum temperatures, such as what is occurring in Ojai. Ojai is a more extreme example because maximum temperatures are actually decreasing while minimum temperatures are increasing. Studies done by Moustafa Chahine and Aiguo Dai et al. show that asymmetric warming may be due to a "vigorous hydrologic cycle" (Nemani et al.) that includes high amounts of evaporation, atmospheric water vapor, and precipitation. 
 
+##Why does average temperature appear to be unchanging? 
 
-![1970-2005 South Coast Air Basin summer maximum temperature warming and cooling trends (in Celsius). Solid circles show p-values < 0.01, crossed circles show p-values of 0.05, and open circles are not significant.](SoCABTMax.png)
+The increasing minimum temperatures and decreasing maximum temperatures result in what appears to be a stable average temperature trend line.
 
+![*Like Ojai, coastal sites in the South Coast Air Basin and San Francisco Bay Area have had rising minimum temperatures and falling maximum temperatures, leading to what appears to be an unchanging average temperature.*](CroppedCoastalLine2.png)
 
-![The temperature trends for inland sites in South Coast Air Basin and San Francisco Bay Area show that both minimum temperatures and maximum temperatures increased.](InlandLine.png)
+However, focusing only on the consistent average temperature neglects the disruption of natural climate processes and the potentially harmful impacts of this significant and unbalanced temperature change. Climate change deniers have used data patterns such as this as well as cooling temperature trends as their foundation to refute the arguments of global warming. In more recent years, the term "climate change" has been used more frequently than "global warming," which skeptics have taken to mean a concession from "alarmists" that global temperatures are not actually increasing. In actuality, though the average temperature of Earth warms, not every region is warming equally. Some areas are warming, while others are cooling. Therefore, regardless of what temperature trend lines show, other natural systems such as precipitation cycles, pressure gradients, biological communities, and oceanic ecosystems are being affected. In this sense, climate change is in fact a more appropriate term to describe the shifts the planet are currently experiencing, and will continue to experience. Ojai is a specific example of a region that is experiencing unequal temperature change and whose agriculture could suffer from the negative effects of broader climate change. 
 
+##How does asymmetric warming affect Ojai's agriculture? 
 
-![Coastal sites in South Coast Air Basin and San Francisco Bay Area, however, have had rising minimum temperatures and falling maximum temperatures, leading to what appears to be an unchanging average temperature.](CoastalLine.png)
+The abundance of organic agriculture is one of Ojai's biggest draws. The Ojai Olive Oil Company is ranked the #1 attraction in Ojai on Trip Advisor (Ojai Olive Oil) and Ojai Pixie Tangerine Month is in its fifth year of celebrating the harvest of the town's favorite fruit. However, the trend in the past one hundred years of warming minimum temperatures and cooling maximum temperatures could be destructive to Ojai's agriculture. 
 
+Although more research needs to be done on the effects of asymmetric warming on agricultural production, research on the effects of increased temperatures on crops reflect the significant impacts temperature changes can have on food supply. Climate is an important influence in almost every step of crop production, from temperature variability and humidity levels to frost intensity and duration (Nemani et al.). The USDA Climate Change Science Program 2008 report found that warming temperatures in the western United States have led to "increased summer drought stress, vulnerability to insect pests, and fire hazard" (USDA 2008). Increased minimum temperatures and warmer springs extend the range and lifetime of many harmful pests, and excessive heat could directly damage the growth of the plant. Crops also need a certain number of chilling hours to break dormancies and start producing fruit, which may not occur if minimum temperatures are rising. John Adams of Adams Acres in Rialto, California, has already experience decreased yield of stone fruits and nuts due to heat sensitivity.
 
-##What does this mean for Ojai's agriculture? 
+However, cooling temperatures can also negatively affect agriculture. Just as warmer temperatures cause longer growing seasons, cooler temperatures can shorten growing seasons, thereby reducing yield. Lower temperatures can also directly hinder a plant's development. Leandro Ravetti, technical director of Australia's largest olive oil producer, conducted a study that found frost is one of the most important hazards to the olive industry. Frost damage to olive fruits in turn colors olive oil with an unpleasant taste. Though temperatures in California may not fall low enough to produce frost, the trend of decreasing maximum temperatures could cause chilling injuries that would similarly affect the quality of olive oil. Young plants are particularly vulnerable to cold, which is what John Adams experienced when he lost a majority of his avocado trees during an especially cold growing season. Oranges, particularly Ojai Pixies, are especially sensitive to microclimates. Pixie tangerines ripen in the spring and are on the trees during California's coldest months, making them very susceptible to frost (Ojai Pixie Tangerines). 
 
-Although scientific discussion has predominantly been focused around the negative effects of increased temperatures on crops, these effects reflect the significant impacts cooling temperatures can potentially have on food supply as well. Climate is a significant influence in almost every step of corp production, from temperature variability and humidity levels to frost intensity and duration (Nemani *et al.*). The USDA Climate Change Science Program 2008 report found that warming temperatures in the western United States have led to "increased summer drought stress, vulnerability to insect pests, and fire hazard" (USDA 2008). Increased minimum temperatures and warmer springs extend the range and lifetime of many pests that can damage crops. 
-
-Although more research needs to be done on the effects of cooling temperatures on agricultural production, the unnatural altering of the seasons due to asymmetric warming could influence the growth of Ojai's crops. Plants are biologically adapted to certain climate conditions, so the ability of plants to adapt to changes is gradual and can be hindered when changes are so swift. Crops need a certain number of chilling hours to break dormancies and start producing fruit, which may not occur is minimum temperatures are rising. John Adams of Adams Acres in Rialto, California, has already experience decreased yield of stone fruits and nuts due to sensitivity to heat. 
-
-However, cooling temperatures can also have negative effects on agriculture. Just as warmer temperatures cause longer growing seasons, cooler temperatures can shorten growing seasons, thereby reducing yield. Lower temperatures can also directly damage a plant's development. Cold temperatures can kill vulnerable young plants, which is what John Adams experienced with his avocado trees. 
-
-Oranges, particularly Ojai Pixies, are especially sensitive to microclimates. Pixie tangerines ripen in the spring and are on the trees during California's coldest months, making them very susceptible to frost (Ojai Pixie Tangerines). Olive oil is also one of Ojai's most popular products, with the Ojai Olive Oil Company ranked the #1 attraction in Ojai on Trip Advisor (Ojai Olive Oil). Leandro Ravetti, technical director of Australia's largest olive oil producer conducted a study that found frost is one of the most important hazards to the olive industry and caused significant economic losses for Australia. Damage to olive fruits in turn colors olive oil with an unpleasant taste. Though temperatures in California may not fall low enough to produce frost, the trend of decreasing maximum temperatures could cause chilling injuries that would similarly affect the quality of olive oil.
-
-Ultimately, more research must be done to evaluate the effects of decreasing maximum temperatures and increasing minimum temperatures in Ojai. Effects not immediately apparent may harm agricultural production in the future if the trend of asymmetric warming continues. These changes in climate could have significant effects on the agriculture of Ojai, particularly the primary crops of avocados, citruses, and olives. With a community so centered around organic produce and local farms, thoughtful actions must be taken to mitigate the effects of decreasing maximum temperatures and increasing minimum temperatures, or at the very least, help agriculture adapt to the changes in climate. 
-
+Ultimately, more research must be done to evaluate the effects of decreasing maximum temperatures and increasing minimum temperatures in Ojai. Plants are biologically adapted to certain climate conditions, so the ability of plants to adapt to changes is gradual and can be hindered when changes are so swift. Therefore, the unnatural altering of the seasons and other natural processes due to asymmetric warming could negatively influence the growth of Ojai's crops, particularly Ojai Pixies and olive oil. Effects not immediately apparent may harm agricultural production in the future if the trend of asymmetric warming continues. With a community so centered around organic produce and local farms, thoughtful actions must be taken to mitigate the effects of decreasing maximum temperatures and increasing minimum temperatures, or at the very least, help agriculture adapt to the changes in climate. 
+ 
 ##Sources
+
 "Global Climate Change: Effects." NASA. NASA, 16 June 2016. Web. 27 Feb. 2017. 
 
 "What Climate Change Means for California." Climate Change. United States Environmental Protection Agency, Aug. 2016. Web. 27 Feb. 2017.
