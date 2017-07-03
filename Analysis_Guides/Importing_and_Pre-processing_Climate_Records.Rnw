@@ -1,0 +1,57 @@
+\documentclass{article}
+
+\title{Importing and Processing NOAA Climate Records}
+\author{Marc Los Huertos}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+
+
+\section{Preparing CSV files}
+
+\subsection{Preprocessing CSV files}
+
+In most cases, we don't need to preprocess the csv files.
+
+\subsection{Upload CSV Files into Appropriate Rstudio Directory}
+
+\section{Reading CSV Files into R}
+
+Although the csv file might be present in an Rstudio directory, it is not in the R environment. One way to confirm this is to look at the Rstudio window tab `Environment', where the file listed. 
+
+To have the file in the R environment, we read the file using the \verb!read.csv()! function. The function is expecting the path and name of the file as an argument inside the perentecies, which is tough to type without making errors. 
+
+\subsection{Assigning the File Path and Name}
+
+We will use a pop-up window to select the file the first time and then we'll assign the file path and name to an object. 
+
+\begin{verbatim}
+> choose.file()
+\end{verbatim}
+
+Need an impage of the pop-up window...
+
+\subsection{Reading a CSV File into a Dataframe}
+
+<<>>=
+# Read CSV
+
+file = "/home/CAMPUS/kaj41925/Climate_Change_Narratives/Khalil/NewOrleansNOAAdata.csv"
+
+import = read.csv(file)
+@
+
+\subsection{Confirming the Dataframe}
+
+\section{Preparing Records for Analysis}
+
+\subsection{Converting Dates}
+
+\subsection{Re-assigning Missing Values}
+
+
+
+\end{document}
