@@ -26,6 +26,9 @@ To have the file in the R environment, we read the file using the \verb!read.csv
 
 \subsection{Assigning the File Path and Name}
 
+Okay, now we know what the file name and path look like from the eyes of R. We could paste the whole mess into the \texttt{read.csv()} function. Okay, let's keep moving. Although R was able to see the file, we still don't have an object we can actually do something with. Instead, we merely printed it to the screen. However, you have not created an object yet. To do this you need to assign it a name. So, what do we need to make an object?  Yes, the name of the object and the use of the assignment symbol. Let's create an object names filename instead that has the whole path and file name in it. Start with the name you want to use before the \texttt{read.csv()} function like this:
+
+
 We will use a pop-up window to select the file the first time and then we'll assign the file path and name to an object. 
 
 \begin{verbatim}
@@ -36,6 +39,10 @@ Need an impage of the pop-up window...
 
 \subsection{Reading a CSV File into a Dataframe}
 
+\begin{verbatim}
+maunaloa <- read.csv(filename)
+\end{verbatim}
+
 <<>>=
 # Read CSV
 
@@ -45,6 +52,16 @@ import = read.csv(file)
 @
 
 \subsection{Confirming the Dataframe}
+
+Okay, you know have created a data frame. To confirm this, type \texttt{str(maunaloa)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
+
+Remember, a data frame is a list of vectors. To access the data inside the data frame, you can use the following command
+
+<<echo = T, results = 'hide' >>=
+#maunaloa$average
+@
+
+to dump the average CO$_2$ concentrations readings onto your screen as a vector. You should see some ~627 observations, depending on how recent the data have been uploaded. So, the dollar symbol is used to drill into the data frame vectors.  And when you look at the \texttt{str()} function again, you will see these dollar signs again.
 
 \section{Preparing Records for Analysis}
 

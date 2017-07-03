@@ -1,77 +1,89 @@
 \documentclass{article}
 
-\title{SOP 90: Analyzing Trends}
+\title{SOP 90: Analyzing Climate Trends}
 \author{Marc Los Huertos}
 
 \begin{document}
 
 \maketitle
 
-\documentclass{tufte-handout}
-
-%\geometry{showframe}% for debugging purposes -- displays the margins
-\usepackage{verbatim}
-\usepackage{amsmath}
-\usepackage{natbib}
-\bibfont{\small} % Doesn't see to work...
-
-% Set up the images/graphics package
-\usepackage{graphicx}
-\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
-% \graphicspath{{graphics/}}
-
-\title{Time Series Analysis and Display%\thanks{}
-}
-\author[Marc Los Huertos]{Marc Los Huertos}
-\date{}  % if the \date{} command is left out, the current date will be used
-
-
-% \SweaveOpts{prefix.string=graphics/plot} % Created a "graphics" subdirectory to 
-
-\setsidenotefont{\color{blue}}
-% \setcaptionfont{hfont commandsi}
-% \setmarginnotefont{\color{blue}}
-% \setcitationfont{\color{gray}}
-
-% The following package makes prettier tables.  We're all about the bling!
-\usepackage{booktabs}
-
-% Small sections of multiple columns
-\usepackage{multicol}
-
-% These commands are used to pretty-print LaTeX commands
-% command name -- adds backslash automatically
-\newcommand{\docpkg}[1]{\texttt{#1}}% package name
-\newcommand{\doccls}[1]{\texttt{#1}}% document class name
-\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
-
-\begin{document}
-
-\maketitle% this prints the handout title, author, and date
 \begin{abstract}
-\noindent Time Series Analyses are very important in environmental monitoring.
+\noindent Time Series Analyses are very important in environmental monitoring. For our purposes, developing methods to analyze climate data can using a range of tools, from relatively simple methods to advanced statistical modelling. 
+
+This document is designed to introduce a few tools to analyze regularly (i.e. daily or monthly) collected data. First, we will use a standard regression model and then we will investigate some more advance time-series modelling approaches.   
 
 \end{abstract}
 
-%\printclassoptions
 
 % Setting up the margins, etc for R
 <<echo = F, results='hide'>>=
 options(width=60)
 rm(list = ls())
 @
+
 \section{Introduction}
 
 Trend analysis... versus time series...
 
+the Mann-Kendall Trend Test, seasonal Mann-Kendall Test, correlated seasonal Mann-Kendall Test, partial Mann-Kendall Trend test, (Seasonal) Sen's slope, partial correlation trend test and change-point test after Pettitt.
+
+
+
+
+
+
+Detailed knowledge of the statistical methods used in analysis is beyond the scope of MFPH Part A, but methods include:
+
+Chi-square test for linear trend
+Regression analysis
+More detailed consideration of analysis is available here
+
+Time series analysis
+
+Time series analysis refers to a particular collection of specialised regression methods that use integrated moving averages and other smoothing techniques to illustrate trends in the data. It involves a complex process that incorporates information from past observations and past errors in those observations into the estimation of predicted values.
+
+Moving averages provide a useful way of presenting time series data, highlighting any long-term trends whilst smoothing out any short-term fluctuations. They are also commonly used to analyse trends in financial analysis. The calculation of moving averages is described in more detail here.
+
+Presentation of trend data
+
+Presentations of time-trend data should usually include the following:
+
+Graphical plots displaying the observed data over time
+Comment on any statistical methods used to transform the data
+Report average percent change
+An interpretation of the trends seen
+Interpretation of trend data
+
+The results of all ecological studies, including time-series designs should be interpreted with caution:1
+
+Data on exposure and outcome may be collected in different ways for different populations
+Migration of populations between groups during the study period may dilute any difference between the groups
+Such studies usually rely on routine data sources, which may have been collected for other purposes
+Ecological studies do not allow us to answer questions about individual risks
+References
+
+Bailey L, Vardulaki K, Langham J, Chandramohan D. Introduction to Epidemiology. Open University Press, 2005.
+%www.mchb.hrsa.gov/mchirc/_pubs/trend_analysis.pdf
+
 A time series is a sequence of data points, measured typically at successive points in time spaced at uniform time intervals. Examples of time series are the daily closing value of the Dow Jones index and the annual flow volume of the Nile River at Aswan. Time series are very frequently plotted via line charts. Time series are used in statistics, signal processing, pattern recognition, econometrics, mathematical finance, weather forecasting, earthquake prediction, electroencephalography, control engineering, astronomy, and communications engineering.
 
-Time series analysis comprises methods for analyzing time series data in order to extract meaningful statistics and other characteristics of the data. Time series forecasting is the use of a model to predict future values based on previously observed values. While regression analysis is often employed in such a way as to test theories that the current values of one or more independent time series affect the current value of another time series, this type of analysis of time series is not called "time series analysis".
+Time series analysis comprises methods for analyzing time series data in order to extract meaningful statistics and other characteristics of the data. Time series forecasting is the use of a model to predict future values based on previously observed values. While regression analysis is often employed in such a way as to test theories that the current values of one or more independent time series affect the current value of another time series, this type of analysis of time series is not called ``time series analysis.''
 
 Time series data have a natural temporal ordering. This makes time series analysis distinct from other common data analysis problems, in which there is no natural ordering of the observations (e.g. explaining people's wages by reference to their respective education levels, where the individuals' data could be entered in any order). Time series analysis is also distinct from spatial data analysis where the observations typically relate to geographical locations (e.g. accounting for house prices by the location as well as the intrinsic characteristics of the houses). A stochastic model for a time series will generally reflect the fact that observations close together in time will be more closely related than observations further apart. In addition, time series models will often make use of the natural one-way ordering of time so that values for a given period will be expressed as deriving in some way from past values, rather than from future values (see time reversibility.)
 
-Methods for time series analyses may be divided into two classes: frequency-domain methods and time-domain methods. The former include spectral analysis and recently wavelet analysis; the latter include auto-correlation and cross-correlation analysis. In time domain correlation analyses can be made in a filter-like manner using scaled correlation, thereby mitigating the need to operate in frequency domain.
+\section{Evaluating the Data}
 
+<<>>=
+# Importing Scripts
+
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
+
+import = read.csv(file)
+@
+
+<<echo = F>>=
+read.csv(filename)[c(681:690),]
+@
 \section{Simple Regression}
 
 $y =mx +b$, where x is time. 
@@ -82,14 +94,7 @@ $y ~ x$
 y = mx + b + \epsilon
 \end{equation}
 
-<< echo = F, results = 'hide' >>=
-filename="H:\\My Documents\\My Webs\\Mauna_Loa.csv"
-# filename <- file.choose()
-@
 
-<<echo = F>>=
-read.csv(filename)[c(681:690),]
-@
 
 
 
@@ -97,15 +102,7 @@ read.csv(filename)[c(681:690),]
 #maunaloa <- read.csv(filename)
 @
 
-Okay, you know have created a data frame. To confirm this, type \texttt{str(maunaloa)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
 
-Remember, a data frame is a list of vectors. To access the data inside the data frame, you can use the following command
-
-<<echo = T, results = 'hide' >>=
-#maunaloa$average
-@
-
-to dump the average CO$_2$ concentrations readings onto your screen as a vector. You should see some ~627 observations, depending on how recent the data have been uploaded. So, the dollar symbol is used to drill into the data frame vectors.  And when you look at the \texttt{str()} function again, you will see these dollar signs again.
  
 \section{Exploring Data: The First Step of Data Analysis}
 
@@ -118,8 +115,6 @@ Let's start with the easy stuff. We want to get the mean of the monthly average 
 @
 
 Okay, so we want ``average.'' But typing average by itself doesn't show us anything except an error. Let's try \texttt{str} again. Notice the dollar symbols.  These symbols are use to signify a list of values inside the data frame. To access this list, we type
-
-%\sidenote{I hid results, on my document, but you should have seen a screen full of numbers zoom buy!}
 
 <<echo = T, results = 'hide' >>=
 #maunaloa$average
@@ -231,7 +226,7 @@ First, let's create a plot of data using \texttt{plot()}, whose format is \textt
 
 
 \begin{figure}
-\label{fig:maunaloa}
+\label{fig:test12}
 \caption{Carbon dioxide concentrations sampled for each month at Mauna Loa, Hawaii.}
 <<echo = F, fig = 'true' >>=
 par(las=1)
@@ -253,7 +248,7 @@ ppm $year^{-1}$.\footnote{When I first made this handout the rate of increase wa
 
 % Additional LaTeX code to add caption to figure
 \begin{figure}
-\label{fig:maunaloa}
+\label{fig:xxtest}
 \caption{Carbon dioxide concentrations at Mauna Loa, Hawaii.}
 <<echo = F, fig = 'true' >>=
 #par(las=1)
@@ -304,6 +299,8 @@ A properly specified model is shown in
 %Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
 
 \section{More Sophisticated Approaches}
+
+Methods for time series analyses may be divided into two classes: frequency-domain methods and time-domain methods. The former include spectral analysis and recently wavelet analysis; the latter include auto-correlation and cross-correlation analysis. In time domain correlation analyses can be made in a filter-like manner using scaled correlation, thereby mitigating the need to operate in frequency domain.
 
 Whether or not you wish to forecast or not has nothing whatsoever to do with correct time series analysis. Time series methods can develop a robust model which can be used simply to characterize the relationship between a dependent series and a set of user-suggested inputs (a.k.a. user-specified predictor series) and empirically identified omitted variables be they deterministic or stochastic.Users at their option can then extend the "signal" into the future i.e. forecast with uncertainties based upon the uncertainty in the coefficients and the uncertainty in the future values of the predictor . Now these two kinds of empirically identified "omitted series" can be classified as 1) deterministic and 2) stochastic. The first type are simply Pulses, Level Shifts , Seasonal Pulses and Local Time Trends whereas the second type is represented by the ARIMA portion of your final model. When one omits one or more stochastic series from the list of possible predictors, the omission is characterized by the ARIMA component in your final model. Time series modelers refer to ARIMA models as a "Poor Man's Regression Model" because the past of the series is being used as a proxy for omitted stochastic input series.
 

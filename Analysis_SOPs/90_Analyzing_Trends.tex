@@ -50,66 +50,67 @@
 
 \usepackage{alltt}
 
-\title{SOP 90: Analyzing Trends}
+\title{SOP 90: Analyzing Climate Trends}
 \author{Marc Los Huertos}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \maketitle
 
-\documentclass{tufte-handout}
-
-%\geometry{showframe}% for debugging purposes -- displays the margins
-\usepackage{verbatim}
-\usepackage{amsmath}
-\usepackage{natbib}
-\bibfont{\small} % Doesn't see to work...
-
-% Set up the images/graphics package
-\usepackage{graphicx}
-\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
-% \graphicspath{{graphics/}}
-
-\title{Time Series Analysis and Display%\thanks{}
-}
-\author[Marc Los Huertos]{Marc Los Huertos}
-\date{}  % if the \date{} command is left out, the current date will be used
-
-
-% \SweaveOpts{prefix.string=graphics/plot} % Created a "graphics" subdirectory to 
-
-\setsidenotefont{\color{blue}}
-% \setcaptionfont{hfont commandsi}
-% \setmarginnotefont{\color{blue}}
-% \setcitationfont{\color{gray}}
-
-% The following package makes prettier tables.  We're all about the bling!
-\usepackage{booktabs}
-
-% Small sections of multiple columns
-\usepackage{multicol}
-
-% These commands are used to pretty-print LaTeX commands
-% command name -- adds backslash automatically
-\newcommand{\docpkg}[1]{\texttt{#1}}% package name
-\newcommand{\doccls}[1]{\texttt{#1}}% document class name
-\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
-
-\begin{document}
-
-\maketitle% this prints the handout title, author, and date
 \begin{abstract}
-\noindent Time Series Analyses are very important in environmental monitoring.
+\noindent Time Series Analyses are very important in environmental monitoring. For our purposes, developing methods to analyze climate data can using a range of tools, from relatively simple methods to advanced statistical modelling. 
+
+This document is designed to introduce a few tools to analyze regularly (i.e. daily or monthly) collected data. First, we will use a standard regression model and then we will investigate some more advance time-series modelling approaches.   
 
 \end{abstract}
 
-%\printclassoptions
 
 % Setting up the margins, etc for R
+
 
 \section{Introduction}
 
 Trend analysis... versus time series...
+
+the Mann-Kendall Trend Test, seasonal Mann-Kendall Test, correlated seasonal Mann-Kendall Test, partial Mann-Kendall Trend test, (Seasonal) Sen's slope, partial correlation trend test and change-point test after Pettitt.
+
+
+
+
+
+
+Detailed knowledge of the statistical methods used in analysis is beyond the scope of MFPH Part A, but methods include:
+
+Chi-square test for linear trend
+Regression analysis
+More detailed consideration of analysis is available here
+
+Time series analysis
+
+Time series analysis refers to a particular collection of specialised regression methods that use integrated moving averages and other smoothing techniques to illustrate trends in the data. It involves a complex process that incorporates information from past observations and past errors in those observations into the estimation of predicted values.
+
+Moving averages provide a useful way of presenting time series data, highlighting any long-term trends whilst smoothing out any short-term fluctuations. They are also commonly used to analyse trends in financial analysis. The calculation of moving averages is described in more detail here.
+
+Presentation of trend data
+
+Presentations of time-trend data should usually include the following:
+
+Graphical plots displaying the observed data over time
+Comment on any statistical methods used to transform the data
+Report average percent change
+An interpretation of the trends seen
+Interpretation of trend data
+
+The results of all ecological studies, including time-series designs should be interpreted with caution:1
+
+Data on exposure and outcome may be collected in different ways for different populations
+Migration of populations between groups during the study period may dilute any difference between the groups
+Such studies usually rely on routine data sources, which may have been collected for other purposes
+Ecological studies do not allow us to answer questions about individual risks
+References
+
+Bailey L, Vardulaki K, Langham J, Chandramohan D. Introduction to Epidemiology. Open University Press, 2005.
+%www.mchb.hrsa.gov/mchirc/_pubs/trend_analysis.pdf
 
 A time series is a sequence of data points, measured typically at successive points in time spaced at uniform time intervals. Examples of time series are the daily closing value of the Dow Jones index and the annual flow volume of the Nile River at Aswan. Time series are very frequently plotted via line charts. Time series are used in statistics, signal processing, pattern recognition, econometrics, mathematical finance, weather forecasting, earthquake prediction, electroencephalography, control engineering, astronomy, and communications engineering.
 
@@ -308,7 +309,7 @@ First, let's create a plot of data using \texttt{plot()}, whose format is \textt
 
 
 \begin{figure}
-\label{fig:maunaloa}
+\label{fig:test12}
 \caption{Carbon dioxide concentrations sampled for each month at Mauna Loa, Hawaii.}
 
 \end{figure}
@@ -327,11 +328,11 @@ This syntax is still pretty straight forward,
 
 From this model, we learn that the change in $CO_2$ is 
 %round(coef(lm(average ~ year, data=maunaloa))[2], 2) 
-ppm $year^{-1}$.\sidenote{When I first made this handout the rate of increase was 1.441. Why do you think this rate has changed?} Figure~\ref{fig:maunaloa} shows the increasing concentrations, but also the seasonal variation. Statisticians have more advanced methods to analyze these data then what we have done, but for our purposes the implications are the same.  Greenhouse gas emissions are increasing and the estimated rates suggest an increasing rate.
+ppm $year^{-1}$.\footnote{When I first made this handout the rate of increase was 1.441. Why do you think this rate has changed?} Figure~\ref{fig:maunaloa} shows the increasing concentrations, but also the seasonal variation. Statisticians have more advanced methods to analyze these data then what we have done, but for our purposes the implications are the same.  Greenhouse gas emissions are increasing and the estimated rates suggest an increasing rate.
 
 % Additional LaTeX code to add caption to figure
 \begin{figure}
-\label{fig:maunaloa}
+\label{fig:xxtest}
 \caption{Carbon dioxide concentrations at Mauna Loa, Hawaii.}
 
 \end{figure}
