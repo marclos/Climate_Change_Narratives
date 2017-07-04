@@ -14,7 +14,7 @@
 
 \subsection{Preprocessing CSV files}
 
-In most cases, we don't need to preprocess the csv files.
+In most cases, we don't need to preprocess the csv files. However, Mac users have been confronted with a host of problems that has something to do with how Macs format CSV files.\footnote{I will update this when I try using a Mac for this.}
 
 \subsection{Upload CSV Files into Appropriate Rstudio Directory}
 
@@ -26,8 +26,15 @@ To have the file in the R environment, we read the file using the \verb!read.csv
 
 \subsection{Assigning the File Path and Name}
 
-Okay, now we know what the file name and path look like from the eyes of R. We could paste the whole mess into the \texttt{read.csv()} function. Okay, let's keep moving. Although R was able to see the file, we still don't have an object we can actually do something with. Instead, we merely printed it to the screen. However, you have not created an object yet. To do this you need to assign it a name. So, what do we need to make an object?  Yes, the name of the object and the use of the assignment symbol. Let's create an object names filename instead that has the whole path and file name in it. Start with the name you want to use before the \texttt{read.csv()} function like this:
+Okay, now we know what the file name and path look like from the eyes of R. In this example, the path and filename is:
 
+\begin{verbatim}
+"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
+\end{verbatim
+
+We could paste the whole mess into the \texttt{read.csv()} function. Okay, let's keep moving. Although R was able to see the file, we still don't have an object we can actually do something with. Instead, we merely printed it to the screen. However, you have not created an object yet. To do this you need to assign it a name. So, what do we need to make an object?  Yes, the name of the object and the use of the assignment symbol. Let's create an object names filename instead that has the whole path and file name in it. Start with the name you want to use before the \texttt{read.csv()} function like this:
+
+First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. Use "file.choose" to find the folder path name. 
 
 We will use a pop-up window to select the file the first time and then we'll assign the file path and name to an object. 
 
@@ -43,6 +50,15 @@ Need an impage of the pop-up window...
 maunaloa <- read.csv(filename)
 \end{verbatim}
 
+\subsection{Importing CSV Files}
+
+
+Importing Scripts
+
+%file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
+
+import = read.csv(file)
+
 <<>>=
 # Read CSV
 
@@ -52,6 +68,71 @@ import = read.csv(file)
 @
 
 \subsection{Confirming the Dataframe}
+
+
+\subsection{Checking the Data}
+
+Now we will check the data by plotting it.
+
+%plot(TMAX~DATE, import)
+
+
+\subsection{Checking the Data}
+
+What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!
+
+
+%import$TMAX[import$TMAX==-9999] = NA
+%import$TMIN[import$TMIN==-9999] = NA
+
+
+Okay, now we'll check again, for dates less then Dec. 31, 1913:
+
+
+%plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+
+
+Yikes! What's wrong? As it turns out the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
+
+19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
+
+
+%plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+
+
+\subsection{Fixing the Dates}
+
+First, we convert the date to a string of character values. Next, we'll convert the strings to a data format. 
+
+
+%strDates <- as.character(import$DATE)
+%head(strDates)
+%import$NewDate <- as.Date(strDates, "%Y%m%d")
+
+
+\subsection{Checking the New Dates}
+
+
+%plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+
+
+\subsection{Subset Sites}
+
+Olivia has two sites in here data, so, we need to subset it.
+
+
+%unique(import$STATION_NAME)
+
+
+Let's choose the FAIRPLEX NY US because the record is longer than the airport.
+
+
+%LosAngeles <- subset(import, STATION_NAME=="LOS ANGELES DOWNTOWN USC CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+
+
+%plot(TMAX~NewDate, LosAngeles, ty='l')
+
+
 
 Okay, you know have created a data frame. To confirm this, type \texttt{str(maunaloa)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
 

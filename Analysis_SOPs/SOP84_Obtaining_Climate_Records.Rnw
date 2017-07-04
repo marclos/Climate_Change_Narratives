@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage{hyperref}
 
 \title{SOP 84: Obtaining Climate Records}
 \author{Marc Los Huertos}
@@ -8,8 +9,35 @@
 
 \section{Terrestrial Meteorological Data}
 
+\subsection{Climate Data Online (CDO) system}
+
+\url{https://www.ncdc.noaa.gov/cdo-web/}
+
+\begin{description}
+  \item[Follow Link] Browse Datasets
+  \item[Expand Link] Daily Summaries
+  \item[Change Date Range] Select the earliest data on the list to the present. Although your site might not have these records, it's easier to set the greatest range upfront.
+  \item[Add Search Terms] Select the state or country of interest.
+  \item[Start Search]
+  \item[Add to Cart] Don't worry, there is no charge (yet!)
+  \item[Station Detail \& Data Flag Options] Change to metric, dataset to include ppt and temperature.
+  \item[Click 'Continue' Button]
+  
+  NOTE: Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 1,000 Station Years. Please select fewer stations/locations, or reduce the date range.
+\end{description}
 
 
+\subsection{Historical Climatology Network-Daily (GHCN‐D) data}
+
+
+\url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}
+
+\subsection{rNOAA library tools}
+
+Get an API code...
+
+
+\url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}
 
 \subsection{Sources of Data}
 
@@ -19,7 +47,6 @@
 \subsection{Evaluating Records}
 
 \subsection{Export Options}
-
 
 \section{Sea Surface Temperature Data}
 
