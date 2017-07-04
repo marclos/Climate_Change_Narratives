@@ -32,12 +32,26 @@
 
 \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}
 
+\url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}
+
 \subsection{rNOAA library tools}
 
 Get an API code...
 
+\url{https://ropensci.org/tutorials/rnoaa_tutorial.html}
 
-\url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}
+<<>>=
+library('plyr')
+library('rnoaa')
+
+@
+
+
+<<>>=
+ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc', token = 'qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb')
+ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00084289', token = 'qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb')
+@
+
 
 \subsection{Sources of Data}
 
