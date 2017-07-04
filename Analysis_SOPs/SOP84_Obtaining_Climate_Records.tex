@@ -59,40 +59,84 @@
 
 \section{Terrestrial Meteorological Data}
 
+
 \subsection{Climate Data Online (CDO) system}
 
-\url{https://www.ncdc.noaa.gov/cdo-web/}
+There are several ways to obtain online climate data and the CDO-web interace is probably the easiest, using the following URL: \url{https://www.ncdc.noaa.gov/cdo-web/}. 
+
+Climate data, such as temperature and precipitation are recorded by station -- so this is generally the observation unit. Even if you don't have a location of interest nailed down, this interface can help you find sites and evaluate the length of their records. 
+
+Below is a description of the steps to get data from a site:
 
 \begin{description}
   \item[Follow Link] Browse Datasets
   \item[Expand Link] Daily Summaries
   \item[Change Date Range] Select the earliest data on the list to the present. Although your site might not have these records, it's easier to set the greatest range upfront.
   \item[Add Search Terms] Select the state or country of interest.
-  \item[Start Search]
+  \item[Start Search] Once you have initiated a search, the next window will give a list of records -- click in these records to see what they might be composed of. Then decide which station you will want to evaluate.
   \item[Add to Cart] Don't worry, there is no charge (yet!)
   \item[Station Detail \& Data Flag Options] Change to metric, dataset to include ppt and temperature.
   \item[Click 'Continue' Button]
   
-  NOTE: Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 1,000 Station Years. Please select fewer stations/locations, or reduce the date range.
-\end{description}
+  NOTE: Common Errors:
+  
+Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 1,000 Station Years. Please select fewer stations/locations, or reduce the date range.
 
+If you get this error, you need to reduce the number of stations selected.
+  
+  \item[Complete Order] Type in your email address and you will get a confirmation relativley soon and the data in a day or so...
+\end{description}
 
 \subsection{Historical Climatology Network-Daily (GHCN‐D) data}
 
 
 \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}
 
-\subsection{rNOAA library tools}
-
-Get an API code...
-
-
 \url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}
 
-\subsection{Sources of Data}
+\subsection{rNOAA library tools}
+
+There is a relatively new tool to access NOAA data using an R package, called rNOAA. 
+
+To use the tool, several dependent packages need to be installed and loaded, including rNOAA. Next users need to get an API code, which is quite simple.
+
+Using the package is relatively strait foreward, although I have been getting timeout errors that I can't solve. 
+
+Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.html}.
+
+First, we prepare R by loading two libraries that we'll use to download (rNOAA) and manipulate (plyr) the data.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(}\hlstr{'plyr'}\hlstd{)}
+\hlkwd{library}\hlstd{(}\hlstr{'rnoaa'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{List of Cities}
+
+rNOAA has a simple function to list the cities:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ncdc_locs}\hlstd{(}\hlkwc{locationcategoryid}\hlstd{=}\hlstr{'CITY'}\hlstd{,} \hlkwc{sortfield}\hlstd{=}\hlstr{'name'}\hlstd{,} \hlkwc{sortorder}\hlstd{=}\hlstr{'desc'}\hlstd{,} \hlkwc{token} \hlstd{=} \hlstr{'qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb'}\hlstd{)}
+\end{alltt}
 
 
-\subsection{Interface Choices}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in curl::curl\_fetch\_memory(url, handle = handle): Timeout was reached}}\end{kframe}
+\end{knitrout}
+
+\subsubsection{Getting Data}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ncdc_stations}\hlstd{(}\hlkwc{datasetid}\hlstd{=}\hlstr{'GHCND'}\hlstd{,} \hlkwc{locationid}\hlstd{=}\hlstr{'FIPS:12017'}\hlstd{,} \hlkwc{stationid}\hlstd{=}\hlstr{'GHCND:USC00084289'}\hlstd{,} \hlkwc{token} \hlstd{=} \hlstr{'qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb'}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in curl::curl\_fetch\_memory(url, handle = handle): Timeout was reached}}\end{kframe}
+\end{knitrout}
 
 \subsection{Evaluating Records}
 

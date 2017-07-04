@@ -9,22 +9,36 @@
 
 \section{Terrestrial Meteorological Data}
 
+
 \subsection{Climate Data Online (CDO) system}
 
-\url{https://www.ncdc.noaa.gov/cdo-web/}
+There are several ways to obtain online climate data and the CDO-web interace is probably the easiest, using the following URL: \url{https://www.ncdc.noaa.gov/cdo-web/}. 
+
+Climate data, such as temperature and precipitation are recorded by station -- so this is generally the observation unit. Even if you don't have a location of interest nailed down, this interface can help you find sites and evaluate the length of their records. 
+
+Below is a description of the steps to get data from a site:
 
 \begin{description}
   \item[Follow Link] Browse Datasets
   \item[Expand Link] Daily Summaries
   \item[Change Date Range] Select the earliest data on the list to the present. Although your site might not have these records, it's easier to set the greatest range upfront.
   \item[Add Search Terms] Select the state or country of interest.
-  \item[Start Search]
+  \item[Start Search] Once you have initiated a search, the next window will give a list of records -- click in these records to see what they might be composed of. Then decide which station you will want to evaluate.
   \item[Add to Cart] Don't worry, there is no charge (yet!)
   \item[Station Detail \& Data Flag Options] Change to metric, dataset to include ppt and temperature.
   \item[Click 'Continue' Button]
   
-  NOTE: Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 1,000 Station Years. Please select fewer stations/locations, or reduce the date range.
+  NOTE: Common Errors:
+  
+Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 1,000 Station Years. Please select fewer stations/locations, or reduce the date range.
+
+If you get this error, you need to reduce the number of stations selected.
+  
+  \item[Complete Order] Type in your email address and you will get a confirmation relativley soon and the data in a day or so...
 \end{description}
+
+\subsubsection{Evaluating the Data}
+
 
 
 \subsection{Historical Climatology Network-Daily (GHCN‐D) data}
@@ -36,27 +50,31 @@
 
 \subsection{rNOAA library tools}
 
-Get an API code...
+There is a relatively new tool to access NOAA data using an R package, called rNOAA. 
 
-\url{https://ropensci.org/tutorials/rnoaa_tutorial.html}
+To use the tool, several dependent packages need to be installed and loaded, including rNOAA. Next users need to get an API code, which is quite simple.
 
+Using the package is relatively strait foreward, although I have been getting timeout errors that I can't solve. 
+
+Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.html}.
+
+First, we prepare R by loading two libraries that we'll use to download (rNOAA) and manipulate (plyr) the data.
 <<>>=
 library('plyr')
 library('rnoaa')
-
 @
 
+\subsubsection{List of Cities}
 
+rNOAA has a simple function to list the cities:
 <<>>=
 ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc', token = 'qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb')
-ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00084289', token = 'qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb')
 @
 
-
-\subsection{Sources of Data}
-
-
-\subsection{Interface Choices}
+\subsubsection{Getting Data}
+<<>>=
+ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00084289', token = 'qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb')
+@
 
 \subsection{Evaluating Records}
 
