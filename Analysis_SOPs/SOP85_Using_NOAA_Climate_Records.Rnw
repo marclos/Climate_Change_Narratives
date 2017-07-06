@@ -1,5 +1,5 @@
 \documentclass{article}
-
+\usepackage{graphics}
 \title{SOP 85: Using NOAA Climate Records}
 \author{Marc Los Huertos}
 
@@ -18,6 +18,11 @@ In most cases, we don't need to preprocess the csv files. However, Mac users hav
 
 \subsection{Upload CSV Files into Appropriate Rstudio Directory}
 
+\begin{figure}[h]
+\includegraphics[scale=0.25]{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/graphics/Upload_button"}
+\end{figure}
+
+
 \section{Reading CSV Files into R}
 
 Although the csv file might be present in an Rstudio directory, it is not in the R environment. One way to confirm this is to look at the Rstudio window tab `Environment', where the file listed. 
@@ -28,9 +33,9 @@ To have the file in the R environment, we read the file using the \verb!read.csv
 
 Okay, now we know what the file name and path look like from the eyes of R. In this example, the path and filename is:
 
-\begin{verbatim}
-"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
-\end{verbatim
+%\begin{verbatim}
+%"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
+%\end{verbatim}
 
 We could paste the whole mess into the \texttt{read.csv()} function. Okay, let's keep moving. Although R was able to see the file, we still don't have an object we can actually do something with. Instead, we merely printed it to the screen. However, you have not created an object yet. To do this you need to assign it a name. So, what do we need to make an object?  Yes, the name of the object and the use of the assignment symbol. Let's create an object names filename instead that has the whole path and file name in it. Start with the name you want to use before the \texttt{read.csv()} function like this:
 
@@ -46,9 +51,9 @@ Need an impage of the pop-up window...
 
 \subsection{Reading a CSV File into a Dataframe}
 
-\begin{verbatim}
-maunaloa <- read.csv(filename)
-\end{verbatim}
+%\begin{verbatim}
+%maunaloa <- read.csv(filename)
+%\end{verbatim}
 
 \subsection{Importing CSV Files}
 

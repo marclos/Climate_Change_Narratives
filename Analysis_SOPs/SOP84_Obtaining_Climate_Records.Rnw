@@ -37,18 +37,21 @@ If you get this error, you need to reduce the number of stations selected.
   \item[Complete Order] Type in your email address and you will get a confirmation relativley soon and the data in a day or so...
 \end{description}
 
+
+
 \subsubsection{Evaluating the Data}
 
+Once you get the data, we'll need to evaluate what we have and format it for our purposes.
 
+The CHCND documentation helps us to understand the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
 
 \subsection{Historical Climatology Network-Daily (GHCN‐D) data}
 
+Alternatively, one can use the FTP site to access the data in a different format (e.g. dyl). The site's url is \url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}. 
 
-\url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}
+In addition, the CHCND documentation, as noted above, is very helpful in understanding the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
 
-\url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}
-
-\subsection{rNOAA library tools}
+\subsection{rNOAA library tools--NOT WORKING YET}
 
 There is a relatively new tool to access NOAA data using an R package, called rNOAA. 
 
