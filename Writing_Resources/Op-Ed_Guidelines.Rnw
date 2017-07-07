@@ -1,54 +1,4 @@
-\documentclass{tufte-handout}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
-\makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
-\makeatother
-
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
-\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
-\let\hlipl\hlkwb
-
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
-\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-
-\usepackage{alltt}
+\documentclass{tufte-handout}
 
 \usepackage{amsmath}
 %\usepackage{natbib}
@@ -85,8 +35,8 @@
 \title{Writing an Op-Ed %\thanks{}
 }
 \author[Marc Los Huertos]{Marc Los Huertos}
-%\date{}
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+%\date{} 
+
 \begin{document}
 
 \maketitle
@@ -122,7 +72,6 @@ Most newspapers publish an opinion editorial page next to the editorial page. Th
 	\item A solid and concise conclusion that powerfully summarizes the writer's opinion. Give it some punch.
 \end{enumerate}
 
-
 \section{Types of Op-Eds}
 
 \begin{description}
@@ -132,14 +81,12 @@ Most newspapers publish an opinion editorial page next to the editorial page. Th
 	\item[Praise:] These editorials commend people and organizations for something done well. They are not as common as the other three.
 \end{description}
  
-
 \section{Writing an Opinion Piece}
 Give a concise, but thorough, background on the issue. Remember, the majority of people reading the story may not have an understanding of the issue. Give a thoughtful, yet brief, background on the issue before venturing into more details of the campaign.
 
 Strengthen your message by citing national or international trends that show support for your thesis. Some factors  that influence public option on environmental issues include: a strong economy, the bipartisan support for the issue, the strength and diversity of the constituency, and the broad range of social benefits that might be gained.
 
 Localize the story. Although environmental issues might be very broad and touches many lives across the USA or world, the readers for your opinion editorial will want to know how your thesis affects their community. Provide the audience with specific, well-known examples of how the successful implementation of your thesis can benefit the community in the future.
-
 
 Although most newspapers keep an open mind in determining the content of their opinion editorials, some newspapers will be more inclined to publish an opinion piece on a subset of topics. Thus, it is important to research the newspaper in advance to appreciate the type of editorials it publishes, as well as what issues are covered in publication as a whole. Remember that a newspaper will not publish a story unless the editorial board feels it represents a unique or different perspective.
 
@@ -152,12 +99,14 @@ For maximum impact, choose an issue that has been making the headlines recently.
 An editorial without an unequivocal opinion is bound to fall flat on its face. Right at the very beginning, define your agenda in clear terms. Make sure that you state your opinion or thesis coherently. Remember those research papers and thesis statements you wrote in college. It's time to refresh your memory and concentrate on thesis statement writing skills. This course on how to write a thesis should help you immensely. The essential structure of a thesis statement in an editorial remains the same, only the language is more informal and journalistic.
 
 \subsection{Build your argument}
+
 A good editorial expresses your point of view while a great one manages to persuade others to join your camp. To persuade people, you need a sound argument based on facts and analogies, not vitriol and diatribe. Once you have stated your thesis, acknowledge contradictory opinions and explain why you disagree with them. Use facts, statistics, quotations and theoretical explanations for criticizing your opponents' views and cite your sources. Rejecting them outright without any explanation screams of cowardice and unprofessional ethics. Using external sources without citing them leaves you vulnerable to accusations that you made up the data or using the data inappropriately. 
 
 To build a foolproof argument, you will need to achieve a balance between content and style. Not only will you need substantial data, you will also need to structure it coherently. Take this course to learn the basics of writing with writing with precision and clarity.
 
 
 \subsection{Strengthen your argument with analogies}
+
 Nothing disarms your opponents better than cultural, social or political analogies. For instance, if you are writing about a controversial issue like secret surveillance, look for similar instances in other countries and how they tackled the problem. You can use such an analogy to your benefit by highlighting both the similarities and the differences. This will also be a good time to speak about the ultimate consequences of a policy/law if appropriate action is not taken by concerned agencies.
 
 \subsection{Provide possible solutions}
@@ -305,6 +254,6 @@ Suggest ways to improve/strengthen your chosen solution.
 
 \section{Grading}
 
-The Op-Ed will be graded using the ``Op-Ed and Memo Grading Matrix'' found on \texttt{Sakai}.
+The OpEd will be graded using the Op-Ed and Memo Grading Matrix found on Sakai.
 
 \end{document}
