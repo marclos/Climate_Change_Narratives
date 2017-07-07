@@ -29,9 +29,11 @@
 
 According the the Inter-Governmental Panel on Climate Change or IPCC, the temperature has been changing about 0.85 degrees C since the  1880s -- but this global average is not evenly distributed accross the globe. 
 
+This change and causes of this change are perhaps one of the most contested environmental issues in the 50 year history of environmental movement. So much so, that as EA students, we need to understand who and how these conclusions were made, while understanding the potential implications.
+
 \subsection{Global and Regional Average Temperature Changes}
 
-How can we appreciate potential changes accross the whole globe? An average temperture increse for the globe is somewhat abstract. Perhaps, we should evaluate how temperature (and/or rainfall) might be changing on local scales. 
+An average temperture increse for the globe is somewhat abstract and, perhaps, beyond what humans can reliable perceive. Are there strategies to help us appreciate these potential weather changes? Perhaps, we should evaluate how temperature (and/or rainfall) might be changing at regional scales. 
 
 Thus, for this project, we'll try to understand how temperature changes ``map'' onto a community that we care about? But to do this we need obtain and analyze tempterature data and determine if weather changes have compelling impacts on local communities.
 
@@ -106,7 +108,7 @@ Students will have the following tools available:
   \item R Studio Server with some scripts \& libraries to help develop analyses;
   \item Gighub to store project codes and as a platform to make the product public;
   \item Lectures, reports, and presentations on climate change science, the social and ecological implications of climate change, and the polcies and politics of climate change;
-  \item Random numbers for student submissions; and
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Admin/RandomNumbers.pdf}{Random numbers for student submissions}; and
   \item Shiny app templates that might be used as a container for interactive content.\footnote{Currently under-development -- We will likely skip this application since I not confident in using this particular tool.}
 \end{itemize*}
 
@@ -126,9 +128,10 @@ Thus, to access to and process these data, we need use tools to access, pre-proc
 \centering
 \begin{tabular}{ll}\hline
 SOP \#    & Description                                 \\\hline\hline
-06        & An Introduction to R, Rstudio, Github       \\
-06b       & Introduction to Markdown--Html              \\
-06c       & Introduction to Markdown--Word              \\
+06        & An Introduction to R, Rstudio, Github \\
+06b       & Introduction to Markdown--Html  \\
+06c       & Introduction to Markdown--Word  \\
+XXx       & Visual Display of Data using R  \\
 \hline
 \end{tabular}
 \end{table}
@@ -176,33 +179,32 @@ Below is my list of key concepts:
 
 However, specific genres require specific adjustments in our writing style. Please use the following to help in your writing process:
 
-\begin{itemize}
+\begin{itemize*}
   \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Writing_About_Climate.pdf}{``Scientific Writing and Climate Narratives''}
 
   \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Op-Ed_Guidelines.pdf}{``Op-Ed Guidelines''}
   \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Scientific_Blog_Guidelines.pdf}{``Scientific Blog Guidelines''}
-  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Citing_Sources.pdf}{``Citing References in EA30}
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Visualing_Data.pdf}{``Visual Presentation of Data using R''}
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Citing_Sources.pdf}{``Citing References in EA30''}
   \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Peer_Review-Dos_and_Donts.pdf}{``Peer review writing -- Dos and Don'ts''}
-\end{itemize}
+\end{itemize*}
 
 Oral presentations will also be part of this project and course. Students will use Rpres for their presentations and here is a short tutorial for this tool:
 
-\begin{itemize}
+\begin{itemize*}
   \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/TBD.pdf}{``Using Rpres to Develop Oral Presentations''}
   \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/TBD.pdf}{``Guide for Oral Presentations''}
-\end{itemize}
+\end{itemize*}
 
 \subsection{Grading for Oral Presentations}
 
 
 Critical thinking...
 
-\begin{itemize}
+\begin{itemize*}
   \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Logical_Fallacies.pdf}{``The Rhetorical Tools of Logical Fallacies''}
   \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Critical_Thinking.pdf}{``Critical Thinking Rubric''}
-\end{itemize}
-
-
+\end{itemize*}
 
 
 \section{Project Milestones}
@@ -241,7 +243,7 @@ To develop expertise, we will rely on teams of students to develop and evaluate 
 
 We will will create expert groups on to present the following topics:
 
-\begin{enumerate}
+\begin{enumerate*}
   \item Radiative Gases -- What are they and what do they do?
   
 List the major compounds categorized as radiative gases and describe how various processes determine their role as GHGs. Provide detail on how different wavelengths of light interact with the gases. Finally, a discussion of water is key, since it is one of the main sources of controversy. 
@@ -270,7 +272,7 @@ Satellites can be used to measure outgoing radition. However, each atmospheric l
   
 Weather and climate extremes such as hurricanes, tornadoes, heavy downpours, heat waves, and droughts affect all sectors of the economy and the environment, impacting people where they live and work.  
   
-\end{enumerate}
+\end{enumerate*}
 
 \subsection{Expert Teams}
 
@@ -292,12 +294,12 @@ print(xtable(project1teams), include.rownames=FALSE)
 
 In addition, each team will present (via open-source software, i.e. rPres) their results to the class. The presentation shall include the following:
 
-\begin{itemize}
+\begin{itemize*}
   \item Historical development of the field/issue and methods;
   \item summary of IPCC information regarding the topic;
   \item List of researchers that have contributed to this topic in the last 20 years and a description of their contribution; and
   \item Describe existing areas of uncertainty.
-\end{itemize}
+\end{itemize*}
 
 Create a presentation as a R Presentation (.Rprs) and it each person should limit their presentation to 10 minutes.Longer presentations will be penalized. Ten minutes goes quickly, so I suggesty you practice a few times to ensure that you don't lose unnecessary points. 
 
@@ -319,7 +321,7 @@ Use of Technology   & 20\% \\ \hline
 
 Submit a written summary of your research findings and their references. Be sure to include how data might be use to counter common arguments that critique climate change science. These summaries must be loaded on the Rstudio project page and in \texttt{.Rnw} and \texttt{.pdf} formats. 
 
-Submit via \texttt{Sakai}.
+Submit via \texttt{Sakai} using the following naming convention: Climate\_Science\_Report\_F17\_XXXXX.pdf, where the XXXXX refer to the five digit \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Admin/RandomNumbers.pdf}{assigned random numbers}.
 
 \subsubsection{Grading of Climate Science Report}
 
@@ -389,19 +391,19 @@ Select 4-5 blogs and write a summary for each one, describe three things that yo
 
 Here are some good examples of climate blogs:
 
-\begin{itemize}
+\begin{itemize*}
   \item \href{http://www.accuweather.com/en/weather-blogs/climatechange}{Accuweather}
   \item \href{http://blogs.nature.com/climatefeedback/}{Nature Magazine}
   \item \href{https://thinkprogress.org/tagged/climate}{Think Progress}
   \item \href{http://climateofourfuture.org/}{Climate Four Future}
-\end{itemize}
+\end{itemize*}
 
 Useful sites: 
 
-\begin{itemize}
+\begin{itemize*}
   \item \href{http://www.climatecentral.org/news/the-heat-is-on}{Climate Central}
   \item 
-\end{itemize}
+\end{itemize*}
 
 
 \subsection{Scientific Blog}
@@ -442,53 +444,18 @@ The Blog will be published online (via \url{Github.com}) and based on your data 
 
 Your final products should include:
 
-\begin{itemize}
+\begin{itemize*}
   \item Effectively display climate patterns from NOAA repositories, with at least 6 decades of data. Be sure all graphics are appropriate labeled and have captions that the reader can use to intrepret the data;
   \item Analyze the data using a linear model using R (i.e. lm);
   \item Describe the methods used to obtain and analyze the data; and
   \item Evaluate peer review literature to determine potential regional impacts from climate change -- be sure to include ecological and economic impacts; 
   \item Cite instances of how various scientific arguments have been distorted and politicized;
   \item Identify how conventional scientific standards have been compromised and how arguments that might be based on distortions can be countered.
-\end{itemize}
+\end{itemize*}
 
 \subsection{Op-Ed 2}
 
-Using the Op-Ed guidelines, write an Op-Ed to summarize 2-3 salient points from your Blog where you should:
-
-\begin{itemize}
-  \item Describe regional climate changes and predictions that include ecological impacts; 
-  \item Cite instances of how various scientific arguments have been distorted and politicized;
-  \item Identify how conventional scientific standards have been compromised and how arguments that might be based on distortions can be countered.
-\end{itemize}
-
-Uses the Op-Ed guidelines, submit a draft Op-Ed via \texttt{Sakai}. Include a description of the local or regional papers that this Op-Ed might be submitted and several examples of Op-Eds that have discussed environmental issues.
-
-Write an Op-Ed to propose what makes a good public product with respect to criticisms of climate science debates and criticisms. In other words, describe (2-3) ways that climate change skeptisism might misuse the data analysis and how one might prevent the misuse, be sure to cite your blog as an attepmpt to accomlish these goals. 
-
-Submit Op-Ed to the appropriate regional or local paper.
-
-\noindent Assignment: 
-\begin{itemize}
-  \item Make an organized presentation that effectively communicates how various scientific arguments have been distorted and politicized;
-  \item Identify how conventional scientific standards have been comprimised; and
-  \item Use the allotted time (10 min) effectively. I suggest you practice, 10 mintues can go very quickly when presenting complext scientific data.
-  
-\end{itemize}
-
-
-\begin{itemize}
-  \item Geographic description of region;
-  \item Demographics and a brief history;
-  \item Summary of economic geography;
-  \item Available data records;
-  \item Summary of data analysis;
-  \item Climate model implications for the region; and
-  \item Analysis of political-science debate in region.
-  
-\end{itemize}
-
-
-
+\input{Admin/Assignments/Op-Ed_F17-2}
 
 
 \clearpage
