@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\title{SOP 90: Analyzing Climate Trends}
+\title{SOP 90: Analyzing Climate Trends with R}
 \author{Marc Los Huertos}
 
 % Setting up the margins, etc for R
@@ -11,7 +11,7 @@ rm(list = ls())
 
 <<echo=FALSE>>=
 # Importing Scripts
-source("../Example_Code/CSV_import-fun.R")
+source("../Custom_Code/CSV_import-fun.R")
 Thailand <- CSV_import("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Thailand_GHCND:TH000048456.csv")
 @
 
@@ -142,6 +142,8 @@ options(width=60)
 
 Nevertheless, the output gives you a really good idea regarding the central tendencies of the entire data set.  Granted typing code might seem like a major step backwards in the computer world, but after a few weeks you will appreciate not having the search through arcane menus to find which button to push--even worse, in these push-button software systems, it often hard to figure out what they are doing. In the case of R, you have a really good idea of what it did, but were much more engaged in the process.
 
+\subsection{Evaluating Spread}
+
 When the mean and median diverge, it means that the distribution is skewed in some way. Let's see what the distribution looks like by creating a histogram.
 
 \begin{verbatim}
@@ -151,12 +153,12 @@ hist(Thailand$TMAX)
 The one you have made probably does not look that pretty, but with some more advanced coding, this is what it might look like (Figure \ref{fig:histogram}). 
 
 % Additional LaTeX code to add caption to figure
-\begin{figure}[h]\label{fig:histogram}
+\begin{figure}[h]%
 \begin{center}
 % \setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
 
 % R code chunk that produces a graphic
-<<echo = F, fig = 'true'>>=
+<<fig:histogram, echo = F, fig = 'true'>>=
 with(Thailand, {
 hist(TMAX,  ylab="Frequency", xlab="degrees C", xlim=c(18, 42),
 main="")
@@ -165,6 +167,7 @@ main="")
 box("figure") # Adds box around figure
 @
 \caption{Histogram of Maximum Temperatures, Bangkok, Thailand.}
+\label{fig:histogram}
 \end{center}
 \end{figure}
 
@@ -469,7 +472,23 @@ Here is a list of assumptions to produce a valid regression model:
   \item[something else]
 \end{description}
 
+Assumptions about e , the “error term”: t
+i. E(et
+) = 0, zero mean
+ii. E(et
+) = s , constant variance 2 2
+iii. E(et
+, Xt
+) = 0, no correlation with X
+iv. E(e , e ) , no autocorrelation. t t-1
+v. e ~ Normally distributed (for hypothesis testing). t
+3. Assumption four is especially important and most likely not to be met when
+using time series data.
 
+Autocorrelation.
+1. It is not uncommon for errors to “track’ themselves; that is, for the error a
+time t to depend in part on its value at t - m, where m is a prior time
+period.
 \subsubsection{Model Diagnostics}
 
 With every statistical test done, researchers validate their model in some way or anther. Often this entails the use of diagnostics, a standardize battery of procedures to check to see if the data are following the assumptions. 
@@ -500,12 +519,28 @@ A properly specified model is shown in
 
 %Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
 
-
-\section{Mixed-Effects Models}
+\section{Relaxing Model Assumptions}
 
 \subsection{Using Sources of Error in the Model}
 
-\subsection{Implementing Mixed Effects Models}
+Instead of letting autocorrelation be 'hidden' problem in the data, we can incorporate the correlation structure into the model and use it to our advantage -- create a better, i.e. unbiased estimate of the model parameters.
+
+\subsection{Generalized Least Square (GLS) and Autocorrelation}
+
+<<>>=
+library(nlme)
+
+TMAX.gls = gls(TMAX ~ NewDate, data = Thailand, na.action=na.omit)
+summary(TMAX.gls)
+TMAX.gls2 = gls(TMAX ~ NewDate, data = Thailand, correlation = corAR1(form=~1), na.action=na.omit)
+summary(TMAX.gls2)
+
+anova(TMAX.gls, TMAX.gls2)
+@
+
+
+\subsection{Adding Seasonality}
+
 
 \section{More Sophisticated Approaches}
 

@@ -50,7 +50,7 @@
 
 \usepackage{alltt}
 
-\title{SOP 90: Analyzing Climate Trends}
+\title{SOP 90: Analyzing Climate Trends with R}
 \author{Marc Los Huertos}
 
 % Setting up the margins, etc for R
@@ -255,6 +255,8 @@ If you would like a summary of each of the variables, the function is pretty eas
 
 Nevertheless, the output gives you a really good idea regarding the central tendencies of the entire data set.  Granted typing code might seem like a major step backwards in the computer world, but after a few weeks you will appreciate not having the search through arcane menus to find which button to push--even worse, in these push-button software systems, it often hard to figure out what they are doing. In the case of R, you have a really good idea of what it did, but were much more engaged in the process.
 
+\subsection{Evaluating Spread}
+
 When the mean and median diverge, it means that the distribution is skewed in some way. Let's see what the distribution looks like by creating a histogram.
 
 \begin{verbatim}
@@ -264,17 +266,18 @@ hist(Thailand$TMAX)
 The one you have made probably does not look that pretty, but with some more advanced coding, this is what it might look like (Figure \ref{fig:histogram}). 
 
 % Additional LaTeX code to add caption to figure
-\begin{figure}[h]\label{fig:histogram}
+\begin{figure}[h]%
 \begin{center}
 % \setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
 
 % R code chunk that produces a graphic
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
+\includegraphics[width=\maxwidth]{figure/fig:histogram-1} 
 
 \end{knitrout}
 \caption{Histogram of Maximum Temperatures, Bangkok, Thailand.}
+\label{fig:histogram}
 \end{center}
 \end{figure}
 
@@ -374,7 +377,7 @@ First, let's create a plot of data using \texttt{plot()}, whose format is \textt
 \caption{Carbon dioxide concentrations sampled for each month at Mauna Loa, Hawaii.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
 
 \end{knitrout}
 \end{figure}
@@ -401,7 +404,7 @@ ppm $year^{-1}$.\footnote{When I first made this handout the rate of increase wa
 \caption{TMAX in Bankok, Thailand.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-14-1} 
 
 \end{knitrout}
 \end{figure}
@@ -493,7 +496,7 @@ So, let's figure out how to see how changes happen for individual months.
 \hlkwd{plot}\hlstd{(MonthlyMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-19-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-18-1} 
 
 \end{knitrout}
 
@@ -523,7 +526,7 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 \hlkwd{plot}\hlstd{(MonthlyMean}\hlopt{$}\hlstd{TMAX[MonthlyMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-1} 
 \begin{kframe}\begin{alltt}
 \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMean[MonthlyMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \hlstd{May.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMean[MonthlyMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,])}
@@ -552,7 +555,7 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(May.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-2} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-2} 
 
 \end{knitrout}
 
@@ -566,7 +569,7 @@ Lets try Dec
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-22-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-1} 
 \begin{kframe}\begin{verbatim}
 ## 
 ## Call:
@@ -587,7 +590,7 @@ Lets try Dec
 ## F-statistic:  2.52 on 1 and 71 DF,  p-value: 0.1168
 \end{verbatim}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-22-2} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-2} 
 
 \end{knitrout}
 
@@ -624,7 +627,7 @@ Lets try Dec
 \hlkwd{plot}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{TMIN,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-24-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-23-1} 
 
 \end{knitrout}
 
@@ -634,7 +637,7 @@ Lets try Dec
 \hlkwd{plot}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{TMIN[MonthlyMeanTMIN}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"12"}\hlstd{],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-25-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-24-1} 
 
 \end{knitrout}
 
@@ -671,7 +674,7 @@ Lets try Dec
 \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(Dec.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-26-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-25-1} 
 
 \end{knitrout}
 
@@ -763,7 +766,23 @@ Here is a list of assumptions to produce a valid regression model:
   \item[something else]
 \end{description}
 
+Assumptions about e , the “error term”: t
+i. E(et
+) = 0, zero mean
+ii. E(et
+) = s , constant variance 2 2
+iii. E(et
+, Xt
+) = 0, no correlation with X
+iv. E(e , e ) , no autocorrelation. t t-1
+v. e ~ Normally distributed (for hypothesis testing). t
+3. Assumption four is especially important and most likely not to be met when
+using time series data.
 
+Autocorrelation.
+1. It is not uncommon for errors to “track’ themselves; that is, for the error a
+time t to depend in part on its value at t - m, where m is a prior time
+period.
 \subsubsection{Model Diagnostics}
 
 With every statistical test done, researchers validate their model in some way or anther. Often this entails the use of diagnostics, a standardize battery of procedures to check to see if the data are following the assumptions. 
@@ -793,7 +812,7 @@ Try not to get bogged down in the code at this point. But it is a useful thing t
 \hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{=Thailand))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-32-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-31-1} 
 
 \end{knitrout}
 \end{figure}
@@ -804,12 +823,94 @@ A properly specified model is shown in
 
 %Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
 
-
-\section{Mixed-Effects Models}
+\section{Relaxing Model Assumptions}
 
 \subsection{Using Sources of Error in the Model}
 
-\subsection{Implementing Mixed Effects Models}
+Instead of letting autocorrelation be 'hidden' problem in the data, we can incorporate the correlation structure into the model and use it to our advantage -- create a better, i.e. unbiased estimate of the model parameters.
+
+\subsection{Generalized Least Square (GLS) and Autocorrelation}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(nlme)}
+\hlstd{TMAX.gls} \hlkwb{=} \hlkwd{gls}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data} \hlstd{= Thailand,} \hlkwc{na.action}\hlstd{=na.omit)}
+\hlkwd{summary}\hlstd{(TMAX.gls)}
+\end{alltt}
+\begin{verbatim}
+## Generalized least squares fit by REML
+##   Model: TMAX ~ NewDate 
+##   Data: Thailand 
+##        AIC      BIC    logLik
+##   99477.04 99501.03 -49735.52
+## 
+## Coefficients:
+##                Value  Std.Error   t-value p-value
+## (Intercept) 32.89085 0.01631207 2016.3503       0
+## NewDate      0.00003 0.00000214   12.6213       0
+## 
+##  Correlation: 
+##         (Intr)
+## NewDate -0.268
+## 
+## Standardized residuals:
+##         Min          Q1         Med          Q3         Max 
+## -6.01131472 -0.56658497  0.03357611  0.63203004  3.33992877 
+## 
+## Residual standard error: 2.328514 
+## Degrees of freedom: 21960 total; 21958 residual
+\end{verbatim}
+\begin{alltt}
+\hlstd{TMAX.gls2} \hlkwb{=} \hlkwd{gls}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data} \hlstd{= Thailand,} \hlkwc{correlation} \hlstd{=} \hlkwd{corAR1}\hlstd{(}\hlkwc{form}\hlstd{=}\hlopt{~}\hlnum{1}\hlstd{),} \hlkwc{na.action}\hlstd{=na.omit)}
+\hlkwd{summary}\hlstd{(TMAX.gls2)}
+\end{alltt}
+\begin{verbatim}
+## Generalized least squares fit by REML
+##   Model: TMAX ~ NewDate 
+##   Data: Thailand 
+##        AIC      BIC    logLik
+##   81141.43 81173.42 -40566.72
+## 
+## Correlation Structure: AR(1)
+##  Formula: ~1 
+##  Parameter estimate(s):
+##     Phi 
+## 0.75252 
+## 
+## Coefficients:
+##                Value  Std.Error  t-value p-value
+## (Intercept) 32.89103 0.04341180 757.6518       0
+## NewDate      0.00003 0.00000569   4.7312       0
+## 
+##  Correlation: 
+##         (Intr)
+## NewDate -0.268
+## 
+## Standardized residuals:
+##         Min          Q1         Med          Q3         Max 
+## -6.00952180 -0.56664256  0.03361602  0.63184878  3.33922871 
+## 
+## Residual standard error: 2.329056 
+## Degrees of freedom: 21960 total; 21958 residual
+\end{verbatim}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(TMAX.gls, TMAX.gls2)}
+\end{alltt}
+\begin{verbatim}
+##           Model df      AIC      BIC    logLik   Test
+## TMAX.gls      1  3 99477.04 99501.03 -49735.52       
+## TMAX.gls2     2  4 81141.43 81173.42 -40566.72 1 vs 2
+##            L.Ratio p-value
+## TMAX.gls                  
+## TMAX.gls2 18337.61  <.0001
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\subsection{Adding Seasonality}
+
 
 \section{More Sophisticated Approaches}
 
