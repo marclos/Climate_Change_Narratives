@@ -52,10 +52,17 @@
 
 \title{SOP 90: Analyzing Climate Trends}
 \author{Marc Los Huertos}
+
+% Setting up the margins, etc for R
+
+
+
+
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \maketitle
+\tableofcontents
 
 \begin{abstract}
 \noindent Trend and Time Series Analyses are very important in environmental monitoring. For our purposes, developing methods to analyze climate data can using a range of tools, from relatively simple methods to advanced statistical modelling. 
@@ -63,8 +70,6 @@
 This document is designed to introduce a few tools to analyze regularly (i.e. daily or monthly) collected data. First, we will use a standard regression model, mixed-effects models, and finally more advanced time-series modelling approaches.   
 
 \end{abstract}
-
-% Setting up the margins, etc for R
 
 
 \section{Introduction}
@@ -117,60 +122,13 @@ Time series analysis comprises methods for analyzing time series data in order t
 
 Time series data have a natural temporal ordering. This makes time series analysis distinct from other common data analysis problems, in which there is no natural ordering of the observations (e.g. explaining people's wages by reference to their respective education levels, where the individuals' data could be entered in any order). Time series analysis is also distinct from spatial data analysis where the observations typically relate to geographical locations (e.g. accounting for house prices by the location as well as the intrinsic characteristics of the houses). A stochastic model for a time series will generally reflect the fact that observations close together in time will be more closely related than observations further apart. In addition, time series models will often make use of the natural one-way ordering of time so that values for a given period will be expressed as deriving in some way from past values, rather than from future values (see time reversibility.)
 
-\section{Evaluating the Data}
+\section{Understanding the Data: The First Step of Data Analysis}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Importing Scripts}
-\hlkwd{source}\hlstd{(}\hlstr{"../Example_Code/CSV_import-fun.R"}\hlstd{)}
-\hlstd{Thailand} \hlkwb{<-} \hlkwd{CSV_import}\hlstd{(}\hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Thailand_GHCND:TH000048456.csv"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
+\subsection{Data Source and Metadata}
 
-\section{Simple Regression}
+\subsection{Evaluating the Structure of Data}
 
-\subsection{What is Linear Regression?}
-
-Linear regression is the most basic and commonly used predictive analysis.  Regression estimates are used to describe data and to explain the relationship between one dependent variable and one or more independent variables.  At the center of the regression analysis is the task of fitting a single line through a scatter plot.  The simplest form with one dependent and one independent variable is defined by the formula:
-
-\begin{equation}
-y = a + b*x.
-\end{equation}
-
-Sometimes the dependent variable is also called the response.  The independent variables are also predictor variables.  However, Linear Regression Analysis consists of more than just fitting a linear line through a cloud of data points.  It consists of 3 stages:
-
-\begin{enumerate}
-  \item analyzing the correlation and directionality of the data, 
-  \item estimating the model, i.e., fitting the line, and 
-  \item evaluating the validity and usefulness of the model.
-\end{enumerate}
-
-There are three major uses for Regression Analysis: 1) causal analysis, 2) forecasting an effect, 3) trend forecasting.  Other than correlation analysis, which focuses on the strength of the relationship between two or more variables, regression analysis assumes a dependence or causal relationship between one or more independent and one dependent variable.
-
-Firstly, it might be used to identify the strength of the effect that the independent variable(s) have on a dependent variable.  Typical questions are what is the strength of relationship between dose and effect, sales and marketing spending, age and income.
-
-Secondly, it can be used to forecast effects or impacts of changes.  That is, regression analysis helps us to understand how much the dependent variable will change when we change one or more independent variables.  Typical questions are, “How much additional Y do I get for one additional unit of X?”.
-
-Thirdly, regression analysis predicts trends and future values.  The regression analysis can be used to get point estimates.  Typical questions are, ``What will the price for gold be 6 month from now?'' ``What is the total effort for a tasks?''
-
-\subsection{Regression and Climate Change}
-For our purposes, we are accessing the impacts of change, however, we may want to extend our projection out 20 years and make a prediction too. 
-
-$y =mx +b$, where x is time. 
-
-$y ~ x$
-
-\begin{equation}
-y = mx + b + \epsilon
-\end{equation}
-
-\section{Exploring Data: The First Step of Data Analysis}
-
-One of the first things you should do with your data is determine some of the central tendencies. For example, the mean, median, and standard deviation. Also some graphing of the data is also important. For example, what does the distribution of the data look like?
-
-Let's start with the easy stuff. We want to get the mean of the maximum temperatures. That means we need to get the values, named TMAX from the data frame. This is analogous to selection a column or row of numbers in Excel to find the mean and you can usually find it by just looking at your spreadsheet to find the data of interest. In R you have to think a bit about what you want. Using the \texttt{str} command is good start, but we could also just look at the top of the observations to see which variables are of interest. To this we use the function \texttt{head()}, which is short for header, which shows the variable names and the first six observations.
+This is analogous to selection a column or row of numbers in Excel to find the mean and you can usually find it by just looking at your spreadsheet to find the data of interest. In R you have to think a bit about what you want. Using the \texttt{str} command is good start, but we could also just look at the top of the observations to see which variables are of interest. To this we use the function \texttt{head()}, which is short for header, which shows the variable names and the first six observations.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -196,6 +154,18 @@ Let's start with the easy stuff. We want to get the mean of the maximum temperat
 \end{kframe}
 \end{knitrout}
 
+
+\subsection{Evaluating for Completeness}
+
+NA is the R symbol for missing data and R requires the user to be fairly intentional about how to deal with missing data. Missing data usually mean the dataset is biased. In contrast to many software packages, R forces you to acknowledge the implications of missing data, which can be annoying, like a parent reminding you to clean your room or brush your teeth or take a shower once in the while. But the trade is worth it: you have dealt explicitly with missing data.
+
+
+\subsection{Evaluating the Central Tendencies}
+
+One of the first things you should do with your data is determine some of the central tendencies. For example, the mean, median, and standard deviation. Also some graphing of the data is also important. For example, what does the distribution of the data look like?
+
+Let's start with the easy stuff. We want to get the mean of the maximum temperatures. That means we need to get the values, named TMAX from the data frame. 
+
 Okay, so we want ``average.'' But typing average by itself doesn't show us anything except an error. Let's try \texttt{str} again. Notice the dollar symbols.  These symbols are use to signify a list of values inside the data frame. To access this list, we type
 
 \begin{knitrout}
@@ -219,22 +189,11 @@ So, now we can get the number of observations, i.e. the length of the vector, by
 \end{kframe}
 \end{knitrout}
 
-Okay, let's calculate the mean. In this case, it requires caution. Notice there are NAs in the data. NA is the R symbol for missing data and R requires the user to be fairly intentional about how to deal with missing data. \footnote{Missing data usually mean the dataset is biased. In contrast to many software packages, R forces you to acknowledge the implications of missing data, which can be annoying, like a parent reminding you to clean your room or brush your teeth or take a shower once in the while. But the trade is worth it: you have dealt explicitly with missing data.}
+Okay, let's calculate the mean. In this case, it requires caution. Notice there are NAs in the data. 
 
-Typing \texttt{mean(Thailand\$TMAX)} gives an a ambiguous result, \texttt{NA}. Try it. R is basically saying that the mean can not be calculated because of missing values, thus the mean is also missing. So, can we not calculate the mean when data are missing?  No, we just have to tell R what to do with missing data.  In this case, we tell R to remove them, with the argument \texttt{na.rm="True"}, where True can be abbreviated to T. na.rm="TRUE" roughly translates to 'please remove all the NAs.' 
+Typing \texttt{mean(Thailand\$TMAX)} gives an a ambiguous result, \texttt{NA}. Try it. R is basically saying that the mean can not be calculated because of missing values, thus the mean is also missing. So, can we not calculate the mean when data are missing?  No, we just have to tell R what to do with missing data.  In this case, we tell R to remove them, with the argument \texttt{na.rm="TRUE"}, where True can be abbreviated to T. na.rm="TRUE" roughly translates to 'please remove all the NAs.' 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{mean}\hlstd{(Thailand}\hlopt{$}\hlstd{TMAX,} \hlkwc{na.rm}\hlstd{=T)}
-\end{alltt}
-\begin{verbatim}
-## [1] 32.94612
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-Okay as of Jan 31, 2017, the average is XXXX\footnote{How many significant figures should you report? Have I reported this correctly?}. It will change next month when May 2010 is added to the data set. 
+Okay as of \today, the average is 32.9461248\footnote{How many significant figures should you report? Have I reported this correctly?}. It will change next month when May 2010 is added to the data set. 
 Now let's determine the median and standard deviation.
 
 \begin{knitrout}
@@ -298,36 +257,68 @@ Nevertheless, the output gives you a really good idea regarding the central tend
 
 When the mean and median diverge, it means that the distribution is skewed in some way. Let's see what the distribution looks like by creating a histogram.
 
-\begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{hist}\hlstd{(Thailand}\hlopt{$}\hlstd{TMAX)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-11-1} 
+\begin{verbatim}
+hist(Thailand$TMAX)
+\end{verbatim}
 
-\end{knitrout}
-\end{figure}
-
-The one you have made probably does not look that pretty, but with some more advanced coding, this is what it might look like. 
+The one you have made probably does not look that pretty, but with some more advanced coding, this is what it might look like (Figure \ref{fig:histogram}). 
 
 % Additional LaTeX code to add caption to figure
-\begin{figure}\label{fig:histogram}
-\caption{Histogram of carbon dioxide concentrations at Mauna Loa, Hawaii.}
+\begin{figure}[h]\label{fig:histogram}
 \begin{center}
 % \setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
 
 % R code chunk that produces a graphic
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
 
 \end{knitrout}
+\caption{Histogram of Maximum Temperatures, Bangkok, Thailand.}
 \end{center}
 \end{figure}
 
 Congratulations, you have made it through the next step in R!  You now know how to do an exploratory analysis and even generate a basic histogram to view the distribution of a data set. Next, we use a standard statistical technique to determine the slope of the line and weather the line is statistically significant.
+
+
+\section{Simple Regression}
+
+\subsection{What is Linear Regression?}
+
+Linear regression is the most basic and commonly used predictive analysis.  Regression estimates are used to describe data and to explain the relationship between one dependent variable and one or more independent variables.  At the center of the regression analysis is the task of fitting a single line through a scatter plot.  The simplest form with one dependent and one independent variable is defined by the formula:
+
+\begin{equation}
+y = a + b*x.
+\end{equation}
+
+Sometimes the dependent variable is also called the response.  The independent variables are also predictor variables.  However, Linear Regression Analysis consists of more than just fitting a linear line through a cloud of data points.  It consists of 3 stages:
+
+\begin{enumerate}
+  \item analyzing the correlation and directionality of the data, 
+  \item estimating the model, i.e., fitting the line, and 
+  \item evaluating the validity and usefulness of the model.
+\end{enumerate}
+
+There are three major uses for Regression Analysis: 1) causal analysis, 2) forecasting an effect, 3) trend forecasting.  Other than correlation analysis, which focuses on the strength of the relationship between two or more variables, regression analysis assumes a dependence or causal relationship between one or more independent and one dependent variable.
+
+Firstly, it might be used to identify the strength of the effect that the independent variable(s) have on a dependent variable.  Typical questions are what is the strength of relationship between dose and effect, sales and marketing spending, age and income.
+
+Secondly, it can be used to forecast effects or impacts of changes.  That is, regression analysis helps us to understand how much the dependent variable will change when we change one or more independent variables.  Typical questions are, “How much additional Y do I get for one additional unit of X?”.
+
+Thirdly, regression analysis predicts trends and future values.  The regression analysis can be used to get point estimates.  Typical questions are, ``What will the price for gold be 6 month from now?'' ``What is the total effort for a tasks?''
+
+\subsection{Regression and Climate Change}
+For our purposes, we are accessing the impacts of change, however, we may want to extend our projection out 20 years and make a prediction too. 
+
+$y =mx +b$, where x is time. 
+
+$y ~ x$
+
+\begin{equation}
+y = mx + b + \epsilon
+\end{equation}
+
+
 
 \section{Linear Models in R}
 
@@ -383,7 +374,7 @@ First, let's create a plot of data using \texttt{plot()}, whose format is \textt
 \caption{Carbon dioxide concentrations sampled for each month at Mauna Loa, Hawaii.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} 
 
 \end{knitrout}
 \end{figure}
@@ -407,8 +398,12 @@ ppm $year^{-1}$.\footnote{When I first made this handout the rate of increase wa
 % Additional LaTeX code to add caption to figure
 \begin{figure}
 \label{fig:xxtest}
-\caption{Carbon dioxide concentrations at Mauna Loa, Hawaii.}
+\caption{TMAX in Bankok, Thailand.}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
 
+\end{knitrout}
 \end{figure}
 
 Now let's ask if this value is significant, by putting the linear model into a ANOVA-like table. There are a number of functions that do this and we have seen the \texttt{anova()} function above. For linear regression, however, the \texttt{summary()} function gives a more complete output.
@@ -416,57 +411,47 @@ Now let's ask if this value is significant, by putting the linear model into a A
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#summary(lm(average ~ year, data=maunaloa))}
+\hlkwd{summary}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{=Thailand))}
 \end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = TMAX ~ NewDate, data = Thailand)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -13.9974  -1.3193   0.0782   1.4717   7.7771 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 3.289e+01  1.631e-02 2016.35   <2e-16 ***
+## NewDate     2.702e-05  2.140e-06   12.62   <2e-16 ***
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.329 on 21958 degrees of freedom
+##   (5066 observations deleted due to missingness)
+## Multiple R-squared:  0.007202,	Adjusted R-squared:  0.007157 
+## F-statistic: 159.3 on 1 and 21958 DF,  p-value: < 2.2e-16
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 
 Here we find the that the slope and intercept are highly significant, we have some information on the residuals, and $R^2$ estimates, etc.
 
 
-\subsection{Model Diagnostics}
-
-With every statistical test done, researchers validate their model in some way or anther. Often this entails the use of diagnostics, a standardize battery of procedures to check to see if the data are following the assumptions. 
-
-In R four plots are created by default.  To see them all at the same time, we need to change the graphical parameters so the graphics window expects four panels, in this case a 2 rows and two columns. 
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-Try not to get bogged down in the code at this point. But it is a useful thing to remember.
-
-% Additional LaTeX code to add caption to figure
-\begin{figure}
-\label{fig:diagnostics}
-\caption{Default diagnostic plots for a linear model in R.}
-%\setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
-% R code chunk that produces a graphic
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#par(mfrow=c(2,2))}
-\hlcom{#plot(lm(average ~ year, data=maunaloa))}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{figure}
-
-To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
+\subsection{Creating Monthly Averages}
 
 So, let's figure out how to see how changes happen for individual months.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Get months}
-\hlcom{#LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.}
-\hlcom{#LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")}
-\hlcom{#LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")}
+\hlcom{#Get months}
+\hlcom{#Thailand$Month = months(LosAngeles$NewDate) # Creates problems.}
+\hlstd{Thailand}\hlopt{$}\hlstd{Month} \hlkwb{=} \hlkwd{format}\hlstd{(}\hlkwd{as.Date}\hlstd{(Thailand}\hlopt{$}\hlstd{NewDate),} \hlkwc{format} \hlstd{=} \hlstr{"%m"}\hlstd{)}
+\hlstd{Thailand}\hlopt{$}\hlstd{Year} \hlkwb{=} \hlkwd{format}\hlstd{(Thailand}\hlopt{$}\hlstd{NewDate,} \hlkwc{format}\hlstd{=}\hlstr{"%Y"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -476,31 +461,40 @@ So, let's figure out how to see how changes happen for individual months.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)}
+\hlstd{MonthlyMean} \hlkwb{=} \hlkwd{aggregate}\hlstd{(TMAX} \hlopt{~} \hlstd{Month} \hlopt{+} \hlstd{Year, Thailand, mean)}
 
-\hlcom{#MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)}
-\hlcom{#MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)}
+\hlstd{MonthlyMean}\hlopt{$}\hlstd{YEAR} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyMean}\hlopt{$}\hlstd{Year)}
+\hlstd{MonthlyMean}\hlopt{$}\hlstd{MONTH} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyMean}\hlopt{$}\hlstd{Month)}
 
 
-\hlcom{# Frank -- change mean to sd and you'll get standard deviation for each month/year.}
+\hlstd{MonthlySD} \hlkwb{=} \hlkwd{aggregate}\hlstd{(TMAX} \hlopt{~} \hlstd{Month} \hlopt{+} \hlstd{Year, Thailand, sd)}
 
-\hlcom{#MonthlySD = aggregate(TMAX ~ Month + Year, LosAngeles, sd)}
+\hlstd{MonthlySD}\hlopt{$}\hlstd{YEAR} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlySD}\hlopt{$}\hlstd{Year)}
+\hlstd{MonthlySD}\hlopt{$}\hlstd{MONTH} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlySD}\hlopt{$}\hlstd{Month)}
+\hlstd{MonthlySD}\hlopt{$}\hlstd{NewDate} \hlkwb{=} \hlstd{MonthlySD}\hlopt{$}\hlstd{YEAR} \hlopt{+} \hlstd{(MonthlySD}\hlopt{$}\hlstd{MONTH} \hlopt{-} \hlnum{1}\hlstd{)}\hlopt{/}\hlnum{12}
 
-\hlcom{#MonthlySD$YEAR = as.numeric(MonthlySD$Year)}
-\hlcom{#MonthlySD$MONTH = as.numeric(MonthlySD$Month)}
-\hlcom{#MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12}
-
-\hlcom{#head(MonthlySD)}
+\hlkwd{head}\hlstd{(MonthlySD)}
 \end{alltt}
+\begin{verbatim}
+##   Month Year     TMAX YEAR MONTH  NewDate
+## 1    01 1943 1.523317 1943     1 1943.000
+## 2    02 1943 1.668648 1943     2 1943.083
+## 3    03 1943 1.969395 1943     3 1943.167
+## 4    04 1943 2.521970 1943     4 1943.250
+## 5    05 1943 2.100818 1943     5 1943.333
+## 6    06 1943 1.041763 1943     6 1943.417
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#plot(MonthlyMean$TMAX, ty='l')}
+\hlkwd{plot}\hlstd{(MonthlyMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-19-1} 
+
 \end{knitrout}
 
 Below is Standard Deviation
@@ -526,59 +520,99 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')}
-\hlcom{#plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') }
-\hlcom{#May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])}
-\hlcom{#summary(May.lm)}
-
-\hlcom{#abline(coef(May.lm), col="red")}
+\hlkwd{plot}\hlstd{(MonthlyMean}\hlopt{$}\hlstd{TMAX[MonthlyMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-1} 
+\begin{kframe}\begin{alltt}
+\hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMean[MonthlyMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
+\hlstd{May.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMean[MonthlyMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,])}
+\hlkwd{summary}\hlstd{(May.lm)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = TMAX ~ YEAR, data = MonthlyMean[MonthlyMean$Month == 
+##     "05", ])
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.85376 -0.93210 -0.04633  0.81231  3.15347 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)
+## (Intercept) 17.238621  13.753642   1.253    0.214
+## YEAR         0.008756   0.006946   1.261    0.211
+## 
+## Residual standard error: 1.302 on 73 degrees of freedom
+## Multiple R-squared:  0.0213,	Adjusted R-squared:  0.007897 
+## F-statistic: 1.589 on 1 and 73 DF,  p-value: 0.2115
+\end{verbatim}
+\begin{alltt}
+\hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(May.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-2} 
+
 \end{knitrout}
 
-%Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
+Now, the change is 0.0088 degress C/year or 0.876 degress C/100 years with a probability of 0.2115. Although we can't reject the null hypothesis, we find the method to be fairly straightforward! 
 
-Next Steps
+\subsection{Next Steps}
 
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
 
 Lets try Dec
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')}
-\hlcom{#plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') }
-\hlcom{#Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])}
-\hlcom{#summary(Dec.lm)}
-
-\hlcom{#abline(coef(Dec.lm), col="red")}
-\end{alltt}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-22-1} 
+\begin{kframe}\begin{verbatim}
+## 
+## Call:
+## lm(formula = TMAX ~ YEAR, data = MonthlyMean[MonthlyMean$Month == 
+##     "12", ])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.9696 -0.8163 -0.1591  0.7210  3.2366 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)
+## (Intercept)  7.465036  14.852894   0.503    0.617
+## YEAR         0.011914   0.007505   1.588    0.117
+## 
+## Residual standard error: 1.358 on 71 degrees of freedom
+## Multiple R-squared:  0.03428,	Adjusted R-squared:  0.02068 
+## F-statistic:  2.52 on 1 and 71 DF,  p-value: 0.1168
+\end{verbatim}
 \end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-22-2} 
+
 \end{knitrout}
 
-\subsection{TMIN}
+\subsubsection{TMIN}
 
-1. We create a monthly mean for each month.
+1. We create a monthly TMIN mean for each month.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{MonthlyMeanTMIN} \hlkwb{=} \hlkwd{aggregate}\hlstd{(TMIN} \hlopt{~} \hlstd{Month} \hlopt{+} \hlstd{Year, LosAngeles, mean)}
-\end{alltt}
+\hlstd{MonthlyMeanTMIN} \hlkwb{=} \hlkwd{aggregate}\hlstd{(TMIN} \hlopt{~} \hlstd{Month} \hlopt{+} \hlstd{Year, Thailand, mean)}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'LosAngeles' not found}}\begin{alltt}
 \hlstd{MonthlyMeanTMIN}\hlopt{$}\hlstd{YEAR} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{Year)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'MonthlyMeanTMIN' not found}}\begin{alltt}
 \hlkwd{head}\hlstd{(MonthlyMeanTMIN)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in head(MonthlyMeanTMIN): object 'MonthlyMeanTMIN' not found}}\end{kframe}
+\begin{verbatim}
+##   Month Year     TMIN YEAR
+## 1    01 1943 18.54828 1943
+## 2    02 1943 20.73077 1943
+## 3    03 1943 23.39655 1943
+## 4    04 1943 23.79259 1943
+## 5    05 1943 24.87692 1943
+## 6    06 1943 24.76429 1943
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 
 \subsection{TMIN}
@@ -587,34 +621,63 @@ Lets try Dec
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#plot(MonthlyMeanTMIN$TMIN, ty='l')}
+\hlkwd{plot}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{TMIN,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-24-1} 
+
 \end{knitrout}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')}
+\hlkwd{plot}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{TMIN[MonthlyMeanTMIN}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"12"}\hlstd{],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-25-1} 
+
 \end{knitrout}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') }
-\hlcom{#Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])}
-\hlcom{#summary(Dec.lm)}
-
-\hlcom{#abline(coef(Dec.lm), col="red")}
+\hlkwd{plot}\hlstd{(TMIN}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMeanTMIN[MonthlyMeanTMIN}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"12"}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
+\hlstd{Dec.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMIN}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMeanTMIN[MonthlyMeanTMIN}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"12"}\hlstd{,])}
+\hlkwd{summary}\hlstd{(Dec.lm)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = TMIN ~ YEAR, data = MonthlyMeanTMIN[MonthlyMeanTMIN$Month == 
+##     "12", ])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.6746 -0.8672 -0.2573  1.0020  3.1247 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -42.320213  16.700175  -2.534 0.013617 *  
+## YEAR          0.032161   0.008439   3.811 0.000303 ***
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.525 on 67 degrees of freedom
+## Multiple R-squared:  0.1782,	Adjusted R-squared:  0.1659 
+## F-statistic: 14.52 on 1 and 67 DF,  p-value: 0.0003034
+\end{verbatim}
+\begin{alltt}
+\hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(Dec.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-26-1} 
+
 \end{knitrout}
 
 \subsection{TMIN}
 
-3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
+3. In this case, we get a slope, 0.0321607 degress/year and a probability of \ensuremath{3.034\times 10^{-4}} and an r-sqaured of 0.178. Cool! As we might expect, the a small amount of the variance is explained by the ``Month.'' Many things predict temerpature, that year is one, is quite problematic.
 
 4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
 
@@ -633,7 +696,7 @@ Lets try Dec
 \end{knitrout}
 
 
-\subsection{Experimental Portion --- Precipitation}
+\subsubsection{Experimental Portion --- Precipitation}
 
 Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
 
@@ -645,8 +708,6 @@ Third, we will need to decide what level of aggredation -- monthly, yearly, etc.
 
 Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
 
-
-\subsection{Precipitation}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -661,7 +722,6 @@ Fourth, in CA the water year starts in Oct 1. Should we follow the same conventi
 
 A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
 
-\subsection{Precipitation}
 Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
 
 \begin{knitrout}
@@ -682,8 +742,6 @@ Figure has points of the yearly sum of rainfall and the blue line mean. The gree
 \end{kframe}
 \end{knitrout}
 
-\subsection{Precipitation}  
-
 %The model suggests that the precipitation is declining at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
 
 \begin{knitrout}
@@ -694,13 +752,64 @@ Figure has points of the yearly sum of rainfall and the blue line mean. The gree
 \end{kframe}
 \end{knitrout}
 
-
-
 \subsection{Problems with a Simple Regression Model}
+
+Regression models, like all statistics, rely on certain assumptions. Violations of these assumptions reduces the validity of the model. If the violations are serious, then the model could be misleading or even incorrect.
+
+Here is a list of assumptions to produce a valid regression model:
+
+\begin{description}
+  \item[Homogeneity of Variance]
+  \item[something else]
+\end{description}
+
+
+\subsubsection{Model Diagnostics}
+
+With every statistical test done, researchers validate their model in some way or anther. Often this entails the use of diagnostics, a standardize battery of procedures to check to see if the data are following the assumptions. 
+
+In R four plots are created by default.  To see them all at the same time, we need to change the graphical parameters so the graphics window expects four panels, in this case a 2 rows and two columns. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Try not to get bogged down in the code at this point. But it is a useful thing to remember.
+
+% Additional LaTeX code to add caption to figure
+\begin{figure}
+\label{fig:diagnostics}
+\caption{Default diagnostic plots for a linear model in R.}
+%\setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
+% R code chunk that produces a graphic
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{=Thailand))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-32-1} 
+
+\end{knitrout}
+\end{figure}
+
+To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
 
 A properly specified model is shown in 
 
 %Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
+
+
+\section{Mixed-Effects Models}
+
+\subsection{Using Sources of Error in the Model}
+
+\subsection{Implementing Mixed Effects Models}
 
 \section{More Sophisticated Approaches}
 
