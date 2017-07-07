@@ -114,13 +114,13 @@ Students will have the following tools available:
 Much of the environmental data collected has become electronic. Thus, to access to and process these data, we need use tools to access, pre-process, and analyze these data using computer software. Below are resources that we have developed to assist you in this class (Table \ref{tab:softwareguides}).
 
 \begin{table}[h]
-\label{tab:softwareguides}
-\caption{Software guides developed for EA30/31. These SOPs have been developed by students and faculty over the years and are loaded on the github.com/SOPs repository.}
+\caption{Software guides developed for EA30/31. These SOPs have been developed by students and faculty over the years and are loaded on the github.com/SOPs repository.}\label{tab:softwareguides}
 \centering
 \begin{tabular}{ll}\hline
 SOP \#    & Description                                 \\\hline\hline
 06        & An Introduction to R, Rstudio, Github       \\
 06b       & Introduction to Markdown--Html              \\
+06c       & Introduction to Markdown--Word              \\
 \hline
 \end{tabular}
 \end{table}
@@ -132,14 +132,14 @@ Much of the environmental data collected has become electronic. Thus, to access 
 Below are resources that we have developed to assist you in this class (Table \ref{tab:tools}).
 
 \begin{table}[h]
-\label{tab:tools}
-\caption{Resources to obtain, pre-process, and analyze NOAA climate data.}
+
+\caption{Resources to obtain, pre-process, and analyze NOAA climate data.}\label{tab:tools}
 \centering
 \begin{tabular}{ll}\hline
 SOP \#    & Description                                 \\\hline\hline
-84        & Obtaining Climate Records                   \\
-85        & Using NOAA climate Records                  \\
-90        & Analyzing Climate Trends                    \\ \hline
+84        & \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Analysis_SOPs/SOP84_Obtaining_Climate_Records.pdf}{Obtaining Climate Records}\\
+85        & \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Analysis_SOPs/SOP85_Using_NOAA_Climate_Records.pdf}{Using NOAA climate Records}\\
+90        & \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Analysis_SOPs/SOP90_Analyzing_Trends.pdf}{Analyzing Climate Trends} \\ \hline
 
 \end{tabular}
 \end{table}
@@ -152,7 +152,9 @@ The analysis of trend data can range from simple to complex. For a breif introdu
 
 
 
-\subsubsection{Writing Resources}
+\subsubsection{Communication Resources}
+
+We will learn and practice our skills to communicate using written and oral media. 
 
 Scientific writing is a skill that takes years to develop. Although there are many types of readings, scientific writing does have some unique characteristics that will seem a bit awkward. However, you might be surprised about how much you already know about technical writing. We have selected key resources that we think will help you further develop and improve your writing skills.
 
@@ -167,37 +169,50 @@ Below is my list of key concepts:
 However, specific genres require specific adjustments in our writing style. Please use the following to help in your writing process:
 
 \begin{itemize}
-  \item ``Writing an Op-Ed''
-  \item ``Scientific Blog Writing Guidelines''
-  \item ``Peer review writing -- Dos and Don'ts''
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Op-Ed_Guidelines.pdf}{``Op-Ed Guidelines''}
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Scientific_Blog_Guidelines.pdf}{``Scientific Blog Guidelines''}
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/Peer_Review-Dos_and_Donts.pdf}{``Peer review writing -- Dos and Don'ts''}
 \end{itemize}
+
+Oral presentations will also be part of this project and course. Students will use Rpres for their presentations and here is a short tutorial for this tool:
+
+\begin{itemize}
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/TBD.pdf}{``Using Rpres to Develop Oral Presentations''}
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Writing_Resources/TBD.pdf}{``Guide for Oral Presentations''}
+\end{itemize}
+
+\subsection{Grading for Oral Presentations}
+
 
 \section{Project Milestones}
 
 To complete the project in a timely fashion, we will be adhering to a rather strick schedule (Table \ref{tab:milestones}).
 
 \begin{table}[h]
-\label{tab:milestones}
-\caption{Project milestones and point distribution.}
+
+\caption{Project milestones and point distribution.}\label{tab:milestones}
 \begin{tabular}{lcll}\hline
 Product                     & Launch    & Due Date  & \% \\\hline\hline
 Op-Ed \#1                   & Aug 30    & Sept 4    & 5 \\
-Expert Team Report          & Sept 4    & Sept 10   & 5 \\
-Background Presentation     & Sept 4    & Sept 11   & 5 \\
-Draft Figures \& Analysis   & Sept 11   & Sept 17   & 5 \\
-Literature Review           & Sept 11   & Sept 24   & 10 \\
-Peer Review -- Literature Review & Sept 24   & Sept 30 & 10 \\
-Blog DRAFT                  & Sept 24   & Oct 2     & 15 \\
-Peer Review -- Blog         & Oct 2     & Oct 6     & 5\\
-Blog FINAL                  & Oct 9     & Oct 13    & 20 \\
+Climate Science Report      & Sept 4    & Sept 10   & 5 \\
+Climate Science Presentation& Sept 4    & Sept 11   & 5 \\
+Climate Science -- Peer Review  & Sept 11 & Sept 15 & 5 \\
+Draft Regional Analysis     & Sept 11   & Sept 11   & 5 \\
+Regional Climate Review     & Sept 11   & Sept 22   & 10 \\
+Regional Review -- Peer Review & Sept 23   & Sept 25 & 10 \\
+Blog DRAFT                  & Sept 18   & Sept 29    & 15 \\
+Blog --Peer Review          & Sept 30   & Oct 2     & 5\\
+Blog FINAL                  & Oct 2     & Oct 8    & 20 \\
 Op Ed \#2 Draft             & Oct 9     & Oct 15    & 10 \\
 Op Ed \#2 Submission        & Sept 15   & Oct 20    & 5 \\ \hline
 \end{tabular}
 \end{table}
 
-\section{Op Ed \#1}
+\section{Op Ed \#1: Why Care about Climate?}
 
-\section{Developing Expertize}
+\input{Admin/Op-Ed_F17-1}
+
+\section{Developing Specialized Knowledge}
 
 To develop expertise, we will rely on teams of students to develop and evaluate various aspect of climate data. Each of us form an essential component for the effort. Organized as teams and expert groups, we will disassemble the project into chunks that each of us will contribute in specific and effective ways. This expertise will be used to develop our Q \& A sessions, as well as, to help us develop and write our op-ed and blogs. The experts should include areas of contravery and how scientists and non-scientists wressle over the data.
 
@@ -216,13 +231,7 @@ Describe how carbon dioxide and other GHGs are emitted and remain in the atmosph
 
   \item Role of Water and Other Feedbacks
   
-Climate change feedback is important in the understanding of global warming because feedback processes may amplify or diminish the effect of each climate forcing, and so play an important part in determining the climate sensitivity and future climate state. Feedback in general is the process in which changing one quantity changes a second quantity, and the change in the second quantity in turn changes the first. Positive feedback amplifies the change in the first quantity while negative feedback reduces it.
-
-Clouds
-Gas release
-Ice-Albedo
-Carbon
-Water vapor
+Climate change feedback is important in the understanding of global warming because feedback processes may amplify or diminish the effect of each climate forcing, and so play an important part in determining the climate sensitivity and future climate state. Feedback in general is the process in which changing one quantity changes a second quantity, and the change in the second quantity in turn changes the first. Positive feedback amplifies the change in the first quantity while negative feedback reduces it. Be sure to include the following feedbacks: Clouds, gas release, ice-albedo, carbon, and water vapor.
 
   \item Terrestial Surface Temperature Records
   
@@ -242,9 +251,11 @@ Weather and climate extremes such as hurricanes, tornadoes, heavy downpours, hea
   
 \end{enumerate}
 
-\subsection{Expert Team Assignments}
+\subsection{Expert Teams}
 
-For this project, the following students have been assigned to the teams below:
+Although most of the work will be individual, we will also work in pair for the presentation. 
+
+The following students have been assigned to the teams below:
 
 <<echo=F, results = 'asis', fig.cap='test'>>=
 library(xtable)
@@ -256,7 +267,7 @@ project1teams <- data.frame(Topic = team, Team_A = studentA, Team_B = studentB, 
 print(xtable(project1teams), include.rownames=FALSE)
 @
 
-\subsection{Expert Team Presentation}
+\subsection{Oral Presentation}
 
 In addition, each team will present (via open-source software, i.e. rPres) their results to the class. The presentation shall include the following:
 
@@ -283,18 +294,16 @@ Use of Technology   & 20\% \\ \hline
 \end{tabular}
 \end{table}
 
-\subsection{Summary of Literature Review}
-
-Review regionally relative results and conclusions from peer reviewed climate science. See this document as a resource.
+\subsection{Climate Science Report}
 
 Submit a written summary of your research findings and their references. Be sure to include how data might be use to counter common arguments that critique climate change science. These summaries must be loaded on the Rstudio project page and in \texttt{.Rnw} and \texttt{.pdf} formats. 
 
 Submit via \texttt{Sakai}.
 
-\subsubsection{Grading of Literature Review}
+\subsubsection{Grading of Climate Science Report}
 
 
-\subsection{Peer Review of Literature Review}
+\subsection{Peer Review of Climate Science Report}
 
 \subsubsection{Grading of Peer Review}
 
@@ -342,6 +351,8 @@ Standard      &   Percent   & \\ \hline\hline
 
 
 \subsection{Regional Climate Impacts -- Literature Review}
+
+Review regionally relative results and conclusions from peer reviewed climate science. See this document as a resource.
 
 Evaluate peer-reviewed articles to determine potential ecological, economic, and sociological implications of climate patterns;
 
