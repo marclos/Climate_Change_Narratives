@@ -74,26 +74,23 @@ This document is designed to introduce a few tools to analyze regularly (i.e. da
 
 \section{Introduction}
 
-Trend analysis... versus time series...
+\subsection{Rational}
 
-the Mann-Kendall Trend Test, seasonal Mann-Kendall Test, correlated seasonal Mann-Kendall Test, partial Mann-Kendall Trend test, (Seasonal) Sen's slope, partial correlation trend test and change-point test after Pettitt.
+In an age of industrialization and waste hazardous waste production, monitoring schemes have become ubiquitous to provide early warning, tracking environmental quality 
 
+To detect change or provide warning for public safety, we also need tools to assess if there are trends or if there are changes that might pose a hazard.
 
+For our purposes, the trend analysis or time series analysis is used to evaluate the contested nature of climate change -- in particular, to determine if there weather changes at a regional level. 
 
+\subsection{Trend Analysis versus Time Series Analysis}
 
+Trend analysis are a set of tools that are used to evalaute if patterns of change exceed the relative variation of the system. To do this, statistical models try to partition the sources of variation -- sources of an effect versus sources of random varation, for example.
 
+Methods might inclucde linear regression, the Mann-Kendall Trend Test, seasonal Mann-Kendall Test, correlated seasonal Mann-Kendall Test, partial Mann-Kendall Trend test, (Seasonal) Sen's slope, partial correlation trend test and change-point test after Pettitt.
 
-Detailed knowledge of the statistical methods used in analysis is beyond the scope of MFPH Part A, but methods include:
+Alternatively, researchers might use time series analysis to evaluate the signal of the series by decomposing it for internal cycles, e.g. seasons and time of year, and determine if the signal is stationary or non-stationary, i.e. non-changing with time versus changing with time. A time series is a sequence of data points, measured typically at successive points in time spaced at uniform time intervals. Examples of time series are the daily closing value of the Dow Jones index and the annual flow volume of the Nile River at Aswan. Time series are very frequently plotted via line charts. Time series are used in statistics, signal processing, pattern recognition, econometrics, mathematical finance, weather forecasting, earthquake prediction, electroencephalography, control engineering, astronomy, and communications engineering.
 
-Chi-square test for linear trend
-Regression analysis
-More detailed consideration of analysis is available here
-
-Time series analysis
-
-Time series analysis refers to a particular collection of specialised regression methods that use integrated moving averages and other smoothing techniques to illustrate trends in the data. It involves a complex process that incorporates information from past observations and past errors in those observations into the estimation of predicted values.
-
-Moving averages provide a useful way of presenting time series data, highlighting any long-term trends whilst smoothing out any short-term fluctuations. They are also commonly used to analyse trends in financial analysis. The calculation of moving averages is described in more detail here.
+\subsection{Generalized Steps}
 
 Presentation of trend data
 
@@ -105,28 +102,151 @@ Report average percent change
 An interpretation of the trends seen
 Interpretation of trend data
 
+
+\subsection{Goals for This Document}
+
+This document provides EA students with limited statstical training to use various statistical tools to analyze climate data. To accompiish this, we have tried to explain the theoretical background and demonstrate the steps to analyze climate data. We also try to explain how the ``null'' hypothesis is used in frequentist statistics, the meaning of type I and type II errors, and how we draw conclusions using statistical tools. Finally, we demonstrate the steps to use some of the common tools to analyze climate data using temperature and precipitation data collected from Bangkok, Thailand. 
+
+NOTE: I am not a statitian. But I have written this because I have never found an adequate guide for undergraduates that is both accessible and complete enough for our project. However, no document is perfect.
+
+First, this document is not complete. Second, there are areas of confusion for me and these probably come out in the document. Even when I understand the concepts and tools, my explanation may lead to confusion. In any case, I suggest you use this as ONE resource and not the only one. In addition, if you are confused by sections, please let me know because I work hard to improve it with each iteration. 
+
+\section{Frequentists and Bayesian Statistics}
+
+Statistics was born well before computer software had been developed, the development of statistical tools have both a historical context that is well beyond our project, but should be appreciated so we can use these tools without too much dificulty. 
+
+First, we need to know there is a distinction between the Frenquentist and Bayesian statitician. Although the tools and approach are quite distinct, few students appreciate how different these approaches are until they are graduate school -- and being forced to 'pick' one versus the other in how they approach data analysis problems. 
+
+I will reverse the typical order in most texts and describe Bayesian statistics first because we can use this to explicitly talk about probability and then we'll shift to Freqentist statistics -- which most of the tools in this text rely. 
+
+\subsection{Bayesian Statistics}
+
+Bayesian statistics, named for Thomas Bayes (1701–1761), is a theory in the field of statistics in which the evidence about the true state of the world is expressed in terms of degrees of belief known as Bayesian probabilities. 
+
+Bayesian statistics is a system for describing epistemological uncertainty using the mathematical language of probability. In the 'Bayesian paradigm,' degrees of belief in states of nature are specified; these are non-negative, and the total belief in all states of nature is fixed to be one. Bayesian statistical methods start with existing 'prior' beliefs, and update these using data to give 'posterior' beliefs, which may be used as the basis for inferential decisions.
+
+Bayesian inference is a method of statistical inference in which Bayes' theorem is used to update the probability for a hypothesis as more evidence or information becomes available. Bayesian inference is an important technique in statistics, and especially in mathematical statistics. Bayesian updating is particularly important in the dynamic analysis of a sequence of data. Bayesian inference has found application in a wide range of activities, including science, engineering, philosophy, medicine, sport, and law. 
+
+To demonstrate Baysian approach, let's evaluate the distribution of temperatures from Bangkok, Thailand. 
+
+https://www.r-bloggers.com/a-simple-intro-to-bayesian-change-point-analysis/
+	
+http://www.flutterbys.com.au/stats/tut/tut7.2b.html
+
+https://www.r-bloggers.com/bayesian-linear-regression-analysis-without-tears-r/
+    
+
+
+\subsection{Frequentist Statistics}
+
+Frequentist inference has been associated with the frequentist interpretation of probability, specifically that any given experiment can be considered as one of an infinite sequence of possible repetitions of the same experiment, each capable of producing statistically independent results.[1] In this view, the frequentist inference approach to drawing conclusions from data is effectively to require that the correct conclusion should be drawn with a given (high) probability, among this notional set of repetitions. However, exactly the same procedures can be developed under a subtly different formulation. This is one where a pre-experiment point of view is taken. It can be argued that the design of an experiment should include, before undertaking the experiment, decisions about exactly what steps will be taken to reach a conclusion from the data yet to be obtained. These steps can be specified by the scientist so that there is a high probability of reaching a correct decision where, in this case, the probability relates to a yet to occur set of random events and hence does not rely on the frequency interpretation of probability. This formulation has been discussed by Neyman,[2] among others.
+
+There are two major differences in the frequentist and Bayesian approaches to inference that are not included in the above consideration of the interpretation of probability:
+
+In a frequentist approach to inference, unknown parameters are often, but not always, treated as having fixed but unknown values that are not capable of being treated as random variates in any sense, and hence there is no way that probabilities can be associated with them. In contrast, a Bayesian approach to inference does allow probabilities to be associated with unknown parameters, where these probabilities can sometimes have a frequency probability interpretation as well as a Bayesian one. The Bayesian approach allows these probabilities to have an interpretation as representing the scientist's belief that given values of the parameter are true [see Bayesian probability - Personal probabilities and objective methods for constructing priors].
+While "probabilities" are involved in both approaches to inference, the probabilities are associated with different types of things. The result of a Bayesian approach can be a probability distribution for what is known about the parameters given the results of the experiment or study. The result of a frequentist approach is either a "true or false" conclusion from a significance test or a conclusion in the form that a given sample-derived confidence interval covers the true value: either of these conclusions has a given probability of being correct, where this probability has either a frequency probability interpretation or a pre-experiment interpretation.
+
+\subsubsection{The 'Null' Hypothesis versus Information Criteria}
+
+
+\subsubsection{Type I and Thpe II Errors}
+
+
+\subsubsection{Four Frequentists Approaches}
+
+A 2 x 2 table does really well to describe the statistical approaches available to freqentists and depends on only if the variables are continuous or categorical. 
+
+Predictor and Responses: Continuous and Categorical
+
+When we measure environmental data, they can be either continuous or categorical. Categorical data are sometimes called discrete data, e.g. count data might be considered discrete and categorical --- if they are relatively number of possible values (perhaps, less than 3-4). Predictor variables can also be either categorical or continuous --- where we think of values that can be integers with a great range and values between integers (i.e. values with decimals).
+
+Matrix Of Analysis
+
+\begin{table}
+		\begin{tabular}{|l|l||ll|} 
+		\hline
+																																				& 									&	\multicol{2}{*}{Response}	&								\\ \hline
+																																				&										& Categorical 					& Continuous 				\\ \hline \hline
+	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Predictor}}} & Categorical 			& Tests of Association	& ANOVA 						\\ 
+																																				& Continuous				&	Logistic Regression		& Linear Regression	\\ \hline
+		\end{tabular}
+	\caption{2 x 2 Matrix of Inference Methods}
+	\label{tab:2X2MatrixOfInferenceMethods}
+\end{table}
+
+
+\begin{figure}\label{fig:tree}
+\caption{Decision tree for frequents inference depending on the predictor and response data types.}
+\begin{center}
+% \setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library(diagram): there is no package called 'diagram'}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}openplotmat"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}coordinates"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: could not find function "{}straightarrow"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textrect"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textrect"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textrect"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[2, 1] + 0.05, arrpos[2, 2], "{}yes"{}): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[3, 1] - 0.05, arrpos[3, 2], "{}no"{}): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[4, 1] + 0.05, arrpos[4, 2] + 0.05, "{}yes"{}): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[5, 1] - 0.05, arrpos[5, 2] + 0.05, "{}no"{}): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[6, 1] + 0.05, arrpos[4, 2] + 0.05, "{}yes"{}): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[7, 1] - 0.05, arrpos[5, 2] + 0.05, "{}no"{}): plot.new has not been called yet}}\end{kframe}
+\end{knitrout}
+
+\end{center}
+\end{figure}
+
+
+
+
+
+In our example, the temperature is obviously continuous. Date can be treated as continuous when their are lots of them, but as describe below, it might also be considered categorical -- in part because it's 'ordered' and it's divisible by day -- and not finer resolution, which is decidedly not continuous. However, because there are so many in these records, we can ignore that to continue our analysis. 
+
+
+
+\section{Understanding the Data: The First Step}
+
+
 The results of all ecological studies, including time-series designs should be interpreted with caution:1
 
 Data on exposure and outcome may be collected in different ways for different populations
 Migration of populations between groups during the study period may dilute any difference between the groups
 Such studies usually rely on routine data sources, which may have been collected for other purposes
 Ecological studies do not allow us to answer questions about individual risks
-References
-
-Bailey L, Vardulaki K, Langham J, Chandramohan D. Introduction to Epidemiology. Open University Press, 2005.
-%www.mchb.hrsa.gov/mchirc/_pubs/trend_analysis.pdf
-
-A time series is a sequence of data points, measured typically at successive points in time spaced at uniform time intervals. Examples of time series are the daily closing value of the Dow Jones index and the annual flow volume of the Nile River at Aswan. Time series are very frequently plotted via line charts. Time series are used in statistics, signal processing, pattern recognition, econometrics, mathematical finance, weather forecasting, earthquake prediction, electroencephalography, control engineering, astronomy, and communications engineering.
-
-Time series analysis comprises methods for analyzing time series data in order to extract meaningful statistics and other characteristics of the data. Time series forecasting is the use of a model to predict future values based on previously observed values. While regression analysis is often employed in such a way as to test theories that the current values of one or more independent time series affect the current value of another time series, this type of analysis of time series is not called ``time series analysis.''
-
-Time series data have a natural temporal ordering. This makes time series analysis distinct from other common data analysis problems, in which there is no natural ordering of the observations (e.g. explaining people's wages by reference to their respective education levels, where the individuals' data could be entered in any order). Time series analysis is also distinct from spatial data analysis where the observations typically relate to geographical locations (e.g. accounting for house prices by the location as well as the intrinsic characteristics of the houses). A stochastic model for a time series will generally reflect the fact that observations close together in time will be more closely related than observations further apart. In addition, time series models will often make use of the natural one-way ordering of time so that values for a given period will be expressed as deriving in some way from past values, rather than from future values (see time reversibility.)
-
-\section{Understanding the Data: The First Step of Data Analysis}
 
 \subsection{Data Source and Metadata}
 
 \subsection{Evaluating the Structure of Data}
+
+Time series data have a natural temporal ordering. This makes time series analysis distinct from other common data analysis problems
 
 This is analogous to selection a column or row of numbers in Excel to find the mean and you can usually find it by just looking at your spreadsheet to find the data of interest. In R you have to think a bit about what you want. Using the \texttt{str} command is good start, but we could also just look at the top of the observations to see which variables are of interest. To this we use the function \texttt{head()}, which is short for header, which shows the variable names and the first six observations.
 
@@ -377,7 +497,7 @@ First, let's create a plot of data using \texttt{plot()}, whose format is \textt
 \caption{Carbon dioxide concentrations sampled for each month at Mauna Loa, Hawaii.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} 
 
 \end{knitrout}
 \end{figure}
@@ -404,7 +524,7 @@ ppm $year^{-1}$.\footnote{When I first made this handout the rate of increase wa
 \caption{TMAX in Bankok, Thailand.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-14-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
 
 \end{knitrout}
 \end{figure}
@@ -496,7 +616,7 @@ So, let's figure out how to see how changes happen for individual months.
 \hlkwd{plot}\hlstd{(MonthlyMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-18-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-19-1} 
 
 \end{knitrout}
 
@@ -526,7 +646,7 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 \hlkwd{plot}\hlstd{(MonthlyMean}\hlopt{$}\hlstd{TMAX[MonthlyMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-1} 
 \begin{kframe}\begin{alltt}
 \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMean[MonthlyMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \hlstd{May.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMean[MonthlyMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,])}
@@ -555,7 +675,7 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(May.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-2} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-2} 
 
 \end{knitrout}
 
@@ -569,7 +689,7 @@ Lets try Dec
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-22-1} 
 \begin{kframe}\begin{verbatim}
 ## 
 ## Call:
@@ -590,7 +710,7 @@ Lets try Dec
 ## F-statistic:  2.52 on 1 and 71 DF,  p-value: 0.1168
 \end{verbatim}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-21-2} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-22-2} 
 
 \end{knitrout}
 
@@ -627,7 +747,7 @@ Lets try Dec
 \hlkwd{plot}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{TMIN,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-23-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-24-1} 
 
 \end{knitrout}
 
@@ -637,7 +757,7 @@ Lets try Dec
 \hlkwd{plot}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{TMIN[MonthlyMeanTMIN}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"12"}\hlstd{],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-24-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-25-1} 
 
 \end{knitrout}
 
@@ -674,7 +794,7 @@ Lets try Dec
 \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(Dec.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-25-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-26-1} 
 
 \end{knitrout}
 
@@ -812,7 +932,7 @@ Try not to get bogged down in the code at this point. But it is a useful thing t
 \hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{=Thailand))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-31-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-32-1} 
 
 \end{knitrout}
 \end{figure}
@@ -835,77 +955,17 @@ Instead of letting autocorrelation be 'hidden' problem in the data, we can incor
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(nlme)}
-\hlstd{TMAX.gls} \hlkwb{=} \hlkwd{gls}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data} \hlstd{= Thailand,} \hlkwc{na.action}\hlstd{=na.omit)}
-\hlkwd{summary}\hlstd{(TMAX.gls)}
-\end{alltt}
-\begin{verbatim}
-## Generalized least squares fit by REML
-##   Model: TMAX ~ NewDate 
-##   Data: Thailand 
-##        AIC      BIC    logLik
-##   99477.04 99501.03 -49735.52
-## 
-## Coefficients:
-##                Value  Std.Error   t-value p-value
-## (Intercept) 32.89085 0.01631207 2016.3503       0
-## NewDate      0.00003 0.00000214   12.6213       0
-## 
-##  Correlation: 
-##         (Intr)
-## NewDate -0.268
-## 
-## Standardized residuals:
-##         Min          Q1         Med          Q3         Max 
-## -6.01131472 -0.56658497  0.03357611  0.63203004  3.33992877 
-## 
-## Residual standard error: 2.328514 
-## Degrees of freedom: 21960 total; 21958 residual
-\end{verbatim}
-\begin{alltt}
-\hlstd{TMAX.gls2} \hlkwb{=} \hlkwd{gls}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data} \hlstd{= Thailand,} \hlkwc{correlation} \hlstd{=} \hlkwd{corAR1}\hlstd{(}\hlkwc{form}\hlstd{=}\hlopt{~}\hlnum{1}\hlstd{),} \hlkwc{na.action}\hlstd{=na.omit)}
-\hlkwd{summary}\hlstd{(TMAX.gls2)}
-\end{alltt}
-\begin{verbatim}
-## Generalized least squares fit by REML
-##   Model: TMAX ~ NewDate 
-##   Data: Thailand 
-##        AIC      BIC    logLik
-##   81141.43 81173.42 -40566.72
-## 
-## Correlation Structure: AR(1)
-##  Formula: ~1 
-##  Parameter estimate(s):
-##     Phi 
-## 0.75252 
-## 
-## Coefficients:
-##                Value  Std.Error  t-value p-value
-## (Intercept) 32.89103 0.04341180 757.6518       0
-## NewDate      0.00003 0.00000569   4.7312       0
-## 
-##  Correlation: 
-##         (Intr)
-## NewDate -0.268
-## 
-## Standardized residuals:
-##         Min          Q1         Med          Q3         Max 
-## -6.00952180 -0.56664256  0.03361602  0.63184878  3.33922871 
-## 
-## Residual standard error: 2.329056 
-## Degrees of freedom: 21960 total; 21958 residual
-\end{verbatim}
-\begin{alltt}
+
+\hlcom{#TMAX.gls = gls(TMAX ~ NewDate, data = Thailand, na.action=na.omit)}
+\hlcom{#summary(TMAX.gls)}
+\hlcom{#TMAX.gls2 = gls(TMAX ~ NewDate, data = Thailand, correlation = corAR1(form=~1), na.action=na.omit)}
+\hlcom{#summary(TMAX.gls2)}
+
 \hlkwd{anova}\hlstd{(TMAX.gls, TMAX.gls2)}
 \end{alltt}
-\begin{verbatim}
-##           Model df      AIC      BIC    logLik   Test
-## TMAX.gls      1  3 99477.04 99501.03 -49735.52       
-## TMAX.gls2     2  4 81141.43 81173.42 -40566.72 1 vs 2
-##            L.Ratio p-value
-## TMAX.gls                  
-## TMAX.gls2 18337.61  <.0001
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in anova(TMAX.gls, TMAX.gls2): object 'TMAX.gls' not found}}\end{kframe}
 \end{knitrout}
 
 
@@ -913,10 +973,6 @@ Instead of letting autocorrelation be 'hidden' problem in the data, we can incor
 
 
 \section{More Sophisticated Approaches}
-
-Methods for time series analyses may be divided into two classes: frequency-domain methods and time-domain methods. The former include spectral analysis and recently wavelet analysis; the latter include auto-correlation and cross-correlation analysis. In time domain correlation analyses can be made in a filter-like manner using scaled correlation, thereby mitigating the need to operate in frequency domain.
-
-Whether or not you wish to forecast or not has nothing whatsoever to do with correct time series analysis. Time series methods can develop a robust model which can be used simply to characterize the relationship between a dependent series and a set of user-suggested inputs (a.k.a. user-specified predictor series) and empirically identified omitted variables be they deterministic or stochastic.Users at their option can then extend the "signal" into the future i.e. forecast with uncertainties based upon the uncertainty in the coefficients and the uncertainty in the future values of the predictor . Now these two kinds of empirically identified "omitted series" can be classified as 1) deterministic and 2) stochastic. The first type are simply Pulses, Level Shifts , Seasonal Pulses and Local Time Trends whereas the second type is represented by the ARIMA portion of your final model. When one omits one or more stochastic series from the list of possible predictors, the omission is characterized by the ARIMA component in your final model. Time series modelers refer to ARIMA models as a "Poor Man's Regression Model" because the past of the series is being used as a proxy for omitted stochastic input series.
 
 \section{Advanced Methods}
 
@@ -926,6 +982,23 @@ Essentially, you model a single dependent variable as being an additive combinat
 
 This method has been used extensively to estimate daily mortality as a function of smoothed environmental time series, especially pollutants. It's not OpenAccess, but (Dominici et al., 2000) is a superb reference, and (Statistical Methods for Environmental Epidemiology with R) is an excellent book on how to use R to do this type of analysis.
 
+\section{Time Series Analysis}
+
+Time series analysis
+
+Time series analysis refers to a particular collection of specialised regression methods that use integrated moving averages and other smoothing techniques to illustrate trends in the data. It involves a complex process that incorporates information from past observations and past errors in those observations into the estimation of predicted values.
+
+Moving averages provide a useful way of presenting time series data, highlighting any long-term trends whilst smoothing out any short-term fluctuations. They are also commonly used to analyse trends in financial analysis. The calculation of moving averages is described in more detail here.
+
+Methods for time series analyses may be divided into two classes: frequency-domain methods and time-domain methods. The former include spectral analysis and recently wavelet analysis; the latter include auto-correlation and cross-correlation analysis. In time domain correlation analyses can be made in a filter-like manner using scaled correlation, thereby mitigating the need to operate in frequency domain.
+
+Whether or not you wish to forecast or not has nothing whatsoever to do with correct time series analysis. Time series methods can develop a robust model which can be used simply to characterize the relationship between a dependent series and a set of user-suggested inputs (a.k.a. user-specified predictor series) and empirically identified omitted variables be they deterministic or stochastic.Users at their option can then extend the "signal" into the future i.e. forecast with uncertainties based upon the uncertainty in the coefficients and the uncertainty in the future values of the predictor . Now these two kinds of empirically identified "omitted series" can be classified as 1) deterministic and 2) stochastic. The first type are simply Pulses, Level Shifts , Seasonal Pulses and Local Time Trends whereas the second type is represented by the ARIMA portion of your final model. When one omits one or more stochastic series from the list of possible predictors, the omission is characterized by the ARIMA component in your final model. Time series modelers refer to ARIMA models as a "Poor Man's Regression Model" because the past of the series is being used as a proxy for omitted stochastic input series.
+
+
+\section{References}
+
+Bailey L, Vardulaki K, Langham J, Chandramohan D. Introduction to Epidemiology. Open University Press, 2005.
+%www.mchb.hrsa.gov/mchirc/_pubs/trend_analysis.pdf
 
 
 \end{document}
