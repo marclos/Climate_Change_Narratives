@@ -43,7 +43,7 @@ For our purposes, the trend analysis or time series analysis is used to evaluate
 
 \subsection{Trend Analysis versus Time Series Analysis}
 
-Trend analysis are a set of tools that are used to evalaute if patterns of change exceed the relative variation of the system. To do this, statistical models try to partition the sources of variation -- sources of an effect versus sources of random varation, for example.
+Trend analysis statistics are a set of tools used to detect patterns of change exceed the relative variation of the system. To do this, statistical models try to partition the sources of variation -- sources of an effect versus sources of random varation, for example.
 
 Methods might inclucde linear regression, the Mann-Kendall Trend Test, seasonal Mann-Kendall Test, correlated seasonal Mann-Kendall Test, partial Mann-Kendall Trend test, (Seasonal) Sen's slope, partial correlation trend test and change-point test after Pettitt.
 
@@ -298,8 +298,63 @@ box("figure") # Adds box around figure
 \end{center}
 \end{figure}
 
-Congratulations, you have made it through the next step in R!  You now know how to do an exploratory analysis and even generate a basic histogram to view the distribution of a data set. Next, we use a standard statistical technique to determine the slope of the line and weather the line is statistically significant.
+Congratulations, you have made it through the next step in R!  You now know how to do an exploratory analysis and even generate a basic histogram to view the distribution of a data set. Next, we use a standard statistical technique to determine the slope of the line and weather the line is statistically significant-- but first we need to understand something about hypothesis testing.
 
+\subsection{'Null Hypotheses' as the Foundation of Frequentist Statistics}
+
+
+
+
+
+
+
+
+\subsection{Type I and Type II Errors}
+
+\begin{table}
+	\caption{2 x 2 Matrix of Inference Methods  --Going to insert graphics to give little pics of analysis...}
+	\label{tab:TypeErrors}
+	
+		\begin{tabular}{|l|l||ll|} \hline
+				&	& \multicolumn{2}{c|}{Reality}    \\ \hline
+				&			& Truth 		& Not True \\ \hline\hline
+				
+	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Statistical Result}}} & 
+	Belief & Correct Decision	& Type I 						\\ 
+	&& \includegraphics[scale=.05]{../graphics/smoking-non-sequitur.jpg} & \\
+			& Non-belief				&	Type II		& Correct Decision	\\ 
+	&&& \\ \hline
+		\end{tabular}
+
+\end{table}
+
+\subsection{Mathematical Mechanisms to Test Hypothesis}
+
+Using the linear model, we can analyze several types of data, when the response variable is continuous. If the have a predictor variable that is categorical, then we often analyze the data using the method known as analysis of variance or ANOVA. If the predictor variable is continuous, then we often analyze data using a regression analysis.
+
+\section{Linear Models in R}
+
+The use of the linear model is the cornerstone of statistics. So ubiquitous it is rarely explained coherently. The linear model can be summarized at the equation for a line, but with the addition of error. You are probably familiar with the equation for a line where, 
+
+\begin{equation}
+y = m * x + b
+\end{equation}
+
+This equation defines a line, where $m$ is the slope, $b$ is the y-intercept, and the x and y are coordinates. The linear model is based on this form and is usually written as  
+
+\begin{equation}
+y \sim \alpha + \beta * x + \epsilon
+\end{equation}
+
+The order is usually changed, where the intercept is first, followed by the slope and x variable and the addition of error or noise. The error is usually symbolized as $\epsilon$. In general, in a statistical model, Greek letters are used and instead of an equals sign, we use a tilde, meaning that that left side of the equation is a function of the right side. Luckily, this is the approximate form that R expects, so if you understand this, you will have a pretty good idea of how to code a linear model in R. 
+
+The function to build a linear model is \texttt{lm()}. This function is extremely powerful and can be easily implemented, but this is a good time to see what the help menus look like in R. 
+
+<<echo = T, eval = F, results= 'verbatim' >>=
+help(lm)
+@
+
+I am not showing it here, but you should see a long complex looking help page window pop up. All help files in R are structured the same way, so in spite of the uninterpretable text, written by and for computer programmers, the structure will become familiar. Beginning with the description, the help screen describes the function, how to use it, and give some examples. Admittedly, I rarely understand much of the text, but I find the examples to be very useful! In fact, I suggest you paste the example into R and see what happens, I find this one of the best ways to learn R. Use an example that I know works, then change it to make it do what I want it to do.
 
 \section{Simple Regression}
 
@@ -327,87 +382,43 @@ Secondly, it can be used to forecast effects or impacts of changes.  That is, re
 
 Thirdly, regression analysis predicts trends and future values.  The regression analysis can be used to get point estimates.  Typical questions are, ``What will the price for gold be 6 month from now?'' ``What is the total effort for a tasks?''
 
-
-
-\subsection{Type I and Thpe II Errors}
-
-\begin{table}
-	\caption{2 x 2 Matrix of Inference Methods  --Going to insert graphics to give little pics of analysis...}
-	\label{tab:TypeErrors}
-	
-		\begin{tabular}{|l|l||ll|} \hline
-				&	& \multicolumn{2}{c|}{Reality}    \\ \hline
-				&			& Truth 		& Not True \\ \hline\hline
-				
-	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Statistical Result}}} & Categorical 		& Tests of Association	& ANOVA 						\\ 
-	&& \includegraphics[scale=.05]{../graphics/smoking-non-sequitur.jpg} & \\
-			& Continuous				&	Logistic Regression		& Linear Regression	\\ 
-	&&& \\ \hline
-		\end{tabular}
-
-\end{table}
-
-
 \subsection{Regression and Climate Change}
-For our purposes, we are accessing the impacts of change, however, we may want to extend our projection out 20 years and make a prediction too. 
 
-$y =mx +b$, where x is time. 
-
-$y ~ x$
+One of the ourcomes of the linear regression is to estimate the best fit line
 
 \begin{equation}
-y = mx + b + \epsilon
+y = mx + b + \epsilon,
 \end{equation}
 
+where $\epsilon$ is an estimate of the error. In addition, two other estimates are provided, one for the slope, $m$, and the y-intercept, $b$. 
 
+But these estimates are also hypotheses, where the null hypothesis is:
 
-\section{Linear Models in R}
+\begin{description}
+  \item[slope is zero] Rejecting the null hypothesis would be support the alternative hypothesis, or the estimate of the slope. 
+  \item[y-intercept is zero] Rejecting the null hypothesis would support the alternative hypothesis, the estimate of the y-intercept.
+\end{description}
 
-The use of the linear model is the cornerstone of statistics. So ubiquitous it is rarely explained coherently. The linear model can be summarized at the equation for a line, but with the addition of error. You are probably familiar with the equation for a line where, 
-
-\begin{equation}
-y = m * x + b
-\end{equation}
-
-This equation defines a line, where $m$ is the slope, $b$ is the y-intercept, and the x and y are coordinates. The linear model is based on this form and is usually written as  
-
-\begin{equation}
-y \sim \alpha + \beta * x + \epsilon
-\end{equation}
-
-The order is usually changed, where the intercept is first, followed by the slope and x variable and the addition of error or noise. The error is usually symbolized as $\epsilon$. In general, in a statistical model, Greek letters are used and instead of an equals sign, we use a tilde, meaning that that left side of the equation is a function of the right side. Luckily, this is the approximate form that R expects, so if you understand this, you will have a pretty good idea of how to code a linear model in R. 
-
-The function to build a linear model is \texttt{lm()}. This function is extremely powerful and can be easily implemented, but this is a good time to see what the help menus look like in R. 
-
-<<echo = T, eval = F, results= 'verbatim' >>=
-help(lm)
-@
-
-I am not showing it here, but you should see a long complex looking help page window pop up. All help files in R are structured the same way, so in spite of the uninterpretable text, written by and for computer programmers, the structure will become familiar. Beginning with the description, the help screen describes the function, how to use it, and give some examples. Admittedly, I rarely understand much of the text, but I find the examples to be very useful! In fact, I suggest you paste the example into R and see what happens, I find this one of the best ways to learn R. Use an example that I know works, then change it to make it do what I want it to do.
-
-Using the linear model, we can analyze several types of data, when the response variable is continuous. If the have a predictor variable that is categorical, then we often analyze the data using the method known as analysis of variance or ANOVA. If the predictor variable is continuous, then we often analyze data using a regression analysis. 
-
-Okay, let's see if we can do this for our Mauna Loa data. Let's test if there is a significant change of carbon dioxide concentrations with time. Since both the predictor and response variables are continuous data, this analysis will be a linear regression, but the form and function of the linear model are exactly the same. The linear model would look something like this
+Okay, let's see if we can do this for our Bangkok data. Let's test if there is a significant change of daily maximum temperatures (TMAX) with time. Thus, in general terms, Maximum temperature is a function of time, or $TMAX = f(Time)$. 
 
 \begin{equation}
 TMAX \sim \alpha + \beta * time + \epsilon
 \end{equation}
 
-Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable in the data frame. There are three variables associated with time: year, month, and decimal.date. Because these data are in a time series, they are serially correlated, meaning that the June sample will be more like the July sample than the August sample. In addition, the June 2010 sample will be similar to the June 2009 sample. These correlation violate the assumption of independence, but for today, we will ignore this violation and just create a linear model in bliss. So, let's use year as the predictor variable and assume there might be some error because each month have slightly different concentrations. For the response variable, we will use the monthly averages, "`average"'. Remember there are some missing data, it will be interesting to note how R deals with that.
+Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in SOP85. 
+
+Because these data are in a time series, they are serially correlated, meaning that the June sample will be more like the July sample than the August sample. In addition, the June 2010 sample will be similar to the June 2009 sample. These correlation violate the assumption of independence, but for now, we will ignore this violation and just create a linear model in bliss. 
+
+For the response variable, we will use the daily maximum temeratures, TMAX. Remember there are some missing data, it will be interesting to note how R deals with that.
 
 First, let's create a plot of data using \texttt{plot()}, whose format is \texttt{plot(x, y)} or \texttt{plot(y ~ x)}. We will use the later for now, 
 
-<<>>=
-#plot(TMAX ~ NewDate, data=Thailand)
-@
-
-
 \begin{figure}
 \label{fig:test12}
-\caption{Carbon dioxide concentrations sampled for each month at Mauna Loa, Hawaii.}
-<<echo = F, fig = 'true' >>=
+\caption{Maximum daily temperatures for Bangkok, Thailand.}
+<<label='Tmaxplot', echo = F, fig = 'true' >>=
 par(las=1)
-plot(Thailand$NewDate, Thailand$TMAX, ylab="degrees C", xlab="Date", pch=20, main="TMAX, \n Bankok, Thailand" )
+plot(TMAX ~ NewDate, data=Thailand, ylab="degrees C", xlab="Date", pch=20, main="TMAX, \n Bankok, Thailand" )
 @
 \end{figure}
 
@@ -415,65 +426,69 @@ plot(Thailand$NewDate, Thailand$TMAX, ylab="degrees C", xlab="Date", pch=20, mai
 Finally, there is one important difference between the linear model that we used in the \texttt{aov()} function. This time we use the \texttt{lm()} function that arrange the results more in-line with a regression model.
 This syntax is still pretty straight forward,  
 
-<<>>=
-#lm(average ~ year, data=maunaloa)
+<<label='linearmodel'>>=
+lm(TMAX ~ NewDate, data=Thailand)
 @
 
-From this model, we learn that the change in $CO_2$ is 
-%\Sexpr{round(coef(lm(average ~ year, data=maunaloa))[2], 2)} 
-ppm $year^{-1}$.\footnote{When I first made this handout the rate of increase was 1.441. Why do you think this rate has changed?} Figure~\ref{fig:maunaloa} shows the increasing concentrations, but also the seasonal variation. Statisticians have more advanced methods to analyze these data then what we have done, but for our purposes the implications are the same.  Greenhouse gas emissions are increasing and the estimated rates suggest an increasing rate.
+From this model, we learn that the change in $TMAX$ is 
+\Sexpr{round(coef(lm(TMAX ~ NewDate, data=Thailand))[2], 2)} 
+degrees $year^{-1}$. Figure~\ref{fig:TMAX_trend} shows the increasing concentrations, but also the seasonal variation. Statisticians have more advanced methods to analyze these data then what we have done, but for our purposes the implications are the same.  Greenhouse gas emissions are increasing and the estimated rates suggest an increasing rate.
 
 % Additional LaTeX code to add caption to figure
 \begin{figure}
-\label{fig:xxtest}
+\label{fig:TMAX_trend}
 \caption{TMAX in Bankok, Thailand.}
 <<echo = F, fig = 'true' >>=
 par(las=1)
-plot(Thailand$NewDate, Thailand$TMAX, type="l", ylab="degrees", xlab="Date", main="Temperature Changes, \n Mauna Loa, HI" )
+plot(TMAX ~ NewDate, data=Thailand, type="l", ylab="degrees", xlab="Date", main="Maximum Daily Temperature, \n Bangkok, Thailand" )
+
 abline(coef(lm(TMAX~NewDate, data=Thailand)), col="red", lwd=2)
 @
 \end{figure}
 
 Now let's ask if this value is significant, by putting the linear model into a ANOVA-like table. There are a number of functions that do this and we have seen the \texttt{anova()} function above. For linear regression, however, the \texttt{summary()} function gives a more complete output.
 
-<<>>=
+<<label='summarylm_TMAX'>>=
 summary(lm(TMAX ~ NewDate, data=Thailand))
 @
 
 Here we find the that the slope and intercept are highly significant, we have some information on the residuals, and $R^2$ estimates, etc.
 
+\subsection{Creating Monthly Averages of Daily Maximum Temperatures}
 
-\subsection{Creating Monthly Averages}
+One of the first things to note is how messy the data look and there are lots of sources of variation. For example, we expect months to respond differently to the climate change. To assess this, we will now analyze the data for monthly means of the maximum temperatures.
 
-So, let's figure out how to see how changes happen for individual months.
+\subsection{Creating Monthly Means}
 
-<<>>=
-#Get months
-#Thailand$Month = months(LosAngeles$NewDate) # Creates problems.
+To create monthly means, we need to disagragate the NewDate variable into a month and year variables.
+
+First we can use the \texttt{as.Date()} function to extract a portion of the date, where \%m is for month and \%Y is for a four digit year. Then, we create new variables in our dataframe, one for month and one for year.
+
+<<label='createmonthvar'>>=
 Thailand$Month = format(as.Date(Thailand$NewDate), format = "%m")
 Thailand$Year = format(Thailand$NewDate, format="%Y")
 @
 
-\subsection{Creating Monthly Means}
+After creating the month and year as separate variables, we can use them to caculate the mean using the \texttt{aggregate()} function. In the code below, we can also calculate the standard deviation too, although I haven't used this measure in this document, several students have asked for this for their analysis.
 
-<<>>=
-MonthlyMean = aggregate(TMAX ~ Month + Year, Thailand, mean)
+<<label='MonthlyTMAXmean'>>=
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, Thailand, mean)
 
-MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
-MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
 
+MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, Thailand, sd)
 
-MonthlySD = aggregate(TMAX ~ Month + Year, Thailand, sd)
+MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
+MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
+MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
 
-MonthlySD$YEAR = as.numeric(MonthlySD$Year)
-MonthlySD$MONTH = as.numeric(MonthlySD$Month)
-MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
-
-head(MonthlySD)
+head(MonthlyTMAXSD)
 @
 
 <<>>=
-plot(MonthlyMean$TMAX, ty='l')
+plot(MonthlyTMAXMean$TMAX, ty='l')
 @
 
 Below is Standard Deviation
@@ -493,9 +508,9 @@ Selecting for 1 Month -- May
 Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
 
 <<>>=
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
-May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
+#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020)) 
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 summary(May.lm)
 
 abline(coef(May.lm), col="red")
@@ -503,20 +518,28 @@ abline(coef(May.lm), col="red")
 
 Now, the change is \Sexpr{round(coef(May.lm)[2], 4)} degress C/year or \Sexpr{round(coef(May.lm)[2]*100, 3)} degress C/100 years with a probability of \Sexpr{round(summary(May.lm)$coefficients[2,4],4)}. Although we can't reject the null hypothesis, we find the method to be fairly straightforward! 
 
-\subsection{Next Steps}
+\subsection{Testing all the Months}
 
-I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
+I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
 
-Lets try Dec
+Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year. 
 
-<<echo=FALSE>>=
-plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
-plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l', las=1) 
-Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
-summary(Dec.lm)
+\begin{figure}
+<<echo=FALSE, label='12MonthsTMAX'>>=
+Months = c("January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December")
 
-abline(coef(Dec.lm), col="red")
+par(mfrow=c(4,3), mar=c(5, 3, 3, 1) + 0.1)
+for (i in 1:12){
+#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month==i], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+summary(Month.lm)
+
+abline(coef(Month.lm), col="red")
+}
 @
+\end{figure}
 
 \subsubsection{TMIN}
 
