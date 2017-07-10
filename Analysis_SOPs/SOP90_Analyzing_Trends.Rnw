@@ -1,4 +1,7 @@
 \documentclass{article}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{graphicx}
 
 \title{SOP 90: Analyzing Climate Trends with R}
 \author{Marc Los Huertos}
@@ -102,41 +105,17 @@ There are two major differences in the frequentist and Bayesian approaches to in
 In a frequentist approach to inference, unknown parameters are often, but not always, treated as having fixed but unknown values that are not capable of being treated as random variates in any sense, and hence there is no way that probabilities can be associated with them. In contrast, a Bayesian approach to inference does allow probabilities to be associated with unknown parameters, where these probabilities can sometimes have a frequency probability interpretation as well as a Bayesian one. The Bayesian approach allows these probabilities to have an interpretation as representing the scientist's belief that given values of the parameter are true [see Bayesian probability - Personal probabilities and objective methods for constructing priors].
 While "probabilities" are involved in both approaches to inference, the probabilities are associated with different types of things. The result of a Bayesian approach can be a probability distribution for what is known about the parameters given the results of the experiment or study. The result of a frequentist approach is either a "true or false" conclusion from a significance test or a conclusion in the form that a given sample-derived confidence interval covers the true value: either of these conclusions has a given probability of being correct, where this probability has either a frequency probability interpretation or a pre-experiment interpretation.
 
-\subsubsection{The 'Null' Hypothesis versus Information Criteria}
-
-
-\subsubsection{Type I and Thpe II Errors}
-
-
-\subsubsection{Four Frequentists Approaches}
-
-A 2 x 2 table does really well to describe the statistical approaches available to freqentists and depends on only if the variables are continuous or categorical. 
-
-Predictor and Responses: Continuous and Categorical
+\subsubsection{Categorical versus Continuous Data}
 
 When we measure environmental data, they can be either continuous or categorical. Categorical data are sometimes called discrete data, e.g. count data might be considered discrete and categorical --- if they are relatively number of possible values (perhaps, less than 3-4). Predictor variables can also be either categorical or continuous --- where we think of values that can be integers with a great range and values between integers (i.e. values with decimals).
 
-Matrix Of Analysis
+Based on our understanding of the data, the choices of analysis become limited but also easier to choose from (Table %\ref{fig:tree}).
 
-\begin{table}
-		\begin{tabular}{|l|l||ll|} 
-		\hline
-																																				& 									&	\multicol{2}{*}{Response}	&								\\ \hline
-																																				&										& Categorical 					& Continuous 				\\ \hline \hline
-	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Predictor}}} & Categorical 			& Tests of Association	& ANOVA 						\\ 
-																																				& Continuous				&	Logistic Regression		& Linear Regression	\\ \hline
-		\end{tabular}
-	\caption{2 x 2 Matrix of Inference Methods}
-	\label{tab:2X2MatrixOfInferenceMethods}
-\end{table}
-
-
-\begin{figure}\label{fig:tree}
-\caption{Decision tree for frequents inference depending on the predictor and response data types.}
+\begin{figure}
+\caption{Decision tree for frequents inference depending on the predictor and response data types.}\label{fig:tree}
 \begin{center}
-% \setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
-
-<<echo = F, fig = FALSE >>=
+\setkeys{Gin}{width=0.5\textwidth} 
+<<echo = F, fig = FALSE, message=FALSE>>=
 # Descision Tree 1
 library (diagram)
 par(mar=c(1,1,1,1))
@@ -176,7 +155,7 @@ textellipse(elpos[6,],0.1, lab=c("ANOVA"), box.col="orange", shadow.col="red",
 # Third Binary RIGHT LEFT
 textellipse(elpos[7,],0.1, lab=c("Logistic"), box.col="lightblue", shadow.col="blue",
   shadow.size=0.005, cex=1.5)
-  
+
 # Third Binary RIGHT RIGHT
 textellipse(elpos[8,],0.1, lab="Regression", box.col="orange", shadow.col="red",
   shadow.size=0.005, cex=1.5)
@@ -189,16 +168,31 @@ textellipse(elpos[8,],0.1, lab="Regression", box.col="orange", shadow.col="red",
   text(arrpos[6,1]+0.05, arrpos[4,2]+0.05, "yes")
   text(arrpos[7,1]-0.05, arrpos[5,2]+0.05, "no")
 @
-
 \end{center}
 \end{figure}
 
 
+\subsubsection{Four Frequentists Approaches}
 
+Table \ref{tab:2X2Matrix} describes the statistical approaches available to freqentists in relation to the characteristics of the data. 
 
+\begin{table}
+	\caption{2 x 2 Matrix of Inference Methods  --Going to insert graphics to give little pics of analysis...}
+	\label{tab:2X2Matrix}
+	
+		\begin{tabular}{|l|l||ll|} \hline
+				&	& \multicolumn{2}{c|}{Response}    \\ \hline
+				&			& Categorical 		& Continuous \\ \hline\hline
+				
+	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Predictor}}} & Categorical 		& Tests of Association	& ANOVA 						\\ 
+	&& \includegraphics[scale=.05]{../graphics/smoking-non-sequitur.jpg} & \\
+			& Continuous				&	Logistic Regression		& Linear Regression	\\ 
+	&&& \\ \hline
+		\end{tabular}
+
+\end{table}
 
 In our example, the temperature is obviously continuous. Date can be treated as continuous when their are lots of them, but as describe below, it might also be considered categorical -- in part because it's 'ordered' and it's divisible by day -- and not finer resolution, which is decidedly not continuous. However, because there are so many in these records, we can ignore that to continue our analysis. 
-
 
 
 \section{Understanding the Data: The First Step}
@@ -332,6 +326,27 @@ Firstly, it might be used to identify the strength of the effect that the indepe
 Secondly, it can be used to forecast effects or impacts of changes.  That is, regression analysis helps us to understand how much the dependent variable will change when we change one or more independent variables.  Typical questions are, “How much additional Y do I get for one additional unit of X?”.
 
 Thirdly, regression analysis predicts trends and future values.  The regression analysis can be used to get point estimates.  Typical questions are, ``What will the price for gold be 6 month from now?'' ``What is the total effort for a tasks?''
+
+
+
+\subsection{Type I and Thpe II Errors}
+
+\begin{table}
+	\caption{2 x 2 Matrix of Inference Methods  --Going to insert graphics to give little pics of analysis...}
+	\label{tab:TypeErrors}
+	
+		\begin{tabular}{|l|l||ll|} \hline
+				&	& \multicolumn{2}{c|}{Reality}    \\ \hline
+				&			& Truth 		& Not True \\ \hline\hline
+				
+	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Statistical Result}}} & Categorical 		& Tests of Association	& ANOVA 						\\ 
+	&& \includegraphics[scale=.05]{../graphics/smoking-non-sequitur.jpg} & \\
+			& Continuous				&	Logistic Regression		& Linear Regression	\\ 
+	&&& \\ \hline
+		\end{tabular}
+
+\end{table}
+
 
 \subsection{Regression and Climate Change}
 For our purposes, we are accessing the impacts of change, however, we may want to extend our projection out 20 years and make a prediction too. 
@@ -652,6 +667,13 @@ A properly specified model is shown in
 
 %Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
 
+\section{The 'Null' Hypothesis versus Information Criteria}
+
+\subsection{Model Comparison}
+
+\subsection{AIC to make statements about strength of evidence}
+
+
 \section{Relaxing Model Assumptions}
 
 \subsection{Using Sources of Error in the Model}
@@ -668,7 +690,7 @@ library(nlme)
 #TMAX.gls2 = gls(TMAX ~ NewDate, data = Thailand, correlation = corAR1(form=~1), na.action=na.omit)
 #summary(TMAX.gls2)
 
-anova(TMAX.gls, TMAX.gls2)
+#anova(TMAX.gls, TMAX.gls2)
 @
 
 
@@ -699,7 +721,7 @@ Whether or not you wish to forecast or not has nothing whatsoever to do with cor
 
 \section{References}
 
-Bailey L, Vardulaki K, Langham J, Chandramohan D. Introduction to Epidemiology. Open University Press, 2005.
+%Bailey L, Vardulaki K, Langham J, Chandramohan D. Introduction to Epidemiology. Open University Press, 2005.
 
 %www.mchb.hrsa.gov/mchirc/_pubs/trend_analysis.pdf
 
