@@ -89,22 +89,23 @@ For our purposes, the trend analysis or time series analysis is used to evaluate
 
 Trend analysis statistics are a set of tools used to detect patterns of change exceed the relative variation of the system. To do this, statistical models try to partition the sources of variation -- sources of an effect versus sources of random varation, for example.
 
+In statistics, trend analysis often refers to techniques for extracting an underlying pattern of behavior in a time series which would otherwise be partly or nearly completely hidden by noise. If the trend can be assumed to be linear, trend analysis can be undertaken within a formal regression analysis, as described in Trend estimation. If the trends have other shapes than linear, trend testing can be done by non-parametric methods, e.g. Mann-Kendall test, which is a version of Kendall rank correlation coefficient. For testing and visualization of non-linear trends also smoothing can be used.
+
 Methods might inclucde linear regression, the Mann-Kendall Trend Test, seasonal Mann-Kendall Test, correlated seasonal Mann-Kendall Test, partial Mann-Kendall Trend test, (Seasonal) Sen's slope, partial correlation trend test and change-point test after Pettitt.
 
 Alternatively, researchers might use time series analysis to evaluate the signal of the series by decomposing it for internal cycles, e.g. seasons and time of year, and determine if the signal is stationary or non-stationary, i.e. non-changing with time versus changing with time. A time series is a sequence of data points, measured typically at successive points in time spaced at uniform time intervals. Examples of time series are the daily closing value of the Dow Jones index and the annual flow volume of the Nile River at Aswan. Time series are very frequently plotted via line charts. Time series are used in statistics, signal processing, pattern recognition, econometrics, mathematical finance, weather forecasting, earthquake prediction, electroencephalography, control engineering, astronomy, and communications engineering.
 
 \subsection{Generalized Steps}
 
-Presentation of trend data
+To conduct a trend analysis, it's useful to consider a pattern of steps:
 
-Presentations of time-trend data should usually include the following:
-
-Graphical plots displaying the observed data over time
-Comment on any statistical methods used to transform the data
-Report average percent change
-An interpretation of the trends seen
-Interpretation of trend data
-
+\begin{enumerate}
+  \item Plot the observed data over time
+  \item Consider methods used to transform the data
+  \item Evaluate the average change
+  \item An interpretation of the resuling trend
+  \item Interpret the trend data
+\end{enumerate}
 
 \subsection{Goals for This Document}
 
@@ -116,21 +117,25 @@ First, this document is not complete. Second, there are areas of confusion for m
 
 \section{Frequentists and Bayesian Statistics}
 
-Statistics was born well before computer software had been developed, the development of statistical tools have both a historical context that is well beyond our project, but should be appreciated so we can use these tools without too much dificulty. 
+TBD
 
-First, we need to know there is a distinction between the Frenquentist and Bayesian statitician. Although the tools and approach are quite distinct, few students appreciate how different these approaches are until they are graduate school -- and being forced to 'pick' one versus the other in how they approach data analysis problems. 
+%Statistics was born well before computer software had been developed, the development of statistical tools have both a historical context that is well beyond our project, but should be appreciated so we can use these tools without too much dificulty. 
 
-I will reverse the typical order in most texts and describe Bayesian statistics first because we can use this to explicitly talk about probability and then we'll shift to Freqentist statistics -- which most of the tools in this text rely. 
+%First, we need to know there is a distinction between the Frenquentist and Bayesian statitician. Although the tools and approach are quite distinct, few students appreciate how different these approaches are until they are graduate school -- and being forced to 'pick' one versus the other in how they approach data analysis problems. 
+
+%I will reverse the typical order in most texts and describe Bayesian statistics first because we can use this to explicitly talk about probability and then we'll shift to Freqentist statistics -- which most of the tools in this text rely. 
 
 \subsection{Bayesian Statistics}
 
-Bayesian statistics, named for Thomas Bayes (1701–1761), is a theory in the field of statistics in which the evidence about the true state of the world is expressed in terms of degrees of belief known as Bayesian probabilities. 
+TBD
 
-Bayesian statistics is a system for describing epistemological uncertainty using the mathematical language of probability. In the 'Bayesian paradigm,' degrees of belief in states of nature are specified; these are non-negative, and the total belief in all states of nature is fixed to be one. Bayesian statistical methods start with existing 'prior' beliefs, and update these using data to give 'posterior' beliefs, which may be used as the basis for inferential decisions.
+%Bayesian statistics, named for Thomas Bayes (1701–1761), is a theory in the field of statistics in which the evidence about the true state of the world is expressed in terms of degrees of belief known as Bayesian probabilities. 
 
-Bayesian inference is a method of statistical inference in which Bayes' theorem is used to update the probability for a hypothesis as more evidence or information becomes available. Bayesian inference is an important technique in statistics, and especially in mathematical statistics. Bayesian updating is particularly important in the dynamic analysis of a sequence of data. Bayesian inference has found application in a wide range of activities, including science, engineering, philosophy, medicine, sport, and law. 
+%Bayesian statistics is a system for describing epistemological uncertainty using the mathematical language of probability. In the 'Bayesian paradigm,' degrees of belief in states of nature are specified; these are non-negative, and the total belief in all states of nature is fixed to be one. Bayesian statistical methods start with existing 'prior' beliefs, and update these using data to give 'posterior' beliefs, which may be used as the basis for inferential decisions.
 
-To demonstrate Baysian approach, let's evaluate the distribution of temperatures from Bangkok, Thailand. 
+%Bayesian inference is a method of statistical inference in which Bayes' theorem is used to update the probability for a hypothesis as more evidence or information becomes available. Bayesian inference is an important technique in statistics, and especially in mathematical statistics. Bayesian updating is particularly important in the dynamic analysis of a sequence of data. Bayesian inference has found application in a wide range of activities, including science, engineering, philosophy, medicine, sport, and law. 
+
+%To demonstrate Baysian approach, let's evaluate the distribution of temperatures from Bangkok, Thailand. 
 
 https://www.r-bloggers.com/a-simple-intro-to-bayesian-change-point-analysis/
 	
@@ -138,18 +143,26 @@ http://www.flutterbys.com.au/stats/tut/tut7.2b.html
 
 https://www.r-bloggers.com/bayesian-linear-regression-analysis-without-tears-r/
     
-
-
 \subsection{Frequentist Statistics}
 
-Frequentist inference has been associated with the frequentist interpretation of probability, specifically that any given experiment can be considered as one of an infinite sequence of possible repetitions of the same experiment, each capable of producing statistically independent results.[1] In this view, the frequentist inference approach to drawing conclusions from data is effectively to require that the correct conclusion should be drawn with a given (high) probability, among this notional set of repetitions. However, exactly the same procedures can be developed under a subtly different formulation. This is one where a pre-experiment point of view is taken. It can be argued that the design of an experiment should include, before undertaking the experiment, decisions about exactly what steps will be taken to reach a conclusion from the data yet to be obtained. These steps can be specified by the scientist so that there is a high probability of reaching a correct decision where, in this case, the probability relates to a yet to occur set of random events and hence does not rely on the frequency interpretation of probability. This formulation has been discussed by Neyman,[2] among others.
+%Frequentist inference has been associated with the frequentist interpretation of probability, specifically that any given experiment can be considered as one of an infinite sequence of possible repetitions of the same experiment, each capable of producing statistically independent results.[1] In this view, the frequentist inference approach to drawing conclusions from data is effectively to require that the correct conclusion should be drawn with a given (high) probability, among this notional set of repetitions. However, exactly the same procedures can be developed under a subtly different formulation. This is one where a pre-experiment point of view is taken. It can be argued that the design of an experiment should include, before undertaking the experiment, decisions about exactly what steps will be taken to reach a conclusion from the data yet to be obtained. These steps can be specified by the scientist so that there is a high probability of reaching a correct decision where, in this case, the probability relates to a yet to occur set of random events and hence does not rely on the frequency interpretation of probability. 
+
+\subsection{Examples of Frequentists Methods}
+
+\subsection{Direct Comparision-- Bayes and Frequentists}
 
 There are two major differences in the frequentist and Bayesian approaches to inference that are not included in the above consideration of the interpretation of probability:
 
-In a frequentist approach to inference, unknown parameters are often, but not always, treated as having fixed but unknown values that are not capable of being treated as random variates in any sense, and hence there is no way that probabilities can be associated with them. In contrast, a Bayesian approach to inference does allow probabilities to be associated with unknown parameters, where these probabilities can sometimes have a frequency probability interpretation as well as a Bayesian one. The Bayesian approach allows these probabilities to have an interpretation as representing the scientist's belief that given values of the parameter are true [see Bayesian probability - Personal probabilities and objective methods for constructing priors].
-While "probabilities" are involved in both approaches to inference, the probabilities are associated with different types of things. The result of a Bayesian approach can be a probability distribution for what is known about the parameters given the results of the experiment or study. The result of a frequentist approach is either a "true or false" conclusion from a significance test or a conclusion in the form that a given sample-derived confidence interval covers the true value: either of these conclusions has a given probability of being correct, where this probability has either a frequency probability interpretation or a pre-experiment interpretation.
+\begin{itemize}
+  \item In a frequentist approach to inference, unknown parameters are often, but not always, treated as having fixed but unknown values that are not capable of being treated as random variates in any sense, and hence there is no way that probabilities can be associated with them. In contrast, a Bayesian approach to inference does allow probabilities to be associated with unknown parameters, where these probabilities can sometimes have a frequency probability interpretation as well as a Bayesian one. The Bayesian approach allows these probabilities to have an interpretation as representing the scientist's belief that given values of the parameter are true.
 
-\subsubsection{Categorical versus Continuous Data}
+  \item While "probabilities" are involved in both approaches to inference, the probabilities are associated with different types of things. The result of a Bayesian approach can be a probability distribution for what is known about the parameters given the results of the experiment or study. The result of a frequentist approach is either a "true or false" conclusion from a significance test or a conclusion in the form that a given sample-derived confidence interval covers the true value: either of these conclusions has a given probability of being correct, where this probability has either a frequency probability interpretation or a pre-experiment interpretation.
+
+\end{itemize}
+
+\section{Understanding the Data: The First Step}
+
+\subsection{Categorical versus Continuous Data}
 
 When we measure environmental data, they can be either continuous or categorical. Categorical data are sometimes called discrete data, e.g. count data might be considered discrete and categorical --- if they are relatively number of possible values (perhaps, less than 3-4). Predictor variables can also be either categorical or continuous --- where we think of values that can be integers with a great range and values between integers (i.e. values with decimals).
 
@@ -158,7 +171,7 @@ Based on our understanding of the data, the choices of analysis become limited b
 \begin{figure}
 \caption{Decision tree for frequents inference depending on the predictor and response data types.}\label{fig:tree}
 \begin{center}
-\setkeys{Gin}{width=0.5\textwidth} 
+%\setkeys{Gin}{width=0.5\textwidth} 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
@@ -167,8 +180,7 @@ Based on our understanding of the data, the choices of analysis become limited b
 \end{center}
 \end{figure}
 
-
-\subsubsection{Four Frequentists Approaches}
+\subsection{Four Frequentists Approaches}
 
 Table \ref{tab:2X2Matrix} describes the statistical approaches available to freqentists in relation to the characteristics of the data. 
 
@@ -190,22 +202,23 @@ Table \ref{tab:2X2Matrix} describes the statistical approaches available to freq
 
 In our example, the temperature is obviously continuous. Date can be treated as continuous when their are lots of them, but as describe below, it might also be considered categorical -- in part because it's 'ordered' and it's divisible by day -- and not finer resolution, which is decidedly not continuous. However, because there are so many in these records, we can ignore that to continue our analysis. 
 
+\subsection{Data Quality Over Time}
 
-\section{Understanding the Data: The First Step}
+The results of all ecological studies, including time-series designs should be interpreted with caution because subtle problems can haunt the results:\footnote{These need to be revised...not completely appropriate.}
 
-
-The results of all ecological studies, including time-series designs should be interpreted with caution:1
-
-Data on exposure and outcome may be collected in different ways for different populations
-Migration of populations between groups during the study period may dilute any difference between the groups
-Such studies usually rely on routine data sources, which may have been collected for other purposes
-Ecological studies do not allow us to answer questions about individual risks
+\begin{itemize}
+  \item Data on exposure and outcome may be collected in different ways for different populations;
+  \item Studies usually rely on routine data sources, which may have been collected for other purposes;
+  \item Ecological studies do not allow us to answer questions about individual risks.
+\end{itemize}
 
 \subsection{Data Source and Metadata}
 
+TBD
+
 \subsection{Evaluating the Structure of Data}
 
-Time series data have a natural temporal ordering. This makes time series analysis distinct from other common data analysis problems
+
 
 This is analogous to selection a column or row of numbers in Excel to find the mean and you can usually find it by just looking at your spreadsheet to find the data of interest. In R you have to think a bit about what you want. Using the \texttt{str} command is good start, but we could also just look at the top of the observations to see which variables are of interest. To this we use the function \texttt{head()}, which is short for header, which shows the variable names and the first six observations.
 
@@ -422,7 +435,7 @@ The function to build a linear model is \texttt{lm()}. This function is extremel
 
 I am not showing it here, but you should see a long complex looking help page window pop up. All help files in R are structured the same way, so in spite of the uninterpretable text, written by and for computer programmers, the structure will become familiar. Beginning with the description, the help screen describes the function, how to use it, and give some examples. Admittedly, I rarely understand much of the text, but I find the examples to be very useful! In fact, I suggest you paste the example into R and see what happens, I find this one of the best ways to learn R. Use an example that I know works, then change it to make it do what I want it to do.
 
-\section{Simple Regression}
+\section{Linear Regression}
 
 \subsection{What is Linear Regression?}
 
@@ -447,6 +460,12 @@ Firstly, it might be used to identify the strength of the effect that the indepe
 Secondly, it can be used to forecast effects or impacts of changes.  That is, regression analysis helps us to understand how much the dependent variable will change when we change one or more independent variables.  Typical questions are, “How much additional Y do I get for one additional unit of X?”.
 
 Thirdly, regression analysis predicts trends and future values.  The regression analysis can be used to get point estimates.  Typical questions are, ``What will the price for gold be 6 month from now?'' ``What is the total effort for a tasks?''
+
+\subsection{Assumptions of Regression}
+
+\subsubsection{Time Series as Ordered Data}
+
+Time series data have a natural temporal ordering. This makes time series analysis distinct from other common data analysis problems.
 
 \subsection{Regression and Climate Change}
 
@@ -489,7 +508,6 @@ First, let's create a plot of data using \texttt{plot()}, whose format is \textt
 \end{knitrout}
 \end{figure}
 
-
 Finally, there is one important difference between the linear model that we used in the \texttt{aov()} function. This time we use the \texttt{lm()} function that arrange the results more in-line with a regression model.
 This syntax is still pretty straight forward,  
 
@@ -511,13 +529,12 @@ This syntax is still pretty straight forward,
 \end{knitrout}
 
 From this model, we learn that the change in $TMAX$ is 
-0 
-degrees $year^{-1}$. Figure~\ref{fig:TMAX_trend} shows the increasing concentrations, but also the seasonal variation. Statisticians have more advanced methods to analyze these data then what we have done, but for our purposes the implications are the same.  Greenhouse gas emissions are increasing and the estimated rates suggest an increasing rate.
+0 degrees $year^{-1}$. Figure~\ref{fig:TMAX_trend} shows a trend of increasing maximum temperatures.
 
 % Additional LaTeX code to add caption to figure
 \begin{figure}
 \label{fig:TMAX_trend}
-\caption{TMAX in Bankok, Thailand.}
+\caption{Maximum Daily Temperatures in Bangkok, Thailand.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
@@ -525,7 +542,7 @@ degrees $year^{-1}$. Figure~\ref{fig:TMAX_trend} shows the increasing concentrat
 \end{knitrout}
 \end{figure}
 
-Now let's ask if this value is significant, by putting the linear model into a ANOVA-like table. There are a number of functions that do this and we have seen the \texttt{anova()} function above. For linear regression, however, the \texttt{summary()} function gives a more complete output.
+Now determine test the null hypotheses and use the \texttt{summary()} function to display many of the important regression results.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -557,7 +574,11 @@ Now let's ask if this value is significant, by putting the linear model into a A
 \end{kframe}
 \end{knitrout}
 
-Here we find the that the slope and intercept are highly significant, we have some information on the residuals, and $R^2$ estimates, etc.
+Based on the results, we reject the null hypotheses, i.e. the events that this might occur by chance is small: 2x10$^{-16}$ for the slope is zero and p < 2x10$^{-16}$ for the y-intercept is zero. 
+
+In addition, we have some information on the residuals, and $R^2$ estimates, which are important to interpret the model. 
+
+For now, we can appreciate the the temperature is changing, i.e. increasing, with a slope of 2.7x10$^{-5}$ degrees C per year. 
 
 \subsection{Creating Monthly Averages of Daily Maximum Temperatures}
 
@@ -685,6 +706,8 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 
 Now, the change is 0.0088 degress C/year or 0.876 degress C/100 years with a probability of 0.2115. Although we can't reject the null hypothesis, we find the method to be fairly straightforward! 
 
+%https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R
+
 \subsection{Testing all the Months}
 
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
@@ -699,123 +722,232 @@ Below, I have create code to evaluate all of the months at once, but you may pre
 \end{knitrout}
 \end{figure}
 
-\subsubsection{TMIN}
+\subsection{Next Steps}
 
-1. We create a monthly TMIN mean for each month.
+\subsubsection{Analyzing Minimum Daily Temperatures}
+
+Alternatively, it might be important to evaluate changes to the daily mininum temperatures. Following the same steps we used before but using the TMIN instead of TMAX, let's analyze the monthly average of daily minimum temperatures by following these steps: 
+
+\begin{enumerate}
+
+\item First, let's plot the daily minimum temperatures, and as with the daily maximum temperatures, find tons of scatter (Table \ref{fig:TMIN_trend}).
+
+% Additional LaTeX code to add caption to figure
+\begin{figure}
+\label{fig:TMIN_trend}
+\caption{Minimum Daily Temperatures in Bangkok, Thailand.}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-16-1} 
+
+\end{knitrout}
+\end{figure}
+
+There appears to be a trend, but it's clouded with lots of variation. 
+
+  \item We create a monthly TMIN mean for each month.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{MonthlyMeanTMIN} \hlkwb{=} \hlkwd{aggregate}\hlstd{(TMIN} \hlopt{~} \hlstd{Month} \hlopt{+} \hlstd{Year, Thailand, mean)}
+\hlstd{MonthlyTMINMean} \hlkwb{=} \hlkwd{aggregate}\hlstd{(TMIN} \hlopt{~} \hlstd{Month} \hlopt{+} \hlstd{Year, Thailand, mean)}
 
-\hlstd{MonthlyMeanTMIN}\hlopt{$}\hlstd{YEAR} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{Year)}
-\hlkwd{head}\hlstd{(MonthlyMeanTMIN)}
+\hlstd{MonthlyTMINMean}\hlopt{$}\hlstd{YEAR} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Year)}
+
+\hlcom{# Fixing the Format of Month and Year as numeric}
+\hlstd{MonthlyTMINMean}\hlopt{$}\hlstd{YEAR} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Year)}
+\hlstd{MonthlyTMINMean}\hlopt{$}\hlstd{MONTH} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Month)}
+\hlkwd{head}\hlstd{(MonthlyTMINMean)}
 \end{alltt}
 \begin{verbatim}
-##   Month Year     TMIN YEAR
-## 1    01 1943 18.54828 1943
-## 2    02 1943 20.73077 1943
-## 3    03 1943 23.39655 1943
-## 4    04 1943 23.79259 1943
-## 5    05 1943 24.87692 1943
-## 6    06 1943 24.76429 1943
+##   Month Year     TMIN YEAR MONTH
+## 1    01 1943 18.54828 1943     1
+## 2    02 1943 20.73077 1943     2
+## 3    03 1943 23.39655 1943     3
+## 4    04 1943 23.79259 1943     4
+## 5    05 1943 24.87692 1943     5
+## 6    06 1943 24.76429 1943     6
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
-\subsection{TMIN}
-2. Now we plot the mins, and again, find tons of scatter.
+\item Create a plot of the monthly average of the daily minimum temperatures. 
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{TMIN,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
+\hlkwd{plot}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-17-1} 
 
 \end{knitrout}
 
+There is still lots of scatter and now we can subset our data by month. 
+
+\item Using the example above, we'll plot all 12 months at once to look for patterns (Table \ref{fig:TMIN}).
+
+\begin{figure}[ht]
+\caption{Twelve Months of Monthly Average Daily Minimum 
+Temperatures, Bangkok, Thailand}
+\label{fig:TMIN}
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{plot}\hlstd{(MonthlyMeanTMIN}\hlopt{$}\hlstd{TMIN[MonthlyMeanTMIN}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"12"}\hlstd{],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-18-1} 
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/12MonthsTMIN-1} 
 
 \end{knitrout}
+\end{figure} 
 
+\item The change in minimum temperatures seems to be even more compelling than the maximum temperatures. To compare, look at the Table \ref{tab:results} to appreciate estimated slopes and their associated null hypothesis probabilities. 
+
+\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(xtable)}
+\hlstd{Results} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Month} \hlstd{= TMINresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{1}\hlstd{],} \hlkwc{TMINSlope} \hlstd{= TMINresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{2}\hlstd{],} \hlkwc{TMIN_P} \hlstd{=} \hlkwd{as.numeric}\hlstd{(TMINresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{3}\hlstd{]),} \hlkwc{TMINRsq} \hlstd{= TMINresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{4}\hlstd{],} \hlkwc{TMAXSlope} \hlstd{= TMAXresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{2}\hlstd{],} \hlkwc{TMAX_P} \hlstd{=} \hlkwd{as.numeric}\hlstd{(TMAXresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{3}\hlstd{]),} \hlkwc{TMAXRsq} \hlstd{= TMAXresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{4}\hlstd{])}
+\hlstd{Results}\hlopt{$}\hlstd{starTMIN} \hlkwb{=} \hlstr{"NS"}
+\hlstd{Results}\hlopt{$}\hlstd{starTMIN[Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<=} \hlnum{.05}\hlstd{]} \hlkwb{=} \hlstr{"*"}
+\hlstd{Results}\hlopt{$}\hlstd{starTMIN[Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<} \hlnum{0.01}\hlstd{]} \hlkwb{=} \hlstr{"**"}
+\hlstd{Results}\hlopt{$}\hlstd{starTMIN[Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<} \hlnum{0.001}\hlstd{]} \hlkwb{=} \hlstr{"***"}
+\hlstd{Results}\hlopt{$}\hlstd{starTMAX} \hlkwb{=} \hlstr{"NS"}
+\hlstd{Results}\hlopt{$}\hlstd{starTMAX[Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<} \hlnum{0.05}\hlstd{]} \hlkwb{=} \hlstr{"*"}
+\hlstd{Results}\hlopt{$}\hlstd{starTMAX[Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<} \hlnum{0.01}\hlstd{]} \hlkwb{=} \hlstr{"**"}
+\hlstd{Results}\hlopt{$}\hlstd{starTMAX[Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<} \hlnum{0.001}\hlstd{]} \hlkwb{=} \hlstr{"***"}
+\hlstd{Results}\hlopt{$}\hlstd{TMINslope}\hlkwb{=}\hlkwd{paste}\hlstd{(Results}\hlopt{$}\hlstd{TMINSlope, Results}\hlopt{$}\hlstd{starTMIN)}
+\hlstd{Results}\hlopt{$}\hlstd{TMAXslope}\hlkwb{=}\hlkwd{paste}\hlstd{(Results}\hlopt{$}\hlstd{TMAXSlope, Results}\hlopt{$}\hlstd{starTMAX)}
+\hlkwd{colnames}\hlstd{(Results)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Month"}\hlstd{,} \hlstr{"2"}\hlstd{,} \hlstr{"3"}\hlstd{,} \hlstr{"R^2"}\hlstd{,} \hlstr{"5"}\hlstd{,} \hlstr{"6"}\hlstd{,} \hlstr{"R^2"}\hlstd{,} \hlstr{"8"}\hlstd{,} \hlstr{"9"}\hlstd{,} \hlstr{"Slope TMIN"}\hlstd{,} \hlstr{"Slope TMAX"}\hlstd{)}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Mon Jul 10 23:40:15 2017
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllll}
+  \hline
+ & Month & Slope TMIN & R\verb|^|2 & Slope TMAX & R\verb|^|2.1 \\ 
+  \hline
+1 & January & 0.0498 *** & 0.341 & -0.0051 NS & 0.009 \\ 
+  2 & February & 0.0387 *** & 0.385 & -1e-04 NS & 0 \\ 
+  3 & March & 0.0409 *** & 0.567 & -0.002 NS & 0.001 \\ 
+  4 & April & 0.04 *** & 0.551 & 0.0097 NS & 0.035 \\ 
+  5 & May & 0.031 *** & 0.48 & 0.0088 NS & 0.021 \\ 
+  6 & June & 0.0259 *** & 0.448 & 0.0129 * & 0.078 \\ 
+  7 & July & 0.028 *** & 0.493 & 0.0157 *** & 0.173 \\ 
+  8 & August & 0.0245 *** & 0.395 & 0.0194 *** & 0.245 \\ 
+  9 & September & 0.015 *** & 0.279 & 0.0217 *** & 0.257 \\ 
+  10 & October & 0.01 * & 0.093 & 0.02 *** & 0.174 \\ 
+  11 & November & 0.0158 * & 0.067 & 0.0253 *** & 0.169 \\ 
+  12 & December & 0.0322 *** & 0.178 & 0.0119 NS & 0.034 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+Based on the results above, the slopes are greatest during the dry season (starting in May) for the maximum temperatures -- but the minimum temperatures show the largest slopes (change) and peaking between January and April.  
+
+In addition, the $r^2$ values signify the amount of the variance explained by the predictor -- in the case of TMIN, most of the values are over 20\% meaning that over 20\% of the variance is explained by time. While in March and April over time explains 50\% of the variance. 
+
+This is very high for uncontroled experiments. However, we should be cognizant that in many cases, especially for the maximum temperatures, it is less than 10\%. This means the the variation in temperature are not predicted by time -- thus, as a modeler, I would work very hard to capture other sources to better understand what is going on in Thailand. 
+
+Finally, we should also be very concerned about testing 2 dozen hypotheses with our little R code. It's easy to do, but based on change alone, with a critical value of 0.05, we should expect 1 in 20 tests to give us a Type I error, a signal when one doesn't exists. Since we did 12 tests, we should expect a good chance that one or more of our tests will reject the null hypothesis incorrectly. Yikes!  
+Please keep this in mind and be careful to avoid this potential problem. 
+
+As we might expect, the a small amount of the variance is explained by the ``Month.'' Many things predict temerpature, that year is one, is quite problematic.
+
+\item What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
+
+\end{enumerate}
+
+\subsubsection{Precipitation: Departure from Mean}
+
+Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
+
+Precipitation is something that might increase or decrease due to climate change. So, to analyze this, we will evaluate how much precipitation has deveated from the mean, by plotting the rainfall and the mean in a time-series plot. 
+
+Second, we need to remove the missing values and evalaute which years have complete years. If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season? We'll need to be consistent -- assuming that missing data are not zeros, we'll define complete years as over 300 days of data. 
+
+NOTE: The missing values have not been converted to NAs!
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(TMIN}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMeanTMIN[MonthlyMeanTMIN}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"12"}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
-\hlstd{Dec.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMIN}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyMeanTMIN[MonthlyMeanTMIN}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"12"}\hlstd{,])}
-\hlkwd{summary}\hlstd{(Dec.lm)}
-\end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## lm(formula = TMIN ~ YEAR, data = MonthlyMeanTMIN[MonthlyMeanTMIN$Month == 
-##     "12", ])
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -3.6746 -0.8672 -0.2573  1.0020  3.1247 
-## 
-## Coefficients:
-##               Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -42.320213  16.700175  -2.534 0.013617 *  
-## YEAR          0.032161   0.008439   3.811 0.000303 ***
-## ---
-## Signif. codes:  
-## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 1.525 on 67 degrees of freedom
-## Multiple R-squared:  0.1782,	Adjusted R-squared:  0.1659 
-## F-statistic: 14.52 on 1 and 67 DF,  p-value: 0.0003034
-\end{verbatim}
-\begin{alltt}
-\hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(Dec.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\hlstd{Thailand}\hlopt{$}\hlstd{PRCP[Thailand}\hlopt{$}\hlstd{PRCP}\hlopt{==-}\hlnum{9999}\hlstd{]} \hlkwb{<-} \hlnum{NA}
+
+\hlstd{Missing} \hlkwb{<-} \hlkwd{aggregate}\hlstd{(}\hlkwd{is.na}\hlstd{(Thailand}\hlopt{$}\hlstd{PRCP),} \hlkwd{list}\hlstd{(Thailand}\hlopt{$}\hlstd{Month, Thailand}\hlopt{$}\hlstd{Year), sum)}
+\hlstd{Missing}\hlopt{$}\hlstd{Date} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(Missing}\hlopt{$}\hlstd{Group.1)} \hlopt{+} \hlkwd{as.numeric}\hlstd{(Missing}\hlopt{$}\hlstd{Group.2)}\hlopt{/}\hlnum{12}
+\hlkwd{plot}\hlstd{(x} \hlopt{~} \hlstd{Date,} \hlkwc{data}\hlstd{=Missing)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-19-1} 
 
 \end{knitrout}
 
-\subsection{TMIN}
+Third, we will need to decide what level of aggredation -- monthly, yearly, etc.  Let's aggreate by month and year to get monthly totals. 
 
-3. In this case, we get a slope, 0.0321607 degress/year and a probability of \ensuremath{3.034\times 10^{-4}} and an r-sqaured of 0.178. Cool! As we might expect, the a small amount of the variance is explained by the ``Month.'' Many things predict temerpature, that year is one, is quite problematic.
-
-4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
-
-
-\subsubsection{Departure from Mean}
+There are loads of missing values in many months. Let's cut of the months that have more than 4 missing days. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#PRCP_mean = mean(LosAngeles$PRCP, na.rm=T)}
+\hlstd{TotalPPT} \hlkwb{<-} \hlkwd{aggregate}\hlstd{(Thailand}\hlopt{$}\hlstd{PRCP,} \hlkwd{list}\hlstd{(Thailand}\hlopt{$}\hlstd{Month, Thailand}\hlopt{$}\hlstd{Year), sum,} \hlkwc{na.rm}\hlstd{=T)}
+\hlkwd{names}\hlstd{(TotalPPT)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Group.1"}\hlstd{,} \hlstr{"Group.2"}\hlstd{,} \hlstr{"ppt"}\hlstd{)}
+\hlstd{NonMissing} \hlkwb{<-} \hlstd{Missing[Missing}\hlopt{$}\hlstd{x} \hlopt{<} \hlnum{5}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{)]}
+\hlkwd{library}\hlstd{(dplyr)}
+\end{alltt}
 
-\hlcom{#plot(PRCP~NewDate, data=LosAngeles)}
-\hlcom{#abline(h=PRCP_mean, col="blue")}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'dplyr'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following objects are masked from 'package:stats':\\\#\# \\\#\#\ \ \ \  filter, lag}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following objects are masked from 'package:base':\\\#\# \\\#\#\ \ \ \  intersect, setdiff, setequal, union}}\begin{alltt}
+\hlstd{PPT} \hlkwb{<-} \hlkwd{merge}\hlstd{(TotalPPT, NonMissing,} \hlkwc{all.y}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlstd{PPT}\hlopt{$}\hlstd{Date} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(PPT}\hlopt{$}\hlstd{Group.1)} \hlopt{+} \hlkwd{as.numeric}\hlstd{(PPT}\hlopt{$}\hlstd{Group.2)}\hlopt{/}\hlnum{12}
+\hlkwd{head}\hlstd{(PPT)}
+\end{alltt}
+\begin{verbatim}
+##   Group.1 Group.2  ppt x     Date
+## 1      01    1951  0.2 0 163.5833
+## 2      01    1952  0.0 0 163.6667
+## 3      01    1953 20.3 0 163.7500
+## 4      01    1954  5.3 0 163.8333
+## 5      01    1955  2.2 0 163.9167
+## 6      01    1956  5.6 0 164.0000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+First, we need a "mean" -- The IPCC uses 1961-1990 as a norm for temperature, I don't know what is the standard for rainfall or Thailand, so we should look that up. For now, we'll use our filtered records to generate a mean.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{PRCP_mean} \hlkwb{=} \hlkwd{mean}\hlstd{(PPT}\hlopt{$}\hlstd{ppt)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(ppt}\hlopt{~}\hlstd{Date,} \hlkwc{data}\hlstd{=PPT)}
+\hlkwd{abline}\hlstd{(}\hlkwc{h}\hlstd{=PRCP_mean,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-22-1} 
 
-\subsubsection{Experimental Portion --- Precipitation}
+\end{knitrout}
 
-Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
+Wow, these data look terrible -- the mean looks meaningless given the biased data set. I don't think we can do more analysis with this. But let's look at a few months and see what we can decipher.
 
-First, we need a "mean" -- The IPCC uses 1961-1990 as a norm, I don't know what is the standard for California, so we should look that up.
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-23-1} 
 
-Second, we need to remove the missing values and evalaute which years have complete years. If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season?  
-
-Third, we will need to decide what level of aggredation -- monthly, yearly, etc. 
-
-Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
-
+\end{knitrout}
+\end{figure}
+ 
+%Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -860,7 +992,7 @@ Figure has points of the yearly sum of rainfall and the blue line mean. The gree
 \end{kframe}
 \end{knitrout}
 
-\subsection{Problems with a Simple Regression Model}
+\subsection{Assumptions of the Linear Regression}
 
 Regression models, like all statistics, rely on certain assumptions. Violations of these assumptions reduces the validity of the model. If the violations are serious, then the model could be misleading or even incorrect.
 
@@ -917,7 +1049,7 @@ Try not to get bogged down in the code at this point. But it is a useful thing t
 \hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{=Thailand))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-25-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-28-1} 
 
 \end{knitrout}
 \end{figure}
@@ -947,7 +1079,12 @@ Instead of letting autocorrelation be 'hidden' problem in the data, we can incor
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(nlme)}
+\end{alltt}
 
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'nlme'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:dplyr':\\\#\# \\\#\#\ \ \ \  collapse}}\begin{alltt}
 \hlcom{#TMAX.gls = gls(TMAX ~ NewDate, data = Thailand, na.action=na.omit)}
 \hlcom{#summary(TMAX.gls)}
 \hlcom{#TMAX.gls2 = gls(TMAX ~ NewDate, data = Thailand, correlation = corAR1(form=~1), na.action=na.omit)}
