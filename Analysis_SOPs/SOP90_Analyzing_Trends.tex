@@ -87,33 +87,31 @@ For our purposes, the trend analysis or time series analysis is used to evaluate
 
 \subsection{Trend Analysis versus Time Series Analysis}
 
-Trend analysis statistics are a set of tools used to detect patterns of change exceed the relative variation of the system. To do this, statistical models try to partition the sources of variation -- sources of an effect versus sources of random varation, for example.
+Trend analysis statistics are a set of tools used to detect patterns of change exceed the relative variation of the system. Detecting these changes relies on the use of mathematical models meant to describe the patterns and processes of the system in question. 
 
-In statistics, trend analysis often refers to techniques for extracting an underlying pattern of behavior in a time series which would otherwise be partly or nearly completely hidden by noise. If the trend can be assumed to be linear, trend analysis can be undertaken within a formal regression analysis, as described in Trend estimation. If the trends have other shapes than linear, trend testing can be done by non-parametric methods, e.g. Mann-Kendall test, which is a version of Kendall rank correlation coefficient. For testing and visualization of non-linear trends also smoothing can be used.
-
-Methods might inclucde linear regression, the Mann-Kendall Trend Test, seasonal Mann-Kendall Test, correlated seasonal Mann-Kendall Test, partial Mann-Kendall Trend test, (Seasonal) Sen's slope, partial correlation trend test and change-point test after Pettitt.
-
-Alternatively, researchers might use time series analysis to evaluate the signal of the series by decomposing it for internal cycles, e.g. seasons and time of year, and determine if the signal is stationary or non-stationary, i.e. non-changing with time versus changing with time. A time series is a sequence of data points, measured typically at successive points in time spaced at uniform time intervals. Examples of time series are the daily closing value of the Dow Jones index and the annual flow volume of the Nile River at Aswan. Time series are very frequently plotted via line charts. Time series are used in statistics, signal processing, pattern recognition, econometrics, mathematical finance, weather forecasting, earthquake prediction, electroencephalography, control engineering, astronomy, and communications engineering.
+Trend analysis often refers to techniques for extracting an underlying pattern of behavior in a time series which would otherwise be partly or nearly completely hidden by noise. To determine if a trend is present, e.g. if the time series is non-stationary, models are used to partion or separate the trend from other sources of varation.
+These sources of varation may be internal or external to the system, may have regular periods (e.g. seasons) or part of some random process (e.g. random walk). If the trend can be assumed to be linear, trend analysis can be undertaken within a formal regression analysis. If the trends have other shapes than linear, trend testing can be done by non-parametric methods, e.g. Mann-Kendall test, which is a version of Kendall rank correlation coefficient. For testing and visualization of non-linear trends, smoothing techniques are extremely valuable. 
 
 \subsection{Generalized Steps}
 
 To conduct a trend analysis, it's useful to consider a pattern of steps:
 
 \begin{enumerate}
-  \item Plot the observed data over time
-  \item Consider methods used to transform the data
-  \item Evaluate the average change
-  \item An interpretation of the resuling trend
-  \item Interpret the trend data
+  \item become knowledge about the structre and limitations of the data source;
+  \item plot the observed data over time;
+  \item consider methods used to transform the data; 
+  \item model and estimate average trend;
+  \item evaluate the validity of the model; and
+  \item interpret the trend data
 \end{enumerate}
 
 \subsection{Goals for This Document}
 
-This document provides EA students with limited statstical training to use various statistical tools to analyze climate data. To accompiish this, we have tried to explain the theoretical background and demonstrate the steps to analyze climate data. We also try to explain how the ``null'' hypothesis is used in frequentist statistics, the meaning of type I and type II errors, and how we draw conclusions using statistical tools. Finally, we demonstrate the steps to use some of the common tools to analyze climate data using temperature and precipitation data collected from Bangkok, Thailand. 
+This document provides EA students with developing statstical training to use various statistics to analyze climate data. To accomplish this, we explore the theoretical background and demonstrate the steps to analyze climate data. We also explain how the ``null'' hypothesis is used in frequentist statistics, the meaning of Type I and Type II errors, and how we draw conclusions based on the results of statistical tests. Finally, we demonstrate the steps to use selected statistical tools to analyze temperature and precipitation data collected from Bangkok, Thailand. 
 
-NOTE: I am not a statsitian. But I have written this because I have never found an adequate guide for undergraduates that is both accessible and complete enough for our project. However, no document is perfect.
+NOTE: I am not a statsitian. But I have written this because I have never found an adequate guide for undergraduates that is both accessible and complete enough for our project. However, no guide is perfect.
 
-First, this document is not complete. Second, there are areas of confusion for me and these probably come out in the document. Even when I understand the concepts and tools, my explanation may lead to confusion. In any case, I suggest you use this as ONE resource and not the only one. In addition, if you are confused by sections, please let me know because I work hard to improve it with each iteration. 
+First, this document is incomplete. There are hundreds of ways to analyze quantitive data and long theoretical history that supports these methods. I have selected just a few and barely delve in the the theory. Second, there are areas of confusion for me and these probably are visible in the document. Even when I understand the concepts and tools, my explanation may lead to confusion. In any case, I suggest you use this as ONE resource among many (e.g. textbooks, online guides, and other faculty). In addition, if you are confused by sections, please let me know because I work hard to improve it with each iteration. 
 
 \section{Frequentists and Bayesian Statistics}
 
@@ -149,22 +147,28 @@ https://www.r-bloggers.com/bayesian-linear-regression-analysis-without-tears-r/
 
 \subsection{Examples of Frequentists Methods}
 
+TBD
+
 \subsection{Direct Comparision-- Bayes and Frequentists}
 
-There are two major differences in the frequentist and Bayesian approaches to inference that are not included in the above consideration of the interpretation of probability:
+TBD
 
-\begin{itemize}
-  \item In a frequentist approach to inference, unknown parameters are often, but not always, treated as having fixed but unknown values that are not capable of being treated as random variates in any sense, and hence there is no way that probabilities can be associated with them. In contrast, a Bayesian approach to inference does allow probabilities to be associated with unknown parameters, where these probabilities can sometimes have a frequency probability interpretation as well as a Bayesian one. The Bayesian approach allows these probabilities to have an interpretation as representing the scientist's belief that given values of the parameter are true.
+%There are two major differences in the frequentist and Bayesian approaches to inference that are not included in the above consideration of the interpretation of probability:
 
-  \item While "probabilities" are involved in both approaches to inference, the probabilities are associated with different types of things. The result of a Bayesian approach can be a probability distribution for what is known about the parameters given the results of the experiment or study. The result of a frequentist approach is either a "true or false" conclusion from a significance test or a conclusion in the form that a given sample-derived confidence interval covers the true value: either of these conclusions has a given probability of being correct, where this probability has either a frequency probability interpretation or a pre-experiment interpretation.
+%\begin{itemize}
+%  \item In a frequentist approach to inference, unknown parameters are often, but not always, treated as having fixed but unknown values that are not capable of being treated as random variates in any sense, and hence there is no way that probabilities can be associated with them. In contrast, a Bayesian approach to inference does allow probabilities to be associated with unknown parameters, where these probabilities can sometimes have a frequency probability interpretation as well as a Bayesian one. The Bayesian approach allows these probabilities to have an interpretation as representing the scientist's belief that given values of the parameter are true.
 
-\end{itemize}
+%  \item While "probabilities" are involved in both approaches to inference, the probabilities are associated with different types of things. The result of a Bayesian approach can be a probability distribution for what is known about the parameters given the results of the experiment or study. The result of a frequentist approach is either a "true or false" conclusion from a significance test or a conclusion in the form that a given sample-derived confidence interval covers the true value: either of these conclusions has a given probability of being correct, where this probability has either a frequency probability interpretation or a pre-experiment interpretation.
+%\end{itemize}
+
 
 \section{Understanding the Data: The First Step}
 
 \subsection{Categorical versus Continuous Data}
 
 When we measure environmental data, they can be either continuous or categorical. Categorical data are sometimes called discrete data, e.g. count data might be considered discrete and categorical --- if they are relatively number of possible values (perhaps, less than 3-4). Predictor variables can also be either categorical or continuous --- where we think of values that can be integers with a great range and values between integers (i.e. values with decimals).
+
+\subsection{Types of Data Define Tests Available}
 
 Based on our understanding of the data, the choices of analysis become limited but also easier to choose from (Table %\ref{fig:tree}).
 
@@ -182,20 +186,40 @@ Based on our understanding of the data, the choices of analysis become limited b
 
 \subsection{Four Frequentists Approaches}
 
+Based on these four data combination types, we will give examples of each of the four types:
+
+\subsubsection{Contigency Tables}
+
+TBD
+
+\subsection{Analysis of Variance}
+
+TBD
+
+\subsection{Linear Regression}
+
+TBD
+
+\subsection{Logistic Regression}
+
+TBD
+
+\subsubsection{Implementing Approaches in R}
+
 Table \ref{tab:2X2Matrix} describes the statistical approaches available to freqentists in relation to the characteristics of the data. 
 
 \begin{table}
 	\caption{2 x 2 Matrix of Inference Methods  --Going to insert graphics to give little pics of analysis...}
 	\label{tab:2X2Matrix}
 	
-		\begin{tabular}{|l|l||ll|} \hline
+		\begin{tabular}{|l|l||p{4cm}p{5cm}|} \hline
 				&	& \multicolumn{2}{c|}{Response}    \\ \hline
 				&			& Categorical 		& Continuous \\ \hline\hline
 				
-	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Predictor}}} & Categorical 		& Tests of Association	& ANOVA 						\\ 
-	&& \includegraphics[scale=.05]{../graphics/smoking-non-sequitur.jpg} & \\
-			& Continuous				&	Logistic Regression		& Linear Regression	\\ 
-	&&& \\ \hline
+	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Predictor}}} & Categorical 		& \textbf{Tests of Association}	& \textbf{ANOVA} 						\\ 
+	&& \texttt{fisher.test()} & \texttt{aov(y $\sim$ x)}, \texttt{lm(y $\sim$ x)}, \texttt{mle(y $\sim$ x)}, \texttt{nlme(y $\sim$ x)}\\
+			& Continuous				&	\textbf{Logistic Regression}		& \textbf{Linear Regression}	\\ 
+	&& \texttt{lm(y $\sim$ x)}, \texttt{glm(y $\sim$ x)}, \texttt{gls(y $\sim$ x)} & \texttt{glm(y $\sim$ x,family=binomial(link='logit'))}\\ \hline
 		\end{tabular}
 
 \end{table}
@@ -377,16 +401,25 @@ Congratulations, you have made it through the next step in R!  You now know how 
 
 \subsection{'Null Hypotheses' as the Foundation of Frequentist Statistics}
 
+The null hypothesis, H$_0$ is the commonly accepted fact; it is the opposite of the alternate hypothesis. Researchers work to reject, nullify or disprove the null hypothesis. Researchers come up with an alternate hypothesis (H$_A$), one that they think explains a phenomenon, and then work to reject the null hypothesis.
 
-
-
-
-
-
+The word “null” in this context means that it’s a commonly accepted fact that researchers work to nullify. It doesn’t mean that the statement is null itself! (Perhaps the term should be called the “nullifiable hypothesis” as that might cause less confusion).
 
 \subsection{Type I and Type II Errors}
 
-\begin{table}
+Adding to the confusion, is that there are times that the statistical test might be wrong!  Researchers try to protect themselves, but as we'll learn, it's impossible to protect ourselves completely. 
+
+A type I error occurs when the null hypothesis (H0) is true, but is rejected. It is asserting something that is absent, a false hit. A type I error may be likened to a so-called false positive (a result that indicates that a given condition is present when it actually is not present).
+
+The type I error rate or significance level is the probability of rejecting the null hypothesis given that it is true. It is denoted by the Greek letter $\alpha$ (alpha) and is also called the alpha level. Often, the significance level is set to 0.05 (5\%), implying that it is acceptable to have a 5\% probability of incorrectly rejecting the null hypothesis.
+
+A type II error occurs when the null hypothesis is false, but erroneously fails to be rejected. It is failing to assert what is present, a miss. A type II error may be compared with a so-called false negative (where an actual 'hit' was disregarded by the test and seen as a 'miss') in a test checking for a single condition with a definitive result of true or false. A Type II error is committed when we fail to believe a truth. In terms of folk tales, an investigator may fail to see the wolf ("failing to raise an alarm"). Again, H0: no wolf.
+
+The rate of the type II error is denoted by the Greek letter $\beta$ (beta) and related to the power of a test (which equals 1−$\beta$).
+
+We can represent these choices in a table, which makes it easy to see the various outcomes and types of errors (Table \ref{tab:TypeErrors}).
+
+\begin{table}[h]
 	\caption{2 x 2 Matrix of Inference Methods  --Going to insert graphics to give little pics of analysis...}
 	\label{tab:TypeErrors}
 	
@@ -406,34 +439,6 @@ Congratulations, you have made it through the next step in R!  You now know how 
 \subsection{Mathematical Mechanisms to Test Hypothesis}
 
 Using the linear model, we can analyze several types of data, when the response variable is continuous. If the have a predictor variable that is categorical, then we often analyze the data using the method known as analysis of variance or ANOVA. If the predictor variable is continuous, then we often analyze data using a regression analysis.
-
-\section{Linear Models in R}
-
-The use of the linear model is the cornerstone of statistics. So ubiquitous it is rarely explained coherently. The linear model can be summarized at the equation for a line, but with the addition of error. You are probably familiar with the equation for a line where, 
-
-\begin{equation}
-y = m * x + b
-\end{equation}
-
-This equation defines a line, where $m$ is the slope, $b$ is the y-intercept, and the x and y are coordinates. The linear model is based on this form and is usually written as  
-
-\begin{equation}
-y \sim \alpha + \beta * x + \epsilon
-\end{equation}
-
-The order is usually changed, where the intercept is first, followed by the slope and x variable and the addition of error or noise. The error is usually symbolized as $\epsilon$. In general, in a statistical model, Greek letters are used and instead of an equals sign, we use a tilde, meaning that that left side of the equation is a function of the right side. Luckily, this is the approximate form that R expects, so if you understand this, you will have a pretty good idea of how to code a linear model in R. 
-
-The function to build a linear model is \texttt{lm()}. This function is extremely powerful and can be easily implemented, but this is a good time to see what the help menus look like in R. 
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{help}\hlstd{(lm)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-I am not showing it here, but you should see a long complex looking help page window pop up. All help files in R are structured the same way, so in spite of the uninterpretable text, written by and for computer programmers, the structure will become familiar. Beginning with the description, the help screen describes the function, how to use it, and give some examples. Admittedly, I rarely understand much of the text, but I find the examples to be very useful! In fact, I suggest you paste the example into R and see what happens, I find this one of the best ways to learn R. Use an example that I know works, then change it to make it do what I want it to do.
 
 \section{Linear Regression}
 
@@ -463,9 +468,46 @@ Thirdly, regression analysis predicts trends and future values.  The regression 
 
 \subsection{Assumptions of Regression}
 
-\subsubsection{Time Series as Ordered Data}
+Here is a list of assumptions to produce a valid regression model:
+
+\begin{description}
+  \item[Linear relationship] TBD
+  \item[Multivariate normality] TBD
+  \item[No or little multicollinearity] TBD
+  \item[No auto-correlation] TBD
+  \item[Homoscedasticity] or Homogeneity of Variance
+\end{description}
+
+\subsubsection{Time Series: Ordered and Autocorrelated}
 
 Time series data have a natural temporal ordering. This makes time series analysis distinct from other common data analysis problems.
+
+\subsection{Linear Models in R}
+
+The use of the linear model is the cornerstone of statistics. So ubiquitous it is rarely explained coherently. The linear model can be summarized at the equation for a line, but with the addition of error. You are probably familiar with the equation for a line where, 
+\begin{equation}
+y = m * x + b
+\end{equation}
+
+This equation defines a line, where $m$ is the slope, $b$ is the y-intercept, and the x and y are coordinates. The linear model is based on this form and is usually written as  
+
+\begin{equation}
+y \sim \alpha + \beta * x + \epsilon
+\end{equation}
+
+The order is usually changed, where the intercept is first, followed by the slope and x variable and the addition of error or noise. The error is usually symbolized as $\epsilon$. In general, in a statistical model, Greek letters are used and instead of an equals sign, we use a tilde, meaning that that left side of the equation is a function of the right side. Luckily, this is the approximate form that R expects, so if you understand this, you will have a pretty good idea of how to code a linear model in R. 
+
+The function to build a linear model is \texttt{lm()}. This function is extremely powerful and can be easily implemented, but this is a good time to see what the help menus look like in R. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{help}\hlstd{(lm)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+I am not showing it here, but you should see a long complex looking help page window pop up. All help files in R are structured the same way, so in spite of the uninterpretable text, written by and for computer programmers, the structure will become familiar. Beginning with the description, the help screen describes the function, how to use it, and give some examples. Admittedly, I rarely understand much of the text, but I find the examples to be very useful! In fact, I suggest you paste the example into R and see what happens, I find this one of the best ways to learn R. Use an example that I know works, then change it to make it do what I want it to do.
 
 \subsection{Regression and Climate Change}
 
@@ -508,8 +550,7 @@ First, let's create a plot of data using \texttt{plot()}, whose format is \textt
 \end{knitrout}
 \end{figure}
 
-Finally, there is one important difference between the linear model that we used in the \texttt{aov()} function. This time we use the \texttt{lm()} function that arrange the results more in-line with a regression model.
-This syntax is still pretty straight forward,  
+We use the \texttt{lm()} function that arrange the results in-line with a regression model. This syntax is  straight forward,  
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -580,11 +621,11 @@ In addition, we have some information on the residuals, and $R^2$ estimates, whi
 
 For now, we can appreciate the the temperature is changing, i.e. increasing, with a slope of 2.7x10$^{-5}$ degrees C per year. 
 
-\subsection{Creating Monthly Averages of Daily Maximum Temperatures}
+\subsubsection{Creating Monthly Averages of Daily Maximum Temperatures}
 
 One of the first things to note is how messy the data look and there are lots of sources of variation. For example, we expect months to respond differently to the climate change. To assess this, we will now analyze the data for monthly means of the maximum temperatures.
 
-\subsection{Creating Monthly Means}
+\subsubsection{Creating Monthly Means}
 
 To create monthly means, we need to disagragate the NewDate variable into a month and year variables.
 
@@ -819,7 +860,7 @@ Temperatures, Bangkok, Thailand}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Jul 10 23:40:15 2017
+% Tue Jul 11 10:11:34 2017
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
@@ -847,7 +888,7 @@ Based on the results above, the slopes are greatest during the dry season (start
 
 In addition, the $r^2$ values signify the amount of the variance explained by the predictor -- in the case of TMIN, most of the values are over 20\% meaning that over 20\% of the variance is explained by time. While in March and April over time explains 50\% of the variance. 
 
-This is very high for uncontroled experiments. However, we should be cognizant that in many cases, especially for the maximum temperatures, it is less than 10\%. This means the the variation in temperature are not predicted by time -- thus, as a modeler, I would work very hard to capture other sources to better understand what is going on in Thailand. 
+This is very high for uncontrolled experiments. However, we should be cognizant that in many cases, especially for the maximum temperatures, it is less than 10\%. This means the the variation in temperature are not predicted by time -- thus, as a modeler, I would work very hard to capture other sources to better understand what is going on in Thailand. 
 
 Finally, we should also be very concerned about testing 2 dozen hypotheses with our little R code. It's easy to do, but based on change alone, with a critical value of 0.05, we should expect 1 in 20 tests to give us a Type I error, a signal when one doesn't exists. Since we did 12 tests, we should expect a good chance that one or more of our tests will reject the null hypothesis incorrectly. Yikes!  
 Please keep this in mind and be careful to avoid this potential problem. 
@@ -996,25 +1037,34 @@ Figure has points of the yearly sum of rainfall and the blue line mean. The gree
 
 Regression models, like all statistics, rely on certain assumptions. Violations of these assumptions reduces the validity of the model. If the violations are serious, then the model could be misleading or even incorrect.
 
-Here is a list of assumptions to produce a valid regression model:
+TBD
+
+%Here is a list of assumptions to produce a valid regression model:
+
+%\begin{description}
+%  \item[Homogeneity of Variance]
+%  \item[something else]
+%\end{description}
+
+\subsubsection{Assumptions about $\epsilon$}
+
+The error term should have 
+
 
 \begin{description}
-  \item[Homogeneity of Variance]
-  \item[something else]
+  \item [E(et) = 0], zero mean
+
+  \item[E(et) = s], constant variance
+
+  \item[E(et, Xt) = 0] , no correlation with X 
+
+  \item[TBD] E(e , e ), no autocorrelation. t t-1
+
+  \item[e ~ Normally distributed] (for hypothesis testing). 
+
 \end{description}
 
-Assumptions about e , the “error term”: t
-i. E(et
-) = 0, zero mean
-ii. E(et
-) = s , constant variance 2 2
-iii. E(et
-, Xt
-) = 0, no correlation with X 
-iv. E(e , e ) , no autocorrelation. t t-1
-v. e ~ Normally distributed (for hypothesis testing). t
-3. Assumption four is especially important and most likely not to be met when
-using time series data.
+Assumption four is especially important and most likely not to be met when using time series data.
 
 Autocorrelation.
 
@@ -1024,17 +1074,9 @@ Autocorrelation.
 
 With every statistical test done, researchers validate their model in some way or anther. Often this entails the use of diagnostics, a standardize battery of procedures to check to see if the data are following the assumptions. 
 
-In R four plots are created by default.  To see them all at the same time, we need to change the graphical parameters so the graphics window expects four panels, in this case a 2 rows and two columns. 
+In R four plots are created by default.  To see them all at the same time, we need to change the graphical parameters, using the par() function. In this case, we use \texttt{par(mfrow=c(2,2))} to create alter the graphics window expects four panels, in this case a 2 rows and two columns.
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-Try not to get bogged down in the code at this point. But it is a useful thing to remember.
+Try not to get bogged down in the code at this point. But noting this function can be handy in a number of ways to improve one's graphics. 
 
 % Additional LaTeX code to add caption to figure
 \begin{figure}
@@ -1046,10 +1088,10 @@ Try not to get bogged down in the code at this point. But it is a useful thing t
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
-\hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{=Thailand))}
+\hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMIN} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMINMean[MonthlyTMINMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{1}\hlstd{,]))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-28-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-27-1} 
 
 \end{knitrout}
 \end{figure}
@@ -1062,12 +1104,19 @@ A properly specified model is shown in
 
 \section{The 'Null' Hypothesis versus Information Criteria}
 
+TBD
+
 \subsection{Model Comparison}
+
+TBD
 
 \subsection{AIC to make statements about strength of evidence}
 
+TBD
 
 \section{Relaxing Model Assumptions}
+
+TBD
 
 \subsection{Using Sources of Error in the Model}
 
@@ -1098,10 +1147,13 @@ Instead of letting autocorrelation be 'hidden' problem in the data, we can incor
 
 \subsection{Adding Seasonality}
 
+TBD
 
-\section{More Sophisticated Approaches}
+\section{Advance Modeling Approaches}
 
-\section{Advanced Methods}
+TBD
+
+\subsection{Generalized Additive Models}
 
 You may want to examine the GAM package in R, as it can be adapted to do some (or all) of what you are looking for. The original paper (Hastie \& Tibshirani, 1986) is available via OpenAccess if you're up for reading it.
 
@@ -1111,15 +1163,17 @@ This method has been used extensively to estimate daily mortality as a function 
 
 \section{Time Series Analysis}
 
-Time series analysis
+TBD
 
-Time series analysis refers to a particular collection of specialised regression methods that use integrated moving averages and other smoothing techniques to illustrate trends in the data. It involves a complex process that incorporates information from past observations and past errors in those observations into the estimation of predicted values.
+%Researchers might use time series analysis to evaluate the signal of the series by decomposing it for internal cycles, e.g. seasons and time of year, and determine if the signal is stationary or non-stationary, i.e. non-changing with time versus changing with time. A time series is a sequence of data points, measured typically at successive points in time spaced at uniform time intervals. Examples of time series are the daily closing value of the Dow Jones index and the annual flow volume of the Nile River at Aswan. Time series are very frequently plotted via line charts. Time series are used in statistics, signal processing, pattern recognition, econometrics, mathematical finance, weather forecasting, earthquake prediction, electroencephalography, control engineering, astronomy, and communications engineering.
 
-Moving averages provide a useful way of presenting time series data, highlighting any long-term trends whilst smoothing out any short-term fluctuations. They are also commonly used to analyse trends in financial analysis. The calculation of moving averages is described in more detail here.
+%Time series analysis refers to a particular collection of specialised regression methods that use integrated moving averages and other smoothing techniques to illustrate trends in the data. It involves a complex process that incorporates information from past observations and past errors in those observations into the estimation of predicted values.
 
-Methods for time series analyses may be divided into two classes: frequency-domain methods and time-domain methods. The former include spectral analysis and recently wavelet analysis; the latter include auto-correlation and cross-correlation analysis. In time domain correlation analyses can be made in a filter-like manner using scaled correlation, thereby mitigating the need to operate in frequency domain.
+%Moving averages provide a useful way of presenting time series data, highlighting any long-term trends whilst smoothing out any short-term fluctuations. They are also commonly used to analyse trends in financial analysis. The calculation of moving averages is described in more detail here.
 
-Whether or not you wish to forecast or not has nothing whatsoever to do with correct time series analysis. Time series methods can develop a robust model which can be used simply to characterize the relationship between a dependent series and a set of user-suggested inputs (a.k.a. user-specified predictor series) and empirically identified omitted variables be they deterministic or stochastic.Users at their option can then extend the "signal" into the future i.e. forecast with uncertainties based upon the uncertainty in the coefficients and the uncertainty in the future values of the predictor . Now these two kinds of empirically identified "omitted series" can be classified as 1) deterministic and 2) stochastic. The first type are simply Pulses, Level Shifts , Seasonal Pulses and Local Time Trends whereas the second type is represented by the ARIMA portion of your final model. When one omits one or more stochastic series from the list of possible predictors, the omission is characterized by the ARIMA component in your final model. Time series modelers refer to ARIMA models as a "Poor Man's Regression Model" because the past of the series is being used as a proxy for omitted stochastic input series.
+%Methods for time series analyses may be divided into two classes: frequency-domain methods and time-domain methods. The former include spectral analysis and recently wavelet analysis; the latter include auto-correlation and cross-correlation analysis. In time domain correlation analyses can be made in a filter-like manner using scaled correlation, thereby mitigating the need to operate in frequency domain.
+
+%Whether or not you wish to forecast or not has nothing whatsoever to do with correct time series analysis. Time series methods can develop a robust model which can be used simply to characterize the relationship between a dependent series and a set of user-suggested inputs (a.k.a. user-specified predictor series) and empirically identified omitted variables be they deterministic or stochastic.Users at their option can then extend the "signal" into the future i.e. forecast with uncertainties based upon the uncertainty in the coefficients and the uncertainty in the future values of the predictor . Now these two kinds of empirically identified "omitted series" can be classified as 1) deterministic and 2) stochastic. The first type are simply Pulses, Level Shifts , Seasonal Pulses and Local Time Trends whereas the second type is represented by the ARIMA portion of your final model. When one omits one or more stochastic series from the list of possible predictors, the omission is characterized by the ARIMA component in your final model. Time series modelers refer to ARIMA models as a "Poor Man's Regression Model" because the past of the series is being used as a proxy for omitted stochastic input series.
 
 \section{References}
 
