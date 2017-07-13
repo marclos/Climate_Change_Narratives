@@ -52,6 +52,11 @@
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{%
+  colorlinks = true,
+  linkcolor  = black
+}
 
 \title{SOP 90: Analyzing Climate Trends with R}
 \author{Marc Los Huertos}
@@ -135,11 +140,11 @@ TBD
 
 %To demonstrate Baysian approach, let's evaluate the distribution of temperatures from Bangkok, Thailand. 
 
-https://www.r-bloggers.com/a-simple-intro-to-bayesian-change-point-analysis/
+\url{https://www.r-bloggers.com/a-simple-intro-to-bayesian-change-point-analysis/}
 	
-http://www.flutterbys.com.au/stats/tut/tut7.2b.html
+\url{http://www.flutterbys.com.au/stats/tut/tut7.2b.html}
 
-https://www.r-bloggers.com/bayesian-linear-regression-analysis-without-tears-r/
+\url{https://www.r-bloggers.com/bayesian-linear-regression-analysis-without-tears-r/}
     
 \subsection{Frequentist Statistics}
 
@@ -177,44 +182,9 @@ Based on our understanding of the data, the choices of analysis become limited b
 \begin{center}
 %\setkeys{Gin}{width=0.5\textwidth} 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library(diagram): there is no package called 'diagram'}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}openplotmat"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}coordinates"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: could not find function "{}straightarrow"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textrect"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textrect"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textrect"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}textellipse"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[2, 1] + 0.05, arrpos[2, 2], "{}yes"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[3, 1] - 0.05, arrpos[3, 2], "{}no"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[4, 1] + 0.05, arrpos[4, 2] + 0.05, "{}yes"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[5, 1] - 0.05, arrpos[5, 2] + 0.05, "{}no"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[6, 1] + 0.05, arrpos[4, 2] + 0.05, "{}yes"{}): plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text.default(arrpos[7, 1] - 0.05, arrpos[5, 2] + 0.05, "{}no"{}): plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 \end{center}
 \end{figure}
@@ -471,9 +441,14 @@ We can represent these choices in a table, which makes it easy to see the variou
 
 \end{table}
 
+
 \subsection{Mathematical Mechanisms to Test Hypothesis}
 
 Using the linear model, we can analyze several types of data, when the response variable is continuous. If the have a predictor variable that is categorical, then we often analyze the data using the method known as analysis of variance or ANOVA. If the predictor variable is continuous, then we often analyze data using a regression analysis.
+
+\begin{figure}
+\includegraphics[scale=0.5]{../graphics/Type_One_and_Two_Error}
+\end{figure}
 
 \section{Linear Regression}
 
@@ -895,11 +870,7 @@ Temperatures, Bangkok, Thailand}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.3.1 by xtable 1.8-2 package
-<<<<<<< HEAD
-% Thu Jul 13 08:12:16 2017
-=======
-% Wed Jul 12 19:18:13 2017
->>>>>>> 1989167678b545093a008beb99dce1d3e8bf1e9f
+% Thu Jul 13 13:19:29 2017
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
