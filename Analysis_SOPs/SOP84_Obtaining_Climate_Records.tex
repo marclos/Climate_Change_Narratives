@@ -59,12 +59,20 @@
 
 \section{Terrestrial Meteorological Data}
 
+\subsection{Selected History of Meteorology}
 
+In 1607, Galileo Galilei constructed a thermoscope, but it wasn't until 1654, when Ferdinando II de Medici established the first weather observing network, that consisted of meteorological stations in Florence, Cutigliano, Vallombrosa, Bologna, Parma, Milan, Innsbruck, Osnabrück, Paris and Warsaw. The collected data were sent to Florence at regular time intervals. In 1714, Gabriel Fahrenheit created a reliable scale for measuring temperature with a mercury-type thermometer. In 1742, Anders Celsius, a Swedish astronomer, proposed the "centigrade" temperature scale, the predecessor of the current Celsius scale.
+
+The arrival of the electrical telegraph in 1837 afforded, for the first time, a practical method for quickly gathering surface weather observations from a wide area. This data could be used to produce maps of the state of the atmosphere for a region near the Earth's surface and to study how these states evolved through time. 
+
+To make frequent weather forecasts based on these data required a reliable network of observations, but it was not until 1849 that the Smithsonian Institution began to establish an observation network across the United States under the leadership of Joseph Henry.[39] Similar observation networks were established in Europe at this time. 
 \subsection{Climate Data Online (CDO) system}
+
+Climate Data Online (CDO) provides free access to National Climate Data Center's archive of global historical weather and climate data in addition to station history information. These data include quality controlled daily, monthly, seasonal, and yearly measurements of temperature, precipitation, wind, and degree days as well as radar data and 30-year Climate Normals. 
 
 There are several ways to obtain online climate data and the CDO-web interace is probably the easiest, using the following URL: \url{https://www.ncdc.noaa.gov/cdo-web/}. 
 
-Climate data, such as temperature and precipitation are recorded by station -- so this is generally the observation unit. Even if you don't have a location of interest nailed down, this interface can help you find sites and evaluate the length of their records. 
+Climate data, such as temperature and precipitation are recorded at each station -- so this is generally the observation unit for our interests. Even if you don't have a location of interest nailed down, this interface can help you find sites and evaluate the length of their records. 
 
 Below is a description of the steps to get data from a site:
 
@@ -87,36 +95,42 @@ If you get this error, you need to reduce the number of stations selected.
   \item[Complete Order] Type in your email address and you will get a confirmation relativley soon and the data in a day or so...
 \end{description}
 
+
 \subsubsection{Evaluating the Data}
 
+Once you get the data, we'll need to evaluate what we have and format it for our purposes. Often you'll find problems when you begin analyzing it, but it's good to understand the structure of the data before you run into problems. 
 
+The CHCND documentation helps us to understand the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
 
 \subsection{Historical Climatology Network-Daily (GHCN‐D) data}
 
+Alternatively, one can use the FTP site to access the data in a different format (e.g. dyl). The site's url is \url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}. 
 
-\url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}
+In addition, the CHCND documentation, as noted above, is very helpful in understanding the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
 
-\url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}
+\subsection{rNOAA library tools--NOT WORKING YET}
 
-\subsection{rNOAA library tools}
+There is a relatively new tool to access NOAA data using an R package, called \texttt{rNOAA}. 
 
-There is a relatively new tool to access NOAA data using an R package, called rNOAA. 
+To use the tool, several dependent packages need to be installed and loaded, including \texttt{rNOAA}. Next users need to get an API code, which is quite simple, following this link: \url{https://www.ncdc.noaa.gov/cdo-web/token}.
 
-To use the tool, several dependent packages need to be installed and loaded, including rNOAA. Next users need to get an API code, which is quite simple.
-
-Using the package is relatively strait foreward, although I have been getting timeout errors that I can't solve. 
+Using the \texttt{rNOAA} package is relatively strait foreward, although I have been getting timeout errors that I can't solve. 
 
 Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.html}.
 
-First, we prepare R by loading two libraries that we'll use to download (rNOAA) and manipulate (plyr) the data.
+First, we prepare R by loading two libraries that we'll use to download (\texttt{rNOAA}) and manipulate (\texttt{plyr}) the data.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(}\hlstr{'plyr'}\hlstd{)}
 \hlkwd{library}\hlstd{(}\hlstr{'rnoaa'}\hlstd{)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library("{}rnoaa"{}): there is no package called 'rnoaa'}}\end{kframe}
 \end{knitrout}
+
+
 
 \subsubsection{List of Cities}
 
@@ -124,22 +138,22 @@ rNOAA has a simple function to list the cities:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ncdc_locs}\hlstd{(}\hlkwc{locationcategoryid}\hlstd{=}\hlstr{'CITY'}\hlstd{,} \hlkwc{sortfield}\hlstd{=}\hlstr{'name'}\hlstd{,} \hlkwc{sortorder}\hlstd{=}\hlstr{'desc'}\hlstd{,} \hlkwc{token} \hlstd{=} \hlstr{'qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb'}\hlstd{)}
+\hlkwd{ncdc_locs}\hlstd{(}\hlkwc{locationcategoryid}\hlstd{=}\hlstr{'CITY'}\hlstd{,} \hlkwc{sortfield}\hlstd{=}\hlstr{'name'}\hlstd{,} \hlkwc{sortorder}\hlstd{=}\hlstr{'desc'}\hlstd{)}
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in curl::curl\_fetch\_memory(url, handle = handle): Timeout was reached}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}ncdc\_locs"{}}}\end{kframe}
 \end{knitrout}
 
 \subsubsection{Getting Data}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ncdc_stations}\hlstd{(}\hlkwc{datasetid}\hlstd{=}\hlstr{'GHCND'}\hlstd{,} \hlkwc{locationid}\hlstd{=}\hlstr{'FIPS:12017'}\hlstd{,} \hlkwc{stationid}\hlstd{=}\hlstr{'GHCND:USC00084289'}\hlstd{,} \hlkwc{token} \hlstd{=} \hlstr{'qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb'}\hlstd{)}
+\hlkwd{ncdc_stations}\hlstd{(}\hlkwc{datasetid}\hlstd{=}\hlstr{'GHCND'}\hlstd{,} \hlkwc{locationid}\hlstd{=}\hlstr{'FIPS:12017'}\hlstd{,} \hlkwc{stationid}\hlstd{=}\hlstr{'GHCND:USC00084289'}\hlstd{)}
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in curl::curl\_fetch\_memory(url, handle = handle): Timeout was reached}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}ncdc\_stations"{}}}\end{kframe}
 \end{knitrout}
 
 \subsection{Evaluating Records}
