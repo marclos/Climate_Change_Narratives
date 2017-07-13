@@ -2,6 +2,11 @@
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{%
+  colorlinks = true,
+  linkcolor  = black
+}
 
 \title{SOP 90: Analyzing Climate Trends with R}
 \author{Marc Los Huertos}
@@ -91,11 +96,11 @@ TBD
 
 %To demonstrate Baysian approach, let's evaluate the distribution of temperatures from Bangkok, Thailand. 
 
-https://www.r-bloggers.com/a-simple-intro-to-bayesian-change-point-analysis/
+\url{https://www.r-bloggers.com/a-simple-intro-to-bayesian-change-point-analysis/}
 	
-http://www.flutterbys.com.au/stats/tut/tut7.2b.html
+\url{http://www.flutterbys.com.au/stats/tut/tut7.2b.html}
 
-https://www.r-bloggers.com/bayesian-linear-regression-analysis-without-tears-r/
+\url{https://www.r-bloggers.com/bayesian-linear-regression-analysis-without-tears-r/}
     
 \subsection{Frequentist Statistics}
 
@@ -374,9 +379,14 @@ We can represent these choices in a table, which makes it easy to see the variou
 
 \end{table}
 
+
 \subsection{Mathematical Mechanisms to Test Hypothesis}
 
 Using the linear model, we can analyze several types of data, when the response variable is continuous. If the have a predictor variable that is categorical, then we often analyze the data using the method known as analysis of variance or ANOVA. If the predictor variable is continuous, then we often analyze data using a regression analysis.
+
+\begin{figure}
+\includegraphics[scale=0.5]{../graphics/Type_One_and_Two_Error}
+\end{figure}
 
 \section{Linear Regression}
 
