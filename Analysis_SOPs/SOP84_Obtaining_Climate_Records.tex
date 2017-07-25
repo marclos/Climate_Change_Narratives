@@ -51,6 +51,7 @@
 \usepackage{alltt}
 \usepackage{hyperref}
 
+
 \title{SOP 84: Obtaining Climate Records}
 \author{Marc Los Huertos}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -61,25 +62,39 @@
 
 \subsection{Selected History of Meteorology}
 
-In 1607, Galileo Galilei constructed a thermoscope, but it wasn't until 1654, when Ferdinando II de Medici established the first weather observing network, that consisted of meteorological stations in Florence, Cutigliano, Vallombrosa, Bologna, Parma, Milan, Innsbruck, Osnabrück, Paris and Warsaw. The collected data were sent to Florence at regular time intervals. In 1714, Gabriel Fahrenheit created a reliable scale for measuring temperature with a mercury-type thermometer. In 1742, Anders Celsius, a Swedish astronomer, proposed the "centigrade" temperature scale, the predecessor of the current Celsius scale.
+In 1607, Galileo Galilei constructed a thermoscope, but it wasn't until 1654, that Ferdinando II de Medici established the first weather observing network, consisting of meteorological stations in Florence, Cutigliano, Vallombrosa, Bologna, Parma, Milan, Innsbruck, Osnabrück, Paris and Warsaw. The collected data were sent to Florence at regular time intervals. In 1714, Gabriel Fahrenheit created a reliable scale for measuring temperature with a mercury-type thermometer. In 1742, Anders Celsius, a Swedish astronomer, proposed the ``centigrade" temperature scale, the predecessor of the current Celsius scale.
 
 The arrival of the electrical telegraph in 1837 afforded, for the first time, a practical method for quickly gathering surface weather observations from a wide area. This data could be used to produce maps of the state of the atmosphere for a region near the Earth's surface and to study how these states evolved through time. 
 
 To make frequent weather forecasts based on these data required a reliable network of observations, but it was not until 1849 that the Smithsonian Institution began to establish an observation network across the United States under the leadership of Joseph Henry.[39] Similar observation networks were established in Europe at this time. 
+
+\subsection{Purpose}
+This document is a guide for getting started on the climate data analysis project. Here you will find: 
+\begin{itemize}
+\item different sources for climate data
+\item a description of how to download/access the data
+\end{itemize}
 \subsection{Climate Data Online (CDO) system}
 
-Climate Data Online (CDO) provides free access to National Climate Data Center's archive of global historical weather and climate data in addition to station history information. These data include quality controlled daily, monthly, seasonal, and yearly measurements of temperature, precipitation, wind, and degree days as well as radar data and 30-year Climate Normals. 
+Climate Data Online (CDO) provides free access to the National Climate Data Center's archive of global historical weather and climate data in addition to station history information. These data include quality controlled daily, monthly, seasonal, and yearly measurements of temperature, precipitation, wind, and degree days as well as radar data and 30-year Climate Normals. 
 
-There are several ways to obtain online climate data and the CDO-web interace is probably the easiest, using the following URL: \url{https://www.ncdc.noaa.gov/cdo-web/}. 
+There are several ways to obtain online climate data and the CDO-web interface is probably the easiest, using the following URL: \url{https://www.ncdc.noaa.gov/cdo-web/}. 
 
-Climate data, such as temperature and precipitation are recorded at each station -- so this is generally the observation unit for our interests. Even if you don't have a location of interest nailed down, this interface can help you find sites and evaluate the length of their records. 
+Climate data, such as temperature and precipitation are recorded at each station -- so these are the observational units we will generally be interested in for our analyses. Even if you don't have a location of interest nailed down, this interface can help you find sites and evaluate the length of their records. For the purpose of our project we reccomend picking a site that has data going back at least into the the 1940's as it might be difficult to come up with insightful observations about sites with less data. 
 
-Below is a description of the steps to get data from a site:
+Below is a description of the steps to get data from the site:
 
 \begin{description}
-  \item[Follow Link] Browse Datasets
+  \item[Follow Link] Click on the following link to reach the CDO website: \\ \url{https://www.ncdc.noaa.gov/cdo-web/} 
+  \item[Click Browse Datasets] after clicking the icon you should see a list of available data sets by type
   \item[Expand Link] Daily Summaries
-  \item[Change Date Range] Select the earliest data on the list to the present. Although your site might not have these records, it's easier to set the greatest range upfront.
+  \item[Select the Search Tool] additionally, you can use the mapping tool to evaluate which areas of the globe have available datasets but if you have a particular area in mind it might be easiest to search for that one first using the search tool
+  \item[Specify Parameters]
+    \begin[itemize]
+    \item ensure that ``Daily Summaries'' is selected from the dropdown menu in \textbf{Select Weather Observation Type/Dataset}
+    \item in \textbf{Select Data Range} change the range to the the earliest date available (so that you will be able to see how far back the data) on the list to the present. Although your site might not have these records, it's easier to set the greatest range upfront.
+    \end[itemize]
+  
   \item[Add Search Terms] Select the state or country of interest.
   \item[Start Search] Once you have initiated a search, the next window will give a list of records -- click in these records to see what they might be composed of. Then decide which station you will want to evaluate.
   \item[Add to Cart] Don't worry, there is no charge (yet!)
