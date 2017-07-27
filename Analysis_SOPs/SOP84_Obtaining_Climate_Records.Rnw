@@ -40,16 +40,19 @@ Below is a description of the steps to get data from the site:
   \item[Follow Link] Click on the following link to reach the CDO website: \\ \url{https://www.ncdc.noaa.gov/cdo-web/} 
   \item[Click Browse Datasets] after clicking the icon you should see a list of available data sets by type
   \item[Expand Link] Daily Summaries
-  \item[Select the Search Tool] additionally, you can use the mapping tool to evaluate which areas of the globe have available datasets but if you have a particular area in mind it might be easiest to search for that one first using the search tool
-  \item[Specify Parameters]
+  \item[Select the Search Tool] additionally, you can use the mapping tool to evaluate which areas of the globe have available datasets but if you have a particular area in mind it might be easiest to search for it using the search tool
+  \item[Specify Parameters] \hspace{30mm}
     \begin{itemize}
     \item ensure that ``Daily Summaries'' is selected from the dropdown menu in \textbf{Select Weather Observation Type/Dataset}
-    \item in \textbf{Select Data Range} change the range to the the earliest date available (so that you will be able to see how far back the data) on the list to the present. Although your site might not have these records, it's easier to set the greatest range upfront.
+    \item in \textbf{Select Data Range} use the calendar tool change the start date to earliest date available (It should be January 1, 1763) and the end date to the most recently available date. This will enable you to see how far back the data record for the station goes.  
+    \item in drop down menu \textbf{Search For} of selecting whether you want to search for climate data by country, state, county, zip code etc. Select the appropriate option for the search term that you will enter in the box below. \\ For example if you want to search for climate data in your hometown try searching you might consider searching by state or county and then typing in the name below
+    \item in the \textbf{Enter a Search Term} box, type in the name of the county, state or other possible identifier of the place for which you would like to find a climate record.
     \end{itemize}
-  
-  \item[Add Search Terms] Select the state or country of interest.
+
   \item[Start Search] Once you have initiated a search, the next window will give a list of records -- click in these records to see what they might be composed of. Then decide which station you will want to evaluate.
-  \item[Add to Cart] Don't worry, there is no charge (yet!)
+  \item[Add to Cart] Don't worry, there is no charge. 
+  \item[View All items] Once you have added the climate record to your cart you should see an orange box pop up on the top left corner that says ``Cart (Free Data) 1 item." Mouse over the box after which you should have the option to click "view all items".
+  \item[Select Cart Options] in \textbf{Select the Output Format} be sure to click the button for \textbf{Custom GHCN-Daily CSV} to ensure that the data file is delivered as a .csv file (comma separated values)
   \item[Station Detail \& Data Flag Options] Change to metric, dataset to include ppt and temperature.
   \item[Click 'Continue' Button]
   
