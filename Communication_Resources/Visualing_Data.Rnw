@@ -1,12 +1,50 @@
 \documentclass{article}
 
 \title{Visual Presentation of Data using R}
+
+<<>>=
+GHGcsv = "C:\\workspace\\3. Research\\1. USDA-UCB_Agroecosystem Diversity\\Data\\All_GHG_Data_170726.csv"
+ghg <- read.csv(GHGcsv)
+@
+
 \begin{document}
 \maketitle
 
-\section{Scatter Plot}
+\section{Exploring the Histogram}
+
+Data exploration can include many steps, but starting with a histogram gives the researcher the ability to evaluate 
+the distribution of the data.
+
+Below is a default histogram for nitrous oxide emissions, where we might be able to visually how normally distributed the data might be.
+
+<<>>=
+hist(ghg$N2O_Flux}
+@
+
+The default graphic is not very compellilng -- so, for publication we need to improve the graphic. 
+
+Axes labels and range
+
+Shading
+
+Title...
+
+\subsection{Histogram: Best Practice}
+\section{Boxplot}
+
+\subsection{Boxplot: Best Practice}
+
+\section{Scatter Plot -- Non-time series}
+
+\subsection{Histogram: Scaltter Plot}
+
+\subsection{Scatter Plot -- Time Series}
+
+\subsection{Time Series: Best Practice}
 
 \section{Bar Graphs}
+
+\subsection{Bar Chart: Best Practice}
 
 \section{Tables}
 
