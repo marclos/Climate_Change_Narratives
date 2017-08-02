@@ -93,22 +93,26 @@ Below is a description of the steps to get data from the site:
     \begin{itemize}
     \item ensure that ``Daily Summaries'' is selected from the dropdown menu in \textbf{Select Weather Observation Type/Dataset}
     \item in \textbf{Select Data Range} use the calendar tool change the start date to earliest date available (It should be January 1, 1763) and the end date to the most recently available date. This will enable you to see how far back the data record for the station goes.  
-    \item in drop down menu \textbf{Search For} of selecting whether you want to search for climate data by country, state, county, zip code etc. Select the appropriate option for the search term that you will enter in the box below. \\ For example if you want to search for climate data in your hometown try searching you might consider searching by state or county and then typing in the name below
-    \item in \textbf{Enter a Search Term} box, type in the name of the county, state or other possible identifier of the place for which you would like to find a climate record.
+    \item in the drop down menu \textbf{Search For} select whether you want to search for climate data by country, state, county, zip code etc. Select the appropriate option for the search term that you will enter in the box below. \\ For example if you want to search for climate data in your hometown, you might consider searching by state or county and then typing in the name below
+    \item in the \textbf{Enter a Search Term} box, type in the name of the county, state or other possible identifier of the place for which you would like to find a climate record.
     \end{itemize}
 
   \item[Start Search] Once you have initiated a search, the next window will give a list of records -- click in these records to see what they might be composed of. Then decide which station you will want to evaluate.
-  \item[Add to Cart] Once you have added the climate record to your cart you should see an orange box pop up on the top left corner that says "Cart (Free Data) 1 item."  Don't worry, there is no charge (yet!)
-  \item[Station Detail \& Data Flag Options] Change to metric, dataset to include ppt and temperature.
-  \item[Click 'Continue' Button]
+  \item[Add to Cart] Don't worry, there is no charge. 
+  \item[View All items] Once you have added the climate record to your cart you should see an orange box pop up on the top left corner that says ``Cart (Free Data) 1 item." Mouse over the box after which you should have the option to click ``view all items".
+  \item[Select Cart Options] in \textbf{Select the Output Format} be sure to click the button for \textbf{Custom GHCN-Daily CSV} to ensure that the data file is delivered as a .csv file (comma separated values)
+  \item[Click `Continue' Button]
+  \item[Station Detail \& Data Flag Options] Change to metric
+  \item[Select Data Types] be sure to check the boxes for include precipitation and temperature to include these in the data sets
+  \item[Click `Continue' Button]
   
   NOTE: Common Errors:
   
 Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 1,000 Station Years. Please select fewer stations/locations, or reduce the date range.
 
-If you get this error, you need to reduce the number of stations selected.
+If you get this error, you need to reduce the number of stations selected or make the date range smaller.
   
-  \item[Complete Order] Type in your email address and you will get a confirmation relativley soon and the data in a day or so...
+  \item[Complete Order] Type in your email address and you will get a confirmation email relativley soon... the data may take up to a couple days to be delivered but are usually delivered within a couple hours.
 \end{description}
 
 
@@ -158,7 +162,7 @@ rNOAA has a simple function to list the cities:
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}ncdc\_locs"{}}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ncdc\_locs(locationcategoryid = "{}CITY"{}, sortfield = "{}name"{}, sortorder = "{}desc"{}): could not find function "{}ncdc\_locs"{}}}\end{kframe}
 \end{knitrout}
 
 \subsubsection{Getting Data}
@@ -169,7 +173,7 @@ rNOAA has a simple function to list the cities:
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}ncdc\_stations"{}}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ncdc\_stations(datasetid = "{}GHCND"{}, locationid = "{}FIPS:12017"{}, : could not find function "{}ncdc\_stations"{}}}\end{kframe}
 \end{knitrout}
 
 \subsection{Evaluating Records}
