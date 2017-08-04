@@ -50,6 +50,7 @@
 
 \usepackage{alltt}
 \usepackage{graphics}
+\usepackage{hyperref}
 \title{SOP 85: Using NOAA Climate Records}
 \author{Marc Los Huertos}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -57,8 +58,18 @@
 \maketitle
 
 \section{Introduction}
+Raw data sets often come with untidy/non-useful formats or information that must first be cleaned or processed before an accurate and useful analysis of the contents can be done. After obtaining a data set there are some preliminary steps you must follow in order to get your data file into working order for your analysis. 
 
+\subsection{Purpose}
+This document is intended a resource and guide to help you: 
+\begin{itemize}
+\item upload your data file into the R environment using the Rstudio server online
+\item clean, organize and reformat the data to prepare it for analysis
+\end{itemize}
 
+Note: Before you attempt to upload your data file into an appropriate directory in Rstudio you should already know how to access your Pomona Rstudio account as well as have connected to Marc's Github repository. Click on the following link to download a guide on how to get started with Rstudio and Github: \\
+\\
+\href{https://github.com/marclos/SOPs/raw/master/06_Rstudio_Github/Rstudio-and-Github_v03.pdf}{An Introduction to R, Rstudio, Github}
 
 \section{Preparing CSV files}
 
@@ -66,7 +77,8 @@
 
 In most cases, we don't need to preprocess the csv files. However, Mac users have been confronted with a host of problems that has something to do with how Macs format CSV files.\footnote{I will update this when I try using a Mac for this.}
 
-\subsection{Upload CSV Files into Appropriate Rstudio Directory}
+\subsection{Upload CSV Files into Appropriate Rstudio Directory} Note: 
+
 
 \begin{figure}[h]
 \includegraphics[scale=0.25]{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/graphics/Upload_button"}
