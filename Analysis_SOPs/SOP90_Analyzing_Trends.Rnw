@@ -40,11 +40,9 @@ This document is designed to introduce a few tools to analyze regularly (i.e. da
 
 \subsection{Rational}
 
-In an age of industrialization and waste hazardous waste production, monitoring schemes have become ubiquitous to provide early warning, tracking environmental quality 
+In an age of industrialization and waste hazardous waste production, monitoring schemes have become ubiquitous to provide early warning and/or tracking environmental quality. To detect change or provide warning for public safety, we also need tools to assess if there are trends or if there are changes that might pose a hazard.
 
-To detect change or provide warning for public safety, we also need tools to assess if there are trends or if there are changes that might pose a hazard.
-
-For our purposes, the trend analysis or time series analysis is used to evaluate the contested nature of climate change -- in particular, to determine if there weather changes at a regional level. 
+For our purposes, trend analysis or time series analysis is used to evaluate the contested nature of climate change -- in particular, to determine if there weather changes at a regional level. 
 
 \subsection{Trend Analysis versus Time Series Analysis}
 
@@ -200,6 +198,27 @@ Based on these four data combination types, we will give examples of each of the
 \subsubsection{Contigency Tables}
 
 TBD
+
+%A contingency table (also known as a cross tabulation or crosstab) is a type of table in a matrix format that displays the (multivariate) frequency distribution of the variables. They are heavily used in survey research, business intelligence, engineering and scientific research. They provide a basic picture of the interrelation between two variables and can help find interactions between them. The term contingency table was first used by Karl Pearson in ''On the Theory of Contingency and Its Relation to Association and Normal Correlation,'' part of the Drapers' Company Research Memoirs Biometric Series I published in 1904.
+
+As an example, how many consequetive days of heat waves before 1960 and afterwards in some made up city!
+
+<<>>=
+heatwave_table = matrix(c(26, 31, 45, 68, 80, 100), ncol=2)
+
+# label the columns and rows
+colnames(heatwave_table) = c('pre1960', 'post1960')
+rownames(heatwave_table) = c('1', '2', '3')
+
+fisher.test(heatwave_table)
+chisq.test(heatwave_table)
+
+# convert to a table
+heatwave_table = as.table(heatwave_table)
+
+# add margins to calculate expected values!
+addmargins(heatwave_table)
+@
 
 \subsection{Analysis of Variance}
 
