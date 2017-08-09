@@ -11,29 +11,27 @@
 Raw data sets often come with untidy/non-useful formats or information that must first be cleaned or processed before an accurate and useful analysis of the contents can be done. After obtaining a data set there are some preliminary steps you must follow in order to get your data file into working order for your analysis. 
 
 \subsection{Purpose}
-
 This document is intended a resource and guide to help you: 
 \begin{itemize}
 \item upload your data file into the R environment using the Rstudio server online
 \item clean, organize and reformat the data to prepare it for analysis
 \end{itemize}
 
-\subsection{About the Programs We'll Be Using}
-We will be using the program R, to run our data analysis. To access the program R we will be using the platform Rstudio which is available on the cloud to students. Since we will be using cloud based computing it will require us to know a little bit about how to access the resources online. Thus, it might be useful to look at SOP 6 on the basics of working with Rstudio and Github: You can click on the following link below to download the document:
+The program that we will be using to run an analysis of our data is R, and we will access it via the Rstudio server using your computer's web browser. Essentially, we will be using cloud based computing software to do our analysis so the first thing you will want to do is know how to access the server. 
 
+Note: Before you attempt to upload your data file into an appropriate directory in Rstudio you should already know how to access your Pomona Rstudio account as well as have connected to Marc's Github repository. Click on the following link to download a guide on how to get started with Rstudio and Github: \\
+\\
 \href{https://github.com/marclos/SOPs/raw/master/06_Rstudio_Github/Rstudio-and-Github_v03.pdf}{An Introduction to R, Rstudio, Github}
 
-\section{Preparing CSV files}
+\section{Preparing CSV file(s)}
 
 \subsection{Preprocessing CSV files}
 
 In most cases, we don't need to preprocess the csv files. However, Mac users have been confronted with a host of problems that has something to do with how Macs format CSV files.\footnote{I will update this when I try using a Mac for this.}
 
 \subsection{Upload CSV Files into Appropriate Rstudio Directory} 
-
-To begin working with your data upload it to the server so that Rstudio can pull information from it. \\
-In Rstudio use the navigation pane (pictured below) to find a proper location to upload the data. If you have already connected to Marc's Github repository for the ``Climate Change Narratives'' Project you should see the folder available your Rstudio directory. 
-
+The first step to getting your data into R is to upload it into the the Rstudio server online.
+Once you are in Rstudio you will want to locate a good folder/location in the Rstudio directory to which to upload your data file. We suggest uploading 
 
 \begin{figure}[h]
 \includegraphics[scale=0.25]{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/graphics/Upload_button"}
