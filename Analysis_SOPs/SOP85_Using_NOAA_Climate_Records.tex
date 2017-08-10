@@ -153,19 +153,96 @@ import = read.csv(file)
 \end{kframe}
 \end{knitrout}
 
-\subsection{Confirming the Dataframe}
+\subsection{Confirming the Proper Reading of the CSV file}
 
 in R, no news is good news, in other words, if you don't get red colored text describing an error, the program did something -- but now we need to figure out if it did something useful!
 
-We need to ensure the that imported file is what you expected and that it read the csv file correctly. There are several ways to accomplish this. We can plot the data, inspect the first few observations, or look at the structure of the dataframe. 
+We need to ensure the that imported file is what you expected and that it read the csv file correctly. There are several ways to accomplish this. We should inspect the first few observations, evaluate the structure of the dataframe and finally plot the data. We will do all of the these below.
 
-We will do all of the these below.
+\subsubsection{Viewing the 1st 6 Observations}
 
-\subsection{Checking the Data}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hlstd{(import)}
+\end{alltt}
+\begin{verbatim}
+##             STATION                      STATION_NAME     DATE     PRCP
+## 1 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19620512     0.16
+## 2 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19620516     0.08
+## 3 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19620605 -9999.00
+## 4 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19621006     0.39
+## 5 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19621007     0.02
+## 6 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19621012     0.08
+##   TAVG  TMAX  TMIN
+## 1   81 -9999    75
+## 2   79    86    75
+## 3   84    93    77
+## 4   83    91 -9999
+## 5   84    91    79
+## 6   78    84 -9999
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
-Now we will check the data by plotting it.
+\subsubsection{Confirming the Column Names}
 
-%plot(TMAX~DATE, import)
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{names}\hlstd{(import)}
+\end{alltt}
+\begin{verbatim}
+## [1] "STATION"      "STATION_NAME" "DATE"         "PRCP"        
+## [5] "TAVG"         "TMAX"         "TMIN"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{Evaluating the structure of the object}
+
+Okay, you know have created a data frame. To confirm this, type \texttt{str(import)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{str}\hlstd{(import)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	13704 obs. of  7 variables:
+##  $ STATION     : Factor w/ 1 level "GHCND:SNM00048698": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ STATION_NAME: Factor w/ 1 level "SINGAPORE CHANGI INTERNATIONAL SN": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ DATE        : int  19620512 19620516 19620605 19621006 19621007 19621012 19621022 19621104 19621105 19621121 ...
+##  $ PRCP        : num  0.16 0.08 -9999 0.39 0.02 ...
+##  $ TAVG        : int  81 79 84 83 84 78 81 78 79 81 ...
+##  $ TMAX        : int  -9999 86 93 91 91 84 91 88 91 -9999 ...
+##  $ TMIN        : int  75 75 77 -9999 79 -9999 75 73 73 75 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Remember, a data frame is a set of vectors. To access the data inside the data frame, you can use the following command
+
+
+\subsubsection{Plotting the Data}
+
+Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}).
+
+\begin{figure}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{DATE, import)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+
+\end{knitrout}
+\caption{Some Caption.}
+\label{fig:plotmissing}
+\end{figure}
 
 We find some rather odd low temperature values in the plot. We can find some of these with the \texttt{min()} function.
 
@@ -180,58 +257,77 @@ We find some rather odd low temperature values in the plot. We can find some of 
 \end{kframe}
 \end{knitrout}
 
-\subsection{Checking the Data}
+\subsection{Re-assigning Missing Values to NAs}
 
-What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!
+What's going on?  What is the deal with the -9999? These are used for missing data. Historically, computers didn't have a lot of options for mixing numbers and letters in a variable type while R has some built in flexibility for this. So, to avoid leaving values blank (with all the ambiguous interpretations), the value -9999 is used to sybmolize missing values, since the number is unrealistic in the real world!
+
+Obviously, if we averaged the temperature with these values, we'd get a pretty inaccurate number (e.g. -3946 versus 89. Thus, we need to remove them!  
+
+We will replace the -9999 with NA, which R uses specifically to avoid accidently averaging arbitrary values that are representing missing values. 
+
+How do we do this?
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{import}\hlopt{$}\hlstd{TMAX[import}\hlopt{$}\hlstd{TMAX}\hlopt{==-}\hlnum{9999}\hlstd{]} \hlkwb{=} \hlnum{NA}
+\hlstd{import}\hlopt{$}\hlstd{TMIN[import}\hlopt{$}\hlstd{TMIN}\hlopt{==-}\hlnum{9999}\hlstd{]} \hlkwb{=} \hlnum{NA}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 
-%import$TMAX[import$TMAX==-9999] = NA
-%import$TMIN[import$TMIN==-9999] = NA
+Okay, now we'll check again, but let's plot a just a few years, let's say five years (356 days * 5 years = 1825) or 1825 observations. 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{DATE, import[}\hlnum{1}\hlopt{:}\hlnum{1835}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
 
-Okay, now we'll check again, for dates less then Dec. 31, 1913:
+\end{knitrout}
 
+Yikes! What's wrong? It appears we have gaps in the data -- but we already removed our missing data, why are these big jumps in the data. 
 
-%plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+As it turns out the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition. Let's say that the data have a year change between 1913 and 1914. The date format in the NOAA data are YYYYMMDD, or year, month, and day with 4, 2, 2 digits, respectively. Thus, the last day of 1913 is 19131231 or Dec, 31, 1913. The next day is January 1st or 19140101. But when you plot these on the x-axis, the order of the values should be $19131231 \rightarrow 19131232 \rightarrow 19131233 \rightarrow 19131234$, etc but there is no 32nd, 33rd or 34th of December. Instead the dates go from  $19131231 \rightarrow 19140101$. We have lots of numbers that are skipped, but no coded as missing, but missing all the same. So, now we need to convert our dates to something more sensible. In R, that means creating a variable with a format that expects dates, thus doesn't plot numbers that are impossible dates!
 
+\subsection{Converting Date Format}
 
-Yikes! What's wrong? As it turns out the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
-
-19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
-
-
-%plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
-
-\subsection{Converting Dates}
-
-\subsection{Re-assigning Missing Values}
-
-\subsection{Fixing the Dates}
-
+To create a new format, we have to complete a few steps. Unfortunately, date formats are one of the more obtuse aspects of R, but if you follow along, you should have success, even if you have no clue what you did. 
 First, we convert the date to a string of character values. Next, we'll convert the strings to a data format. 
 
-
-%strDates <- as.character(import$DATE)
-%head(strDates)
-%import$NewDate <- as.Date(strDates, "%Y%m%d")
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(import}\hlopt{$}\hlstd{DATE)}
+\hlkwd{head}\hlstd{(strDates)}
+\end{alltt}
+\begin{verbatim}
+## [1] "19620512" "19620516" "19620605" "19621006" "19621007" "19621012"
+\end{verbatim}
+\begin{alltt}
+\hlstd{import}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 \subsection{Checking the New Dates}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{NewDate, import[}\hlnum{1}\hlopt{:}\hlnum{1835}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
 
-%plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+\end{knitrout}
 
-
-\subsection{Subset Sites}
-
-Olivia has two sites in here data, so, we need to subset it.
-
+%\subsection{Subset Sites}
 
 %unique(import$STATION_NAME)
-
-
-Let's choose the FAIRPLEX NY US because the record is longer than the airport.
-
+%Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 %LosAngeles <- subset(import, STATION_NAME=="LOS ANGELES DOWNTOWN USC CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 
@@ -240,9 +336,7 @@ Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 
 
-Okay, you know have created a data frame. To confirm this, type \texttt{str(maunaloa)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
 
-Remember, a data frame is a list of vectors. To access the data inside the data frame, you can use the following command
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}

@@ -99,22 +99,47 @@ file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Singapore_Cl
 import = read.csv(file)
 @
 
-\subsection{Confirming the Dataframe}
+\subsection{Confirming the Proper Reading of the CSV file}
 
 in R, no news is good news, in other words, if you don't get red colored text describing an error, the program did something -- but now we need to figure out if it did something useful!
 
-We need to ensure the that imported file is what you expected and that it read the csv file correctly. There are several ways to accomplish this. We can plot the data, inspect the first few observations, or look at the structure of the dataframe. 
+We need to ensure the that imported file is what you expected and that it read the csv file correctly. There are several ways to accomplish this. We should inspect the first few observations, evaluate the structure of the dataframe and finally plot the data. We will do all of the these below.
 
-We will do all of the these below.
+\subsubsection{Viewing the 1st 6 Observations}
 
-\subsection{Checking the Data}
+<<>>=
+head(import)
+@
 
-Now we will check the data by plotting it.
+\subsubsection{Confirming the Column Names}
+
+<<>>=
+names(import)
+@
+
+\subsubsection{Evaluating the structure of the object}
+
+Okay, you know have created a data frame. To confirm this, type \texttt{str(import)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
+
+
+<<>>=
+str(import)
+@
+
+Remember, a data frame is a set of vectors. To access the data inside the data frame, you can use the following command
+
+
+\subsubsection{Plotting the Data}
+
+Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}).
 
 \begin{figure}
+
 <<echo=T, fig=TRUE>>=
 plot(TMAX~DATE, import)
 @
+\caption{Some Caption.}
+\label{fig:plotmissing}
 \end{figure}
 
 We find some rather odd low temperature values in the plot. We can find some of these with the \texttt{min()} function.
@@ -123,58 +148,53 @@ We find some rather odd low temperature values in the plot. We can find some of 
 min(import$TMAX)
 @
 
-\subsection{Checking the Data}
+\subsection{Re-assigning Missing Values to NAs}
 
-What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!
+What's going on?  What is the deal with the -9999? These are used for missing data. Historically, computers didn't have a lot of options for mixing numbers and letters in a variable type while R has some built in flexibility for this. So, to avoid leaving values blank (with all the ambiguous interpretations), the value -9999 is used to sybmolize missing values, since the number is unrealistic in the real world!
 
+Obviously, if we averaged the temperature with these values, we'd get a pretty inaccurate number (e.g. \Sexpr{round(mean(import$TMAX), 0)} versus \Sexpr{round(mean(import$TMAX[import$TMAX>-9999]), 0)}. Thus, we need to remove them!  
 
-%import$TMAX[import$TMAX==-9999] = NA
-%import$TMIN[import$TMIN==-9999] = NA
+We will replace the -9999 with NA, which R uses specifically to avoid accidently averaging arbitrary values that are representing missing values. 
 
-
-Okay, now we'll check again, for dates less then Dec. 31, 1913:
-
-
-%plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
-
-
-Yikes! What's wrong? As it turns out the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
-
-19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
+How do we do this?
+<<>>=
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+@
 
 
-%plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+Okay, now we'll check again, but let's plot a just a few years, let's say five years (356 days * 5 years = 1825) or 1825 observations. 
 
-\subsection{Converting Dates}
+<<>>=
+plot(TMAX~DATE, import[1:1835,], ty='l')
+@
 
-\subsection{Re-assigning Missing Values}
+Yikes! What's wrong? It appears we have gaps in the data -- but we already removed our missing data, why are these big jumps in the data. 
 
-\subsection{Fixing the Dates}
+As it turns out the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition. Let's say that the data have a year change between 1913 and 1914. The date format in the NOAA data are YYYYMMDD, or year, month, and day with 4, 2, 2 digits, respectively. Thus, the last day of 1913 is 19131231 or Dec, 31, 1913. The next day is January 1st or 19140101. But when you plot these on the x-axis, the order of the values should be $19131231 \rightarrow 19131232 \rightarrow 19131233 \rightarrow 19131234$, etc but there is no 32nd, 33rd or 34th of December. Instead the dates go from  $19131231 \rightarrow 19140101$. We have lots of numbers that are skipped, but no coded as missing, but missing all the same. So, now we need to convert our dates to something more sensible. In R, that means creating a variable with a format that expects dates, thus doesn't plot numbers that are impossible dates!
 
+\subsection{Converting Date Format}
+
+To create a new format, we have to complete a few steps. Unfortunately, date formats are one of the more obtuse aspects of R, but if you follow along, you should have success, even if you have no clue what you did. 
 First, we convert the date to a string of character values. Next, we'll convert the strings to a data format. 
 
+<<>>=
+strDates <- as.character(import$DATE)
+head(strDates)
 
-%strDates <- as.character(import$DATE)
-%head(strDates)
-%import$NewDate <- as.Date(strDates, "%Y%m%d")
-
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+@
 
 \subsection{Checking the New Dates}
 
+<<>>=
+plot(TMAX~NewDate, import[1:1835,], ty='l')
+@
 
-%plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
-
-
-\subsection{Subset Sites}
-
-Olivia has two sites in here data, so, we need to subset it.
-
+%\subsection{Subset Sites}
 
 %unique(import$STATION_NAME)
-
-
-Let's choose the FAIRPLEX NY US because the record is longer than the airport.
-
+%Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 %LosAngeles <- subset(import, STATION_NAME=="LOS ANGELES DOWNTOWN USC CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
 
@@ -183,9 +203,7 @@ Let's choose the FAIRPLEX NY US because the record is longer than the airport.
 
 
 
-Okay, you know have created a data frame. To confirm this, type \texttt{str(maunaloa)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
 
-Remember, a data frame is a list of vectors. To access the data inside the data frame, you can use the following command
 
 <<echo = T, results = 'hide' >>=
 #maunaloa$average
