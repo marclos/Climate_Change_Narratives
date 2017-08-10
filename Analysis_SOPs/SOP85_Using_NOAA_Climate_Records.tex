@@ -61,7 +61,7 @@
 Raw data sets often come with untidy/non-useful formats or information that must first be cleaned or processed before an accurate and useful analysis of the contents can be done. After obtaining a data set there are some preliminary steps you must follow in order to get your data file into working order for your analysis. 
 
 \subsection{Purpose}
-This document is intended a resource and guide to help you: 
+This document is intended as a resource and guide to help you: 
 \begin{itemize}
 \item upload your data file into the R environment using the Rstudio Server; and 
 \item clean, organize and reformat the data to prepare it for analysis. 
@@ -78,22 +78,23 @@ Note: Before you attempt to upload your data file into an appropriate directory 
 
 
 \subsection{Upload CSV Files into Appropriate Rstudio Directory} 
-The first step to getting your data into R is to upload it into the the Rstudio server online.Follow these steps to upload your data file into an appropriate directory.\\ \emph{Note: following these steps requires you to be logged into an Rstudio account that is linked to Marc's repository, see above}
+The first step to getting your data into R is to upload it into the the Rstudio server online. Follow these steps to upload your data file into an appropriate directory.\\ \emph{Note: following these steps requires you to be logged into an Rstudio account that is linked to Marc's repository, see above}
 
   \begin{enumerate}
-  \item Once your in Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} in the \textit{Files} tab located in the lower right navigation block in Rstudio
+  \item Once you're in Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} in the \textit{Files} tab located in the lower right navigation block in Rstudio
   \item Navigate to a folder entitled \textbf{``Data"} 
   \item click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
   \item Use the upload button to select a file from your computer to upload into the rstudio server
+  \begin{figure}[h]
+  \includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
+  \end{figure}
   \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). Hopefully you still remember where you saved it and what name you saved it under. 
   \item Click \textbf{Open} and then click 
   
   \end{enumerate}
 
 
-%\begin{figure}[h]
-%\includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button.jpg"}
-%\end{figure}
+
 
 \subsection{Preprocessing CSV files}
 
@@ -146,7 +147,7 @@ import = read.csv(file)
 \begin{alltt}
 \hlcom{# Read CSV}
 
-\hlstd{file} \hlkwb{=} \hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Singapore_ClimateData.csv"}
+\hlstd{file} \hlkwb{=} \hlstr{"/home/CAMPUS/im022012/Climate_Change_Narratives/Data/Singapore_ClimateData.csv"}
 
 \hlstd{import} \hlkwb{=} \hlkwd{read.csv}\hlstd{(file)}
 \end{alltt}
