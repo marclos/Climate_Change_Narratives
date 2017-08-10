@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{graphics}
+\usepackage{graphicx}
 \usepackage{hyperref}
 \title{SOP 85: Using NOAA Climate Records}
 \author{Marc Los Huertos}
@@ -17,7 +17,7 @@ This document is intended a resource and guide to help you:
 \item clean, organize and reformat the data to prepare it for analysis
 \end{itemize}
 
-The program that we will be using to run an analysis of our data is R, and we will access it via the Rstudio server using your computer's web browser. Essentially, we will be using cloud based computing software to do our analysis so the first thing you will want to do is know how to access the server. 
+The program that we will be using to run an analysis of our data is R, and we will access it via the Rstudio server using your computer's web browser. Essentially, we will be using computing software on the cloud to do our analysis so the first thing you will want know how to do is access the server. 
 
 Note: Before you attempt to upload your data file into an appropriate directory in Rstudio you should already know how to access your Pomona Rstudio account as well as have connected to Marc's Github repository. Click on the following link to download a guide on how to get started with Rstudio and Github: \\
 \\
@@ -25,17 +25,29 @@ Note: Before you attempt to upload your data file into an appropriate directory 
 
 \section{Preparing CSV file(s)}
 
+
+
+\subsection{Upload CSV Files into Appropriate Rstudio Directory} 
+The first step to getting your data into R is to upload it into the the Rstudio server online.Follow these steps to upload your data file into an appropriate directory.\\ \emph{Note: following these steps requires you to be logged into an Rstudio account that is linked to Marc's repository, see above}
+
+  \begin{enumerate}
+  \item Once your in Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} in the \textit{Files} tab located in the lower right navigation block in Rstudio
+  \item Navigate to a folder entitled \textbf{``Data"} 
+  \item click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: spr\_17 if you're enrolled in EA 30 spring semester of 2017.
+  \item Use the upload button to select a file from your computer to upload into the rstudio server
+  \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). Hopefully you still remember where you saved it and what name you saved it under. 
+  \item Click \textbf{Open} and then click 
+  
+  \end{enumerate}
+
+
+%\begin{figure}[h]
+%\includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button.jpg"}
+%\end{figure}
+
 \subsection{Preprocessing CSV files}
 
 In most cases, we don't need to preprocess the csv files. However, Mac users have been confronted with a host of problems that has something to do with how Macs format CSV files.\footnote{I will update this when I try using a Mac for this.}
-
-\subsection{Upload CSV Files into Appropriate Rstudio Directory} 
-The first step to getting your data into R is to upload it into the the Rstudio server online.
-Once you are in Rstudio you will want to locate a good folder/location in the Rstudio directory to which to upload your data file. We suggest uploading 
-
-\begin{figure}[h]
-\includegraphics[scale=0.25]{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/graphics/Upload_button"}
-\end{figure}
 
 
 \section{Reading CSV Files into R}
