@@ -2,7 +2,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \title{SOP 85: Using NOAA Climate Records}
-\author{Marc Los Huertos}
+\author{Marc Los Huertos and Isaac Medina}
 
 \begin{document}
 \maketitle
@@ -13,8 +13,8 @@ Raw data sets often come with untidy/non-useful formats or information that must
 \subsection{Purpose}
 This document is intended a resource and guide to help you: 
 \begin{itemize}
-\item upload your data file into the R environment using the Rstudio server online
-\item clean, organize and reformat the data to prepare it for analysis
+\item upload your data file into the R environment using the Rstudio Server; and 
+\item clean, organize and reformat the data to prepare it for analysis. 
 \end{itemize}
 
 The program that we will be using to run an analysis of our data is R, and we will access it via the Rstudio server using your computer's web browser. Essentially, we will be using computing software on the cloud to do our analysis so the first thing you will want know how to do is access the server. 
@@ -33,7 +33,7 @@ The first step to getting your data into R is to upload it into the the Rstudio 
   \begin{enumerate}
   \item Once your in Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} in the \textit{Files} tab located in the lower right navigation block in Rstudio
   \item Navigate to a folder entitled \textbf{``Data"} 
-  \item click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: spr\_17 if you're enrolled in EA 30 spring semester of 2017.
+  \item click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
   \item Use the upload button to select a file from your computer to upload into the rstudio server
   \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). Hopefully you still remember where you saved it and what name you saved it under. 
   \item Click \textbf{Open} and then click 
@@ -79,7 +79,7 @@ Need an impage of the pop-up window...
 \subsection{Reading a CSV File into a Dataframe}
 
 %\begin{verbatim}
-%maunaloa <- read.csv(filename)
+%import <- read.csv(filename)
 %\end{verbatim}
 
 \subsection{Importing CSV Files}
@@ -94,20 +94,34 @@ import = read.csv(file)
 <<>>=
 # Read CSV
 
-file = "/home/CAMPUS/kaj41925/Climate_Change_Narratives/Khalil/NewOrleansNOAAdata.csv"
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Singapore_ClimateData.csv"
 
 import = read.csv(file)
 @
 
 \subsection{Confirming the Dataframe}
 
+in R, no news is good news, in other words, if you don't get red colored text describing an error, the program did something -- but now we need to figure out if it did something useful!
+
+We need to ensure the that imported file is what you expected and that it read the csv file correctly. There are several ways to accomplish this. We can plot the data, inspect the first few observations, or look at the structure of the dataframe. 
+
+We will do all of the these below.
 
 \subsection{Checking the Data}
 
 Now we will check the data by plotting it.
 
-%plot(TMAX~DATE, import)
+\begin{figure}
+<<echo=T, fig=TRUE>>=
+plot(TMAX~DATE, import)
+@
+\end{figure}
 
+We find some rather odd low temperature values in the plot. We can find some of these with the \texttt{min()} function.
+
+<<>>=
+min(import$TMAX)
+@
 
 \subsection{Checking the Data}
 
