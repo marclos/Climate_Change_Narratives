@@ -39,23 +39,24 @@ The first step to getting your data into R is to upload it into the the Rstudio 
   \includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
   \end{figure}
   \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). Hopefully you still remember where you saved it and what name you saved it under. 
-  \item Click \textbf{Open} and then click 
+  \item Click \textbf{Open} and then click \textbf{OK}. 
   
   \end{enumerate}
 
 
-
-
 \subsection{Preprocessing CSV files}
 
-In most cases, we don't need to preprocess the csv files. However, Mac users have been confronted with a host of problems that has something to do with how Macs format CSV files.\footnote{I will update this when I try using a Mac for this.}
+In most cases, we don't need to preprocess the csv files before uploading them. However, Mac users have been confronted with a host of problems that has something to do with how Macs format CSV files. If you have any problems with reading or uploading your csv file on a Mac speak with the instructor or TA. \footnote{I will update this when I try using a Mac for this.}
 
 
 \section{Reading CSV Files into R}
 
-Although the csv file might be present in an Rstudio directory, it is not in the R environment. One way to confirm this is to look at the Rstudio window tab `Environment', where the file listed. 
+Congrats on uploading your data into the Rstudio server! But we're not done here yet...\\ Although the csv file might be present in an Rstudio directory, it is not yet in the R environment. One way to confirm this is to look at the Rstudio tab \textbf{`Environment'} in the top right window, where the file shoud be listed. If you don't see anything here it's because the file has not yet been loaded into R. \\ Follow the next steps to load your data into R: 
 
-To have the file in the R environment, we read the file using the \verb!read.csv()! function. The function is expecting the path and name of the file as an argument inside the perentecies, which is tough to type without making errors. 
+  \begin{enumerate}
+  \item In the bottom left window of Rstudio, click on the '
+  \end{enumerate}
+To have the file in the R environment (where it wi), we read the file using the \verb!read.csv()! function. The function is expecting the path and name of the file as an argument inside the perentecies, which is tough to type without making errors. 
 
 \subsection{Assigning the File Path and Name}
 
@@ -95,7 +96,7 @@ import = read.csv(file)
 <<>>=
 # Read CSV
 
-file = "/home/CAMPUS/im022012/Climate_Change_Narratives/Data/Singapore_ClimateData.csv"
+file = "/home/CAMPUS/im022012/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"
 
 import = read.csv(file)
 @
