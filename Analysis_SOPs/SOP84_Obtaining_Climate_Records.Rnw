@@ -80,11 +80,9 @@ Alternatively, one can use the FTP site to access the data in a different format
 
 In addition, the CHCND documentation, as noted above, is very helpful in understanding the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
 
-\subsection{rNOAA library tools--NOT WORKING YET}
+\subsection{rnoaa library tools}
 
-There is a relatively new tool to access NOAA data using an R package, called \texttt{rNOAA}. 
-
-To use the tool, several dependent packages need to be installed and loaded, including \texttt{rNOAA}. Next users need to get an API code, which is quite simple, following this link: \url{https://www.ncdc.noaa.gov/cdo-web/token}.
+There is a relatively new tool to access NOAA data using an R package, called \texttt{rnoaa}. To use the tool, several dependent packages need to be installed and loaded, including \texttt{rNOAA}. Next users need to get an API code, which can be easily done by following the instructions described by this link: \url{https://www.ncdc.noaa.gov/cdo-web/token}.
 
 Using the \texttt{rNOAA} package is relatively strait foreward, although I have been getting timeout errors that I can't solve. 
 
@@ -92,8 +90,8 @@ Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.
 
 First, we prepare R by loading two libraries that we'll use to download (\texttt{rNOAA}) and manipulate (\texttt{plyr}) the data.
 <<library>>=
-library('plyr')
-library('rnoaa')
+library(plyr)
+library(rnoaa)
 @
 
 <<echo=FALSE>>=
@@ -107,7 +105,15 @@ rNOAA has a simple function to list the cities:
 ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
 @
 
+The function queries the NOAA website and retrieves city names and the dates of the climate records. Importantly, the records include the station ID, which can be used to college the data for that city. 
+
+NOTE: By default 25 records (cities) are retrieved. See \texttt{?ncdc_locs} to learn how to include arguments to obtain more records.  
+
+NOTE2: It would be nice to make a map of how concentrated the stations spatially. 
+
 \subsubsection{Getting Data}
+
+Using the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
 <<>>=
 ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00084289')
 @
