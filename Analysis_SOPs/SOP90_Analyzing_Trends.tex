@@ -146,6 +146,8 @@ TBD
     
 \subsection{Frequentist Statistics}
 
+TBD
+
 %Frequentist inference has been associated with the frequentist interpretation of probability, specifically that any given experiment can be considered as one of an infinite sequence of possible repetitions of the same experiment, each capable of producing statistically independent results.[1] In this view, the frequentist inference approach to drawing conclusions from data is effectively to require that the correct conclusion should be drawn with a given (high) probability, among this notional set of repetitions. However, exactly the same procedures can be developed under a subtly different formulation. This is one where a pre-experiment point of view is taken. It can be argued that the design of an experiment should include, before undertaking the experiment, decisions about exactly what steps will be taken to reach a conclusion from the data yet to be obtained. These steps can be specified by the scientist so that there is a high probability of reaching a correct decision where, in this case, the probability relates to a yet to occur set of random events and hence does not rely on the frequency interpretation of probability. 
 
 \subsection{Examples of Frequentists Methods}
@@ -181,7 +183,7 @@ Based on our understanding of the data, the choices of analysis become limited b
 %\setkeys{Gin}{width=0.5\textwidth} 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+\includegraphics[width=\maxwidth]{figure/Decision_Tree-1} 
 
 \end{knitrout}
 \end{center}
@@ -195,9 +197,65 @@ Based on these four data combination types, we will give examples of each of the
 
 TBD
 
+%A contingency table (also known as a cross tabulation or crosstab) is a type of table in a matrix format that displays the (multivariate) frequency distribution of the variables. They are heavily used in survey research, business intelligence, engineering and scientific research. They provide a basic picture of the interrelation between two variables and can help find interactions between them. The term contingency table was first used by Karl Pearson in ''On the Theory of Contingency and Its Relation to Association and Normal Correlation,'' part of the Drapers' Company Research Memoirs Biometric Series I published in 1904.
+
+As an example, how many consequetive days of heat waves before 1960 and afterwards in some made up city!
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{heatwave_table} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{26}\hlstd{,} \hlnum{31}\hlstd{,} \hlnum{45}\hlstd{,} \hlnum{68}\hlstd{,} \hlnum{80}\hlstd{,} \hlnum{100}\hlstd{),} \hlkwc{ncol}\hlstd{=}\hlnum{2}\hlstd{)}
+
+\hlcom{# label the columns and rows}
+\hlkwd{colnames}\hlstd{(heatwave_table)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{'pre1960'}\hlstd{,} \hlstr{'post1960'}\hlstd{)}
+\hlkwd{rownames}\hlstd{(heatwave_table)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{'1'}\hlstd{,} \hlstr{'2'}\hlstd{,} \hlstr{'3'}\hlstd{)}
+
+\hlkwd{fisher.test}\hlstd{(heatwave_table)}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	Fisher's Exact Test for Count Data
+## 
+## data:  heatwave_table
+## p-value = 0.8207
+## alternative hypothesis: two.sided
+\end{verbatim}
+\begin{alltt}
+\hlkwd{chisq.test}\hlstd{(heatwave_table)}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  heatwave_table
+## X-squared = 0.43075, df = 2, p-value = 0.8062
+\end{verbatim}
+\begin{alltt}
+\hlcom{# convert to a table}
+\hlstd{heatwave_table} \hlkwb{=} \hlkwd{as.table}\hlstd{(heatwave_table)}
+
+\hlcom{# add margins to calculate expected values!}
+\hlkwd{addmargins}\hlstd{(heatwave_table)}
+\end{alltt}
+\begin{verbatim}
+##     pre1960 post1960 Sum
+## 1        26       68  94
+## 2        31       80 111
+## 3        45      100 145
+## Sum     102      248 350
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 \subsection{Analysis of Variance}
 
-TBD
+%Analysis of variance (ANOVA) is a collection of statistical models used to analyze the differences among group means and their associated procedures (such as ''variation'' among and between groups), developed by statistician and evolutionary biologist Ronald Fisher. 
+
+%In the ANOVA setting, the observed variance in a particular variable is partitioned into components attributable to different sources of variation. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and  generalizes the t-test to more than two groups. ANOVAs are useful for comparing (testing) three or more means (groups or variables) for statistical significance. 
+
+For example, we might partition the level of warming due to anthropogenic versus natural radiative forcings:
+
+
 
 \subsection{Linear Regression}
 
@@ -868,7 +926,7 @@ Temperatures, Bangkok, Thailand}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.4.1 by xtable 1.8-2 package
-% Sat Aug  5 16:30:44 2017
+% Sat Aug 12 17:20:45 2017
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}

@@ -20,7 +20,7 @@ rm(list = ls())
 <<echo=FALSE>>=
 # Importing Scripts
 source("../Custom_Code/CSV_import-fun.R")
-Thailand <- CSV_import("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Thailand_GHCND:TH000048456.csv")
+Thailand <- CSV_import("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/MLH/Thailand_GHCND:TH000048456.csv")
 @
 
 \begin{document}
@@ -102,6 +102,8 @@ TBD
     
 \subsection{Frequentist Statistics}
 
+TBD
+
 %Frequentist inference has been associated with the frequentist interpretation of probability, specifically that any given experiment can be considered as one of an infinite sequence of possible repetitions of the same experiment, each capable of producing statistically independent results.[1] In this view, the frequentist inference approach to drawing conclusions from data is effectively to require that the correct conclusion should be drawn with a given (high) probability, among this notional set of repetitions. However, exactly the same procedures can be developed under a subtly different formulation. This is one where a pre-experiment point of view is taken. It can be argued that the design of an experiment should include, before undertaking the experiment, decisions about exactly what steps will be taken to reach a conclusion from the data yet to be obtained. These steps can be specified by the scientist so that there is a high probability of reaching a correct decision where, in this case, the probability relates to a yet to occur set of random events and hence does not rely on the frequency interpretation of probability. 
 
 \subsection{Examples of Frequentists Methods}
@@ -135,7 +137,7 @@ Based on our understanding of the data, the choices of analysis become limited b
 \caption{Decision tree for frequents inference depending on the predictor and response data types.}\label{fig:tree}
 \begin{center}
 %\setkeys{Gin}{width=0.5\textwidth} 
-<<echo = F, fig = FALSE, message=FALSE>>=
+<<echo = F, fig = FALSE, message=FALSE, label='Decision Tree'>>=
 # Descision Tree 1
 library (diagram)
 par(mar=c(1,1,1,1))
@@ -922,6 +924,8 @@ TBD
 Instead of letting autocorrelation be 'hidden' problem in the data, we can incorporate the correlation structure into the model and use it to our advantage -- create a better, i.e. unbiased estimate of the model parameters.
 
 \subsection{Generalized Least Square (GLS) and Autocorrelation}
+
+To avoid some of our assumption violations, we can include aspects of autocorrectlion in the model, thus it won't be a confounding factor. We do this by using an alternative function, \texttt{gls()}, that is included in the \texttt{nmle} library. 
 
 <<>>=
 library(nlme)
