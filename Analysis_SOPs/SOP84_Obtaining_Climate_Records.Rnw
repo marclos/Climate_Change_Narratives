@@ -56,10 +56,7 @@ Below is a description of the steps to get data from the site:
   \item[Click `Continue' Button]
   \item[Station Detail \& Data Flag Options] Change to metric
   \item[Select Data Types] be sure to check the boxes for precipitation and temperature to include these in the data sets
-  \item[Click `Continue' Button]
-  
-  NOTE: Common Errors:
-  
+  \item[Click `Continue' Button] NOTE: Common Errors:
 Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 1,000 Station Years. Please select fewer stations/locations, or reduce the date range.
 
 If you get this error, you need to reduce the number of stations selected or make the date range smaller.
@@ -88,7 +85,7 @@ Using the \texttt{rNOAA} package is relatively strait foreward, although I have 
 
 Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.html}.
 
-First, we prepare R by loading two libraries that we'll use to download (\texttt{rNOAA}) and manipulate (\texttt{plyr}) the data.
+%First, we prepare R by loading two libraries that we'll use to download (\texttt{rNOAA}) and manipulate (\texttt{plyr}) the data.
 <<library>>=
 library(plyr)
 library(rnoaa)
@@ -107,13 +104,13 @@ ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
 
 The function queries the NOAA website and retrieves city names and the dates of the climate records. Importantly, the records include the station ID, which can be used to college the data for that city. 
 
-NOTE: By default 25 records (cities) are retrieved. See \texttt{?ncdc_locs} to learn how to include arguments to obtain more records.  
+%NOTE: By default 25 records (cities) are retrieved. See \texttt{?ncdc_locs} to learn how to include arguments to obtain more records.  
 
 NOTE2: It would be nice to make a map of how concentrated the stations spatially. 
 
 \subsubsection{Getting Data}
 
-Using the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
+%Using the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
 <<>>=
 ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00084289')
 @
