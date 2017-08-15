@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\title{SOP 06: Introduction to Rstudio Server and Github}
+\author{Marc Los Huertos and Isaac Medina}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+As students of the environment in this course, our ability to have substantive scienctific discourse rests upon our ability to draw meaningul conclusions from observations or data. In dealing with the problems of data, as in other sciences, we will utilize the language of statistics and mathematics to deal with the complexity of environmental issues. This enables us to rely on powerful statistical and computational tools that have been developed to deal with data - in particular open source software like R, Rstudio and Git. \\
+Once you get the hang of using these programs, you will be equipped to do many kinds of interesting and powerful analyses. However, becoming facile in using these programs can feel a lot like learning how to walk. We need to approach this process in discrete steps. The following pages will explain more about what Rstudio and Github are, as well as guide you through an excercise that connects the functionality of both programs!
+
+  \subsection{Purpose}
+  
+This document is intended as a resource and guide to help you understand how to: 
+  \begin{itemize}
+  \item Create projects in Rstudio and connect them with your peers so you can collaborate online using Github repositories. 
+  \item Troubleshoot when you run into problems ``pushing", ``pulling" and ``merging" your work with your collaborators.
+  \end{itemize}
+\section{Background}
+
+  \subsection{What is R?}
+  % R is a powerful, open source program but combined with RStudio and Github the program becomes an archetype of a program that enables 1) collaboration, 2) transparency, and 3) accessibility.
+  
+  % RStudio is the user interface for R. Although R by itself is an amazing example of crowd sourcing, where a wide range of staticians and programmers have created a free programming environments with a robust range of statistical packages, the RStudio interface provides a user with the tools to track and publish their analysis process in an effecient and transparent way. 
+  
+  %Local Install versus Server --- R and RStudio can be installed on a local computer/laptop from the CRAN download mirror sites. However, we also have access to the R and RStudio Server installed on the Pomona College mainframe, where you can access it via a web browser. Wow, this is conveient!
+  
+  \subsection{What is Git and Github?}
+  %GitHub is a web-based Git repository hosting service.
+  % Version Control is a method to track changes in software, and often in the context of collaborative projects. The final component of R and RStudio is its capacity to create projects (RStudio's terminology) and repositories (Github's terminalogy) that can be shared among collaborators. In particular, the collaboration allows for contributions to be tracked via version control tools. There are a number of ways that we can access these tools, but we'll try to limit the methods to keep the process relatively ``simple''.
+  
+  \subsection{Why does it matter? Collaboration}
+  
+  
+\section{Connecting Rstudio and Github: The ``Beginner's Luck'' Excercise}
+Now that you know what Rstudio and Github are this excercise will guide you through the processes of connecting the two together. This process will require several steps in which you will have to go back and forth between Rstudio and Github. 
+
+  \subsection{Step 1: Sign into your Rstudio Server Account}
+Since we will be using the server version of Rstudio all you need to do is login to your Rstudio Account:
+    \begin{enumerate}
+    \item Using your computer's web browser go to \url{https://rstudio2.campus.pomona.edu} to access your Rstudio account
+    \item Login using your Pomona College user ID and password \footnote{Non-Pomona students must first speak to a representative at the ITS help desk in the Cowart Building. They will ask for your 5C student ID before issuing you a name and password. If you have questions about this speak to the instructor or TA}
+    \end{enumerate}
+  \subsection{Step 2: Create a Student Account with Github}
+  \subsection{Step 3 Create an SSH Key in Rstudio}
+  \subsection{Step 4: Link Your Github and Rstudio Server Accounts Using Your SSH}
+  \subsection{Step 5: Create a Project in Rstudio Linked to Marc's ``Beginner's Luck'' Repository}
+  \subsection{Push and Pull Something}
+  
+\section{Appendix A: Troubleshooting}
+\section{Additional Resources}
+
+
+
+
+
+
+\end{document}
