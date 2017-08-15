@@ -129,7 +129,7 @@ In addition, the CHCND documentation, as noted above, is very helpful in underst
 
 There is a relatively new tool to access NOAA data using an R package, called \texttt{rnoaa}. To use the tool, several dependent packages need to be installed and loaded, including \texttt{rNOAA}. Next users need to get an API code, which can be easily done by following the instructions described by this link: \url{https://www.ncdc.noaa.gov/cdo-web/token}.
 
-Using the \texttt{rNOAA} package is relatively strait foreward, although I have been getting timeout errors that I can't solve. 
+Using the \texttt{rnoaa} package is relatively strait foreward, although I have been getting timeout errors that I can't solve. 
 
 Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.html}.
 
@@ -140,9 +140,7 @@ Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.
 \hlkwd{library}\hlstd{(plyr)}
 \hlkwd{library}\hlstd{(rnoaa)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library(rnoaa): there is no package called 'rnoaa'}}\end{kframe}
+\end{kframe}
 \end{knitrout}
 
 
@@ -155,7 +153,6 @@ rNOAA has a simple function to list the cities:
 \begin{alltt}
 \hlkwd{ncdc_locs}\hlstd{(}\hlkwc{locationcategoryid}\hlstd{=}\hlstr{'CITY'}\hlstd{,} \hlkwc{sortfield}\hlstd{=}\hlstr{'name'}\hlstd{,} \hlkwc{sortorder}\hlstd{=}\hlstr{'desc'}\hlstd{)}
 \end{alltt}
-<<<<<<< HEAD
 \begin{verbatim}
 ## $meta
 ## $meta$totalCount
@@ -200,11 +197,6 @@ rNOAA has a simple function to list the cities:
 ## [1] "ncdc_locs"
 \end{verbatim}
 \end{kframe}
-=======
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ncdc\_locs(locationcategoryid = "{}CITY"{}, sortfield = "{}name"{}, sortorder = "{}desc"{}): could not find function "{}ncdc\_locs"{}}}\end{kframe}
->>>>>>> 8ce99c915d7d874c9bb8c8b73c1a9752979804bd
 \end{knitrout}
 
 The function queries the NOAA website and retrieves city names and the dates of the climate records. Importantly, the records include the station ID, which can be used to college the data for that city. 
@@ -215,17 +207,12 @@ NOTE2: It would be nice to make a map of how concentrated the stations spatially
 
 \subsubsection{Getting Data}
 
-<<<<<<< HEAD
-%sing the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
-=======
 %Using the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
->>>>>>> 8ce99c915d7d874c9bb8c8b73c1a9752979804bd
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{ncdc_stations}\hlstd{(}\hlkwc{datasetid}\hlstd{=}\hlstr{'GHCND'}\hlstd{,} \hlkwc{locationid}\hlstd{=}\hlstr{'FIPS:12017'}\hlstd{,} \hlkwc{stationid}\hlstd{=}\hlstr{'GHCND:USC00084289'}\hlstd{)}
 \end{alltt}
-<<<<<<< HEAD
 \begin{verbatim}
 ## $meta
 ## NULL
@@ -240,11 +227,6 @@ NOTE2: It would be nice to make a map of how concentrated the stations spatially
 ## [1] "ncdc_stations"
 \end{verbatim}
 \end{kframe}
-=======
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ncdc\_stations(datasetid = "{}GHCND"{}, locationid = "{}FIPS:12017"{}, : could not find function "{}ncdc\_stations"{}}}\end{kframe}
->>>>>>> 8ce99c915d7d874c9bb8c8b73c1a9752979804bd
 \end{knitrout}
 
 \subsection{Evaluating Records}
