@@ -104,10 +104,7 @@ Below is a description of the steps to get data from the site:
   \item[Click `Continue' Button]
   \item[Station Detail \& Data Flag Options] Change to metric
   \item[Select Data Types] be sure to check the boxes for precipitation and temperature to include these in the data sets
-  \item[Click `Continue' Button]
-  
-  NOTE: Common Errors:
-  
+  \item[Click `Continue' Button] NOTE: Common Errors:
 Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 1,000 Station Years. Please select fewer stations/locations, or reduce the date range.
 
 If you get this error, you need to reduce the number of stations selected or make the date range smaller.
@@ -143,7 +140,9 @@ Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.
 \hlkwd{library}\hlstd{(plyr)}
 \hlkwd{library}\hlstd{(rnoaa)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library(rnoaa): there is no package called 'rnoaa'}}\end{kframe}
 \end{knitrout}
 
 
@@ -156,6 +155,7 @@ rNOAA has a simple function to list the cities:
 \begin{alltt}
 \hlkwd{ncdc_locs}\hlstd{(}\hlkwc{locationcategoryid}\hlstd{=}\hlstr{'CITY'}\hlstd{,} \hlkwc{sortfield}\hlstd{=}\hlstr{'name'}\hlstd{,} \hlkwc{sortorder}\hlstd{=}\hlstr{'desc'}\hlstd{)}
 \end{alltt}
+<<<<<<< HEAD
 \begin{verbatim}
 ## $meta
 ## $meta$totalCount
@@ -200,6 +200,11 @@ rNOAA has a simple function to list the cities:
 ## [1] "ncdc_locs"
 \end{verbatim}
 \end{kframe}
+=======
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ncdc\_locs(locationcategoryid = "{}CITY"{}, sortfield = "{}name"{}, sortorder = "{}desc"{}): could not find function "{}ncdc\_locs"{}}}\end{kframe}
+>>>>>>> 8ce99c915d7d874c9bb8c8b73c1a9752979804bd
 \end{knitrout}
 
 The function queries the NOAA website and retrieves city names and the dates of the climate records. Importantly, the records include the station ID, which can be used to college the data for that city. 
@@ -210,12 +215,17 @@ NOTE2: It would be nice to make a map of how concentrated the stations spatially
 
 \subsubsection{Getting Data}
 
+<<<<<<< HEAD
 %sing the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
+=======
+%Using the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
+>>>>>>> 8ce99c915d7d874c9bb8c8b73c1a9752979804bd
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{ncdc_stations}\hlstd{(}\hlkwc{datasetid}\hlstd{=}\hlstr{'GHCND'}\hlstd{,} \hlkwc{locationid}\hlstd{=}\hlstr{'FIPS:12017'}\hlstd{,} \hlkwc{stationid}\hlstd{=}\hlstr{'GHCND:USC00084289'}\hlstd{)}
 \end{alltt}
+<<<<<<< HEAD
 \begin{verbatim}
 ## $meta
 ## NULL
@@ -230,6 +240,11 @@ NOTE2: It would be nice to make a map of how concentrated the stations spatially
 ## [1] "ncdc_stations"
 \end{verbatim}
 \end{kframe}
+=======
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ncdc\_stations(datasetid = "{}GHCND"{}, locationid = "{}FIPS:12017"{}, : could not find function "{}ncdc\_stations"{}}}\end{kframe}
+>>>>>>> 8ce99c915d7d874c9bb8c8b73c1a9752979804bd
 \end{knitrout}
 
 \subsection{Evaluating Records}
