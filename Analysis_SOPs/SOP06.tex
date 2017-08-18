@@ -94,14 +94,41 @@ Since we will be using the server version of Rstudio all you need to do is login
     \item Login using your Pomona College user ID and password \footnote{Non-Pomona students must first speak to a representative at the ITS help desk in the Cowart Building. They will ask for your 5C student ID before issuing you a name and password. If you have questions about this speak to the instructor or TA}
     \item click on \textbf{New Session} to create a new R session on the server
     \end{enumerate}
+\pagebreak
+
   \subsubsection*{Some Useful Rstudio Basics You Should Know}
   \emph{Feel free to skip to Step 2 if you already know the layout of Rstudio. Otherwise read on.}\\
-  Once you're in Rstudio you'll notice that the layout of the window is subdivided into four smaller windows or sections that each have their own tabs. 
-\includegraphics[width=5in]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Rstudio_Layout"}
+  Once you're in Rstudio you'll notice that the layout of the window is subdivided into four smaller windows or sections that each have their own tabs. \vspace{5mm}
   
+\includegraphics[width=5in]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Rstudio_Layout"}
+  \begin{enumerate}
+  \item The first window is your \textbf{Document} window. Everytime you open or start a new file it will open up here. Rstudio has the capacitity to write many types of files including: 
+  \begin{itemize}
+  \item R markdown files (.Rmd) which are useful to quickly and easily embed R code into different formats. Once you've written up your R code you can use the KnitR package to easily convert them to a good looking, Microsoft Word, PDF or HTML file. 
+  \item R Sweave (.Rnw) and TeX (.TeX) files to use the typesetting functionalities of the \LaTeX language to produce documents with embedded R code and output. 
+  \item Shiny App files to make interactive web applications and data visualization tools
+  \end{itemize}
+  \item The Second Window is where you'll find your \textbf{Environment} and \textbf{Git} tabs. This window is used to track changes to your R ``environment'' and your local repository. You will learn to rely on this window once you actually begin loading and working with data in R. For now think of it as a the place which shows you all the data, variables and functions your working with in R. 
+  \item The third window is the \textbf{Console} window. This is like the command line in Rstudio for executing R code. Although you can write your code in your document (Window 1), anytime you actually wish to run a line of code or script it must first go into the console.\\
+  Additionally this window displays the results of most computations and commands given to R. For example if you type 1 + 2 in the console and hit enter it should display a 3 as output.   
+  \item Window 4 has several tabs including \textbf{Files, Plots, Help} to name a few. The Files tab is a graphical user interface (GUI) to help you open, edit and manage the files in your directory. WHile working in Rstudio you will oftentimes find yourself pulling in data, images and information from different files so this tool is very handy for keeping track of where things are saved. \\
+  Any you make a plot, image or graphic of your data  means you'll be pulling in many 
+  \end{enumerate}
   
   \subsection*{Step 2: Create a Student Account with Github}
+ Now that you know how to sign into Rstudio, Open a new browser tab or window and follow these steps to get started using Github:
+    \begin{enumerate}
+    \item Go to \url{https://github.com/join}
+    \item Fill in your information in Step 1 to create a new account. Be sure to use your student email address (with a .edu ending) in case you ever want to upgrade your account to a discounted Student account. 
+    \item in step 2 choose the basic/free plan. Should you ever want to create your own private repositories in the future you can upgrade to a discounted student account using the request form here: \url{https://education.github.com/} For now, the basic plan will suffice for the needs of our class. 
+    \item in step 3 fill out the remaining questions, you can choose research and project managements as as your interests for using github
+    
+    \item \textbf{Verify your email address} by clicking on the link that was automatically sent to your email address
+    \end{enumerate}
+    
+    
   \subsection*{Step 3 Create an SSH Key in Rstudio}
+Now that you have an active Github account, return 
   \subsection*{Step 4: Link Your Github and Rstudio Server Accounts Using Your SSH}
   \subsection*{Step 5: Create a Project in Rstudio Linked to Marc's ``Beginner's Luck'' Repository}
   \subsection*{Push and Pull Something}
