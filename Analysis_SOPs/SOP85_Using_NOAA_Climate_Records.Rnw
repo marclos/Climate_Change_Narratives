@@ -36,7 +36,7 @@ The first step to getting your data into R is to upload it into the the Rstudio 
   \item click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
   \item Use the upload button to select a file from your computer to upload into the rstudio server
   \begin{figure}[h]
-  \includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
+  %\includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
   \end{figure}
   \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). Hopefully you still remember where you saved it and what name you saved it under. 
   \item Click \textbf{Open} and then click \textbf{OK}. 
@@ -76,6 +76,10 @@ We will use a pop-up window to select the file the first time and then we'll ass
 > choose.file()
 \end{verbatim}
 
+
+<<eval=FALSE>>=
+file.choose()
+@
 Need an impage of the pop-up window...
 
 \subsection{Reading a CSV File into a Dataframe}
@@ -95,8 +99,8 @@ import = read.csv(file)
 
 <<>>=
 # Read CSV
-
-file = "/home/CAMPUS/im022012/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"
+#file = "/home/CAMPUS/im022012/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"
 
 import = read.csv(file)
 @

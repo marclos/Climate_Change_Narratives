@@ -86,7 +86,7 @@ The first step to getting your data into R is to upload it into the the Rstudio 
   \item click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
   \item Use the upload button to select a file from your computer to upload into the rstudio server
   \begin{figure}[h]
-  \includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
+  %\includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
   \end{figure}
   \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). Hopefully you still remember where you saved it and what name you saved it under. 
   \item Click \textbf{Open} and then click \textbf{OK}. 
@@ -126,6 +126,14 @@ We will use a pop-up window to select the file the first time and then we'll ass
 > choose.file()
 \end{verbatim}
 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{file.choose}\hlstd{()}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 Need an impage of the pop-up window...
 
 \subsection{Reading a CSV File into a Dataframe}
@@ -147,8 +155,8 @@ import = read.csv(file)
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# Read CSV}
-
-\hlstd{file} \hlkwb{=} \hlstr{"/home/CAMPUS/im022012/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"}
+\hlstd{file} \hlkwb{=} \hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"}
+\hlcom{#file = "/home/CAMPUS/im022012/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"}
 
 \hlstd{import} \hlkwb{=} \hlkwd{read.csv}\hlstd{(file)}
 \end{alltt}
@@ -239,7 +247,7 @@ Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}).
 \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{DATE, import)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
 
 \end{knitrout}
 \caption{Some Caption.}
@@ -286,7 +294,7 @@ Okay, now we'll check again, but let's plot a just a few years, let's say five y
 \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{DATE, import[}\hlnum{1}\hlopt{:}\hlnum{1835}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
 
 \end{knitrout}
 
@@ -322,7 +330,7 @@ First, we convert the date to a string of character values. Next, we'll convert 
 \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{NewDate, import[}\hlnum{1}\hlopt{:}\hlnum{1835}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-11-1} 
 
 \end{knitrout}
 
