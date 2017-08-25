@@ -111,26 +111,53 @@ Since we will be using the server version of Rstudio all you need to do is login
   \item The Second Window is where you'll find your \textbf{Environment} and \textbf{Git} tabs. This window is used to track changes to your R ``environment'' and your local repository. You will learn to rely on this window once you actually begin loading and working with data in R. For now think of it as a the place which shows you all the data, variables and functions your working with in R. 
   \item The third window is the \textbf{Console} window. This is like the command line in Rstudio for executing R code. Although you can write your code in your document (Window 1), anytime you actually wish to run a line of code or script it must first go into the console.\\
   Additionally this window displays the results of most computations and commands given to R. For example if you type 1 + 2 in the console and hit enter it should display a 3 as output.   
-  \item Window 4 has several tabs including \textbf{Files, Plots, Help} to name a few. The Files tab is a graphical user interface (GUI) to help you open, edit and manage the files in your directory. WHile working in Rstudio you will oftentimes find yourself pulling in data, images and information from different files so this tool is very handy for keeping track of where things are saved. \\
-  Any you make a plot, image or graphic of your data  means you'll be pulling in many 
+  \item Window 4 has several tabs including \textbf{Files, Plots, Help} to name a few. The Files tab is a graphical user interface (GUI) to help you open, edit and manage the files in your directory. While working in Rstudio you will oftentimes find yourself using data, images and information from different files so this tool is very handy for keeping track of where things are saved. \\
+  Anytime you make a plot, image or graphic of your data it will be displayed in the Plots tab. The Help tab is used to get more information about specific R commands that go into the console. \\
+  %For example, if you type in the command mean() (ASK MARC HOW TO GET THAT TYPEWRITER LOOK)
   \end{enumerate}
   
   \subsection*{Step 2: Create a Student Account with Github}
  Now that you know how to sign into Rstudio, Open a new browser tab or window and follow these steps to get started using Github:
     \begin{enumerate}
     \item Go to \url{https://github.com/join}
-    \item Fill in your information in Step 1 to create a new account. Be sure to use your student email address (with a .edu ending) in case you ever want to upgrade your account to a discounted Student account. 
+    \item Fill in your information in Step 1 to create a new account. Be sure to use your student email address (with a .edu ending) in case you ever want to upgrade your account to a discounted student account. 
     \item in step 2 choose the basic/free plan. Should you ever want to create your own private repositories in the future you can upgrade to a discounted student account using the request form here: \url{https://education.github.com/} For now, the basic plan will suffice for the needs of our class. 
-    \item in step 3 fill out the remaining questions, you can choose research and project managements as as your interests for using github
+    \item in step 3 fill out the remaining questions, you can choose research and project management as your interests for using github
     
     \item \textbf{Verify your email address} by clicking on the link that was automatically sent to your email address
     \end{enumerate}
     
     
   \subsection*{Step 3 Create an SSH Key in Rstudio}
-Now that you have an active Github account, return 
-  \subsection*{Step 4: Link Your Github and Rstudio Server Accounts Using Your SSH}
+Now that you have an active Github account, return to Rstudio. We will now attempt link your Rstudio Account to your Github account using an SSH key. 
+  \begin{enumerate}
+  \item In an active Rstudio session click on \textbf{Tools} located in the toolbar at the top
+  \item In the dropdown menu select \textbf{Global Options}
+  \item In the new popup window navigate to \textbf{Git/SVN} 
+  \item Click on \textbf{Create RSA Key...} button
+  \item The system will now ask you if you want to create a passphrase to go along with the new key. We recommend not using any passphrases for your first time. \textbf{Do not type a passphrase}
+  \item Click on \textbf{Create}
+  \item A window should pop up showing you the \emph{private key} that Rstudio has generated close this window
+  \item You should be back in the popup window for Git/SVN global options. Click on \textbf{View Public Key}
+  \item \textbf{Copy} the text in the popup window and close it
+  \end{enumerate}
+  \subsection*{Step 4: Link Your Github and Rstudio Server Accounts Using Your SSH} 
+  Now that you've copied the \emph{Public Key} associated with your SSH key, we need to notify the Github server to be on the lookout for this key. Return to your Github account and follow these steps to link your Github account to Rstudio. 
+  \begin{enumerate}
+  \item Sign into your Github account \url{https://github.com/login}
+  \item At the top right corner next to your profile picture click on the carrot to bring out the dropdown menu
+  \item Go to \textbf{Settings}
+  \item in the settings page click on \textbf{SSH and GPG Keys}
+  \item In the top right corner click on the button \textbf{New SSH key}
+  \item New sections should now appear where you can add a \textbf{Title} and \textbf{Key}. In the Title section type in ``Rstudio Server". In the Key section \textbf{paste in the public key} you copied from Rstudio.
+  \item Click on \textbf{Add SSH Key}
+  \end{enumerate}
+ 
   \subsection*{Step 5: Create a Project in Rstudio Linked to Marc's ``Beginner's Luck'' Repository}
+If all was successful in the above steps your Rstudio and Github accounts should be able to link! Let's test this out by linking your Rstudio account to one of Marc's existing project repositories. 
+  \begin{enumerate}
+  \item Return an 
+  \end{enumerate} 
   \subsection*{Push and Pull Something}
   
 \section{Appendix A: Troubleshooting}
