@@ -78,12 +78,12 @@ Note: Before you attempt to upload your data file into an appropriate directory 
 
 
 \subsection{Upload CSV Files into Appropriate Rstudio Directory} 
-The first step to getting your data into R is to upload it into the the Rstudio server online. Follow these steps to upload your data file into an appropriate directory.\\ \emph{Note: following these steps requires you to be logged into an Rstudio account that is linked to Marc's repository, see above}
+The first step to getting your data into R is to upload it into the the Rstudio server online. Follow these steps to upload your data file into an appropriate directory.\\ \emph{Note: following these steps requires you to be logged into an Rstudio account that is linked to Marc's repository, ``Climate\_Change\_Narratives" use the above link to learn how to do this}
 
   \begin{enumerate}
-  \item Once you're in Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} in the \textit{Files} tab located in the lower right navigation block in Rstudio
-  \item Navigate to a folder entitled \textbf{``Data"} 
-  \item click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
+  \item Once you're in Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} using the \textit{Files} tab in the lower right navigation GUI (Window 4 from SOP 06)
+  \item Navigate to the folder entitled \textbf{``Data"} 
+  \item Next click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
   \item Use the upload button to select a file from your computer to upload into the rstudio server
   \begin{figure}[h]
   %\includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
@@ -101,7 +101,8 @@ In most cases, we don't need to preprocess the csv files before uploading them. 
 
 \section{Reading CSV Files into R}
 
-Congrats on uploading your data into the Rstudio server! But we're not done here yet...\\ Although the csv file might be present in an Rstudio directory, it is not yet in the R environment. One way to confirm this is to look at the Rstudio tab \textbf{`Environment'} in the top right window, where the file shoud be listed. If you don't see anything here it's because the file has not yet been loaded into R. \\ Follow the next steps to load your data into R: 
+Congrats on uploading your data into the Rstudio server! But we're not done here yet...\\ Although the csv file might be present in an Rstudio directory, it is not yet in the R environment. We need to tell R to read the file. In order to do this we will use R commands. %One way to confirm this is to look at the Rstudio tab \textbf{`Environment'} in the top right window, where the file shoud be listed. If you don't see anything here it's because the file has not yet been loaded into R. 
+\\ Follow the next steps to load the data into R: 
 
   \begin{enumerate}
   \item In the bottom left window of Rstudio, click on the '
@@ -155,8 +156,8 @@ import = read.csv(file)
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# Read CSV}
-\hlstd{file} \hlkwb{=} \hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"}
-\hlcom{#file = "/home/CAMPUS/im022012/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"}
+\hlcom{#file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"}
+\hlstd{file} \hlkwb{=} \hlstr{"/home/CAMPUS/im022012/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"}
 
 \hlstd{import} \hlkwb{=} \hlkwd{read.csv}\hlstd{(file)}
 \end{alltt}
