@@ -323,11 +323,13 @@ The following students have been assigned to the teams below:
 library(xtable)
 team = c("1", "2", "3", "4", "5", "6")
 studentA = c("Brooke","Mina", "Troy", "Kyle","Bebe", "Meily")
-studentB = c("Caroline", "Kihara", "Sarah", "Chris", "Katherine", "Marc")
+studentB = c("Caroline", "Kihara", "Sarah", "Chris", "Katherine", "Valentina")
 presentDate =c("09/11/17", "09/11/17", "09/11/17", "09/18/17", "09/18/17", "09/18/17")
 project1teams <- data.frame(Topic = team, Team_A = studentA, Team_B = studentB, Presentation_Date=presentDate)
 print(xtable(project1teams), include.rownames=FALSE)
 @
+
+\input{Admin/Deliverables/Climate_Science_Review_F17}
 
 \subsection{Climate Science Review Presentation}
 
