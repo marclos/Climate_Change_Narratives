@@ -287,7 +287,7 @@ We will will create expert groups on to present the following topics:
   
 List the major compounds categorized as radiative gases and describe how various processes determine their role as GHGs. Provide detail on how different wavelengths of light interact with the gases. Finally, a discussion of water is key, since it is one of the main sources of controversy. 
   
-  \item GHG Emission Trends and Sources -- Carbon Dioxode (CO$_2$), Nitrous Oxide (N$_2$O), and Methane (CH$_4$).
+  \item GHG Emission Trends and Sources -- Carbon Dioxide (CO$_2$), Nitrous Oxide (N$_2$O), and Methane (CH$_4$).
 
 Describe how carbon dioxide and other GHGs are emitted and remain in the atmosphere. Distinguish between natural and anthropogenic sources and why that distinction might be important. Desribe various type of sources and how these might be linked to certain types of economic development and activities. In addition, describe the role of vegetation and other forms of carbon sequestration.
 
@@ -295,11 +295,11 @@ Describe how carbon dioxide and other GHGs are emitted and remain in the atmosph
   
 Climate change feedback is important in the understanding of global warming because feedback processes may amplify or diminish the effect of each climate forcing, and so play an important part in determining the climate sensitivity and future climate state. Feedback in general is the process in which changing one quantity changes a second quantity, and the change in the second quantity in turn changes the first. Positive feedback amplifies the change in the first quantity while negative feedback reduces it. Be sure to include the following feedbacks: Clouds, gas release, ice-albedo, carbon, and water vapor.
 
-  \item Terrestial Surface Temperature Records
+  \item Terrestrial Surface Temperature Records
   
 The instrumental temperature record provides the temperature of Earth's climate system from the historical network of in situ measurements of surface air temperatures and ocean surface temperatures. Data are collected at thousands of meteorological stations, buoys and ships around the globe. The longest-running temperature record is the Central England temperature data series, that starts in 1659. The longest-running quasi-global record starts in 1850. In recent decades more extensive sampling of ocean temperatures at various depths have begun allowing estimates of ocean heat content but these do not form part of the global surface temperature datasets.
   
-  \item Ocean Tempertures and Sea Level
+  \item Ocean Temperatures and Sea Level
 
 Describe how ocean temperatures have been measured over time and how these have lead to a range of interpretations of the results. Disucss how the thermal expansion of water may influence sea leval rise. Discuss how sea temperature change may affect different parts of the world differently. Describe the methods to distinguish sea level rise and coastal elevation changes, including how satellites work to collect these data.  
 
@@ -321,11 +321,11 @@ The following students have been assigned to the teams below:
 
 <<echo=F, results = 'asis', fig.cap='test'>>=
 library(xtable)
-team = c("1", "2", "3", "4", "5", "6")
-studentA = c("Brooke","Mina", "Troy", "Kyle","Bebe", "Meily")
-studentB = c("Caroline", "Kihara", "Sarah", "Chris", "Katherine", "Valentina")
-presentDate =c("09/11/17", "09/11/17", "09/11/17", "09/18/17", "09/18/17", "09/18/17")
-project1teams <- data.frame(Topic = team, Team_A = studentA, Team_B = studentB, Presentation_Date=presentDate)
+team = c("1", "2", "3", "4", "5", "6", "7")
+studentA = c("w","u", "v", "x","y", "z", "r")
+#studentB = c("Caroline", "Kihara", "Sarah", "Chris", "Katherine", "Valentina")
+presentDate =c("09/11/17", "09/11/17", "09/11/17", "09/11/17", "09/18/17", "09/18/17", "09/18/17")
+project1teams <- data.frame(Topic = team, Team_A = studentA, Presentation_Date=presentDate)
 print(xtable(project1teams), include.rownames=FALSE)
 @
 
