@@ -325,7 +325,7 @@ team = c("1", "2", "3", "4", "5", "6", "7")
 studentA = c("Kirara","Ally", "Caroline", "Brooke","Meily", "Valentina", "Bebe")
 #studentB = c("Caroline", "Kihara", "Sarah", "Chris", "Katherine", "Valentina")
 presentDate =c("09/11/17", "09/11/17", "09/11/17", "09/13/17", "09/18/17", "09/18/17", "09/18/17")
-project1teams <- data.frame(Topic = team, Team_A = studentA, Presentation_Date=presentDate)
+project1teams <- data.frame(Topic = team, Student = studentA, Presentation_Date=presentDate)
 print(xtable(project1teams), include.rownames=FALSE)
 @
 
