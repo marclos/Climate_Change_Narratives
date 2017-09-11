@@ -1,12 +1,25 @@
 
-Rpres: Open Source Markdown Language for Presentations
+Making Effective Presentations on Climate Change
 ========================================================
 author: Marc Los Huertos
-date: Sept. 10, 2017
+date: Sept. 11, 2017
 autosize: true
 
-Slide Title: What is the rPres' goals?
+Things to Think about before Preparing a Presentation
 ========================================================
+
+- Rhetorical Situation
+- Exigence
+- Triage
+- Time
+- Audience
+- Being Relaxed
+
+
+
+
+===
+
 
 This presentation uses and models the use of Rstudio's markdown language to create presentations. 
 
@@ -39,6 +52,15 @@ Slide With Plot
 ```{r, echo=FALSE}
 plot(cars)
 ```
+Slide With Image Right?
+====================================
+You can have an image in the slide as well. In this case, the graphic is on the left and the text is on the right.
+***
+
+![alt text](myimage.png)
+
+
+
 
 Slide With Image Left
 ====================================
