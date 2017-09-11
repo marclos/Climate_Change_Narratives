@@ -118,4 +118,6 @@ Practice Slide
 hello hello my name is caroline
 ***
 ![hello hello](scan0001.jpg)
+img src="scan0001.jpg" width=400 height=600
+
 
