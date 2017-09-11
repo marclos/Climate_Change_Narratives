@@ -17,121 +17,154 @@ This document is intended as a resource and guide to help you:
 \item upload your data file into the R environment using the Rstudio Server; and 
 \item clean, organize and reformat the data to prepare it for analysis. 
 \end{itemize}
+Since this SOP (Standard Operating Procedure) is about uploading and cleaning your data file, it assumes you already know how to successfully login to Rstudio, connect to Marc's Github repositories and that you already downloaded a climate data file from the CDO website. If you haven't already done these steps, go back and download the following SOPs (linked here): 
 
-The program that we will be using to run an analysis of our data is R, and we will access it via the Rstudio server using your computer's web browser. Essentially, we will be using computing software on the cloud to do our analysis so the first thing you will want know how to do is access the server. 
+\href{https://github.com/marclos/SOPs/raw/master/06_Rstudio_Github/Rstudio-and-Github_v03.pdf}{SOP 06: An Introduction to R, Rstudio, Github} 
 
-Note: Before you attempt to upload your data file into an appropriate directory in Rstudio you should already know how to access your Pomona Rstudio account as well as have connected to Marc's Github repository. Click on the following link to download a guide on how to get started with Rstudio and Github: \\
-\\
-\href{https://github.com/marclos/SOPs/raw/master/06_Rstudio_Github/Rstudio-and-Github_v03.pdf}{An Introduction to R, Rstudio, Github}
+\href{https://github.com/marclos/Climate_Change_Narratives/blob/master/Analysis_SOPs/SOP84_Obtaining_Climate_Records.pdf}{SOP: 84 Obtaining Climate Records}
+
+\section{Connect to the Climate Narratives Repository}
+
+In SOP 06 you did an excercise to connect to a test repository called ``Beginner's Luck''. This time we will connect to a new repository called ``Climate\_Change\_Narratives." You want to make sure that you \textbf{start a new project in R} connected to this repository since it will eventually house all the work you will do for the the climate project ``Do Weather Changes Matter?" 
+
+\subsection{Start A New R Session}
+We recommend starting a new R session for each project in order to have the most organized workspace. If when you sign into Rstudio it takes you directly to the active R session in which we were working on the ``Beginner's Luck Repository" follow these steps to create a new session
+
+  \begin{itemize}
+  \item If signed into an active session click on the red power button in the top right corner to ``Quit the current R session"
+  \item Select Start New Session
+  \end{itemize}
+
+\subsection{Create A New Project linked to Climate\_Change\_Narratives}
+To connect to the Climate Change Narratives Repository follow these steps:\\
+\emph{Note: These steps are essentially the same as Step 5 in SOP 06 the difference being that we're linking to a different repository} \\
+
+\begin{enumerate}
+  \item In an an active Rstudio session click on \textbf{File}
+  \item select \textbf{New Project} from the dropdown menu
+  \item select \textbf{Version Control} and then select \textbf{Git}
+  \item Get the new URL at \url{https://github.com/marclos/Climate_Change_Narratives}
+  \item Click on the green button \textbf{Clone or Download} and ensure that the popup window says \textbf{CLONE WITH SSH}, if it says ``clone with HTTPS'' click on \textbf{Use SSH} 
+  \item Copy the repository's URL 
+  \item In Rstudio \textbf{Paste in the URL from Github}
+  \item Under Project Directory Name type in ``Climate\_Change\_Narratives"
+  \item Click on \textbf{Create Project} 
+  \item Since were going to try to make changes to the repository this time, we'll need more access. \textbf{Send Marc an email} requesting to become a collaborator on the ``Climate\_Narratives\_Repository" and \textbf{accept the invitation} to become a collaborator on github
+  \end{enumerate} 
 
 \section{Preparing CSV file(s)}
 
-
-
 \subsection{Upload CSV Files into Appropriate Rstudio Directory} 
-The first step to getting your data into R is to upload it into the the Rstudio server online. Follow these steps to upload your data file into an appropriate directory.\\ \emph{Note: following these steps requires you to be logged into an Rstudio account that is linked to Marc's repository, ``Climate\_Change\_Narratives" use the above link to learn how to do this}
+The first step to getting your data into R is to upload it from your computer into the the Rstudio server online but to simplify our work in the future first \textbf{locate the file} in your computer and rename it using the following convention: \\ 
+\begin{center}
+\textbf{yourname\_region\_data}
+\end{center}
+where you fill in your firstname and a short descriptor for the region to which your data pertain. \\
+
+Now follow these steps to upload the data into the Rstudio server:
 
   \begin{enumerate}
-  \item Once you're in Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} using the \textit{Files} tab in the lower right navigation GUI (Window 4 from SOP 06)
+  \item In Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} using the \textit{Files} tab in the lower right navigation GUI (Window 4 from SOP 06)
   \item Navigate to the folder entitled \textbf{``Data"} 
   \item Next click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
   \item Use the upload button to select a file from your computer to upload into the rstudio server
   \begin{figure}[h]
-  %\includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
+  \includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
   \end{figure}
-  \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). Hopefully you still remember where you saved it and what name you saved it under. 
+  \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). It should have the new name you gave it above (yourname\_region\_data)
   \item Click \textbf{Open} and then click \textbf{OK}. 
   
   \end{enumerate}
 
+Your data file is now uploaded to the Rstudio server! All this means is that the actual file is in your workspace on the server. This however, doesn't mean that the file has been uploaded (or ``pushed") to the repository on Github.com. If Marc has added you as a collaborator already now would be a good time to go through the process of pulling, committing and pusing with Git. Ask Marc to guide you through this in lan, and continue to the next section. 
 
-\subsection{Preprocessing CSV files}
 
-In most cases, we don't need to preprocess the csv files before uploading them. However, Mac users have been confronted with a host of problems that has something to do with how Macs format CSV files. If you have any problems with reading or uploading your csv file on a Mac speak with the instructor or TA. \footnote{I will update this when I try using a Mac for this.}
+%\subsection{Preprocessing CSV files}
+
+%In most cases, we don't need to preprocess the csv files before uploading them. However, Mac users have been confronted with a host of problems that has something to do with how Macs format CSV files. If you have any problems with reading or uploading your csv file on a Mac speak with the instructor or TA. \footnote{I will update this when I try using a Mac for this.}
 
 
 \section{Reading CSV Files into R}
 
-Congrats on uploading your data into the Rstudio server! But we're not done here yet...\\ Although the csv file might be present in an Rstudio directory, it is not yet in the R environment. We need to tell R to read the file. In order to do this we will use R commands. %One way to confirm this is to look at the Rstudio tab \textbf{`Environment'} in the top right window, where the file shoud be listed. If you don't see anything here it's because the file has not yet been loaded into R. 
-\\ Follow the next steps to load the data into R: 
+Now that we got the file saved onto the Rstudio Server it's time to tell R to read the file so we can look at the data! This will require telling R to read the file. In order to do this we will use R commands. (remember these commands are to be typed in the R ``console") %One way to confirm this is to look at the Rstudio tab \textbf{`Environment'} in the top right window, where the file shoud be listed. If you don't see anything here it's because the file has not yet been loaded into R. 
 
-  \begin{enumerate}
-  \item In the bottom left window of Rstudio, click on the '
-  \end{enumerate}
-To have the file in the R environment (where it wi), we read the file using the \verb!read.csv()! function. The function is expecting the path and name of the file as an argument inside the perentecies, which is tough to type without making errors. 
-
-\subsection{Assigning the File Path and Name}
-
-Okay, now we know what the file name and path look like from the eyes of R. In this example, the path and filename is:
-
-%\begin{verbatim}
-%"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
-%\end{verbatim}
-
-We could paste the whole mess into the \texttt{read.csv()} function. Okay, let's keep moving. Although R was able to see the file, we still don't have an object we can actually do something with. Instead, we merely printed it to the screen. However, you have not created an object yet. To do this you need to assign it a name. So, what do we need to make an object?  Yes, the name of the object and the use of the assignment symbol. Let's create an object names filename instead that has the whole path and file name in it. Start with the name you want to use before the \texttt{read.csv()} function like this:
-
-First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. Use "file.choose" to find the folder path name. 
-
-We will use a pop-up window to select the file the first time and then we'll assign the file path and name to an object. 
-
+ \subsection{Finding the data path to the file}
+In order to tell R to read the file you also have to let it know where the file is (R is funny that way). We use an R command to help us find the specific data path to the file. \\
+In the console type in the following and then follow these steps: 
 \begin{verbatim}
-> choose.file()
+file.choose()
 \end{verbatim}
 
+\begin{itemize} 
+\item press enter on your keyboard
+\item in the resulting popup window navigate to the your saved data file and \textbf{double click} on it
+\item Look at the console window.. under the command that you just typed you should now see a data path. The data path should look something like this: ``/home/CAMPUS/im022012/Climate\_Change\_Narratives/Data/test\_data/Singapore\_ClimateData.csv"  It is the location of where your file is saved on the server.
+\item \textbf{Copy} the data path (including the parenthesis)
+\end{itemize}
 
-<<eval=FALSE>>=
-file.choose()
+\subsection{Telling R to Read the Data File}
+
+Now that we know where the data file is we will tell R to read it! In the console type in the following command and follow the next steps: 
+\begin{verbatim}
+read.csv()
+\end{verbatim}
+
+\begin{itemize}
+\item This time before you press enter on the R command \textbf{Paste} in the data path you copied inbetween the parenthesis of the R command (be sure to include the parenthesis)
+\item press enter
+\item If your command worked you should see a bunch of text in your console window now. This means R read your file!
+\end{itemize}
+
+\subsection{Creating a Data Object}
+So we made R read our file, however cool this might be, it is still not useful to us. In order to manipulate and do things with the data we need to tell R not only to read the file but also to store it in an object (such as a data frame) that we can manipulate. Follow these steps to tell R to read the file and store it in an object: \\
+
+This time we will use the following R command\\
+\begin{verbatim}
+climate_data <- read.csv("the/file/path")
+\end{verbatim}
+
+\textbf{But be sure to use your actual data path!}
+
+What this command is essentially doing is it's telling R to read the file and store it in an object called climate\_data ... if we really wanted to we could have actually named the object something else but climate\_data will suffice for now. \\ 
+
+In R usually ``no news is good news" after you hit enter on a command. In other words, if you don't get red colored text describing an error, the program did something -- but now we need to figure out if it did something useful! Luckily there is a way to check if your command was successful in creating your object. All you have to do is check the \textbf{Environment} tab (in window 2). You should see your data object: climate\_data listed there. 
+
+
+
+\section{Confirming the Proper Reading of the CSV file}
+<<echo=FALSE, message=FALSE, results='hide'>>=
+climate_data<- read.csv("/home/CAMPUS/im022012/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv")
 @
-Need an impage of the pop-up window...
 
-\subsection{Reading a CSV File into a Dataframe}
-
-%\begin{verbatim}
-%import <- read.csv(filename)
-%\end{verbatim}
-
-\subsection{Importing CSV Files}
-
-
-Importing Scripts
-
-%file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
-
-import = read.csv(file)
-
-<<>>=
-# Read CSV
-#file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"
-file = "/home/CAMPUS/im022012/Climate_Change_Narratives/Data/test_data/Singapore_ClimateData.csv"
-
-import = read.csv(file)
-@
-
-\subsection{Confirming the Proper Reading of the CSV file}
-
-in R, no news is good news, in other words, if you don't get red colored text describing an error, the program did something -- but now we need to figure out if it did something useful!
-
-We need to ensure the that imported file is what you expected and that it read the csv file correctly. There are several ways to accomplish this. We should inspect the first few observations, evaluate the structure of the dataframe and finally plot the data. We will do all of the these below.
+So we see that the data file is actually an object in R now. But what does it actually look like and what's in it? 
+Since R was made to handle large data sets it tries not to overwhelm you with all the data at once but luckily the developers made a few commands to peak at the data to see if everthing is in order. We will try some of these commands now to look at few observations then we'll evaluate the structure of the dataframe and go on to finally plot the data!
 
 \subsubsection{Viewing the 1st 6 Observations}
+The following command allows you to view the first six observations of data in the data frame you created. Type it into the console and hit enter!
 
 <<>>=
-head(import)
+head(climate_data)
 @
+After typing in the command above the console should spit out some of the data. You should see that it is generally organized into columns and rows like in Excel. 
+
+\subsection{Evaluating the structure of the object}
+
+Okay, you know have created a data frame. To confirm this, type \texttt{str(climate\_data)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
+
+
+
 
 \subsubsection{Confirming the Column Names}
+In R it isn't uncommon to want to manipulate a specific column of data within your data frame. Therefore it is useful to know what the names of the columns in your data frame are. The following command can be used to make R give you the names of the columns in your data frame. 
 
 <<>>=
-names(import)
+names(climate_data)
 @
 
-\subsubsection{Evaluating the structure of the object}
-
-Okay, you know have created a data frame. To confirm this, type \texttt{str(import)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
 
 
 <<>>=
-str(import)
+str(climate_data)
 @
 
 Remember, a data frame is a set of vectors. To access the data inside the data frame, you can use the following command
@@ -144,7 +177,8 @@ Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}).
 \begin{figure}
 
 <<echo=T, fig=TRUE>>=
-plot(TMAX~DATE, import)
+plot(TMAX~DATE, climate_data)
+
 @
 \caption{Some Caption.}
 \label{fig:plotmissing}
@@ -153,28 +187,28 @@ plot(TMAX~DATE, import)
 We find some rather odd low temperature values in the plot. We can find some of these with the \texttt{min()} function.
 
 <<>>=
-min(import$TMAX)
+min(climate_data$TMAX)
 @
 
 \subsection{Re-assigning Missing Values to NAs}
 
 What's going on?  What is the deal with the -9999? These are used for missing data. Historically, computers didn't have a lot of options for mixing numbers and letters in a variable type while R has some built in flexibility for this. So, to avoid leaving values blank (with all the ambiguous interpretations), the value -9999 is used to sybmolize missing values, since the number is unrealistic in the real world!
 
-Obviously, if we averaged the temperature with these values, we'd get a pretty inaccurate number (e.g. \Sexpr{round(mean(import$TMAX), 0)} versus \Sexpr{round(mean(import$TMAX[import$TMAX>-9999]), 0)}. Thus, we need to remove them!  
+%Obviously, if we averaged the temperature with these values, we'd get a pretty inaccurate number (e.g. \Sexpr{round(mean(climate\_data$TMAX), 0)} versus \Sexpr{round(mean(climate\_data$TMAX[climate\_data$TMAX>-9999]), 0)}. Thus, we need to remove them!  
 
 We will replace the -9999 with NA, which R uses specifically to avoid accidently averaging arbitrary values that are representing missing values. 
 
 How do we do this?
 <<>>=
-import$TMAX[import$TMAX==-9999] = NA
-import$TMIN[import$TMIN==-9999] = NA
+climate_data$TMAX[climate_data$TMAX==-9999] = NA
+climate_data$TMIN[climate_data$TMIN==-9999] = NA
 @
 
 
 Okay, now we'll check again, but let's plot a just a few years, let's say five years (356 days * 5 years = 1825) or 1825 observations. 
 
 <<>>=
-plot(TMAX~DATE, import[1:1835,], ty='l')
+plot(TMAX~DATE, climate_data[1:1835,], ty='l')
 @
 
 Yikes! What's wrong? It appears we have gaps in the data -- but we already removed our missing data, why are these big jumps in the data. 
@@ -187,16 +221,16 @@ To create a new format, we have to complete a few steps. Unfortunately, date for
 First, we convert the date to a string of character values. Next, we'll convert the strings to a data format. 
 
 <<>>=
-strDates <- as.character(import$DATE)
+strDates <- as.character(climate_data$DATE)
 head(strDates)
 
-import$NewDate <- as.Date(strDates, "%Y%m%d")
+climate_data$NewDate <- as.Date(strDates, "%Y%m%d")
 @
 
 \subsection{Checking the New Dates}
 
 <<>>=
-plot(TMAX~NewDate, import[1:1835,], ty='l')
+plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
 @
 
 %\subsection{Subset Sites}
