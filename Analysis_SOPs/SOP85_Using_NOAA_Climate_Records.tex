@@ -188,7 +188,11 @@ So we see that the data file is actually an object in R now. But what does it ac
 Since R was made to handle large data sets it tries not to overwhelm you with all the data at once but luckily the developers made a few commands to peak at the data to see if everthing is in order. We will try some of these commands now to look at few observations then we'll evaluate the structure of the dataframe and go on to finally plot the data!
 
 \subsubsection{Viewing the 1st 6 Observations}
-The following command allows you to view the first six observations of data in the data frame you created. Type it into the console and hit enter!
+The following command allows you to view the first six observations of data in the data frame you created.
+\begin{verbatim}
+head(climate_data)
+\end{verbatim}
+Type it into the console and hit enter! You should get something that looks like the following
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -213,32 +217,15 @@ The following command allows you to view the first six observations of data in t
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-After typing in the command above the console should spit out some of the data. You should see that it is generally organized into columns and rows like in Excel. 
+You can see how the data is formatted into columns and rows like in Excel. 
 
 \subsection{Evaluating the structure of the object}
 
-Okay, you know have created a data frame. To confirm this, type \texttt{str(climate\_data)} and you should see some strange text that describes the data frame. This function allow you to peer into the data frame structure. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of check, for you want to ensure the data have been imported in a way that you expect.
-
-
-
-
-\subsubsection{Confirming the Column Names}
-In R it isn't uncommon to want to manipulate a specific column of data within your data frame. Therefore it is useful to know what the names of the columns in your data frame are. The following command can be used to make R give you the names of the columns in your data frame. 
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{names}\hlstd{(climate_data)}
-\end{alltt}
+Okay, so you now have created a data frame and taken a peak at it. But what if you want more information about it? Such as how many columns (a.k.a. variables) are in it. Or how many rows (a.k.a. observations) are in it. You can use \\
 \begin{verbatim}
-## [1] "STATION"      "STATION_NAME" "DATE"         "PRCP"        
-## [5] "TAVG"         "TMAX"         "TMIN"
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-
-
+str(climate_data)
+\end{verbatim} 
+You should see some strange text that describes the data frame. This function allow you to peer into the structure of the data frame. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of checking, for you want to ensure the data have been imported in a way that you expect.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -256,11 +243,40 @@ In R it isn't uncommon to want to manipulate a specific column of data within yo
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\subsection{Confirming the Column Names}
+In R it isn't uncommon to want to manipulate a specific column of data within your data frame. Therefore it is useful to know what the names of the columns in your data frame are. The following command can be used to make R give you the names of the columns in your data frame. 
 
-Remember, a data frame is a set of vectors. To access the data inside the data frame, you can use the following command
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{names}\hlstd{(climate_data)}
+\end{alltt}
+\begin{verbatim}
+## [1] "STATION"      "STATION_NAME" "DATE"         "PRCP"        
+## [5] "TAVG"         "TMAX"         "TMIN"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 
-\subsubsection{Plotting the Data}
+
+
+
+A data frame is essentially a set of ``vectors". Which themselves are like lists of numbers or text. You can think of each column as one of the vectors inside your data frame. If you want to access the data in one of the columns specifically, you can use the following command
+
+\begin{verbatim}
+nameofdataframe$columnname
+\end{verbatim}
+
+so for example, you can type in:
+
+\begin{verbatim}
+climate_data$TMAX
+\end{verbatim}
+
+And R will spit out the data in just that column. 
+
+\section{Plotting the Data}
 
 Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}).
 
