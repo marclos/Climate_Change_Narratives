@@ -4,5 +4,16 @@ output: html_document
 ---
 
 ````{r}
-climate_data<- read.csv()
+climate_data<- read.csv("/home/CAMPUS/wbpa2016/Climate_Change_Narratives/Student_Folders/Bebe/Bebe_santamonica_data.csv")
+
+strDates <- as.character(climate_data$DATE)
+head(strDates)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+linearmodel <- lm(TMAX~NewDate, climate_data)
+
+plot(TMAX~NewDate, climate_data, ty='l')
+
+abline(coef(linearmodel))
+
 ```
