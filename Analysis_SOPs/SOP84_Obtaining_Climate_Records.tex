@@ -66,7 +66,7 @@ In 1607, Galileo Galilei constructed a thermoscope, but it wasn't until 1654, th
 
 The arrival of the electrical telegraph in 1837 afforded, for the first time, a practical method for quickly gathering surface weather observations from a wide area. This data could be used to produce maps of the state of the atmosphere for a region near the Earth's surface and to study how these states evolved through time. 
 
-To make frequent weather forecasts based on these data required a reliable network of observations, but it was not until 1849 that the Smithsonian Institution began to establish an observation network across the United States under the leadership of Joseph Henry.[39] Similar observation networks were established in Europe at this time. 
+To make frequent weather forecasts based on these data required a reliable network of observations, but it was not until 1849 that the Smithsonian Institution began to establish an observation network across the United States under the leadership of Joseph Henry. Similar observation networks were established in Europe at this time. 
 
 \subsection{Purpose}
 This document is a guide for getting started on the climate data analysis project. Here you will find: 
@@ -155,56 +155,9 @@ rNOAA has a simple function to list the cities:
 \begin{alltt}
 \hlkwd{ncdc_locs}\hlstd{(}\hlkwc{locationcategoryid}\hlstd{=}\hlstr{'CITY'}\hlstd{,} \hlkwc{sortfield}\hlstd{=}\hlstr{'name'}\hlstd{,} \hlkwc{sortorder}\hlstd{=}\hlstr{'desc'}\hlstd{)}
 \end{alltt}
-<<<<<<< HEAD
 
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ncdc\_locs(locationcategoryid = "{}CITY"{}, sortfield = "{}name"{}, sortorder = "{}desc"{}): could not find function "{}ncdc\_locs"{}}}\end{kframe}
-=======
-\begin{verbatim}
-## $meta
-## $meta$totalCount
-## [1] 1980
-## 
-## $meta$pageCount
-## [1] 25
-## 
-## $meta$offset
-## [1] 1
-## 
-## 
-## $data
-##       mindate    maxdate                  name datacoverage            id
-## 1  1892-08-01 2017-06-30            Zwolle, NL       1.0000 CITY:NL000012
-## 2  1901-01-01 2017-08-11            Zurich, SZ       1.0000 CITY:SZ000007
-## 3  1957-07-01 2017-08-11         Zonguldak, TU       1.0000 CITY:TU000057
-## 4  1906-01-01 2017-08-11            Zinder, NG       0.9025 CITY:NG000004
-## 5  1973-01-01 2017-08-11        Ziguinchor, SG       1.0000 CITY:SG000004
-## 6  1938-01-01 2017-08-11         Zhytomyra, UP       0.9723 CITY:UP000025
-## 7  1948-03-01 2017-08-11        Zhezkazgan, KZ       0.9302 CITY:KZ000017
-## 8  1951-01-01 2017-08-11         Zhengzhou, CH       1.0000 CITY:CH000045
-## 9  1941-01-01 2017-06-30          Zaragoza, SP       1.0000 CITY:SP000021
-## 10 1936-01-01 2009-06-17      Zaporiyhzhya, UP       1.0000 CITY:UP000024
-## 11 1957-01-01 2017-08-11          Zanzibar, TZ       0.8016 CITY:TZ000019
-## 12 1973-01-01 2017-08-11            Zanjan, IR       0.9105 CITY:IR000020
-## 13 1893-01-01 2017-08-14     Zanesville, OH US       1.0000 CITY:US390029
-## 14 1912-01-01 2017-06-19             Zahle, LE       0.9819 CITY:LE000004
-## 15 1951-01-01 2017-08-11           Zahedan, IR       0.9975 CITY:IR000019
-## 16 1860-12-01 2017-08-11            Zagreb, HR       1.0000 CITY:HR000002
-## 17 1975-08-29 2017-08-11         Zacatecas, MX       0.9306 CITY:MX000036
-## 18 1947-01-01 2017-08-11 Yuzhno-Sakhalinsk, RS       1.0000 CITY:RS000081
-## 19 1893-01-01 2017-08-14           Yuma, AZ US       1.0000 CITY:US040015
-## 20 1942-02-01 2017-08-14   Yucca Valley, CA US       1.0000 CITY:US060048
-## 21 1885-01-01 2017-08-14      Yuba City, CA US       1.0000 CITY:US060047
-## 22 1998-02-01 2017-08-11            Yozgat, TU       1.0000 CITY:TU000056
-## 23 1893-01-01 2017-08-14     Youngstown, OH US       1.0000 CITY:US390028
-## 24 1894-01-01 2017-08-14           York, PA US       1.0000 CITY:US420024
-## 25 1869-01-01 2017-08-14        Yonkers, NY US       1.0000 CITY:US360031
-## 
-## attr(,"class")
-## [1] "ncdc_locs"
-\end{verbatim}
-\end{kframe}
->>>>>>> f9cc81c59122df4ceb185ffc9a323ca9dd984cb1
 \end{knitrout}
 
 The function queries the NOAA website and retrieves city names and the dates of the climate records. Importantly, the records include the station ID, which can be used to college the data for that city. 

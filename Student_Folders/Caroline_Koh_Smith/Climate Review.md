@@ -1,8 +1,10 @@
 Climate Review
 ========================================================
 author: Caroline Smith
-date: assigned 9/6
+date: 
 autosize: true
+font-family: 'century gothic'
+
 
 Positive and Negative Feedback Loops
 ========================================================
@@ -81,3 +83,41 @@ Positive Feedback Loop:
 
 The Effects of Clouds
 ========================================================
+
+Clouds both increase and decrease atmospheric heat
+- low altitude water droplet clouds mostly reflect light, so they cool
+- high altitude ice crystal clouds absorb and trap heat, so they warm
+- positive feedback loop with 80% certainty, similar to that of water vapor
+- negative feedback loop of albedo not significant enough to equilibrate
+
+The Effect of Ice-Albedo
+========================================================
+
+- about 4% of all sunlight reflected by ice masses
+
+Positive Feedback Loop:
+- climate change causes ice to melt
+- less ice means more sunlight is absorbed by earth as heat
+- warming oceans make contact with ice, more melts
+- sea level rise covers land, evaporates into water vapor
+
+The Interconnected Feedback Loop
+========================================================
+Many of the feedback loops influence each other
+- GHGs cause initial increase in atmospheric heat retention
+- warming causes more GHGs to be released, water vapor (condenses into clouds), ice melt
+- more GHGs are released through human activity
+
+What to do? Regulate!
+- natural processes such as evaporation, condensation, and ice melt cannot be regulated
+- causes for those can such as human caused GHG emissions
+
+
+Practice Slide
+=====
+hello hello my name is caroline
+***
+![hello hello](scan0001.jpg)
+img src="scan0001.jpg" width=400 height=600
+
+

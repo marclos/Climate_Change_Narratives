@@ -50,11 +50,13 @@
 
 \usepackage{alltt}
 \usepackage{graphicx}
+\usepackage{caption}
 \usepackage{hyperref}
 \title{SOP 06: Introduction to Rstudio Server and Github}
 \author{Isaac Medina \& Marc Los Huertos}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
+
 \maketitle
 
 \section{Introduction}
@@ -103,8 +105,12 @@ Since we will be using the server version of Rstudio all you need to do is login
   \subsubsection*{Some Useful Rstudio Basics You Should Know}
   \emph{Feel free to skip to Step 2 if you already know the layout of Rstudio. Otherwise read on.}\\
   Once you're in Rstudio you'll notice that the layout of the window is subdivided into four smaller windows or sections that each have their own tabs. \vspace{5mm}
-  
-\includegraphics[width=5in]{"../../Climate_Change_Narratives/graphics/Rstudio_Layout"}
+
+\begin{figure}[h!]
+  \includegraphics[width=5in]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Rstudio_Layout"}
+  \caption*{Note: If your Rstudio window doesn't show four windows as pictured here, don't worry! It's just that it's your first time in Rstudio and you haven't created a new file to work on. Using the toolbar at the top click on File then New File and then R Script to get the four windows as pictured here.}
+\end{figure}  
+
   \begin{enumerate}
   \item The first window is your \textbf{Document} window. Everytime you open or start a new file it will open up here. Rstudio has the capacitity to write many types of files including: 
   \begin{itemize}
@@ -162,21 +168,8 @@ Now that you have an active Github account, return to Rstudio. We will now attem
   \item New sections should now appear where you can add a \textbf{Title} and \textbf{Key}. In the Title section type in ``Rstudio Server". In the Key section \textbf{paste in the public key} you copied from Rstudio.
   \item Click on \textbf{Add SSH Key}
   \end{enumerate}
-  
-\subsection*{Step 5: Identifying Yourself}
-
-Tell Git who you are. Remember Git is a piece of software running on the server. This is distinct to GitHub, which is the repository website. In RStudio, click Tools:Shell\ldots
-
-\noindent Enter:
-
-\begin{verbatim}
-git config --global user.email "githubemailadddress@pomona.edu"
-git config --global user.name "githubusername"
-\end{verbatim}
-
-Use your GitHub username.
  
-  \subsection*{Step 6: Create a Project in Rstudio Linked to Marc's ``Beginner's Luck'' Repository}
+  \subsection*{Step 5: Create a Project in Rstudio Linked to Marc's ``Beginner's Luck'' Repository}
 If all was successful in the above steps your Rstudio and Github accounts should be able to link! Let's test this out by linking your Rstudio account to one of Marc's existing project repositories. 
   \begin{enumerate}
   \item In an an active Rstudio session click on \textbf{File}
@@ -204,6 +197,88 @@ Congratulations! You just created an Rstudio project linked to Marc's Repository
 \section{Appendix A: Troubleshooting}
 
 Please send us a note of you have trouble, you might use the github issues button to document the problem.
+
+\subsection{https versus ssh}
+
+You may run into an error that forces you to login each time you want to uplad anything. This is because the cloning process was not done corerectly...
+
+Changing a remote's URL
+MAC WINDOWS LINUX
+The git remote set-url command changes an existing remote repository URL.
+
+Tip: For information on the difference between HTTPS and SSH URLs, see "Which remote URL should I use?"
+The git remote set-url command takes two arguments:
+
+An existing remote name. For example, origin or upstream are two common choices.
+A new URL for the remote. For example:
+
+If you're updating to use HTTPS, your URL might look like:
+
+%https://github.com/USERNAME/REPOSITORY.git
+If you're updating to use SSH, your URL might look like:
+
+%git@github.com:USERNAME/REPOSITORY.git
+Switching remote URLs from SSH to HTTPS
+
+Open Git Bash.
+
+Change the current working directory to your local project.
+
+List your existing remotes in order to get the name of the remote you want to change.
+
+git remote -v
+origin  %git@github.com:USERNAME/REPOSITORY.git (fetch)
+origin  %git@github.com:USERNAME/REPOSITORY.git (push)
+Change your remote's URL from SSH to HTTPS with the git remote set-url command.
+
+%git remote set-url origin https://github.com/USERNAME/REPOSITORY.git
+Verify that the remote URL has changed.
+
+git remote -v
+%# Verify new remote URL
+%origin  https://github.com/USERNAME/REPOSITORY.git (fetch)
+%origin  https://github.com/USERNAME/REPOSITORY.git (push)
+
+The next time you git fetch, git pull, or git push to the remote repository, you'll be asked for your GitHub username and password.
+
+If you have two-factor authentication enabled, you must create a personal access token to use instead of your GitHub password.
+
+You can use a credential helper so Git will remember your GitHub username and password every time it talks to GitHub.
+Switching remote URLs from HTTPS to SSH
+
+Open Git Bash.
+
+Change the current working directory to your local project.
+
+List your existing remotes in order to get the name of the remote you want to change.
+
+git remote -v
+%origin  https://github.com/USERNAME/REPOSITORY.git (fetch)
+%origin  https://github.com/USERNAME/REPOSITORY.git (push)
+Change your remote's URL from HTTPS to SSH with the git remote set-url command.
+
+%git remote set-url origin git@github.com:USERNAME/REPOSITORY.git
+Verify that the remote URL has changed.
+
+%# Verify new remote URL
+git remote -v
+
+%origin  git@github.com:USERNAME/REPOSITORY.git (fetch)
+%origin  git@github.com:USERNAME/REPOSITORY.git (push)
+
+
+\subsection{ Identifying Yourself}
+
+Tell Git who you are. Remember Git is a piece of software running on the server. This is distinct to GitHub, which is the repository website. In RStudio, click Tools:Shell\ldots
+
+\noindent Enter:
+
+\begin{verbatim}
+git config --global user.email "githubemailadddress@pomona.edu"
+git config --global user.name "githubusername"
+\end{verbatim}
+
+Use your GitHub username.
 
 \section{Additional Resources}
 
