@@ -119,7 +119,7 @@ Now follow these steps to upload the data into the Rstudio server:
   \item Next click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
   \item Use the upload button to select a file from your computer to upload into the rstudio server
   \begin{figure}[h]
-  \includegraphics[scale=0.25]{"/home/CAMPUS/im022012/Climate_Change_Narratives/graphics/Upload_button"}
+  \includegraphics[scale=0.25]{"../graphics/Upload_button"}
   \end{figure}
   \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). It should have the new name you gave it above (yourname\_region\_data)
   \item Click \textbf{Open} and then click \textbf{OK}. 
@@ -170,7 +170,7 @@ So we made R read our file, however cool this might be, it is still not useful t
 
 This time we will use the following R command\\
 \begin{verbatim}
-climate_data <- read.csv("the/file/path")
+climate_data <- read.csv(''the/file/path'')
 \end{verbatim}
 
 \textbf{But be sure to use your actual data path!}
@@ -258,11 +258,7 @@ In R it isn't uncommon to want to manipulate a specific column of data within yo
 \end{kframe}
 \end{knitrout}
 
-
-
-
-
-A data frame is essentially a set of ``vectors". Which themselves are like lists of numbers or text. You can think of each column as one of the vectors inside your data frame. If you want to access the data in one of the columns specifically, you can use the following command
+A data frame is essentially a set of ``vectors". Which themselves are like lists of numbers or text. You can think of each column as one of the vectors inside your data frame. If you want to access the data in one of the columns specifically, you can use the following command syntax:
 
 \begin{verbatim}
 nameofdataframe$columnname
@@ -281,7 +277,6 @@ And R will spit out the data in just that column.
 Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}).
 
 \begin{figure}
-
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -295,7 +290,7 @@ Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}).
 \label{fig:plotmissing}
 \end{figure}
 
-We find some rather odd low temperature values in the plot. We can find some of these with the \texttt{min()} function.
+We find some rather odd low temperature values in the plot. We can find some of these with the \texttt{min()} function. This function works when there are no missing data, otherwise it will just report NA. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -308,13 +303,26 @@ We find some rather odd low temperature values in the plot. We can find some of 
 \end{kframe}
 \end{knitrout}
 
+To get the function to cooperate if there are missing values, add 'na.rm=T' to the function:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{min}\hlstd{(climate_data}\hlopt{$}\hlstd{TMAX,} \hlkwc{na.rm}\hlstd{=T)}
+\end{alltt}
+\begin{verbatim}
+## [1] -9999
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 \subsection{Re-assigning Missing Values to NAs}
 
-What's going on?  What is the deal with the -9999? These are used for missing data. Historically, computers didn't have a lot of options for mixing numbers and letters in a variable type while R has some built in flexibility for this. So, to avoid leaving values blank (with all the ambiguous interpretations), the value -9999 is used to sybmolize missing values, since the number is unrealistic in the real world!
+In some of the stations, missing values were coded as  -9999? These are used for missing data. Historically, computers didn't have a lot of options for mixing numbers and letters in a variable type while R has some built in flexibility for this. So, to avoid leaving values blank (with all the ambiguous interpretations), the value -9999 is used to sybmolize missing values, since the number is unrealistic in the real world!
 
 %Obviously, if we averaged the temperature with these values, we'd get a pretty inaccurate number (e.g. round(mean(climate\_data$TMAX), 0) versus round(mean(climate\_data$TMAX[climate\_data$TMAX>-9999]), 0). Thus, we need to remove them!  
 
-We will replace the -9999 with NA, which R uses specifically to avoid accidently averaging arbitrary values that are representing missing values. 
+If your station used -9999 for missing values, we will replace these with NA, which R uses specifically to avoid accidently averaging arbitrary values that are representing missing values. 
 
 How do we do this?
 \begin{knitrout}
@@ -335,19 +343,77 @@ Okay, now we'll check again, but let's plot a just a few years, let's say five y
 \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{DATE, climate_data[}\hlnum{1}\hlopt{:}\hlnum{1835}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
 
 \end{knitrout}
 
-Yikes! What's wrong? It appears we have gaps in the data -- but we already removed our missing data, why are these big jumps in the data. 
+In the case of the Singapore data we have a new problem. What's wrong? It appears we have gaps in the data -- but we already removed our missing data, why are these big jumps in the data.
 
-As it turns out the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition. Let's say that the data have a year change between 1913 and 1914. The date format in the NOAA data are YYYYMMDD, or year, month, and day with 4, 2, 2 digits, respectively. Thus, the last day of 1913 is 19131231 or Dec, 31, 1913. The next day is January 1st or 19140101. But when you plot these on the x-axis, the order of the values should be $19131231 \rightarrow 19131232 \rightarrow 19131233 \rightarrow 19131234$, etc but there is no 32nd, 33rd or 34th of December. Instead the dates go from  $19131231 \rightarrow 19140101$. We have lots of numbers that are skipped, but no coded as missing, but missing all the same. So, now we need to convert our dates to something more sensible. In R, that means creating a variable with a format that expects dates, thus doesn't plot numbers that are impossible dates!
+As it turns out stations might have one of three types of date formats -- and each of them are problematic. The first thing to note is that they are factors instead of begin formatted as a Date. You can check this with the following function:
 
-\subsection{Converting Date Format}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{str}\hlstd{(climate_data)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	13704 obs. of  7 variables:
+##  $ STATION     : Factor w/ 1 level "GHCND:SNM00048698": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ STATION_NAME: Factor w/ 1 level "SINGAPORE CHANGI INTERNATIONAL SN": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ DATE        : int  19620512 19620516 19620605 19621006 19621007 19621012 19621022 19621104 19621105 19621121 ...
+##  $ PRCP        : num  0.16 0.08 -9999 0.39 0.02 ...
+##  $ TAVG        : int  81 79 84 83 84 78 81 78 79 81 ...
+##  $ TMAX        : int  NA 86 93 91 91 84 91 88 91 NA ...
+##  $ TMIN        : int  75 75 77 NA 79 NA 75 73 73 75 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+In this case, we find that Date is a factor, which means that we will not be able to determine a trend because R has not recognized the data as a continuous variable. 
+
+
+\subsection{Determine and Convert Date Format}
 
 To create a new format, we have to complete a few steps. Unfortunately, date formats are one of the more obtuse aspects of R, but if you follow along, you should have success, even if you have no clue what you did. 
-First, we convert the date to a string of character values. Next, we'll convert the strings to a data format. 
+First, we convert the date to a string of character values. Next, we'll convert the strings to a data format. But we need to determine which type of data format we have from the following three choices then we can make the conversion:
 
+\begin{description}
+  \item[MM/DD/YYYY] This is a standard data for many US stations.
+  
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(climate_data}\hlopt{$}\hlstd{DATE)}
+\hlkwd{head}\hlstd{(strDates)}
+\end{alltt}
+\begin{verbatim}
+## [1] "19620512" "19620516" "19620605" "19621006" "19621007" "19621012"
+\end{verbatim}
+\begin{alltt}
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%m/%d/Y%"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+  \item[MM-DD-YYYY]
+  
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(climate_data}\hlopt{$}\hlstd{DATE)}
+\hlkwd{head}\hlstd{(strDates)}
+\end{alltt}
+\begin{verbatim}
+## [1] "19620512" "19620516" "19620605" "19621006" "19621007" "19621012"
+\end{verbatim}
+\begin{alltt}
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%m-%d-Y%"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+  \item[YYYYMMDD] As it turns out the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition. Let's say that the data have a year change between 1913 and 1914. The date format in the NOAA data are YYYYMMDD, or year, month, and day with 4, 2, 2 digits, respectively. Thus, the last day of 1913 is 19131231 or Dec, 31, 1913. The next day is January 1st or 19140101. But when you plot these on the x-axis, the order of the values should be $19131231 \rightarrow 19131232 \rightarrow 19131233 \rightarrow 19131234$, etc but there is no 32nd, 33rd or 34th of December. Instead the dates go from  $19131231 \rightarrow 19140101$. We have lots of numbers that are skipped, but no coded as missing, but missing all the same. So, now we need to convert our dates to something more sensible. In R, that means creating a variable with a format that expects dates, thus doesn't plot numbers that are impossible dates!
+  
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -359,9 +425,32 @@ First, we convert the date to a string of character values. Next, we'll convert 
 \end{verbatim}
 \begin{alltt}
 \hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{)}
+
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,} \hlstr{"%Y/%m/%d"}\hlstd{),} \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+  \item[Mixed Formats]... see Valentina's data!
+  
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(climate_data}\hlopt{$}\hlstd{DATE)}
+\hlkwd{head}\hlstd{(strDates)}
+\end{alltt}
+\begin{verbatim}
+## [1] "19620512" "19620516" "19620605" "19621006" "19621007" "19621012"
+\end{verbatim}
+\begin{alltt}
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,} \hlstr{"%Y/%m/%d"}\hlstd{),} \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{description}
+
+
 
 \subsection{Checking the New Dates}
 
@@ -371,7 +460,7 @@ First, we convert the date to a string of character values. Next, we'll convert 
 \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{NewDate, climate_data[}\hlnum{1}\hlopt{:}\hlnum{1835}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
 
 \end{knitrout}
 

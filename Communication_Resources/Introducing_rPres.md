@@ -1,11 +1,19 @@
 
 Making Effective Presentations on Climate Change
 ========================================================
+<<<<<<< HEAD
 author: Marc Los Huertos
 date: Sept. 11, 2017
 autosize: true
 
 Things to Think about before Preparing a Presentation
+=======
+author: Kirara Tsutsui
+date: Sept. 10, 2017
+autosize: true
+
+Slide Title: Radiative Gases
+>>>>>>> 9d71b4c7c2c1dbec813608b017ce8bbd7bbb30a1
 ========================================================
 
 - Rhetorical Situation
