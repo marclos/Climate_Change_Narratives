@@ -475,9 +475,6 @@ First, we convert the date to a string of character values. Next, we'll convert 
 %plot(TMAX~NewDate, LosAngeles, ty='l')
 
 
-
-
-
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -489,6 +486,16 @@ First, we convert the date to a string of character values. Next, we'll convert 
 to dump the average CO$_2$ concentrations readings onto your screen as a vector. You should see some ~627 observations, depending on how recent the data have been uploaded. So, the dollar symbol is used to drill into the data frame vectors.  And when you look at the \texttt{str()} function again, you will see these dollar signs again.
 
 \section{Preparing Records for Analysis}
+
+Our next task is to create a template to automatically run our code, so we can regenerate the pre-processed data within a Rmd file, which will then produce a figure. 
+
+\subsection{Creating the Rmd as a blog template}
+
+Start a new file -- File/New/Rmarkdown. Enter a draft title and make sure the author name is correct. Save the file in the your student folder. 
+
+Knit to make sure it works. 
+
+Now you will begin creating your blog by getting the commands you created before into an R block so that your data is available for the kniting process.
 
 
 
