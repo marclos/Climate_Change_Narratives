@@ -19,6 +19,13 @@ What It Actually Means
 ***
 ![alt text](AR5RF.jpg)
 
+Slide with plot which I want to fill the whole screen
+========================================================
+title: false
+```{r, echo=FALSE,out.height="2000px",out.width="2000px"}
+plot(cars)
+```
+
 (Press UPLOAD and put it in your FILE. Name it as one word)
 (Make sure to explain the units and significance of the axes) (also explain the meaning of the numbers)
 
