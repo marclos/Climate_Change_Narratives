@@ -153,11 +153,11 @@ You can see how the data is formatted into columns and rows like in Excel.
 
 \subsection{Evaluating the structure of the object}
 
-Okay, so you now have created a data frame and taken a peak at it. But what if you want more information about it? Such as how many columns (a.k.a. variables) are in it. Or how many rows (a.k.a. observations) are in it. You can use \\
+Okay, so you now have created a data frame and taken a peak at it. But what if you want more information about it? Such as how many columns (a.k.a. variables) are in it. Or how many rows (a.k.a. observations) are in it. You can use the following command: \\
 \begin{verbatim}
 str(climate_data)
 \end{verbatim} 
-You should see some strange text that describes the data frame. This function allow you to peer into the structure of the data frame. You you see it is a data frame and it has several variables and each one has certain characteristics and R even shows you some of the observations. This is a good thing to get into the habitat of checking, for you want to ensure the data have been imported in a way that you expect.
+This function allow you to peer into the structure of the data frame giving output which describes how many variables they're are, how many observations of each as well as other useful information. Below you can see an example of the command. Checking the structure of the data frame is a another way to ensure that the data have been imported in a way that you expect.
 <<tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=65)>>=
 str(climate_data)
 @
