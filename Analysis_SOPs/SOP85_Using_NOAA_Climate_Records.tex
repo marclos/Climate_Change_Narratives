@@ -148,7 +148,8 @@ file.choose()
 \begin{itemize} 
 \item press enter on your keyboard
 \item in the resulting popup window navigate to the your saved data file and \textbf{double click} on it
-\item Look at the console window.. under the command that you just typed you should now see a data path. The data path should look something like this: ``/home/CAMPUS/im022012/Climate\_Change\_Narratives/Data/test\_data/Singapore\_ClimateData.csv"  It is the location of where your file is saved on the server.
+\item Look at the console window.. under the command that you just typed you should now see a data path. The data path should look something like this: ``/home/CAMPUS/im022012/Climate\_Change\_Narratives/Data/test\_data/Singapore\_ClimateData.csv"  It is the location of where your file is saved on the server. I suggest you truncate it to the path that after the home directory, i.e. ''Data/test\_data/Singapore\_ClimateData.csv''.
+
 \item \textbf{Copy} the data path (including the parenthesis)
 \end{itemize}
 
@@ -432,7 +433,10 @@ First, we convert the date to a string of character values. Next, we'll convert 
 \end{knitrout}
 
   \item[Mixed Formats]... see Valentina's data!
-  
+
+Doesn't seem to work, I had to brut force it... will work on this next summer!
+
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -497,6 +501,16 @@ Knit to make sure it works.
 
 Now you will begin creating your blog by getting the commands you created before into an R block so that your data is available for the kniting process.
 
+\begin{enumerate}
+  \item Find the path for the csv file (\texttt{file.choose()}).
+  \item Read the file into R (\texttt{read.csv(filepathfilename.csv})).
+  \item Replace missing values with NA.
+  \item Fix the date formats.
+  \item Create a figure of Tmax versus time (\texttt{plot()}).
+  \item Overlay the best fit line (\texttt{abline()}, \texttt{coef()}, and \texttt{lm()}).
+  \item Go to SOP 90 to learn about how to analyze data.
+  
+\end{enumerate}
 
 
 

@@ -1,7 +1,11 @@
-presentation1
+
+
+
+
+
 ========================================================
-author: 
-date: 
+author: Sea Surface Temperatures and Sea Level Measurements
+date: Meily Wu Fung
 autosize: true
 
 First Slide
@@ -9,7 +13,7 @@ First Slide
 
 For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
 
-- Bullet 1
+- Hello
 - Bullet 2
 - Bullet 3
 
@@ -34,4 +38,11 @@ summary(cars)
 Slide With Plot
 ========================================================
 
-![plot of chunk unnamed-chunk-2](presentation1-figure/unnamed-chunk-2-1.png)
+![plot of chunk unnamed-chunk-3](presentation1-figure/unnamed-chunk-3-1.png)
+================
+Slide With Image Left
+====================================
+![](myimage.png)
+***
+This text will appear to the right
+

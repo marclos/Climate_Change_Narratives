@@ -6,9 +6,6 @@ CSV_import <- function(filename=file.choose()){
   import$TMIN[import$TMIN==-9999] = NA
   strDates <- as.character(import$DATE)
   #head(strDates)
-  import$NewDate <- as.Date(strDates, "%Y%m%d", 
-              tryFormats = c("%Y-%m-%d", "%m/%d/%Y"), 
-              optional = FALSE)
-  #import$NewDate <- as.Date(strDates, "%Y%m%d")
+  import$NewDate <- as.Date(strDates, "%Y%m%d")
   return(import)
 }

@@ -1,0 +1,77 @@
+---
+title: "San Francisco climate data"
+author: "Meily Wu Fung"
+date: "9/18/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this
+
+
+```{r cars}
+climate_data=read.csv("/home/CAMPUS/mwew2015/Climate_Change_Narratives/Data/SFclimate_data.csv")
+#head(climate_data)
+#str(climate_data)
+#climate_data$TMAX
+#min(climate_data$TMAX) ##[1]-9999
+climate_data$TMAX[climate_data$TMAX==-9999]=NA
+climate_data$TMIN[climate_data$TMIN==-9999]=NA
+#plot(TMAX~DATE,climate_data[1:100,],ty='1')
+strDates<-as.character(climate_data$DATE)
+#head(strDates)
+
+climate_data$NewDate<-as.Date(strDates, "%Y-%m-%d")
+#strDates<-as.character(climate_data$DATE)
+str(climate_data)
+``` 
+
+```{r}
+plot(TMAX~NewDate, climate_data,ty='l')
+#lm(TMAX~NewDate, data=climate_data)                             
+#summary(lm(TMAX~NewDate,data=climate_data)) 
+#par(mfrow=c(2,2))
+#plot(lm(TMAX~NewDate,data=climate_data))
+#plot(TMAX~NewDate,data=climate_data)
+abline(coef(lm(TMAX~NewDate,data=climate_data)), col='red')
+#linearmodel<-lm(TMAX~NewDate,data=climate_data)
+
+
+```
+
+
+```{r}
+
+
+
+
+#climate_data<-lm(TMAX ~ NewDate, climate_data)
+#abline(coef(lm(climate_data), col='red')
+
+         
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+#plot(climate_data)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+=====
+
+
+
