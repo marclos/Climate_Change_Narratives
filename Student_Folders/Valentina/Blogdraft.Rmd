@@ -9,7 +9,7 @@ output: html_document
 #climate_data <- read.csv("Student_Folders/Valentina/valentina_cmont_data.csv")
 
 climate_data <- read.csv("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv")
-str(climate_data)
+# str(climate_data)
 climate_data$TMAX[climate_data$TMAX==-9999] = NA
 climate_data$TMIN[climate_data$TMIN==-9999] = NA
 climate_data$NewDate <- as.Date(NA, "%Y-%m-%d")
@@ -17,19 +17,25 @@ strDates <- as.character(climate_data$DATE)
 climate_data$NewDate[1:2484] <- as.Date(strDates[1:2484], "%Y-%m-%d")
 climate_data$NewDate[2485:38063] <- as.Date(strDates[2485:38063], "%m/%d/%Y")
 
-
-
 ```
 
-## My blog intro...
+## Temperature Data in New Brunswick
+
+In some quarters, people believe that New Brunswick is too cold and that warming will be good...
 
 
-## Including Plots
+## Are there trends in the temperature record?
 
-You can also embed plots, for example:
+I am going write some compelling stuff here...
+
 
 ```{r pressure, echo=FALSE}
-plot(TMAX ~ NewDate, climate_data)
+plot(TMAX ~ NewDate, climate_data, pch=20)
+climate_data.lm <- lm(TMAX ~ NewDate, climate_data)
+abline(coef(climate_data.lm), col='red')
+
 ```
+
+
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
