@@ -25,9 +25,12 @@ When light comes down from the sun:
 - ~51% comes down to earth and is absorbed 
 - ~4% is reflected through albedo
 - ~20% is absorbed by the atmosphere
-
 Light coming down into the atmosphere and the earth converted into heat
 - molecules in the atmosphere absorb and re-rediate the heat
+
+===
+***
+![absorption](radiate.gif)
 
 Greenhouse Gases and Positive Feedback
 ========================================================
@@ -44,6 +47,7 @@ Natural systems in balance with the amount of heat in atmosphere
 Specific Greenhouse Gases: Carbon Dioxide
 ========================================================
 
+Svante Arrhenius found doubling the CO2 in atmosphere would produce warming effect up to 4°C
 - negative feedback loop of photosynthesis and respiration
 - emissions from combustion of fossil fuels and deforestation create a disproportionate amount of CO2 in the atmosphere
 - very abundant greenhouse gas
@@ -113,11 +117,11 @@ What to do? Regulate!
 - causes for those can such as human caused GHG emissions
 
 
-Practice Slide
+
 =====
-hello hello my name is caroline
+
 ***
-![hello hello](scan0001.jpg)
-img src="scan0001.jpg" width=400 height=600
+![feedback loop](Diagram.jpg)
+
 
 
