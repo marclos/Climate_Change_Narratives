@@ -1,4 +1,4 @@
-Climate Science Review
+Climate Science Review: Satellite-Based Temperature Measurements
 ========================================================
 author: Valentina Emanuele Jervis
 date: 09/17/2017
@@ -16,10 +16,6 @@ For more details on authoring R presentations please visit <https://support.rstu
 Slide With Code
 ========================================================
 
-
-```r
-summary(cars)
-```
 
 ```
      speed           dist       

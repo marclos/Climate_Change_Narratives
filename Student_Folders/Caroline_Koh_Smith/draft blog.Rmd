@@ -1,0 +1,76 @@
+---
+title: "Cape May Climate"
+author: "Caroline Koh Smith"
+date: "9/18/2017"
+output: html_document
+---
+## STUFF AND MORE STUFF
+Cape May data 
+
+```{r intro, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+read.csv("/home/CAMPUS/ctsa2016/Climate_Change_Narratives/Student_Folders/Caroline_Koh_Smith/carolinekohsmith_capemay_data.csv")
+climate_data <- read.csv("/home/CAMPUS/ctsa2016/Climate_Change_Narratives/Student_Folders/Caroline_Koh_Smith/carolinekohsmith_capemay_data.csv")
+str(climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+str(climate_data)
+head(climate_data)
+```
+``` {r hello, echo=TRUE}
+head(climate_data)
+```
+This next section is a visual of this data demonstrating the change in Maximum temperature over the period of 1894 to the present time. There is a graph and a line of best fit.
+
+
+
+
+
+```{r graphing, echo=FALSE}
+lm(TMAX ~ NewDate,data=climate_data)
+climate.lm<- lm(formula = TMAX ~ NewDate, data = climate_data)
+#plot(climate.lm)
+#plot(lm(formula = TMAX ~ NewDate, data = climate_data))
+plot(TMAX~NewDate, climate_data, ty="p", pch=20)
+abline(coef(climate.lm), col="blue")
+```
+
+```{r2}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
+MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
+MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
+MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH)
+MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
+head(MonthlyTMAXSD)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+abline(coef(climate.lm), col="red")
+```
+
+```{r3}
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
