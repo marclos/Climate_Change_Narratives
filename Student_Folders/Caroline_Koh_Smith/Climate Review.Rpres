@@ -27,6 +27,7 @@ When light comes down from the sun:
 - ~20% is absorbed by the atmosphere
 Light coming down into the atmosphere and the earth converted into heat
 - molecules in the atmosphere absorb and re-rediate the heat
+- process discovered by Fourier, 1824
 
 ===
 ***
@@ -74,6 +75,7 @@ Positive Feedback Loop:
 Specific Greenhouse Gases: Water Vapor
 ========================================================
 
+Andrew Desler, Texas A&M
 Water vapor most abundant warming substance in atmosphere
 - amplifies the warming of other substances
 - depletes the environment of water as liquid and ice: droughts, dehydration
@@ -84,6 +86,9 @@ Positive Feedback Loop:
 - Evap. water also makes combustions more likely--> CO2
 - Humidity increases the effectiveness of other GHGs, causing more warming
 - Humidity also increases amount of decomp. --> methane
+
+===
+![feedback loop](climatefeedback.jpg)
 
 The Effects of Clouds
 ========================================================
@@ -116,12 +121,10 @@ What to do? Regulate!
 - natural processes such as evaporation, condensation, and ice melt cannot be regulated
 - causes for those can such as human caused GHG emissions
 
-
-
 =====
 
 ***
-![feedback loop](Diagram.jpg)
+![feedback loop](deadly_many_Feedback_loops.png)
 
 
 
