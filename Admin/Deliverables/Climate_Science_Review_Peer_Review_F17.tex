@@ -20,6 +20,16 @@ Read two of your peers' Climate Report and evaluate the report using the followi
   \item Re-write two sentences that could be improved for accuracy.
 \end{enumerate}
 
+
+<<echo=F, results = 'asis', fig.cap='Peer Review Assignments'>>=
+library(xtable)
+Reviewer = c("Kirara","Ally", "Caroline", "Brooke","Meily", "Valentina", "Bebe")
+Reviewed1 = c("11790", "NA", "61296",     "NA",   "91789",  "Valentina", "Bebe")
+Reviewed2 =c("91789", "NA", "Caroline", "NA", "11790", "61269", "98159", "Bebe")
+project1teams <- data.frame(Reviewer = reviewer, "To be reviewed"=presentDate)
+print(xtable(project1teams), include.rownames=FALSE)
+@
+
 \subsubsection{Submission Format and Naming Convention}
 
 Climate\_Science\_PeerReview\_XXXXX.pdf

@@ -258,10 +258,10 @@ Deliverable                     & Launch    & Due Date  & \% \\\hline\hline
 Op-Ed \#1                   & Aug 30    & Sept 4    & 5 \\
 Climate Science Review      & Sept 4    & Sept 17   & 5 \\
 Climate Science Review Presentation& Sept 4    & Sept 18   & 5 \\
-Climate Science -- Peer Review  & Sept 18 & Sept 20 & 5 \\
+Climate Science -- Peer Review  & Sept 18 & Sept 22 & 5 \\
 Draft Regional Analysis     & Sept 18   & Sept 18   & 5 \\
-Regional Climate Literature Review    & Sept 11   & Sept 22   & 10 \\
-Regional Climate Literature Review -- Peer Review & Sept 23   & Sept 25 & 10 \\
+Regional Climate Literature Review    & Sept 11   & Sept 24   & 10 \\
+Regional Climate Literature Review -- Peer Review & Sept 25   & Sept 27 & 10 \\
 Blog DRAFT                  & Sept 18   & Sept 27    & 15 \\
 Blog --Peer Review          & Sept 28   & Oct 2     & 5\\
 Blog FINAL                  & Oct 2     & Oct 8    & 20 \\
@@ -340,6 +340,15 @@ print(xtable(project1teams), include.rownames=FALSE)
 \subsection{Peer Review of Climate Science Review}
 
 \input{Admin/Deliverables/Climate_Science_Review_Peer_Review_F17}
+
+<<echo=F, results = 'asis', fig.cap='Peer Review Assignments'>>=
+library(xtable)
+reviewer = c("Kirara","Ally", "Caroline", "Brooke","Meily", "Valentina", "Bebe")
+reviewed1 = c("11790", "", "61296",     "NA",   "91789",  "66354", "98159")
+reviewed2 =c("66354", "NA", "98159",      "NA",   "11790",  "61296",    "91789")
+peerreview <- data.frame(Reviewer = reviewer, To_be_reviewed=reviewed1, To_be_reviewed=reviewed2)
+print(xtable(peerreview), include.rownames=FALSE)
+@
 
 \section{Regional Climate Analysis}
 
