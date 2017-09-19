@@ -8,7 +8,7 @@ By using peer reveiw, we can develop methods that might reduce this stumbling bl
 
 \subsubsection{Assignment}
 
-Read two of your peers' Climate Report and evaluate the report using the following questions as a guide:
+Read two of your peers' Climate Report (see Table~\ref{tab:peerreviewassignments}) and evaluate the report using the following questions as a guide:
 
 \begin{enumerate}
   \item What is the argument of the report?
@@ -20,15 +20,21 @@ Read two of your peers' Climate Report and evaluate the report using the followi
   \item Re-write two sentences that could be improved for accuracy.
 \end{enumerate}
 
-
-<<echo=F, results = 'asis', fig.cap='Peer Review Assignments'>>=
-library(xtable)
-Reviewer = c("Kirara","Ally", "Caroline", "Brooke","Meily", "Valentina", "Bebe")
-Reviewed1 = c("11790", "NA", "61296",     "NA",   "91789",  "Valentina", "Bebe")
-Reviewed2 =c("91789", "NA", "Caroline", "NA", "11790", "61269", "98159", "Bebe")
-project1teams <- data.frame(Reviewer = reviewer, "To be reviewed"=presentDate)
-print(xtable(project1teams), include.rownames=FALSE)
-@
+\begin{table}[h]
+\caption{Peer Review Assignments -- Based on Random Numbers.}
+\label{tab:peerreviewassignments}
+\begin{tabular}{lcc}\hline
+Reviewer    &   To be Reveiwed   & To be Reviewed\\ 
+\hline\hline
+Kirara      & 11790   & 66354\\
+Ally        &   NA    & NA \\
+Caroline    & 61296   & 98159 \\
+Meily       & 91789   & 11790 \\
+Valentina   & 66354   & 61296 \\
+Bebe        & 98159   & 91789 \\
+\hline
+\end{tabular}
+\end{table}
 
 \subsubsection{Submission Format and Naming Convention}
 

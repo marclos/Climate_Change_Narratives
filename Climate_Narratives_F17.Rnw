@@ -341,15 +341,6 @@ print(xtable(project1teams), include.rownames=FALSE)
 
 \input{Admin/Deliverables/Climate_Science_Review_Peer_Review_F17}
 
-<<echo=F, results = 'asis', fig.cap='Peer Review Assignments'>>=
-library(xtable)
-reviewer = c("Kirara","Ally", "Caroline", "Brooke","Meily", "Valentina", "Bebe")
-reviewed1 = c("11790", "", "61296",     "NA",   "91789",  "66354", "98159")
-reviewed2 =c("66354", "NA", "98159",      "NA",   "11790",  "61296",    "91789")
-peerreview <- data.frame(Reviewer = reviewer, To_be_reviewed=reviewed1, To_be_reviewed=reviewed2)
-print(xtable(peerreview), include.rownames=FALSE)
-@
-
 \section{Regional Climate Analysis}
 
 Each of us will select a region of interest. Perhaps, somewhere that you have spent a compelling time in or that you wish to know more about. Please select a region that has not been done by previous classes. 
