@@ -61,13 +61,13 @@ AMSU-A:
 -Measure temperatures higher in the stratosphere
 
 ***
-(AMSU)
+![alt text](IMG_JPG_AMSU_A1_BIG.jpg)
 
 EARTH IS HEATING ANYWAY
 ===
 While the data and the instruments measure fundamentally different quantities, all the data shows an evident warming trend: 0.11 degrees Celsius per decade since 1978 
 ***
-![alt text](Graph)
+![alt text](Graph.jpg.png)
 
 AREAS OF UNCERTAINTY
 ===
