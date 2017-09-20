@@ -1,19 +1,88 @@
 ---
 title: "Climate_Data"
+author: Bebe
+date: 21 sep
 output: html_document
 ---
+##temperature data insabta monica
+capture someones attention of why they wanna rea d the blog
 
-````{r}
+##are there trends in the temperature 
+compelling data
+
+```{r, echo=FALSE,results='hide'}
 climate_data<- read.csv("/home/CAMPUS/wbpa2016/Climate_Change_Narratives/Student_Folders/Bebe/Bebe_santamonica_data.csv")
 
 strDates <- as.character(climate_data$DATE)
 head(strDates)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+climate_data.lm <- lm(TMAX ~ NewDate, climate_data)
+summary(climate_data.lm)
+```
 
+
+
+```{r, echo=FALSE}
+plot(TMAX ~ NewDate, climate_data)
+
+abline(coef(climate_data.lm), col='pink')
+
+```
+
+
+
+
+```{r}
 linearmodel <- lm(TMAX~NewDate, climate_data)
 
 plot(TMAX~NewDate, climate_data, ty='l')
 
 abline(coef(linearmodel))
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+
+MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
+
+MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
+
+MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
+
+MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
+
+head(MonthlyTMAXSD)
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+
+head(MonthlyTMINMean)
+
+library(xtable)
+
+ Months = c("January", "February", "March", "April", "May", "June",
++   "July", "August", "September", "October", "November", "December")
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12)
+{plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="pink")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3)))
+}
 
 ```
