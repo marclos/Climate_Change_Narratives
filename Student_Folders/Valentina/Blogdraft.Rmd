@@ -67,6 +67,25 @@ abline(coef(Aug.lm), col='red')
 
 summary(Aug.lm)
 
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
+
+head(MonthlyTMINMean)
+
+plot(MonthlyTMINMean$TMIN, ty='p')
+
+library(xtable) 
+Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13),2], TMIN_P = as.numeric(TMINresult[c(2:13),3]), TMINRsq = TMINresult[c(2:13),4], TMAXSlope = TMAXresult[c(2:13),2], TMAX_P = as.numeric(TMAXresult[c(2:13),3]), TMAXRsq = TMAXresult[c(2:13),4]) 
+Results$starTMIN = "NS" 
+Results$starTMIN[Results$TMIN_P <= .05] = "*" 
+Results$starTMIN[Results$TMIN_P < 0.01] = "**" 
+Results$starTMIN[Results$TMIN_P < 0.001] = "***" 
+Results$starTMAX = "NS" 
+Results$starTMAX[Results$TMAX_P < 0.05] = "*" 
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
 
 ```
 
