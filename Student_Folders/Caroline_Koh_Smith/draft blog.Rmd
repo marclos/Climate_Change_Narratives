@@ -4,8 +4,7 @@ author: "Caroline Koh Smith"
 date: "9/18/2017"
 output: html_document
 ---
-## STUFF AND MORE STUFF
-Cape May data 
+## Climate Change in Cape May, NJ
 
 ```{r intro, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -17,10 +16,8 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 str(climate_data)
 head(climate_data)
 ```
-``` {r hello, echo=TRUE}
-head(climate_data)
-```
-This next section is a visual of this data demonstrating the change in Maximum temperature over the period of 1894 to the present time. There is a graph and a line of best fit.
+
+This next section is a visual of this data demonstrating the change in Maximum temperature over the period of 1894 to the present time. There is a graph demonstrating the daily values of Maximumum temperature 
 
 
 
@@ -32,10 +29,10 @@ climate.lm<- lm(formula = TMAX ~ NewDate, data = climate_data)
 #plot(climate.lm)
 #plot(lm(formula = TMAX ~ NewDate, data = climate_data))
 plot(TMAX~NewDate, climate_data, ty="p", pch=20)
-abline(coef(climate.lm), col="blue")
+abline(coef(climate.lm), col="green")
 ```
 
-```{r2}
+```{r, echo=TRUE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
@@ -45,32 +42,83 @@ str(MonthlyTMAXMean)
 MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
 MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
 MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
-MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH)
 MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
 head(MonthlyTMAXSD)
 plot(MonthlyTMAXMean$TMAX, ty='l')
-abline(coef(climate.lm), col="red")
+abline(coef(climate.lm), col="green")
+```
+PLOT OF MAY
+```{r, echo=TRUE}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='p', pch=20, main = "May")
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+##summary(May.lm)
+abline(coef(May.lm), col="red")
+
 ```
 
-```{r3}
-
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+TMIN
+```{r, echo=TRUE}
+climate.lm<- lm(formula = TMIN ~ NewDate, data = climate_data)
+plot(TMIN~NewDate, climate_data, ty="p", pch=20)
+abline(coef(climate.lm), col="green")
 ```
 
-## Including Plots
+```{r, echo=TRUE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+##str(MonthlyTMINMean)
+MonthlyTMINSD = aggregate(TMIN ~ Month + Year, climate_data, sd)
+MonthlyTMINSD$YEAR = as.numeric(MonthlyTMINSD$Year)
+MonthlyTMINSD$MONTH = as.numeric(MonthlyTMINSD$Month)
+MonthlyTMINSD$NewDate = MonthlyTMINSD$YEAR + (MonthlyTMINSD$MONTH - 1)/12
+##head(MonthlyTMINSD)
+plot(MonthlyTMINMean$TMIN, ty='l')
+abline(coef(climate.lm), col="green")
+```
+May Minimum
+``` {r, echo=TRUE}
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='p', pch=20, main = "May")
+Maymin.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+##summary(Maymin.lm)
+abline(coef(Maymin.lm), col="red")
+```
+Precip
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+``` {r, echo=TRUE}
+TotalPPT <- aggregate(climate_data$PRCP, list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+names(TotalPPT) = c("Month", "Year", "PRCP")
+TotalPPT$Date <- as.numeric(TotalPPT$Month)/12 + as.numeric(TotalPPT$Year)
+plot(PRCP~Date, data=TotalPPT, ty="p", pch=20)
+```
+``` {r, echo=TRUE}
+plot(PRCP~Date, data=TotalPPT[TotalPPT$Month=="05",], ty='p', pch=20, main = "May")
+MayPRCP.lm <- lm(PRCP~Date, data=TotalPPT[TotalPPT$Month=="05",])
+summary(Maymin.lm)
+abline(coef(MayPRCP.lm), col="red")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+``` {r, echo=TRUE}
+##All of the graphs for the months
+##TMAX
+##Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+##par(mfrow=c(4,3), mar=c(5,4,3,2)+0.1)
+##TMAXresult <- NA
+##for (i in 1:12){
+##plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty='l', las=1, main=Months[i])
+##Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+##summary(Month.lm)
+##abline(coef(Month.lm), col="red")
+##TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3)))}
+##TMIN
+##{Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+##par(mfrow=c(4,3), mar=c(5,4,3,2)+0.1)
+##TMINresult <- NA
+##for (i in 1:12){
+##plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty='l', las=1, main=Months[i])
+##Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+##summary(Month.lm)
+##abline(coef(Month.lm), col="red")
+##TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3)))}}
