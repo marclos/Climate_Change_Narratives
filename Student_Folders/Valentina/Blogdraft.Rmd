@@ -21,25 +21,20 @@ climate_data$NewDate[2485:38063] <- as.Date(strDates[2485:38063], "%m/%d/%Y")
 
 
 ## Temperature Data in Claremont, CA
+Located 30.3 miles East of Downtown Los Angeles, the city of Calremont is a very interesting place in terms of weather. While it is close to the coast, it is far enough to keep the coastal climate from interfering with its own, and its desert-like characteristics make it different from other Los Angeles area locations. 
+
+## Daily Data (TMAX)
 
 
-## Including Plots
-
-You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
 plot(TMAX ~ NewDate, climate_data)
 
-climate_data.lm <- lm(TMAX~NewDate, climate_data)
-abline(coef(climate_data.lm), col='red')
-
-
-
 ```
 
+## Creating Monthly TMAX Means 
 
 ```{r echo=FALSE}
-
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 
@@ -50,44 +45,55 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
 str(MonthlyTMAXMean)
 
-MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
 
-MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year) 
-MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month) 
-MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', xlim=c(1880, 2020)) 
+Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 
-head(MonthlyTMAXSD)
+abline(coef(Jan.lm), col='red')
 
-plot(MonthlyTMAXMean$TMAX, ty='l')
+summary(Jan.lm)
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], ty='p', xlim=c(1950, 2020)) 
-Aug.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+```
 
-abline(coef(Aug.lm), col='red')
+## Creating Monthly TMIN Means
 
-summary(Aug.lm)
+```{r echo=FALSE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+climate_data$Year = format(climate_data$NewDate, format="%Y")
 
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 
+#fixing data
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
-
 head(MonthlyTMINMean)
 
-plot(MonthlyTMINMean$TMIN, ty='p')
+#plot(MonthlyTMINMean$TMIN, ty='p')
 
-library(xtable) 
-Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13),2], TMIN_P = as.numeric(TMINresult[c(2:13),3]), TMINRsq = TMINresult[c(2:13),4], TMAXSlope = TMAXresult[c(2:13),2], TMAX_P = as.numeric(TMAXresult[c(2:13),3]), TMAXRsq = TMAXresult[c(2:13),4]) 
-Results$starTMIN = "NS" 
-Results$starTMIN[Results$TMIN_P <= .05] = "*" 
-Results$starTMIN[Results$TMIN_P < 0.01] = "**" 
-Results$starTMIN[Results$TMIN_P < 0.001] = "***" 
-Results$starTMAX = "NS" 
-Results$starTMAX[Results$TMAX_P < 0.05] = "*" 
-Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l', xlim=c(1880, 2020)) 
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+
+abline(coef(Jan.lm), col='red')
+
+summary(Jan.lm)
+
 
 ```
 
+##Comparing all monthly TMIN means
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r echo=FALSE}
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+# Create a panel so I can see all the figures at once. 
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1) 
+TMAXresult <- NA 
+for (i in 1:12){ 
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i], ty='l') 
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty='l', las=1, xlim=c(1880, 2020), main=Months[i]) 
+Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,]) 
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3))) }
+
+```
