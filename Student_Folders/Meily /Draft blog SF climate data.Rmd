@@ -34,7 +34,7 @@ climate_data$NewDate<-as.Date(strDates, "%Y-%m-%d")
 #strDates<-as.character(climate_data$DATE)
 str(climate_data)
 ``` 
-
+plot data from select period of time in a month-basis
 ```{r}
 plot(TMAX~NewDate, climate_data,ty='l')
 #lm(TMAX~NewDate, data=climate_data)                             
@@ -44,6 +44,117 @@ plot(TMAX~NewDate, climate_data,ty='l')
 #plot(TMAX~NewDate,data=climate_data)
 abline(coef(lm(TMAX~NewDate,data=climate_data)), col='red')
 #linearmodel<-lm(TMAX~NewDate,data=climate_data)
+```
+##Creating monthly TMAX Means
+
+```{r}
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+MonthlyTMAXMean=aggregate(TMAX~Month+Year,climate_data,mean)
+MonthlyTMAXMean$YEAR=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH=as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],ty='l', xlim=c(1920,2017))
+January.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(January.lm)
+abline(coef(January.lm), col="red")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",],ty='l', xlim=c(1920,2017))
+February.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+summary(February.lm)
+abline(coef(February.lm), col="red")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",],ty='l', xlim=c(1920,2017))
+March.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",])
+summary(March.lm)
+abline(coef(March.lm), col="red")
+
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],ty='l', xlim=c(1920,2017))
+April.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+summary(April.lm)
+abline(coef(April.lm), col="red")
+
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],ty='l', xlim=c(1920,2017))
+May.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",],ty='l', xlim=c(1920,2017))
+June.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+summary(June.lm)
+abline(coef(June.lm), col="red")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",],ty='l', xlim=c(1920,2017))
+July.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+summary(July.lm)
+abline(coef(July.lm), col="red")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],ty='l', xlim=c(1920,2017))
+August.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+summary(August.lm)
+abline(coef(August.lm), col="red")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",],ty='l', xlim=c(1920,2017))
+September.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+summary(September.lm)
+abline(coef(September.lm), col="red")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],ty='l', xlim=c(1920,2017))
+October.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+summary(October.lm)
+abline(coef(October.lm), col="red")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",],ty='l', xlim=c(1920,2017))
+November.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",])
+summary(November.lm)
+abline(coef(November.lm), col="red")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],ty='l', xlim=c(1920,2017))
+December.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+summary(December.lm)
+abline(coef(December.lm), col="red")
+
+
+
+
+
+Months=c("January", "February", "March", "April", "May", "October", "November", "December")
+
+par(mfrow=c(4,3), mar=c(5,4,3,2)+0.1)
+TMAXresult <- NA
+for (i in 1:12)
+  
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty="l", las=1, xlim=c(1920,2017))
+Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+
+
+
+MonthlyTMINMean=aggregate(TMIN~Month+Year,climate_data,mean)
+MonthlyTMINMean$YEAR=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH=as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+
+par(mfrow=c(4,3), mar=c(5,4,3,2)+0.1)
+TMINresult <- NA
+for (i in 1:12){
+  
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty="l", las=1, xlim=c(1920,2017))
+Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")}
+
+
 
 
 ```
