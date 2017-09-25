@@ -39,31 +39,36 @@ abline(coef(climate.lm), col="blue")
 
 ```{r, echo=TRUE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
-climate_data$Month = format(climate_data$NewDate, format="%Y")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
 
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year) 
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month) 
 str(MonthlyTMAXMean)
 
-MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
-
-MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year) 
-MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month) 
-MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
-
-head(MonthlyTMAXSD)
-
 plot(MonthlyTMAXMean$TMAX, ty='l')
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020)) 
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",], ty='l', xlim=c(1850, 2020)) 
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
 summary(May.lm)
-
 abline(coef(May.lm), col="red")
 
-```````````
+`````
+``````{r, echo=TRUE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+climate_data$Year = format(climate_data$NewDate, format="%Y")
 
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
+str(MonthlyTMINMean)
+
+plot(MonthlyTMINMean$TMIN, ty='l')
+
+plot(TMINYEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty='l', xlim=c(1850, 2020)) 
+May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
 
 
 
