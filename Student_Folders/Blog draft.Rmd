@@ -48,12 +48,27 @@ str(MonthlyTMAXMean)
 
 plot(MonthlyTMAXMean$TMAX, ty='l')
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",], ty='l', xlim=c(1850, 2020)) 
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",], ty='l', xlim=c(1850, 2020)) 
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 summary(May.lm)
 abline(coef(May.lm), col="red")
 
 `````
+
+```{r, echo=FALSE}
+lm(TMIN~NewDate,data=climate_data)
+climate.lm<- lm(formula=TMIN~NewDate, data=climate_data)
+plot(TMIN~NewDate,climate_data, ty="p", pch=20)
+abline(coef(climate.lm), col="blue")
+````````````
+
+
+
+
+
+
+
+
 ``````{r, echo=TRUE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
 climate_data$Year = format(climate_data$NewDate, format="%Y")
@@ -65,11 +80,17 @@ str(MonthlyTMINMean)
 
 plot(MonthlyTMINMean$TMIN, ty='l')
 
-plot(TMINYEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty='l', xlim=c(1850, 2020)) 
-May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l', xlim=c(1850, 2020)) 
+May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 summary(May.lm)
-abline(coef(May.lm), col="red")
+abline(coef(May.lm), col="purple")
 
+`````
+#Use Min temp values for the summers to compare how increase in min temperatures have increased either the number or magnitutde (volatility) of hurricanes in Sugarland
+
+
+#Precipitation
+```{r, echo=TRUE}
 
 
 
