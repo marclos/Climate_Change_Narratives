@@ -1,0 +1,75 @@
+---
+title: "Torrance, CA"
+author: "Allison Joseph"
+date: "9/18/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+climate_data <- read.csv("/home/CAMPUS/aeja2017/Climate_Change_Narratives/Student_Folders/Allison_Joseph/ally_tor.csv") 
+
+strDates <- as.character(climate_data$DATE)
+head(strDates)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+#str(climate_data)
+
+
+```
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+str()
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r }
+
+
+```
+
+## Daily Data
+
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+plot(TMAX~NewDate, climate_data)
+climate_data.lm <- lm(TMAX~NewDate, climate_data, pch=20)
+abline(coef(climate_data.lm), col='red')
+summary(climate_data.lm)
+
+```
+
+
+## Monthly Averages
+
+```{r monthly, echo=FALSE}
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year) 
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month) 
+str(MonthlyTMAXMean)
+
+MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
+MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year) 
+MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month) 
+MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
+head(MonthlyTMAXSD)
+
+#plot(MonthlyTMAXMean$TMAX, ty='l')
+
+#plot(MonthlySD£TMAX, ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",], ty='l', xlim=c(1950, 2020))
+March.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",])
+
+summary(March.lm)
+
+abline(coef(March.lm), col="red")
+
+````
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
