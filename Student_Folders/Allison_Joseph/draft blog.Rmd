@@ -42,7 +42,7 @@ summary(climate_data.lm)
 ```
 
 
-## Monthly Averages
+## Monthly Max Temperature Averages
 
 ```{r monthly, echo=FALSE}
 
@@ -63,13 +63,31 @@ head(MonthlyTMAXSD)
 #plot(MonthlyTMAXMean$TMAX, ty='l')
 
 #plot(MonthlySD£TMAX, ty='l')
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",], ty='l', xlim=c(1950, 2020))
-March.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",])
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",], ty='l', xlim=c(1950, 2020))
+February.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
 
-summary(March.lm)
+summary(February.lm)
 
-abline(coef(March.lm), col="red")
+#abline(coefFebruary.lm), col="red")
 
 ````
+## Minimum Monthly Temperatures
+``` {r minimum daily temperatures, echo=FALSE}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+
+#plot(MonthlyTMINMean$TMN, ty='l')
+
+#plot(MonthlySD£TMIN, ty='l')
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1950, 2020))
+December.lm <- lm(TMIN~YEAR,data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+
+summary(December.lm)
+```
+
+
