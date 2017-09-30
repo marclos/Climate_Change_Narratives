@@ -22,10 +22,6 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 str()
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r }
-
-
-```
 
 ## Daily Data
 
@@ -41,6 +37,9 @@ summary(climate_data.lm)
 
 ```
 
+For Torrance, only 5 months (January, March, April, June, September) out of the year appear to match the predicted rise of 3 degrees temperature in the Los Angeles area. The remaining months were below this 3 degree prediction, with the months of November and December showing a decrease. For Torrance, the slightly cooler temperatures seen can occur as a result of a phenomenon called “coastal cooling.” Coastal areas show a cooling trend, while inland and urban areas show a warming trend. 
+
+Although lower than the predicted trend of 3 degrees, Torrance’s TMAX temperatures do show an overall warming, 10 out of the 12 months show an increase of some sort, ranging from .01 to .04 degrees. Thus, the Intergovernmental Panel Climate Change (IPCC) asserts that environmental hazards stemming from rising temperature such as increased flood risk and sea level rise, threaten the economic social and ecological wellbeing of coastal cities. 
 
 ## Monthly Max Temperature Averages
 
@@ -71,6 +70,9 @@ summary(February.lm)
 #abline(coefFebruary.lm), col="red")
 
 ````
+
+In addition, Torrance reflects a pattern that is known as asymmetric warming, as monthly mean minimum temperatures (TMIN) increase faster than monthly mean maximum values (TMAX). The rate of asymmetric warming has accelerated since the mid-1970s on both a regional and global scale (Bornstein et al. 2008). For the South Coast Air Basin area and San Francisco Bay Area show both minimum and maximum temperatures have increased for inland sites, while coastal sites in those regions have simultaneously had rising minimum temperatures and falling maximum temperatures. 
+
 ## Minimum Monthly Temperatures
 ``` {r minimum daily temperatures, echo=FALSE}
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
