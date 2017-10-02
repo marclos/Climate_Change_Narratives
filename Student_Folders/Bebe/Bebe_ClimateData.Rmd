@@ -4,7 +4,7 @@ author: Bebe
 date: 21 sep
 output: html_document
 ---
-##temperature data insabta monica
+##temperature data in santa monica
 capture someones attention of why they wanna rea d the blog
 
 ##are there trends in the temperature 
@@ -12,6 +12,8 @@ compelling data
 
 ```{r, echo=FALSE,results='hide'}
 climate_data<- read.csv("/home/CAMPUS/wbpa2016/Climate_Change_Narratives/Student_Folders/Bebe/Bebe_santamonica_data.csv")
+climate_data$TMAX[20824]<-NA
+climate_data$TMAX[23955]<-NA
 
 strDates <- as.character(climate_data$DATE)
 head(strDates)
@@ -74,7 +76,7 @@ head(MonthlyTMINMean)
 library(xtable)
 
  Months = c("January", "February", "March", "April", "May", "June",
-+   "July", "August", "September", "October", "November", "December")
+   "July", "August", "September", "October", "November", "December")
 par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
 TMAXresult <- NA
 for (i in 1:12)
@@ -85,4 +87,32 @@ abline(coef(Month.lm), col="pink")
 TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3)))
 }
 
+
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+Febuary.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(Febuary.lm)
+abline(coef(Febuary.lm), col="pink")
+
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(August.lm)
+abline(coef(August.lm), col="pink")
+
+
+
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP), list(climate_data$Month, climate_data$Year), sum)
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+plot(x ~ Date, data=Missing)
 ```
+
+```
+
+```
+
+
+
