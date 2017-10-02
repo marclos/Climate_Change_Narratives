@@ -22,29 +22,29 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 str()
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
+Using data from the National Oceanic and Atmospheric Association (NOAA) free online archive of historical weather and climate data from stations around the globe, climate data from January 1, 1932 to September 6, 2017 for station USW00003122 in Torrance, California was examined. RStudio software was used to summarize, evaluate, and graphically present the data, creating a linear model and a trendline. Analysis of maximum and minimum temperatures (Fahrenheit) by month from 1932 to 2017 were used to account for daily and seasonal fluctuations in temperature. 
+
+Using the null hypothesis method, a standard scientific convention, the data was used to determine if there is a trend between time and temperature. The null hypothesis states that there is no relationship between temperature and time. The alternative hypothesis states that there is a relationship between temperature and time. Therefore, if the probability value (p-value) calculated is less than 0.05, the null hypothesis is considered violated and a relationship can be assumed.
 
 ## Daily Data
 
-
-You can also embed plots, for example:
+The data shows a daily increase of .00005 degrees Farenheit, with a p-value of less than 0.0001. Although such an increase does not seem to be that high, when multiplied by 365 (days) for 1 year, the average yearly increase was 0.02 degrees Farenheit. Over 100 years, the temperature increase for Torrance would be about 2 degrees Farenheit. 
 
 ```{r pressure, echo=FALSE}
 
 plot(TMAX~NewDate, climate_data)
 climate_data.lm <- lm(TMAX~NewDate, climate_data, pch=20)
 abline(coef(climate_data.lm), col='red')
-summary(climate_data.lm)
+#summary(climate_data.lm)
 
 ```
 
-For Torrance, only 5 months (January, March, April, June, September) out of the year appear to match the predicted rise of 3 degrees temperature in the Los Angeles area. The remaining months were below this 3 degree prediction, with the months of November and December showing a decrease. For Torrance, the slightly cooler temperatures seen can occur as a result of a phenomenon called “coastal cooling.” Coastal areas show a cooling trend, while inland and urban areas show a warming trend. 
 
-Although lower than the predicted trend of 3 degrees, Torrance’s TMAX temperatures do show an overall warming, 10 out of the 12 months show an increase of some sort, ranging from .01 to .04 degrees. Thus, the Intergovernmental Panel Climate Change (IPCC) asserts that environmental hazards stemming from rising temperature such as increased flood risk and sea level rise, threaten the economic social and ecological wellbeing of coastal cities. 
 
 ## Monthly Max Temperature Averages
 
+Janruary was chosen as an example month, because there is a trend for both maximum and minimum values (null hypothesis is violated). January shows a .04 monthly increase, with a p value of less than 0.05. Thus, January rejects the null hypothesis, showing a trend between time and temperature. 
 ```{r monthly, echo=FALSE}
-
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
@@ -62,18 +62,28 @@ head(MonthlyTMAXSD)
 #plot(MonthlyTMAXMean$TMAX, ty='l')
 
 #plot(MonthlySD£TMAX, ty='l')
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",], ty='l', xlim=c(1950, 2020))
-February.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', main = "January Maximum Temperatures",  xlim=c(1950, 2020))
+January.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 
-summary(February.lm)
+summary(January.lm)
 
-#abline(coefFebruary.lm), col="red")
+abline(coef(January.lm), col="red")
 
 ````
 
-In addition, Torrance reflects a pattern that is known as asymmetric warming, as monthly mean minimum temperatures (TMIN) increase faster than monthly mean maximum values (TMAX). The rate of asymmetric warming has accelerated since the mid-1970s on both a regional and global scale (Bornstein et al. 2008). For the South Coast Air Basin area and San Francisco Bay Area show both minimum and maximum temperatures have increased for inland sites, while coastal sites in those regions have simultaneously had rising minimum temperatures and falling maximum temperatures. 
+##Analyis of Maximum Temperature Data
+
+January, March, April, June, and December (5/12 months) violate the null hypothesis. 
+
+The data shows that Torrance is generally warming, increase in temperature exists for Janruary, March, April, and June, supporting the idea that global warming is occurring. 
+
+In contrast, December shows a decrease in temperature. December's cooling can be understood due to seasonal variation, as temperatures tend to decrease during the winter. 
+
+
 
 ## Minimum Monthly Temperatures
+Janruary shows a .08 monthly increase with a p value of less than 0.0001. The null hypothesis can be rejected, showing there is a temperature between time and temperature. 
+
 ``` {r minimum daily temperatures, echo=FALSE}
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
@@ -81,15 +91,26 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
-plot(MonthlyTMINMean$TMIN, ty='l')
+#plot(MonthlyTMINMean$TMIN, ty='l')
 
 #plot(MonthlyTMINMean$TMN, ty='l')
 
 #plot(MonthlySD£TMIN, ty='l')
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1950, 2020))
-December.lm <- lm(TMIN~YEAR,data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l', main = "January Minimum Temperatures", xlim=c(1950, 2020))
+January.lm <- lm(TMIN~YEAR,data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 
-summary(December.lm)
+summary(January.lm)
+abline(coef(January.lm), col="red")
+
 ```
 
+##Minimum Monthly Temperatures Data Analysis 
 
+For Torrance, all of the minimum temperatures are increasing, with a p value of less than .05. Thus, the null hypothesis is rejected, therefore, temperature is increasing with date. 
+
+When comparing January's temperature increase, the slope for Janruary's maximum temperature was .04, while January's minimum temperature had a greater slope of .08. The rate of temperature increase for all monthly minimum temperatures was greater than their maximum temperature counterpart.
+
+Thus, nights are warming at a faster rate than the daytime temperatures. Torrance reflects a pattern known as asymmetric warming, as minimum temperatures are increasing at a faster rate than maximum temperatures. This is a common temperature feature of coastal cities.
+
+## 
+In brief, warming temperatures and secondary impacts of climate change pose a threat to Texas’s natural environment, health, and economic wellbeing. 
