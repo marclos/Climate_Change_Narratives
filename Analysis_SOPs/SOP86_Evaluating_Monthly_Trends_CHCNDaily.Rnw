@@ -328,8 +328,14 @@ NOTE: The missing values have not been converted to NAs!
 <<>>=
 climate_data$PRCP[climate_data$PRCP==-9999] <- NA
 
-Missing <- aggregate(is.na(climate_data$PRCP), list(climate_data$Month, climate_data$Year), sum)
+Missing <- aggregate(is.na(climate_data$PRCP), 
+          list(climate_data$Month, climate_data$Year), sum)
+
+# The aggregate command is used to create a simplified dataset. In this case
+# we are creating a sum of PRCP based on each month and year.
+
 Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+
 plot(x ~ Date, data=Missing)
 @
 
@@ -338,8 +344,13 @@ Third, we will need to decide what level of aggredation -- monthly, yearly, etc.
 There are loads of missing values in many months. Let's cut of the months that have more than 4 missing days. 
 
 <<>>=
-TotalPPT <- aggregate(climate_data$PRCP, list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+TotalPPT <- aggregate(climate_data$PRCP, 
+            list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+
+# Check to see what you created.
+
 names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+
 NonMissing <- Missing[Missing$x < 5, c(1:3)]
 library(dplyr)
 PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
