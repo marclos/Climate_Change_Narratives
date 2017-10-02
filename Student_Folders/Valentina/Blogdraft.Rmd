@@ -5,7 +5,7 @@ date: "9/18/2017"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r, echo=FALSE}
 #climate_data <- read.csv("Student_Folders/Valentina/valentina_cmont_data.csv")
 
 climate_data <- read.csv("/home/CAMPUS/veja2016/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv")
@@ -21,20 +21,29 @@ climate_data$NewDate[2485:38063] <- as.Date(strDates[2485:38063], "%m/%d/%Y")
 
 
 ## Temperature Data in Claremont, CA
-Located 30.3 miles East of Downtown Los Angeles, the city of Calremont is a very interesting place in terms of weather. While it is close to the coast, it is far enough to keep the coastal climate from interfering with its own, and its desert-like characteristics make it different from other Los Angeles area locations. 
+Located 30.3 miles East of Downtown Los Angeles, the city of Claremont is a very interesting place in terms of weather. While it is close to the coast, it is far enough to keep the coastal climate from interfering with its own, and its desert-like characteristics make it different from other Los Angeles area locations. 
 
-## Daily Data (TMAX)
+***
+![alt text](LAbasinMap.png)
 
+##Context: Climate Change in the Greater Los Angeles Area
+Like in many of the other areas of Southern California, Los Angeles is being affected by claimate change in multiple ways. 
+According to the UCLA's "Climate Change in the Los Angeles Region" study, these are some of the trends shown:
 
+- Warming is not uniform across the LA region. Valleys and inland areas warm more than areas near the coast.
+- The number of days hotter than 95°F increases across the region, but to a greater extent in the interior compared with coastal areas.
 
-```{r pressure, echo=FALSE}
-plot(TMAX ~ NewDate, climate_data)
+These particularly address Claremont, which is located amongst the "inland areas."
 
-```
+##Methods
+In order to account for the effects of climate change, temperature records from the National Oceanic and Atmospheric Administration (NOAA) over the last two decades were processed and analyzed. The two categories that were in the data account for the minimum and maximum temperatures measured on a daily and monthly basis over the years.
 
 ## Creating Monthly TMAX Means 
+When getting the monthly maximum temperature means, however, I found that measurements are not accurate enough since null hypothesis cannot be disproved. Since Claremont accounts for a very small area of the Greater Los Angeles region, the data recorded does not show an accurate relationship between temperature and time.
 
-```{r echo=FALSE}
+Nevertheless, the monthly minimum temperatures do portray this relationship.
+
+```{r, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 
@@ -43,21 +52,27 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year) 
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month) 
 
-str(MonthlyTMAXMean)
+#str(MonthlyTMAXMean)
 
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', xlim=c(1880, 2020)) 
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='p',pch=20, xlim=c(1880, 2020)) 
 Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 
 abline(coef(Jan.lm), col='red')
 
-summary(Jan.lm)
+#summary(Jan.lm)
 
 ```
 
 ## Creating Monthly TMIN Means
+When analyzing data, the information that resulted in the best models to show the relationship between temperature and time in Claremont, CA (according to the scientific method framework) was the monthly average minimum temperatures. These monthly mean temperatures account for temperature measurements starting in 1880 and ending in 2017. The following are the figures for the months that show the most significant relationship between these two variables: the months that have the lowest null hypothesis (p-value).
 
-```{r echo=FALSE}
+
+
+#January
+p-value: 2.394e-11
+
+```{r, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 
@@ -67,33 +82,133 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 #fixing data
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
-head(MonthlyTMINMean)
+#head(MonthlyTMINMean)
 
 #plot(MonthlyTMINMean$TMIN, ty='p')
 
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l', xlim=c(1880, 2020)) 
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='p',pch=20, xlim=c(1880, 2020)) 
 Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 
 abline(coef(Jan.lm), col='red')
 
-summary(Jan.lm)
+#summary(Jan.lm)
 
 
 ```
 
-##Comparing all monthly TMIN means
 
-```{r echo=FALSE}
-Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-# Create a panel so I can see all the figures at once. 
-par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1) 
-TMAXresult <- NA 
-for (i in 1:12){ 
-#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i], ty='l') 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty='l', las=1, xlim=c(1880, 2020), main=Months[i]) 
-Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,]) 
-summary(Month.lm)
-abline(coef(Month.lm), col="red")
-TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3))) }
+
+#May
+p-value: 2.316e-10
+
+```{r, echo=FALSE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+#fixing data
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
+#head(MonthlyTMINMean)
+
+#plot(MonthlyTMINMean$TMIN, ty='p')
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='p',pch=20, xlim=c(1880, 2020)) 
+May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+
+abline(coef(May.lm), col='red')
+
+#summary(May.lm)
+
 
 ```
+
+#June
+p-value: 3.989e-11
+
+```{r, echo=FALSE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+#fixing data
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
+#head(MonthlyTMINMean)
+
+#plot(MonthlyTMINMean$TMIN, ty='p')
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty='p',pch=20, xlim=c(1880, 2020)) 
+Jun.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
+
+abline(coef(Jun.lm), col='red')
+
+#summary(Jun.lm)
+
+
+```
+
+
+#August
+p-value: 6.008e-12
+
+```{r, echo=FALSE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+#fixing data
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
+#head(MonthlyTMINMean)
+
+#plot(MonthlyTMINMean$TMIN, ty='p')
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty='p',pch=20, xlim=c(1880, 2020)) 
+Aug.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+
+abline(coef(Aug.lm), col='red')
+
+#summary(Aug.lm)
+
+
+```
+
+
+#October
+p-value: 4.611e-13
+
+```{r, echo=FALSE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+#fixing data
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
+#head(MonthlyTMINMean)
+
+#plot(MonthlyTMINMean$TMIN, ty='p')
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty='p',pch=20, xlim=c(1880, 2020)) 
+Oct.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+
+abline(coef(Oct.lm), col='red')
+
+#summary(Oct.lm)
+
+
+```
+
+##Climate Change Impacts on this Region: Literature Review
+
+##Conclusions
+
