@@ -1,99 +1,143 @@
 ---
-title: "Sugar Land"
+title: "Analyzing Increase in Floods in Sugar Land, Texas"
 author: "Kirara Tsutsui"
-date: "9/18/2017"
+date: "10/2/2017"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-
+```{r setup, include=FALSE, echo=FALSE}
 
 knitr::opts_chunk$set(echo = FALSE)
 climate_data <-read.csv("/home/CAMPUS/ktaa2016/Climate_Change_Narratives/Student_Folders/Kirara_Tsutsui/kirara_houston_data.csv")
-head(climate_data)
+#head(climate_data)
 
 
 strDates <-as.character(climate_data$DATE) 
-head(strDates)
+#head(strDates)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 #str(climate_data)
 
-
-
-
 ```
 
-## Daily data shows strong negative trend 
-
-
-
-```{r, echo=FALSE}
-lm(TMAX~NewDate,data=climate_data)
-climate.lm<- lm(formula=TMAX~NewDate, data=climate_data)
-plot(TMAX~NewDate,climate_data, ty="p", pch=20)
-abline(coef(climate.lm), col="blue")
-``````````````
-
-
-## Monthly averages
-
-```{r, echo=TRUE}
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year) 
-MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month) 
-str(MonthlyTMAXMean)
-
-plot(MonthlyTMAXMean$TMAX, ty='l')
-
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",], ty='l', xlim=c(1850, 2020)) 
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
-summary(May.lm)
-abline(coef(May.lm), col="red")
-
-`````
-
-```{r, echo=FALSE}
-lm(TMIN~NewDate,data=climate_data)
+# Monthly TMIN Averages
+``````{r, echo=FALSE}
+#lm(TMIN~NewDate,data=climate_data)
 climate.lm<- lm(formula=TMIN~NewDate, data=climate_data)
-plot(TMIN~NewDate,climate_data, ty="p", pch=20)
-abline(coef(climate.lm), col="blue")
-````````````
 
-
-
-
-
-
-
-
-``````{r, echo=TRUE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
-str(MonthlyTMINMean)
+#str(MonthlyTMINMean)
 
-plot(MonthlyTMINMean$TMIN, ty='l')
+#January not significant 0.878
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l', xlim=c(1850, 2020), main="January") 
+January.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+#summary(January.lm)
+abline(coef(January.lm), col="purple")
 
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l', xlim=c(1850, 2020)) 
-May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
-summary(May.lm)
+#February not significant 0.0604
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",], ty='l', xlim=c(1850, 2020), main="February") 
+February.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+#summary(February.lm)
+abline(coef(February.lm), col="purple")
+
+#March not significant 0.212
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",], ty='l', xlim=c(1850, 2020),main="March") 
+March.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
+#summary(March.lm)
+abline(coef(March.lm), col="purple")
+
+#April not significant 
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",], ty='l', xlim=c(1850, 2020), main="April") 
+April.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
+#summary(April.lm)
+abline(coef(April.lm), col="purple")
+
+#May significant
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l', xlim=c(1850, 2020), main="May") 
+May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+#summary(May.lm)
 abline(coef(May.lm), col="purple")
+
+#June significant
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty='l', xlim=c(1850, 2020), main="June") 
+June.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
+#summary(June.lm)
+abline(coef(June.lm), col="purple")
+
+#July significant 
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l', xlim=c(1850, 2020), main="July") 
+July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
+#summary(July.lm)
+abline(coef(July.lm), col="purple")
+
+```
+#write about the significance of the min average temperature change of July
+
+``````{r, echo=FALSE}
+
+#August significant
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty='l', xlim=c(1850, 2020), main="August") 
+August.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+#summary(August.lm)
+abline(coef(August.lm), col="purple")
+
+#September significant 0.0017
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="09",], ty='l', xlim=c(1850, 2020), main="September") 
+September.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
+#summary(September.lm)
+abline(coef(May.lm), col="purple")
+
+#October slightly significant 0.0495
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty='l', xlim=c(1850, 2020), main="October") 
+October.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+#summary(October.lm)
+abline(coef(October.lm), col="purple")
+
+#November significant 0.00398
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",], ty='l', xlim=c(1850, 2020), main="November") 
+November.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
+#summary(November.lm)
+abline(coef(November.lm), col="purple")
+
+#December not significant 0.462
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1850, 2020), main="December") 
+December.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+#summary(December.lm)
+abline(coef(December.lm), col="purple")
+
 
 `````
 #Use Min temp values for the summers to compare how increase in min temperatures have increased either the number or magnitutde (volatility) of hurricanes in Sugarland
 
 
 #Precipitation
+
 ```{r, echo=TRUE}
+#Yearly Average
+TotalPPT<-aggregate(climate_data$PRCP,list(climate_data$Year), sum, na.rm=T)
+
+#Create two variable groups
+
+names(TotalPPT)=c("Year", "PRCP") 
 
 
+TotalPPT$Date<-as.numeric(TotalPPT$Year)
+plot(PRCP~Date, data=TotalPPT, ty="p", pch=20)
+
+TotalPPT.lm <- lm(PRCP~Date, data=TotalPPT)
+summary(TotalPPT.lm)
+abline(coef(TotalPPT.lm), col="blue")
+
+names(TotalPPT)=c("Year", "PRCP", "Month")
+
+plot(PRCP~Date, data=TotalPPT[TotalPPT$Month=="07",], ty='p', pch=20, main = "July")
+JulyPRCP.lm<-lm(PRCP~Month, data=TotalPPT[TotalPPT$Month=="07",])
+summary(July.lm)
+abline(coef(JulyPRCP.lm), col="blue")
 
 
-
-
+``````````````
