@@ -1,14 +1,17 @@
 ---
-title: "Climate_Data"
-author: Bebe
-date: 21 sep
+title: "What does climate change mean for Santa Monica?"
+author: Bebe Phornprapha
+date: October 4th 2017
 output: html_document
 ---
-##temperature data in santa monica
-capture someones attention of why they wanna rea d the blog
+##Why is Climate Change releavant to Santa Monica? 
+![Alt text](https://med-colleges.com/images/locations/santa-monica-college.png) 
+Santa Monica is located on the coast of Southern California. 
 
-##are there trends in the temperature 
-compelling data
+##Methods in collecting data 
+All of the data was downloaded from NOAA (National Oceanic and Atmospheric Administration) from a weather station in Santa Monica, California. The RStudio software was used to summarize, evaluate, and graph the data. When processing the data, the obviuos outliers were delted (ie. incorrectly inputted high/low temperatures) and a linear model was then created, along with a trendline. Then maximum temperatures from   I analyzed maximum and minimum temperatures (Fahrenheit) by month from 1924 to 2016 to account for daily and seasonal fluctuations in temperature.
+
+I am determining a trend between time and temperature using the null hypothesis method, a standard scientific convention. The null hypothesis states that there is no relationship between temperature and time. The alternative hypothesis states that there is a relationship between temperature and time. Therefore, if the probability value (p-value) calculated is less than .05, the null hypothesis is considered violated and a relationship can be assumed.
 
 ```{r importdata, echo=FALSE,results='hide'}
 climate_data<- read.csv("/home/CAMPUS/wbpa2016/Climate_Change_Narratives/Student_Folders/Bebe/Bebe_santamonica_data.csv")
@@ -22,8 +25,9 @@ climate_data.lm <- lm(TMAX ~ NewDate, climate_data)
 summary(climate_data.lm)
 ```
 
+##Results 
 
-```{r yearlymean}
+```{r yearlymean, echo=FALSE,results='hide'}
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 YearTMAXMean = aggregate(TMAX ~ Year, climate_data, mean)
 YearTMAXMean$YEAR = as.numeric(YearTMAXMean$Year)
@@ -36,16 +40,8 @@ summary(linearmodel)
 ```
 
 
-```{r notused}
-linearmodel <- lm(TMAX~NewDate, climate_data)
 
-#plot(TMAX~NewDate, climate_data, ty='l')
-
-#abline(coef(linearmodel), col='pink')
-
-```
-
-```{r monthlymeans,echo=FALSE}
+```{r monthlymeans,echo=FALSE, results='hide'}
 
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 
@@ -63,27 +59,26 @@ str(MonthlyTMAXMean)
 
 
 
-```{r}
+```{r, echo=FALSE,results='hide'}
 #plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="12"], ty='l')
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
-ty='l', xlim=c(1950, 2020))
+ty='p',pch=20, xlab = "Year", ylab = "Maximum Temperature (°C)", las = 1, main = "Maximum Monthly Temperature: Febuary", xlim=c(1950, 2020))
 Febuary.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 summary(Febuary.lm)
-abline(coef(Febuary.lm), col="pink")
+abline(coef(Febuary.lm), col="purple")
 
 ```
 
 
 
-```{r}
+```{r, echo=FALSE,results='hide'}
 #plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="07"], ty='l')
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",],
-ty='l', xlim=c(1950, 2020))
+ty='p',pch=20, xlab = "Year", ylab = "Maximum Temperature (°C)", las = 1, main = "Maximum Monthly Temperature: July",  xlim=c(1950, 2020))
 July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
 summary(July.lm)
-abline(coef(July.lm), col="pink")
+abline(coef(July.lm), col="purple")
 ```
-
 
 
 
