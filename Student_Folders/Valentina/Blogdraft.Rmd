@@ -1,5 +1,5 @@
 ---
-title: "Draft Blog"
+title: "Is Claremont Actually Heating? Should We Care?"
 author: "Valentina Emanuele"
 date: "9/18/2017"
 output: html_document
@@ -21,13 +21,20 @@ climate_data$NewDate[2485:38063] <- as.Date(strDates[2485:38063], "%m/%d/%Y")
 
 
 ## Temperature Data in Claremont, CA
+Heat waves in the summer, but really cold days in the winter... Does this mean Claremont is actually heating, cooling or both? 
+
 Located 30.3 miles East of Downtown Los Angeles, the city of Claremont is a very interesting place in terms of weather. While it is close to the coast, it is far enough to keep the coastal climate from interfering with its own, and its desert-like characteristics make it different from other Los Angeles area locations. 
 
 ***
-![alt text](LAbasinMap.png)
+![](LAbasinMap.png)
+
+Although it is different from many of the other LA County cities, Claremont is still affected by the most significant of the climate change effects: heating. Data collected near Claremont since 1880 has been modeled and shows the increasing heating trend that this area has been experiencing since the late Industrial Revolution. Thus, the effects of these trends are seen in many ways, particulary in water and air related topics. 
 
 ##Context: Climate Change in the Greater Los Angeles Area
-Like in many of the other areas of Southern California, Los Angeles is being affected by claimate change in multiple ways. 
+***
+![](LA_Skyline_Mountains2-800x450.jpg)
+
+Like in many of the other areas of Southern California, Los Angeles is being affected by climate change in multiple ways. 
 According to the UCLA's "Climate Change in the Los Angeles Region" study, these are some of the trends shown:
 
 - Warming is not uniform across the LA region. Valleys and inland areas warm more than areas near the coast.
@@ -35,30 +42,29 @@ According to the UCLA's "Climate Change in the Los Angeles Region" study, these 
 
 These particularly address Claremont, which is located amongst the "inland areas."
 
-##Methods
-In order to account for the effects of climate change, temperature records from the National Oceanic and Atmospheric Administration (NOAA) over the last two decades were processed and analyzed. The two categories that were in the data account for the minimum and maximum temperatures measured on a daily and monthly basis over the years.
+Furthermore, 
 
-## Creating Monthly TMAX Means 
-When getting the monthly maximum temperature means, however, I found that measurements are not accurate enough since null hypothesis cannot be disproved. Since Claremont accounts for a very small area of the Greater Los Angeles region, the data recorded does not show an accurate relationship between temperature and time.
 
-Nevertheless, the monthly minimum temperatures do portray this relationship.
+
+##Method
+In order to account for the effects of climate change, temperature records from the National Oceanic and Atmospheric Administration (NOAA) over the last two decades were processed and analyzed. 
 
 ```{r, echo=FALSE}
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
-climate_data$Year = format(climate_data$NewDate, format="%Y")
+#climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+#climate_data$Year = format(climate_data$NewDate, format="%Y")
 
-MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+#MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 
-MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year) 
-MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month) 
+#MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year) 
+#MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month) 
 
 #str(MonthlyTMAXMean)
 
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='p',pch=20, xlim=c(1880, 2020)) 
-Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='p',pch=20, xlim=c(1880, #2020)) 
+#Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 
-abline(coef(Jan.lm), col='red')
+#abline(coef(Jan.lm), col='red')
 
 #summary(Jan.lm)
 
@@ -209,6 +215,11 @@ abline(coef(Oct.lm), col='red')
 ```
 
 ##Climate Change Impacts on this Region: Literature Review
+In the endeavor of getting a clear and well-rounded perspective of the effects of climate change in the region of Claremont, California, I have chosen a couple pieces of scientific literature that account for the social, economic and ecological implications of climate patterns. The topics that these papers cover are related to the effects temperature increase has on the area. One of the most commonly discussed impacts is drought and water supply, however, other more general issues of increased heating are also explored. Interestingly enough, these address socioeconomic impacts that will most likely affect people. 
+
+Beyond having to buy air conditioning for the old residence halls in August and/or a jacket to keep warm in November, we are facing real climate change effects. From potentially getting infected by Zika or having serious water and food shortages, the effects of the heating are making people very worried. "The changing climate will not only bring new diseases, experts say, but also will threaten the water supply, worsen air quality and cardiovascular disease and cause deaths from extreme heat," (LA Times, 2016).
 
 ##Conclusions
-
+-What models and media tell us
+-What to do: in LA and in Claremont
+Nevertheless, the impacts on the flora and fauna of the region are not particularly explored. This is even preoccupying since Claremont is the manager and “owner” of the Claremont Hills Wilderness park, which is home for endless wild plants and animals. 
