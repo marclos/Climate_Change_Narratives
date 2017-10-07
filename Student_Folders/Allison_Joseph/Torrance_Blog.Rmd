@@ -8,7 +8,7 @@ Torrance is a coastal community in southwestern Los Angeles County sharing the c
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-climate_data <- read.csv("Climate_Change_Narratives/Student_Folders/Allison_Joseph/ally_tor.csv") 
+climate_data <- read.csv("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Allison_Joseph/ally_tor.csv") 
 
 strDates <- as.character(climate_data$DATE)
 head(strDates)
