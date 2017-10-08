@@ -1,12 +1,12 @@
 ---
-title: "San Francisco climate data"
+title: "****Please don't review this yet*****"
 author: "Meily Wu Fung"
 date: "9/18/2017"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 
 
 ```
@@ -58,7 +58,7 @@ MonthlyTMAXMean$MONTH=as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],ty='l', xlim=c(1920,2017))
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],ty='l', xlim=c(1920,2017), main= "blahblahblah")
 January.lm<-lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 summary(January.lm)
 abline(coef(January.lm), col="red")
@@ -130,12 +130,12 @@ Months=c("January", "February", "March", "April", "May", "October", "November", 
 
 par(mfrow=c(4,3), mar=c(5,4,3,2)+0.1)
 TMAXresult <- NA
-for (i in 1:12)
+for (i in 1:12){
   
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty="l", las=1, xlim=c(1920,2017))
 Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
 summary(Month.lm)
-abline(coef(Month.lm), col="red")
+abline(coef(Month.lm), col="red")}
 
 
 
@@ -171,18 +171,16 @@ abline(coef(Month.lm), col="red")}
          
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-#plot(climate_data)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
 
 =====
+
+## Discussion 
+
+The city of San Francisco is home to 870,000 residents, and is the fourth most populous city in California. Besides being the cultural, commercial and financial center of the larger San Francisco Bay Area, it attracts abundant tourists annually with its temperate climate and mix of landmarks. However, with an increasing trend of record-high temperatures and slowly rising average temperatures, climate change has potential threats in the city of San Francisco. Some of these include heat vulnerability, sea level and coastal change, extreme weather events, and air pollution. 
+The San Francisco Department of Public Health, funded by the Center for Disease Control and Prevention (CDC) assesses San Francisco’s vulnerability to extreme heat events. The brink of what is considered an “extreme heat day” varies based on the historical average temperatures of the place being analysed. According to a synthesis of climate change impacts in the San Francisco Bay Area done for the California Energy Commission, the temperatures in the high 70s in coastal areas, including San Francisco, are considered extreme heat days, which are lower compared to more inland areas. However, this means that the number of days above these thresholds can be much greater for these coastal areas. For San Francisco, these days are expected to increase dramatically (Ekstrom). 
+
+
+![](SFextremeheatdays.png)
 
 
 
