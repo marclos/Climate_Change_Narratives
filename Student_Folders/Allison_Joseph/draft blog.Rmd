@@ -4,10 +4,11 @@ author: "Allison Joseph"
 date: "9/18/2017"
 output: html_document
 ---
+  Torrance is a coastal community in southwestern Los Angeles County, sharing the climate and geographical features common to the Greater Los Angeles area. Torrance has about 1.5 miles of beaches on the Pacific Ocean and a heavily industrialized inland area (California Climate Change Center, 2010). Thus, cooling can result from ocean breezes, while heating can result from industrialization. Torrance serves as a model for California coastal cities, demonstrating an overall increase in temperature because of climate change. Coastal cities are particularly vulnerable to natural hazards, including storms, extreme high tides, and rising sea levels resulting from global climate change (IPCC, 2014). 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-climate_data <- read.csv("/home/CAMPUS/aeja2017/Climate_Change_Narratives/Student_Folders/Allison_Joseph/ally_tor.csv") 
+climate_data <- read.csv("Climate_Change_Narratives/Student_Folders/Allison_Joseph/ally_tor.csv") 
 
 strDates <- as.character(climate_data$DATE)
 head(strDates)
@@ -16,36 +17,33 @@ climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 
 
 ```
-## R Markdown
+## Models
+  
+  Using data from the National Oceanic and Atmospheric Association (NOAA) free online archive of historical weather and climate data from stations around the globe, climate data from January 1, 1932 to September 6, 2017 for station USW00003122 in Torrance, California was examined. 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-str()
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+  RStudio software was used to summarize, evaluate, and graphically present the data, creating a linear model and a trendline. Analysis of maximum and minimum temperatures (Fahrenheit) by month from 1932 to 2017 were used to account for daily and seasonal fluctuations in temperature. 
 
-```{r }
-
-
-```
+  Using the null hypothesis method, a standard scientific convention, the data was used to determine if there is a trend between time and temperature. The null hypothesis states that there is no relationship between temperature and time. The alternative hypothesis states that there is a relationship between temperature and time. Therefore, if the probability value (p-value) calculated is less than 0.05, the null hypothesis is considered violated and a relationship can be assumed.
 
 ## Daily Data
 
-
-You can also embed plots, for example:
+  The data shows a daily increase of .00005 degrees Farenheit, with a p-value of less than 0.0001. Although such an increase does not seem to be that high, when multiplied by 365 (days) for 1 year, the average yearly increase was 0.02 degrees Farenheit. Over 100 years, the temperature increase for Torrance would be about 2 degrees Farenheit. 
 
 ```{r pressure, echo=FALSE}
 
 plot(TMAX~NewDate, climate_data)
 climate_data.lm <- lm(TMAX~NewDate, climate_data, pch=20)
 abline(coef(climate_data.lm), col='red')
-summary(climate_data.lm)
+#summary(climate_data.lm)
 
 ```
 
 
+
 ## Monthly Max Temperature Averages
 
+  January was chosen as an example month, because there is a trend for both maximum and minimum values (null hypothesis is violated). January shows a .04 monthly increase, with a p value of less than 0.05. Thus, January rejects the null hypothesis, showing a trend between time and temperature. 
 ```{r monthly, echo=FALSE}
-
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
@@ -63,15 +61,28 @@ head(MonthlyTMAXSD)
 #plot(MonthlyTMAXMean$TMAX, ty='l')
 
 #plot(MonthlySD£TMAX, ty='l')
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",], ty='l', xlim=c(1950, 2020))
-February.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', main = "January Maximum Temperatures",  xlim=c(1950, 2020))
+January.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 
-summary(February.lm)
+summary(January.lm)
 
-#abline(coefFebruary.lm), col="red")
+abline(coef(January.lm), col="red")
 
 ````
+
+##Analyis of Maximum Temperature Data
+
+January, March, April, June, and December (5/12 months) violate the null hypothesis. 
+
+The data shows that Torrance is generally warming, an increase in temperature exists for January, March, April, and June, supporting the idea that climate change is occurring. 
+
+In contrast, December shows a decrease in temperature. December's cooling can be understood due to seasonal variation, as temperatures tend to decrease during the winter. 
+
+
+
 ## Minimum Monthly Temperatures
+  January shows a .08 monthly increase with a p value of less than 0.0001. The null hypothesis can be rejected, showing there is a trend between time and temperature. 
+
 ``` {r minimum daily temperatures, echo=FALSE}
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
@@ -79,15 +90,56 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
-plot(MonthlyTMINMean$TMIN, ty='l')
+#plot(MonthlyTMINMean$TMIN, ty='l')
 
 #plot(MonthlyTMINMean$TMN, ty='l')
 
 #plot(MonthlySD£TMIN, ty='l')
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1950, 2020))
-December.lm <- lm(TMIN~YEAR,data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l', main = "January Minimum Temperatures", xlim=c(1950, 2020))
+January.lm <- lm(TMIN~YEAR,data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 
-summary(December.lm)
+#summary(January.lm)
+abline(coef(January.lm), col="red")
+
 ```
 
+##Minimum Monthly Temperatures Data Analysis 
 
+  For Torrance, all of the minimum temperatures are increasing, with a p value of less than .05. Thus, the null hypothesis is rejected, therefore, temperature is increasing with date. 
+
+  When comparing January's temperature increase, the slope for Janruary's maximum temperature was .04, while January's minimum temperature had a greater slope of .08. The rate of temperature increase for all monthly minimum temperatures was greater than their maximum temperature counterpart.
+
+  Thus, nights are warming at a faster rate than the daytime temperatures. Torrance reflects a pattern known as asymmetric warming, as minimum temperatures are increasing at a faster rate than maximum temperatures. 
+
+  This lack of nighttime cooling has characterized recent heat waves in California, increasing the duration of such extreme events to 5 days or longer. This places huge strains on California health and infrastructure.
+
+## What does this mean for Torrance?
+
+  Literature regarding the specific effects of climate change on Torrance was difficult to find. Yet, as a part of the greater Los Angeles coast, one can infer that Torrance faces similar challenges to other coastal cities. 
+  As glaciers melt amid the heat of a warming planet, scientists predict that coastal communities in the United States will face severe challenges. In the past century, global mean sea level has increased by 7 to 8 inches and it is extremely likely (>95% probability) that human influence has been the dominant cause of observed atmospheric and oceanic warming (IPCC 2014). Global sea level is influenced by increasing temperatures, which result in the expansion of ocean waters as they warm and the addition of freshwater to the ocean from melting land-based ice sheets and glaciers. 
+  Sea level rise is believed to be the most significant impact of climate change on California coastal areas (Environmental Protection Agency, 2014). Its main impacts include inundation/flooding, ecosystem change/wetland loss, coastal erosion, saltwater intrusion, and rising water levels. Tide gauges and satellite observations show that in the past century, mean sea level in Los Angeles has risen 8 in (20 cm), keeping pace with the predicted global rise (NOAA, 2016).  
+  <img src="sea-level-figure1-2016.png" width=1000 height=500>
+
+  However, in the past 15 years, mean sea level in California has remained relatively constant. It has been suggested that this suppression may have been associated with the Pacific Decadal Oscillation (PDO), a pattern of Pacific climate variability that alternates between multidecadal-long warm and cool ocean phases. Since mid-2014, the PDO is shifting back to its warm phase, which will likely allow for accelerated sea level rise along the West Coast.
+  In response to the threat of rising sea levels, a study by the University of Southern California Sea Grant Program mapped out L.A.’s oceanfront assets and assessed what areas are most vulnerable to sea level rise. “Some low-lying areas within the city’s jurisdiction, such as Venice Beach and some areas of Wilmington and San Pedro, are already vulnerable to flooding,” said Phyllis Grifman, lead author of the report and associate director of the USC Sea Grant Program. Although Torrance was not considered to be one of the most vulnerable areas, it is one of the areas of concern for the California Coastal Commission. Through its Sea Level Rise Policy Guidance, the CCC assists Torrance and other coastal cities in preparing for current and future challenges. 
+    The impacts of sea level rise will affect almost every facet of our natural and manmade environments. Natural flooding, erosion, and storm event patterns are likely to be exacerbated by sea level rise, leading to significant economic, social, and environmental impacts for Los Angeles coastal cities.
+
+## Economic Impacts
+    The economic cost of increased sea level rise is a concern for not only the city of Torrance, but for the larger Los Angeles area. California has the nation’s largest ocean economy, valued at over $44 billion per year, providing numerous ports and shipping areas that serve the nation and the world. The port of Los Angeles accounts for 43% of California’s ocean sector gross domestic product (GDP). Sea level rise could cause a variety of impacts to ports, including flooding of port infrastructure and damage to piers and marina facilities from wave action and higher water levels. In addition, low-lying roads and railways, wastewater treatment facilities, energy facilities, storm water infrastructure, and utility infrastructure are at risk of damage and impaired function due to erosion and inundation. The replacement value of property at risk from sea level rise for the California coast is approximately $100 billion. Future development for industry and commerce will be also be limited because of flooding and erosion (Parker, 2017). 
+    Sea level rise could also lead to a loss of public access and recreational opportunities, a vital part of California’s tourism economy. Permanent inundation, periodic flooding, and the erosion of beaches will result in a reduction in beach access and attendance. (California Coastal Commission, 2017). An analysis of 51 public beaches in Los Angeles County and Orange County evaluated the economic impacts of permanent beach loss caused by sea level rise and temporary beach inundation by extreme coastal storms. The study integrated a beach attendance model and a beach sediment model to predict that a 1-meter sea level rise by 2100 can reduce more than 500 thousand beach visits by Southern California residents each year, resulting in an economic loss of $40 million to $63 million annually. In addition, severe wind storms can also reduce beach attendance by more than 300 thousand, resulting in a $37 million economic loss (Finkl, 2016). 
+<img src="la sea level.jpg" width=900 height=400>
+
+## Social Impacts
+    California’s coast is important to the health and well-being of the public, as people’s safety, lives, daily movement patterns, and sense of community and security can be disrupted.  The coast provides low-cost, outdoor recreation, hiking trails, and activities that can improve the overall quality of life for the public.  
+    Yet, due to current development patterns along the coast, sea level rise and flooding will have disproportionate impacts on communities with the least capacity to adapt, deepening existing environmental injustice if adaptation responses are not managed effectively (City of Torrance, 2017). In some communities near the Port of Los Angeles, the average family earns only $13,000 annually. Los Angeles officials are beginning to prioritize the needs of the city’s most vulnerable residents. Los Angele’s chief sustainability officer, Matt Petersen states, “Vulnerable communities don't have the resources to rebuild, to repair, to evacuate. We really need to help prepare those communities, both nationally and, certainly, here in L.A.” Researchers believe that sea level rise will place unique burdens on the urban poor, residents of informal settlements, and other vulnerable groups, such as women, children, the elderly and disabled, and minority populations (The World Bank). 
+    Finally, the California Coastal Act speaks to this concept, recognizing that the protection of the coast is of vital interest to all people. Safeguarding California, the State's plan for climate adaptation, also highlights the importance of environmental justice as a cross-sector theme for resilience planning efforts. 
+
+
+## Environmental Impacts
+    Finally, rising sea levels threaten coastal ecosystems and natural resources. Coastal habitat areas likely to be affected by sea level rise include bluffs and cliffs, rocky intertidal areas, beaches, dunes, wetlands, estuaries, tidal marshes and tidally-influenced streams and rivers (Parker, 2017).  Many endemic and endangered species in California are dependent on these coastal environments. For example, grunion need a sandy beach environment to reproduce and survive, the California clapper rail is dependent on marshes and wetlands, and the black abalone requires rocky intertidal habitat. Nesting habitat, nursery areas, and haul-out sites important for birds, fish, marine mammals and other animals could also disappear as sea levels rise.
+  	 In addition, loss of coastal areas will have significant consequences to adjacent inland ecosystems. Beaches act as buffers to interior agricultural lands and habitats during storms and flooding. Sea level rise could lead to wetland habitat conversion and loss as the intertidal zone shifts inland. Loss or reduction of wetland habitat could impact many plant and animal species, including migratory birds that depend on these habitats (USC Sea Grant).
+    Sea level rise could also lead to declines in coastal water quality. First, coastal water quality could be degraded due to inundation of toxic soils and an increase in nonpoint source pollution from flooding. (California Climate Change Center, 2010). Second, rising seas could impact wastewater facility infrastructure designed to protect water quality near the coast. Third, sea level rise could lead to saltwater intrusion into valuable groundwater aquifers, potentially rendering some existing wells unusable and decreasing the total groundwater supply in coastal areas. The extent of saltwater intrusion will have the worst impacts occurring in unconfined aquifers along low-lying coasts. (California Ocean Protection Council Science Advisory Team, 2017).
+
+
+## Conclusion 
+    Ultimately, the temperature patterns of Torrance serve as a model for other Los Angeles coastal communities. Although coastal communities tend to have less intense rates of increasing TMAX temperatures (due to coastal cooling), climate experts need to focus on the overall upward trend and increase in TMIN temperatures.  This trend will result in continued sea level rise, one of the most urgent economic, social and ecological threats of climate change. 
