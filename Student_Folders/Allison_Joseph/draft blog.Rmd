@@ -8,7 +8,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-climate_data <- read.csv("/home/CAMPUS/aeja2017/Climate_Change_Narratives/Student_Folders/Allison_Joseph/ally_tor.csv") 
+climate_data <- read.csv("Climate_Change_Narratives/Student_Folders/Allison_Joseph/ally_tor.csv") 
 
 strDates <- as.character(climate_data$DATE)
 head(strDates)
