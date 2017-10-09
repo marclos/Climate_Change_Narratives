@@ -5,6 +5,10 @@ date: "9/18/2017"
 output: html_document
 ---
   Torrance is a coastal community in southwestern Los Angeles County, sharing the climate and geographical features common to the Greater Los Angeles area. Torrance has about 1.5 miles of beaches on the Pacific Ocean and a heavily industrialized inland area (California Climate Change Center, 2010). Thus, cooling can result from ocean breezes, while heating can result from industrialization. Torrance serves as a model for California coastal cities, demonstrating an overall increase in temperature because of climate change. Coastal cities are particularly vulnerable to natural hazards, including storms, extreme high tides, and rising sea levels resulting from global climate change (IPCC, 2014). 
+  
+
+<img src="torrance.jpg" width=600 height=300>
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo =TRUE)
@@ -31,9 +35,9 @@ climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 
 ```{r pressure, echo=FALSE}
 
-plot(TMAX~NewDate, climate_data)
-climate_data.lm <- lm(TMAX~NewDate, climate_data, pch=20)
-abline(coef(climate_data.lm), col='red')
+plot(TMAX~NewDate, climate_data, pch=".", ylab="Maximum Temperature", xlab= "Year")
+climate_data.lm <- lm(TMAX~NewDate, climate_data)
+abline(coef(climate_data.lm), col='red', lwd=2.5)
 #summary(climate_data.lm)
 
 ```
@@ -43,6 +47,7 @@ abline(coef(climate_data.lm), col='red')
 ## Monthly Max Temperature Averages
 
   January was chosen as an example month, because there is a trend for both maximum and minimum values (null hypothesis is violated). January shows a .04 monthly increase, with a p value of less than 0.05. Thus, January rejects the null hypothesis, showing a trend between time and temperature. 
+  
 ```{r monthly, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
 climate_data$Year = format(climate_data$NewDate, format="%Y")
@@ -50,13 +55,13 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year) 
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month) 
-str(MonthlyTMAXMean)
+#str(MonthlyTMAXMean)
 
 MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
 MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year) 
 MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month) 
 MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
-head(MonthlyTMAXSD)
+#head(MonthlyTMAXSD)
 
 #plot(MonthlyTMAXMean$TMAX, ty='l')
 
@@ -64,7 +69,7 @@ head(MonthlyTMAXSD)
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', main = "January Maximum Temperatures",  xlim=c(1950, 2020))
 January.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 
-summary(January.lm)
+#summary(January.lm)
 
 abline(coef(January.lm), col="red")
 
@@ -89,7 +94,7 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
+#head(MonthlyTMINMean)
 #plot(MonthlyTMINMean$TMIN, ty='l')
 
 #plot(MonthlyTMINMean$TMN, ty='l')
@@ -120,13 +125,14 @@ abline(coef(January.lm), col="red")
   Sea level rise is believed to be the most significant impact of climate change on California coastal areas (Environmental Protection Agency, 2014). Its main impacts include inundation/flooding, ecosystem change/wetland loss, coastal erosion, saltwater intrusion, and rising water levels. Tide gauges and satellite observations show that in the past century, mean sea level in Los Angeles has risen 8 in (20 cm), keeping pace with the predicted global rise (NOAA, 2016).  
   <img src="sea-level-figure1-2016.png" width=1000 height=500>
 
-  However, in the past 15 years, mean sea level in California has remained relatively constant. It has been suggested that this suppression may have been associated with the Pacific Decadal Oscillation (PDO), a pattern of Pacific climate variability that alternates between multidecadal-long warm and cool ocean phases. Since mid-2014, the PDO is shifting back to its warm phase, which will likely allow for accelerated sea level rise along the West Coast.
   In response to the threat of rising sea levels, a study by the University of Southern California Sea Grant Program mapped out L.A.’s oceanfront assets and assessed what areas are most vulnerable to sea level rise. “Some low-lying areas within the city’s jurisdiction, such as Venice Beach and some areas of Wilmington and San Pedro, are already vulnerable to flooding,” said Phyllis Grifman, lead author of the report and associate director of the USC Sea Grant Program. Although Torrance was not considered to be one of the most vulnerable areas, it is one of the areas of concern for the California Coastal Commission. Through its Sea Level Rise Policy Guidance, the CCC assists Torrance and other coastal cities in preparing for current and future challenges. 
     The impacts of sea level rise will affect almost every facet of our natural and manmade environments. Natural flooding, erosion, and storm event patterns are likely to be exacerbated by sea level rise, leading to significant economic, social, and environmental impacts for Los Angeles coastal cities.
 
 ## Economic Impacts
-    The economic cost of increased sea level rise is a concern for not only the city of Torrance, but for the larger Los Angeles area. California has the nation’s largest ocean economy, valued at over $44 billion per year, providing numerous ports and shipping areas that serve the nation and the world. The port of Los Angeles accounts for 43% of California’s ocean sector gross domestic product (GDP). Sea level rise could cause a variety of impacts to ports, including flooding of port infrastructure and damage to piers and marina facilities from wave action and higher water levels. In addition, low-lying roads and railways, wastewater treatment facilities, energy facilities, storm water infrastructure, and utility infrastructure are at risk of damage and impaired function due to erosion and inundation. The replacement value of property at risk from sea level rise for the California coast is approximately $100 billion. Future development for industry and commerce will be also be limited because of flooding and erosion (Parker, 2017). 
+
+    The economic cost of increased sea level rise is a concern for not only the city of Torrance, but for the larger Los Angeles area. California has the nation's largest ocean economy, valued at over $44 billion per year, providing numerous ports and shipping areas that serve the nation and the world. The port of Los Angeles accounts for 43% of California's ocean sector gross domestic product (GDP). Sea level rise could cause a variety of impacts to ports, including flooding of port infrastructure and damage to piers and marina facilities from wave action and higher water levels. In addition, low-lying roads and railways, wastewater treatment facilities, energy facilities, storm water infrastructure, and utility infrastructure are at risk of damage and impaired function due to erosion and inundation. The replacement value of property at risk from sea level rise for the California coast is approximately $100 billion. Future development for industry and commerce will be also be limited because of flooding and erosion (Parker, 2017). 
     Sea level rise could also lead to a loss of public access and recreational opportunities, a vital part of California’s tourism economy. Permanent inundation, periodic flooding, and the erosion of beaches will result in a reduction in beach access and attendance. (California Coastal Commission, 2017). An analysis of 51 public beaches in Los Angeles County and Orange County evaluated the economic impacts of permanent beach loss caused by sea level rise and temporary beach inundation by extreme coastal storms. The study integrated a beach attendance model and a beach sediment model to predict that a 1-meter sea level rise by 2100 can reduce more than 500 thousand beach visits by Southern California residents each year, resulting in an economic loss of $40 million to $63 million annually. In addition, severe wind storms can also reduce beach attendance by more than 300 thousand, resulting in a $37 million economic loss (Finkl, 2016). 
+    
 <img src="la sea level.jpg" width=900 height=400>
 
 ## Social Impacts
