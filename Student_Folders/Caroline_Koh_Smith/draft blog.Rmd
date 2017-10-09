@@ -1,5 +1,5 @@
 ---
-title: "Cape May Climate"
+title: "Climate Change in Cape May and Its Effects on Horsehoe Crab Spawning"
 author: "Caroline Koh Smith"
 date: "9/18/2017"
 output: html_document
@@ -52,14 +52,15 @@ MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
 
 To make this data easier to understand, I've separated out the month of may and analyzed the trends for the average maximum temperature for every month of May from 1894 to 2017. May is an important month because that is when the horseshoe crabs go to the beaches of Cape May to spawn (I will discuss this further below). This makes the range of temperatures more concentrated as the average maximum temperature in May should be similar every year. Here you can also clearly see an increase in temperature of about 3 C. 
 
-This can also be said with certainty as the model has a p value of 4.661e-06 which is also significantly less that 0.05. Note: The slope of this graph looks much steeper because the range of temperatures is far less than over the full year. Analysis of the other months of the year was done and all showed the same trends, although some less significantly.
+This can also be said with certainty as the model has a p value of 4.661e-06 which is also significantly less that 0.05. Note: The slope of this graph looks much steeper because the range of temperatures is far less than over the full year. Analysis of the other months of the year was done and all showed the same trends, although some less significantly. The only month that did not have a significant p value was January, whose p value was 0.391.
 
 ```{r, echo=FALSE}
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='p', pch=20, main = "Average Maximum Temperatures in May")
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 ##summary(May.lm)
 abline(coef(May.lm), col="blue")
-
+##months with significance: February, March, April, May, June, July, August, September, October, November, December
+##months with no significance: January, 
 ```
 
 From this data it is clear that the climate in Cape May is warming. But what does this mean?
@@ -78,8 +79,7 @@ abline(coef(climate.lm), col="blue")
 ##summary(lm(TMIN ~ NewDate,data=climate_data))
 ```
 
-Here are the average minimum temperatures for the month of May. However, the P-value for this linear model is .191, which is greater than 0.05, so there is not enough significance to state a pattern of warming for average minimum temperatures of May. Why do the maximum temperatures (which are taken during the day) show siginicant warming while minimum temperatures (taken at night) do not? This phenomenon is known as asymmetric warming, which is prevalent in coastal towns.
-*look up asymmetric warming*
+Here are the average minimum temperatures for the month of May. However, the P-value for this linear model is .191, which is greater than 0.05, so there is not enough significance to state a pattern of warming for average minimum temperatures of May. The months that do show significance are April, June, July, and September; warmer months tend to show more significance. Why do the maximum temperatures (which are taken during the day) show siginicant warming while minimum temperatures (taken at night) do not? This phenomenon is known as asymmetric warming, which is prevalent in coastal towns.
 
 ```{r, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -98,6 +98,8 @@ MonthlyTMINSD$NewDate = MonthlyTMINSD$YEAR + (MonthlyTMINSD$MONTH - 1)/12
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='p', pch=20, main = "Average Minimum Temperature Data in May")
 Maymin.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
 ##summary(Maymin.lm)
+##months with significance: April, June, July, September
+##months without significance: January, February, March, May, August, October, November, December
 abline(coef(Maymin.lm), col="blue")
 ```
 

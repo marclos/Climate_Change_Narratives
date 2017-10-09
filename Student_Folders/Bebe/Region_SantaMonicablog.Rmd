@@ -4,21 +4,21 @@ author: Bebe Phornprapha
 date: October 4th 2017
 output: html_document
 ---
-##Why is Climate Change releavant to Santa Monica? 
-![Alt text](https://med-colleges.com/images/locations/santa-monica-college.png) 
+##Does climate chang affect Santa Monica? 
+![Map of Santa Monica](https://med-colleges.com/images/locations/santa-monica-college.png) 
 
 
 Santa Monica is a coastal city located in Los Angeles County in southern California. Santa Monica is home to many businesses, homes, and tourist attractions such as the third street promenade shopping center and Santa Monica Pier. 
 
-With soaring global temperatures, Los Angeles’s temperature is following the trend. Climate scientists at UCLA predict that by 2050, the Los Angeles area is expected to warm by five degrees celsius on average. Coastal cities like Santa Monica is likely to warm 3 to 4 degrees celsius by mid-century. Rising air temperatures is expected to warm the oceans and melt ice across the world, raising sea levels. The sea level along California's coasts has risen nearly 8 inches in the past century and is projected to rise by as much as 20 to 55 inches by the end of the century. This will lead to higher storm surge and waves, resulting in more extensive flooding. With many businesses, homes, and tourist attractions, coastal flooding in Santa Monica would be a economic and social catastrophe. 
+With soaring global temperatures, Los Angeles’s temperature is following the warming trend. Climate scientists at UCLA predict that by 2050, the Los Angeles area is expected to warm by five degrees celsius on average. Coastal cities like Santa Monica is likely to warm 3 to 4 degrees celsius by mid-century. Rising air temperatures is expected to warm the oceans and melt ice across the world, raising sea levels. The sea level along California's coasts has risen nearly 8 inches in the past century and is projected to rise by as much as 20 to 55 inches by the end of the century. This will lead to higher storm surge and waves, resulting in more extensive flooding. With many businesses, homes, and tourist attractions, coastal flooding in Santa Monica would be a economic and social catastrophe. 
 
 However, there have been contradictory warming trends in Santa Monica. Temperature has actually been cooling since 1924 to 2017. 
 
 ##Methods in collecting data 
-To test this trend out, all of the data was downloaded from NOAA (National Oceanic and Atmospheric Administration) from a weather station in Santa Monica, California. The RStudio software was used to summarize, evaluate, and graph the data. When processing the data, the obviuos outliers were delted (ie. incorrectly inputted high/low temperatures) and a linear model was then created, along with a trendline. Then maximum temperatures (celcius) were analyzed from 1924 to 2017 to account for yearly and seasonal fluctuations in temperature. The months of July and December were also graphed and analyzed. This was then used to see if each month fits the general trend that the yearly temperature shows.  
+To test this cooling trend, the temperature data was downloaded from NOAA (National Oceanic and Atmospheric Administration) from a weather station in Santa Monica, California. The RStudio software was then used to evaluate and graph the data. When processing the data, the obviuos outliers, such as incorrectly inputted high/low temperatures, were delted. A linear model was then created, along with a trendline. Then maximum temperatures (celcius) were analyzed from 1924 to 2017 to account for yearly fluctuations in temperature. The months of July and December were also graphed and analyzed to see if each month fits the general trend that the yearly temperature shows.  
 
-Now it will be determined if there is a trend between time and temperature using the null hypothesis. The null  hypothesis predicts that there is no observed relationship between variables.
-In this case, the null hypothesis predicts that there is no relationship between the maximum tmperature of Santa Monica and time. A rejection of the null hypothesis supports the alternative hypothesis that there is a relationship between maximum temperature of Santa Monica and time. 
+Now it will be determined if there is a trend between time and temperature using the null hypothesis. The null  hypothesis predicts that there is no observed relationship between time and temperature. 
+In this case, the null hypothesis predicts that there is no relationship between the maximum temperature of Santa Monica and time. A rejection of the null hypothesis supports the alternative hypothesis that there is a relationship between the maximum temperature of Santa Monica and time. 
 
 The p value will be calculated from the relationship, and a p-value of less than 0.05 leads to a rejection of the null hypothesis, and an acception of the alternative hypothesis. 
 
@@ -120,6 +120,8 @@ Housing and property damage alone will be major if flooding were to occur. With 
 Santa Monica itself is also a major tourist destination, and in 2014 the city accounted for 41 million tourists who brought in more than $16 billion in expenditures through attractions such as the third street promenade shopping center and the Santa Monica Pier. If Santa Monica were to flood, this would be a major blow to Los Angeles as a tourist destination, but also many people who work at these destinations would lose their jobs. 
 
  Furthermore, Santa Monica beach itself is a major attraction by itself, and the beach generated $1.5 million in revenue. Many Los Angeles natives who have been visiting the beach since childhood, or tourists who visit the self proclaimed “world famous Santa Monica Beach”. Coastal flooding would destroy the famous recreation spot, but also cold temperatures could also deter people from heading to the beach. As mentioned, many people who rely on the beach as their source of revenue, such as local businesses who rely on the tourist traffic flow, would also decrease in revenue. 
+
+![Pictured above is the Santa Monica Pier](https://i.gse.io/gse_media/117/2/1490031487-Santa_Monica_Pier_tickets.jpg?h=520&p=1&q=60&w=920&c=1)
 
 ##Ecological Damage
 As oceans warm, oxygen levels are declining in the ocean. With a warmer water temperature, scientists at the Scripps institute of ocean temperature calculated that oxygen declines could reduce cowcod habitats in by 18% in 2020 if warming trends were to continue. This would be a blow to the aquatic biodiversity , as a decrease in the cowcod will most likely cause a decrease in the numbers of fish who count on the cowcod as prey. 
