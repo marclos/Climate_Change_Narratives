@@ -41,8 +41,7 @@ The intent of this blog post is to consider the correlation between changes in t
 # Monthly TMIN Averages
 One of the two proxies approached here is Monthly Minimum Average Temperatures. 
 ``````{r, echo=FALSE}
-#lm(TMIN~NewDate,data=climate_data)
-climate.lm<- lm(formula=TMIN~NewDate, data=climate_data)
+climate.lm<- lm(formula = TMIN ~ NewDate, data = climate_data)
 
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
 climate_data$Year = format(climate_data$NewDate, format="%Y")
