@@ -1,19 +1,9 @@
 ---
-title: "Hurricanes and Climate Change: Does Warming Affect Sugar Land?"
+title: "Analyzing Increase in Floods in Sugar Land, Texas"
 author: "Kirara Tsutsui"
 date: "10/2/2017"
 output: html_document
 ---
-#Hurricane Harvey - How Sugar Land Coped
-Harvey struck the southeastern part of the state the most. According to remote sensing by the Dartmouth Flood Observatory, more than 3,800 square miles were flooded, an area nearly as large as Delaware and Rhode Island combined. 
-
-((Insert picture of remote sensing here, need to do more research on this))
-
-#Overview of Sugar Land City
-Sugar Land City is located in the Fort Bend County of Texas. It is part of the Houston-Woodlands-Sugar Land Metropolitan area and is known as one of the most affluent cities in the state, with a growth rate of 158% from 2000 and 2010. It was a sugar plantation in the mid-20th century and was incorporated into the state of Texas in 1959. Major industries of the city include the medical, energy, engineering, and manufacturing sectors. 
-
-![alt text](SugarLandMap2.png)
-
 
 ```{r setup, include=FALSE, echo=FALSE}
 
@@ -28,18 +18,8 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 #str(climate_data)
 
 ```
-#Why Didn't Harvey Weaken Over Time?
-Hurricanes usually weaken over time. Scientifically, as the strong winds pick up seawater and churn the oceans, they move the warm waters below the surface and bring in newer, colder water closer to the atmosphere. 
-Kerry Emanuel, an atmospheric sciences professor at the Massachusetts Institute of Technology, says, "Hurricanes are powered by the evaporation of sea water. water evaporates faster from a hot surface rather than a cold surface." As hurricanes feed and grow on warm ocean surface waters, the loss of heat in the water would drain energy and therefore reduce the speed of the winds. 
-From an analysis of the evolution of 6,000 simulated storms, Emanuel concluded that while a storm that increases its intensity by 60 knots in the 24 hours before landfall may have been likely to occur once a century in the 1900s, "by late in this century, they could come every five to 10 years."
-
-Other scientists also assert that it was the very principle hurricanes develop around that is to blame for the prolonged intensity of Harvey. Because the water that it churned up 100 to 200 meters below the surface as it progressed proved warmer than usual, Harvey had more heat and therefore energy to feed on. Jeff Masters, meterologist and founder of the website Weather Underground, claims that Hurricane Harvey had been over very warm water - at least 85 degrees Fahrenheit - for more than six hours on August 25th. He said that this, along with the fact that the storm was not bothered by wind shear, fueld Harvey's rapid intensification. 
-
-#Hypothesis
-The intent of this blog post is to consider the correlation between changes in temperature and precipitation in order to assess the implication warming has on flood risk.
 
 # Monthly TMIN Averages
-One of the two proxies approached here is Monthly Minimum Average Temperatures. 
 ``````{r, echo=FALSE}
 climate.lm<- lm(formula = TMIN ~ NewDate, data = climate_data)
 
@@ -93,7 +73,8 @@ July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 #summary(July.lm)
 abline(coef(July.lm), col="purple")
 
-``
+```
+#write about the significance of the min average temperature change of July
 
 ``````{r, echo=FALSE}
 
@@ -159,21 +140,3 @@ abline(coef(JulyPRCP.lm), col="blue")
 
 
 ``````````````
-#Write about how changes in precipitation reflect the changes in min temperatures
-
-#Implications of Findings 
-Researchers have created formulas for assessing the magnitutde of extreme weather risk in certain circumstances. For example, Smit and Pilifosova concluded that human vulnerability to the broad range of risks associated with climate change can be represented with the following model: 
-Vslit=f(Eslit, ACslit)
-where V=vulnerability, E=exposure, AC=adaptive capacity, s=a given system or community, l=a given location, i=a given climatic stimulus and t=a given period of time. This model acknowledges that the vulnerability of a given community or system to climate change is specific to particu- lar stresses or stimuli at particular locations and periods of time. There are two principal elements of vulnerability distinguished in the model. E refers to the probability or incidence of hazardous conditions relative to the presence of humans at a particular location at a particular time. AC refers to the ability of those exposed to cope with the potential hazardous conditions to which it is exposed. No particular scale is specified in this model, allowing for vulnerability to be characterized at levels from individual households to communities, regions and beyond.
-
-
-#Obstacles for Sugar Land
-While Sugar Land did not experience the worst flooding in Texas from Harvey, there is no space for complacency. The city is in extremely close proximity to Brazos River, which could easily threaten neighborhoods in the Fort Bend and Brazoria County. Mark Vogler, drainage district manager for Fort Bend County, commented in wake of Harvey, "The (Brazos) River is a monster. It takes a great deal of time and money to contain it." According to him, Harvey added at least $1 million to the $20 million or more in repairs already designated to protect the local infrastrucutre. 
-
-The Addicks and Barker dams, two reservoirs straddling I-10 where its hits Highway6, about 20 miles west of downtown Huston, is also of grave concern. In a more scientific perspective, the two dams are the top of a hydrological basin that drains through the city and into the Houston Ship Channel. For the first time in history, floodwaters in the Addicks Reservoir went over the top of the 108-foot spillway and threatened immediate surrounding subdivisions. Just hours after the overtopping of the Addicks Reservoir, a levee at Columbia Lakes in Brazoria County, which is south of Houston, was observed breached by floodwaters; residents were urged to evacuate the area immediately, with officials writing “GET OUT NOW!!” on social media. 
-
-Not enough precautionary steps were taken to mitigate the overfill of these two reservoirs. This was due to lack of transparency of the U.S Army Corps of Engineers in terms of how much the two dams were capable of withstanding floods. In 2011, the Sierra Club filed a lawsuit against the Corps after the uncovering of an email which claimed that “Addicks and barker were not designed to impound large pools behind them for an extended period of time. These larger and longer lasting pools … [are] increasing the threat to both dams.” The lawsuit also revealed a 2010 action plan which set the “maximum pool” at levels expected to be generated by a 25-year storm – which was 30 times smaller than the rains brought by Hurricane Harvey. 
-
-It was the overfilling of the reservoirs on the night of the 27th that prompted Fort Bend County Emergency Management to issue a mandatory evacuation order overnight and took residents off guard. Experts assert that a third reservoir is much needed. As we assess the implications of climate change, we must also question how and why planning and policy failed to set up effective flood mitigation regimes. 
-
-
