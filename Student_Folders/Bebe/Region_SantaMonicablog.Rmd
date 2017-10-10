@@ -1,24 +1,24 @@
 ---
-title: "What does climate change mean for Santa Monica, California?"
+title: "Are temperatures warming in Santa Monica?"
 author: Bebe Phornprapha
 date: October 4th 2017
 output: html_document
 ---
-##Why is Climate Change releavant to Santa Monica? 
-![Alt text](https://med-colleges.com/images/locations/santa-monica-college.png) 
+##Does climate change affect Santa Monica? 
+![Map of Santa Monica](https://med-colleges.com/images/locations/santa-monica-college.png) 
 
 
-Santa Monica is a coastal city located in Los Angeles County in southern California. Santa Monica is home to many businesses, homes, and tourist attractions such as the third street promenade shopping center and Santa Monica Pier. 
+Santa Monica is a coastal city located in Los Angeles County in southern California. Santa Monica is home to many businesses, homes, and tourist attractions such as the Third Street Promenade shopping center and Santa Monica Pier. 
 
-With soaring global temperatures, Los Angeles’s temperature is following the trend. Climate scientists at UCLA predict that by 2050, the Los Angeles area is expected to warm by five degrees celsius on average. Coastal cities like Santa Monica is likely to warm 3 to 4 degrees celsius by mid-century. Rising air temperatures is expected to warm the oceans and melt ice across the world, raising sea levels. The sea level along California's coasts has risen nearly 8 inches in the past century and is projected to rise by as much as 20 to 55 inches by the end of the century. This will lead to higher storm surge and waves, resulting in more extensive flooding. With many businesses, homes, and tourist attractions, coastal flooding in Santa Monica would be a economic and social catastrophe. 
+With soaring global temperatures, Los Angeles’s temperature is following this warming trend. Climate scientists at UCLA predict that by 2050, the Los Angeles area is expected to warm by five degrees celsius on average. Coastal cities like Santa Monica is likely to warm 3 to 4 degrees celsius by mid-century. Rising air temperatures is expected to warm the oceans and melt ice across the world, raising sea levels. The sea level along California's coasts has risen nearly 8 inches in the past century and is projected to rise by as much as 20 to 55 inches by the end of the century. This will lead to higher storm surge and waves, resulting in more extensive flooding. With many businesses, homes, and tourist attractions, coastal flooding in Santa Monica would be a economic, environment, and social catastrophe. 
 
-However, there have been contradictory warming trends in Santa Monica. Temperature has actually been cooling since 1924 to 2017. 
+However, there has been contradictory warming trends in Santa Monica. Temperature has actually been cooling since 1924 to 2017. 
 
 ##Methods in collecting data 
-To test this trend out, all of the data was downloaded from NOAA (National Oceanic and Atmospheric Administration) from a weather station in Santa Monica, California. The RStudio software was used to summarize, evaluate, and graph the data. When processing the data, the obviuos outliers were delted (ie. incorrectly inputted high/low temperatures) and a linear model was then created, along with a trendline. Then maximum temperatures (celcius) were analyzed from 1924 to 2017 to account for yearly and seasonal fluctuations in temperature. The months of July and December were also graphed and analyzed. This was then used to see if each month fits the general trend that the yearly temperature shows.  
+To test this cooling trend, the temperature data was downloaded from NOAA (National Oceanic and Atmospheric Administration) from a weather station in Santa Monica, California. The RStudio software was then used to evaluate and graph the data. When processing the data, the obviuos outliers, such as incorrectly inputted high/low temperatures, were delted. A linear model was then created, along with a trendline. Then maximum temperatures (celcius) were analyzed from 1924 to 2017 to account for yearly fluctuations in temperature. The months of July and December were also graphed and analyzed to see if each month fits the general trend that the yearly temperature shows.  
 
-Now it will be determined if there is a trend between time and temperature using the null hypothesis. The null  hypothesis predicts that there is no observed relationship between variables.
-In this case, the null hypothesis predicts that there is no relationship between the maximum tmperature of Santa Monica and time. A rejection of the null hypothesis supports the alternative hypothesis that there is a relationship between maximum temperature of Santa Monica and time. 
+Now it will be determined if there is a trend between time and temperature using the null hypothesis. The null  hypothesis predicts that there is no observed relationship between time and temperature. 
+In this case, the null hypothesis predicts that there is no relationship between the maximum temperature of Santa Monica and time. A rejection of the null hypothesis supports the alternative hypothesis that there is a relationship between the maximum temperature of Santa Monica and time. 
 
 The p value will be calculated from the relationship, and a p-value of less than 0.05 leads to a rejection of the null hypothesis, and an acception of the alternative hypothesis. 
 
@@ -51,7 +51,7 @@ abline(coef(linearmodel), col='purple')
 summary(linearmodel)
 ```
 
-Below is the plotted graph for the maximum mean yearly temperatures in Santa Monica, CA from 1924 to 2017. The graph shows that there is an overall decreasing trend in the data, as the best fit line shows a negative slope. Moreover, with a significant p-value of 3.35e-08, we can reject the null hypothesis and accept the alternative hypothesis. In other words, although there’s a decreasing trend in temperature and time. 
+Below is the plotted graph for the maximum mean yearly temperatures in Santa Monica, CA from 1924 to 2017. The graph shows that there is an overall decreasing trend in the data, as the best fit line shows a negative slope. Moreover, with a significant p-value of 3.35e-08, we can reject the null hypothesis and accept the alternative hypothesis. In other words, there’s a decreasing trend in temperature and time. 
 
 ```{r monthlymeans,echo=FALSE, results='hide'}
 
@@ -73,7 +73,7 @@ str(MonthlyTMAXMean)
 
 According to NOAA climate data, the maximum temperatures in Santa Monica have decreased for ten out of twelve months of the year since 1917. Out of these ten months, seven are statistically significant, with p-values less than 0.05. 
  
-The months of July and December was chosen as they represent the two opposite seasons - Summer and winter. It can be established to see if there is a trend of cooling if the temperature cools for both seasons.
+The months of July and December was chosen as they represent the two opposite seasons - summer and winter. It can be established to see if there is a trend of cooling if the temperature cools for both seasons.
 
 ##Example of Maximum Temperature Data for the Month of Febuary 
 
@@ -104,25 +104,27 @@ abline(coef(July.lm), col="purple")
 ```
 
 ## Explanation for Santa Monica’s cooling trend when Los Angeles county is heating up 
-The cooling temperature data trend for Santa Monica can be misinterpreted to advocate that the world is not heating, but it is actually cooling. This data can be served as fuel for climate deniers who do not believe in global warming. However, Santa Monica is actually cooling due to the hot inland temperatures.
+The cooling temperature data trend for Santa Monica can be misinterpreted to support the theory that the world is not heating, but it is actually cooling. This data can used as fuel for climate deniers who do not believe in global warming. However, Santa Monica is actually cooling due to the warming inland temperatures.
 
-As temperatures in inland California increases, scientists have discovered a the phenomena of coastal cooling, as temperatures along all of coastal california has all been decreasing. Scientist Curt Ebbesmeyer found that when inland areas heat up, this affects pressure gradients which then results in sea breeze, which cools the coastal regions. He found a significant increase in the warming of Pacific sea surface temperature over the past decade, contributing and increasing the cooling effect. 
+As temperatures in inland California increases, scientists have discovered the phenomena of coastal cooling, as temperatures along all of coastal california has been decreasing. Scientist Curt Ebbesmeyer found that when inland areas heat up, this affects pressure gradients which then results in sea breeze, which cools the coastal regions. He found a significant increase in the warming of Pacific sea surface temperature over the past decade, contributing and increasing the cooling effect. 
 
 Even though there has been no research on coastal cooling in Southern California, professor Robert Bornstein of San Jose State University has concluded that there has been coastal cooling in Northern California. From 1970 to 2005, inland sites maximum temperature has been rising 0.32C, and coastal areas maximum temperatures have been cooling -0.3C. 
 
-However, scientists at UCLA center for Climate Solutions models suggest that by 2050, downtown Los Angeles will exceed 95 degrees 22 days per year. In other words, inland Los Angeles is warming. With the data showing a trend of cooling in Santa Monica, there is definitely evidence for coastal cooling in Southern California. If this trend were to continue, and Los Angeles’ temperature continues to rise, santa monica would not only be hit with an increase of coastal cooling, but also coastal flooding from the melting ice caps contributing to rising sea levels. 
+However, scientists at UCLA center for Climate Solutions models suggest that by 2050, downtown Los Angeles will exceed 95 degrees farenheit 22 days per year. In other words, inland Los Angeles is warming. With the data showing a trend of cooling in Santa Monica, there is definitely evidence for coastal cooling in Southern California. If this trend were to continue, and Los Angeles’s temperature continues to rise, Santa Monica would not only be hit with an increase of coastal cooling, but also coastal flooding from the melting ice caps which contributes to rising sea levels. 
 
 ##What climate implications are there for Santa Monica?
 
 ##Economic Damage
-Housing and property damage alone will be major if flooding were to occur. With 80,000 people projected to live in Santa Monica, many homes will be destroyed which will lead to an economic devastation.  
+Housing and property damage alone will be major if flooding were to occur. With 80,000 people projected to live in Santa Monica, many homes will be destroyed which will lead to an economic catastrophe.  
 
 Santa Monica itself is also a major tourist destination, and in 2014 the city accounted for 41 million tourists who brought in more than $16 billion in expenditures through attractions such as the third street promenade shopping center and the Santa Monica Pier. If Santa Monica were to flood, this would be a major blow to Los Angeles as a tourist destination, but also many people who work at these destinations would lose their jobs. 
 
- Furthermore, Santa Monica beach itself is a major attraction by itself, and the beach generated $1.5 million in revenue. Many Los Angeles natives who have been visiting the beach since childhood, or tourists who visit the self proclaimed “world famous Santa Monica Beach”. Coastal flooding would destroy the famous recreation spot, but also cold temperatures could also deter people from heading to the beach. As mentioned, many people who rely on the beach as their source of revenue, such as local businesses who rely on the tourist traffic flow, would also decrease in revenue. 
+ Furthermore, Santa Monica beach itself is a major attraction by itself, and the beach alone generated $1.5 million in revenue in 2014. Coastal flooding would destroy the famous recreation spot, but also cold temperatures could also deter people from heading to the beach. As mentioned, many people who rely on the beach as their source of revenue, such as local businesses who rely on the tourist traffic flow, would recieve a loss in income. 
+
+![Pictured above is the Santa Monica Pier](https://i.gse.io/gse_media/117/2/1490031487-Santa_Monica_Pier_tickets.jpg?h=520&p=1&q=60&w=920&c=1)
 
 ##Ecological Damage
-As oceans warm, oxygen levels are declining in the ocean. With a warmer water temperature, scientists at the Scripps institute of ocean temperature calculated that oxygen declines could reduce cowcod habitats in by 18% in 2020 if warming trends were to continue. This would be a blow to the aquatic biodiversity , as a decrease in the cowcod will most likely cause a decrease in the numbers of fish who count on the cowcod as prey. 
+As oceans warm, oxygen levels are declining in the ocean. With a warmer water temperature, scientists at the Scripps institute of ocean temperature calculated that oxygen declines could reduce cowcod habitats in by 18% in 2020 if warming trends were to continue. This would be a blow to the aquatic biodiversity, as a decrease in the cowcod will most likely cause a decrease in the numbers of fish who count on the cowcod as prey. 
 
 ##Conclusion
 Overall, more research must be done to evaluate the effects of decreasing maximum temperatures in Santa Monica. Negative consequences that are not currently apparent may cause more significant ecological and economic damage if climate change were to lead to flooding in Santa Monica. With a community whose residential areas and tourist revenues relying on Santa Monica beach, efforts must be taken to lower the maximum temperatures in Los Angeles county.
