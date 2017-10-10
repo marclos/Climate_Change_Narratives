@@ -5,15 +5,18 @@ date: "10/9/2017"
 font: "Times New Roman"
 output: html_document
 
-#Hurricane Harvey - How Sugar Land Coped
-Harvey struck the southeastern part of Texasthe most. According to remote sensing by the Dartmouth Flood Observatory, more than 3,800 square miles were flooded, an area nearly as large as Delaware and Rhode Island combined. 
+#Overview of Hurricane Harvey 
 
-((Insert picture of remote sensing here, need to do more research on this))
+A Category 4 hurricane, Hurricane Harvey hit the Texas coastal towns of Rockport and Port Aransas on Friday, collapsing buildings, launching boats into parking lots and forcing thousands of households to leave their homes. It was born off the coast of South America in mid-August and then tracked through the Gulf of Mexico, making landfall in the US on August 25.  At 8A.M. Eastern Daylight time on Thursday, the hurricane’s top winds were 60mph. On Friday evening, the storm was upgraded to a Category 4 - given to storms with the potential of affecting "catastrophic damage" - and the wind accelerated to over 130mph. Texas Governor Abott has announced that the total damage to Texas from Harvey could top $150 billion, easily topping that of Hurricane Katrina in 2005.  25 trillion gallons of water covered southeast Texas and Louisiana over the course of a week. A total of 13 million residents were under some type of flood watch or warning, and the storm displaced as many as 30,000 people, not to mention their properties and businesses. 
 
-#Overview of Sugar Land City
+Harvey struck the southeastern part of Texas the most. According to remote sensing by the Dartmouth Flood Observatory, more than 3,800 square miles were flooded, an area nearly as large as Delaware and Rhode Island combined. 
+
+#Sugar Land City
+
+!(SugarLandMap2.png)
 
 Sugar Land City is located in the Fort Bend County of Texas. It is part of the Houston-Woodlands-Sugar Land Metropolitan area and is known as one of the most affluent cities in the state, with a growth rate of 158% from 2000 and 2010. It was a sugar plantation in the mid-20th century and was incorporated into the state of Texas in 1959. Major industries of the city include the medical, energy, engineering, and manufacturing sectors. 
-!(SugarLandMap2.png)
+
 !(SugarLandMap1.png)
 
 ```{r setup, include=FALSE, echo=FALSE}
@@ -40,7 +43,7 @@ Other scientists also assert that it was the very principle hurricanes develop a
 
 The intent of this blog post is to consider the correlation between changes in temperature and precipitation in order to assess the implication warming has on flood risk.
 
-The two proxies used in this study is Monthly Minimum Temperature figures over the (insert years here) and Monthly Total Precipitation figures. These figures are shown in graphs and the original data is obtained through the National Oceanic and Atmospheric Administration (NOAA). 
+The two proxies used in this study is Monthly Minimum Temperature figures and Monthly Total Precipitation figures. These figures are shown in graphs and the original data is obtained through the Climate Data Online (CDO) from the National Oceanic and Atmospheric Administration (NOAA). These data analyzed here represent those from the Sugar Land City station, recorded from Januar 1, 1893 to September 6, 2017.
 
 RStudio's data processing is used here in order to distinguish between null and valid hypotheses. The null hypothesis refers to situations where the two variables tested show no significant relationship to one another. Here, the threshold mark for null hypotheses is deemed as anything smaller than and not including 0.05 in the Prvalue of the coefficients. 
 
@@ -58,75 +61,67 @@ MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
 #str(MonthlyTMINMean)
-#January not significant 0.878
 
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l', xlim=c(1850, 2020), main="January") 
-January.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+#January not significant 0.878
+#plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l', xlim=c(1850, 2020), main="January") 
+#January.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 #summary(January.lm)
-abline(coef(January.lm), col="purple")
+#abline(coef(January.lm), col="purple")
 
 
 #February not significant 0.0604
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",], ty='l', xlim=c(1850, 2020), main="February") 
-February.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+#plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",], ty='l', xlim=c(1850, 2020), main="February") 
+#February.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
 #summary(February.lm)
-abline(coef(February.lm), col="purple")
-
+#abline(coef(February.lm), col="purple")
 
 #March not significant 0.212
-
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",], ty='l', xlim=c(1850, 2020),main="March") 
-March.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
+#plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",], ty='l', xlim=c(1850, 2020),main="March") 
+#March.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
 #summary(March.lm)
 abline(coef(March.lm), col="purple")
 
-
 #April not significant 
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",], ty='l', xlim=c(1850, 2020), main="April") 
-April.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
+#plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",], ty='l', xlim=c(1850, 2020), main="April") 
+#April.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
 #summary(April.lm)
-abline(coef(April.lm), col="purple")
+#abline(coef(April.lm), col="purple")
 
-
-#May significant
+May significant p-value: 4.145e-05
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l', xlim=c(1850, 2020), main="May") 
 May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
 #summary(May.lm)
 abline(coef(May.lm), col="purple")
 
-#June significant
-
+June significant p-value:1.978e-06
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty='l', xlim=c(1850, 2020), main="June") 
-June.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
-#summary(June.lm)
+June.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",]#summary(June.lm)
 abline(coef(June.lm), col="purple")
 
-#July significant 
-
+July significant p-value:1.443e-13
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l', xlim=c(1850, 2020), main="July") 
 July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 #summary(July.lm)
 abline(coef(July.lm), col="purple")
 
-
-#August significant
+August significant p-value:9.09e-08
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty='l', xlim=c(1850, 2020), main="August") 
 August.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
 #summary(August.lm)
 abline(coef(August.lm), col="purple")
 
-#September significant 0.0017
+September significant p-value=0.0017
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="09",], ty='l', xlim=c(1850, 2020), main="September") 
 September.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
 #summary(September.lm)
 
-#October slightly significant 0.0495
+October slightly significant p-value= 0.0495
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty='l', xlim=c(1850, 2020), main="October") 
 October.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
 #summary(October.lm)
 abline(coef(October.lm), col="purple")
 
-#November significant 0.00398
+November significant p-value=0.00398
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",], ty='l', xlim=c(1850, 2020), main="November") 
 November.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
 #summary(November.lm)
@@ -134,13 +129,16 @@ abline(coef(November.lm), col="purple")
 
 
 #December not significant 0.462
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1850, 2020), main="December")
-December.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+#plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1850, 2020), main="December")
+#December.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
 #summary(December.lm)
 abline(coef(December.lm), col="purple")
 
 #Use Min temp values for the summers to compare how increase in min temperatures have increased either the number or magnitutde (volatility) of hurricanes in Sugarland
 ```
+#Analysis of the Monthly TMIN Averages
+Under the p-value modelling scheme defined earlier, the months May to November had p-values of under 0.05 and were therefore deemed significant. The relative changes in minimum temperature values for the summer reason could say a lot about the warming of Sugar Land. Minimum temperature values are hard to work with as night temperatures do not deviate too much from the average, but the trends seen over the years during these months tell us that warming is indeed a ongoing phenomenon in the region.
+
 # Precipitation Figures
 ```{r, echo=TRUE}
 #Precipitation
@@ -186,3 +184,4 @@ The Addicks and Barker dams, two reservoirs straddling I-10 where its hits Highw
 Not enough precautionary steps were taken to mitigate the overfill of these two reservoirs. This was due to lack of transparency of the U.S Army Corps of Engineers in terms of how much the two dams were capable of withstanding floods. In 2011, the Sierra Club filed a lawsuit against the Corps after the uncovering of an email which claimed that “Addicks and barker were not designed to impound large pools behind them for an extended period of time. These larger and longer lasting pools … [are] increasing the threat to both dams.” The lawsuit also revealed a 2010 action plan which set the “maximum pool” at levels expected to be generated by a 25-year storm – which was 30 times smaller than the rains brought by Hurricane Harvey. 
 
 It was the overfilling of the reservoirs on the night of the 27th that prompted Fort Bend County Emergency Management to issue a mandatory evacuation order overnight and took residents off guard. Experts assert that a third reservoir is much needed. As we assess the implications of climate change, we must also question how and why planning and policy failed to set up effective flood mitigation regimes. 
+
