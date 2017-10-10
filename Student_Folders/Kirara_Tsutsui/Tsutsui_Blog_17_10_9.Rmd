@@ -4,32 +4,37 @@ author: "Kirara Tsutsui"
 date: "10/9/2017"
 font: "Times New Roman"
 output: html_document
+---
 
-#Overview of Hurricane Harvey 
+# Overview of Hurricane Harvey 
 
 A Category 4 hurricane, Hurricane Harvey hit the Texas coastal towns of Rockport and Port Aransas on Friday, collapsing buildings, launching boats into parking lots and forcing thousands of households to leave their homes. It was born off the coast of South America in mid-August and then tracked through the Gulf of Mexico, making landfall in the US on August 25.  At 8A.M. Eastern Daylight time on Thursday, the hurricane’s top winds were 60mph. On Friday evening, the storm was upgraded to a Category 4 - given to storms with the potential of affecting "catastrophic damage" - and the wind accelerated to over 130mph. Texas Governor Abott has announced that the total damage to Texas from Harvey could top $150 billion, easily topping that of Hurricane Katrina in 2005.  25 trillion gallons of water covered southeast Texas and Louisiana over the course of a week. A total of 13 million residents were under some type of flood watch or warning, and the storm displaced as many as 30,000 people, not to mention their properties and businesses. 
 
 Harvey struck the southeastern part of Texas the most. According to remote sensing by the Dartmouth Flood Observatory, more than 3,800 square miles were flooded, an area nearly as large as Delaware and Rhode Island combined. 
 
-#Sugar Land City
+# Sugar Land City
 
-!(SugarLandMap2.png)
+![](SugarLandMap2.png)
 
 Sugar Land City is located in the Fort Bend County of Texas. It is part of the Houston-Woodlands-Sugar Land Metropolitan area and is known as one of the most affluent cities in the state, with a growth rate of 158% from 2000 and 2010. It was a sugar plantation in the mid-20th century and was incorporated into the state of Texas in 1959. Major industries of the city include the medical, energy, engineering, and manufacturing sectors. 
 
-!(SugarLandMap1.png)
+![Map of Sugar Land](SugarLandMap1.png)
 
 ```{r setup, include=FALSE, echo=FALSE}
 
 knitr::opts_chunk$set(echo = FALSE)
-climate_data <-read.csv("/home/CAMPUS/ktaa2016/Climate_Change_Narratives/Student_Folders/Kirara_Tsutsui/kirara_houston_data.csv")
+
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Kirara_Tsutsui/kirara_houston_data.csv"
+file = "/home/CAMPUS/ktaa2016/Climate_Change_Narratives/Student_Folders/Kirara_Tsutsui/kirara_houston_data.csv"
+climate_data=read.csv(file)
+
 strDates <-as.character(climate_data$DATE) 
 #head(strDates)
 
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 #str(climate_data)
 ```
-#Flooding in Texas: Why Didn't Hurricane Harvey Weaken Over Time?
+# Flooding in Texas: Why Didn't Hurricane Harvey Weaken Over Time?
 Hurricanes usually weaken over time. Scientifically, as the strong winds pick up seawater and churn the oceans, they move the warm waters below the surface and bring in newer, colder water closer to the atmosphere. 
 
 
@@ -39,7 +44,7 @@ From an analysis of the evolution of 6,000 simulated storms, Emanuel concluded t
 
 Other scientists also assert that it was the very principle hurricanes develop around that is to blame for the prolonged intensity of Harvey. Because the water that it churned up 100 to 200 meters below the surface as it progressed proved warmer than usual, Harvey had more heat and therefore energy to feed on. Jeff Masters, meterologist and founder of the website Weather Underground, claims that Hurricane Harvey had been over very warm water - at least 85 degrees Fahrenheit - for more than six hours on August 25th. He said that this, along with the fact that the storm was not bothered by wind shear, fueld Harvey's rapid intensification. 
 
-#So What Does Hurricane Harvey Tell Us? 
+# So What Does Hurricane Harvey Tell Us? 
 
 The intent of this blog post is to consider the correlation between changes in temperature and precipitation in order to assess the implication warming has on flood risk.
 
@@ -47,7 +52,7 @@ The two proxies used in this study is Monthly Minimum Temperature figures and Mo
 
 RStudio's data processing is used here in order to distinguish between null and valid hypotheses. The null hypothesis refers to situations where the two variables tested show no significant relationship to one another. Here, the threshold mark for null hypotheses is deemed as anything smaller than and not including 0.05 in the Prvalue of the coefficients. 
 
-# Monthly TMIN Averages
+# Monthly TMIN Averages -- MLH is TMIN the best title name? How will people know what this means?
 
 One of the two proxies approached here is Monthly Minimum Average Temperatures. 
 
@@ -60,6 +65,9 @@ climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
+```
+
+```{r}
 #str(MonthlyTMINMean)
 
 #January not significant 0.878
@@ -79,49 +87,55 @@ MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 #plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",], ty='l', xlim=c(1850, 2020),main="March") 
 #March.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
 #summary(March.lm)
-abline(coef(March.lm), col="purple")
+
+#### MLH: Not sure what line 90 is doing, I commented it out
+#abline(coef(March.lm), col="purple")
 
 #April not significant 
 #plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",], ty='l', xlim=c(1850, 2020), main="April") 
 #April.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
 #summary(April.lm)
 #abline(coef(April.lm), col="purple")
+```
 
-May significant p-value: 4.145e-05
+```{r }
+# May significant p-value: 4.145e-05
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l', xlim=c(1850, 2020), main="May") 
 May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
 #summary(May.lm)
 abline(coef(May.lm), col="purple")
 
-June significant p-value:1.978e-06
+#June significant p-value:1.978e-06
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty='l', xlim=c(1850, 2020), main="June") 
-June.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",]#summary(June.lm)
+### MLH: Missing ) below.. fixed it. 
+June.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
+#summary(June.lm)
 abline(coef(June.lm), col="purple")
 
-July significant p-value:1.443e-13
+#July significant p-value:1.443e-13
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l', xlim=c(1850, 2020), main="July") 
 July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 #summary(July.lm)
 abline(coef(July.lm), col="purple")
 
-August significant p-value:9.09e-08
+#August significant p-value:9.09e-08
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty='l', xlim=c(1850, 2020), main="August") 
 August.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
 #summary(August.lm)
 abline(coef(August.lm), col="purple")
 
-September significant p-value=0.0017
+#September significant p-value=0.0017
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="09",], ty='l', xlim=c(1850, 2020), main="September") 
 September.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
 #summary(September.lm)
 
-October slightly significant p-value= 0.0495
+#October slightly significant p-value= 0.0495
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty='l', xlim=c(1850, 2020), main="October") 
 October.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
 #summary(October.lm)
 abline(coef(October.lm), col="purple")
 
-November significant p-value=0.00398
+#November significant p-value=0.00398
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",], ty='l', xlim=c(1850, 2020), main="November") 
 November.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
 #summary(November.lm)
@@ -132,7 +146,8 @@ abline(coef(November.lm), col="purple")
 #plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1850, 2020), main="December")
 #December.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
 #summary(December.lm)
-abline(coef(December.lm), col="purple")
+### MLH: Abline is missing the plot commented out...
+#abline(coef(December.lm), col="purple")
 
 #Use Min temp values for the summers to compare how increase in min temperatures have increased either the number or magnitutde (volatility) of hurricanes in Sugarland
 ```
@@ -157,13 +172,16 @@ abline(coef(TotalPPT.lm), col="blue")
 
 #MonthlyPRCP
 names(TotalPPT)=c("Year","Month", "PRCP")
-TotalPPT$Date<-as.numeric(TotalPPT$Month)
-plot(PRCP~Date, data=TotalPPT, ty='p', pch=20)
-TotalPPT.lm<- lm(PRCP~Date, data=TotalPPT)
-July.lm<-lm(PRCP~Date, data=TotalPPT[TotalPPT$Month=="07",])
+
+## MLH: No idea what you are trying to do here... why would months be turned into the date? Commented out.
+
+# TotalPPT$Date<-as.numeric(TotalPPT$Month)
+# plot(PRCP~Date, data=TotalPPT, ty='p', pch=20)
+# TotalPPT.lm<- lm(PRCP~Date, data=TotalPPT)
+# July.lm<-lm(PRCP~Date, data=TotalPPT[TotalPPT$Month=="07",])
 #define month correctly
 #summary(July.lm)
-abline(coef(JulyPRCP.lm), col="blue")
+# abline(coef(JulyPRCP.lm), col="blue")
 ``````````````
 
 
