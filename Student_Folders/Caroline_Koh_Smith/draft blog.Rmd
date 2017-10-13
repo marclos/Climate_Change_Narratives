@@ -17,24 +17,23 @@ str(climate_data)
 head(climate_data)
 ```
 
-Cape May County lies at the southernmost point of New Jersey, right where the Atlantic meets the Delaware River. It is a popular destination for both beachgoers and migrating fauna, as well as home to over 400 different species of animals (many of them endangered) and 94,000 residents. However, because of a changing climate, the communities living there and the sensitive ecology will be adversely affected. 
+## An Introduction to Cape May and its Climate
+Cape May County lies at the southernmost point of New Jersey, right where the Atlantic meets the Delaware River. It is a popular destination for both beachgoers and migrating fauna, as well as home to over 400 different species of animals (many of them endangered) and 94,000 residents. However, because of a changing climate, the communities living there and the sensitive ecology will be adversely affected. Using daily temperature measurements from NOAA and the program R, I analyzed the way Cape May's climate is changing, and used these findings as well as scientific literature to discuss how that will affect the environment there.  
+![spawning horseshoe crabs](IMG_4478.jpg)
+## NOAA Data Analysis
+The first data that was analyzed was the daily maximum temperatures from the 1890s to the present. The Köppen-Geiger measure, which is the standard qualitative climate descriptor, of Southern New Jersey’s climate is a Cfa, meaning that the main climate is warm temperate (C), the precipitation is fully humid (f), and temperature is warm arid (a). That means that the temperature varies greatly from an average winter max of about 5°C and an average summer max of about 25°C. A linear model of this data was created that demonstrates a trend of warming by about 3 C: this was calculated by using the linear regression model of the data (y=(6.119e-05)(x)+(1.716e+01)) at the first date, January 1st, 1984, and the latest date, August 8th, 2017. The model shows a starting average temperature of 15.4615°C and an ending average temperature of 18.2252°C. 
 
-The first graph demonstrates the daily maximum temperatures from the 1890s to the present. The data is spread out because of Cape May's climate. The Köppen-Geiger measure of Southern New Jersey’s climate is a Cfa, meaning that the main climate is warm temperate (C), the precipitation is fully humid (f), and temperature is warm arid (a). That means that the temperature varies greatly from an average winter max of about 5 C and an average summer max of about 25 C. The line on this graph demonstrates a trend of warming by about 3 C: this was calculated by using the linear regression model of the data (y=(6.119e-05)(x)+(1.716e+01)) at the first date, January 1st, 1984, and the latest date, August 8th, 2017. The model shows a starting average temperature of 15.4615 C and an ending average temperature of 18.2252 C. 
-
-If there were no correlation between the time and the increase in temperature, the linear model would not have any significance. However, the p-value for this model (which is the statistical certainty) is<2e-16, which is less than 0.05, demonstrating that there is a correlation.
+To test for a correlation between time and temperature we need a null hypothesis, which is a statistical assumption of no correlation. The alternate hypothesis to this would then be that there is a correlation: That Cape May's climate has been warming significantly. Then a linear regression model of the data is used to test the null hypothesis. This model, in order to show significance, is evaluated using a p-value, which is the calculated probability of the model being imprecise. If the p-value is less than 0.05, meaning the likelihood of the model being imprecise is less than 5%, the data can be considered significant. Since the p-value for this model (which is the statistical certainty) is<2e-16, which is less than 0.05, it is demonstrated that there is a correlation.
 
 ```{r graphing, echo=FALSE}
 ##lm(TMAX ~ NewDate,data=climate_data)
 climate.lm<- lm(formula = TMAX ~ NewDate, data = climate_data)
 #plot(climate.lm)
 #plot(lm(formula = TMAX ~ NewDate, data = climate_data))
-plot(TMAX~NewDate, climate_data, ty="p", pch=20, main = "Daily Maximum Temperature Data")
-abline(coef(climate.lm), col="blue")
+#plot(TMAX~NewDate, climate_data, ty="p", pch=20, main = "Daily Maximum Temperature Data")
+#abline(coef(climate.lm), col="blue")
 ##as.numeric(min(climate_data$NewDate))*(6.119e-05)+1.716e+01
 ##as.numeric(max(climate_data$NewDate))*(6.119e-05)+1.716e+01
-```
-
-```{r, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
@@ -50,12 +49,13 @@ MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
 ##abline(coef(climate.lm), col="blue")
 ```
 
-To make this data easier to understand, I've separated out the month of may and analyzed the trends for the average maximum temperature for every month of May from 1894 to 2017. May is an important month because that is when the horseshoe crabs go to the beaches of Cape May to spawn (I will discuss this further below). This makes the range of temperatures more concentrated as the average maximum temperature in May should be similar every year. Here you can also clearly see an increase in temperature of about 3 C. 
 
-This can also be said with certainty as the model has a p value of 4.661e-06 which is also significantly less that 0.05. Note: The slope of this graph looks much steeper because the range of temperatures is far less than over the full year. Analysis of the other months of the year was done and all showed the same trends, although some less significantly. The only month that did not have a significant p value was January, whose p value was 0.391.
+To make this data easier to understand, I separated out the month of May and analyzed the trends for the average maximum temperature for every May from 1894 to 2017. May is an important month because that is when the horseshoe crabs go to the beaches of Cape May to spawn (I will discuss this further below). Chosing one month makes the range of temperatures more concentrated as the average maximum temperature in May should be similar every year. Here you can also clearly see an increase in temperature of about 3°C. 
+
+This can also be said with certainty as the model has a p value of 4.661e-06 which is also significantly less that 0.05. Note: The slope of this graph looks much steeper because the range of temperatures is far less than over the full year. Analysis of the other months of the year was done and almost all showed the same trends, although some less significantly.
 
 ```{r, echo=FALSE}
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='p', pch=20, main = "Average Maximum Temperatures in May")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='p', pch=20, main = "May Maximum Temperatures From 1894 to 2017", xlab = "Year", ylab = "Average Maximum Temperature")
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 ##summary(May.lm)
 abline(coef(May.lm), col="blue")
@@ -63,25 +63,23 @@ abline(coef(May.lm), col="blue")
 ##months with no significance: January, 
 ```
 
-From this data it is clear that the climate in Cape May is warming. But what does this mean?
-Cape May, which is already very vulnerable to coastal storms such as hurricanes and nor’easters, will experience devastating flooding that will only be exacerbated because of the lack of flood control measures within the built environment. This will harm both the residents of the area and the sensitive ecosystems that are there. The natural environment is an amalgam of salt marshes, grasslands, hardwood swamps, forested uplands, and bogs home to 317 bird species, 42 mammal species, and 55 reptile and amphibian species. 
-
-One of the most vulnerable species is the North American Horseshoe Crab (Limulus Polyphemus), as the Delaware Bay is their spawning area. Horseshoe Crabs have medicinal properties in their blood which has resulted in them being over fished (as well as for bait). Their homes have been destroyed and will continue to be with overdevelopment and climate change affecting sea levels and water temperatures. Despite their species having lived for over 400 million years, their numbers are now being threatened. Spawning, which a good portion of is done in Cape May, is also being affected by beach erosion and geochemical factors, according to a 1988 paper by Botton et al. It determined that if ocean salinity, chemical composition of beaches, and beach erosion changes, horseshoe crab spawning will be far less successful as they prefer to spawn on beaches without sediment reduction to H2S. Moreover, some of the beaches will be completely destroyed by rising sea levels. 
-
-The species Limulus Polyphemus has been around for over 450 million years (my), with very little genetic variation for 150 my, earning them the title of living fossils. For them to be considered a threatened species now is significant. They were able to live through mass extinctions, but because the land was always there for them to spawn, they were able to survive. Their historical survival rate raises hope that they will be able to survive great changes in climate, but if overfishing and land depletion continue, the chances weaken.  
-
-Horseshoe crab spawning is not only important to their own populations, but also to populations of several endangered migrating birds who feed on the eggs. A 1994 Paper by Botton et al. demonstrates how shorebirds such as red knots, ruddy turnstones, and semipalmated sandpipers were all dependent on horseshoe crab eggs for feeding. With fewer horseshoe crabs, fewer of these birds, many of whom are endangered because of habitat destruction, will be able to survive. The paper states that “500,000 to 1.5 million shorebirds arrive on and depart from Delaware Bay beaches within a three to four-week period in the spring” to return to their arctic breeding grounds from equatorial regions in the winter. When they do not get enough to eat, they do not build enough fat to give them energy during their migration. 
-
-I also have done the same analyses of the minimum themperatures, showing similar trends to the maximum. Here is the daily minimum temperatures and a linear model, with a p-value of 2e-16, so the model is very accurate. 
-
+January was the only month that did not show significance, with a p-value of 0.3913. While the slope of the line shows a positive trend, the p-value means that there is a 40% chance that the trend is imprecise. Generally, the winter other winter months (December, February, and March) all had higher p-values (although still significant), demonstrating a trend of less warming in winter months. There are many hypotheses for why this could be: Some climate researchers have found correlations between warmer Arctic periods and colder weather in North America, while others believe it to be because the cold weather helps create a negative feedback that lessens the amount of warming in winter months. Here is the graph of January:
 ```{r, echo=FALSE}
+January.lm <- lm(formula = TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == 
+    "01", ])
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='p', pch=20, main = "January Maximum Temperatures From 1894 to 2017", xlab = "Year", ylab = "Average Maximum Temperature")
+abline(coef(January.lm), col="blue")
 ##climate.lm<- lm(formula = TMIN ~ NewDate, data = climate_data)
-plot(TMIN~NewDate, climate_data, ty="p", pch=20, main = "Daily Minimum Temperature Data")
-abline(coef(climate.lm), col="blue")
+##plot(TMIN~NewDate, climate_data, ty="p", pch=20, main = "Daily Minimum Temperature Data")
+##abline(coef(climate.lm), col="blue")
 ##summary(lm(TMIN ~ NewDate,data=climate_data))
 ```
 
-Here are the average minimum temperatures for the month of May. However, the P-value for this linear model is .191, which is greater than 0.05, so there is not enough significance to state a pattern of warming for average minimum temperatures of May. The months that do show significance are April, June, July, and September; warmer months tend to show more significance. Why do the maximum temperatures (which are taken during the day) show siginicant warming while minimum temperatures (taken at night) do not? This phenomenon is known as asymmetric warming, which is prevalent in coastal towns.
+I also have done the same analyses of the minimum themperatures, showing similar trends to the maximum. 
+Here are the average minimum temperatures for the month of May. However, the P-value for this linear model is 0.191, which is greater than 0.05, so there is not enough significance to state a pattern of warming for average minimum temperatures of May. The months that do show significance are April, June, July, and September; again, warmer months tend to show more significance. Why do the maximum temperatures (which are taken during the day) show siginicant warming while minimum temperatures (taken at night) do not? This phenomenon is known as asymmetric warming, which is prevalent in coastal towns.
+
+There is no confirmed reason as to why asymetric warming occurs, particularly because the phenomenon is reversed on the West Coast. A possible theory is that the sun, because it rises in the east, warms up the East Coast more during the day (which is amplified by the greenhouse gases), whereas it warms up the West Coast more during the evening.
+
 
 ```{r, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -97,16 +95,53 @@ MonthlyTMINSD$NewDate = MonthlyTMINSD$YEAR + (MonthlyTMINSD$MONTH - 1)/12
 ##head(MonthlyTMINSD)
 ##plot(MonthlyTMINMean$TMIN, ty='l')
 ##abline(coef(climate.lm), col="blue")
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='p', pch=20, main = "Average Minimum Temperature Data in May")
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='p', pch=20, main = "May Minimum Temperatures From 1894 to 2017", xlab = "Year", ylab = "Average Minimum Temperature")
 Maymin.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
 ##summary(Maymin.lm)
 ##months with significance: April, June, July, September
 ##months without significance: January, February, March, May, August, October, November, December
 abline(coef(Maymin.lm), col="blue")
 ```
+As stated, a month that did show significance was July, so I've included that graph as well. 
 
-The primary paper of how climate change will affect Cape May is one titled “Vulnerability of coastal communities to sea-level rise: a case study of Cape May County, New Jersey, USA” by Wu et al. in 2002. It discusses how sea level rise will increase the effects of coastal storms by using GIS and analyzing the community and its built environment to determine the vulnerability of people living there from the effects of climate change. 25% of the population is over 65 years old8, which makes the population especially vulnerable as elderly people need more assistance when it comes to disaster relief and often are not able to remove themselves in time. The barrier islands have lower vulnerabilities because they tend to be second homes to wealthier beach goers, while inland is where the major vulnerabilities lie as those are the lower income areas. The percent of the population exposed to flood risk is constantly increasing, especially from inland flooding events. A large part of the Cape May industry is hospitality– if the places where people are coming to will be destroyed, those living there and working hospitality jobs will be economically devastated. However, this paper, as it stated, “ignored the potential impacts on the ecosystems of the county, which may not adapt as readily as people and their infrastructures”. Because a large attraction of the Cape May area is the wildlife and wildlife recreation, the destruction of the ecosystems could have a significant economic impact as well. 
+```{r, echo=FALSE}
+Julmin.lm <- lm(formula = TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == 
+    "07", ])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='p', pch=20, main = "July Minimum Temperatures From 1894 to 2017", xlab = "Year", ylab = "Average Minimum Temperature")
+abline(coef(Julmin.lm), col="blue")
+```
 
+The colder months showed even less of a trend: In fact, the month of January even showed cooling as the slope of the linear regression model was -.611, the only negative slope shown. However, the model's p-value was .542, so there is an over 50% chance that this data is imprecise, and this model cannot be used to state with certainty that January has been cooling.
+
+But if it has, why? The same theories apply from the Maximum Temperature data set: Arctic warming could be causing atmospheric shifts resulting in periods of cooling. Also, the graph demonstrates a high density of cold months after the 1980s, when there was an El Niño event, which may be throwing off the data. Again, this January minimum temperature data set is insignificant. However, it shows interesting phenomena that are often heard in the rhetoric of climate change deniers.
+
+
+```{r, echo=FALSE}
+Janmin.lm <- lm(formula = TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == 
+    "01", ])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='p', pch=20, main = "January Minimum Temperatures From 1894 to 2017", xlab = "Year", ylab = "Average Minimum Temperature")
+abline(coef(Janmin.lm), col="blue")
+##cooling months: Jan 
+```
+
+## What this warming will do to Cape May, and its Horseshoe Crabs
+From this data it is clear that the climate in Cape May is warming. But what does this mean?
+Cape May, which is already very vulnerable to coastal storms such as hurricanes and nor’easters, will experience devastating flooding that will only be exacerbated because of the lack of flood control measures within the built environment. This will harm both the residents of the area and the sensitive ecosystems that are there. The natural environment is an amalgam of salt marshes, grasslands, hardwood swamps, forested uplands, and bogs home to 317 bird species, 42 mammal species, and 55 reptile and amphibian species. 
+
+One of the most vulnerable species is the North American Horseshoe Crab (Limulus Polyphemus), as the Delaware Bay is their spawning area. Horseshoe Crabs have medicinal properties in their blood which has resulted in them being over fished (as well as for bait). Their homes have been destroyed and will continue to be with overdevelopment and climate change affecting sea levels and water temperatures. Despite their species having lived for over 400 million years, their numbers are now being threatened. Spawning, which a good portion of is done in Cape May, is also being affected by beach erosion and geochemical factors, according to a 1988 paper by Botton et al. It determined that if ocean salinity, chemical composition of beaches, and beach erosion changes, horseshoe crab spawning will be far less successful as they prefer to spawn on beaches without sediment reduction to H2S. Moreover, some of the beaches will be completely destroyed by rising sea levels. 
+
+The species Limulus Polyphemus has been around for over 450 million years (my), with very little genetic variation for 150 my, earning them the title of living fossils. For them to be considered a threatened species now is significant. They were able to live through mass extinctions, but because the land was always there for them to spawn, they were able to survive. Their historical survival rate raises hope that they will be able to survive great changes in climate, but if overfishing and land depletion continue, the chances weaken.  
+
+Horseshoe crab spawning is not only important to their own populations, but also to populations of several endangered migrating birds who feed on the eggs. A 1994 Paper by Botton et al. demonstrates how shorebirds such as red knots, ruddy turnstones, and semipalmated sandpipers were all dependent on horseshoe crab eggs for feeding. With fewer horseshoe crabs, fewer of these birds, many of whom are endangered because of habitat destruction, will be able to survive. The paper states that “500,000 to 1.5 million shorebirds arrive on and depart from Delaware Bay beaches within a three to four-week period in the spring” to return to their arctic breeding grounds from equatorial regions in the winter. When they do not get enough to eat, they do not build enough fat to give them energy during their migration. 
+
+The warming of Cape May will affect more than the wildlife— it will also harm the livelihoods of those living there. The primary paper of how climate change will affect Cape May is one titled “Vulnerability of coastal communities to sea-level rise: a case study of Cape May County, New Jersey, USA” by Wu et al. in 2002. It discusses how sea level rise will increase the effects of coastal storms by using GIS and analyzing the community and its built environment to determine the vulnerability of people living there from the effects of climate change. 25% of the population is over 65 years old, which makes the population especially vulnerable as elderly people need more assistance when it comes to disaster relief and often are not able to remove themselves in time. The barrier islands have lower vulnerabilities because they tend to be second homes to wealthier beach goers, while inland is where the major vulnerabilities lie as those are the lower income areas. The percent of the population exposed to flood risk is constantly increasing, especially from inland flooding events. A large part of the Cape May industry is hospitality– if the places where people are coming to will be destroyed, those living there and working hospitality jobs will be economically devastated. However, this paper, as it stated, “ignored the potential impacts on the ecosystems of the county, which may not adapt as readily as people and their infrastructures”. Because a large attraction of the Cape May area is the wildlife and wildlife recreation, the destruction of the ecosystems could have a significant economic impact as well. 
+
+## The politics
+The people of Cape May have a general consensus that Climate Change is happening and will affect them greatly. Reading their local newspapers, many of the articles state the probable effects current climatologists are predicting for the New Jersey Coast. Much of the rhetoric exchanged is between what policy should be implemented to protect the area, or whether policy should be implemented at all if the area will just be destroyed. 
+
+What matters more in the protection of Cape May is national policy. While there are movements to stop shoreline reduction from construction etc., most of what will affect Cape May is sea level rise, which is caused primarily by melting ice caps. For this to be done, national policy needs to be put into place that will end or reduce practices that change the climate. Residents of Cape May, a right-wing county, understand this (although they still overwhelmingly vote for anti-climate candidates). However, Conservatives nationally do not, particularly those who are climate deniers. They use data like the one from the Minimum Temperatures in January, which was imprecise and insignificant, as examples that the atmosphere is not warming. P-values are necessary to understand whether data can be used and correlations can be made with certainty, but they are rarely presented in politics. When they are, there exists such a mistrust of scientific data being biased or lobbied that oftentimes they are disregarded. 
+
+Superstorm Sandy was used by both sides and misconstrued to be proof both of climate change and that climate change is not happening. There is not enough certainty to back either claim. But what Superstorm Sandy was able to show was the devastation from extreme flooding that would occur on the Jersey shore. The people of Cape May over the next few decades will see their homes and those of their wild neighbors overtaken by ocean. Species that have been around hundreds of millions of years are now threatened. What is certain is that a majority of the data analyzed from NOAA with R showed a significant trend of warming, which means that these vulnerable populations are already being affected. To prevent these homes from being destroyed, we must take action to end sea level rise.
 
 ``` {r, echo=FALSE}
 ##All of the graphs for the months
