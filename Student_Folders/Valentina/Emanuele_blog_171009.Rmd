@@ -52,7 +52,7 @@ According to NASA: "Average temperatures in California rose nearly two degrees F
 Claremont, although not as urban as Los Angeles, is experiencing similar trends. In addition to the effects of the LA pollution, which definitely reach the Claremont area, is heating in itself.
 
 
-##Method
+## Method
 In order to account for the heating trend Claremont has been experiencing, temperature records from the National Oceanic and Atmospheric Administration (NOAA) over the last two decades were processed and analyzed using Rstudio. 
 
 I will look at temperature records gathered between 1880 and 2017 in two stations near Claremont. They provide temperature data within a fairly long time frame which makes it reliable when it comes to illustrating an increase in temperature over time in the area. In order to make this analysis I will use the null-hypothesis convention. 
@@ -67,7 +67,7 @@ Below are the figures for the months that show the most significant relationship
 We will finally look at the slope, which illustrates the increase in the minimum temperatures for that specific month over the years.
 
 
-## January
+## January... something more descriptive...
 
 
 ```{r, echo=FALSE}
@@ -81,22 +81,29 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
 
-par(mfrow=c(2,2))
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='p',pch=20, xlim=c(1880, 2020), ylab="Minimum Temperature (°C)") 
+par(mfrow=c(2,2), oma=c(3,2,0,0), mar=c(4, 2.3, 1, 0)+.1)
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='p',pch=20, xlim=c(1880, 2020), ylab="", xlab="", main="January", las=1) 
 Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 abline(coef(Jan.lm), col='red')
 
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='p',pch=20, xlim=c(1880, 2020), ylab="Minimum Temperature (°C)") 
+mtext(text="Minimum Temperature (°C)         ",side=2,line=3, adj=1, outer=F)
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='p',pch=20, xlim=c(1880, 2020), ylab="", xlab="", main="May", las=1) 
 May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
 abline(coef(May.lm), col='red')
 
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty='p',pch=20, xlim=c(1880, 2020), ylab="Minimum Temperature (°C)") 
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty='p',pch=20, xlim=c(1880, 2020), ylab="", xlab="Year", main="August", las=1) 
 Aug.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
 abline(coef(Aug.lm), col='red')
 
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty='p',pch=20, xlim=c(1880, 2020), ylab="Minimum Temperature (°C)", main="October") 
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty='p',pch=20, xlim=c(1880, 2020), ylab="", xlab="Year", main="October", las=1) 
 Oct.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
 abline(coef(Oct.lm), col='red')
+
+
 
 ```
 
