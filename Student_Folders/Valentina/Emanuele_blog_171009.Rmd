@@ -8,8 +8,8 @@ output:
 ---
 
 ```{r, echo=FALSE}
-file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv"
-file = "Student_Folders/Valentina/valentina_cmont_data.csv"
+file = "/home/CAMPUS/veja2016/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv"
+file = "/home/CAMPUS/veja2016/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv"
 climate_data <- read.csv(file)
 #str(climate_data)
 climate_data$TMAX[climate_data$TMAX==-9999] = NA
@@ -24,16 +24,22 @@ climate_data$NewDate[2485:38063] <- as.Date(strDates[2485:38063], "%m/%d/%Y")
 
 Heat waves in the summer, but really cold days in the winter... Does this mean Claremont is actually heating, cooling or both? 
 
-As students, most of us just moved to Claremont and have not been here longer than maybe 1, 2 or 3 years. Thus, it can be hard to notice major climate changes and/or heating trends. In fact, as a result of a quick survey I made to 15 people in the Claremont Colleges student body, 10 of the 15 said they were not sure if the city was actually heating or cooling because it gets really hot in the summer but really cold in the winter. Moreover, although the remaining 5 said it was heating, they did not know how much it was heating or how long the heating trend has been going on for. For the most part, students in Claremont jump to conclusions without having enough evidence. This logical fallacy makes it really hard for the community to have major action toward climate change, since they do not really know what is happening and how it is affecting the area. Therefore, through this blog, I aim to educate the students of Claremont on the heating trend we are facing in our current home and the implications it is having and will continue to have if we do not do something about it. 
+As students, most of us just moved to Claremont and have not been here longer than maybe 1, 2 or 3 years. Thus, it can be hard to notice major climate changes and/or heating trends. In fact, as a result of a quick survey I made to 15 people in the Claremont Colleges student body, 10 of the 15 said they were not sure if the city was actually heating or cooling because it gets really hot in the summer but really cold in the winter. Moreover, although the remaining 5 said it was heating, they did not know how much it was heating or how long the heating trend has been going on for. For the most part, students in Claremont jump to conclusions without having enough evidence. This logical fallacy makes it really hard for the community to have major action toward climate change, since they do not really know what is happening and how it is affecting the area. Therefore, through this blog, I aim to educate the students and the other members of the Claremont community on the heating trend we are facing in our current home and the implications it is having and will continue to have if we do not do something about it. 
 
 ## About Claremont
 Located 30.3 miles East of Downtown Los Angeles, the city of Claremont is a very interesting place in terms of weather. While it is close to the coast, it is far enough to keep the coastal climate from interfering with its own, and its desert-like characteristics make it different from other Los Angeles area locations. 
+
+Although it is different from many of the other LA County cities, Claremont is still affected by the most significant of the climate change effects: heating. Data collected near Claremont since 1880 has been modeled and shows the increasing heating trend that this area has been experiencing since the late Industrial Revolution. Thus, the effects of these trends are seen in many ways, particulary in water and health. 
 
 ***
 ![](LAbasinMap.png)
 Source: Google Maps
 
-Although it is different from many of the other LA County cities, Claremont is still affected by the most significant of the climate change effects: heating. Data collected near Claremont since 1880 has been modeled and shows the increasing heating trend that this area has been experiencing since the late Industrial Revolution. Thus, the effects of these trends are seen in many ways, particulary in water and health. 
+
+
+
+
+
 
 
 ##Context: Climate Change in the Greater Los Angeles Area
@@ -69,7 +75,7 @@ Below are the figures for the months that show the most significant relationship
 We will finally look at the slope, which illustrates the increase in the minimum temperatures for that specific month over the years.
 
 
-## Monthly Average Minimim Temperatures for January, May, August and October
+## Monthly Average Minimim Temperatures (1880-2017) for January, May, August and October in Claremont, CA 
 
 
 ```{r, echo=FALSE}
