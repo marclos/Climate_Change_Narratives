@@ -10,7 +10,6 @@ output:
 ```{r, echo=FALSE}
 file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv"
 file = "Student_Folders/Valentina/valentina_cmont_data.csv"
-
 climate_data <- read.csv(file)
 #str(climate_data)
 climate_data$TMAX[climate_data$TMAX==-9999] = NA
@@ -23,9 +22,11 @@ climate_data$NewDate[2485:38063] <- as.Date(strDates[2485:38063], "%m/%d/%Y")
 
 
 
-## Temperature Data in Claremont, CA
 Heat waves in the summer, but really cold days in the winter... Does this mean Claremont is actually heating, cooling or both? 
 
+As students, most of us just moved to Claremont and have not been here longer than maybe 1, 2 or 3 years. Thus, it can be hard to notice major climate changes and/or heating trends. In fact, as a result of a quick survey I made to 15 people in the Claremont Colleges student body, 10 of the 15 said they were not sure if the city was actually heating or cooling because it gets really hot in the summer but really cold in the winter. Moreover, although the remaining 5 said it was heating, they did not know how much it was heating or how long the heating trend has been going on for. For the most part, students in Claremont jump to conclusions without having enough evidence. This logical fallacy makes it really hard for the community to have major action toward climate change, since they do not really know what is happening and how it is affecting the area. Therefore, through this blog, I aim to educate the students of Claremont on the heating trend we are facing in our current home and the implications it is having and will continue to have if we do not do something about it. 
+
+## About Claremont
 Located 30.3 miles East of Downtown Los Angeles, the city of Claremont is a very interesting place in terms of weather. While it is close to the coast, it is far enough to keep the coastal climate from interfering with its own, and its desert-like characteristics make it different from other Los Angeles area locations. 
 
 ***
@@ -33,6 +34,7 @@ Located 30.3 miles East of Downtown Los Angeles, the city of Claremont is a very
 Source: Google Maps
 
 Although it is different from many of the other LA County cities, Claremont is still affected by the most significant of the climate change effects: heating. Data collected near Claremont since 1880 has been modeled and shows the increasing heating trend that this area has been experiencing since the late Industrial Revolution. Thus, the effects of these trends are seen in many ways, particulary in water and health. 
+
 
 ##Context: Climate Change in the Greater Los Angeles Area
 ***
@@ -53,11 +55,11 @@ Claremont, although not as urban as Los Angeles, is experiencing similar trends.
 
 
 ## Method
-In order to account for the heating trend Claremont has been experiencing, temperature records from the National Oceanic and Atmospheric Administration (NOAA) over the last two decades were processed and analyzed using Rstudio. 
+In order to account for the heating trend Claremont has been experiencing, daily temperature records from the National Oceanic and Atmospheric Administration (NOAA) over the last two decades were processed and analyzed using Rstudio. 
 
 I will look at temperature records gathered between 1880 and 2017 in two stations near Claremont. They provide temperature data within a fairly long time frame which makes it reliable when it comes to illustrating an increase in temperature over time in the area. In order to make this analysis I will use the null-hypothesis convention. 
 
-The null hypothesis refers to what we want to disproof in order to account for a relationship between two specific variables, in this case time and temperature. A value is given to this null hypothesis, which we will refer to as the p-value and it is 0.05. Therefore for each graph, we will be able to relate the variables and reject this hypothesis if the p-value < 0.05. 
+The null hypothesis refers to what we want to test in order to account for a relationship between two specific variables, in this case time and temperature. A value is given to this null hypothesis, which we will refer to as the p-value and it is 0.05. Therefore for each graph, we will be able to relate the variables and reject this hypothesis if the p-value < 0.05. 
 
 ## Creating Monthly Minimum Temperature Means
 When analyzing data, the information that resulted in the best models to show the relationship between temperature (in degrees Celsius) and time in Claremont, CA (according to the scientific method framework) was the monthly average minimum temperatures. These monthly mean temperatures account for temperature measurements starting in 1880 and ending in 2017. Using Rstudio, I created a linear model that presents the best fitting line for the data and shows the model for the heating trend. 
@@ -67,7 +69,7 @@ Below are the figures for the months that show the most significant relationship
 We will finally look at the slope, which illustrates the increase in the minimum temperatures for that specific month over the years.
 
 
-## January... something more descriptive...
+## Monthly Average Minimim Temperatures for January, May, August and October
 
 
 ```{r, echo=FALSE}
@@ -112,20 +114,24 @@ abline(coef(Oct.lm), col='red')
 ***
 ![](Figure1.png)
 
-Figure#1 shows the months' p-values and slopes. We can determine that the relationship between time and temperature in these cases is valid because every p-value is lower than the null hypothesis 0.05, which allows us to disregard it.
+Figure#1 shows the months' p-values and slopes. We can determine that the relationship between time and temperature in these cases is relevant because every p-value is lower than the null hypothesis 0.05, which allows us to disregard it.
 
-Furthermore, we can see an evident heating trend in the slopes of the minimum monthly mean temperature models. The fact that the slopes are greater than zero shows that there is an increase in the temperatures recorded in Claremont since 1880 until today. Nevertheless, we can also notice there are months that have a bigger slope, and thus a greater heating trend. This is the case of August (slope: 0.032373), which is more intuitive since this month is usually the hottest month in the summer and in the year. Nevertheless, January also shows a very significant heating trend with a slope of 0.031846. 
+Furthermore, we can see an evident heating trend in the slopes of the minimum monthly mean temperature models. The fact that the slopes are greater than zero shows that there is an increase in the temperatures recorded in Claremont since 1880 until today. Nevertheless, we can also notice there are months that have a bigger slope, and thus a greater heating trend. This is the case of August (slope: 0.032), which is more intuitive since this month is usually the hottest month in the summer and in the year. Nevertheless, January also shows a very significant heating trend with a very similar slope. This is evidence to the heating trend the city has been experiencing. Regardless of the season, minimum temperatures have been increasing every year since 1880.
 
 
 ##Climate Change Impacts on this Region: Literature Review
-In the endeavor of getting a clear and well-rounded perspective of the effects of climate change in the region of Claremont, California, I have chosen a couple pieces of scientific literature that account for the social, economic and ecological implications of climate patterns. The topics that these papers cover are related to the effects temperature increase has on the area. One of the most commonly discussed impacts is drought and water supply, however, other more general issues of increased heating are also explored. 
+In the endeavor of getting a clear and well-rounded perspective of the effects of climate change in the region of Claremont, California, I have chosen a couple pieces of scientific literature that account for the social, economic and ecological implications of heating in the area. 
 
+##Public Health
 Beyond having to buy air conditioning for the old residence halls in August and/or a jacket to keep warm in November, we are facing real climate change effects. From potentially getting infected by Zika or having serious water and food shortages, the effects of the heating are making people very worried. "The changing climate will not only bring new diseases, experts say, but also will threaten the water supply, worsen air quality and cardiovascular disease and cause deaths from extreme heat," (LA Times, 2016). Most recently, the mosquitoes that can transmit the Zika virus, commonly found in the tropical areas of the globe, have been spreading over the world. The Aedes mosquitoes have been moving across Southern California since 2015, according to Report 1: Your Health and Climate Change in Los Angeles County, by the LA County Department of public health. They prefer warmer climates. Last year was one of the hottest on record in the Southland, creating conditions "optimal for Aedes to expand," said Kenn Fujioka, manager of the San Gabriel Valley Mosquito and Vector Control District.
 
 Moreover, diseases just related to heat have also increased during the past years. Heat has proven to be deadly in multiple situations: the heatwave of 2006 is a clear example of this. Outdoor workers such as those in agriculture, construction, firefighting, delivery, and service work are particularly at risk from heat-related illnesses. Other vulnerable groups include athletes, young children, the elderly, and people with chronic medical conditions such as diabetes, heart disease, and respiratory disease.
 
+##Water Supply
 On the social side, health is also dangerously threatened by issues regarding water supply, yet another consequence of temperature increase. Various research papers have evaluated the water distribution system for Southern California, the Greater LA area, and specifically the eastern part of LA, which is where Claremont is located. People are worried by the long-term effects of climate change on this resource. In fact, a recent Pomona graduate, Frank Lyles did his thesis on this topic. He claims that the heating trend expected for the upcoming years is a serious threat to water supply systems such as the Six Basins Aquifer: which distributes water in eastern Los Angeles and western San Bernardino counties. This affects communities that have limited access to big city aquifers, and thus refers to an important socioeconomic boundary. A lot of the people living in cities near Claremont, such as Pomona and San Bernardino, who use the Six Basins System, are lower-to middle class and lack access to other water sources. 
  
+ 
+##Wildfires
 Lastly, Wildfires are also a major impact of hotter temperatures. Particularly for areas close to forests or mountains (Claremont), wildfires are an important risk for the people and the natural surroundings of these areas. Over the last century, 11 of the 20 largest fires in California took place between 2003 and 2013. The largest and most destructive of these to ever occur in Los Angeles County was the Station Fire, in 2009. "A large quantity of dry brush fuel, caused by three years of drought, along with temperatures exceeding 100°F for much of late August 2009, contributed to the fire’s severity," (LA County Public health Department). According to LA's fire department, in 2014 alone, over 90 thousand acres were burned due to wildfires, affecting, not only the flora, fauna and the people living in the areas, but also all of the region with its carbon dioxide release and the amount of water used to turn the fires down.  
 
 
