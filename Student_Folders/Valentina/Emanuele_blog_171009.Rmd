@@ -8,9 +8,10 @@ output:
 ---
 
 ```{r, echo=FALSE}
-#climate_data <- read.csv("Student_Folders/Valentina/valentina_cmont_data.csv")
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv"
+file = "Student_Folders/Valentina/valentina_cmont_data.csv"
 
-climate_data <- read.csv("/home/CAMPUS/veja2016/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv")
+climate_data <- read.csv(file)
 #str(climate_data)
 climate_data$TMAX[climate_data$TMAX==-9999] = NA
 climate_data$TMIN[climate_data$TMIN==-9999] = NA
@@ -58,27 +59,6 @@ I will look at temperature records gathered between 1880 and 2017 in two station
 
 The null hypothesis refers to what we want to disproof in order to account for a relationship between two specific variables, in this case time and temperature. A value is given to this null hypothesis, which we will refer to as the p-value and it is 0.05. Therefore for each graph, we will be able to relate the variables and reject this hypothesis if the p-value < 0.05. 
 
-```{r, echo=FALSE}
-#climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
-#climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-#MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-
-#MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year) 
-#MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month) 
-
-#str(MonthlyTMAXMean)
-
-
-#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='p',pch=20, xlim=c(1880, #2020)) 
-#Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
-
-#abline(coef(Jan.lm), col='red')
-
-#summary(Jan.lm)
-
-```
-
 ## Creating Monthly Minimum Temperature Means
 When analyzing data, the information that resulted in the best models to show the relationship between temperature (in degrees Celsius) and time in Claremont, CA (according to the scientific method framework) was the monthly average minimum temperatures. These monthly mean temperatures account for temperature measurements starting in 1880 and ending in 2017. Using Rstudio, I created a linear model that presents the best fitting line for the data and shows the model for the heating trend. 
 
@@ -87,9 +67,8 @@ Below are the figures for the months that show the most significant relationship
 We will finally look at the slope, which illustrates the increase in the minimum temperatures for that specific month over the years.
 
 
-#January
-p-value: 2.394e-11
-slope: 0.031846
+## January
+
 
 ```{r, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
@@ -101,103 +80,26 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 #fixing data
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
-#head(MonthlyTMINMean)
 
-#plot(MonthlyTMINMean$TMIN, ty='p')
-
+par(mfrow=c(2,2))
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='p',pch=20, xlim=c(1880, 2020), ylab="Minimum Temperature (°C)") 
 Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
-
 abline(coef(Jan.lm), col='red')
-
-#summary(Jan.lm)
-
-
-```
-
-#May
-p-value: 2.316e-10
-slope: 0.022422
-
-```{r, echo=FALSE}
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-
-#fixing data
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
-#head(MonthlyTMINMean)
-
-#plot(MonthlyTMINMean$TMIN, ty='p')
 
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='p',pch=20, xlim=c(1880, 2020), ylab="Minimum Temperature (°C)") 
 May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
-
 abline(coef(May.lm), col='red')
-
-#summary(May.lm)
-
-
-```
-
-#August
-p-value: 6.008e-12
-slope: 0.032373
-
-```{r, echo=FALSE}
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-
-#fixing data
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
-#head(MonthlyTMINMean)
-
-#plot(MonthlyTMINMean$TMIN, ty='p')
 
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty='p',pch=20, xlim=c(1880, 2020), ylab="Minimum Temperature (°C)") 
 Aug.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
-
 abline(coef(Aug.lm), col='red')
 
-#summary(Aug.lm)
-
-
-```
-
-#October
-p-value: 4.611e-13
-slope: 0.029454
-
-```{r, echo=FALSE}
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-
-#fixing data
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
-#head(MonthlyTMINMean)
-
-#plot(MonthlyTMINMean$TMIN, ty='p')
-
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty='p',pch=20, xlim=c(1880, 2020), ylab="Minimum Temperature (°C)") 
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty='p',pch=20, xlim=c(1880, 2020), ylab="Minimum Temperature (°C)", main="October") 
 Oct.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
-
 abline(coef(Oct.lm), col='red')
 
-#summary(Oct.lm)
-
-
 ```
+
 
 
 ***
