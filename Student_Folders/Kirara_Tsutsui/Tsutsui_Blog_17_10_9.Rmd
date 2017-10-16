@@ -1,16 +1,24 @@
 ---
 title: "Hurricanes and Climate Change: Does Warming Affect Sugar Land City?"
 author: "Kirara Tsutsui"
-date: "10/9/2017"
+date: "10/13/2017"
 font: "Times New Roman"
 output: html_document
 ---
 
-# Overview of Hurricane Harvey 
+# Hurricane Harvey: Overview
 
 A Category 4 hurricane, Hurricane Harvey hit the Texas coastal towns of Rockport and Port Aransas on Friday, collapsing buildings, launching boats into parking lots and forcing thousands of households to leave their homes. It was born off the coast of South America in mid-August and then tracked through the Gulf of Mexico, making landfall in the US on August 25.  At 8A.M. Eastern Daylight time on Thursday, the hurricane’s top winds were 60mph. On Friday evening, the storm was upgraded to a Category 4 - given to storms with the potential of affecting "catastrophic damage" - and the wind accelerated to over 130mph. Texas Governor Abott has announced that the total damage to Texas from Harvey could top $150 billion, easily topping that of Hurricane Katrina in 2005.  25 trillion gallons of water covered southeast Texas and Louisiana over the course of a week. A total of 13 million residents were under some type of flood watch or warning, and the storm displaced as many as 30,000 people, not to mention their properties and businesses. 
 
 Harvey struck the southeastern part of Texas the most. According to remote sensing by the Dartmouth Flood Observatory, more than 3,800 square miles were flooded, an area nearly as large as Delaware and Rhode Island combined. 
+
+#Hurricane Harvey and Climate Change: Modelling
+The intent of this blog post is to consider the correlation between changes in temperature and precipitation in order to assess the implication warming has on flood risk.
+
+The two proxies used in this study is Monthly Minimum Temperature figures and Monthly Total Precipitation figures. These figures are shown in graphs and the original data is obtained through the Climate Data Online (CDO) from the National Oceanic and Atmospheric Administration (NOAA). These data analyzed here represent those from the Sugar Land City station, recorded from Januar 1, 1893 to September 6, 2017.
+
+RStudio's data processing is used here in order to distinguish between null and valid hypotheses. The null hypothesis refers to situations where the two variables tested show no significant relationship to one another. Here, the threshold mark for null hypotheses is deemed as anything smaller than and not including 0.05 in the Prvalue of the coefficients. 
+
 
 # Sugar Land City
 
@@ -37,24 +45,15 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 # Flooding in Texas: Why Didn't Hurricane Harvey Weaken Over Time?
 Hurricanes usually weaken over time. Scientifically, as the strong winds pick up seawater and churn the oceans, they move the warm waters below the surface and bring in newer, colder water closer to the atmosphere. 
 
-
 Kerry Emanuel, an atmospheric sciences professor at the Massachusetts Institute of Technology, says, "Hurricanes are powered by the evaporation of sea water. water evaporates faster from a hot surface rather than a cold surface." As hurricanes feed and grow on warm ocean surface waters, the loss of heat in the water would drain energy and therefore reduce the speed of the winds. 
 
 From an analysis of the evolution of 6,000 simulated storms, Emanuel concluded that while a storm that increases its intensity by 60 knots in the 24 hours before landfall may have been likely to occur once a century in the 1900s, "by late in this century, they could come every five to 10 years."
 
 Other scientists also assert that it was the very principle hurricanes develop around that is to blame for the prolonged intensity of Harvey. Because the water that it churned up 100 to 200 meters below the surface as it progressed proved warmer than usual, Harvey had more heat and therefore energy to feed on. Jeff Masters, meterologist and founder of the website Weather Underground, claims that Hurricane Harvey had been over very warm water - at least 85 degrees Fahrenheit - for more than six hours on August 25th. He said that this, along with the fact that the storm was not bothered by wind shear, fueld Harvey's rapid intensification. 
 
-# So What Does Hurricane Harvey Tell Us? 
+#Rising Nighttime Temperatures 
 
-The intent of this blog post is to consider the correlation between changes in temperature and precipitation in order to assess the implication warming has on flood risk.
-
-The two proxies used in this study is Monthly Minimum Temperature figures and Monthly Total Precipitation figures. These figures are shown in graphs and the original data is obtained through the Climate Data Online (CDO) from the National Oceanic and Atmospheric Administration (NOAA). These data analyzed here represent those from the Sugar Land City station, recorded from Januar 1, 1893 to September 6, 2017.
-
-RStudio's data processing is used here in order to distinguish between null and valid hypotheses. The null hypothesis refers to situations where the two variables tested show no significant relationship to one another. Here, the threshold mark for null hypotheses is deemed as anything smaller than and not including 0.05 in the Prvalue of the coefficients. 
-
-# Monthly TMIN Averages -- MLH is TMIN the best title name? How will people know what this means?
-
-One of the two proxies approached here is Monthly Minimum Average Temperatures. 
+One of the two proxies approached here is Monthly Minimum Average Temperatures. Minimum Average Temperatures are observed during the nighttime, and the Monthly Minimum Average Temperatures these figures are not as volatile as Maximum Temperatures. Thus, an increasing trend in these figures would imply that warming is becoming so pressing that even nighttime warming is becoming fairly observed. 
 
 ``````{r, echo=FALSE}
 #lm(TMIN~NewDate,data=climate_data)
