@@ -24,7 +24,9 @@ The p value will be calculated from the relationship, and a p-value of less than
 
 
 ```{r importdata, echo=FALSE,results='hide'}
-climate_data<- read.csv("/home/CAMPUS/wbpa2016/Climate_Change_Narratives/Student_Folders/Bebe/Bebe_santamonica_data.csv")
+file = "/home/CAMPUS/wbpa2016/Climate_Change_Narratives/Student_Folders/Bebe/Bebe_santamonica_data.csv"
+#file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Bebe/Bebe_santamonica_data.csv"
+  climate_data<- read.csv(file)
 climate_data$TMAX[20824]<-NA
 climate_data$TMAX[23955]<-NA
 

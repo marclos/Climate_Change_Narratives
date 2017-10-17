@@ -24,7 +24,9 @@ The p-value of the data, or the calculated probablity, can indicate the signific
 p-values will be used in this analysis to determine which data can be used. The data that will be accounted for will be data with p-values of <0.05, denoting that a relationship exists, or 0, denoting that there is no relationship. 
 
 ```{r, echo=FALSE, }
-climate_data<-read.csv("/home/CAMPUS/mwew2015/Climate_Change_Narratives/Data/SFclimate_data.csv")
+file = "/home/CAMPUS/mwew2015/Climate_Change_Narratives/Data/SFclimate_data.csv"
+#file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/SFclimate_data.csv"
+climate_data<-read.csv(file)
 
 climate_data$TMAX[climate_data$TMAX==-9999]=NA
 climate_data$TMIN[climate_data$TMIN==-9999]=NA
