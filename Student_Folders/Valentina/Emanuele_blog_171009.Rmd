@@ -3,13 +3,12 @@ title: "Is Claremont Actually Heating? Should We Care?"
 author: "Valentina Emanuele"
 date: "9/18/2017"
 output:
-  pdf_document: default
   html_document: default
 ---
 
 ```{r, echo=FALSE}
-file = "/home/CAMPUS/veja2016/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv"
-file = "/home/CAMPUS/veja2016/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv"
+file = "valentina_cmont_data.csv"
+#file = "/home/CAMPUS/veja2016/Climate_Change_Narratives/Student_Folders/Valentina/valentina_cmont_data.csv"
 climate_data <- read.csv(file)
 #str(climate_data)
 climate_data$TMAX[climate_data$TMAX==-9999] = NA
