@@ -4,8 +4,8 @@ author: "Allison Joseph"
 date: "10/18/2017"
 output: html_document
 ---
-  Torrance is a coastal community in southwestern Los Angeles County, sharing the climate and geographical features common to the Greater Los Angeles area. Torrance has about 1.5 miles of beaches on the Pacific Ocean and a heavily industrialized inland area (California Climate Change Center, 2010). Thus, coastal cooling can result from increasing ocean breezes that are induced by regional warming in inland areas. 
-  Unfortunately, coastal cooling trends can be distorted by climate change skeptics, who argue that a decrease or slowdown of warming is occurring. Some websites, blogs and articles in the media propose that it is not global warming we should be worried about, but instead global cooling. Yet, the data from Torrance does not support such claims. Rather, Torrance serves as a model for California coastal cities, demonstrating an overall increase in temperature because of climate change. As temperatures continue to rise, Torrance and other coastal cities will be particularly vulnerable to natural hazards, including storms, extreme high tides, and rising sea levels (IPCC, 2014).
+  Torrance is a coastal community in southwestern Los Angeles County, composed of about 1.5 miles of beaches on the Pacific Ocean and a heavily industrialized inland area (California Climate Change Center, 2010). Thus, coastal cooling can result from increasing ocean breezes that are induced by regional warming in inland areas. 
+  Unfortunately, coastal cooling trends can be distorted by climate change skeptics, who argue that a decrease or slowdown of warming is occurring. Some websites, blogs and articles in the media propose that it is not global warming we should be worried about, but instead global cooling. Yet, the data from Torrance does not support such claims, demonstrating an overall increase in temperature because of climate change. As temperatures continue to rise, Torrance and other coastal cities will be particularly vulnerable to natural hazards, including storms, extreme high tides, and rising sea levels (IPCC, 2014).
 
 
 <img src="torrance.jpg" width=600 height=300>
@@ -67,7 +67,7 @@ MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
 #plot(MonthlyTMAXMean$TMAX, ty='l')
 
 #plot(MonthlySD£TMAX, ty='l')
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', main = "January Maximum Temperatures",  xlim=c(1950, 2020))
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', main = "January Maximum Temperatures", pch=".", ylab="Maximum Temperature", xlab= "Year", xlim=c(1950, 2020))
 January.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 
 #summary(January.lm)
@@ -82,7 +82,7 @@ January, March, April, June, and December (5/12 months) reject the null hypothes
 
 The data shows that Torrance is generally warming, an increase in temperature exists for January, March, April, and June, supporting the idea that climate change is occurring. 
 
-In contrast, December shows a decrease in temperature. December's cooling can be understood due to seasonal variation, as temperatures tend to decrease during the winter. 
+In contrast, December shows a decrease in temperature. December's cooling is surprising, for even California's winter months show an increasing temperature trend.
 
 
 
@@ -101,7 +101,7 @@ MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 #plot(MonthlyTMINMean$TMN, ty='l')
 
 #plot(MonthlySD£TMIN, ty='l')
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l', main = "January Minimum Temperatures", xlim=c(1950, 2020))
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l', main = "January Minimum Temperatures", pch=".", ylab="Minimum Temperature", xlab= "Year", xlim=c(1950, 2020))
 January.lm <- lm(TMIN~YEAR,data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 
 #summary(January.lm)
@@ -111,13 +111,13 @@ abline(coef(January.lm), col="red")
 
 ##Minimum Monthly Temperatures Data Analysis 
 
-  For Torrance, all of the minimum temperatures are increasing, with a p value of less than .05. Thus, the null hypothesis is rejected, therefore, temperature is increasing with date. 
+  For Torrance, all of the minimum daily temperatures are increasing, with a p < 0.05.
 
   When comparing January's temperature increase, the slope for January's maximum temperature was .04, while January's minimum temperature had a greater slope of .08. The rate of temperature increase for all monthly minimum temperatures was greater than their maximum temperature counterpart.
 
   Thus, nights are warming at a faster rate than the daytime temperatures. Torrance reflects a pattern known as asymmetric warming, as minimum temperatures are increasing at a faster rate than maximum temperatures. 
 
-  This lack of nighttime cooling has characterized recent heat waves in California, increasing the duration of such extreme events to 5 days or longer. This places huge strains on California health and infrastructure.
+  This lack of nighttime cooling has characterized recent heat waves in California, increasing the duration of such extreme events to 5 days or longer. Increased nightime temperatures place huge strains on California health, as heat-related mortality will become even more of a public health concern in the future.   
 
 ## The Larger Context: Is Torrance's Warming Significant?
 
@@ -128,11 +128,11 @@ abline(coef(January.lm), col="red")
   
   Thus, Torrance will face dangerous consequences from continued climate warming.  As glaciers melt amid the heat of a warming planet, scientists predict that coastal communities in the United States will face severe challenges. In the past century, global mean sea level has increased by 7 to 8 inches and it is extremely likely (>95% probability) that human influence has been the dominant cause of observed atmospheric and oceanic warming (IPCC 2014). Global sea level is influenced by increasing temperatures, which result in the expansion of ocean waters as they warm and the addition of freshwater to the ocean from melting land-based ice sheets and glaciers (Earth Observatory, 2009). 
 
-  Sea level rise is believed to be the most significant impact of climate change on California coastal areas (Environmental Protection Agency, 2014). Its main impacts include inundation/flooding, ecosystem change/wetland loss, coastal erosion, saltwater intrusion, and rising water levels. Tide gauges and satellite observations show that in the past century mean sea level in Los Angeles has risen 8 in (20 cm), keeping pace with the predicted global rise (NOAA, 2016).  
+  Sea level rise is believed to be the most significant impact of climate change on California coastal areas (Environmental Protection Agency, 2014). Its main impacts include inundation/flooding, ecosystem change/wetland loss, coastal erosion, saltwater intrusion, and rising water levels. Tide gauges and satellite observations show that in the past century mean sea level in Los Angeles has risen 8 in (20 cm), keeping pace with the predicted global rise (NOAA, 2016).
   <img src="sea-level-figure1-2016.png" width=1000 height=500>
 Iamge Source: NOAA, 2016
 
-  In response to the threat of rising sea levels, a study by the University of Southern California Sea Grant Program mapped out L.A.’s oceanfront assets and assessed what areas are most vulnerable to sea level rise. “Some low-lying areas within the city’s jurisdiction, such as Venice Beach and some areas of Wilmington and San Pedro, are already vulnerable to flooding,” said Phyllis Grifman, lead author of the report and associate director of the USC Sea Grant Program. Although Torrance was not considered to be one of the most vulnerable areas, it is one of the areas of concern for the California Coastal Commission (CCC). Through its Sea Level Rise Policy Guidance, the CCC assists Torrance and other coastal cities in preparing for current and future challenges (California Climate Change Center, 2010). 
+  In response to the threat of rising sea levels, Torrance has partnered with the California Coastal Commission (CCC). Through its Sea Level Rise Policy Guidance, the CCC assists coastal cities in preparing for current and future sea level rise challenges (California Climate Change Center, 2010). Torrance's neighboring cities are also in danger, “Some low-lying areas within the city’s jurisdiction, such as Venice Beach, and areas of Wilmington and San Pedro, are already vulnerable to flooding,” declared Phyllis Grifman, lead author of the report and associate director of the USC Sea Grant Program (2017). The vulnerability of such areas could place greater economic and infrastructural demands on the city of Torrance.
   
     The impacts of sea level rise will affect almost every facet of our natural and manmade environments. Natural flooding, erosion, and storm event patterns are likely to be exacerbated by sea level rise, leading to significant economic, social, and environmental impacts for Los Angeles coastal cities.
 
@@ -140,10 +140,12 @@ Iamge Source: NOAA, 2016
 
 
 ## Economic Impacts
+  As sea levels continue to rise, Torrance will face economic challenges. Torrance is home to the U.S. headquarters of American Honda Motor Company, Robinson Helicopters and Southern California’s largest Exxon Mobil Refinery. As a major oil-producing region, Torrance was once dotted with thousands of oil wells and oil derricks. Though the oil wells are not as common as they once were, the ExxonMobil refinery in the north end of the city is responsible for much of Southern California's gasoline supply. Thus, Torrance will face pressure to reduce greenhouse gas emissions as climate change impacts continue to increase.
+  Torrance has created an Energy Efficiency Climate Action Plan (EECAP) to increase energy efficiency and lower GHG emissions. Along with the South Coast Air Quality Management Plan (AQMP), Torrance is working to design a policy that follows all federal and State air quality standards. Because of the importance of motor vehicles as a pollution source, the AQMP places substantial emphasis on reducing motor vehicle miles traveled. In addition, since 2013, the Torrance Exonn Mobil refinery has released more pollution into the air via unplanned flaring than the six other oil refineries in Southern California combined. In 2015, the AQMD belatedly discovered that ExxonMobil had released double the amount of sulfur dioxide the company initially reported, resulting in an 8.1 million fine. Since this incident, the city of Torrance has developed regulations to improve air quality standards and strategies to reduce vehicle emissions. Yet, such plans include the promotion of alternative fuels, which may threaten sectors of Torrance’s automotive industry. 
 
-    The economic cost of increased sea level rise is a concern for not only the city of Torrance, but for the larger Los Angeles area. California has the nation's largest ocean economy, valued at over $44 billion per year, providing numerous ports and shipping areas that serve the nation and the world. The port of Los Angeles accounts for 43% of California's ocean sector gross domestic product (GDP). Sea level rise could result in the flooding port infrastructure and the destruction of piers and marina facilities. Iaddition, low-lying roads and railways, wastewater treatment facilities, energy facilities, storm water infrastructure, and utility infrastructure are at risk of damage and impaired function due to erosion and inundation. The replacement value of property at risk from sea level rise for the California coast is approximately $100 billion. Future development for industry and commerce will be also be limited because of flooding and erosion (Parker, 2017). 
 
-<img src="la sea level.jpg" width=900 height=400>
+
+<img src="torrance fire.jpg" width=900 height=400>
 
 ## Social Impacts
     California’s coast is important to the health and well-being of the public, as people’s safety, lives, daily movement patterns, and sense of community and security can be disrupted.  Due to current development patterns along the coast, sea level rise and flooding will have disproportionate impacts on communities with the least capacity to adapt, deepening existing environmental injustice if adaptation responses are not managed effectively (City of Torrance, 2017). In some communities near the Port of Los Angeles, the average family earns only $13,000 annually. Los Angele’s chief sustainability officer, Matt Petersen states, “Vulnerable communities don't have the resources to rebuild, to repair, to evacuate. We really need to help prepare those communities, both nationally and, certainly, here in L.A.” Researchers believe that sea level rise will place unique burdens on the urban poor, residents of informal settlements, and other vulnerable groups, such as women, children, the elderly and disabled, and minority populations (Finnegan, 2014). 
