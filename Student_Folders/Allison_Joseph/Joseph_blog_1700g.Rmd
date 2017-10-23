@@ -13,7 +13,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo =TRUE)
-climate_data <- read.csv("/home/CAMPUS/aeja2017/Climate_Change_Narratives/Student_Folders/Allison_Joseph/ally_tor.csv") 
+climate_data <- read.csv("ally_tor.csv") 
 
 strDates <- as.character(climate_data$DATE)
 head(strDates)
@@ -153,13 +153,13 @@ Iamge Source: NOAA, 2016
 <img src="homeless.jpg" width=800 height=500>
 
 ## Environmental Impacts
-    Finally, rising sea levels threaten coastal ecosystems and natural resources. Coastal habitat areas likely to be affected by sea level rise include bluffs and cliffs, rocky intertidal areas, beaches, dunes, wetlands, estuaries, tidal marshes and tidally-influenced streams and rivers (Parker, 2017).  Many endemic and endangered species in California are dependent on these coastal environments. For example, grunion need a sandy beach environment to reproduce and survive, the California clapper rail is dependent on marshes and wetlands, and the black abalone requires rocky intertidal habitat. Nesting habitat, nursery areas, and haul-out sites important for birds, fish, marine mammals and other animals could also disappear as sea levels rise.
-  	 In addition, loss of coastal areas will have significant consequences to adjacent inland ecosystems. Beaches act as buffers to interior agricultural lands and habitats during storms and flooding. Sea level rise could lead to wetland habitat conversion and loss as the intertidal zone shifts inland. Loss or reduction of wetland habitat could impact many plant and animal species, including migratory birds that depend on these habitats (USC Sea Grant).
+    Finally, rising sea levels threaten coastal ecosystems and natural resources. Coastal habitat areas likely to be affected by sea level rise include bluffs and cliffs, rocky intertidal areas, beaches, dunes, wetlands, estuaries, tidal marshes and tidally-influenced streams and rivers (Parker, 2017). Loss of coastal areas will have significant consequences to adjacent inland ecosystems. Beaches act as buffers to interior agricultural lands and habitats during storms and flooding. Sea level rise could lead to wetland habitat conversion and loss as the intertidal zone shifts inland. Loss or reduction of wetland habitat could impact many plant and animal species, including migratory birds that depend on these habitats (USC Sea Grant). Torrance is home to the Madrona Marsh and Wildlife preserve, a natural wetland area replete with wildlife and native vegetation.  The Marsh also contains a nature center and a host of educational programs focusing on drought tolerant and native plants, water conservation and wildlife 
+  	
 <img src="coastal 2 .jpg" width=800 height=500>
 Source: Earth Observatory
 
 ## Conclusion
-    Although Torrance's warming trend may appear to be slower than the IPCC's temperature increase predictions, this does not mean that climate change is not occurring. In reality, Torrance's coastal cooling is to be expected with the increase of inland temperatures. The temperature patterns of Torrance serve as a model for other Los Angeles coastal communities. As coastal communities tend to have less intense rates of increasing TMAX temperatures (due to coastal cooling), climate experts need to focus on the overall upward trend and increase in TMIN temperatures. This trend will result in continued sea level rise, one of the most urgent economic, social and ecological threats of climate change. 
+    Although Torrance's warming trend may appear to be slower than the IPCC's temperature increase predictions, this does not mean that climate change is not occurring. In reality, Torrance's coastal cooling is to be expected with the increase of inland temperatures. The temperature patterns of Torrance serve as a model for other Los Angeles coastal communities. As coastal communities tend to have less intense rates of increasing maximum temperatures (due to coastal cooling), climate experts need to focus on the overall upward trend and increase in minimum temperatures. This trend will result in continued sea level rise, one of the most urgent economic, social and ecological threats of climate change. 
 
 ## Resources    
 California Climate Change Center. (2010, March). THE IMPACTS OF SEA-LEVEL RISE ON THE CALIFORNIA COAST. Retrieved September 29, 2017, from
