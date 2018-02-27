@@ -21,14 +21,10 @@ file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_thurston co
 import=read.csv(file)
 
 str(import)
-<<<<<<< HEAD
 min(import$TMAX, na.rm = T)
 
 as.Date(import$DATE,"%m/%d/Y%")
-plot(TMAX~NewDate, import[1:1835,], ty='1')
-=======
 #min(import$TMAX, na.rm = T)
->>>>>>> 04eb751ef47a6f3a4b7303b7b2f0d6cde322a575
 
 strDates <- as.character(import$DATE)
 head(strDates)
