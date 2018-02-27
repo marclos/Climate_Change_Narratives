@@ -16,29 +16,29 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
+#file="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/SP18/choi_thurston county_data.csv"
 file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_thurston county_data.csv"
 import=read.csv(file)
 
 str(import)
-min(import$TMAX, na.rm = T)
+#min(import$TMAX, na.rm = T)
 
-as.Date(import$DATE)
-as.character(import$DATE)
-as.Date(import$DATE,"%m/%d/Y%")
+strDates <- as.character(import$DATE)
+head(strDates)
 
+import$NewDate <- as.Date(strDates, "%m/%d/%Y")
 
-
-
-
+str(import)
 
 ```
 
 ## Including Plots
 
-You can also embed plots, for example:
+Note a very long record... we might need to find a different data set...
+
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
+plot(TMAX ~ NewDate, data=import)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
