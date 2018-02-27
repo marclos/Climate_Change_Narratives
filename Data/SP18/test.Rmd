@@ -22,11 +22,8 @@ import=read.csv(file)
 str(import)
 min(import$TMAX, na.rm = T)
 
-as.Date(import$DATE)
-as.character(import$DATE)
 as.Date(import$DATE,"%m/%d/Y%")
-
-
+plot(TMAX~NewDate, import[1:1835,], ty='1')
 
 
 
