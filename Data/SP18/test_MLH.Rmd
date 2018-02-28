@@ -1,0 +1,47 @@
+---
+title: "Thurston County Climate Narratives"
+author: "Minah Choi"
+date: "2/26/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown this is a heading...
+
+You start writing here...
+
+
+
+```{r cars}
+#file="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
+file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_thurston county_data.csv"
+import=read.csv(file)
+
+str(import)
+min(import$TMAX, na.rm = T)
+
+as.Date(import$DATE,"%m/%d/Y%")
+#min(import$TMAX, na.rm = T)
+
+strDates <- as.character(import$DATE)
+head(strDates)
+
+import$NewDate <- as.Date(strDates, "%m/%d/%Y")
+
+str(import)
+
+```
+
+## Including Plots
+
+Note a very long record... we might need to find a different data set...
+
+
+```{r pressure, echo=FALSE}
+plot(TMAX ~ NewDate, data=import)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
