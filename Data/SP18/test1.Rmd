@@ -31,53 +31,47 @@ str(climate_data)
 names(climate_data)
 min(climate_data$TMAX)
 min(climate_data$TMAX, na.rm = T)
-plot(TMAX~DATE, climate_data)
-climate_data$TMAX[climate_data$TMAX==-9999] = NA
-climate_data$TMIN[climate_data$TMIN==-9999] = NA
-plot(TMAX~DATE, climate_data[1:1891,], ty='1')
 str(climate_data)
 strDates <- as.character(climate_data$DATE)
 head(strDates)
-climate_data$NewDate <- as.Date(strDates, "%m/%d/Y%")
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d", tryFormats = c("%Y-%m-%d", "%m/%d/%Y"))
+climate_data$NewDate[2696:45597] <- as.Date(strDates[2696:45597], "%m/%d/%Y")
 str(climate_data)
 ```
 
-my dates are all goofy--
 
 
-```{r plot, echo=FALSE}
-summary(plot)
 
-plot(TMAX )
+```{r monthly, echo=FALSE}
 
+plot(TMAX ~ NewDate, data = climate_data)
 lm(TMAX ~ NewDate, data = climate_data)
-
 summary(lm(TMAX ~ NewDate, data = climate_data))
 
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
-
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
-
 str(MonthlyTMAXMean)
 
-plot(MonthlyTMAXMean$TMAX, ty='1')
+plot(MonthlyTMAXMean$TMAX, ty='l')
 
+#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
+#May.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+#summary(May.lm)
+
+#abline(coef(May.lm), col="red")
 ```
 
-i'm not sure what exactly happened here, but i went ahead and started moving through the coding on SOP86_
-it won't recognize my objects for some reason? I read through some of the coding on previous blogs (hope that was ok) to try to see what was going on.
-
 ```{r 1 month}
-summary(month)
 
-plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='1', xlim=c(1950, 2020))
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-summary(May.lm)
-
+#testing for 1 month analysis
+#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
+#May.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+#summary(May.lm)
+#abline(coef(May.lm), col="red")
 
 
 ```
@@ -86,9 +80,89 @@ summary(May.lm)
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r allmonths, echo=FALSE}
 
+MonthlyTMINMEAN = aggregate(TMIN ~ Month + Year, climate_data, mean)
+
+MonthlyTMINMEAN$YEAR = as.numeric(MonthlyTMINMEAN$Year)
+
+MonthlyTMINMEAN$YEAR = as.numeric(MonthlyTMINMEAN$Year)
+MonthlyTMINMEAN$Month = as.numeric(MonthlyTMINMEAN$Month)
+head(MonthlyTMINMEAN)
+
+##JAN
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', xlim=c(1950, 2020))
+Jan.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+abline(coef(Jan.lm), col="red")
+
+##FEB
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",], ty='l', xlim=c(1950, 2020))
+Feb.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+abline(coef(Feb.lm), col="red")
+
+##MAR
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",], ty='l', xlim=c(1950, 2020))
+Mar.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",])
+abline(coef(Mar.lm), col="red")
+
+##APR
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",], ty='l', xlim=c(1950, 2020))
+Apr.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+abline(coef(Apr.lm), col="red")
+
+##MAY
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+abline(coef(May.lm), col="red")
+
+##JUN
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",], ty='l', xlim=c(1950, 2020))
+Jun.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+abline(coef(Jun.lm), col="red")
+
+##JUL
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",], ty='l', xlim=c(1950, 2020))
+Jul.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+abline(coef(Jul.lm), col="red")
+
+##AUG
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], ty='l', xlim=c(1950, 2020))
+Aug.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+abline(coef(Aug.lm), col="red")
+
+##SEP
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",], ty='l', xlim=c(1950, 2020))
+Sep.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+abline(coef(Sep.lm), col="red")
+
+##OCT
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",], ty='l', xlim=c(1950, 2020))
+Oct.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+abline(coef(Oct.lm), col="red")
+
+##NOV
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",], ty='l', xlim=c(1950, 2020))
+Nov.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",])
+abline(coef(Nov.lm), col="red")
+
+##DEC
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",], ty='l', xlim=c(1950, 2020))
+Dec.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+abline(coef(Dec.lm), col="red")
+
+plot(MonthlyTMINMEAN$TMIN, ty='l')
+
+#Months = c("January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+#par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+#TMAXresult <- NA
+#for (i in 1:12){plot}
+#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+#summary(Month.lm)
+```
+```{r minimum}
+
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13),2],)
 
 ```
 
