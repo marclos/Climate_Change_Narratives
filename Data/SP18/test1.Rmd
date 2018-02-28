@@ -1,0 +1,95 @@
+---
+title: "Aberdeen Blog"
+author: "Minah Choi"
+date: "2/27/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
+file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
+climate_data <- read.csv(file)
+
+strDates <- as.character(climate_data$DATE)
+head(strDates)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/Y%")
+str(climate_data)
+```
+
+## Markdown
+
+```{r cars}
+summary(cars)
+
+#file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
+file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
+climate_data=read.csv(file)
+
+head(climate_data)
+str(climate_data)
+names(climate_data)
+min(climate_data$TMAX)
+min(climate_data$TMAX, na.rm = T)
+plot(TMAX~DATE, climate_data)
+climate_data$TMAX[climate_data$TMAX==-9999] = NA
+climate_data$TMIN[climate_data$TMIN==-9999] = NA
+plot(TMAX~DATE, climate_data[1:1891,], ty='1')
+str(climate_data)
+strDates <- as.character(climate_data$DATE)
+head(strDates)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/Y%")
+str(climate_data)
+```
+
+my dates are all goofy--
+
+
+```{r plot, echo=FALSE}
+summary(plot)
+
+plot(TMAX )
+
+lm(TMAX ~ NewDate, data = climate_data)
+
+summary(lm(TMAX ~ NewDate, data = climate_data))
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+
+plot(MonthlyTMAXMean$TMAX, ty='1')
+
+```
+
+i'm not sure what exactly happened here, but i went ahead and started moving through the coding on SOP86_
+it won't recognize my objects for some reason? I read through some of the coding on previous blogs (hope that was ok) to try to see what was going on.
+
+```{r 1 month}
+summary(month)
+
+plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='1', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
