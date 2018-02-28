@@ -7,47 +7,35 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
-file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
-climate_data <- read.csv(file)
-
-strDates <- as.character(climate_data$DATE)
-head(strDates)
-climate_data$NewDate <- as.Date(strDates, "%m/%d/Y%")
-str(climate_data)
 ```
 
 ## Markdown
 
-```{r cars}
-summary(cars)
-
+```{r importdata}
 #file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
-file="/home/CAMPUS/mmc02014/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
-climate_data=read.csv(file)
+file="choi_aberdeen station_data.csv"
+climate_data <- read.csv(file)
 
-head(climate_data)
-str(climate_data)
-names(climate_data)
-min(climate_data$TMAX)
-min(climate_data$TMAX, na.rm = T)
-str(climate_data)
 strDates <- as.character(climate_data$DATE)
-head(strDates)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d", tryFormats = c("%Y-%m-%d", "%m/%d/%Y"))
+# Command didn't work, brute force method
 climate_data$NewDate[2696:45597] <- as.Date(strDates[2696:45597], "%m/%d/%Y")
-str(climate_data)
 ```
 
 
+## Plot of all dates
 
-
-```{r monthly, echo=FALSE}
+```{r intialplot, echo=FALSE}
 
 plot(TMAX ~ NewDate, data = climate_data)
 lm(TMAX ~ NewDate, data = climate_data)
 summary(lm(TMAX ~ NewDate, data = climate_data))
+```
 
+
+## Create Monthly Means
+
+```{r monthlymeans}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
@@ -58,21 +46,14 @@ str(MonthlyTMAXMean)
 
 plot(MonthlyTMAXMean$TMAX, ty='l')
 
-#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
-#May.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-#summary(May.lm)
+# I changed the name to be consistant and put it in this block
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 
-#abline(coef(May.lm), col="red")
-```
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 
-```{r 1 month}
-
-#testing for 1 month analysis
-#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
-#May.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-#summary(May.lm)
-#abline(coef(May.lm), col="red")
-
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
 
 ```
 
@@ -81,19 +62,16 @@ plot(MonthlyTMAXMean$TMAX, ty='l')
 You can also embed plots, for example:
 
 ```{r allmonths, echo=FALSE}
-
-MonthlyTMINMEAN = aggregate(TMIN ~ Month + Year, climate_data, mean)
-
-MonthlyTMINMEAN$YEAR = as.numeric(MonthlyTMINMEAN$Year)
-
-MonthlyTMINMEAN$YEAR = as.numeric(MonthlyTMINMEAN$Year)
-MonthlyTMINMEAN$Month = as.numeric(MonthlyTMINMEAN$Month)
-head(MonthlyTMINMEAN)
-
 ##JAN
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', xlim=c(1950, 2020))
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='p', xlim=c(1890, 2020))
 Jan.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 abline(coef(Jan.lm), col="red")
+## TMIN
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='p', xlim=c(1890, 2020))
+Jan.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+abline(coef(Jan.lm), col="blue")
+
 
 ##FEB
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",], ty='l', xlim=c(1950, 2020))
@@ -150,8 +128,6 @@ plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",], ty='l', xlim
 Dec.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 abline(coef(Dec.lm), col="red")
 
-plot(MonthlyTMINMEAN$TMIN, ty='l')
-
 #Months = c("January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 #par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
 #TMAXresult <- NA
@@ -162,7 +138,7 @@ plot(MonthlyTMINMEAN$TMIN, ty='l')
 ```{r minimum}
 
 library(xtable)
-Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13),2],)
+#Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13),2],)
 
 ```
 
