@@ -56,14 +56,10 @@ MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 
-plot(MonthlyTMAXMean$TMAX, ty='l')
-
-#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
-#May.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-#summary(May.lm)
-
-#abline(coef(May.lm), col="red")
+#plot(MonthlyTMAXMean$TMAX, ty='l')
 ```
+
+
 
 ```{r 1 month}
 
@@ -150,19 +146,49 @@ plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",], ty='l', xlim
 Dec.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 abline(coef(Dec.lm), col="red")
 
-plot(MonthlyTMINMEAN$TMIN, ty='l')
+#plot(MonthlyTMINMEAN$TMIN, ty='l')
 
 #Months = c("January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 #par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
-#TMAXresult <- NA
+TMAXresult <- NA
 #for (i in 1:12){plot}
 #plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
 #summary(Month.lm)
 ```
-```{r minimum}
+^This is all good to go
 
-library(xtable)
-Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13),2],)
+
+
+
+```{r minimum, echo=false}
+MonthlyTMINMEAN = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMEAN$YEAR = as.numeric(MonthlyTMINMEAN$Year)
+MonthlyTMINMEAN$Month = as.numeric(MonthlyTMINMEAN$Month)
+str(MonthlyTMINMEAN)
+
+plot(MonthlyTMINMEAN$TMIN, ty='l')
+##THIS IS WHERE IT GETS FUNKY WITH THE TMIN PLOT--I can't get it to code correctly
+##"need finite 'ylim' values"
+
+plot(TMIN~YEAR, data=MonthlyTMINMEAN[MonthlyTMINMEAN$Month=="05",], ty='1', xlim=c(1950, 2020))
+Maymin.lm <- lm(TMIN~YEAR, data = MonthlyTMINMEAN[MonthlyTMINMEAN$Month=="05",])
+
+#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",], ty='l', xlim=c(1950, 2020))
+#Sep.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+#abline(coef(Sep.lm), col="red")
+
+```
+
+
+Where I left off (2/28)  
+```{r precip, echo=false}
+
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP), list(climate_data$Month, climate_data$Year)) 
+#^^not sure what is happening here- on the SOP86 the code was cut off so i'm not sure what comes after "$Year)"
+
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+
 
 ```
 
