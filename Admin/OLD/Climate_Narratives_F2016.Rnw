@@ -1,0 +1,264 @@
+\documentclass{article}
+%\documentclass{tufte-handout}
+\usepackage{hyperref}
+
+\newenvironment{itemize*}%
+  {\begin{itemize}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{itemize}}
+	
+\newenvironment{enumerate*}%
+  {\begin{enumerate}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{enumerate}}
+
+\title{Do weather changes matter?}
+\author{Marc Los Huertos}
+%\date{} 
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+According the the Inter-Governmental Panel on Climate Change or IPCC, the temperature has been changing about 2 degrees C per 100 years (check this) -- but this global average is not evenly distributed accross the globe. 
+
+How can we appreciate potential changes accross the whole globe? An average temperture increse for the globe is somewhat abstract.   Perhaps, we should evaluate how temperature (and/or rainfall) might be changing on local scales. 
+
+Thus, for this project, we'll try to understand how temperature changes "map" onto a community that we care about? But to do this we need obtain and analyze tempterature data and determine if weather changes have compelling impacts on local communities.
+
+In other words, do weather changes matter?
+
+\subsection{Goals of this Document}
+
+\begin{enumerate*}
+  \item Describe the goals and approach for the project;
+  \item Provide or point to resources to prepare for and conduct the project; and
+  \item Describe how we will evaluate the project process and products.
+\end{enumerate*}
+
+\section{Project Description}
+
+\subsection{Driving Question(s)}
+
+Projects can often be structured as questions, but sometimes it it worth phrasing the questions in a number of ways -- this might help you find ways that you might find the question more provactive and interesting, For example,
+
+\begin{itemize*}
+  \item Is my region's climate changing?
+  \item How is climate change affecting my community?
+\end{itemize*}
+
+But you can modify these questions to develop the project that you might find compelling.
+
+In addition, we may develop "sub-questions" that can be developed or answered as chunks, which will be used to answer the main question or questions. For example, 
+
+\begin{itemize*}
+  \item Are there biases in weather data? Can these biases be corrected? If so, how?
+  \item How can we evaluate trends? What are the most appropriate statistical tools to test for trends?
+  \item What is the best way to display visual data?  Are there best practices to guide a public product to make it more compelling or interactive?
+\end{itemize*}
+
+\subsection{Public Product}
+
+Science is a social project. From the questions we ask, to the results and their presentation, science is embedded in a culture of norms. Thus, as part of this project, students will produce a narrative blog with the following characterics:
+
+\begin{itemize*}
+  %\item Appropriate and thoughtful statistical analysis;
+  \item time series data in a plot using R; 
+  \item description of what the data tells about about the region, 
+  \item a few short paragraphs describing how data can be interpretted; pitfalls of unintentional and intentional misinterpretations; and 
+  \item narrative that describes the climate and climate implications for a community that you care about.
+\end{itemize*}
+
+In addition, we will hold a Q \&A session with public school teachers to help them implement NGSS standards on weather and climate.
+
+\section{Approach}
+
+Students will have the following tools available:
+
+\begin{itemize*}
+  \item Servers where stored weather data can be downloaded;
+  \item R Studio Server with some scripts \& libraries to help develop analyses;
+  \item Gighub to store project codes; and
+  \item Student presentations on various climate change criticisms. 
+  %\item Shiny app templates that might be used as a container for interactive content.
+\end{itemize*}
+
+\subsection{Learning Goals}
+
+For this project, you will use weather data to the question "do weather changes matter". How you answer the question is largely up to you, however, there are some learning goals associated with this project:
+
+\paragraph{Skills}
+
+\begin{itemize*}
+  \item Ability to download and process weather data;
+  \item evaluate temporal trends in weather data;
+  \item evaluate environmental impacts on human or non-human communities; and
+  \item communicate conclusions to the public with special attention to guide how data misinterpretations should be considered.
+\end{itemize*}
+
+\paragraph{Content}
+\begin{itemize*}
+  \item Understand how data climate data is currated;
+  \item Analyze climate impacts from around the world.
+\end{itemize*}
+
+Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and present the results ot the public.
+
+\section{Project Stages}
+
+\subsection{Expert Groups}
+
+NOTE: We already did this with our short presentations on the 1st of December. (The topics below were place holders before each of you selected topics of interest.)
+
+Each of us form an essential component for the effort. Organized as teams and expert groups, we will disassemble the project into chunks that each of us will contribute in specific and effective ways.
+
+For this project, the following students have been assigned to the teams below:
+
+<<echo=F, results = 'asis'>>=
+library(xtable)
+students = c("Claudia", "Katharine", "Khalil", "Kelli", "Theadorea", "Viraj", "Mireya", "Marisa", "Olivia", "Yuxin", "Marc")
+team = c("1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "5")
+project1teams <- data.frame(Member=students, Team=team)
+xtable(project1teams)
+@
+
+We will develop expert groups on to present the following topics:
+
+\begin{enumerate}
+  \item Temperature Record
+  \item Radiative Gases
+  \item Emissions 
+  \item Water
+  \item Warming 
+\end{enumerate}
+
+\subsection{Regional Climate Analysis}
+
+\begin{enumerate*}
+
+  \item Download and analyze data (i.e. make inferences) to create an public product; I have uploaded all the climate data on a network drive, \url{//fargo/classes/EA30-LosHuertos}{//fargo/classes/EA30-LosHuertos}
+  
+  \item Evaluate peer reviewed articles to determine potential ecological, economic, and sociological implications of climate patterns; 
+  \item Write report to describe results; and
+  \item Propose what makes a good public product with respect to criticisms of climate science debates and criticisms. In other words, describe (2-3) ways that climate change skeptisism might misuse the data analysis and how one might prevent the misuse.
+\end{enumerate*}
+
+Useful sites: \href{http://www.climatecentral.org/news/the-heat-is-on}{http://www.climatecentral.org/news/the-heat-is-on}
+
+\section{Product}
+
+The Blog will be due XX pm, Feb. XX :-)
+
+\begin{itemize}
+  \item Time series graph of temperture data from a specific region using R; 
+  \item Evaluation of data to determine if trends exists;
+  \item Compare results to model predictions and possible ecological and economic implications to the region; 
+  \item Describe how the data should be presented, e.g. how the data should be interpreted, and how to avoid misinterpretations that are present in the popular culture.
+  
+\end{itemize}
+
+\section{Grading}
+
+\begin{table}
+\begin{tabular}{lll}\hline
+Product                 & \% of Project   & Due Date \\\hline\hline
+Background Presentation & 25\%            & Feb. 6th \\
+Blog                    & 25\%            & Feb. 13th \\
+Op Ed                   & 25\%            & Feb. 20th \\
+Q \& A Session          & 25\%            & TBD \\ \hline
+
+\end{tabular}
+\end{table}
+
+\subsection{Background Presentation}
+
+\begin{itemize}
+  \item Prepare an outline to summarize the data and citations as a reference for peers (2017);
+  \item Make an organized presentation that effectively communicates how various scientific arguments have been distorted and politicized;
+  \item Identify how conventional scientific standards have been comprimised; and
+  \item Use the allotted time effectively. 
+  
+\end{itemize}
+
+
+\subsection{Blog (2016)}
+
+\begin{itemize}
+  \item Describe the economic, cultural, and physical geography of the region;
+  \item Describe climate patterns;
+  \item Effectively display climate patterns from NOAA repositories, with at least 6 decades of data. Be sure all graphics are appropriate labeled and have captions that the reader can use to intrepret the data;
+  \item Analyze the data using a linear model using R (i.e. lm);
+  \item Describe the methods used to obtain and analyze the data; and
+  \item Evaluate peer review literature to determine potential regional impacts from climate change -- be sure to include ecological and economic impacts; 
+  \item Cite instances of how various scientific arguments have been distorted and politicized;
+  \item Identify how conventional scientific standards have been compromised and how arguments that might be based on distortions can be countered.
+\end{itemize}
+
+
+\subsection{Blog (2017)}
+
+To be developed
+
+\subsection{Op Ed (2017)}
+
+To be developed
+
+\subsection{Oral Presentation}
+
+Students will present a summary of their written report during the last week of classes. 
+
+The 10 minute presentation will include the following:
+
+\begin{itemize}
+  \item Geographic description of region;
+  \item Demographics and a brief history;
+  \item Summary of economic geography;
+  \item Available data records;
+  \item Summary of data analysis;
+  \item Climate model implications for the region; and
+  \item Analysis of political-science debate in region.
+  
+\end{itemize}
+
+
+\newpage
+\subsection{Oral Presentation--Peer Evaluation}
+
+\bigskip
+Evaluator: \rule{7cm}{0.4pt}
+
+\bigskip
+
+\noindent Presenter: \rule{7cm}{0.4pt}
+
+\begin{enumerate}
+ \setlength\itemsep{4em}
+  \item Describe two items you learned.
+  \item Describe one concept or fact you would like to learn in more detail.
+\end{enumerate}
+
+
+\begin{table}[ht!]
+\caption{Please circle the best response, where one is inadequate and five is outstanding---i.e. should be teaching the topic!}
+\begin{tabular}{|p{4in}|ccccc|}\hline
+How clear was the presentation?     & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Did the analysis seem valid?        & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Was information complete enough?            & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+To what extent could you use this example in climate discussions?            & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+\end{tabular}
+\end{table}
+
+
+\end{document}

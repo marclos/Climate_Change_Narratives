@@ -1,0 +1,130 @@
+\documentclass{article}
+\usepackage{hyperref}
+<<>>=
+
+@
+
+\title{SOP 84: Obtaining Climate Records}
+\author{Marc Los Huertos}
+
+\begin{document}
+\maketitle
+
+\section{Terrestrial Meteorological Data}
+
+\subsection{Selected History of Meteorology}
+
+In 1607, Galileo Galilei constructed a thermoscope, but it wasn't until 1654, that Ferdinando II de Medici established the first weather observing network, consisting of meteorological stations in Florence, Cutigliano, Vallombrosa, Bologna, Parma, Milan, Innsbruck, Osnabrück, Paris and Warsaw. The collected data were sent to Florence at regular time intervals. In 1714, Gabriel Fahrenheit created a reliable scale for measuring temperature with a mercury-type thermometer. In 1742, Anders Celsius, a Swedish astronomer, proposed the ``centigrade" temperature scale, the predecessor of the current Celsius scale.
+
+The arrival of the electrical telegraph in 1837 afforded, for the first time, a practical method for quickly gathering surface weather observations from a wide area. This data could be used to produce maps of the state of the atmosphere for a region near the Earth's surface and to study how these states evolved through time. 
+
+To make frequent weather forecasts based on these data required a reliable network of observations, but it was not until 1849 that the Smithsonian Institution began to establish an observation network across the United States under the leadership of Joseph Henry. Similar observation networks were established in Europe at this time. 
+
+\subsection{Purpose}
+This document is a guide for getting started on the climate data analysis project. Here you will find: 
+\begin{itemize}
+\item different sources for climate data
+\item a description of how to download/access the data
+\end{itemize}
+\subsection{Climate Data Online (CDO) system}
+
+Climate Data Online (CDO) provides free access to the National Climate Data Center's archive of global historical weather and climate data in addition to station history information. These data include quality controlled daily, monthly, seasonal, and yearly measurements of temperature, precipitation, wind, and degree days as well as radar data and 30-year Climate Normals. 
+
+There are several ways to obtain online climate data and the CDO-web interface is probably the easiest, using the following URL: \url{https://www.ncdc.noaa.gov/cdo-web/}. 
+
+Climate data, such as temperature and precipitation are recorded at each station -- so these are the observational units we will generally be interested in for our analyses. Even if you don't have a location of interest nailed down, this interface can help you find sites and evaluate the length of their records. For the purpose of our project we reccomend picking a site that has data going back at least into the the 1940's as it might be difficult to come up with insightful observations about sites with less data. 
+
+Below is a description of the steps to get data from the site:
+
+\begin{description}
+  \item[Follow Link] Click on the following link to reach the CDO website: \\ \url{https://www.ncdc.noaa.gov/cdo-web/} 
+  \item[Click Browse Datasets] after clicking the icon you should see a list of available data sets by type
+  \item[Expand Link] Daily Summaries
+  \item[Select the Search Tool] additionally, you can use the mapping tool to evaluate which areas of the globe have available datasets but if you have a particular area in mind it might be easiest to search for it using the search tool
+  \item[Specify Parameters] \hspace{30mm}
+    \begin{itemize}
+    \item ensure that ``Daily Summaries'' is selected from the dropdown menu in \textbf{Select Weather Observation Type/Dataset}
+    \item in \textbf{Select Data Range} use the calendar tool change the start date to earliest date available (It should be January 1, 1763) and the end date to the most recently available date. This will enable you to see how far back the data record for the station goes.  
+    \item in the drop down menu \textbf{Search For} select whether you want to search for climate data by country, state, county, zip code etc. Select the appropriate option for the search term that you will enter in the box below. \\ For example if you want to search for climate data in your hometown, you might consider searching by state or county and then typing in the name below
+    \item in the \textbf{Enter a Search Term} box, type in the name of the county, state or other possible identifier of the place for which you would like to find a climate record.
+    \end{itemize}
+
+  \item[Start Search] Once you have initiated a search, the next window will give a list of records -- click in these records to see what they might be composed of. Then decide which station you will want to evaluate.
+  \item[Add to Cart] Don't worry, there is no charge. 
+  \item[View All items] Once you have added the climate record to your cart you should see an orange box pop up on the top left corner that says ``Cart (Free Data) 1 item." Mouse over the box after which you should have the option to click ``view all items".
+  \item[Select Cart Options] in \textbf{Select the Output Format} be sure to click the button for \textbf{Custom GHCN-Daily CSV} to ensure that the data file is delivered as a .csv file (comma separated values)
+  \item[Click `Continue' Button]
+  \item[Station Detail \& Data Flag Options] Change to metric
+  \item[Select Data Types] be sure to check the boxes for precipitation and temperature to include these in the data sets
+  \item[Click `Continue' Button] NOTE: Common Errors:
+Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 1,000 Station Years. Please select fewer stations/locations, or reduce the date range.
+
+If you get this error, you need to reduce the number of stations selected or make the date range smaller.
+  
+  \item[Complete Order] Type in your email address and you will get a confirmation email relativley soon... the data may take up to a couple days to be delivered but are usually delivered within a couple hours.
+\end{description}
+
+
+\subsubsection{Evaluating the Data}
+
+Once you get the data, we'll need to evaluate what we have and format it for our purposes. Often you'll find problems when you begin analyzing it, but it's good to understand the structure of the data before you run into problems. 
+
+The CHCND documentation helps us to understand the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
+
+\subsection{Historical Climatology Network-Daily (GHCN‐D) data}
+
+Alternatively, one can use the FTP site to access the data in a different format (e.g. dyl). The site's url is \url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}. 
+
+In addition, the CHCND documentation, as noted above, is very helpful in understanding the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
+
+\subsection{rnoaa library tools}
+
+There is a relatively new tool to access NOAA data using an R package, called \texttt{rnoaa}. To use the tool, several dependent packages need to be installed and loaded, including \texttt{rNOAA}. Next users need to get an API code, which can be easily done by following the instructions described by this link: \url{https://www.ncdc.noaa.gov/cdo-web/token}.
+
+Using the \texttt{rnoaa} package is relatively strait foreward, although I have been getting timeout errors that I can't solve. 
+
+Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.html}.
+
+%First, we prepare R by loading two libraries that we'll use to download (\texttt{rNOAA}) and manipulate (\texttt{plyr}) the data.
+<<library>>=
+library(plyr)
+library(rnoaa)
+@
+
+<<echo=FALSE>>=
+options(noaakey = "qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb")
+@
+
+\subsubsection{List of Cities}
+
+rNOAA has a simple function to list the cities:
+<<>>=
+ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
+@
+
+The function queries the NOAA website and retrieves city names and the dates of the climate records. Importantly, the records include the station ID, which can be used to college the data for that city. 
+
+%NOTE: By default 25 records (cities) are retrieved. See \texttt{?ncdc_locs} to learn how to include arguments to obtain more records.  
+
+NOTE2: It would be nice to make a map of how concentrated the stations spatially. 
+
+\subsubsection{Getting Data}
+
+%Using the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
+<<>>=
+ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00084289')
+@
+
+\subsection{Evaluating Records}
+
+\subsection{Export Options}
+
+\section{Sea Surface Temperature Data}
+
+\section{Satellite Data}
+
+\section{Ice-Core Data}
+
+
+
+\end{document}

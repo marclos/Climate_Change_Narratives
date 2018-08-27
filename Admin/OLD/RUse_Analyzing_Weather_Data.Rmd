@@ -1,0 +1,371 @@
+---
+title: "Using R to Process Weather Data"
+author: "Marc Los Huertos, EA30 Fall 2016"
+date: "7/20/2016"
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(reshape2)
+source("summarySE.R")
+```
+# R Resources for Climate Data
+
+## Tutorials and Libraries
+
+Numerous resources are available that might help us (beside this document!) access and process weather data. 
+
+Here is a preliminary list: 
+
+* [R Blogger to Access, Clean, and Plot NOAA tempeature data](http://www.r-bloggers.com/accessing-cleaning-and-plotting-noaa-temperature-data/)
+* Next...suggestions?
+
+# Accessing the Data
+
+## What sites are available for downloading the data?
+
+* [NCDC--NOAA Datasets](https://www.ncdc.noaa.gov/cdo-web/datasets)
+
+For this project, the Global Historical Climate Network may be the most useful data, which can be downloaded from the following an [ftp site](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/), where I downloaded the entire dataset for the class!
+
+# Stations in NOAA Database
+
+## NOAA isd-history 
+NOAA has a list of sites in the [isd-history](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt) , but I have not investigated the source of the data or how this fits with other datasets.
+
+Note: read.fwf generates unknown variable "X1", "X2", etc.
+
+```{r otherstuff, echo=F, warning=F, message=F}
+library(raster)
+library(XML)
+
+# Data installed from ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt
+
+coords.fwt <- read.fwf("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/isd-history.txt",widths=c(6,1,5,1,38,7,1,8,9,8,1,8),sep=";",skip=22,fill=T)
+Names = c("USAF", "X1", "WBAN", "X2", "STATION_NAME", "X3", "CTRY", "X4", "ST", "X5", "CALL", "X6", "LAT", "X7", "LON", "X8", "ELEV", "X9", "BEGIN", "X10", "END")
+Widths = c(6,       1,    5,      1,        29,         1,    2,      3,    2,    1,    4,      1,    8,     1,     8,    1,    7,     1,     8,      1,    8)
+
+coords.fwt <- read.fwf("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.txt",widths=Widths,sep=";",skip=22,fill=T); names(coords.fwt)=Names; coords.fwt[c(30,4000,20000),]
+
+coords <- data.frame(ID=paste(as.factor(coords.fwt[,1])),WBAN=paste(as.factor(coords.fwt[,3])),Lat=as.numeric(paste(coords.fwt$LAT)),Lon=as.numeric(paste(coords.fwt$LON)));  coords[c(30,4000,20000),]
+```
+
+## Map of Weather Stations (source: NOAA ISD??)
+```{r NOAApoints}
+plot(Lat ~ Lon, data=coords, xlim=c(-180, 180) )
+```
+
+# Download Weather Data
+
+## Identify URLs for data source
+
+Once finding data sources, you might find URLs with ftp or http protocols -- it shouldn't matter which type you find. 
+
+For example, using the NOAA's website, I found the following URL, [ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/), to download data from the Global Historical Climatalogical Network (GHCDN), where an entire dataset can be downloaded. 
+
+Alternatively, another [NCDC-NOAA Directory](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/) seems to have data by year. But please look at the [readme.txt](ftp://ftp.ncdc.noaa.gov/pub/data/noaa/readme.txt) that describes the data and let me know and I will make a note of what it contains.
+
+## GHCND Data
+
+One major source of data is the GHCND. I downloaded the file to my computer, then uploaded some example data into the R project Data directory.
+
+```{r tarfile, echo=T}
+gzfile = "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd_all.tar.gz"
+```
+
+The file source URL is `r gzfile`. There are two things  you should note about this file. 
+
+1. It's located on an ftp ("file transfer protocol"), where one can create automatic update scripts to avoid analyzing out of date files.
+2. It is compressed (gz and tar are compression methods.) Thus, the file required some pre-processing, in particular, to uncompressed.
+
+## How to Uncompress Data
+
+Files storing centuries of weather data from thousands of sites can become quite large. Thus, the files are compressed. There are a number of compression methods, available, e.g. zip, gz, and tar. Fortunately, we can use R to uncompress a range of compressed file types.
+
+Examples of functions to uncompress data:
+
+```{r uncompress, eval=FALSE}
+# Uncompress the files.
+untar(gzfile, files="Data")
+```
+
+It takes a while (2+ hours) to uncompress (first gz -> tar -> readable files), so I have done that already and loaded some of the data into the github site.
+
+```{r listdlys, echo=F}
+list.files("../Climate_Change_Narratives/Data", pattern= "*.dly")
+```
+
+```{r stationfile}
+stationfile = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/ghcnd-stations.txt"
+```
+
+## Regional Datasets--Finding Stations
+
+Since we are interested in a more regional approach, you may want to find a less daunting file.
+
+```{r readinginputdata}
+# read.table(stationfile, header=F, fill=T, row.names=NULL); head(stations)
+stations = (read.fwf(stationfile, fill=T, widths= c(11, 9, 10, 7, 3, 32, 3, 4, 9), ))
+```
+
+# Processing Imported Data
+
+## Creating Variable Names
+
+Since the data don't come with headers (variable names), we need to assign them. This can be a long and frustating activity. Below, I did some mettling to attempt this.
+
+```{r creatingvariablenames, echo=T}
+names(stations)= c("ID", "LAT", "LONG", "ELEV", "STATE", "NAME", "GSN", "HCN_CRN", "WHOID")
+```
+## Stations with Assign Variable Names
+```{r stationheader}
+head(stations)
+```
+
+## Structure of imported data
+
+The structure of the object we created is shown below. Note the object is a dataframe with 100747 daily observations.
+
+```{r dataframestructure}
+str(stations)
+```
+
+## Records from One Location
+Here's an example of data from Arizona
+
+```{r Arizona}
+stations[stations$ID=="US1AZMR0019",] 
+# head(stations[stations$HCN_CRN==" CRN",])
+```
+Now we can locate the site location from this file.
+
+## Getting Weather Data from Specific Locations
+
+Copy the URL into a clipboard and then create a object with the link, so let's download the Arizona file. 
+
+```{r sourcefile}
+sourcefile ="TBD??"
+```
+
+### Create a Folder for Data
+Once a site URL has been identified, we can use R to download the data into a specific directory. I suggest you create a subdirectory within Data that you can track and store your data. 
+
+### Download the Data
+
+Note: The site can stall, so be careful when trying to download large files via web browers.
+
+# Reading Data into R
+
+## What is the data format?
+
+Before reading data, we need to determine the file structure. For example, XX data has the following format, where headers are lost and each column is separated by tabs that are lost in text rendions. Thus, we'll need a key to intepret the data.
+
+AG000060680  22.8000    5.4331 1362.0    TAMANRASSET                    GSN     60680
+
+Thankfully, there is a [readme.tex file](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt) that provides a key to the file structure. I suggest you read it carefully and to understand what is in the database.
+
+## File Structure Keys
+
+Although these keys are a bit daunting to read at first, we will appreciate the consistancy soon! Below is the structure of dly files, which is cut off, so be sure the check out the readme.txt file for a complete list: 
+
+| Parameter   | Columns | Variable Type |
+|-------------|---------|---------------|
+|ID           | 1-11    | Character     |
+|YEAR         | 12-15   |Integer |
+|MONTH        |16-17    |Integer |
+|ELEMENT      |18-21    |Character |
+|VALUE1       |22-26    |Integer |
+|MFLAG1       |27-27    |Character |
+|QFLAG1       |28-28  | Character|
+|SFLAG1       |29-29 |  Character|
+|VALUE2       |30-34  | Integer|
+|MFLAG2       |35-35 |  Character|
+|QFLAG2       |36-36  | Character|
+|SFLAG2       |37-37 |  Character|
+|  .          | .         | .|
+|  .          | .        |  .|
+|  .          | .       |   .|
+|VALUE31    |262-266   |Integer|
+|MFLAG31    |267-267   |Character|
+|QFLAG31    |268-268   |Character|
+|SFLAG31    |269-269   |Character|
+
+
+
+# Processing Data
+
+## Creating Loops
+I often forget how to make loops, so I often use simple examples that help me remember, for example, 
+
+```{r practiceloops}
+# practicing loops
+for (year in c(2010,2011,2012,2013,2014,2015)){
+  print(paste("The year is", year))
+}
+```
+
+Since the data have a re-occuring set of variable names, I decided to create a vector of variable names, many of which are nearly the same. So, as you'll see, I had to create a loop to avoid having to type a ton (or 31 :-)) of different variables.
+
+```{r newvariables}
+# Create New Varible Names
+MFLAG=NA; QFLAG=NA; SFLAG=NA; VALUE=NA
+for (i in 1:31){
+VALUE[i] = paste("DATE", i, sep="")
+MFLAG[i] = paste("MFLAG", i, sep="")
+QFLAG[i] = paste("QFLAG", i, sep="")
+SFLAG[i] = paste("SFLAG", i, sep="")
+}
+
+# Vector of variable names converted from a transposed matrix
+tmp = as.vector(t(matrix(data=c(VALUE, MFLAG, QFLAG, SFLAG), ncol=4)))
+Names = c("ID", "YEAR", "MONTH", "ELEMENT", tmp); length(Names)
+```
+
+# Process Selected Data Files
+
+## Reading .dly file into R
+
+Now that we have a good idea of what these files look like, I have created a loop to read the files and select the rows where the maximum temperature was recorded ("TMAX"). 
+```{r processing}
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data")
+getwd()
+dly_list = list.files(pattern="*.dly"); head(dly_list)
+#for (i in 1:length(dly_list)) 
+for (i in 2:2){
+tmp <- read.fwf(dly_list[i], widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
+names(tmp) <- Names
+assign(dly_list[i], subset(tmp, ELEMENT=="TMAX", select=c(1:4, seq(5, by = 4, length.out=31))))
+}
+```
+
+
+USE Internet Explorer
+
+ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all/
+
+file.choose()
+file = ""
+tmp <- read.fwf(file, widths = c(11, 4, 2, 4, rep(c(5, 1, 1, 1),31)))
+
+Once the file has been read, then I modified the file to make it useful, where I needed to re-arrange the file so we don't have a months across the top, but as rows. 
+
+```{r melt, warning=F}
+tmp1 = melt(AGM00060515.dly, id=c("ID", "YEAR", "MONTH", "ELEMENT"))
+head(tmp1)
+tmp1$Day = as.numeric(str_sub(tmp1$variable,6,7)); head(tmp1)
+tmp1$value[tmp1$value==-9999] = NA; head(tmp1)
+tmp1$Temperature = tmp1$value/10
+
+drops <- c("variable","value")
+tmp1 <-tmp1[ , !(names(tmp1) %in% drops)]
+tmp1$DECADE = round(tmp1$YEAR, -1)
+# names(tmp1)
+```
+
+Now the data is ready to be visualized!
+
+# Presenting the Results
+
+## Summarizing the Results
+
+```{r summarySE, warning=F, message=F}
+# called summarySE function
+summarydf <- summarySE(tmp1, "Temperature", "DECADE", na.rm=T)
+```
+
+## Using ggplot2
+
+The ggplot2 library is relatively new to me, so I am sure we can make some icremental improvements as the semester progresses. First, let's load the library.
+
+```{r ggplot2library}
+library(ggplot2)
+```
+
+## Creating a Figure 
+
+```{r presenting}
+# Think the color=DECADE thing can be deleted, but I haven't tried it yet. In any case, the legend is lame and I need to get rid of it!
+
+ggplot(summarydf, aes(y=Temperature, x=DECADE, color= DECADE)) + geom_errorbar(aes(ymin=Temperature-se, ymax=Temperature+se), width=.2) + geom_line() + geom_point()
+
+```
+
+# Creating a Shiny App
+
+## Create a Regression Line 
+
+```{r PreparingRegressionData}
+names(tmp1)
+
+tmp1$Date = as.Date(with(tmp1, paste(MONTH, Day, YEAR, sep="/")), "%m/%d/%Y"); names(tmp1)
+```
+
+## Draft Plot
+
+```{r draftregression}
+plot(Temperature ~ Date, data=tmp1, las=1, pch=20, col="gray")
+
+bestfit = lm(Temperature ~ Date, data=tmp1)
+abline(coef(bestfit), col="red", lwd=2)
+xcoord = min(tmp1$Date, na.rm=T); ycoord=min(tmp1$Temperature, na.rm=T)+10
+
+text(xcoord, ycoord, coef(bestfit)[2])
+```
+
+## Creating Flexible Dates
+
+Create a range of inputs -- by year.
+
+```{r FlexibleInputs}
+
+yrmin = 1990
+yrmax = 2000
+
+#tmp1 %>% filter(DECADE > min, na.rm=T)
+#head(filter(tmp1, YEAR >= 2014))
+tmp2 = filter(tmp1, YEAR >= yrmin & YEAR <= yrmax)
+tmp2 <- tmp2[!is.na(tmp2$Date),]
+head(tmp2)
+```
+
+## Create Update-able Plot
+
+```{r plot2}
+plot(Temperature ~ Date, data=tmp2, las=1, pch=20, col="gray")
+
+bestfit = lm(Temperature ~ Date, data=tmp2)
+abline(coef(bestfit), col="red", lwd=2)
+xcoord = min(tmp2$Date, na.rm=T); ycoord=min(tmp2$Temperature, na.rm=T)+10
+
+delta = coef(bestfit)[2]/(yrmax-yrmin)*100
+text(xcoord, ycoord, delta)
+
+```
+
+# Next Steps
+
+## Developing a Shiny App
+
+1. Pass Data to Shiny
+
+```{r writecsv}
+filename = "Data/XYZ_dly.csv"
+write.csv(tmp1, filename)
+```
+
+## Create Reactive Inputs
+
+2. Create Input Slider for min and max years
+3. Create text to decribe results that are readable!
+4. Add "output" to html text.
+
+
+
+
+

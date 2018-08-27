@@ -1,0 +1,356 @@
+---
+title: "Importing and Processing CSV Files"
+author: "Marc Los Huertos"
+date: "12/6/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Importing CSV Files
+
+First, we will import the CSV file. In most cases, we don't need to preprocess the csv files. 
+```{r importingCSV}
+# Importing Scripts
+
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/Los Angeles_878024.csv"
+
+import = read.csv(file)
+```
+
+## Checking the Data
+
+```{r checking}
+plot(TMAX~DATE, import)
+```
+
+What's going on?  What is the deal with the -9999? These are used for missing data. We need to remove them!
+
+```{r missings}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+
+Okay, now we'll check again, for dates less then Dec. 31, 1913:
+```{r}
+plot(TMAX~DATE, import[import$DATE<19131231,], ty='l')
+```
+
+Yikes! What's wrong? As it turns it the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition: 
+
+19131231 -> 19140101, if you use these as numbers it should be 19131232, 19131232, etc. You see we are missing lots numbers!
+
+
+```{r}
+plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+```
+
+## Fixing the Dates
+
+First, we convert the date a string or character values. Next, we'll convert the strings to a data format. 
+
+```{r}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+## Checking the New Dates
+```{r}
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l')
+```
+## Subset Sites
+
+Olivia has two sites in here data, so, we need to subset it.
+
+```{r}
+unique(import$STATION_NAME)
+```
+
+Let's choose the FAIRPLEX NY US because the record is longer than the airport.
+
+```{r}
+LosAngeles <- subset(import, STATION_NAME=="LOS ANGELES DOWNTOWN USC CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+
+
+## A new plot
+```{r}
+plot(TMAX~NewDate, LosAngeles, ty='l')
+```
+
+## Evaluating the trend
+
+Creating a linear model and then evaluate the rate (slope). 
+```{r}
+# Linear Model
+LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
+summary(LosAngeles.lm)
+plot(TMAX~NewDate, LosAngeles, ty='l')
+abline(coef(LosAngeles.lm), col='red')
+```
+
+## Creating Month and Year Variables
+
+So, let's figure out how to see how changes happen for individual months.
+```{r}
+# Get months
+LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
+LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
+LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
+```
+
+### Creating Monthly Means
+```{r creatingmonthlymeans}
+MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(TMAX ~ Month + Year, LosAngeles, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+
+
+```{r plottingMonthyMeans}
+plot(MonthlyMean$TMAX, ty='l')
+
+```
+below is sd
+```{r plottingMonthySD}
+plot(MonthlySD$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+```{r TestingTAvg}
+
+plot(TAVG~ NewDate, import, ty='l')
+TAVG.lm <- lm(TAVG~NewDate, import)
+summary(TAVG.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+
+### Selecting for 1 Month -- May
+
+Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
+
+```{r May}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="05",])
+summary(May.lm)
+
+
+
+
+
+abline(coef(May.lm), col="red")
+
+
+
+```
+```{r June}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="06",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+```
+
+Now, the change is `r coef(May.lm)[2]` degress/year or `r round(coef(May.lm)[2]*100, 3)` degress/100 years (YIKES!) with a probability of `r round(summary(May.lm)$coefficients[2,4],4)`. Although we can't reject the null hypothesis, it is worrying!
+
+## Next Steps
+
+I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!
+
+## Lets try Dec
+
+```{r Dec}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(May.lm)
+
+abline(coef(May.lm), col="blue")
+```
+
+
+```{r}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+## TMIN
+
+1. We create a monthly mean for each month.
+
+```{r}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
+
+2. Now we plot the mins, and again, find tons of scatter.
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="12"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",], ty='l') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+
+3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. Cool! As we might expect, the a small amount of the variance is explained by the "Month". Many things predict temerpature, that year is one, is quite problematic.
+
+4. What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
+
+# Monthly Mean Minimum Temperature - August
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='p')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="8"], ty='p')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="8",], ty='p') 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="green")
+
+```
+
+
+
+
+# Monthly Mean Maximum Temperature - November
+
+```{r November}
+plot (TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
+November.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
+summary(November.lm)
+
+abline(coef(November.lm), col="yellow")
+```
+
+# Departure from Mean
+
+```{r}
+PRCP_mean = mean(LosAngeles$PRCP, na.rm=T)
+
+plot(PRCP~NewDate, data=LosAngeles)
+abline(h=PRCP_mean, col="blue")
+
+```
+
+
+## Experimental Portion --- Precipitation
+
+Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
+
+First, we need a "mean" -- The IPCC uses 1961-1990 as a norm, I don't know what is the standard for California, so we should look that up.
+
+Second, we need to remove the missing values and evalaute which years have complete years. If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season?  
+
+Third, we will need to decide what level of aggredation -- monthly, yearly, etc. 
+
+Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
+
+
+```{r}
+LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
+YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$PRCP)
+```
+
+A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
+
+Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
+```{r}
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+The model suggests that the precipitation is declines at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
+
+```{r}
+summary(YearlySum.lm)
+```
+
+Other attempts that didn't work!
+```{r}
+YearlySum2 = subset(YearlySum, select=c(PRCP))
+YearlyMean = mean(YearlySum2$PRCP)
+
+#filter(YearlySum2)
+
+
+
+#Doesn't work...
+# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
+# ma(YearlySum$PRCP)  
+
+
+yearlyts =ts(YearlySum2) 
+str(yearlyts)
+
+
+
+
+```
+yearlyts.lag = lag(yearlyts, 5)[6:112,]; head(yearlyts.lag)
+
+plot(yearlyts, lty = 1, col = 3)
+
+lines(yearlyts.lag)
+
+YearlySum$Departure = YearlyMean - YearlySum$PRCP
+YearlySum$YEAR = as.numeric(YearlySum$Year)
+
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="l")
+abline(h=YearlyMean, col="blue")
+
+lines(Departure ~ YEAR, data=YearlySum, col="red")
+
+
+
+
+
