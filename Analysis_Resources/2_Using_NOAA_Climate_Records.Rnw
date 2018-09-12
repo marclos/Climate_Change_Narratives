@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\title{Using NOAA Climate Records}
+\title{Reading and Processing NOAA Climate Records in R}
 \author{Marc Los Huertos and Isaac Medina}
 
 \begin{document}
@@ -30,9 +30,9 @@ where you fill in your firstname and a short descriptor for the region to which 
 Now follow these steps to upload the data into the Rstudio server:
 
   \begin{enumerate}
-  \item In Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} using the \textit{Files} tab in the lower right navigation GUI (Window 4 from SOP 06)
-  \item Navigate to the folder entitled \textbf{``Data"} 
-  \item Next click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
+%  \item In Rstudio click on the folder entitled \textbf{``Climate\_Change\_Narratives"} using the \textit{Files} tab in the lower right navigation GUI (Window 4 from SOP 06)
+%  \item Navigate to the folder entitled \textbf{``Data"} 
+%  \item Next click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
   \item Use the upload button to select a file from your computer to upload into the rstudio server
   \begin{figure}[h]
   \includegraphics[scale=0.25]{"../graphics/Upload_button"}
@@ -42,7 +42,7 @@ Now follow these steps to upload the data into the Rstudio server:
   
   \end{enumerate}
 
-Your data file is now uploaded to the Rstudio server! All this means is that the actual file is in your workspace on the server. This however, doesn't mean that the file has been uploaded (or ``pushed") to the repository on Github.com. If Marc has added you as a collaborator already now would be a good time to go through the process of pulling, committing and pusing with Git. Ask Marc to guide you through this in lan, and continue to the next section. 
+Your data file is now uploaded to the Rstudio server! All this means is that the actual file is in your workspace on the server. %This however, doesn't mean that the file has been uploaded (or ``pushed") to the repository on Github.com. If Marc has added you as a collaborator already now would be a good time to go through the process of pulling, committing and pusing with Git. Ask Marc to guide you through this in lan, and continue to the next section. 
 
 
 %\subsection{Preprocessing CSV files}
@@ -95,7 +95,6 @@ climate_data <- read.csv(''the/file/path'')
 What this command is essentially doing is it's telling R to read the file and store it in an object called climate\_data ... if we really wanted to we could have actually named the object something else but climate\_data will suffice for now. \\ 
 
 In R usually ``no news is good news" after you hit enter on a command. In other words, if you don't get red colored text describing an error, the program did something -- but now we need to figure out if it did something useful! Luckily there is a way to check if your command was successful in creating your object. All you have to do is check the \textbf{Environment} tab (in window 2). You should see your data object: climate\_data listed there. 
-
 
 
 \section{Confirming the Proper Reading of the CSV file}
