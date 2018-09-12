@@ -114,9 +114,9 @@ file.choose()
 \begin{itemize} 
 \item press enter on your keyboard
 \item in the resulting popup window navigate to the your saved data file and \textbf{double click} on it
-\item Look at the console window.. under the command that you just typed you should now see a data path. The data path should look something like this: ``/home/CAMPUS/im022012/Climate\_Change\_Narratives/Data/test\_data/Singapore\_ClimateData.csv"  It is the location of where your file is saved on the server. I suggest you truncate it to the path that after the home directory, i.e. ''Data/test\_data/Singapore\_ClimateData.csv''.
+\item Look at the console window.. under the command that you just typed you should now see a data path. The data path should look something like this: ``/home/CAMPUS/im022012/Singapore\_ClimateData.csv"  %It is the location of where your file is saved on the server. I suggest you truncate it to the path that after the home directory, i.e. ''Data/test\_data/Singapore\_ClimateData.csv''.
 
-\item \textbf{Copy} the data path (including the parenthesis)
+\item \textbf{Copy} the data path (including the quotation marks)
 \end{itemize}
 
 \subsection{Telling R to Read the Data File}
@@ -344,60 +344,47 @@ To create a new format, we have to complete a few steps. Unfortunately, date for
 First, we convert the date to a string of character values. Next, we'll convert the strings to a data format. But we need to determine which type of data format we have from the following three choices then we can make the conversion:
 
 \begin{description}
-  \item[MM/DD/YYYY] This is a standard data for many US stations.
+  \item[MM/DD/YYYY] This is a standard data for many US stations. To convert the dates, we first create a vector of just the dates. Then, we can reformat the dates using the syntax below:
   
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(climate_data}\hlopt{$}\hlstd{DATE)}
-\hlkwd{head}\hlstd{(strDates)}
-\end{alltt}
-\begin{verbatim}
-## [1] "19620512" "19620516" "19620605" "19621006" "19621007" "19621012"
-\end{verbatim}
-\begin{alltt}
+
 \hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%m/%d/Y%"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-  \item[MM-DD-YYYY]
+Caution: Be sure the dates were actually converted correctly, using the \texttt{head()} or \texttt{str()} functions.
+
+
+\item[MM-DD-YYYY] Sometimes, the dates are formatted by month-day-year, where we can use the code below to reformat the dates:
+
   
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(climate_data}\hlopt{$}\hlstd{DATE)}
-\hlkwd{head}\hlstd{(strDates)}
-\end{alltt}
-\begin{verbatim}
-## [1] "19620512" "19620516" "19620605" "19621006" "19621007" "19621012"
-\end{verbatim}
-\begin{alltt}
-\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%m-%d-Y%"}\hlstd{)}
+
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%m-%d-%Y"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-  \item[YYYYMMDD] As it turns out the problem is that with how the dates are specified. In particular, the Dec 31 to Jan 1 transition. Let's say that the data have a year change between 1913 and 1914. The date format in the NOAA data are YYYYMMDD, or year, month, and day with 4, 2, 2 digits, respectively. Thus, the last day of 1913 is 19131231 or Dec, 31, 1913. The next day is January 1st or 19140101. But when you plot these on the x-axis, the order of the values should be $19131231 \rightarrow 19131232 \rightarrow 19131233 \rightarrow 19131234$, etc but there is no 32nd, 33rd or 34th of December. Instead the dates go from  $19131231 \rightarrow 19140101$. We have lots of numbers that are skipped, but no coded as missing, but missing all the same. So, now we need to convert our dates to something more sensible. In R, that means creating a variable with a format that expects dates, thus doesn't plot numbers that are impossible dates!
+\item[YYYYMMDD] In certain cases, the dates are formatted as a long number starting with year. Although these dates sort correctly, they create big gaps at the new year: Let's say that the data have a year change between 1913 and 1914. The date format in the NOAA data are YYYYMMDD, or year, month, and day with 4, 2, 2 digits, respectively. Thus, the last day of 1913 is 19131231 or Dec, 31, 1913. The next day is January 1st or 19140101. But when you plot these on the x-axis, the order of the values should be $19131231 \rightarrow 19131232 \rightarrow 19131233 \rightarrow 19131234$, etc but there is no 32nd, 33rd or 34th of December. Instead the dates go from  $19131231 \rightarrow 19140101$. We have lots of numbers that are skipped, but no coded as missing, but missing all the same. So, now we need to convert our dates to something more sensible. In R, that means creating a variable with a format that expects dates, thus doesn't plot numbers that are impossible dates!
   
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(climate_data}\hlopt{$}\hlstd{DATE)}
-\hlkwd{head}\hlstd{(strDates)}
-\end{alltt}
-\begin{verbatim}
-## [1] "19620512" "19620516" "19620605" "19621006" "19621007" "19621012"
-\end{verbatim}
-\begin{alltt}
+
 \hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{)}
-
-\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,} \hlstr{"%Y/%m/%d"}\hlstd{),} \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-  \item[Mixed Formats]... see Valentina's data!
+\item[Mixed Formats]... see Valentina's data!
 
 Doesn't seem to work, I had to brut force it... will work on this next summer!
 
@@ -412,7 +399,8 @@ Doesn't seem to work, I had to brut force it... will work on this next summer!
 ## [1] "19620512" "19620516" "19620605" "19621006" "19621007" "19621012"
 \end{verbatim}
 \begin{alltt}
-\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,} \hlstr{"%Y/%m/%d"}\hlstd{),} \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,}
+    \hlstr{"%Y/%m/%d"}\hlstd{),} \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -473,7 +461,7 @@ Now you will begin creating your blog by getting the commands you created before
   \item Fix the date formats.
   \item Create a figure of Tmax versus time (\texttt{plot()}).
   \item Overlay the best fit line (\texttt{abline()}, \texttt{coef()}, and \texttt{lm()}).
-  \item Go to SOP 90 to learn about how to analyze data.
+  \item Go to "Evaluating Monthly Trends using CHCN-Daily" to learn about how to analyze data.
   
 \end{enumerate}
 
