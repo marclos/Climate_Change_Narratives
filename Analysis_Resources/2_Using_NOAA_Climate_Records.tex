@@ -351,7 +351,7 @@ First, we convert the date to a string of character values. Next, we'll convert 
 \begin{alltt}
 \hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(climate_data}\hlopt{$}\hlstd{DATE)}
 
-\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%m/%d/Y%"}\hlstd{)}
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%m/%d/%Y"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}

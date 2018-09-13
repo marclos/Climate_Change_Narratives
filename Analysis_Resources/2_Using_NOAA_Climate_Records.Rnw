@@ -216,7 +216,7 @@ First, we convert the date to a string of character values. Next, we'll convert 
 <<>>=
 strDates <- as.character(climate_data$DATE)
 
-climate_data$NewDate <- as.Date(strDates, "%m/%d/Y%")
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 @
 
 Caution: Be sure the dates were actually converted correctly, using the \texttt{head()} or \texttt{str()} functions.
