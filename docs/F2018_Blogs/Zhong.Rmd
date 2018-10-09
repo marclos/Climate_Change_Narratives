@@ -18,3 +18,108 @@ According to the The American Heart Association:
 https://blissair.com/what-is-pm-2-5.htm 
 
 The EPA on December 14, 2014 strengthened air quality standards to reflect a 12μg/m3 primary annual standard with the annual safety 24-hour concentration of PM2.5 maintained at 35.4 μg/m3. PM2.5 levels above 35.4μg/m3 are considered unhealthy as demonstrated by the 2007 Southern California wildfires. 
+
+https://www.epa.gov/sites/production/files/2016-04/documents/2012_aqi_factsheet.pdf 
+
+24-Hour PM2.5 Standard (μg/m3)
+
+ 
+https://blissair.com/what-is-pm-2-5.htm 
+
+The Witch Fire was the second largest wildfire in the 2007 California wildfire season, claiming over 247,000 acres and 1,265 residential buildings https://en.wikipedia.org/wiki/Witch_Fire. It lasted from October 21, 2007 to November 13, 2007. It started in Witch Creek Canyon, near Santa Ysabel and spread throughout San Diego County. https://en.wikipedia.org/wiki/Witch_Fire. The Harris, Witch, McCoy Fire, Coronado Hills Fire, Rice, Poomacha, Ammo (Horno) Fire, and Wilcox Fire also were in San Diego County during this wildfire period. https://en.wikipedia.org/wiki/2007_California_wildfires 
+
+To study the effects of PM2.5 in the Witch Fire and surrounding fires, I looked at daily summaries from the “AQS Data Mart which contains ambient air pollution data collected by EPA, state, local, and tribal air pollution control agencies.” The data originally consisted of 6 monitoring stations in San Diego County, but Station 60731011 at Crestwood Rd, Boulevard, CA 91905, US was removed for lack of available data during the wildfire period.  https://www.epa.gov/outdoor-air-quality-data/download-daily-data   
+
+ 
+
+Strong Santa Ana winds pushed the fires west toward the coast forcing over 500,000 people to evacuate. On Monday, October 22, the Santa Ana winds peaked with sustained wind speeds of 90mph (140km/h). 
+
+Escondido, CA had the highest concentration of PM2.5 after 10/21 until 10/24, peaking at 126.2ug/m3 on Oct 24 while Main St, San Diego and Chula Vista peaked at 77.8 and 69.6, respectively on 10/24. 
+	Peak Date	Peak PM2.5 (ug/m3 LC)
+Escondido, CA 	10/21/2018-10/24/2018	124-126.2
+Main St, San Diego	24-Oct	77.8
+Chula Vista	25-Oct	69.6
+El Cajon 	2-Nov	35.5
+Hazard Way, San Diego	3-Nov	30.5
+
+
+ 
+Map of 2007 California wildfires as of 10/26/2007. The Harris, Witch, Rice, Poomacha, Horno, Wilcox, and Rosa Fires are also included. http://www.fireupdate.com/2007/2007maps.htm Monitoring stations added by Baili Zhong in blue. 
+https://drive.google.com/open?id=1iamjtnoH46clRmWGmxgovE_mn_TLmMRE&usp=sharing 
+
+
+
+*Stations are referred to by location and regarding proximity to fire as of 10/26 according to the above map.
+The Escondido, CA station had the closest proximity with a distance of about 2.41mi from the Witch fire perimeter and had the highest PM2.5 levels during most of the wildfire period from October 21, 2007 to November 13, 2007. As of 10/26, Chula Vista was 5.01mi from the Harris Fire and had the second highest peak on 10/25, followed closely by El Cajon which was 4.77mi away from the Harris Fire. The Hazard Way, San Diego station was 9.05mi from the Witch Creek Fire and 12.5mi away from the Harris Fire and had the lowest PM2.5 levels, only reaching 30.6ug/m3--below the 35.4μg/m3 24-hr safety threshold. However, Main St, San Diego was 9.29mi away from the Harris Fire but had the third highest peak of 69.6μg/m3 on 10/27.
+
+The Witch Fire perimeter was fully contained by November 6. By 11/11-11/12, Pm2.5 levels lowered to near 12μg/m3 primary annual standard levels, except for El Cajon which still had levels of 35.5μg/m3 on 11/11. 
+
+It is interesting that the PM2.5 levels for all 5 stations started rising after 11/17 when the fires were extinguished on 11/13. Furthermore, only by 12/8 did the last monitoring station, Escondido, reach safe levels under 35.5μg/m3. Only by 12/20 did PM2.5 levels decrease to 12μg/m3 primary annual standard levels. PM2.5 levels do not end with the quenching of wildfires but can fluctuate around unsafe levels for at least a month according to the 2007 Southern California wildfires. Closer proximity to wildfires usually leads to higher PM2.5 rates even a month after the fire has been put out. A study by https://www.sciencedirect.com/science/article/pii/S1104689916300174 estimates the medical costs of the 2007 Southern California wildfires to be $3.4 million. This cost does not consider the cost of mortality, symptoms not reported at local hospitals, or the costs of avoiding wildfire smoke. Wildfires cause serious health effects and can lead to higher hospital admissions and social consequences long after and before fire quenching—a topic further explored by Johnathan, Mia, and Mason.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Extra fire pictures that may or may not be included in the future. 
+http://www.fire.ca.gov/fire_protection/downloads/siege/2007/Overview_CompleteFinal.pdf 
+ Witch Fire 10/26
+http://www.fireupdate.com/2007/images/witch_1023_lg[1].jpg 
+ 
+ 10/26 Witch Fire
+http://www.fireupdate.com/2007/2007maps.htm 
+
+
+
+The below graph shows peak wind speeds around 10/22, the same day where PM2.5 levels were highest in Escondido, CA; Main St, San Diego; and Chula Vista. 
+ 
+http://www.fire.ca.gov/fire_protection/downloads/siege/2007/Overview_CompleteFinal.pdf pg45
+ pg 30
+ pg40
+
+My attempt at R:
+## Analyzing 2007 San Diego PM2.5
+
+
+import=read.csv("/home/CAMPUS/bzaa2017/ad_viz_plotval_data (1).csv")
+strDates <- as.character(import$Date)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%m/%d/%Y")
+head(import)
+###subset
+
+newdata <- subset(import, AQS_SITE_ID == 60730001, select=c(Daily.Mean.PM2.5.Concentration, NewDate))
+
+newdata2 <- subset(import, AQS_SITE_ID == 60730003, select=c(Daily.Mean.PM2.5.Concentration, NewDate))
+
+newdata3 <- subset(import, AQS_SITE_ID == 60730006, select=c(Daily.Mean.PM2.5.Concentration, NewDate))
+
+newdata4 <- subset(import, AQS_SITE_ID == 60731002, select=c(Daily.Mean.PM2.5.Concentration, NewDate))
+
+newdata5 <- subset(import, AQS_SITE_ID == 60731010, select=c(Daily.Mean.PM2.5.Concentration, NewDate))
+
+newdata6 <- subset(import, AQS_SITE_ID == 60731011, select=c(Daily.Mean.PM2.5.Concentration, NewDate))
+
+datarange <- subset(newdata, NewDate >= "2007-10-15" & NewDate <= "2007-11-20")
+
+plot(Daily.Mean.PM2.5.Concentration~NewDate, data=datarange, ty='l',  ylim=c(0,130), col = "blue")
+lines(newdata2$NewDate, newdata2$Daily.Mean.PM2.5.Concentration, col = "red")
+lines(newdata3$NewDate, newdata3$Daily.Mean.PM2.5.Concentration, col = "green")
+lines(newdata4$NewDate, newdata4$Daily.Mean.PM2.5.Concentration, col = "orange")
+lines(newdata5$NewDate, newdata5$Daily.Mean.PM2.5.Concentration, col = "brown")
+lines(newdata6$NewDate, newdata6$Daily.Mean.PM2.5.Concentration, col = "black")
+
+###legend(1, 95, legend=c("Line 1", "Line 2"),
+###       col=c("red", "blue"), lty=1:2, cex=0.8)
+
+###legend(as.Date("2007-10-15"), 100, legend=c("Chula Vista (60730001)", "60730003"), col=c("blue", "red"), lty=1:2, cex=0.65)
+#import$Date2 <- as.Date( as.character(import$NewDate), "%m/%d/%Y")
+
