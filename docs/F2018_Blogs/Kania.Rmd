@@ -1,0 +1,66 @@
+---
+title: "Does Wildfire Fuel Source Have An Effect On Health Impacts From Smoke Exposure?"
+author: "Mia Kania"
+date: "10/8/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Why do differentiated health impacts created by wildfire smoke matter?
+With the height of fire season not even at a close, California’s landscape has experienced the highest rates of burns in the state in recorded history. In an effort to discover where public health policy efforts can be most effective in protecting folks from the impacts of wildfires, many studies have been done to investigate the impacts of wildfire smoke on various populations. However, literature has not reached a consensus on which health issues are most exacerbated by wildfire smoke, so it is difficult to know where to focus proactive public health measures when a community experiences wildfire.
+
+
+![Caption?](figure/FEMA33364_A_helicopter_drops_water_on_the_wildfire_in_California.jpg)
+
+### The Driving Question
+The wealth of literature on the public health impacts and implications of California’s rampant wildfires stretches from questions about housing and zoning to environmental justice to effects of wildfire smoke inhalation, which will be the focus of this blog. Study of the health concerns created and exacerbated from wildfire smoke exposure are extensive. While the literature on this subject is broad, however, scientists have yet to come to a consensus on which medical conditions are most affected by wildfire smoke. 
+
+Many studies (3, 4, 5, 7) have concluded that, while wildfire smoke exacerbates both cardiovascular and respiratory issues, smoke has the greatest impact on respiratory illnesses such as asthma and chronic obtrusive pulmonary disease (COPD). However, other studies (1, 2, 6, 8) have found that populations exposed to wildfire smoke are more likely to exhibit signs of cardiovascular diseases such as hypertension or congestive heart failure.
+
+Due to this disagreement in literature, I decided to compare the results of studies with varying fuel sources, in order to identify any possible connection between specific health effects and various fires’ fuel sources. Inspired by John Keeley’s lectures on fire ecology, this project analyzes fuel sources for a series of previously analyzed fires in order to reveal any possible correlation between plant type burned and health issues most exacerbated by the resulting smoke.
+
+
+### Methodology
+Firstly, I collected analyses of the health effects of wildfire smoke that concluded wildfire smoke had a greater effect on either cardiovascular or respiratory diseases. These papers all used similar data of emergency department principal diagnosis rates and particulate matter 2.5 data to identify any influence from changed air quality due to wildfire smoke on health issues. Due to their comparable analyses, I deemed the data to be similarly gathered enough to use in my analysis. I also ensured each study examined the effects of smoke inhalation from different fires in order to ensure a larger sample size of fauna.
+
+I then researched the bioregions of fire’s each burn radius examined in my literature. Although some burn areas spanned multiple bioregions, I estimated the bioregion that covered the greatest area of the burn radius. Next, I classified each burn area’s vegetation as either primarily woodland, brushland, or bog, based on bioregion and primary species. Table 1 depicts the breakdown of each fire and its primary fuel source (vegetation).
+
+Location of Fire | Time of Fire | Primary Vegetation Classification | Primary Health Issues Exacerbated
+------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------
+Northern California, USA | Summer 2008| Woodlands/brushland | Respiratory 
+Victoria, Australia | June 2006 - June 2007 | Woodlands |  Cardiovascular 
+Southern California, USA | October 2003 | Brushland | Respiratory
+North Carolina, USA | June 2008 | Bog | Respiratory
+California, USA | 2015 | Brushland | Cardiovascular
+Washington, USA | 2012 | Woodlands | Respiratory
+Quebec, Canada | June 2002 | Woodlands | Cardiovascular
+British Columbia, Canada | 2008 - 2014 | Woodlands | Cadriovascular
+######*Table 1: Classification of vegetation fuel source & primary health issue irritated from exposure*
+
+Finally, I did some form of analysis that I need to ask Marc to help me with.
+
+### Results
+This analysis revealed no significant correlation between vegetation fuel type and most irritated health conditions. Once I actually go into analysis here, I will write in more detail about said results!
+
+### Limitations
+While the work done in this blog does not reveal any significant correlation between fuel source and primary health effects of exposure to wildfire smoke, this could be due, at least in part, to the limited sample size in the study. Given timeline and research for this project, I was only able to do cursory research using already existing studies. Ideally, however, a review of this kind would encompass a much larger selection of literature in order to identify any significant correlation. Even if this study had revealed a significant p value, it would be rendered unusable due to the sample size of my particular study.
+
+Furthermore, not every study in my review studied wildfire smoke’s effect on both respiratory and cardiovascular issues. Because certain studies only focused on one category, I cannot definitively state that that health issue was the most affected during the studied fire.
+
+
+### Conclusions
+Although this study did not reveal any significant correlation between vegetation burned and health impacts of wildfire smoke inhalation, it does begin to ask important questions in regards to public policy generation. In order to prevent negative health impacts associated with wildfire smoke inhalation, public health policy creators must know which populations are most vulnerable given the conditions of the fire. For example, if it were revealed that brushland fires tend to exacerbate cardiovascular conditions more than respiratory conditions, policy could be adjusted to stress increased vigilance for those with preexisting cardiovascular conditions. The ability to target vulnerable populations would allow public health officials to prevent the impacts of wildfire smoke inhalation with more precision and success.
+
+##### Bibliography
+
+1. Delfino, R J, et al. “The Relationship of Respiratory and Cardiovascular Hospital Admissions to the Southern California Wildfires of 2003.” Occupational and Environmental Medicine, vol. 66, no. 3, Jan. 2009, pp. 189–197., doi:10.1136/oem.2008.041376.
+2. Haikerwal, Anjali, et al. “Impact of Fine Particulate Matter (PM2.5) Exposure During Wildfires on Cardiovascular Health Outcomes.” Journal of the American Heart Association: Cardiovascular and Cerebrovascular Disease, John Wiley & Sons, Ltd, 15 July 2015, www.ncbi.nlm.nih.gov/pmc/articles/PMC4608063/.
+3. Le, George E., et al. “Canadian Forest Fires and the Effects of Long-Range Transboundary Air Pollution on Hospitalizations among the Elderly.” MDPI, Multidisciplinary Digital Publishing Institute, 20 May 2014, www.mdpi.com/2220-9964/3/2/713/htm.
+4. Rappold, Ana G., et al. “Peat Bog Wildfire Smoke Exposure in Rural North Carolina Is Associated with Cardiopulmonary Emergency Department Visits Assessed through Syndromic Surveillance.” Environmental Health Perspectives, vol. 119, no. 10, 11 Oct. 2011, pp. 1415–1420., doi:10.1289/ehp.1003206.
+5. Reid, Colleen E. “Differential Respiratory Health Effects from the 2008 Northern California Wildfires: A Spatiotemporal Approach.” NeuroImage, Academic Press, 15 June 2016, www.sciencedirect.com/science/article/pii/S001393511630247X.
+6. Ryan, Gan W., et al. Comparison of Wildfire Smoke Estimation Methods and ... GeoHealth, 17 May 2017, agupubs.onlinelibrary.wiley.com/doi/pdf/10.1002/2017GH000073.
+7. Weichenthal, Scott, et al. “Biomass Burning as a Source of Ambient Fine Particulate Air Pollution and Acute Myocardial Infarction.” Epidemiology, vol. 28, no. 3, May 2017, pp. 329–337., doi:10.1097/ede.0000000000000636.
+8. Wettstein, ZS., et al. “Cardiovascular and Cerebrovascular Emergency Department ...” PubMed, 11 Apr. 2018, www.dir.ca.gov/dosh/DoshReg/5155-Meetings/ER-Visits-Wildfire-Smoke.pdf.

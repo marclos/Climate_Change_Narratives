@@ -23,75 +23,21 @@ options(htmltools.dir.version = FALSE)
 ```
 # 2018 Fire Season
 
-After the late autumn fires of 2017, the notion of a fire season in California is at best questionable. Fire season is all year around. 
+After the late autumn fires of 2017, the notion of a fire season in California is at best questionable. Fire season is all year around. And when the summer arrived in 2018, the fire season was exceptional distructive again. The questions we address in these set of blogs, "what is the cause of these intense fires?" and "what are some of the implications for the Earth's inhabitants?"
 
 
-## Climate and Radiative Forcing
+## Climate, Radiative Forcing, and Carbon Dioxide
 
-Climate is defined as the average weather condition. But climate is dynamic; climate can also change with time. Climate change can occur for a myriad of interacing reasons. Thus, the science of climate change is complex. And yet, we understand what can drive climate change and even how sensitive climate is to the composition of the atmosphere.
+Although the Earth's climate has been changing for hundreds of thousands, even millions and billions of years, even small changes to the Earth's average temperatures has significant implications for human activities. Climate change science can be extremely complex, but there are some simple conclusions that we can draw: 
 
-![](../graphics/Radiationbalance.jpg)`r margin_note("Earth's energy balance is composed of the sum of the inputs and outputs. Scientists have a pretty good idea about how much heat is trapped by greeenhouse gases.")`
+1) factoid 1 link
 
-The Earth's temperature is controled by the amount of energy entering and exiting the atmosphere. Some of this energy or radiation is reflected by the Earth's atmosphere, some is absorbed by the atmosphere, and some reaches the Earth's surface, where it might also be absorbed or reflected. A portion of reflected energy is trapped by greenhouse gases and keeps our planet warmer than it would be if these gases were not present. In fact, without these gases, Earth would be significantly cooler, i.e. frozen! 
+2) factoid 2 link
 
-## Carbon Dioxide as a Major Greenhouse Gas
+3) factoid 3 link
 
-Although a host of gases can trap heat, carbon dioxide or CO~2~ is particularly important. CO~2~ concentrations are relatively large compared to most greenhouse gases and have increased due land use changes and the combustion of fossil fuels. We even know how much of the CO~2~ in the atmosphere has come from burning of fossil fuels.
 
-```{r maunaloa, echo=FALSE}
-address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
-download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
-
-maunaloa <- read.table("maunaloa", skip=70)
-names(maunaloa) <- c("year", "month", "decimal.date", "average", "interpolated", "trend", "days")
-maunaloa$average[maunaloa$average==-99.99] <- NA
-maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=maunaloa$decimal.date, average=maunaloa$average)
-#head(maunaloa)
-#str(maunaloa)
-#write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
-```
-
-In contrast to the red herring nature of political debates about the role of greenhouse gases on climate change, we know how they influence the planet's climate from multiple sources of evidence [@pachauri2015ipcc]. Furthermore, as a major greenhouse gas, CO<sub>2</sub> concentrations are increasing as a result of our use of fossil fuels and already influences the planet's climate.
-
-## Increasing Carbon Dioxide Concentrations and Temperature
-
-Atmospheric CO<sub>2</sub> concentrations are measured in a continuous fashion from several locations around the world. The longest record is measured on the volcano Mauna Loa, Hawaii. Using these data, we can estimate how CO~2~ concentrations have changed.
-
-```{r fig-margin, fig.margin = TRUE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
-par(las=1)
-plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
-main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
-abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
-```
-
-One way to assess a trend or make predictions is to model the data as we have done in the figure to the right. Although the fitted line follows the trend, significant variation exists the data. Some of this intraannual variation is due the seasonality of CO<sub>2</sub> uptake and release by plants. 
-
-Scientists use models to explore patterns or develop predictions. Since a straight line doesn't fit the data very well, we might explore alternative models. For example, we can specify a model that includes seasonal variation and a changing rate of change (using a polynomial equation). 
-
-```{r polynomial, echo=FALSE, results='hide'}
-new.lm <- lm(average~poly(decimal.date,2) + cos(2*pi*month/12) + sin(2*pi*month/12), data=maunaloa, na.action = na.exclude)
-
-summary(new.lm)
-extra.dates = c(max(maunaloa$decimal.date) + seq(1/12, by=1/12, length.out=20))
-extra.months = rep(seq(1, 12, length.out=12),3) 
-predicted.intervals <- predict(new.lm, data.frame(decimal.date=c(maunaloa$decimal.date, extra.dates), month=c(maunaloa$month, extra.months[2:21])), 
-  interval='confidence', level=0.99)
-
-```  
-
-By incorporating more parameters (polynomial and a sin/cos function), we can create a curved line that better fits the data. However, we lose the simplicity of estimating concentration changes as a single, simple rate.
-
-```{r fig-margin2, fig.margin = FALSE, fig.cap = "Observed CO~2~ concentrations (black) and modelled with a polynomial equation (purple): $CO_2 = date + (date)^2 + \\\\ cos(2\\pi*month/12) + \\\\ sin(2\\pi*month/12) + \\epsilon.$", cache=TRUE, echo=FALSE}
-par(las=1)
-plot(maunaloa$decimal.date, maunaloa$average, type="l", lwd=2, col="grey40", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
-main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
-lines(c(maunaloa$decimal.date, extra.dates),as.numeric(predicted.intervals[,1]),col='blueviolet',lwd=1)
-```
 ## Fire Science -- Climate, Forestry, and Public Health
-
-Based on recent surveys (citation needed), many American's don't believe climate change will personally affect them. In the figure below, residents in specific southwest counties are more likely to acknowledge that climate change will affect them personally. In some areas few recognize how regional impacts of climate change will affect them personally.
-
-![](../graphics/LocalImpactClimateSurvey.jpg)`r margin_note("Most people acknowledge someone in the US will be harmed by climate change, but fewer recognize the potential for personal harm. Source: Howe, Peter D., Matto Mildenberger, Jennifer R. Marlon, and Anthony Leiserowitz (2015). “Geographic variation in opinions on climate change at state and local scales in the USA.” Nature Climate Change, doi:10.1038/nclimate2583")`
 
 The EA30 class of the 2018 Fall, evaluate a range of questions associated with climate and fires. These included...
 
@@ -105,6 +51,11 @@ Finally, we combined this information into a series of blogs that might be used 
 
 ## 2018 Blogs
 
+[Griffith Fires by Anam Mehta](F2018_Blogs/Mehta.html)
+
+[Emergency Department Visits and Social Identity by Jonathan Gunasti](F2018_Blogs/Gunasti.html)
+
+[Does Wildfire Fuel Source Have An Effect On Health Impacts From Smoke Exposure? by Mia Kania](F2018_Blogs/Kania.html)
 
 # Conclusions
 
@@ -112,6 +63,6 @@ Finally, we combined this information into a series of blogs that might be used 
 
 ## Previous Projects
 
-[Why Climate Change Will Affect You Personally?](Index_2018S.html)
+[Why Climate Change Will Affect You Personally?](Index_2017F.html)
 
-[Climate Change and Logical Fallacies](Index_2017.html)
+[Climate Change and Logical Fallacies](Index_2017S.html)

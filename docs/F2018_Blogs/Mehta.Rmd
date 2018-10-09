@@ -1,0 +1,104 @@
+---
+title: "Griffith Fires"
+author: "Anam Mehta"
+date: "10/8/2018"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Background on Griffith Park and WUIs
+
+Home to the Hollywood Sign and the famous observatory, Griffith Park is one of the most well
+known parks in the US. It is often called the Central Park of LA because it is located right in the
+city in the Los Feliz neighborhood. It is one of the largest urban parks in the country, but is much
+more undeveloped and rugged than Central Park. If you live anywhere near Los Angeles, odds
+are you have walked up the path in the park to the observatory to see the city lights or watch the
+sunset. Griffith Park also marks the Eastern end of the Santa Monica Mountains. Due to its
+proximity to urban areas, Griffith Park is designated as a Wildland Urban Interface, or WUI,
+where human developed areas are next to or overlap with undeveloped areas. This WUI
+classification in California is notably important because of fire risk in the state and the shear
+number of homes that are built in WUIs. California has more homes in WUIs than any other
+state. These homes are more at risk of fire since the fuel for fire is closer to these houses and can
+even be in their backyards. But the risk is not all natural either—the more houses and people in
+WUIs, the more human created fires. As our need for housing increases, we expand more and
+more into WUIs, opening us up to more risk. An overwhelming majority of fires in the state are
+human started.
+
+## Fire Management
+So what do we do to reduce this risk? One way is to reduce the area of WUIs by changing zoning
+laws and where developers can build homes. However, there are already many established WUIs
+that are at a large risk of fire right now; what about those? Take Griffith Park for example. Even
+being so close to very populated areas of LA, major fires still burn in the park, and the California
+Department of Forestry and Fire Protection has designated the area as a place with a “very high”
+fire hazard. This means that there is greater than one percent chance of experiencing fires per
+year. This may seem like a small number, but fires in Griffith Park happen relatively frequently.
+How are these fires managed such that the least damage is done to homes, infrastructure, flora,
+fauna, and aesthetics? The method of prescribed burns is clearly harmful in this area, so what
+actually works?
+
+The responsibility of Griffith Park falls to more than one stakeholder, and so the management of
+fire is not a singular problem. The park is owned by the City of Los Angeles, and within the city,
+the Department of Parks and Recreation have control over the park. Since Griffith Park is also
+has an important social and emotional value for many people, the recovery of the park after a fire
+is a collective effort between community organizations and the government agencies. In a
+wildfire situations, however, the park must rely on the City of Los Angeles Fire Department to
+contain and suppress the fire. This means that the relationship between the internal agencies that
+are in charge of the safety of the park is incredibly important in order to make effective
+management policies. The policies created must also be specific to Griffith Park because of the 
+vegetation and landscape of park. Much of Griffith Park has very variable elevations. Canyons,
+hills, and mountains dominate the landscape. Wind has the potential to channel canyon fires very
+destructively and it the elevation changes make it hard for firefighters to access and keep up with
+the fire. Griffith Park is also mostly vegetated by chaparral plants. These plants are small,
+woody, and hug the ground, so in fire, they are completely burned. They are fire adapted to a
+point. The natural fire return interval is 30 to 150 years, and having fires more frequently than 20
+years can completely eliminate the native chaparral plants and allow invasive grasses to populate
+the area. Large, high intensity fires are nothing new to the chaparral landscape. The frequency of
+these fires is the problem.
+
+Fire management of forests is very different from the fire management of these chaparral
+scrublands. The key in Griffith Park is suppression, suppression, suppression. Due to the high
+population densities near the park, the consequences of a large fire that escapes the bounds of the
+park on human life could be monumentally horrific. So far, fires in Griffith Park have been dealt
+with relatively quickly because of its locality and danger, but fires in Griffith are far from over.
+While, on the map, the last fire logged is from 2007, more than 10 years ago, a 25 acre fire
+burned in Griffith just a few months ago. It was a brush fire that was about half a mile from the
+observatory. This fire prompted evacuations and road closures but was dealt with very quickly
+due to the weather and position of the fire.
+
+Since almost all of the fires in Griffith Park have been started by humans, prevention can be
+targeted at human behaviors. Even something as small as a few sparks from skimming some
+piece of metal on a rock can start a huge blaze, especially if the climate conditions are right. So
+education and banning behaviors that could inadvertently start fires should be a major way to
+prevent human caused fires in the future.
+
+## Data to Explore
+
+Using geospatial data of Griffith Park’s fires, we created a story map showing where and when
+the park has burned in the past. [Link to storymap: http://arcg.is/1Ceb5C](http://arcg.is/1Ceb5C).
+
+## Conclusions
+
+ While I have looked at a bunch of different datasets and ways to show the data on GIS, my ideas
+on the conclusion of the project have all fallen through for various reasons. The most recent idea
+that I thought was solid disappointingly won’t really work out, but that’s research I guess. My new idea that I hope will work out is to broaden the scope from Griffith Park to the Santa
+Monica mountains, then look at the overlap of fires along 20 year intervals to see when the
+chaparral ecosystems would have been hurt the most, and where restoration efforts should be
+concentrated. I still have to figure out how exactly how to go about doing this on GIS, but I am
+pretty confident it can be. So hopefully, for the final blog I can have something along those lines
+for a conclusion. The other sections would also have to be tweaked.
+
+## Bibliography
+Cooper, Daniel S., and Paul Mathewson. "GRIFFITH PARK WILDLIFE MANAGEMENT
+PLAN DRAFT." (2008).
+Razo Santoyo, Laura. Fire prevention in Los Angeles County: a survey of the methods and
+stategies used in the wildland-urban interface. Diss. California State Polytechnic University,
+Pomona, 2015.
+Syphard, Alexandra D., Keith C. Clarke, and Janet Franklin. "Simulating fire frequency and
+urban growth in southern California coastal shrublands, USA." Landscape ecology22.3 (2007):
+431-445.
+Fitzmorris, Patricia Kayt. "Wildfire Management in Los Angeles’ Wildland-Urban Interface."
+(2010).
+Serna, J., & Karlamangla, S. (2018, July 10). Brush fire near Griffith Park prompts evacuation of
+observatory. Retrieved from
+http://www.latimes.com/local/lanow/la-me-ln-griffith-brush-fire-20180710-story.html
