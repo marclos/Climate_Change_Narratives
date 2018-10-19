@@ -2,7 +2,9 @@
 title: "Griffith Fires"
 author: "Anam Mehta"
 date: "10/8/2018"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
