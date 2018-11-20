@@ -45,7 +45,7 @@ maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=ma
 #write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
 ```
 
-2) Human activity such as the burning of fossil fuels (coal, oil, gas) is rapidly increasing the amount of carbon dioxide in Earth’s atmosphere.
+2) Human activity such as the burning of fossil fuels (coal, oil, gas) is rapidly increasing the amount of carbon dioxide in Earth’s atmosphere. Note: Not only are carbon dioxide emissions increasing, the rate is accelerating. 
 
 ```{r fig-margin, fig.margin = TRUE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
