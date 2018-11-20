@@ -1,6 +1,6 @@
 ---
 title: "Climate Change and Fires -- Is this a red herring or the alarm alarmists have been warning about?"
-subtitle: "How do the average weather conditions change locally? What are the implications of climate change?"
+subtitle: "What does forest floor raking have to do with it?"
 author: "Environmental Analysis 30 Students, Pomona College"
 date: "`r Sys.Date()`"
 output:
@@ -32,15 +32,52 @@ Although the Earth's climate has been changing for hundreds of thousands, even m
 
 1) Carbon dioxide (and other ``greenhouse gases'') trap heat and make Earth warmer than it would be otherwise.
 
+```{r maunaloa, echo=FALSE}
+address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
+download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
+
+maunaloa <- read.table("maunaloa", skip=70)
+names(maunaloa) <- c("year", "month", "decimal.date", "average", "interpolated", "trend", "days")
+maunaloa$average[maunaloa$average==-99.99] <- NA
+maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=maunaloa$decimal.date, average=maunaloa$average)
+#head(maunaloa)
+#str(maunaloa)
+#write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
+```
+
 2) Human activity such as the burning of fossil fuels (coal, oil, gas) is rapidly increasing the amount of carbon dioxide in Earth’s atmosphere.
+
+```{r fig-margin, fig.margin = TRUE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
+par(las=1)
+plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
+main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
+abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
+```
 
 Based on these two processes, we can draw the following conclusion:
 
 We should expect the rising carbon dioxide concentration to warm our planet, with the warming becoming more severe as we add more carbon dioxide. But does this mean that we should also expect wildfires to increase as well?
 
+## Wildfires and Climate
+
+Most researchers are loath to make predictions in the context of highly uncertain data. However, it's also useful to consider simple drivers wildfires and how climate might impact them. 
+
+1. Warmer temperatures increase fire hazards. This fact alone should cause us concern. 
+
+2. Warmer temperatures will increase the energy in weather systems. These will probably lead to higher winds; more intense huricanes, precipitation events, and snow storms; and even possbly more droughts. In a nutshell, more extreme weather events that will require new responses. 
+
+```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='Strategies to address natural disasters vary, while some may have some limited political value, there are many who are effective and thoughtful about providing support to victims.'}
+knitr::include_graphics('F2018_Blogs/figure/TrumpDisaster.jpg')
+```
+
+
+If we take these at face value, we might conclude that fires are going to get worse and more extreme with climate change.
+
 ## Wildfires, Public Health, Management
 
-The EA30 class of the 2018 Fall, evaluate a range of questions associated with climate and fires. First, we some basic aspects of fire science, then we looked at some of the implications on human health. Finally, we reviewed numerous attempts to managed the landscape to reduce the risk of wildfires. 
+The devastation of wildfires occurs along multiple axes: loss of life, loss of property, loss of ecosystem services, and impacts on public health. Learning from the history of wildfires, is one of the first keys to manage them in the future. 
+
+The EA30 class of the 2018 Fall, evaluate a range of questions associated with climate and fires. First, we some basic aspects of fire science, then we evaluated some of the implications on public health for people around the region. Finally, we reviewed numerous attempts to managed the landscape to reduce the risk of wildfires. 
 
 ## Fire Science
 
@@ -64,9 +101,11 @@ Although climate change is an factor, direct, human related impacts need to beco
 
 ## Public Health
 
-One of the greatest health risk to residents not in immediate danger is smoke inhalation. For example, particulate matter (PM 2.5) can flucuate above safe levels long after a fire has been contained ([Zhong 2018](F2018_Blogs/Zhong.html)). Kania reports that fuel sources can have differential impacts on public health ([Kania](F2018_Blogs/Kania.html)), thus state public health officials should play a stronger role in vegetation management that improve both ecological and public health outcomes. 
+Over the last few years, the health effects of wildfires has become an increasing documented concern. Mortality is the tragic and direct affect.  But there are also long-term effects. 
 
-Although we might expect hopsital admissions to vary based on demography, Mason Asoto did not have a relationship between X and X. However, [Gunasti](F2018_Blogs/Gunasti.html)
+One of the greatest health risk to residents not in immediate danger is smoke inhalation. For example, particulate matter (PM 2.5) can flucuate above safe levels long after a fire has been contained ([Zhong 2018](F2018_Blogs/Zhong/Zhong.html)). Kania reports that fuel sources can have differential impacts on public health ([Kania](F2018_Blogs/Kania.html)), thus state public health officials should play a stronger role in vegetation management that improve both ecological and public health outcomes. 
+
+Although we might expect hopsital admissions to vary based on demography, Mason Asato did not have a relationship between X and X [Asato](F2018_Blogs/Asato/Asato.html). However, [Gunasti](F2018_Blogs/Gunasti.html) found...
 
 ## Reducing Risk and WUIs
 
@@ -84,7 +123,7 @@ Even in other states, WUIs also particularly challenging. For example, [Reyes-Sa
 
 [Fuel Mangagement in CA by Alex](F2018_Blogs/Dykens-Hodapp.html)
 
-[Social and Economic Factors and Fire Related Hospitalizations by Mason](F2018_Blogs/Asoto.html)
+
 
 [Prescribed Burning as a type of Fuel Treatment by Gabriel](F2018_Blogs/Das.html)
 
