@@ -25,7 +25,8 @@ In addition to funding constraints, agencies in California face other social con
  
 The data gathered shows controlled burns, mechanical treatments, and protection zones, split up into local, state, and federal, in the state of California.  I used data from the USDA Forest Service’s state level data sets - Direct Protection Areas for Wildland Fire Protection, and data from CalFire’s FRAP mapping datasets - Fire Perimeters Version 17_1 containing wildfire history, prescribed burns and other mechanical treatments.  The direct protection areas are divided between State, Local, and Federal protection (Figure 1)  My preliminary analysis (Table 1) looks at percent-controlled burns and mechanical treatments within federal and state protection zones.  I used ArcGIS Desktop to sum the total land treated by mechanical treatments and controlled burns under state and federal protection zones. 
 
-Figure 1. Direct Protection Areas in California
+![Figure 1. Direct Protection Areas in California](grayDPAs.PNG)
+
 ```{r map1, echo=FALSE}
 #library(png)
 #library(grid)
@@ -33,12 +34,14 @@ Figure 1. Direct Protection Areas in California
 #grid.raster(img)
 ```
 Table 1. Controlled burns and mechanical treatments on state and federal land
+
 ```{r table, echo = FALSE}
 library(readr)
 FireData <- read.csv("PreliminaryAnalysis.csv")
 library(knitr)
-kable(FireData[])
+kable(FireData)
 ```
+
 The federal government completes a much larger area of mechanical treatment than does the state government, while the state government uses controlled burns on much more of their land than the federal government.  This appears to be a stark contrast.  However, these statistics are influenced by several spatial features.  Whether an entity conducts controlled burns or mechanical treatments depends on the ecosystems and fire infrastructure of the entity’s land (Keeley 2018), as well as legal restrictions and social constraints[5]  (Quinn-Davidson, 2012).  While Northern California is dominated by trees and has adapted itself to burn at a low intensity to avoid fire in the crowns of the trees, fire in Southern California chaparral scrubs should burn at any intensity to the top of the bush, burning only every thirty to 130 years, (Keeley, 2018).  So because the ecosystems vary across the state, these statistics do not make sense on their own.
  
 #Secondary Analysis:
