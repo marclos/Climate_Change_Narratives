@@ -64,7 +64,7 @@ df$Not = factor(df$Not,labels = c("Intersects", "Does not intersect"))
 boxplot(overlaparea ~ Not, data = df, ylab = "Area (in hundreds of m^2)")
 ```
 
-Figure 1. Mean total area of mechanical and burn treatment overlap (in hundreds of m^2) that intersects and does not intersect with WUIs.
+![Figure 1. Mean total area of mechanical and burn treatment overlap (in hundreds of m^2) that intersects and does not intersect with WUIs.](boxplot.png)
 
 ## Discussion
 
