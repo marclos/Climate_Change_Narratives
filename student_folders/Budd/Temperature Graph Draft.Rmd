@@ -1,6 +1,6 @@
----
+file---
 title: "Temperature Graph Draft"
-author: "Susannah"
+author: "Susannah Budd"
 date: "2/5/2019"
 output: html_document
 ---
@@ -9,22 +9,16 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+#Concord, NH Temperature Graph
+Plot of maximum temperatures in Concord, New Hampshire from 1939-2019 with best fit line:
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r, echo=FALSE}
+climate_data<-read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/susannah_concordnh_data.csv")
+strDates<-as.character(climate_data$DATE)
+climate_data$NewDate<-as.Date(strDates, "%m/%d/%Y")
+plot(TMAX~NewDate, climate_data, ty='l', main = "TMAX (degrees Celsius) vs TIME (years)", xlab = "TIME (years)", ylab = "TMAX (degrees Celsius)", col.main = "red", col.lab = "red")
+c<-coef(lm(TMAX~NewDate, climate_data))
+abline(c, col="red")
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
