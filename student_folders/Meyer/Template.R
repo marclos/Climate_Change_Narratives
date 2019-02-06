@@ -24,7 +24,7 @@ climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 ## Plot Data
 
 plot(TMAX~DATE, climate_data)
-plot(TMAX~NewDate, climate_data)
+plot(TMAX~NewDate, climate_data, ty='l')
 plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
 
 ## Add best fit line
