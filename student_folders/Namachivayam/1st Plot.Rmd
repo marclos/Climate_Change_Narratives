@@ -17,7 +17,33 @@ Here is my plot of Albuquerque maximum temperatures overlayed with a best fit li
 climate_data=read.csv("/Users/siddharth/R_Projects/siddharth_abq_data.csv")
 strDates=as.character(climate_data$DATE)
 climate_data$DATES=as.Date(strDates,"%Y-%m-%d")
-plot(TMAX~DATES, climate_data,ty='l')
+plot(TMAX~DATES, climate_data,ty='l',xlab="YEAR")
 abline(lm(TMAX~DATES,climate_data),col="red")
-title(main="TMAX vs DATE")
+title(main="TMAX vs YEAR")
 ```
+
+Lets look at some of the results for this regression:
+
+```{r regression results, echo=FALSE}
+summary(lm(TMAX~DATES,climate_data))
+```
+
+Note that the p-value for the y-intercept is 2x10^-6 and the p-value for the slope of the line is .02. Both of these values are less than .05. In other words, we can say with 95% confidence that our temperature is increasing at a rate  of 1.356x10^-5 degrees C per year and has an intercept of 21.28 degrees C.  
+
+Let's go ahead and clean up our original graph by looking at monthly averages one month at a time. Here's a graph of monthly averages for the month of May.
+
+```{r monthly, echo=FALSE}
+climate_data$Month = format(as.Date(climate_data$DATES), format = "%m")
+climate_data$Year = format(climate_data$DATES, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+     ty='l')
+May.lm=lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+abline(May.lm,col="red")
+title(main="Average TMAX for May vs YEAR")
+```
+
+
