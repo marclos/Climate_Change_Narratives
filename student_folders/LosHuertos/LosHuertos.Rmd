@@ -1,0 +1,33 @@
+---
+title: "Marc's Super INtersting blog"
+author: "marc"
+date: "2/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## UPLOAD DATA into R
+
+Into some directory???
+
+climatechangenarrativees/studentfolders/lastname...
+
+```{r}
+filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/SP18/choi_aberdeen station_data.csv"
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

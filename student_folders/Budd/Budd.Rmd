@@ -1,0 +1,91 @@
+file---
+title: "Temperature Graph Draft"
+author: "Susannah Budd"
+date: "2/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Concord, NH Temperature Graph
+Plot of maximum temperatures in Concord, New Hampshire from 1939-2019 with best fit line:
+
+```{r, echo=FALSE}
+##Read CSV Data
+climate_data<-read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/susannah_concordnh_data.csv")
+```
+
+```{r, echo=FALSE}
+##Fix Dates
+strDates<-as.character(climate_data$DATE)
+climate_data$NewDate<-as.Date(strDates, "%m/%d/%Y")
+```
+
+```{r, echo=FALSE}
+##Plot Data
+plot(TMAX~NewDate, climate_data, ty='l', main = "TMAX (degrees Celsius) vs TIME (years)", xlab = "TIME (years)", ylab = "TMAX (degrees Celsius)", col.main = "red", col.lab = "red")
+##Add Best Fit Line
+c<-coef(lm(TMAX~NewDate, climate_data))
+abline(c, col="red")
+```
+
+```{r, echo=FALSE}
+##Define Portions of "NewDate"
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(as.Date(climate_data$NewDate), format = "%Y")
+MonthlyTMAXMean = aggregate(TMAX~Month+Year, climate_data, mean)
+MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$YEAR=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH=as.numeric(MonthlyTMAXMean$Month)
+```
+
+```{r, echo=FALSE}
+##New Plots
+plot(MonthlyTMAXMean$TMAX, ty='l', main = "TMAX (degrees Celsius) vs TIME (months)", xlab = "TIME (months)", ylab = "TMAX (degrees Celsius)", col.main = "red", col.lab = "red")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1939, 2019), main = "TMAX FOR MAY (degrees Celsius) vs TIME (years)", xlab = "TIME (years)", ylab = "TMAX FOR MAY (degrees Celsius)", col.main = "red", col.lab = "red")
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+abline(coef(May.lm), col="red")
+```
+
+```{r, echo=FALSE}
+##Monthly Minimums
+MonthlyTMINMean = aggregate(TMIN~Month+Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+```
+
+```{r, include=FALSE}
+##Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+```
+
+```{r, echo=FALSE}
+##Vector of Months
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+```
+
+```{r, echo=FALSE}
+##Create Panel
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12) {
+# plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+# ty='l')
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ], ty = "l", las = 1, xlim = c(1940, 2020),
+main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+```
+
+
