@@ -11,9 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ##Guangzhou, China Temperature Graph 
-```{r}
+```{r, read, echo = FALSE, results='hide'}
 #preparing and reading CSV file 
-read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
+#read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
 climate_data <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
 head(climate_data)
 str(climate_data)
@@ -24,7 +24,7 @@ min(climate_data$TMAX, na.rm=T)
 ```
 
 
-```{r, echo = FALSE}
+```{r, fixdates, echo = FALSE}
 ##Changing dates
 climate_data$TMAX[climate_data$TMAX==-9999] = NA
 climate_data$TMIN[climate_data$TMIN==-9999] = NA
