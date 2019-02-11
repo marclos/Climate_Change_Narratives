@@ -1,0 +1,75 @@
+---
+title: "Cheyenne's Vlog"
+author: "Cheyenne"
+date: "2/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+## Reading csv file
+filepath = "/home/CAMPUS/cbva2017/Climate_Change_Narratives/student_folders/Vance/Cheyenne_Huntsville_data.csv"
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+
+
+
+
+## Fixing Dates
+
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+##Plot Data
+plot(TMAX~NewDate, climate_data, ty='l')
+
+## Best Fit Line
+c <- coef(lm(TMAX~NewDate, climate_data))
+abline(c, col="red")
+
+##Plot stuff
+ lm(TMAX ~ NewDate, data=climate_data)
+
+## Call:
+ lm(formula = TMAX ~ NewDate, data = climate_data)
+ 
+ summary(lm(formula = TMAX ~ NewDate, data = climate_data))
+ 
+## Creating Monthly Means
+ climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+ climate_data$Year = format(climate_data$NewDate, format="%Y")
+ 
+##Stand Dev
+ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+
+##Selecting for 1 month
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
