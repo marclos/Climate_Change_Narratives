@@ -53,13 +53,19 @@ summary(lm(TMAX~NewDate, data=climate_data))
 
 ##Define Shit
 climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
+climate_data$Year = format(as.Date(climate_data$NewDate), format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month +Year, climate_data, mean)
 MonthlyTMAXMean$Year = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$Month = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 plot(MonthlyTMAXMean$TMAX, ty='l')
 
+##New Things
+plot(TMAX ~ Year, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05"],
+ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(My.lm), col="red")
 
 ```
 
