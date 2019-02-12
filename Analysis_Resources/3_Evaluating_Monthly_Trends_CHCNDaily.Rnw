@@ -185,6 +185,8 @@ Now, the change is \Sexpr{round(coef(May.lm)[2], 4)} degress C/year or \Sexpr{ro
 
 \subsection{Testing all the Months}
 
+This section for advanced users and specific questions. Please do not proceed without consulting Marc.
+
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
 
 Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year. 
