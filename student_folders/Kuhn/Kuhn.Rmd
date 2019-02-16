@@ -15,7 +15,7 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r}
+```{r,results="hide", echo=FALSE  }
 filepath="/home/CAMPUS/ecka2018/Climate_Change_Narratives/EmilyKuhn_Santabarbara_data.csv"
 climate_data = read.csv(filepath)
 head(climate_data)
@@ -25,15 +25,16 @@ str(climate_data)
 ## Fixing Dates
 
 You can also embed plots, for example:
+Santa Barbara is a coastal city in California
 
-```{r}
+```{r, results="hide", echo=FALSE }
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates,"%Y-%m-%d")
 
 ```
 
 ## Plot
-```{r}
+```{r, results="hide", echo=FALSE }
 plot(TMAX~NewDate, climate_data, ty='l')
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
@@ -55,6 +56,7 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 (MonthlyTMINMean)
+
 
 
 ```

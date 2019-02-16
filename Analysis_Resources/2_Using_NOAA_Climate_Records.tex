@@ -240,7 +240,7 @@ And R will spit out the data in just that column.
 
 \section{Plotting the Data}
 
-Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}).
+Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}). 
 
 \begin{figure}
 \begin{knitrout}
@@ -252,7 +252,7 @@ Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}).
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 
 \end{knitrout}
-\caption{Some Caption.}
+\caption{These data are plotted with DATE on the x-asis and TMAX on the y-asis. These data have a fair amount of missing data (-9999). Not all the datasets will report missing data in this way. In some cases, they are just missing.}
 \label{fig:plotmissing}
 \end{figure}
 
@@ -286,6 +286,8 @@ To get the function to cooperate if there are missing values, add 'na.rm=T' to t
 
 In some of the stations, missing values were coded as  -9999? These are used for missing data. Historically, computers didn't have a lot of options for mixing numbers and letters in a variable type while R has some built in flexibility for this. So, to avoid leaving values blank (with all the ambiguous interpretations), the value -9999 is used to sybmolize missing values, since the number is unrealistic in the real world!
 
+If your data do not have missing data, skip these steps!
+
 %Obviously, if we averaged the temperature with these values, we'd get a pretty inaccurate number (e.g. round(mean(climate\_data$TMAX), 0) versus round(mean(climate\_data$TMAX[climate\_data$TMAX>-9999]), 0). Thus, we need to remove them!  
 
 If your station used -9999 for missing values, we will replace these with NA, which R uses specifically to avoid accidently averaging arbitrary values that are representing missing values. 
@@ -300,8 +302,7 @@ How do we do this?
 \end{kframe}
 \end{knitrout}
 
-
-Okay, now we'll check again, but let's plot a just a few years, let's say five years (356 days * 5 years = 1825) or 1825 observations. 
+Okay, now we'll check again, but let's plot a just a few years, let's say five years (356 days * 5 years = 1825) or 1825 observations. Please use this to check the data only! 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -372,6 +373,32 @@ Caution: Be sure the dates were actually converted correctly, using the \texttt{
 \end{kframe}
 \end{knitrout}
 
+\item[YYYY/MM/DD] Sometimes, the dates are formatted by year/month/day, where we can use the code below to reformat the dates:
+
+  
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(climate_data}\hlopt{$}\hlstd{DATE)}
+
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y/%m/%d"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item[YYYY-MM-DD] Sometimes, the dates are formatted by year-month-dayy, where we can use the code below to reformat the dates:
+
+  
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{strDates} \hlkwb{<-} \hlkwd{as.character}\hlstd{(climate_data}\hlopt{$}\hlstd{DATE)}
+
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y-%m-%d"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
 \item[YYYYMMDD] In certain cases, the dates are formatted as a long number starting with year. Although these dates sort correctly, they create big gaps at the new year: Let's say that the data have a year change between 1913 and 1914. The date format in the NOAA data are YYYYMMDD, or year, month, and day with 4, 2, 2 digits, respectively. Thus, the last day of 1913 is 19131231 or Dec, 31, 1913. The next day is January 1st or 19140101. But when you plot these on the x-axis, the order of the values should be $19131231 \rightarrow 19131232 \rightarrow 19131233 \rightarrow 19131234$, etc but there is no 32nd, 33rd or 34th of December. Instead the dates go from  $19131231 \rightarrow 19140101$. We have lots of numbers that are skipped, but no coded as missing, but missing all the same. So, now we need to convert our dates to something more sensible. In R, that means creating a variable with a format that expects dates, thus doesn't plot numbers that are impossible dates!
   
 \begin{knitrout}
@@ -383,6 +410,10 @@ Caution: Be sure the dates were actually converted correctly, using the \texttt{
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+
+\item[2-digit Years] Is a total mess. See Marc for help!
+
 
 \item[Mixed Formats]... see Valentina's data!
 
@@ -401,6 +432,10 @@ Doesn't seem to work, I had to brut force it... will work on this next summer!
 \begin{alltt}
 \hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,}
     \hlstr{"%Y/%m/%d"}\hlstd{),} \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,}
+    \hlstr{"%m/%d/%y"}\hlstd{),} \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -417,7 +452,7 @@ Doesn't seem to work, I had to brut force it... will work on this next summer!
 \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{NewDate, climate_data[}\hlnum{1}\hlopt{:}\hlnum{1835}\hlstd{,],} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-17-1} 
 
 \end{knitrout}
 
