@@ -20,6 +20,7 @@ filepath="/home/CAMPUS/ecka2018/Climate_Change_Narratives/EmilyKuhn_Santabarbara
 climate_data = read.csv(filepath)
 head(climate_data)
 str(climate_data)
+
 ```
 
 ## Fixing Dates
@@ -56,8 +57,28 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 (MonthlyTMINMean)
-
-
+Months=c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12) {
+# plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+# ty='l')
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ], ty = "l", las = 1, xlim = c(1893, 2020),
+main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+plot(MonthlyTMINMean$TMIN, ty='l')
+library(xtable)
 
 ```
 
