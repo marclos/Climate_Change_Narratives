@@ -28,7 +28,7 @@ summary(cars)
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
+```{r, echo=FALSE}
 old_data=read.csv("/home/CAMPUS/mmba2018/Climate_Change_Narratives/student_folders/Floyd/Makeda_Los Angeles_data.csv")
 climate_data=old_data[3000:38565,]
 strDates=as.character(climate_data$DATE)
@@ -43,11 +43,78 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 plot(MonthlyTMAXMean$TMAX, ty='l')
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
-ty='l', xlim=c(1920, 2020))
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-summary(May.lm)
-abline(coef(May.lm), col="red")
+# First I create a vector of months
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+# Create a panel so I can see all the figures at
+# once.
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
 
-```
+par(mfrow=c(1,1))
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+5, ], ty = "l", las = 1, xlim = c(1920, 2020))
 
+
+
+for (i in 1:12) {
+# plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+# ty='l')
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ], ty = "l", las = 1, xlim = c(1940, 2020),
+main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+print(summary(Month.lm))
+}
+
+
+
+plot(TMIN~NewDate, climate_data, ty='l')
+abline(lm(TMIN~NewDate,climate_data),col="red")
+lm(TMIN ~ NewDate, data=climate_data)
+summary(lm(TMIN ~ NewDate, data=climate_data))
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+plot(MonthlyTMINMean$TMIN, ty='l')
+# First I create a vector of months
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+# Create a panel so I can see all the figures at
+# once.
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+
+par(mfrow=c(1,1))
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+5, ], ty = "l", las = 1, xlim = c(1920, 2020))
+
+
+
+for (i in 1:12) {
+# plot(MonthlyTMINMean£TMAX[MonthlyTMINMean£Month==i],
+# ty='l')
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+i, ], ty = "l", las = 1, xlim = c(1940, 2020),
+main = Months[i])
+Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMINresult <- rbind(TMINresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+print(summary(Month.lm))
+}
