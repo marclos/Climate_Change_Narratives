@@ -42,7 +42,7 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
      ty='l')
 May.lm=lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-abline(May.lm,col="red")
+abline(coef(May.lm),col="red")
 title(main="Average TMAX for May vs YEAR")
 ```
 
