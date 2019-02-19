@@ -15,7 +15,7 @@ Into some directory???
 
 climatechangenarratives/studentfolders/lastname...
 
-```{r}
+```{r, echo=FALSE, results='hide'}
 filepath = "/home/CAMPUS/ekma2018/Climate_Change_Narratives/student_folders/Meyer/ella_seattle_data.csv"
 climate_data = read.csv(filepath)
 head(climate_data)
@@ -28,7 +28,8 @@ str(climate_data)
 strDates = as.character(climate_data$DATE)
 climate_data$NewDate = as.Date(strDates, "%m/%d/%Y")
 
-
+```
+```{r,}
 CYear = sub("/([0-9]+)$", "/19\\1", strDates[1:18993]) # Defined for this dataset! 
 CYear = c(CYear, sub("/([0-9]+)$", "/20\\1", strDates[18994:25959]))
 head(CYear)
@@ -61,6 +62,51 @@ climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 
 ```
+
+## Plots
+
+```{r, echo=FALSE}
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+
+Months = c("January", "February", "March", "April",
+           "May", "June", "July", "August", "September", "October",
+           "November", "December")
+
+
+
+## Monthly Max
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+
+
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 8, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[8])
+
+
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12) {
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                             i, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       i, ])
+  print(summary(Month.lm))
+  abline(coef(Month.lm), col = "red")
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+                                        round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+                                                                                                          4], 4), round(summary(Month.lm)$r.squared,
+                                                                                                                        3)))
+}
+```
+
 
 ## Seattle Climate Links
 
