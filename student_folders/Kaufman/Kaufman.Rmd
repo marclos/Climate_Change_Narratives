@@ -27,6 +27,37 @@ climate_data$TMAX[climate_data$TMAX==-9999] = NA
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 plot(TMAX~NewDate, climate_data, ty='l')
+min(climate_data$TMAX, na.rm=T)
+lm(TMAX ~ NewDate, data=climate_data)
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+ plot(MonthlyTMAXMean$TMAX, ty='l')
+ plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+
+ 
+ for (i in 1:12){
+     plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+      Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+     summary(Month.lm)      
+
+abline(coef(Month.lm), col="red")
+       TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3)))
+               par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+Months = c("January", "February", "March", "April", "May", "June",
+                 "July", "August", "September", "October", "November", "December")
+
+}
+
 ```
 
 
