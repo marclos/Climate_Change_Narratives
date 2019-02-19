@@ -47,7 +47,7 @@ str(MonthlyTMAXMean)
 plot(MonthlyTMAXMean$TMAX, ty='l')
 
 ##Plot May
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020), main="May TMAX(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMAX(Degrees Celcius)", col.main="black", col.lab="blue")
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 summary(May.lm)
 abline(coef(May.lm), col="red")
@@ -61,23 +61,45 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
 
+
 ##Every Month! Come back and do 1 by 1
 Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1 )
+par(mfrow = c(1, 1), mar = c(5, 4, 3, 2) + 0.1 )
 TMAXresult <- NA 
 for (i in 1:12) {
-  plot(TMAX ~ YEAR, data =  MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(1, 100),main = Months[i])
+  plot(TMAX ~ YEAR, data =  MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(15, 35),main = Months[i])
 Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
 summary(Month.lm)
 abline(coef(Month.lm), col = "red")
 TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
 }
 
-##Daily Mins
+##Daily Mins (Get new Data!)
 plot(MonthlyTMINMean$TMIN, ty='l')
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13), 2],)
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P <= 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
 
 ```
 ```
-
+for (i in 1:12) {
+  plot(TMIN ~ YEAR, data =  MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(15, 35),main = Months[i])
+Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
