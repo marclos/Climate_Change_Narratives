@@ -64,7 +64,7 @@ head(MonthlyTMINMean)
 
 ##Every Month! Come back and do 1 by 1
 Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-par(mfrow = c(1, 1), mar = c(5, 4, 3, 2) + 0.1 )
+par(mfrow = c(3, 4), mar = c(5, 4, 3, 2) + 0.1 )
 TMAXresult <- NA 
 for (i in 1:12) {
   plot(TMAX ~ YEAR, data =  MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(15, 35),main = Months[i])
@@ -74,25 +74,71 @@ abline(coef(Month.lm), col = "red")
 TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
 }
 
-##Daily Mins (Get new Data!)
-plot(MonthlyTMINMean$TMIN, ty='l')
-library(xtable)
-Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13), 2],)
-Results$starTMIN = "NS"
-Results$starTMIN[Results$TMIN_P <= .05] = "*"
-Results$starTMIN[Results$TMIN_P <= 0.01] = "**"
-Results$starTMIN[Results$TMIN_P < 0.001] = "***"
-Results$starTMAX = "NS"
-Results$starTMAX[Results$TMAX_P < 0.05] = "*"
-Results$starTMAX[Results$TMAX_P < 0.01] = "**"
-Results$starTMAX[Results$TMAX_P < 0.001] = "***"
-Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
-Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
-colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
-"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
-print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+##Daily Mins (Decide which months [Oct, Nov, Dec; summer too?]
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+par(mfrow = c(3, 4), mar = c(5, 4, 3, 2) + 0.1 )
+TMINresult <- NA 
+for (i in 1:12) {
+  plot(TMIN ~ YEAR, data =  MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(0, 20),main = Months[i])
+Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
 
 ```
+```{r}
+##Precipitation Data (Initial Data)
+filepath= "/home/CAMPUS/ttab2018/Climate_Change_Narratives/student_folders/Anderson/tonianderson_burbank_realdata.csv"
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+names(climate_data)
+
+##Fix Dates
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+
+##Plot Data
+plot(PRCP~NewDate, climate_data, ty='l', ylim=c(0, 300), main="Precipitation vs. Time(Years)", xlab="Time(Years)", ylab="Precipitation Celcius)", col.main="black", col.lab="green" )
+c <- coef(lm(PRCP~NewDate, climate_data))
+abline(c, col="red")
+
+```
+```{r}
+##Precipitaion Data (Get sum, then create monthly plots)
+## Define Shit
+lm(PRCP~NewDate, data=climate_data)
+summary(lm(PRCP~NewDate, data=climate_data))
+
+##Monthly Sums
+climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
+climate_data$Year = format(as.Date(climate_data$NewDate), format="%Y")
+MonthlyPRCPSum = aggregate(PRCP ~ Month +Year, climate_data, sum)
+MonthlyPRCPSum$YEAR = as.numeric(MonthlyPRCPSum$Year)
+MonthlyPRCPSum$MONTH = as.numeric(MonthlyPRCPSum$Month)
+str(MonthlyPRCPSum)
+
+
+##Plot May
+plot(PRCP~YEAR, data=MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",], ty='l', xlim=c(1950, 2020), main="May Precipitation vs. Time(Years)", xlab="Time(Years)", ylab="Precipitation", col.main="black", col.lab="blue")
+May.lm <- lm(PRCP~YEAR, data=MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+
+##Every Month! Come back and do 1 by 1
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+par(mfrow = c(3, 4), mar = c(5, 4, 3, 2) + 0.1 )
+PRCPresult <- NA 
+for (i in 1:12) {
+plot(PRCP ~ YEAR, data =  MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(0, 400), main = Months[i], xlab="Total Precipation", ylab="Year", col.main="black", col.lab="green" )
+Month.lm <- lm(PRCP ~ YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+
 ```
 for (i in 1:12) {
   plot(TMIN ~ YEAR, data =  MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(15, 35),main = Months[i])
