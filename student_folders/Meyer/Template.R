@@ -92,7 +92,7 @@ for (i in 1:12) {
        main = Months[i])
   Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
                                                        i, ])
-  summary(Month.lm)
+  print(summary(Month.lm))
   abline(coef(Month.lm), col = "red")
   TMAXresult <- rbind(TMAXresult, cbind(Months[i],
                                         round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
