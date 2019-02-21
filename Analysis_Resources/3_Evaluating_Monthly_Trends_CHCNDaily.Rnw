@@ -105,7 +105,7 @@ lm(TMAX ~ NewDate, data=climate_data)
 @
 
 From this model, we learn that the change in $TMAX$ is 
-\Sexpr{round(coef(lm(TMAX ~ NewDate, data=climate_data))[2], 2)} degrees $year^{-1}$. Figure~\ref{fig:TMAX_trend} shows a trend of increasing maximum temperatures.
+\Sexpr{round(coef(lm(TMAX ~ NewDate, data=climate_data))[2], 6)} degrees $year^{-1}$. Figure~\ref{fig:TMAX_trend} shows a trend of increasing maximum temperatures.
 
 % Additional LaTeX code to add caption to figure
 \begin{figure}
