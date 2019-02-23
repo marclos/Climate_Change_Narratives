@@ -140,6 +140,63 @@ PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.lm)[2], 4), ro
 }
 
 ```
+##October, November, and December Data for Comparision
+
+```{r}
+##TMAX Months
+
+#October
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",], ty='l', xlim=c(1950, 2020), main="Oct TMAX(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMAX(Degrees Celcius)", col.main="black", col.lab="red")
+Oct.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+summary(Oct.lm)
+abline(coef(Oct.lm), col="red")
+#November
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",], ty='l', xlim=c(1950, 2020), main="Nov TMAX(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMAX(Degrees Celcius)", col.main="black", col.lab="red")
+Nov.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",])
+summary(Nov.lm)
+abline(coef(Nov.lm), col="red")
+#December
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",], ty='l', xlim=c(1950, 2020), main="Dec TMAX(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMAX(Degrees Celcius)", col.main="black", col.lab="red")
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+summary(Dec.lm)
+abline(coef(Dec.lm), col="red")
+
+##TMIN Months
+
+#October
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l', xlim=c(1950, 2020), main="Oct TMIN(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMIN(Degrees Celcius)", col.main="black", col.lab="blue")
+Oct.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+summary(Oct.lm)
+abline(coef(Oct.lm), col="blue")
+#November
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",], ty='l', xlim=c(1950, 2020), main="Nov TMIN(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMIN(Degrees Celcius)", col.main="black", col.lab="blue")
+Nov.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
+summary(Nov.lm)
+abline(coef(Nov.lm), col="blue")
+#December
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1950, 2020), main="Dec TMIN(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMIN(Degrees Celcius)", col.main="black", col.lab="blue")
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+summary(Dec.lm)
+abline(coef(Dec.lm), col="blue")
+
+##Precipitation Months
+
+#October
+plot(PRCP~YEAR, data=MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",], ty='l', xlim=c(1950, 2020), main="Oct Precipitation vs. Time(Years)", xlab="Time(Years)", ylab="Precipitation", col.main="black", col.lab="green")
+Oct.lm <- lm(PRCP~YEAR, data=MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",])
+summary(Oct.lm)
+abline(coef(Oct.lm), col="green")
+#November
+plot(PRCP~YEAR, data=MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",], ty='l', xlim=c(1950, 2020), main="Nov Precipitation vs. Time(Years)", xlab="Time(Years)", ylab="Precipitation", col.main="black", col.lab="green")
+Nov.lm <- lm(PRCP~YEAR, data=MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",])
+summary(Nov.lm)
+abline(coef(Nov.lm), col="green")
+#December
+plot(PRCP~YEAR, data=MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",], ty='l', xlim=c(1950, 2020), main="Dec Precipitation vs. Time(Years)", xlab="Time(Years)", ylab="Precipitation", col.main="black", col.lab="green")
+Dec.lm <- lm(PRCP~YEAR, data=MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",])
+summary(Dec.lm)
+abline(coef(Dec.lm), col="green")
+```
 for (i in 1:12) {
   plot(TMIN ~ YEAR, data =  MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(15, 35),main = Months[i])
 Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
