@@ -30,10 +30,12 @@ climate_data$NewDate <- as.Date(CYear, "%m/%d/%Y")
 str(climate_data)
 
 
-## Plot General Data
+## Plot Data
 
 plot(TMAX ~ NewDate, climate_data)
 plot(TMAX ~ NewDate, climate_data[1:1835,], ty='l')
+
+plot(TMIN ~ NewDate, climate_data)
 
 plot(PRCP ~ NewDate, climate_data)
 
@@ -43,8 +45,14 @@ lm(TMAX ~ NewDate, climate_data)
 
 plot(lm(TMAX ~ NewDate, climate_data))
 
+lm(TMIN ~ NewDate, climate_data)
 
-## Month organization
+plot(lm(PRCP ~ NewDate, climate_data))
+
+## MONTHS
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
 
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
@@ -63,11 +71,35 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
-plot(MonthlyTMAXMean$TMAX, ty='l')
+## July
 
-lm(MonthlyTMAXMean$MONTH ~ NewDate, climate_data)
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7, ], ty = "l", las = 1, xlim = c(1945, 2020),
+     main = Months[7])
+MaxJuly.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                     7, ])
+abline(coef(Month.lm), col = "red")
 
-plot(lm(MonthlyTMAXMean ~ NewDate, climate_data))
+MaxJuly.lm.
+
+## August
+
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 8, ], ty = "l", las = 1, xlim = c(1945, 2020),
+     main = Months[8])
+MaxAugust.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                     8, ])
+abline(coef(Month.lm), col = "yellow")
+
+MaxAugust.lm
+
+## September
+
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 9, ], ty = "l", las = 1, xlim = c(1945, 2020),
+     main = Months[9])
+MaxSeptember.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                     9, ])
+abline(coef(Month.lm), col = "orange")
+
+MaxSeptember.lm
 
 ## Monthly Min
 
@@ -76,89 +108,35 @@ MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 
-plot(MonthlyTMINMean$TMIN, ty='l')
+## July
 
-head(MonthlyTMINMean)
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                           7, ], ty = "l", las = 1, xlim = c(1945, 2020),
+     main = Months[7])
+MinJuly.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                                     7, ])
+abline(coef(Month.lm), col = "red")
 
+MinJuly.lm
 
+## August
 
-## For loop - TMAX
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                           8, ], ty = "l", las = 1, xlim = c(1945, 2020),
+     main = Months[8])
+MinAugust.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                                     8, ])
+abline(coef(Month.lm), col = "yellow")
 
-par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
-TMAXresult <- NA
-for (i in 1:12) {
-  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
-                                             i, ], ty = "l", las = 1, xlim = c(1945, 2020),
-       main = Months[i])
-  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
-                                                       i, ])
-  print(summary(Month.lm))
-  abline(coef(Month.lm), col = "red")
-  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
-                                        round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
-                                                                                                          4], 4), round(summary(Month.lm)$r.squared,
-                                                                                                                        3)))
-}
+MinAugust.lm
 
+## September
 
-TMAXresult <- rbind(TMAXresult, cbind(Months[i],
-                                      round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
-                                                                                                        4], 4), round(summary(Month.lm)$r.squared,
-                                                                                                                      3)))
-summary(TMAXresult)
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                           9, ], ty = "l", las = 1, xlim = c(1945, 2020),
+     main = Months[9])
+MinSeptember.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                                     9, ])
+abline(coef(Month.lm), col = "orange")
 
-
-## For loop - TMIN
-
-par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
-TMINresult <- NA
-for (i in 1:12) {
-  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
-                                             i, ], ty = "l", las = 1, xlim = c(1945, 2020),
-       main = Months[i])
-  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
-                                                       i, ])
-  summary(Month.lm)
-  abline(coef(Month.lm), col = "blue")
-  TMINresult <- rbind(TMINresult, cbind(Months[i],
-                                        round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
-                                                                                                          4], 4), round(summary(Month.lm)$r.squared,
-                                                                                                                        3)))
-}
-
-
-
-## Precipitation
-
-MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, climate_data, mean)
-
-MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
-MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
-
-plot(MonthlyPRCPMean$PRCP, ty='l')
-
-par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
-PRCPresult <- NA
-for (i in 1:12) {
-  plot(PRCP ~ YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH ==
-                                             i, ], ty = "l", las = 1, xlim = c(1945, 2020),
-       main = Months[i])
-  Month.lm <- lm(PRCP ~ YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH ==
-                                                       i, ])
-  summary(Month.lm)
-  abline(coef(Month.lm), col = "green")
-  PRCPresult <- rbind(PRCPresult, cbind(Months[i],
-                                        round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
-                                                                                                          4], 4), round(summary(Month.lm)$r.squared,
-                                                                                                                        3)))
-}
-
-
-## Snow
-
-MonthlySNOWMean = aggregate(SNOW ~ Month + Year, climate_data, mean)
-
-MonthlySNOWMean$YEAR = as.numeric(MonthlySNOWMean$Year)
-MonthlySNOWMean$MONTH = as.numeric(MonthlySNOWMean$Month)
-
-plot(MonthlySNOWMean$SNOW, ty='l')
+MinSeptember.lm 
