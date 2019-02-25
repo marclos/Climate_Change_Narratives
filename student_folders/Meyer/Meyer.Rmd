@@ -1,6 +1,6 @@
 ---
 title: "Draft Climate"
-author: "Ella"
+author: "Ella Meyer"
 date: "2/5/2019"
 output: html_document
 ---
@@ -15,7 +15,7 @@ Into some directory???
 
 climatechangenarratives/studentfolders/lastname...
 
-```{r}
+```{r, echo=FALSE, results='hide'}
 filepath = "/home/CAMPUS/ekma2018/Climate_Change_Narratives/student_folders/Meyer/ella_seattle_data.csv"
 climate_data = read.csv(filepath)
 head(climate_data)
@@ -24,11 +24,12 @@ str(climate_data)
 
 ## Fixing Dates
 
-```{r}
+```{r, echo=FALSE, results='hide'}
 strDates = as.character(climate_data$DATE)
 climate_data$NewDate = as.Date(strDates, "%m/%d/%Y")
 
-
+```
+```{r,}
 CYear = sub("/([0-9]+)$", "/19\\1", strDates[1:18993]) # Defined for this dataset! 
 CYear = c(CYear, sub("/([0-9]+)$", "/20\\1", strDates[18994:25959]))
 head(CYear)
@@ -40,29 +41,102 @@ str(climate_data)
 
 ## Plot Data
 
-```{r}
+```{r, echo=FALSE, results='hide'}
 plot(TMAX ~ NewDate, climate_data)
 ```
 
 
 ## Add Best Fit Line
 
-```{r}
+```{r, echo=FALSE, results='hide'}
 lm(TMAX ~ NewDate, climate_data)
 
 plot(lm(TMAX ~ NewDate, climate_data))
 ```
 
+## Months
+```{r, echo=FALSE, results='hide'}
 
-## Monthly Means
-
-```{r}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 
+
+Months = c("January", "February", "March", "April",
+           "May", "June", "July", "August", "September", "October",
+           "November", "December")
+
+
+
+## Monthly Max
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+## Monthly Min
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+
+
 ```
 
-## Seattle Climate Links
+```{r, echo=FALSE}
+## SELECTED MONTHS
 
-https://www.citylab.com/environment/2018/04/seattle-thinks-it-knows-rain-climate-change-begs-to-differ/557291/
-https://www.usatoday.com/story/news/nation/2019/02/10/seattle-snowiest-february-70-years-more-coming/2830164002/
+## July Max
+
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[7])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       7, ])
+  abline(coef(Month.lm), col = "red")
+
+## Min
+
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                             7, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[7])
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                                       7, ])
+  abline(coef(Month.lm), col = "red")
+
+  
+  
+## August Max
+
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 8, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[8])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       8, ])
+  abline(coef(Month.lm), col = "yellow")
+  
+## August Min
+  
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                             8, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[8])
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                                       8, ])
+  abline(coef(Month.lm), col = "yellow")
+
+## September Max
+  
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 9, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[9])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       9, ])
+  abline(coef(Month.lm), col = "orange")
+  
+## Min
+  
+  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                             9, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[9])
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                                       9, ])
+  abline(coef(Month.lm), col = "orange")
+```

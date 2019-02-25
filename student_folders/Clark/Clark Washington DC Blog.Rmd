@@ -87,11 +87,38 @@ ty='l', xlim=c(1945, 2020))
 Aug.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
 summary(Aug.lm)
 abline(coef(Aug.lm), col="red")
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],
+ty='l', xlim=c(1945, 2020))
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+summary(Jan.lm)
+abline(coef(Jan.lm), col="red")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",],
+ty='l', xlim=c(1945, 2020))
+Feb.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+summary(Feb.lm)
+abline(coef(Feb.lm), col="red")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
+ty='l', xlim=c(1945, 2020))
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+summary(Dec.lm)
+abline(coef(Dec.lm), col="red")
+
+
+
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+ty='l', xlim=c(1945, 2020))
+Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(Jan.lm)
+abline(coef(Jan.lm), col="red")
 ```
+
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 https://www.weather.gov/lwx/hurricane_history hurricane season is june 1- nov 30
-https://journals.ametsoc.org/doi/abs/10.1175/1520-0477(1999)080%3C2717:AAECHA%3E2.0.CO%3B2
+https://journals.ametsoc.org/doi/abs/10.1175/1520-0477(1999)080%3C2717:AAECHA%3E2.0.CO%3B2 (Smith E (1999) Atlantic and East Coast hurricanes 1900–98: a frequency and intensity study for the twenty‐first century. Bulletin of the American Meteorology Society, 80, 2717–2720.)
 https://www.wusa9.com/article/news/dcs-15-worst-winter-storms/65-598322161 
 http://science.sciencemag.org/content/343/6172/729
-
+http://www.publish.csiro.au/PY/py13136 
+https://www.legalclinic.org/wp-content/uploads/2018/10/Fact-Sheet-on-Homelessness-and-Housing-Instability-in-DC_September-2018.pdf
+https://www.mitpressjournals.org/doi/abs/10.1162/0034653053970339 
