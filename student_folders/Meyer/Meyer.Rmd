@@ -1,6 +1,6 @@
 ---
 title: "Draft Climate"
-author: "Ella"
+author: "Ella Meyer"
 date: "2/5/2019"
 output: html_document
 ---
@@ -24,7 +24,7 @@ str(climate_data)
 
 ## Fixing Dates
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, results='hide'}
 strDates = as.character(climate_data$DATE)
 climate_data$NewDate = as.Date(strDates, "%m/%d/%Y")
 
@@ -54,8 +54,8 @@ lm(TMAX ~ NewDate, climate_data)
 plot(lm(TMAX ~ NewDate, climate_data))
 ```
 
-## Selected Months Max Temp
-```{r, echo=FALSE}
+## Months
+```{r, echo=FALSE, results='hide'}
 
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
@@ -74,35 +74,6 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
-## July
-
-plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7, ], ty = "l", las = 1, xlim = c(1945, 2020),
-       main = Months[7])
-Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
-                                                       7, ])
-  abline(coef(Month.lm), col = "red")
-  
-## August
-
-plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 8, ], ty = "l", las = 1, xlim = c(1945, 2020),
-       main = Months[8])
-Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
-                                                       8, ])
-  abline(coef(Month.lm), col = "yellow")
-
-## September
-  
-  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 9, ], ty = "l", las = 1, xlim = c(1945, 2020),
-       main = Months[9])
-Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
-                                                       9, ])
-  abline(coef(Month.lm), col = "orange")
-  
-```
-
-## Selected Months Min Temp
-```{r, echo=FALSE}
-
 ## Monthly Min
 
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
@@ -110,7 +81,21 @@ MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 
-## July
+
+```
+
+```{r, echo=FALSE}
+## SELECTED MONTHS
+
+## July Max
+
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[7])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       7, ])
+  abline(coef(Month.lm), col = "red")
+
+## Min
 
 plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
                                              7, ], ty = "l", las = 1, xlim = c(1945, 2020),
@@ -118,17 +103,35 @@ plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
   Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
                                                        7, ])
   abline(coef(Month.lm), col = "red")
+
   
-## August
   
-  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+## August Max
+
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 8, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[8])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       8, ])
+  abline(coef(Month.lm), col = "yellow")
+  
+## August Min
+  
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
                                              8, ], ty = "l", las = 1, xlim = c(1945, 2020),
        main = Months[8])
   Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
                                                        8, ])
   abline(coef(Month.lm), col = "yellow")
+
+## September Max
   
-## September
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 9, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = Months[9])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       9, ])
+  abline(coef(Month.lm), col = "orange")
+  
+## Min
   
   plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
                                              9, ], ty = "l", las = 1, xlim = c(1945, 2020),
@@ -137,4 +140,3 @@ plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
                                                        9, ])
   abline(coef(Month.lm), col = "orange")
 ```
-
