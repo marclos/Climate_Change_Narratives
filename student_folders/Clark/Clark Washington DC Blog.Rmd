@@ -1,0 +1,124 @@
+---
+title: "Extreme Weather Events in the Nation's Capital"
+author: "Chris Clark"
+date: "2/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+read.csv("/home/CAMPUS/ccca2017/Climate_Change_Narratives/student_folders/Clark/Chris_Arlington_Data.csv")
+climate_data<-read.csv("/home/CAMPUS/ccca2017/Climate_Change_Narratives/student_folders/Clark/Chris_Arlington_Data.csv")
+strDates <- as.character(climate_data$DATE)
+head(strDates)
+CYear = sub("/([0-9]+)$", "/19\\1", strDates[1:23132])
+CYear = c(CYear, sub("/([0-9]+)$", "/20\\1", strDates[23133:30098]))
+head(CYear)
+climate_data$NewDate <- as.Date(CYear, "%m/%d/%Y")
+str(climate_data)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+
+plot(TMAX ~ NewDate, data=climate_data)
+
+
+## Including Plots
+
+
+plot(pressure)
+plot(TMAX ~ NewDate, data=climate_data, ty='l')
+lm(TMAX ~ NewDate, data=climate_data)
+summary(lm(TMAX ~ NewDate, data=climate_data))
+abline(lm(TMAX~NewDate, data=climate_data), col="red")
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1940, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ], ty = "l", las = 1, xlim = c(1945, 2020),main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ])
+summary(Month.lm)  
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],
+ty='l', xlim=c(1945, 2020))
+Oct.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+summary(Oct.lm)
+abline(coef(Oct.lm), col="red")
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",],
+ty='l', xlim=c(1945, 2020))
+Feb.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+summary(Feb.lm)
+abline(coef(Feb.lm), col="red")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
+ty='l', xlim=c(1945, 2020))
+Aug.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+summary(Aug.lm)
+abline(coef(Aug.lm), col="red")
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],
+ty='l', xlim=c(1945, 2020))
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+summary(Jan.lm)
+abline(coef(Jan.lm), col="red")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",],
+ty='l', xlim=c(1945, 2020))
+Feb.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+summary(Feb.lm)
+abline(coef(Feb.lm), col="red")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
+ty='l', xlim=c(1945, 2020))
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+summary(Dec.lm)
+abline(coef(Dec.lm), col="red")
+
+
+
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+ty='l', xlim=c(1945, 2020))
+Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(Jan.lm)
+abline(coef(Jan.lm), col="red")
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+https://www.weather.gov/lwx/hurricane_history hurricane season is june 1- nov 30
+https://journals.ametsoc.org/doi/abs/10.1175/1520-0477(1999)080%3C2717:AAECHA%3E2.0.CO%3B2 (Smith E (1999) Atlantic and East Coast hurricanes 1900–98: a frequency and intensity study for the twenty‐first century. Bulletin of the American Meteorology Society, 80, 2717–2720.)
+https://www.wusa9.com/article/news/dcs-15-worst-winter-storms/65-598322161 
+http://science.sciencemag.org/content/343/6172/729
+http://www.publish.csiro.au/PY/py13136 
+https://www.legalclinic.org/wp-content/uploads/2018/10/Fact-Sheet-on-Homelessness-and-Housing-Instability-in-DC_September-2018.pdf
+https://www.mitpressjournals.org/doi/abs/10.1162/0034653053970339 

@@ -1,0 +1,162 @@
+---
+title: "Rising Temperatures and Drought in Albuquerque, New Mexico"
+author: "Siddharth Namachivayam"
+date: "2/23/2019"
+output: html_document
+---
+<style>
+body {
+    background-color: #FFEDBA;
+}
+
+div.a {
+  text-align: center;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<div class="a">
+## Background
+```{r picture, echo=FALSE, out.width = '40%'}
+knitr::include_graphics("NM.png")
+```
+</div>
+
+<br>
+Above is a map of varying drought conditions across the state of New Mexico in late June during an intense southwest drought which began in 2018. For the vast majority of that year, over 50% of the state was categorized as consistently experiencing 'severe drought' by the USDA drought monitor. Unsurprisingly, this drought has had considerable impacts on the state of New Mexico with long-term consequences continuing into 2019. For example, exceedingly dry conditions increased the risk of wildfire and exacerbated water scarcity issues across the state. Farmers became more dependent on pumping groundwater due to reduced water allotments, escalating the cost of crop production. Specifically, in the city of Albuquerque, the drought caused numerous issues with regards to urban water supply, leading to uncertainty around the reliability of reservoirs. 
+
+Clearly, extreme events like the recent drought in the southwest have pressing and important implications for the city of Albuquerque and the state of New Mexico. Understanding how such events occur and what factors amplify/facilitate them will be of crucial importance in planning and preparing against the negative impacts of severe drought. Thus, while creating this blog, I was interested in the following question: given the above severity of New Mexico's ongoing drought, what climatic trends in temperature facilitated and amplified the observed extreme weather behavior?
+
+In order to reduce the scope of my analysis, I decided to strictly look at temperature trends within the city of Albuquerque. The station at Albuquerque International Airport provided all the raw data analyzed and presented in the below section.
+
+<div class="a">
+## Analyzing Albuquerque Data
+</div>
+In order to analyze temperature trends, I initially created 12 sets of data (January, February, March, etc.), each looking at the monthly averages of Albuqerque minimum temperatures. I then plotted the data from 1931 to 2019 and then added the best fit line for each plot. 
+
+<div class="a">
+```{r minabq_plot, echo=FALSE}
+climate_data=read.csv("siddharth_abq_data.csv")
+strDates=as.character(climate_data$DATE)
+climate_data$DATES=as.Date(strDates,"%Y-%m-%d")
+
+climate_data$Month = format(as.Date(climate_data$DATES), format = "%m")
+climate_data$Year = format(climate_data$DATES, format="%Y")
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+
+par(mfrow = c(3, 4), mar = c(5, 4, 3, 2) + 0.1)
+TMINresult=NA
+for (i in 1:12) {
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty = "l", las = 1, main = Months[i], ylab="TMAX (°C)")
+Month.lm=lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+abline(coef(Month.lm), col = "red")
+TMINresult=rbind(TMINresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3)))
+}
+```
+</div> 
+<br>
+To determine whether these best fit lines are statistically significant, statisticians look at something known as the 'p-value.' In general, if the p-value is less than 0.05, then a result is considered statistically significant. In our above graphs for Albuquerque minimum temperatures, every month had p-values less than 0.05, meaning they are all statistically significant. 
+
+Interestingly however, when looking at monthly averages of Albuquerque maximum temperatures, only the month of March had p-values less than 0.05 (hence it was the only month statistically significant):
+
+<div class="a">
+```{r maxabq_plot, echo=FALSE}
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+Months = c("","","March")
+
+par(mfrow = c(1, 1), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult=NA
+for (i in 3:3) {
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty = "l", las = 1, main = Months[i], ylab="TMAX (°C)")
+Month.lm=lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+abline(coef(Month.lm), col = "red")
+TMAXresult=rbind(TMAXresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3)))
+}
+```
+</div> 
+<br>
+However in the end, note that all of our statistically significant data show a relatively strong warming trend for the city of Albuquerque ever since 1931. 
+
+<div class="a">
+## UNFINISHED FROM HERE
+</div> 
+Above is a plot of Albuquerque maximum temperatures  overlayed with a best fit line.
+
+Lets look at some of the results for this regression:
+
+```{r maxresults, echo=FALSE}
+summary(lm(TMAX~DATES,climate_data))
+```
+
+Note that the p-value for the y-intercept is 2x10^-6 and the p-value for the slope of the line is .02. Both of these values are less than .05. In other words, we can say with 95% confidence that our temperature is increasing at a rate  of 1.356x10^-5 degrees C per year and has an intercept of 21.28 degrees C.  
+
+Let's go ahead and clean up our original graph by looking at monthly averages one month at a time. 
+
+Ok cool. Let's do the same thing except for TMIN data now instead.
+
+
+Lets look at some of the results for this regression:
+
+```{r minresults, echo=FALSE}
+summary(lm(TMIN~DATES,climate_data))
+```
+
+[SOME ANALYSIS]
+Let's go ahead and clean up our original graph by looking at monthly averages one month at a time. 
+
+
+Ok lets take a break from all this temprature stuff and look at precipitation instead.
+
+```{r precabq_plot, echo=FALSE}
+plot(PRCP~DATES, climate_data,ty='l',xlab="YEAR")
+abline(lm(PRCP~DATES,climate_data),col="red")
+title(main="PRCP vs YEAR")
+summary(lm(PRCP~DATES,climate_data))
+```
+
+[SOME ANALYSIS]
+Let's go ahead and clean up our original graph by looking at monthly averages one month at a time. 
+
+```{r precmonthly, echo=FALSE}
+MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, climate_data, mean)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+
+par(mfrow = c(1, 1), mar = c(5, 4, 3, 2) + 0.1)
+PRCPresult=NA
+for (i in 1:12) {
+plot(PRCP ~ YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH==i,], ty = "l", las = 1, main = Months[i])
+Month.lm=lm(PRCP ~ YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH==i,])
+print(summary(Month.lm))
+abline(coef(Month.lm), col = "red")
+PRCPresult=rbind(PRCPresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3)))
+}
+```
+
+Sources to look at:
+https://onlinelibrary.wiley.com/doi/full/10.1002/eco.1849
+http://adsabs.harvard.edu/abs/2016AGUFMGC32C..04S
+https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.12743
+https://www.sciencedirect.com/science/article/pii/S0190052816300323
+https://bioone.org/journals/Rangelands/volume-30/issue-3/1551-501X(2008)30[23:CCAEOT]2.0.CO;2/Climate-Change-and-Ecosystems-of-the-Southwestern-United-States/10.2111/1551-501X(2008)30[23:CCAEOT]2.0.CO;2.full
+https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2008GL035075

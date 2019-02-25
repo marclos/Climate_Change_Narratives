@@ -105,7 +105,7 @@ lm(TMAX ~ NewDate, data=climate_data)
 @
 
 From this model, we learn that the change in $TMAX$ is 
-\Sexpr{round(coef(lm(TMAX ~ NewDate, data=climate_data))[2], 2)} degrees $year^{-1}$. Figure~\ref{fig:TMAX_trend} shows a trend of increasing maximum temperatures.
+\Sexpr{round(coef(lm(TMAX ~ NewDate, data=climate_data))[2], 6)} degrees $year^{-1}$. Figure~\ref{fig:TMAX_trend} shows a trend of increasing maximum temperatures.
 
 % Additional LaTeX code to add caption to figure
 \begin{figure}
@@ -184,6 +184,8 @@ Now, the change is \Sexpr{round(coef(May.lm)[2], 4)} degress C/year or \Sexpr{ro
 %https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R
 
 \subsection{Testing all the Months}
+
+This section for advanced users and specific questions. Please do not proceed without consulting Marc.
 
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
 
