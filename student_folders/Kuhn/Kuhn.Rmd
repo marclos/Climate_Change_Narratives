@@ -17,11 +17,13 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r,results="hide", echo=FALSE  }
 filepath="/home/CAMPUS/ecka2018/Climate_Change_Narratives/EmilyKuhn_Santabarbara_data.csv"
+
 climate_data = read.csv(filepath)
 head(climate_data)
 str(climate_data)
 
 ```
+
 
 ## Fixing Dates
 
@@ -84,3 +86,31 @@ library(xtable)
 
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+read.csv
+
+
+
+```{r}
+firefile = "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/WildfireAcres.csv"
+wildfires = read.csv(firefile)
+
+str(wildfires)
+plot(Acres.Burned ~ Year, data= wildfires)
+
+wildfires.lm = lm(Acres.Burned ~ Year, data= wildfires)
+summary(wildfires.lm)
+abline(coef(wildfires.lm))
+
+
+
+```
+gjkh  khklhk hkjh kjh 
+```{r}
+
+filerangepath= "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/WildfireRanges.csv"
+ranges=read.csv(filerangepath)
+
+str(ranges)
+
+plot(Fires~Time,data=ranges)
+
