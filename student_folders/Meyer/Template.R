@@ -41,7 +41,7 @@ plot(PRCP ~ NewDate, climate_data)
 
 ## Add best fit line
 
-lm(TMAX ~ NewDate, climate_data)
+print(lm(TMAX ~ NewDate, data = climate_data))
 
 plot(lm(TMAX ~ NewDate, climate_data))
 

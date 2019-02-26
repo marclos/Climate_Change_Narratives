@@ -4,6 +4,13 @@ author: "Chris Clark"
 date: "2/11/2019"
 output: html_document
 ---
+Background
+---
+Washington, DC is a hub of government and culture for the United States. It is built on a drained swamp, making the climate humid with blistering summers and cold winters. The city has not been historically known for its extreme weather, but events such as hurricanes and blizzards have been increasing in frequency and intensity throughout the past century. These increases have also corresponded with atmospheric warming in DC in summer and winter months. This is troubling from a humanitarian perspective because of the rampant homelessness and income inequality in the nation’s capital. Changes in temperature that can influence these events may be very destructive and deadly to communities of lower income, and something must be done to mitigate these impacts. 
+
+Methods
+---
+Using  The National Oceanic and Atmospheric Association (NOAA) data base, I downloaded climate data from 1936-2019 taken from Reagan National Airport in Arlington, Virginia (3 miles south of Washington, DC). I then analyzed the relationship between temperatures and times over this 83 year span using the open source statistical analysis program RStudio. I analyzed the data to determine whether it rejects the null hypothesis that there is no relationship between temperature change and time. Data with p-values less than 0.05 are statistically significant and reject the null hypothesis. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -18,24 +25,19 @@ climate_data$NewDate <- as.Date(CYear, "%m/%d/%Y")
 str(climate_data)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
+``` {r cars, include=FALSE}
 
 plot(TMAX ~ NewDate, data=climate_data)
 
 
-## Including Plots
 
 
-plot(pressure)
+
 plot(TMAX ~ NewDate, data=climate_data, ty='l')
 lm(TMAX ~ NewDate, data=climate_data)
-summary(lm(TMAX ~ NewDate, data=climate_data))
+
 abline(lm(TMAX~NewDate, data=climate_data), col="red")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
@@ -48,7 +50,7 @@ plot(MonthlyTMAXMean$TMAX, ty='l')
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
 ty='l', xlim=c(1940, 2020))
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-summary(May.lm)
+
 abline(coef(May.lm), col="red")
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
@@ -65,7 +67,7 @@ plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
 i, ], ty = "l", las = 1, xlim = c(1945, 2020),main = Months[i])
 Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
 i, ])
-summary(Month.lm)  
+
 abline(coef(Month.lm), col = "red")
 TMAXresult <- rbind(TMAXresult, cbind(Months[i],
 round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
@@ -75,50 +77,88 @@ round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],
 ty='l', xlim=c(1945, 2020))
 Oct.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
-summary(Oct.lm)
+
 abline(coef(Oct.lm), col="red")
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",],
 ty='l', xlim=c(1945, 2020))
 Feb.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
-summary(Feb.lm)
+
 abline(coef(Feb.lm), col="red")
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
 ty='l', xlim=c(1945, 2020))
 Aug.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
-summary(Aug.lm)
+
 abline(coef(Aug.lm), col="red")
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],
 ty='l', xlim=c(1945, 2020))
 Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
-summary(Jan.lm)
+
 abline(coef(Jan.lm), col="red")
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",],
 ty='l', xlim=c(1945, 2020))
 Feb.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
-summary(Feb.lm)
+
 abline(coef(Feb.lm), col="red")
+
+
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
 ty='l', xlim=c(1945, 2020))
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
-summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+```
+Maximum Temperatures and Blizzards? December
+---
+Washington, DC is a quintessentially mid-atlantic area, straddling the line between the traditional north and south. As such, it is an area that has not historically been known for its blizzards. However, according to local news outlet WUSA9, 11 of the 15 worst winter storms in the DC metropolitan area since 1800 have occurred between the months of January and March from 1966 to the present. Why could this be happening? One hypothesis is that warming temperatures in the winter can cause increased evaporation, leading to more water vapor in the air and thus larger snowfall once the temperatures dip and the precipitation falls (Wallace et al. 2014). In the DC area this is supported by the fact that maximum temperatures in December have increased significantly since 1945 with a slope of .0299 degrees C per year and p-value of .027. Temperatures in January and February (DCs heaviest snowfall months) have not significantly decreased, but since the temperatures in December have, it is very possible the evaporation has increased leading to increases in major snowfall events in the region. 
+``` {r, echo=FALSE}
+# Including Plots
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
+ty='l', xlim=c(1945, 2020), main="December")
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 abline(coef(Dec.lm), col="red")
 
+```
+
+Maximum Temperatures and Hurricanes in August
+---
+
+Atlantic hurricane season as designated by NOAA starts on June 1 and goes all the way through November 30. For the plot of maximum temperature against time for the month of August, there was a slope of .0222 degrees C per year and a p-value of 0.001436. This p-value being well below .05 shows a significant correlation between year and temperature, meaning that there has been significant warming in the Washington, DC area. This increased surface/atmospheric temperature lends itself to aiding in hurricane landfall, where previously cooler land and atmospheric conditions could not support the storms. This is supported by Smith’s article (1999) that shows that between 1970 and 1998 east coast hurricane frequency was increasing. Hurricane data from the National Weather Service also shows that through time, DC is experiencing more hurricanes, which may be partially explained by the increases in temperature. 
+``` {r, echo=FALSE}
+# Including Plots
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
+ty='l', xlim=c(1945, 2020), main="August")
+Aug.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+
+abline(coef(Aug.lm), col="red")
 
 
+```
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
-ty='l', xlim=c(1945, 2020))
-Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
-summary(Jan.lm)
-abline(coef(Jan.lm), col="red")
+Societal Implications & Homelessness
+---
+
+```{r picture, echo=FALSE, out.width = '40%'}
+knitr::include_graphics("Homeless Blizzard.jpg")
 ```
 
 
+Above is a photo or a homeless person in DC trying to push their belongings through a blizzard. This photo highlights a larger problem that is very prevalent in Washington. It has been found in research that extreme weather events disproportionately affect people who are homeless or live in poverty. These events have been seen to magnify physical and mental health issues as well as substance use disorders in the impoverished and homeless (Pendrey et al. 2014). This has wide implications in DC, which, according to The Washington Legal Clinic for the Homeless, has a 19% poverty rate with more than 15,000 of the city’s 700,000 residents experiencing homelessness over the course of a typical year. Additionally, since it has been shown that climatic disasters are more destructive to places of lower income (Kahn 2005). With these two factors, it becomes apparent that increases in frequency and intensity of extreme weather events will wreak havoc on the lower income communities, and because of the tie between income and race, communities of color. This needs to be considered in planning for extreme weather events so that the city of Washington, DC so that displacement and casualties can be avoided as extreme weather comes more and more often. 
+
+Sources 
+---
+Kahn M. 2005. The Death Toll from Natural Disasters: The Role of Income, Geography, and Institutions. Review of Economics and Statistics 87(2):271-284 
+
+[NWS] National Weather Service (US). 2012. Hurricane History for the Washington and Baltimore Region. Silver Spring (MD): National Oceanic and Atmospheric Administration
+
+Pendrey C, Carey M, Stanley J. 2013. Impacts of extreme weather on the health and well-being of people who are homeless. Australian Journal of Primary Health 20:2-3.
+
+Smith E. 1999. Atlantic and East Coast hurricanes 1900–98: a frequency and intensity study for the twenty‐first century. Bulletin of the American Meteorology Society. 80:2717–2720.
+
+The Washington Legal Clinic for the Homeless. 2018. Fact Sheet on Homelessness and Housing Instability in DC [PDF]. Washington (DC): The Washington Legal Clinic for the Homeless.
+
+Wallace JM, Held IM, Thompson D, Trenberth KE, Walsh JE. 2014. Global warming and winter weather. Science 343:729–730. 
+
+WUSA (US). 2018. DC's 15 worst winter storms. Washington (DC): CBS 
+
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-https://www.weather.gov/lwx/hurricane_history hurricane season is june 1- nov 30
-https://journals.ametsoc.org/doi/abs/10.1175/1520-0477(1999)080%3C2717:AAECHA%3E2.0.CO%3B2 (Smith E (1999) Atlantic and East Coast hurricanes 1900–98: a frequency and intensity study for the twenty‐first century. Bulletin of the American Meteorology Society, 80, 2717–2720.)
-https://www.wusa9.com/article/news/dcs-15-worst-winter-storms/65-598322161 
-http://science.sciencemag.org/content/343/6172/729
-http://www.publish.csiro.au/PY/py13136 
-https://www.legalclinic.org/wp-content/uploads/2018/10/Fact-Sheet-on-Homelessness-and-Housing-Instability-in-DC_September-2018.pdf
-https://www.mitpressjournals.org/doi/abs/10.1162/0034653053970339 
+
