@@ -1,7 +1,7 @@
 ---
-title: "Rising Temperatures and Drought in Albuquerque, New Mexico"
+title: "Why Are Recent Droughts In New Mexico So Severe?"
 author: "Siddharth Namachivayam"
-date: "2/25/2019"
+date: "2/26/2019"
 output: html_document
 ---
 <style>
@@ -30,11 +30,11 @@ knitr::include_graphics("NM.png")
 </div>
 
 <br>
-The above map displays varying drought conditions across the state of New Mexico in late June during the intense Southwest drought which began in 2018. For the vast majority of that year, the USDA drought monitor categorized around 70% of the state as consistently experiencing at least 'severe drought.' Unsurprisingly, this drought has had considerable impacts on the state of New Mexico with long-term consequences continuing into 2019. For example, exceedingly dry conditions increased the number of wildfires and also exacerbated water scarcity issues across the state. Specifically in the city of Albuquerque, the drought caused numerous issues with regards to urban water supply, leading to uncertainty around the reliability of reservoirs. 
+The above map displays varying drought conditions across the state of New Mexico in late June during the intense Southwest drought which began in 2018. For the vast majority of that year, the USDA drought monitor categorized around 70% of the state as consistently experiencing at least 'severe drought.' Unsurprisingly, this drought has had considerable impacts on the state of New Mexico with long-term consequences continuing into 2019. For example, exceedingly dry conditions increased the number of wildfires and exacerbated water scarcity issues across the state. Specifically in the city of Albuquerque, the drought caused numerous issues with regards to urban water supply, leading to uncertainty around the reliability of reservoirs. 
 
-Clearly, extreme events like the recent drought in the southwest have pressing and important implications for the city of Albuquerque and the state of New Mexico. Understanding how such events occur and what factors amplify/facilitate them will be of crucial importance in planning and preparing against the negative impacts of severe drought. Thus, while creating this blog, I was interested in the following question: given the above severity of New Mexico's ongoing drought, what climatic trends in temperature facilitated and amplified the observed extreme weather behavior?
+Clearly, extreme events like the recent drought in the Southwest have pressing and important implications for the city of Albuquerque and the state of New Mexico. Understanding how such events occur and what factors amplify/facilitate them will be of crucial importance in planning and preparing against the negative impacts of severe drought. Thus, while creating this blog, I was interested in the following question: given the above severity of New Mexico's ongoing drought, what climatic trends in temperature facilitated and amplified the observed extreme weather behavior? 
 
-In order to reduce the scope of my analysis, I decided to strictly look at temperature trends within the city of Albuquerque. The station at Albuquerque International Airport provided all the raw data analyzed and presented in the section below.
+To begin with, I hypothesized that rising temperatures during the summer in New Mexico contributed to the severity of drought in the region. In order to reduce the scope of my analysis, I decided to strictly look at temperature trends within the city of Albuquerque. The station at Albuquerque International Airport provided all the raw data analyzed and presented in the section below.
 
 <div class="a">
 ## Analyzing Albuquerque Data
@@ -71,7 +71,7 @@ TMINresult=rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round
 <br>
 Note each best fit line has a clear positive (or increasing) slope. To determine whether these positive trends are statistically significant (i.e. fit the data well), statisticians look at a measure known as the 'p-value.' Essentially, p-values indicate the probability of a certain observed result occuring. So, the lower the p-value, the higher the significance of a result. There are a lot of calculations that go into finding this p-value, but if it is less than 0.05, then statisticians consider the corresponding result to be statistically significant. 
 
-In the above 12 graphs for Albuquerque minimum temperatures, each best fit line had p-values less than 0.05. This means our positive trend lines fit the data really well! Hence, we have strong evidence that the monthly averages for Albuquerque minimum temperatures have been steadily increasing since 1931 for all 12 months. 
+In the above 12 graphs for Albuquerque minimum temperatures, each best fit line had p-values less than 0.05. This means our positive trend lines fit the data really well! Hence, we have strong evidence that the monthly averages for Albuquerque minimum temperatures have been steadily increasing since 1931 *for all four seasons* (not only during the summer as I had initially hypothesized). 
 
 <div class="a">
 ## How Can We Trust The Data?
@@ -85,7 +85,7 @@ knitr::include_graphics("UHI.jpg")
 ```
 </div> 
 
-Unfortunately, some climate skeptics have accused even these adjustments of containing an additional 'warm' bias. However, thorough studies on the reliability of the U.S. surface temperature recor, indicate that such adjustments are both appropriate and necessary. Furthermore, they suggest any potential 'warm' biases towards daily minimum temperatures are essentially negligible. In light of these studies along with the increasing trends observed in our above data analysis, there should be no doubt that Albuquerque is indeed warming.
+Unfortunately, some climate skeptics accuse the homogenization process itself of containing a 'warm' bias. However, thorough studies on the reliability of the U.S. surface temperature record indicate that such adjustments are both appropriate and necessary. Furthermore, they suggest any potential 'warm' biases towards daily minimum temperatures are essentially negligible. In light of these studies along with the increasing trends observed in our above data analysis, there should be no doubt that Albuquerque is indeed warming.
 
 <div class="a">
 ## What Do Rising Temperatures Have To Do With Drought?
@@ -93,7 +93,7 @@ Unfortunately, some climate skeptics have accused even these adjustments of cont
 **There are two main reasons that rising temperatures in Albuquerque could potentially amplify/facilitate severe drought:**
 </div> 
 
-**1) Mountain snowpack-** Flow in the Rio Grande river is one of the best indicators of drought for New Mexico. This is because runoff into the Rio Grande directly relates to snowpack in the Jemez mountains, a crucial source for New Mexico's water supply. The Jemez mountains will have similar climatic trends to Albuquerque International Airport, even if the trends are shifted downward due to altitude. In other words, we expect the Jemez mountains to exhibit warming. Higher winter temperatures in the mountains precipitate more rain than snow, decreasing snowpack. In addition, higher spring temperatures melt snowpack earlier, ultimately extending the duration and intensity of summer drought.  
+The first reason has to do with **mountain snowpack**. Flow in the Rio Grande river is one of the best indicators of drought for New Mexico. This is because runoff into the Rio Grande directly relates to snowpack in the Jemez mountains, a crucial source for New Mexico's water supply. The Jemez mountains exhibit roughly similar climatic trends to Albuquerque International Airport, even if the trends are shifted downward due to altitude. Hence, the Jemez mountains are probably experiencing warming similar to that of Albuquerque. Higher winter temperatures in the mountains precipitate more rain than snow, decreasing the total amount of snowfall. In addition, higher spring temperatures melt snowpack earlier, ultimately extending the duration and intensity of summer drought.  
 
 <div class="a">
 ```{r picture3, echo=FALSE, fig.cap="Snowpack in Northern New Mexico", out.width = '41%'}
@@ -101,99 +101,31 @@ knitr::include_graphics("Snowpack.png")
 ```
 </div> 
 
-**2) Evapotranspiration-** Evapotranspiration is the combined effect of evaporation and transpiration. Since higher temperatures cause more liquid water to convert to gas and encourage plants to open up their stomata, we should expect an increase in evapotranspiration. We should note, however, that transpiration in New Mexico is slightly mitigated by the presence of drought-resilient CAM plants in the desert. Overall though, rising temperatures tend to decrease the amount of available water by evapotranspirating it into the atmosphere, further contributing to extreme drought conditions.
+The second reason rising temperatures have an effect on drought has to do with **evapotranspiration**. Evapotranspiration is the combined effect of evaporation and transpiration. Since higher temperatures cause more liquid water to convert to gas and encourage plants to open up their stomata, we should expect evapotranspiration to increase. This in turn decreases the amount of available water by evapotranspirating it into the atmosphere, further contributing to drought conditions. As a brief happy side note, transpiration in New Mexico is slightly mitigated by the presence of drought-resilient CAM plants in the desert! However, the overall trend ends up remaining the same. 
+
 <div class="a">
-```{r picture4, echo=FALSE, fig.cap="Illustration of Evapotranspiration", out.width = '25.5%'}
+```{r picture4, echo=FALSE, fig.cap="Illustration of Evapotranspiration", out.width = '24.5%'}
 knitr::include_graphics("evapo.png")
 ```
 
 ## Impacts of Drought
 </div> 
 
+Drought in New Mexico has numerous impacts on water supply, wildfires, and agriculture. Most immediately, water shortages will increase in frequency as reservoirs approach historically low levels. [Insert more stuff]
+
+In general, drought also tends produce a whole host of environmental justice issues. For example, one study in California indicates that domestic water supply shortages and rising water costs affect low-income families and people of color the most. In addition to facing decreasing water affordability, these populations often need financial assistance in dealing with dry household wells. Moreover, increasingly severe droughts in New Mexico affect indigenous people in unique ways. For example, drier climate has forced the people of the Santo Domingo tribe to give up traditional farming practices central to their culture. Clearly, drought poses a signficant threat to the welfare of both New Mexico and its inhabitants. 
+
 <div class="a">
 ## Conclusion
 </div>
+
+Strong warming trends in regions like Albuquerque are likely exacerbating drought in New Mexico. Higher temperatures in the Jemez mountains decrease snowpack during winters and lead to earlier snowmelt in the spring. Along with increasing evapotranspiration, these factors cause longer and drier periods of drought during the summer. As these droughts become more and more severe, the people most affected by their impacts will be farmers, low-income families, and people of color. Preparing against rising temperatures will be crucial to mitigating the severity of drought in New Mexico. Moving into the future, New Mexico should view its water problems as not only pertaining to drought, but rather, to more general climatic shifts and trends within the region. 
 
 <div class="a">
 ## Citations
 </div>
 
-## EVERYTHING BELOW IS EXTRANEOUS
-Interestingly, when looking at monthly averages of Albuquerque maximum temperatures, only the month of March had p-values less than 0.05 (hence it was the only month statistically significant):
-```{r maxabq_plot, echo=FALSE}
-MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
-
-Months = c("","","March")
-
-par(mfrow = c(1, 1), mar = c(5, 4, 3, 2) + 0.1)
-TMAXresult=NA
-for (i in 3:3) {
-plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty = "l", las = 1, main = Months[i], ylab="TMAX (°C)")
-Month.lm=lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
-abline(coef(Month.lm), col = "red")
-TMAXresult=rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3)))
-}
-```
-
-Above is a plot of Albuquerque maximum temperatures overlayed with a best fit line.
-
-Lets look at some of the results for this regression:
-
-```{r maxresults, echo=FALSE}
-summary(lm(TMAX~DATES,climate_data))
-```
-
-Note the p-value for the y-intercept is 2x10^-6 and the p-value for the slope of the line is .02. Both of these values are less than .05. In other words, we can say with 95% confidence that our temperature is increasing at a rate  of 1.356x10^-5 degrees C per year and has an intercept of 21.28 degrees C.  
-
-Let's go ahead and clean up our original graph by looking at monthly averages one month at a time. 
-
-Ok cool. Let's do the same thing except for TMIN data now instead.
-
-
-Lets look at some of the results for this regression:
-
-```{r minresults, echo=FALSE}
-summary(lm(TMIN~DATES,climate_data))
-```
-
-[SOME ANALYSIS]
-Let's go ahead and clean up our original graph by looking at monthly averages one month at a time. 
-
-
-Ok lets take a break from all this temprature stuff and look at precipitation instead.
-
-```{r precabq_plot, echo=FALSE}
-plot(PRCP~DATES, climate_data,ty='l',xlab="YEAR")
-abline(lm(PRCP~DATES,climate_data),col="red")
-title(main="PRCP vs YEAR")
-summary(lm(PRCP~DATES,climate_data))
-```
-
-[SOME ANALYSIS]
-Let's go ahead and clean up our original graph by looking at monthly averages one month at a time. 
-
-```{r precmonthly, echo=FALSE}
-MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, climate_data, mean)
-MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
-MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
-
-Months = c("January", "February", "March", "April",
-"May", "June", "July", "August", "September", "October",
-"November", "December")
-
-par(mfrow = c(1, 1), mar = c(5, 4, 3, 2) + 0.1)
-PRCPresult=NA
-for (i in 1:12) {
-plot(PRCP ~ YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH==i,], ty = "l", las = 1, main = Months[i])
-Month.lm=lm(PRCP ~ YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH==i,])
-print(summary(Month.lm))
-abline(coef(Month.lm), col = "red")
-PRCPresult=rbind(PRCPresult, cbind(Months[i],
-round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3)))
-}
-```
+HAVE YET TO COMPLETE THIS
 
 Sources to look at:
 https://onlinelibrary.wiley.com/doi/full/10.1002/eco.1849
