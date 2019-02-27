@@ -1,8 +1,12 @@
 ---
-title: "Fire vs. Water: How Seattle, one of the most notoriously rainy cities, is confronted with the effects of near-by wildfires"
+title: 'Fire vs. Water: How Seattle, one of the most notoriously rainy cities, is
+  confronted with the effects of near-by wildfires'
 author: "Ella Meyer"
 date: "March 1st, 2019"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -110,6 +114,7 @@ MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 
 ## July Max
 
+par(mfrow = c(1,2))
 plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7, ], ty = "l", las = 1, xlim = c(1945, 2020),
        main = "July Max")
 Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
@@ -131,6 +136,7 @@ The maximum temperatures in July increase at a slope of 0.02658 degrees Fahrenhe
 ```{r, echo=FALSE}
 ## August Max
 
+par(mfrow = c(1,2))
 plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 8, ], ty = "l", las = 1, xlim = c(1945, 2020),
        main = "August Max")
 Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
@@ -152,6 +158,7 @@ The maximum temperatures in August increase at a slope of 0.04085 degrees Fahren
 ```{r, echo=FALSE}
 ## September Max
   
+par(mfrow = c(1,2))
   plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 9, ], ty = "l", las = 1, xlim = c(1945, 2020),
        main = "September Max")
 Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
