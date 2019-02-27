@@ -1,0 +1,187 @@
+---
+title: 'From Fire to Floods: Climate Whiplash in Southern California'
+author: "Toni Anderson"
+date: "2/23/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+![The Picturesque City of Burbank](Burbank View.jpg)
+
+# Introduction
+
+Southern California is well known for its temperate climate and sunny beaches. The entertainment capital of the world has a reputation as one of the most idyllic climates in America, making a perfect backdrop for the hundreds of movies filmed there . In the very heart of region, the city of Burbank proudly hosts countless film studios, animation academies, and live television sets. The eyes of the world rest on Burbank through their television screens. However, the eyes of scientists are watching Burbank carefully as well, for a very different reason. 
+	Southern California’s idyllic warm climate hides a much more sinister environmental concern: the phenomenon known colloquially as “Climate Whiplash.” Put simply, this term denotes frequent transitions from very wet to very dry weather. This phenomenon is becoming more prevalent worldwide, but is easily identifiable in Southern California. For example, at the end of 2018, the hills of Burbank went from a raging fire to deadly mudslides in just a few weeks, causing massive property damage and prolonged evacuations of both people and livestock. This blog examines the observed trends of climate whiplash in Southern California, using both scientific studies and raw climate data from the National Oceanic and Atmospheric Administration (NOAA). From this data, it will then discuss the effects of this whiplash on the community itself; including flooding, evacuation culture, and water supply contamination.
+
+
+# Methods
+
+How did I get my data. What is NOAA. what are some shortcomings.
+
+# Data
+
+```{r include=FALSE}
+##Read CSV Data
+filepath= "/home/CAMPUS/ttab2018/Climate_Change_Narratives/student_folders/Anderson/tonianderson_burbank_realdata.csv"
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+names(climate_data)
+
+##Fix Dates
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+```
+
+###TMAX Daily Averages 
+```{r echo=FALSE}
+plot(TMAX~NewDate, climate_data, ty='l', main="TMAX(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMAX(Degrees Celcius)", col.main="black", col.lab="red" )
+c <- coef(lm(TMAX~NewDate, climate_data))
+abline(c, col="red")
+```
+
+###TMIN Daily Averages 
+```{r echo=FALSE}
+##TMIN
+plot(TMIN~NewDate, climate_data, ty='l', main="TMIN(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMIN(Degrees Celcius)", col.main="black", col.lab="blue" )
+c <- coef(lm(TMIN~NewDate, climate_data))
+abline(c, col="blue")
+```
+
+
+```{r include=FALSE}
+## Define Shit
+lm(TMAX~NewDate, data=climate_data)
+summary(lm(TMAX~NewDate, data=climate_data))
+
+##Monthly Averages
+climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
+climate_data$Year = format(as.Date(climate_data$NewDate), format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month +Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+
+##Plot May
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020), main="May TMAX(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMAX(Degrees Celcius)", col.main="black", col.lab="blue")
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+##TMIN Definitions
+plot(TMIN~NewDate, climate_data, ty='l', main="TMIN(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMIN(Degrees Celcius)", col.main="black", col.lab="blue" )
+c <- coef(lm(TMIN~NewDate, climate_data))
+abline(c, col="red")
+MonthlyTMINMean = aggregate(TMIN ~ Month +Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+##Precipitation Data (Initial Data)
+filepath= "/home/CAMPUS/ttab2018/Climate_Change_Narratives/student_folders/Anderson/tonianderson_burbank_realdata.csv"
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+names(climate_data)
+
+##Fix Dates
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+
+##Precipitaion Data (Get sum, then create monthly plots)
+## Define Shit
+lm(PRCP~NewDate, data=climate_data)
+summary(lm(PRCP~NewDate, data=climate_data))
+
+##Monthly Sums
+climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
+climate_data$Year = format(as.Date(climate_data$NewDate), format="%Y")
+MonthlyPRCPSum = aggregate(PRCP ~ Month +Year, climate_data, sum)
+MonthlyPRCPSum$YEAR = as.numeric(MonthlyPRCPSum$Year)
+MonthlyPRCPSum$MONTH = as.numeric(MonthlyPRCPSum$Month)
+str(MonthlyPRCPSum)
+
+```
+
+###Precipitation Daily Sums 
+```{r echo=FALSE}
+
+##Plot Data
+plot(PRCP~NewDate, climate_data, ty='l', ylim=c(0, 300), main="Precipitation vs. Time(Years)", xlab="Time(Years)", ylab="Precipitation (Milimeters)", col.main="black", col.lab="green" )
+c <- coef(lm(PRCP~NewDate, climate_data))
+abline(c, col="green")
+```
+
+```{r include=FALSE}
+##Every Month! (Leaving here in case something doesn't work without it)
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+par(mfrow = c(3, 4), mar = c(5, 4, 3, 2) + 0.1 )
+PRCPresult <- NA 
+for (i in 1:12) {
+plot(PRCP ~ YEAR, data =  MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(0, 400), main = Months[i], xlab="Total Precipation", ylab="Year", col.main="black", col.lab="green" )
+Month.lm <- lm(PRCP ~ YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+
+```
+
+###Temperature Maximum Daily Averages Monthly
+```{r echo=FALSE, fig.height=3}
+##Fall Season
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+par(mfrow = c(1, 3), mar = c(5, 4, 3, 2) + 0.1 )
+TMAXresult <- NA 
+for (i in 10:12) {
+  plot(TMAX ~ YEAR, data =  MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(0, 35), xlab="Time (Years)", ylab="TMAX (Degrees Celcius)", col.lab="red", main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+###Temperature Minimum Daily Averages Monthly
+```{r echo=FALSE, fig.height=3}
+##Fall Season
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+par(mfrow = c(1, 3), mar = c(5, 4, 3, 2) + 0.1 )
+TMINresult <- NA 
+for (i in 10:12) {
+  plot(TMIN ~ YEAR, data =  MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(0, 35),xlab="Time (Years)", ylab="TMIN (Degrees Celcius)", col.lab="blue", main = Months[i])
+Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "blue")
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+###Precipitation Monthly Data (Sum)
+```{r echo=FALSE, fig.height=3}
+#Fall Season
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+ par(mfrow = c(1, 3), mar = c(5, 4, 3, 2) + 0.1 )
+ PRCPresult <- NA 
+ for (i in 10:12) {
+plot(PRCP ~ YEAR, data =  MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(0, 300), main = Months[i], xlab="Year", ylab="Total Precipitation (Milimeters)", col.main="black", col.lab="green" )
+Month.lm <- lm(PRCP ~ YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "green")
+PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+```
+TMAX and TMIN trends coupled with precipitation. Match up to real life events. Talk about precipitation variability and sum vs avg.
+
+## Effects
+
+What is gonna happen next? Floods. What impacts does it have on economy?
+
+##Conclusion
+What next?
+
+##Citations
