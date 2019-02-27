@@ -23,7 +23,9 @@ options(htmltools.dir.version = FALSE)
 ```
 # What is Attribution Science
 
-## Signal and Noise
+Attribution Science is a subset of climate science that attempts to evaluate the effect of climate change on weather patterns, in particular extreme weather events. 
+
+The effort has focused on changes observed during the period of instrumental temperature record, particularly in the last 50 years. This is the period when human activity has grown fastest and observations of the atmosphere above the surface have become available. 
 
 ## Scientific 'Progress': False Positives and Negatives
 
@@ -33,9 +35,15 @@ options(htmltools.dir.version = FALSE)
 
 ## Climate, Radiative Forcing, and Carbon Dioxide
 
-Although the Earth's climate has been changing for hundreds of thousands, even millions and billions of years, even small changes to the Earth's average temperatures has significant implications for human activities. Climate change science can be extremely complex, but here are two well undertood proceses: 
+Although the Earth's climate has been changing for hundreds of thousands, even millions and billions of years, even small changes to the Earth's average temperatures has significant implications for human activities. 
 
-1) Carbon dioxide (and other ``greenhouse gases'') trap heat and make Earth warmer than it would be otherwise.
+Climate change science can be extremely complex, but according to the Intergovernmental Panel on Climate Change (IPCC), it is ''extremely likely'' that human influence was the dominant cause of global warming between 1951 and 2010.
+
+### Signal and Noise
+
+Some of the main human activities that contribute to global warming are:
+
+-- Increasing atmospheric concentrations of greenhouse gases 
 
 ```{r maunaloa, echo=FALSE}
 address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
@@ -50,14 +58,42 @@ maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=ma
 #write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
 ```
 
-2) Human activity such as the burning of fossil fuels (coal, oil, gas) is rapidly increasing the amount of carbon dioxide in Earth’s atmosphere. Note: Not only are carbon dioxide emissions increasing, the rate is accelerating. 
-
 ```{r fig-margin, fig.margin = TRUE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
 par(las=1)
 plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
 abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
 ```
+
+-- Global changes to land surface, such as deforestation
+
+FIGURE NEEDED
+
+-- Increasing atmospheric concentrations of aerosols.
+
+FIGURE NEEDED
+
+-- In addition to human activities, some natural mechanisms can also cause climate change, including for example, climate oscillations, changes in solar activity, and volcanic activity.
+
+FIGURE NEEDED
+
+Multiple lines of evidence support attribution of recent climate change to human activities:
+
+* A basic physical understanding of the climate system: greenhouse gas concentrations have increased and their warming properties are well-established.
+
+* Historical estimates of past climate changes suggest that the recent changes in global surface temperature are unusual.
+
+* Computer-based climate models are unable to replicate the observed warming unless human greenhouse gas emissions are included.
+
+
+Natural forces alone (such as solar and volcanic activity) cannot explain the observed warming.
+The IPCC's attribution of recent global warming to human activities is a view shared by the scientific community, and is also supported by 196 other scientific organizations worldwide.
+
+Here are two well undertood proceses: 
+
+
+
+2) Human activity such as the burning of fossil fuels (coal, oil, gas) is rapidly increasing the amount of carbon dioxide in Earth’s atmosphere. Note: Not only are carbon dioxide emissions increasing, the rate is accelerating. 
 
 Based on these two processes, we can draw the following conclusion:
 
