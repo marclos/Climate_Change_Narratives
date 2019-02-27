@@ -41,11 +41,11 @@ plot(PRCP ~ NewDate, climate_data)
 
 ## Add best fit line
 
-print(lm(TMAX ~ NewDate, data = climate_data))
+summary(lm(TMAX ~ NewDate, data = climate_data))
 
 plot(lm(TMAX ~ NewDate, climate_data))
 
-lm(TMIN ~ NewDate, climate_data)
+summary(lm(TMIN ~ NewDate, climate_data))
 
 plot(lm(PRCP ~ NewDate, climate_data))
 
@@ -72,7 +72,7 @@ MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
 ## July
-
+par(mfrow = c(1,2))
 plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7, ], ty = "l", las = 1, xlim = c(1945, 2020),
      main = Months[7])
 MaxJuly.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
