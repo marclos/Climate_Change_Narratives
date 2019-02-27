@@ -1,7 +1,7 @@
 ---
-title: "Draft Climate"
-author: "Ella"
-date: "2/5/2019"
+title: "Fire vs. Water: How Seattle, one of the most notoriously rainy cities, is confronted with the effects of near-by wildfires"
+author: "Ella Meyer"
+date: "March 1st, 2019"
 output: html_document
 ---
 
@@ -9,27 +9,53 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Upload Data Into R
 
-Into some directory???
+## Introduction
 
-climatechangenarratives/studentfolders/lastname...
+### It's Raining, Again
 
-```{r, echo=FALSE, results='hide'}
+Seattle averages 152 days of rain per year (Lam 2016), yet Seattleites are unlikely to be found carrying an umbrella on a grey-sky day. Maybe this is because, although its rainy reputation is well deserved, Seattle actually experiences less cumulative rainfall over the course a year than many U.S. cities, including New York and Miami. These patterns of consistently lighter rainfall are due to the Olympic Rain Shadow, in which moisture is lost as air travels down and past the Olympic Mountains (Lam 2016). Just enough rain to wear a raincoat, but not enough to carry an umbrella.
+
+Rainfall is not Seattle’s only close relationship to water, however. The city is waterfront to the Puget Sound. The Puget Sound host more than 350 different species of plants, marine mammals, seabirds, and invertebrates, and it also plays a huge role in Seattle’s economy. Ships transporting goods and ferries transporting humans are in constant rotation in the Sound. Salmon harvested from the Sound are an integral part of local Native American culture and have become a main stake of Seattle’s economy and tourism. Whale watching tours depart daily from the piers. 
+
+Unfortunately, the health of the Puget Sound and the city are in jeopardy. The Intergovernmental Panel on Climate Change (IPCC) identified a warming trend of 1.5 degrees Farenheit in the 20th century in the Pacific Northwest (Mote and Salathe 2010). Climate change is eminent, and ocean acidification and pollution from stormwater are some of climate change’s effects that threaten the Puget Sound. Washington State’s contributions of greenhouse gas emissions have increased from 90 million metric tons per year in 1990 to around 97 million metric tons in 2015. The top three sources of emissions in Seattle are transportation, residential/commercial/industrial, and electricity (Bush 2019). Because of the large portion of greenhouse gas emissions both locally and globally, we can expect the climate to begin to warm and for this to have various impacts on the environment and our lives.
+
+### Rise of Wildfires
+
+When it’s a nice day in Seattle, you might hear the phrase “The mountain is out”, a.k.a. the sky is clear enough that you can see Mount Rainier behind the cityscape. For a period of time during the last two summers in Seattle, however, the mountain was most certainly not out, but for different reasons than usual. Wildfire smoke has engulfed the city from mid August to early September for the past couple of years. Historically, Seattle has been unaffected by wildfires. Last summer, the air quality during the fires was the worst it had been in Seattle since before the 1980’s, when we had wood burning stoves, higher polluting cars and trucks, and fewer paved roads (Sistek 2018). 
+
+![Puget Sound Clean Air Agency graph of air quality in Seattle.](/home/CAMPUS/ekma2018/Climate_Change_Narratives/student_folders/Meyer/Screen Shot 2019-02-20 at 3.45.50 PM.png)
+
+Given Seattle’s rainy reputation and close relation to the water, it might be the last place you would think of to be influenced so extremely by wildfires. The wildfires that are influencing air quality in Seattle are actually in four areas surrounding the city: British Columbia from the north, the Olympics to the west, Central and Western Washington to the east, and Northern California from the south. The smoke from these areas had a tendency to get stuck in Seattle for a few reasons. First, as high pressure systems are rebuilt in the atmosphere above, air sinks and with it comes smoke. The smoke creates an “inversion lid” that works against the air that wants to rise vertically. Additionally, smokey-air means that the atmosphere lacks pressure difference and so there is less wind to wash the smoke out (Sistek 2018).
+
+Various local and worldwide news outlets, such as the Seattle Times, KOMO 4 News, the Washington Post and National Geographic, have taken advantage of smokey situation to create stories. A couple examples of these headlines read, “Breathing Seattle’s air right now is like smoking 7 cigarettes. Blame wildfires” (Vox 2018), and “Ash falls like snow in Seattle as wildfires rage in Pacific Northwest” (Seattle Times 2018). These headlines paint Seattle in an apocalyptic scene, and insinuate that we should be afraid of wildfires. 
+Given that wildfire smoke has not been a typical part of Seattle’s history, the next big question now, is: could the increase in wildfires be linked to climate change? Climate change will have effects that drive wildfires: warmer temperatures increase higher fire hazard during the summer and decrease the snowpack during the winter that prevents dryness (Wimberly and Liu 2014). In order to see if wildfires could be increasing because of climate change, we first need to understand whether or not there actually is climate change in this region.
+
+
+![Photo by Sigma Sreedharan of wildfire smoke turning the sun over the Space Needle a shade of red. August 20th 2018](/home/CAMPUS/ekma2018/Climate_Change_Narratives/student_folders/Meyer/GUYVCARPLY4PXNQIH5B3RREEWY.jpg)
+
+## Methods
+
+To tackle this question, I utilized climate data from the National Oceanic and Atmospheric Association (NOAA). NOAA has access to an worldwide archive of weather and climate data taken from various stations. The data that I downloaded was collected from the Seattle-Tacoma International Airport, and dates back to January 1st, 1948, and ends February 12th, 2019. Using the coding language of R, I created a graph of all the climate data and added a best-fit line using a linear regression model. I also completed this same process for the minimum and maximum temperatures of all the data, as well as for specific months. Of the months with the most statistically significant data, I have chosen to include July, August, and September. I will determine whether or not the data are statistically significant by using the probability value (p-value). If the p-value is less than 0.05, then the data is statistically significant and rejects the null hypothesis. The null hypothesis is that temperature change and time have no relationship. 
+
+
+## Results
+
+The best-fit line of all the maximum temperatures in the NOAA data set has a positive slope of 0.00006275. The data set of the minimum temperatures shows a slightly steeper best-fit line with a slope of 0.00008445. This data may demonstrate a slight warming over the last approximately 70 years, but without a greater context of the temperature in this area previous to 1948 it is difficult to be sure whether or not this is significant. PVALUE On the other hand, the results for a few individual monthly temperatures show a more statistically significant trend and steeper slope.
+
+```{r, echo=FALSE, include=FALSE}
+## UPLOAD DATA INTO R
+
 filepath = "/home/CAMPUS/ekma2018/Climate_Change_Narratives/student_folders/Meyer/ella_seattle_data.csv"
 climate_data = read.csv(filepath)
 head(climate_data)
 str(climate_data)
-```
 
-## Fixing Dates
+## FIXING DATES
 
-```{r}
 strDates = as.character(climate_data$DATE)
 climate_data$NewDate = as.Date(strDates, "%m/%d/%Y")
 
-```
-```{r,}
 CYear = sub("/([0-9]+)$", "/19\\1", strDates[1:18993]) # Defined for this dataset! 
 CYear = c(CYear, sub("/([0-9]+)$", "/20\\1", strDates[18994:25959]))
 head(CYear)
@@ -37,35 +63,18 @@ head(CYear)
 climate_data$NewDate <- as.Date(CYear, "%m/%d/%Y")
 
 str(climate_data)
-```
 
 ## Plot Data
 
-```{r}
 plot(TMAX ~ NewDate, climate_data)
-```
 
+## ADD BEST FIT LINE 
 
-## Add Best Fit Line
-
-```{r}
 lm(TMAX ~ NewDate, climate_data)
 
 plot(lm(TMAX ~ NewDate, climate_data))
-```
 
-
-## Monthly Means
-
-```{r}
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-```
-
-## Plots
-
-```{r, echo=FALSE}
+## MONTHS
 
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
@@ -84,31 +93,118 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
+## Monthly Min
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 
 
-plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 8, ], ty = "l", las = 1, xlim = c(1945, 2020),
-       main = Months[8])
-
-
-par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
-TMAXresult <- NA
-for (i in 1:12) {
-  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
-                                             i, ], ty = "l", las = 1, xlim = c(1945, 2020),
-       main = Months[i])
-  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
-                                                       i, ])
-  print(summary(Month.lm))
-  abline(coef(Month.lm), col = "red")
-  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
-                                        round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
-                                                                                                          4], 4), round(summary(Month.lm)$r.squared,
-                                                                                                                        3)))
-}
 ```
 
+### Maximum and Minimum Temperature Graphs for Specific Months
 
-## Seattle Climate Links
+```{r, echo=FALSE}
+## SELECTED MONTHS
 
-https://www.citylab.com/environment/2018/04/seattle-thinks-it-knows-rain-climate-change-begs-to-differ/557291/
-https://www.usatoday.com/story/news/nation/2019/02/10/seattle-snowiest-february-70-years-more-coming/2830164002/
+## July Max
+
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = "July Max")
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       7, ])
+  abline(coef(Month.lm), col = "red")
+
+## Min
+
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                             7, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = "July Min")
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                                       7, ])
+  abline(coef(Month.lm), col = "red")
+```
+
+The maximum temperatures in July increase at a slope of 0.02658 degrees Fahrenheit per year from 1948 to 2019, and the minimum temperatures increase at an even steeper slope of  0.03605. The p-value for both the maximum and the minimum temperature trend for July is 0.01004, which is statistically significant.
+
+```{r, echo=FALSE}
+## August Max
+
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 8, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = "August Max")
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       8, ])
+  abline(coef(Month.lm), col = "yellow")
+  
+## August Min
+  
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                             8, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = "August Min")
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                                       8, ])
+  abline(coef(Month.lm), col = "yellow")
+```
+
+The maximum temperatures in August increase at a slope of 0.04085 degrees Fahrenheit per year from 1948 to 2019, and the minimum temperatures increase at slightly shallower slope of 0.0391. The p-value for both the maximum and the minimum temperature trend for August is 0.00001511, which is highly significant.
+
+```{r, echo=FALSE}
+## September Max
+  
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 9, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = "September Max")
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+                                                       9, ])
+  abline(coef(Month.lm), col = "orange")
+  
+## Min
+  
+  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                             9, ], ty = "l", las = 1, xlim = c(1945, 2020),
+       main = "September Min")
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+                                                       9, ])
+  abline(coef(Month.lm), col = "orange")
+```
+
+The maximum temperatures in September increase at a slope of 0.02373 degrees Fahrenheit per year from 1948 to 2019, and the minimum temperatures increase at steeper slope of 0.03375. The p-value for both the maximum and the minimum temperature trend for August is 0.01397, which is significant.
+
+
+## Conclusion
+
+According to NOAA’s climate data, the summer months in Seattle are experiencing a warming trend that has moderate statistical significance for July and September, and is highly statistically significant for August. Therefore, we can reject the null hypothesis and conclude that temperature change and time do have a relationship during these months in Seattle. August is also the month with the steepest increasing slopes and the month in which Seattle has been most affected by wildfires. While warming in the climate may put us at a higher risk for more frequent and more intense wildfires, climate change by itself is not to blame for wildfires. That being said, the increased presence of wildfires in an area historically unaffected by such forces is reason enough for concern, and the increasing temperatures during the months that these wildfires are occurring is important to note.
+
+## Discussion
+
+If the warming trend in Seattle continues, we should expect the possibility of seeing the skies blanketed in smoke in future summers. Assuming that this will be the case, how will the lives of Seattle’s residents be affected? On August 20th, 2018, there was a joint press release from various public health organizations in Seattle that alerted citizens of the unhealthy level of air quality. The release listed a large range of health problems that wildfire smoke can cause, including: trouble breathing, coughing, stinging eyes, irritated sinuses, headaches, asthma attack, chest pain, and fast heartbeat. The press release also strongly advised everyone, but especially those at higher risk, to stay indoors with the windows closed and air conditioning on and/or an air filter, and to refrain from driving or outdoor physical activity.
+
+However, there is a large population of people who do not have the ability to comply with these recommendations. To start, around 85% of Seattle’s population do not have air conditioning in their homes, myself included. Many people also have long commutes to work and school in the morning in which they must either drive or bike. According to Seattle’s Department of Transportation, 60% of bikers still commuted on the Fremont Bridge. Over 300 flights were delayed at the Seattle-Tacoma airport because of low visibility (Fritz and Turnbull 2018). 
+
+Further, Seattle’s growing homeless population is at extremely high risk of health implications from the smoke. In December of 2018, KOMO 4 News reported that Seattle has the largest homeless population outside of New York and Los Angeles. The city has around 12,000 homeless individuals, and over half of them are unsheltered (Mulvihill 2018). This is also a population of people with generally little access to healthcare yet more health issues.
+
+The impact is not only on humans. At the Seattle Aquarium, a sea otter previously diagnosed with asthma, likely from usual air pollution, was treated with an inhaler during these times of smoke. Although this example might seem ridiculous or whimsical to some, it demonstrates that the region’s wildlife will also take a hit health-wise, and they do not have the access to any of the protective measures that we do. Not every sea otter can be given an inhaler. 
+
+In order to keep the residents of Seattle (human and wildlife) safe, action on climate change is required. Not just to prevent extreme events like wildfires, but to protect us from the ways that climate change will impact our daily life economically and socially.
+
+## Sources
+
+Bush, E., 2019. Washington’s greenhouse gas emissions spiked 6 percent in most recent tally. The Seattle Times.
+
+Fritz, A. and Turnbull, L., 2018. Wildfire smoke is choking Seattle, obscuring the view and blocking out the sun. The Washington Post.
+
+Irfan, U., 2018. Breathing Seattle’s air right now is like smoking 7 cigarettes. Blame wildfires. Vox.
+
+Lam, L., 2016. Seattle's Rainy Reputation Is Well-Deserved. The Weather Channel.
+
+Liu, J.C. et. al., 2017. Who Among the Elderly Is Most Vulnerable to Exposure to and Health Risks of Fine Particulate Matter From Wildfire Smoke?. American Journal of Epidemiology. Volume 186, Issue 6, pp. 730–735
+
+Mote, P.W. and Salathe, E.P., 2010. Future climate in the Pacific Northwest. Climatic change, 102(1-2), pp.29-50.
+
+Mulvihill, G., 2018. Report: Seattle has nation's largest homeless population outside of New York, Los Angeles. KOMO News.
+
+Sistek, S. 2018. Smoky 'unhealthy' air is now worst in Seattle this century. How'd it get so bad?. KOMO News.
+
+Welch, C., 2018. Wildfire Smoke Makes Seattle and Portland World's Dirtiest Cities. National Geographic.
+
+Wimberly, M.C. and Liu, Z., 2014. Interactions of climate, fire, and management in future forests of the Pacific Northwest. Forest Ecology and Management, 327, pp.270-279.

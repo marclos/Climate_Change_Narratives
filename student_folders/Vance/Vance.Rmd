@@ -18,7 +18,8 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r cars}
 summary(cars)
 ## Reading csv file
-filepath = "/home/CAMPUS/cbva2017/Climate_Change_Narratives/student_folders/Vance/Cheyenne_Huntsville_data.csv"
+filepath = ## Reading csv file
+filepath = "/home/CAMPUS/cbva2017/Climate_Change_Narratives/student_folders/Vance/Vance_Huntsville_Data.csv"
 climate_data = read.csv(filepath)
 head(climate_data)
 str(climate_data)
@@ -33,6 +34,9 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
 ##Plot Data
 plot(TMAX~NewDate, climate_data, ty='l')
+
+plot(PRCP~NewDate, climate_data, ty='l')
+
 
 ## Best Fit Line
 c <- coef(lm(TMAX~NewDate, climate_data))
@@ -59,10 +63,84 @@ plot(MonthlyTMAXMean$TMAX, ty='l')
 
 ##Selecting for 1 month
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
-ty='l', xlim=c(1950, 2020))
+ty='l', xlim=c(1948, 2019))
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 summary(May.lm)
 abline(coef(May.lm), col="red")
+
+##Precipitation
+
+##Stand Dev
+ MonthlyPRCPsum = aggregate(PRCP ~ Month + Year, climate_data, sum)
+MonthlyPRCPsum$YEAR = as.numeric(MonthlyPRCPsum$Year)
+MonthlyPRCPsum$MONTH = as.numeric(MonthlyPRCPsum$Month)
+str(MonthlyPRCPsum)
+plot(MonthlyPRCPsum$PRCP, ty='l')
+
+##Selecting for 1 month
+plot(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="05",],
+ty='l', xlim=c(1948, 2019))
+May.lm <- lm(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+
+
+##Mobile Data
+
+## Reading csv file
+filepath = "/home/CAMPUS/cbva2017/Climate_Change_Narratives/student_folders/Vance/Vance_Mobile_Data.csv"
+climate_data2 = read.csv(filepath)
+head(climate_data2)
+str(climate_data2)
+
+
+
+
+## Fixing Dates
+
+strDates <- as.character(climate_data2$DATE)
+climate_data2$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+##Plot Data
+plot(TMAX~NewDate, climate_data2, ty='l')
+
+plot(PRCP~NewDate, climate_data2, ty='l')
+
+
+## Best Fit Line
+c <- coef(lm(TMAX~NewDate, climate_data2))
+abline(c, col="red")
+
+##Plot stuff
+ lm(TMAX ~ NewDate, data=climate_data2)
+
+## Call:
+ lm(formula = TMAX ~ NewDate, data = climate_data2)
+ 
+ summary(lm(formula = TMAX ~ NewDate, data = climate_data2))
+ 
+## Creating Monthly Means
+ climate_data2$Month = format(as.Date(climate_data2$NewDate), format = "%m")
+ climate_data2$Year = format(climate_data2$NewDate, format="%Y")
+ 
+##Stand Dev
+ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data2, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+
+##Selecting for 1 month
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+ty='l', xlim=c(1948, 2019))
+May.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
 
 ```
 
