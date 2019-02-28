@@ -1,25 +1,33 @@
 ---
-title: 'From Fire to Floods: Climate Whiplash in Southern California'
+title: 'From Fire to Floods: Climate Whiplash in Los Angeles County'
 author: "Toni Anderson"
 date: "2/23/2019"
 output: html_document
+
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-![The Picturesque City of Burbank](Burbank View.jpg)
+![The Picturesque City of Burbank. Source: Gettyimages](Burbank View.jpg)
 
 # Introduction
 
 Southern California is well known for its temperate climate and sunny beaches. The entertainment capital of the world has a reputation as one of the most idyllic climates in America, making a perfect backdrop for the hundreds of movies filmed there . In the very heart of region, the city of Burbank proudly hosts countless film studios, animation academies, and live television sets. The eyes of the world rest on Burbank through their television screens. However, the eyes of scientists are watching Burbank carefully as well, for a very different reason. 
-	Southern California’s idyllic warm climate hides a much more sinister environmental concern: the phenomenon known colloquially as “Climate Whiplash.” Put simply, this term denotes frequent transitions from very wet to very dry weather. This phenomenon is becoming more prevalent worldwide, but is easily identifiable in Southern California. For example, at the end of 2018, the hills of Burbank went from a raging fire to deadly mudslides in just a few weeks, causing massive property damage and prolonged evacuations of both people and livestock. This blog examines the observed trends of climate whiplash in Southern California, using both scientific studies and raw climate data from the National Oceanic and Atmospheric Administration (NOAA). From this data, it will then discuss the effects of this whiplash on the community itself; including flooding, evacuation culture, and water supply contamination.
 
+Southern California’s idyllic warm climate hides a much more sinister environmental concern: the phenomenon known colloquially as “Climate Whiplash.” Put simply, this term denotes frequent transitions from very wet to very dry weather. This phenomenon is becoming more prevalent worldwide, but is easily identifiable in Southern California. For example, at the end of 2018, the hills of Burbank went from a raging fire to deadly mudslides in just a few weeks, causing massive property damage and prolonged evacuations of both people and livestock. This blog examines the observed trends of climate whiplash in Southern California, using both scientific studies and raw climate data from the National Oceanic and Atmospheric Administration (NOAA). From this data, it will then discuss the effects of this whiplash on the community itself; including flooding, evacuation culture, and water supply contamination.
+
+![LA County and Burbank. Source: Google Maps](Burbank Maps.png)
 
 # Methods
 
-How did I get my data. What is NOAA. what are some shortcomings.
+For this analysis, I obtained daily summaries of temperature and precipitation data for Burbank. Then, using the program RStudio, I graphed the data in order to assess trends and relationships between time, temperature, and precipitation, as well obtain additional statistical information about the the data. My main source of climate data came from National Oceanic and Atmospheric Administration (NOAA), which keeps an extensive database of weather and climate data collected from weather stations across the United States. The NOAA is responsible for climate data collection and analysis; the organization houses numerous databases, as well as education programs such as the National Center for Environmental Information that allow people to access their analysis and the data itself. Using their Climate Data Online program, I was able to download daily summaries of maximum and minimum temperatures as well as precipitation data from my station of choice: the Burbank Valley Pump Plant (Station GHCND:USC00041194). This specific dataset covered all the way from 1939 to the present day, and had a 99% coverage rate, meaning that only 1% of data was left unaccounted for in the form of a gap or lapse in the data. Many stations had far less comprehensive set of data; the Las Molinas station in Northern California covers from 2013 to the present day, and has only a 14% coverage rate! 
+	
+There are certain restrictions to only using one dataset and location for my analysis. Because I am using just one location and then applying trends I see there to the entirety of LA county, there is the potential for misgeneralizations to be made to locations in which the data I have does not apply. Furthermore, if there are gaps or incorrect data points in my dataset, there is nothing to which I can compare it and correct (or at least be aware of) these inconsistencies. However, a singular dataset simplified the analysis process, and, since this particular set has a very long and consistent set of results, I can use it to reliably track trends without the fear of missing data or gaps skewing the results. The possibility of misgeneralizations still exists; however, given the central location of my station, the trends reported will be fairly synonymous with ones experienced elsewhere is the county. Furthemore, it is the trend over time, not the specific numbers themselves that are important in this analysis. While the numbers themselves may differ, the basic trend is similar enough in within a small enough, making this data applicable for the entirety of the county.
+
+In order to assess a relationship between two variable, in this case time and temperature as well as time and precipitation, it is necessary to use a null hypothesis method. In this case, the null hypothesis would state that there is no direct relationship between time and temperature/precipitation, and is codified in data as the ‘p-value.’ If the p-value (calculated in R-Studio) is less than .05, then the null hypothesis may be rejected; this means that there is without question a relationship between the two variables. However, if the p=value is greater than .05, there is still possibility that the relationship does not exist. 
+
 
 # Data
 
@@ -35,22 +43,6 @@ names(climate_data)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 ```
-
-###TMAX Daily Averages 
-```{r echo=FALSE}
-plot(TMAX~NewDate, climate_data, ty='l', main="TMAX(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMAX(Degrees Celcius)", col.main="black", col.lab="red" )
-c <- coef(lm(TMAX~NewDate, climate_data))
-abline(c, col="red")
-```
-
-###TMIN Daily Averages 
-```{r echo=FALSE}
-##TMIN
-plot(TMIN~NewDate, climate_data, ty='l', main="TMIN(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMIN(Degrees Celcius)", col.main="black", col.lab="blue" )
-c <- coef(lm(TMIN~NewDate, climate_data))
-abline(c, col="blue")
-```
-
 
 ```{r include=FALSE}
 ## Define Shit
@@ -105,7 +97,34 @@ MonthlyPRCPSum$YEAR = as.numeric(MonthlyPRCPSum$Year)
 MonthlyPRCPSum$MONTH = as.numeric(MonthlyPRCPSum$Month)
 str(MonthlyPRCPSum)
 
+##P-Values
+TMIN.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean)
+summary(TMIN.lm)
+TMAX.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean)
+summary(TMAX.lm)
+PRCP.lm <- lm(PRCP ~ YEAR, data = MonthlyPRCPSum)
+summary(PRCP.lm)
 ```
+###TMAX Daily Averages 
+```{r echo=FALSE}
+plot(TMAX~NewDate, climate_data, ty='l', main="TMAX(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMAX(Degrees Celcius)", col.main="black", col.lab="red" )
+c <- coef(lm(TMAX~NewDate, climate_data))
+abline(c, col="red")
+
+```
+
+This graph shows Burbank’s average monthly maximum temperatures from 1940 until today, representing the entirety of the data set. This graph, while not entirely useful for the climate whiplash theory, showcases the seasonal variation in climate, as well as establishes a positive relationship between maximum temperature and time. With a p-value of 0.1501, it is safe to reject the null hypothesis.
+
+###TMIN Daily Averages 
+```{r echo=FALSE}
+##TMIN
+plot(TMIN~NewDate, climate_data, ty='l', main="TMIN(Degrees Celcius) vs. Time(Years)", xlab="Time(Years)", ylab="TMIN(Degrees Celcius)", col.main="black", col.lab="blue" )
+c <- coef(lm(TMIN~NewDate, climate_data))
+abline(c, col="blue")
+
+```
+
+This graph also shows monthly average temperature, but this time, it is showcasing the minimums. Once again we can reject the null hypothesis with a p-value of 0.001148. Comparing the trend to the TMAX graph, it is easy to see the difference in average temperature increase. While TMIN is still increasing, it is doing so far less rapidly than TMAX, meaning that there is a bigger gap between the daily TMAX and TMIN. This is the first sign of climate whiplash.
 
 ###Precipitation Daily Sums 
 ```{r echo=FALSE}
@@ -115,6 +134,8 @@ plot(PRCP~NewDate, climate_data, ty='l', ylim=c(0, 300), main="Precipitation vs.
 c <- coef(lm(PRCP~NewDate, climate_data))
 abline(c, col="green")
 ```
+
+Now this graph is where things get interesting. What is important to note here is high variation in total precipitation. With a p-value of 0.7554, there is certainly no way we can reject the null hypothesis, meaning that there is no concrete relationship between time and precipitation. As shown in the graph, there is no clear increase or decrease over time; rather there is a series of spikes and drops. This is indicative of Southern California’s penchant for droughts and unreliability of rain.According to … much of California’s precipitation occurs in short, intense bursts during the stormy season. These bursts are difficult to predict and can avoid LA County altogether depending on the year.
 
 ```{r include=FALSE}
 ##Every Month! (Leaving here in case something doesn't work without it)
@@ -132,7 +153,7 @@ PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.lm)[2], 4), ro
 ```
 
 ###Temperature Maximum Daily Averages Monthly
-```{r echo=FALSE, fig.height=3}
+```{r echo=FALSE, fig.height=2.5}
 ##Fall Season
 Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 par(mfrow = c(1, 3), mar = c(5, 4, 3, 2) + 0.1 )
@@ -147,7 +168,7 @@ TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), ro
 ```
 
 ###Temperature Minimum Daily Averages Monthly
-```{r echo=FALSE, fig.height=3}
+```{r echo=FALSE, fig.height=2.5}
 ##Fall Season
 Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 par(mfrow = c(1, 3), mar = c(5, 4, 3, 2) + 0.1 )
@@ -162,7 +183,7 @@ TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), ro
 ```
 
 ###Precipitation Monthly Data (Sum)
-```{r echo=FALSE, fig.height=3}
+```{r echo=FALSE, fig.height=2.5}
 #Fall Season
 Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
  par(mfrow = c(1, 3), mar = c(5, 4, 3, 2) + 0.1 )
