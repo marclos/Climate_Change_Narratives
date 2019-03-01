@@ -15,14 +15,40 @@ Susannah Budd\
 
 &nbsp;
 
-**Introduction**\
-New Hampshire is a small, primarily rural state, home to 1.3 million people in the middle of Northern New England: Massachusetts to the South, Canada to the North, Vermont to the West, and Maine to the East. Historically, New Hampshire was an industrial state, with major cities centered around paper or textile mills. However, with the advent of globalization and the loss of most of this business, New Hampshire has needed to rebrand its economy. Today, the three largest industries in the state are technology, medicine, and tourism. The first two industries have strong epicenters which draw most of the state’s white-collar professionals: the Greater Boston Area supports a thriving technology business in the South, while Dartmouth-Hitchcock Hospital near the Vermont boarder employs many top-tier medical professionals. This leaves the rest of the state largely dependent on the tourist economy. Luckily, the state is home to a variety of natural attractions: the scenic White Mountains which offer a variety of hiking opportunities, a Lakes Region with ample opportunity for swimming and watersports, a quaint Seacoast Region, and many of the East Coast’s best ski mountains. Most notably, perhaps, is the state’s famous fall foliage. Out-of-state “leaf-peepers” pour into the state throughout September and October, hoping to witness the green leaves changing to reds and oranges – and spending more than a billion dollars in-state in the process.
+
+**An Introduction to New Hampshire and Tourism** \ 
+
+New Hampshire is a small, primarily rural state, home to 1.3 million people in the middle of Northern New England: Massachusetts to the South, Canada to the North, Vermont to the West, and Maine to the East. Historically, New Hampshire was an industrial state, with major cities centered around paper or textile mills. However, with the advent of globalization and the loss of most of this business, New Hampshire needed to rebrand its economy. Today, the three largest industries in the state are technology, medicine, and tourism (“New Hampshire Population 2019,” 2019). The first two industries have strong epicenters which draw most of the state’s white-collar professionals: the Greater Boston Area supports a thriving technology business in the South, while Dartmouth-Hitchcock Hospital near the Vermont boarder employs many top-tier medical professionals. This leaves the rest of the state largely dependent on the tourist economy. \ 
+
+Luckily, the state is home to a variety of natural attractions: the scenic White Mountains which offer a variety of hiking opportunities, a Lakes Region with ample opportunity for swimming and watersports, a quaint Seacoast Region, and many of the East Coast’s best ski mountains. Most notably, perhaps, is the state’s famous fall foliage. Out-of-state “leaf-peepers” pour into the state throughout September and October, hoping to witness the green leaves changing to reds and oranges – and spending nearly three-hundred million dollars in-state in the process (New Hampshire Department of Environmental Services, 2008).  \ 
+
+Such tourism is most important to the northern third of the state, called the North Country. This isolated and sparsely populated region was hit the hardest by the loss of the paper and logging industries, as its isolation and small tax base provides significant barriers to economic development (“The Ultimate Guide To The North Country Economy,” n.d.). New Hampshire’s Carroll County in particular has rebranded itself as the go-to place for tourism in the White Mountains, with the fall foliage and ski seasons being the core of the area’s unique appeal. With approximately one-fifth of Carroll County’s population working in the service industry, New Hampshire tourism proves to be an essential component of the economy in an otherwise vulnerable region (“The Ultimate Guide To The North Country Economy,” n.d.).  \ 
 
 <center>
 
 ![Peak Foliage in New Hampshire's White Mountains](FallFoliage.jpg)
 
 </center>
+
+**An Introduction to Leaf Phenology** \ 
+
+As was previously discussed, a significant component of New Hampshire’s tourism industry stems from its stunning fall foliage. The food-making process of leaves produces chlorophyll, a green-pigmented compound (Lev-Yadun, 2016). Yellow and orange pigments, called carotenes, are also produced, however, these are largely masked by the vibrant green color throughout most of the leaf’s lifespan. As days begin to shorten, a signal that winter is arriving, food production in leaves stops, and chlorophyll begins to break down. This exposes the colors of the carotenes which are left behind, forming the beautiful colors of foliage (Lev-Yadun, 2016). Although the onset of fall foliage is triggered largely by changes in daylight, the appearance and duration of such foliage, or “leaf phenology,” is largely dependent on temperatures.  \ 
+
+The intensity of the red and purple colors which add beauty and depth to a foliaged landscape is determined by the presence of anthocyanin (Chalker-Scott, 1999). Anthocyanin is formed by plants to protect themselves from overexposure to the sun as they begin to lose their leaves before winter and continue use the nutrients remaining in the dying leaves as efficiently as possible (Feild, 2001). The production of this compound is facilitated by low temperatures above freezing (Chalker-Scott, 1999). Without cooler temperatures, less anthocyanin will be produced, and foliage may begin to appear dull colored and less visually appealing.\ 
+
+Additionally, the foliage season is terminated by the onset of frost. When freezing temperatures are reached, ice crystals are formed inside of the leaves, killing them immediately and consequently ceasing all biological production (Gallinat 2015). Eventually, leaves may be lost without a freeze, as trees gradually form a separation layer between itself and the leaf, allowing wind to easily blow the leaves away, as days shorten (Gallinat 2015). However, this process is much more gradual than an immediate freeze, so an extended warm period may preserve a foliaged landscape. In considering this context of the impact of temperature on foliage, a question arises: how might changes in temperature impact the foliage economy in states like New Hampshire? And how might such changes impact vulnerable populations dependent on these economies? \ 
+
+**Methods** \ 
+
+The National Oceanic and Atmospheric Association, or NOAA, has a large global network of daily temperature data, called the Global Historical Climate Network. This information is available for free on NOAA’s website. In order to assess the potential impact of New Hampshire temperatures on autumnal leaf phenology, I obtained temperature records from a station in Concord, New Hampshire ranging from April 4, 1939 to January 26, 2019. I imported this data into RStudio, where I analyzed the trends for both maximum and minimum temperatures in September, which has historically been the epicenter of foliage season. The null hypothesis which I was investigating here states that there is no relationship between temperature and time. The other data set which I analyzed was obtained via “civilian science.” A famous tourist destination in Northern New Hampshire, Polly’s Pancake Parlor, has been recording the start and end dates of the foliage season since 1975. I imported their data into Excel, where I calculated the number of days each season lasted. I then imported this data set into RStudio, where I analyzed the change in season length over time. Here, the null hypothesis was that there is no relationship between foliage season length and time. I investigated these null hypotheses using the p-value. If the p-value is less than 0.05, then the findings are considered to be statistically significant, and the null hypothesis may be rejected. \ 
+
+<center>
+
+![Polly's Pancake Parlor in Sugar Hill, NH](pollys1.jpg)
+
+</center>
+
+**Results** \ 
 
 <center>
 
@@ -55,20 +81,11 @@ September.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="0
 abline(coef(September.lm), col = "red")
 ```
 
-```{r, echo=FALSE}
-##Read Leaf Observation CSV Data
-leaf_observations <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/Leaf-Chart-1-1.csv")
-```
+</center>
 
-![Polly's Pancake Parlor in Sugar Hill, NH](pollys1.jpg)
+The linear regression model of the graph of maximum temperatures in September was found to have a positive slope. The p-value for this model was 0.03, which is lower than 0.05, meaning that the data is statistically significant, and that the null hypothesis may be rejected. The adjusted r2 value was 0.00013, indicating that the correlation between the data points and the linear model is low. \ 
 
-```{r, echo=FALSE}
-##Plot Leaf Observation Data
-plot(Range~Year, leaf_observations, ty='l', main = "Length of Foliage Season (days) vs. Year", xlab = "Foliage Season Length (days)", ylab = "Year", col.main = "red", col.lab = "red")
-##Add Best Fit Line
-c<-coef(lm(Range~Year, leaf_observations))
-abline(c, col="red")
-```
+<center>
 
 ```{r, echo=FALSE}
 ##Monthly Minimums
@@ -81,3 +98,86 @@ abline(coef(September.lm), col = "red")
 ```
 
 </center>
+
+The linear regression model of the graph of minimum temperatures in September was found to have a positive slope. The p-value for this model was 2.2e-11, which is lower than 0.05, meaning that the data is statistically significant, and that the null hypothesis may be rejected. The adjusted r2 value was 0.0015, indicating that the correlation between the data points and the linear model is low. \ 
+
+<center>
+
+```{r, echo=FALSE}
+##Read Leaf Observation CSV Data
+leaf_observations <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/Leaf-Chart-1-1.csv")
+```
+
+```{r, echo=FALSE}
+##Plot Leaf Observation Data
+plot(Range~Year, leaf_observations, ty='l', main = "Length of Foliage Season (days) vs. Year", xlab = "Year", ylab = "Foliage Season Length (days)", col.main = "red", col.lab = "red")
+##Add Best Fit Line
+c<-coef(lm(Range~Year, leaf_observations))
+abline(c, col="red")
+```
+
+</center>
+
+The linear regression model of the graph of foliage season length was found to have a positive slope. The p-value for this model was 1.5e-8, which is lower than 0.05, meaning that the data is statistically significant, and that the null hypothesis may be rejected. The adjusted r2 value was 0.54, indicating that the correlation between the data points and the linear model is relatively high, with the variable “year” accounting for approximately 54% of the data. \ 
+
+**Discussion and Conclusion**
+
+All three graphs demonstrated statistical significance, indicating that the null hypotheses may be rejected. This suggests that the results which the graphs show are credible. Although the r2 values are generally low, this does not negate the significance of the graph’s results. The variable “year” is truly just a proxy for a host of other changes which impact temperature and leaf phenology in more direct and significant ways. Examining change over time may be a powerful way to gain a general understanding of an issue, however, as time does not have a causal relationship with either temperature or foliage season length, it neglects to include the direct processes which impact these processes, which may lead to low correlative values without negating the high probability values.\ 
+
+With this understanding, these graphs may provide a powerful understanding of how a statistically significant warming trend is impacting New Hampshire’s foliage economy. Clearly, as the temperature and foliage season graphs demonstrate, as temperatures are warming, the foliage season is getting longer and longer. This correlation adheres to the leaf phenology principle discussed above, where delayed frost may extend the lifespan of foliaged landscapes. In and of itself, this is not a bad thing – in fact, a longer foliage season is good for New Hampshire. By extending the heightened tourism period, it becomes more likely that more money will ultimately be brought into the state. At Polly’s Pancake Parlor, the 2018 foliage season actually broke a record, bringing 800 people into the restaurant between 7 AM and 3 PM in a single day (Margolis, 2018).  \ 
+
+<center>
+
+![Franconia Notch in New Hampshire](Franconia Notch.jpg)
+
+</center>
+
+However, the warmth associated with an increased foliage season is not benefitting some of New Hampshire’s other tourist niches. As Christopher Bellis, the owner of a bed-and-breakfast Carroll County, said, “It may be good for my foliage business. But climate change is not necessarily good for my winter business” (Margolis, 2018). Skiing, another huge tourism industry in New Hampshire, is already seeing a reduction in snow days, causing resorts and their companion service businesses to worry about their futures (Margolis, 2018). Additionally, the long-term sustainability of increased foliage tourism anything but certain. As the graphs above show, both the maximum and minimum temperatures are increasing. As was discussed above, anthocyanin, a compound necessary to form foliage’s darker hues, is not produced robustly without cold nights. This would likely lead to a less vibrant foliage season (Archetti, 2013). In fact, this change is already starting to occur. As local reporter David Brooks said, “The walling-off of the leaf is triggered by the daylight, which isn’t changing, but the color is triggered by the weather, which is changing. So it does seem like [warmer autumns are] resulting in less splendid splendor, shall we say” (Biello, 2015).  \ 
+
+<center>
+
+![Skiing is an Important Component of the Tourist Economy in New Hampshire](Skiing.jpg)
+
+</center>
+
+The long-term implications of a “less splendid splendor” are, thus far, unclear. However, duller leaves aren’t the state’s only concern. As early as 2008, New Hampshire’s state government has expressed concerns regarding how climate change may impact the tourism leaf economy process (New Hampshire Department of Environmental Services, 2008). Their worries include dulling leaves, but also increased pest and pathogen propagation and subsequent tree damage, northward tree movement, and the potential loss of the 3-million-dollar maple syrup industry process (New Hampshire Department of Environmental Services, 2008). Given that these tourist industries are sustaining large portions of the state’s most vulnerable populations, their gradual disappearance bodes poorly for the long-term health of these economies and begs the question as to how these communities may continue to be supported in an area with very little industry. Coos County, located north of the White Mountains, has struggled to bring in a tourist economy for years – and consequently, has faced the greatest economic challenges in the state (“The Ultimate Guide To The North Country Economy,” n.d.). Millions of governmental dollars have been poured into the county in an attempt to rebuild a firmer economy. However, this has largely been ineffective, with approximately 41% of the county’s residents living in poverty (“The Ultimate Guide To The North Country Economy,” n.d.). In facing the loss of a significant tourist economy, New Hampshire must figure out a better way to support its struggling populations. \ 
+
+Although New Hampshire’s foliage tourism economy continues to flourish and even improve as warmer temperatures lengthen the foliage season, warming autumns likely mean less anthocyanin, and subsequently less vibrant colors. As the foliage in New Hampshire dims, it will likely become more and more difficult to draw the same tourist population to the state which has sustained some of its more vulnerable populations for more than a generation now. Additionally, although it was not analyzed here, past research has suggested that warming temperatures may already be damaging other critical components of the New Hampshire tourism economy. The seasonal extension which warming autumns have provided to foliage tourism will likely be offset by the depletion of the vibrant colors which make New Hampshire a popular tourist attraction to begin with as well as the diminishment of snow-dependent tourist industries, such as skiing. Particularly as these tourism industries are not only representative of the very culture and essence of New Hampshire but are sustaining some of the state’s most vulnerable populations, their loss would prove undeniably tragic for New Hampshire’s future. 
+
+<center>
+
+![Views from New Hampshire's Kancamagus Highway](Kancamagus.JPG)
+
+</center>
+
+**Bibliography**\ 
+
+[Franconia Notch in Autumn]. (n.d.). Retrieved from http://www.franconianotch.org/things-to-do/great-outdoors/ \ 
+
+[Kancamangus Highway in Autumn]. (2017, December 4). Retrieved from https://www.roamingthenortheast.com/blog/2017/12/3/driving-the-kancamagus-new-englands-best-fall-foliage-drive\ 
+
+[Polly's Pancake Parlor in Autumn]. (2017, May 22). Retrieved from https://www.onlyinyourstate.com/new-hampshire/pancake-parlor-nh/\ 
+
+Archetti, M., Richardson, A. D., Okeefe, J., & Delpierre, N. (2013). Predicting Climate Change Impacts on the Amount and Duration of Autumn Colors in a New England Forest. PLOS ONE,8(3), 1-8. doi:10.1371/journal.pone.0057373\ 
+
+Biello, P. (2015, October 6). Granite Geek: Why New Hampshire's Foliage Is Not Quite So Splendid This Year. Retrieved from https://www.nhpr.org/post/granite-geek-why-new-hampshires-foliage-not-quite-so-splendid-year#stream/0\ 
+
+Burke, G. (n.d.). [Family Skiing in New Hampshire]. Retrieved from https://familyskitrips.com/newengland/top-ten-family-ski-resorts-in-new-england/\ 
+
+Chalker-Scott, L. (1999). Environmental Significance of Anthocyanins in Plant Stress Responses. Photochemistry and Photobiology,70(1), 1-9. doi:10.1562/0031-8655(1999)0702.3.co;2\ 
+
+Feild, T. S., Lee, D. W., & Holbrook, N. M. (2001). Why Leaves Turn Red in Autumn. The Role of Anthocyanins in Senescing Leaves of Red-Osier Dogwood. Plant Physiology,127(2), 566-574. doi:10.1104/pp.010063\ 
+
+Gallinat, A. S., Primack, R. B., & Wagner, D. L. (2015). Autumn, the neglected season in climate change research. Trends in Ecology & Evolution,30(3), 169-176. doi:10.1016/j.tree.2015.03.016\ 
+
+United States, New Hampshire Department of Environmental Services. (2008). Global Climate Change and Its Impact on New Hampshire's Fall Foliage and Maple Sugar Industry. Retrieved from https://www.des.nh.gov/organization/commissioner/pip/factsheets/ard/documents/ard-25.pdf.\ 
+
+Lev-Yadun, S. (2016). What Do Red and Yellow Autumn Leaves Signal for Sure? The Botanical Review,73(4), 279-289. doi:10.1007/978-3-319-42096-7_47\ 
+
+Margolis, J. (2018, October 28). 'Leaf peeping' is huge in New England. Will climate change alter tourism? Retrieved from https://www.pri.org/stories/2018-10-19/leaf-peeping-huge-new-england-will-climate-change-alter-tourism\ 
+
+New Hampshire Population 2019. (2019). Retrieved from http://worldpopulationreview.com/states/new-hampshire-population/\ 
+
+Tangney, D., Jr. (2019, February 6). [Peak Fall Foliage in New Hampshire]. Retrieved from https://www.tripsavvy.com/see-peak-new-england-fall-foliage-1600409\ 
+
+The Ultimate Guide To The North Country Economy. (n.d.). Retrieved from https://stateimpact.npr.org/new-hampshire/tag/north-country/\ 
