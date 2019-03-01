@@ -1,7 +1,7 @@
 ---
-title: "Kylie's Topic of Interest"
-author: "Kylie"
-date: "2/11/2019"
+title: "*What are the origins of the extreme flooding in Southeastern China?*"
+author: "Kylie Wong"
+date: "03/01/2019"
 output: html_document
 
 ---
@@ -10,19 +10,69 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+##Introduction 
+As China continues to climb up the global ranks with its recent goals for technological advancements and urban development, the natural landscape of the country is put at risk. Specifically in Southeast China, where urban development is centralized around the entire Pearl River Delta, large cities like Guangzhou and many others are at a high risk of flooding. As a result, the urban infrastructure is threatened. In addition, the entire livelihood of Chinese citizens are threatened with the high frequency of flash floods. The heavy rainfall and flooding in Southeast China in the summer of 2016 generated $1.1 billion in damages, left 200,000 people without a home, and took 36 lives (NSSL). With climate change escalating extreme weather trends, the frequency of these floods are likely to increase, costing more lives and creating more damages. 
+
+In this blog, I will attempt to explore the origins of the floods in the Pearl River Basin of South China, and what triggers the intensity of the floods. In addition, I will analyze the impacts of the floods on the socio-economic infrastructure of Southeast China; therefore, I hypothesize that the intensity of rainfall is correlated to the power of flash floods in South China, which would lead to detrimental effects the socio-economic infrastructure in China.  
+
+
+
+####How are floods and precipitation related?  
+Floods occur after heavy and overflowing rainfall on land that is usually dry. The most dangerous floods are flash floods, which can flood an entire region in a short amount of time with high intensity. What makes these flood even more dangerous is its unpredictability, which can easily devastate a region that is under-prepared and also densely populated like Southeastern China.    
+
+
+
+##Methods  
+To conduct this study, I accessed the database on National Oceanic and Atmospheric Administration  (NOAA) to collect precipitation data in my region of study. I collected data from: Guangzhou, the delta region in the eastern part of the basin; Hechi, which is in the western part; and Guilin, which is closest to the northwestern part of the basin. I chose to graph three different sets of data to test if the differences in the geographic terrain of the watershed is correlated with the amounts of precipitation in each region. In addition, I accessed multiple peer review journals for the information about specific extreme climate patterns (which are all cited below). 
+
+
+
+##Data
+```{r,read, echo = FALSE, results= 'hide'}
+file.choose()
+read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
+guangzhou_precdata <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
+head(guangzhou_precdata)
+str(guangzhou_precdata)
+names(guangzhou_precdata)
+```
+
+```{r}
+#plotting
+#plot(PRCP~DATE, guangzhou_precdata)
+min(guangzhou_precdata$PRCP)
+strDates <- as.character(guangzhou_precdata$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+```
+
+```{r}
+plot(PRCP~NewDate, guangzhou_precdata)
+prcp.lm=lm(PRCP~NewDate, data=guangzhou_precdata)
+abline(coef(prcp.lm), col="red")
+```
+```{r}
+guangzhou_precdata$PRCP[guangzhou_precdata$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(guangzhou_precdata$PRCP), list(guangzhou_precdata$Month, guangzhou_precdata$Year), sum)
+
+```
+
+
+
+
 ##Guangzhou, China Temperature Graph 
+(this may not be relevant to my research)
 ```{r, read, echo = FALSE, results='hide'}
 #preparing and reading CSV file 
 #read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
 climate_data <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
 head(climate_data)
 str(climate_data)
-climate_data$TMAX
+#climate_data$TMAX
 plot(TMAX~DATE, climate_data)
 min(climate_data$TMAX)
 min(climate_data$TMAX, na.rm=T)
 ```
-
 
 ```{r, fixdates, echo = FALSE}
 ##Changing dates
@@ -34,7 +84,6 @@ strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
 ```
-
 
 ```{r, echo = FALSE}
 ##Preparing the monthly average plots 
@@ -48,7 +97,6 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 plot(MonthlyTMAXMean$TMAX, ty='l')
 ```
-
 
 ```{r, echo = FALSE}
 ##May Vector 
