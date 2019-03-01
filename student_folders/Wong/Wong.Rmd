@@ -28,24 +28,36 @@ To conduct this study, I accessed the database on National Oceanic and Atmospher
 
 
 ##Data
-```{r,read, echo = FALSE, results='hide'}
+```{r,read, echo = FALSE, results= 'hide'}
 file.choose()
 read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
 guangzhou_precdata <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
 head(guangzhou_precdata)
 str(guangzhou_precdata)
 names(guangzhou_precdata)
-plot(PRCP~DATE, guangzhou_precdata)
+```
+
+```{r}
+#plotting
+#plot(PRCP~DATE, guangzhou_precdata)
 min(guangzhou_precdata$PRCP)
 strDates <- as.character(guangzhou_precdata$DATE)
-guangzhou_precdata$NewDate <- as.Date(strDates, "%Y-%m-%d")
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
 ```
 
 ```{r}
-#third SOP
+plot(PRCP~NewDate, guangzhou_precdata)
+prcp.lm=lm(PRCP~NewDate, data=guangzhou_precdata)
+abline(coef(prcp.lm), col="red")
+```
+```{r}
+guangzhou_precdata$PRCP[guangzhou_precdata$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(guangzhou_precdata$PRCP), list(guangzhou_precdata$Month, guangzhou_precdata$Year), sum)
 
 ```
+
+
 
 
 ##Guangzhou, China Temperature Graph 
