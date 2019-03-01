@@ -118,7 +118,7 @@ abline(c, col="red")
 
 ```
 
-This graph shows Burbank’s average monthly maximum temperatures from 1940 until today, representing the entirety of the data set. This graph, while not entirely useful for the climate whiplash theory, showcases the seasonal variation in climate, as well as establishes a positive relationship between maximum temperature and time. With a p-value of 0.1501, it is safe to reject the null hypothesis, establishing a relationship between time and temperature. 
+This graph shows Burbank’s average monthly maximum temperatures from 1940 until today, representing the entirety of the data set. This graph, while not entirely useful for the climate whiplash theory, showcases the seasonal variation in climate, as well as establishes a positive relationship between maximum temperature and time. With a p-value of 0.015, it is safe to reject the null hypothesis, establishing a relationship between time and temperature. 
 
 
 ###Minimum Temperature Monthly Averages 
@@ -131,7 +131,7 @@ abline(c, col="blue")
 
 ```
 
-This graph also shows monthly average temperature, but this time, it is showcasing the minimums. Once again we can reject the null hypothesis with a p-value of 0.001148. Comparing the trend to the TMAX graph, it is easy to see the while TMIN is still increasing, it is doing so far less rapidly than TMAX, leading to an icreasing gap between the daily TMAX and TMIN. This is the first indication of climate whiplash; as gaps become more pronounced and varied over time, there will be a large effect on precipitation consistency, therefore kickstarting whiplash climate patterns.^6^
+This graph also shows monthly average temperature, but this time, it is showcasing the minimums. Once again we can reject the null hypothesis with a p-value of 0.001. Comparing the trend to the TMAX graph, it is easy to see the while TMIN is still increasing, it is doing so far less rapidly than TMAX, leading to an icreasing gap between the daily TMAX and TMIN. This is the first indication of climate whiplash; as gaps become more pronounced and varied over time, there will be a large effect on precipitation consistency, therefore kickstarting whiplash climate patterns.^6^
 
 ###Precipitation Monthly Sums 
 
@@ -143,7 +143,7 @@ c <- coef(lm(PRCP~NewDate, climate_data))
 abline(c, col="green")
 ```
 
-Now this graph is where things get interesting. What is important to note here is high variation in total precipitation. With a p-value of 0.7554, there is certainly no way we can reject the null hypothesis. As shown in the graph, there is no clear increase or decrease over time; rather there is a series of sharp spikes and large dips. This is indicative of Southern California’s penchant for droughts and unreliability of rain.^2^ Historically, much of California’s precipitation occurs in short, intense bursts during the stormy season.^8^ However as temperature begins to vary more, these storms can become more intense and less frequent, contributing to the rapid shifts from wet to dry that characterize climate whiplash.
+Now this graph is where things get interesting. What is important to note here is high variation in total precipitation. With a p-value of 0.755, there is certainly no way we can reject the null hypothesis. As shown in the graph, there is no clear increase or decrease over time; rather there is a series of sharp spikes and large dips. This is indicative of Southern California’s penchant for droughts and unreliability of rain.^2^ Historically, much of California’s precipitation occurs in short, intense bursts during the stormy season.^8^ However as temperature begins to vary more, these storms can become more intense and less frequent, contributing to the rapid shifts from wet to dry that characterize climate whiplash.
 
 ###Maximum and Minimum Temperature Fall Data (Average)
 
