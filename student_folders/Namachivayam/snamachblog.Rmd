@@ -39,7 +39,7 @@ To begin, I hypothesized that rising temperatures during the summer intensified 
 <div class="a">
 ## Analyzing Albuquerque Data
 </div>
-In order to analyze temperature trends, I initially created 12 sets of data (January, February, March, etc.), each looking at the monthly averages of Albuquerque minimum temperatures. I then plotted the data from 1931 to 2019 and then added a best fit line for each plot:
+In order to analyze temperature trends, I initially created 12 sets of data (January, February, March, etc.), each looking at the monthly averages of Albuquerque minimum temperatures (TMIN). I then plotted the data from 1931 to 2019 and then added a best fit line for each plot:
 
 <div class="a">
 ```{r minabq_plot, echo=FALSE}
@@ -61,7 +61,7 @@ Months = c("January", "February", "March", "April",
 par(mfrow = c(3, 4), mar = c(5, 4, 3, 2) + 0.1)
 TMINresult=NA
 for (i in 1:12) {
-plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty = "p", pch=20, las = 1, main = Months[i], ylab="TMIN (°C)")
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty = "p", pch=20, las = 1, main = Months[i], ylab="TMIN (°C)", xlab="Year")
 Month.lm=lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
 abline(coef(Month.lm), col = "red",lwd=3)
 TMINresult=rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3)))
@@ -71,7 +71,7 @@ TMINresult=rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round
 <br>
 Note each best fit line has a clear positive (or increasing) slope. To determine whether these positive trends are statistically significant (i.e. fit the data well), statisticians look at a measure known as the 'p-value.' Essentially, p-values indicate the probability of a certain observed result occuring. So, the lower the p-value, the higher the significance of a result. There are a lot of calculations that go into finding this p-value, but if it is less than 0.05, then statisticians consider the corresponding result to be statistically significant. 
 
-In all of the above graphs for Albuquerque minimum temperatures, each best fit line had p-values less than 0.05. Hence, since our positive trend lines fit the data well, we have strong evidence that Albuquerque minimum temperatures have been increasing since 1931 *for all 12 months* (not only during the summer as I had initially hypothesized). 
+In all of the above graphs for Albuquerque minimum temperatures, each best fit line had p-values less than 0.05. Since our positive trend lines fit the data well, we thus have strong evidence that Albuquerque minimum temperatures have been increasing since 1931 *for all 12 months* (not only during the summer as I had initially hypothesized). 
 
 <div class="a">
 ## How Can We Trust The Data?
@@ -85,7 +85,7 @@ knitr::include_graphics("UHI.jpg")
 ```
 </div> 
 
-Unfortunately, some climate skeptics accuse the homogenization process itself of containing a 'warm' bias. However, thorough studies on the reliability of the U.S. Surface Temperature Record indicate that such adjustments are both appropriate and necessary (Menne et al. 2010). Furthermore, they suggest any potential 'warm' biases towards daily minimum temperatures are essentially negligible. In light of these studies, along with the increasing trends observed in our above data analysis, there should be no doubt that Albuquerque is indeed warming.
+Unfortunately, some climate skeptics accuse the homogenization process itself of containing a 'warm' bias. Still, thorough studies on the reliability of the U.S. Surface Temperature Record indicate that such adjustments are both appropriate and necessary (Menne et al. 2010). Furthermore, they suggest any potential 'warm' biases towards daily minimum temperatures are essentially negligible. In light of these studies, along with the increasing trends observed in our above data analysis, there should be no doubt that Albuquerque is indeed warming.
 
 <div class="a">
 ## What Do Rising Temperatures Have To Do With Drought?
@@ -93,7 +93,7 @@ Unfortunately, some climate skeptics accuse the homogenization process itself of
 **There are two main reasons that rising temperatures in Albuquerque could potentially amplify/facilitate severe drought:**
 </div> 
 
-**1) Mountain snowpack-** Discharge in the Rio Grande river, a crucial source for New Mexico's water supply, directly relates to snowpack in the Jemez Mountains (UCS 2016). Temperatures in the Jemez Mountains will be lower than those measured at Albuquerque due to higher altitudes. However, the *trend* of those temperatures will be increasing similar to what we saw in the Albuquerque data, i.e. we can expect the mountains to be warming. Warmer winter temperatures in the mountains will cause more precipation in the form of rain rather than snow, decreasing the total amount of snowfall. In addition, warmer spring temperatures will melt snowpack earlier, ultimately extending the duration and intensity of summer drought.  
+**1) Mountain snowpack-** Discharge in the Rio Grande river, a crucial source for New Mexico's water supply, directly relates to snowpack in the Jemez Mountains (UCS 2016). Temperatures in the Jemez Mountains will be lower than those measured at Albuquerque due to higher altitudes. However, the *trend* of those temperatures will be increasing similar to what we saw in the Albuquerque data, i.e. we can expect the mountains to be warming. Warmer winter temperatures in the mountains will cause more precipitation in the form of rain rather than snow, decreasing the total amount of snowfall. In addition, warmer spring temperatures will melt snowpack earlier, ultimately extending the duration and intensity of summer drought.  
 
 <div class="a">
 ```{r picture3, echo=FALSE, fig.cap="Snowpack in Northern New Mexico", out.width = '42.5%'}
@@ -113,7 +113,7 @@ knitr::include_graphics("evapo.png")
 ## What Does This Mean For New Mexicans?
 </div> 
 
-Warmer temperatures across New Mexico increase the frequency, intensity, and duration of drought conditions. These increasingly severe conditions have major consequences for both farmers and agriculture. For example, since drought reduces water allocations for crop irrigation, farmers become more dependent on pumping ground water from wells. As these wells deepen over time, their water starts to contain higher amounts of salt, damaging crop production and threatening the livelihood of farmers throughout the state (Frisvold et al. 2013). 
+Warmer temperatures across New Mexico increase the frequency, intensity, and duration of drought conditions. These increasingly severe conditions have major consequences for both farmers and agriculture. For example, since drought reduces water allocations for crop irrigation, farmers become more dependent on pumping groundwater from wells. As these wells deepen over time, their water starts to contain higher amounts of salt, damaging crop production and threatening the livelihood of farmers throughout the state (Frisvold et al. 2013). 
 
 <div class="a">
 ```{r picture5, echo=FALSE, fig.cap="Location of Kewa Pueblo between Albuquerque and Santa Fe", out.width = '50%'}
@@ -121,13 +121,13 @@ knitr::include_graphics("kwp.png")
 ```
 </div> 
 
-Droughts also come with a whole host of environmental justice issues that exacerbate inequality. For example, one study in California indicates that domestic water supply shortages and rising water costs affect low-income families and people of color the most (Feinstein et al. 2017). Decreasing the affordability of water during shortages increases the precarity of poorer households' living conditions at a time when they already have little to no disposable income. Indigenous people in New Mexico will also be disproportionately impacted by intensifying drought. In 2014, drought forced the people of the Kewa tribe to cease  traditional farming practices in order to adapt to changing climate conditions (Jung 2014). As the duration and severity of drought increases with warming in New Mexico, more Indigenous people will have to fight to maintain their traditions and way of life.
+In addition to the already discussed impacts, these droughts will also exacerbate existing social inequalities through a whole host of environmental justice issues. For example, one study in California indicates that domestic water supply shortages and rising water costs affect low-income families and people of color the most (Feinstein et al. 2017). Decreasing the affordability of water during shortages increases the precarity of poorer households' living conditions at a time when they already have little to no disposable income. Indigenous people in New Mexico will also be disproportionately impacted by intensifying drought. In 2014, drought forced the people of the Kewa tribe to cease  traditional farming practices in order to adapt to changing climate conditions (Jung 2014). As the duration and severity of drought increases with warming in New Mexico, more Indigenous people will have to fight to maintain their traditions and way of life.
 
 <div class="a">
 ## Conclusion
 </div>
 
-Strong warming trends in regions like Albuquerque are likely exacerbating drought in New Mexico. Higher temperatures in the Jemez Mountains decrease snowpack during winters and lead to earlier snowmelt in the spring. Along with increasing evapotranspiration, these factors cause longer and drier periods of drought during the summer. As these droughts become more and more severe, their impacts will disproportionately affect greater numbers of farmers, low-income families, people of color, and Indigenous tribes. Preparing against rising temperatures will be crucial to mitigating the severity of drought in New Mexico. Moving into the future, New Mexico should view its water problems as pertaining to not only drought, but rather, more general climatic shifts and trends within the region which influence drought severity. 
+Strong warming trends in regions like Albuquerque are likely exacerbating drought in New Mexico. Higher temperatures in the Jemez Mountains decrease snowpack during winters and lead to earlier snowmelt in the spring. Along with increasing evapotranspiration, these factors cause longer and drier periods of drought during the summer. As these droughts become more and more severe, their impacts will disproportionately affect greater numbers of farmers, low-income families, people of color, and Indigenous tribes. Preparing against rising temperatures will be crucial to mitigating the severity of drought in New Mexico. Moving into the future, New Mexico should view its water problems as pertaining to not only drought, but rather, more general climatic shifts and trends which faciilitate and amplify severe drought. 
 
 <div class="a">
 ## Citations
