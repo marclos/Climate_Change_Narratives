@@ -1,26 +1,40 @@
-file---
-title: "Temperature Graph Draft"
-author: "Susannah Budd"
-date: "2/5/2019"
-output: html_document
----
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##Concord, NH Temperature Graph
-Plot of maximum temperatures in Concord, New Hampshire from 1939-2019 with best fit line:
+
+<center>
+
+#### **How Are Warming Autumns Impacting Fall Foliage and the Tourist Economy In New Hampshire?**
+
+Susannah Budd\
+03/01/2019
+
+</center>
+
+&nbsp;
+
+**Introduction**\
+New Hampshire is a small, primarily rural state, home to 1.3 million people in the middle of Northern New England: Massachusetts to the South, Canada to the North, Vermont to the West, and Maine to the East. Historically, New Hampshire was an industrial state, with major cities centered around paper or textile mills. However, with the advent of globalization and the loss of most of this business, New Hampshire has needed to rebrand its economy. Today, the three largest industries in the state are technology, medicine, and tourism. The first two industries have strong epicenters which draw most of the state’s white-collar professionals: the Greater Boston Area supports a thriving technology business in the South, while Dartmouth-Hitchcock Hospital near the Vermont boarder employs many top-tier medical professionals. This leaves the rest of the state largely dependent on the tourist economy. Luckily, the state is home to a variety of natural attractions: the scenic White Mountains which offer a variety of hiking opportunities, a Lakes Region with ample opportunity for swimming and watersports, a quaint Seacoast Region, and many of the East Coast’s best ski mountains. Most notably, perhaps, is the state’s famous fall foliage. Out-of-state “leaf-peepers” pour into the state throughout September and October, hoping to witness the green leaves changing to reds and oranges – and spending more than a billion dollars in-state in the process.
+
+<center>
+
+![Peak Foliage in New Hampshire's White Mountains](FallFoliage.jpg)
+
+</center>
+
+<center>
 
 ```{r, echo=FALSE}
 ##Read CSV Data
-climate_data<-read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/susannah_concordnh_data.csv")
+climate_data <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/susannah_concordnh_data.csv")
 ```
 
 ```{r, echo=FALSE}
 ##Fix Dates
-strDates<-as.character(climate_data$DATE)
-climate_data$NewDate<-as.Date(strDates, "%m/%d/%Y")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 ```
 
 ```{r, echo=FALSE}
@@ -28,35 +42,25 @@ climate_data$NewDate<-as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(as.Date(climate_data$NewDate), format = "%Y")
 MonthlyTMAXMean = aggregate(TMAX~Month+Year, climate_data, mean)
-MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$YEAR=as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$MONTH=as.numeric(MonthlyTMAXMean$Month)
+
+MonthlyTMAXMean$Year = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 ```
 
 ```{r, echo=FALSE}
 ##New Plots
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",], ty='l', xlim=c(1939, 2019), main = "TMAX for September (degrees Celsius) vs Time (years)", xlab = "Time (years)", ylab = "TMAX for September (degrees Celsius)", col.main = "red", col.lab = "red")
-September.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
-abline(coef(September.lm), col="red")
-```
-
-```{r, echo=FALSE}
-##Monthly Minimums
-MonthlyTMINMean = aggregate(TMIN~Month+Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-```
-
-```{r, include=FALSE}
-##Fixing the Format of Month and Year as numeric
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month == "09",], ty = 'l', xlim = c(1939, 2019), main = "TMAX for September (degrees Celsius) vs Time (years)", xlab = "Time (years)", ylab = "TMAX for September (degrees Celsius)", col.main = "red", col.lab = "red")
+September.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+abline(coef(September.lm), col = "red")
 ```
 
 ```{r, echo=FALSE}
 ##Read Leaf Observation CSV Data
 leaf_observations <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/Leaf-Chart-1-1.csv")
 ```
+
+![Polly's Pancake Parlor in Sugar Hill, NH](pollys1.jpg)
 
 ```{r, echo=FALSE}
 ##Plot Leaf Observation Data
@@ -66,3 +70,14 @@ c<-coef(lm(Range~Year, leaf_observations))
 abline(c, col="red")
 ```
 
+```{r, echo=FALSE}
+##Monthly Minimums
+MonthlyTMINMean = aggregate(TMIN~Month+Year, climate_data, mean)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month == "09",], ty = 'l', xlim = c(1939, 2019), main = "TMIN for September (degrees Celsius) vs Time (years)", xlab = "Time (years)", ylab = "TMIN for September (degrees Celsius)", col.main = "red", col.lab = "red")
+September.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
+abline(coef(September.lm), col = "red")
+```
+
+</center>
