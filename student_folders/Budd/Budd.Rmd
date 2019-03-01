@@ -15,14 +15,40 @@ Susannah Budd\
 
 &nbsp;
 
-**Introduction**\
-New Hampshire is a small, primarily rural state, home to 1.3 million people in the middle of Northern New England: Massachusetts to the South, Canada to the North, Vermont to the West, and Maine to the East. Historically, New Hampshire was an industrial state, with major cities centered around paper or textile mills. However, with the advent of globalization and the loss of most of this business, New Hampshire has needed to rebrand its economy. Today, the three largest industries in the state are technology, medicine, and tourism. The first two industries have strong epicenters which draw most of the state’s white-collar professionals: the Greater Boston Area supports a thriving technology business in the South, while Dartmouth-Hitchcock Hospital near the Vermont boarder employs many top-tier medical professionals. This leaves the rest of the state largely dependent on the tourist economy. Luckily, the state is home to a variety of natural attractions: the scenic White Mountains which offer a variety of hiking opportunities, a Lakes Region with ample opportunity for swimming and watersports, a quaint Seacoast Region, and many of the East Coast’s best ski mountains. Most notably, perhaps, is the state’s famous fall foliage. Out-of-state “leaf-peepers” pour into the state throughout September and October, hoping to witness the green leaves changing to reds and oranges – and spending more than a billion dollars in-state in the process.
+
+**An Introduction to New Hampshire and Tourism** \ 
+
+New Hampshire is a small, primarily rural state, home to 1.3 million people in the middle of Northern New England: Massachusetts to the South, Canada to the North, Vermont to the West, and Maine to the East. Historically, New Hampshire was an industrial state, with major cities centered around paper or textile mills. However, with the advent of globalization and the loss of most of this business, New Hampshire needed to rebrand its economy. Today, the three largest industries in the state are technology, medicine, and tourism. The first two industries have strong epicenters which draw most of the state’s white-collar professionals: the Greater Boston Area supports a thriving technology business in the South, while Dartmouth-Hitchcock Hospital near the Vermont boarder employs many top-tier medical professionals. This leaves the rest of the state largely dependent on the tourist economy.\ 
+
+Luckily, the state is home to a variety of natural attractions: the scenic White Mountains which offer a variety of hiking opportunities, a Lakes Region with ample opportunity for swimming and watersports, a quaint Seacoast Region, and many of the East Coast’s best ski mountains. Most notably, perhaps, is the state’s famous fall foliage. Out-of-state “leaf-peepers” pour into the state throughout September and October, hoping to witness the green leaves changing to reds and oranges – and spending nearly three-hundred million dollars in-state in the process. \ 
+
+Such tourism is most important to the northern third of the state, called the North Country. This isolated and sparsely populated region was hit the hardest by the loss of the paper and logging industries, as its isolation and small tax base provides significant barriers to economic development. New Hampshire’s Carroll County in particular has rebranded itself as the go-to place for tourism in the White Mountains, with the fall foliage and ski seasons being the core of the area’s unique appeal. With approximately one-fifth of Carroll County’s population working in the service industry, New Hampshire tourism proves to be an essential component of the economy in an otherwise vulnerable region. \ 
 
 <center>
 
 ![Peak Foliage in New Hampshire's White Mountains](FallFoliage.jpg)
 
 </center>
+
+**An Introduction to Leaf Phenology** \ 
+
+As was previously discussed, a significant component of New Hampshire’s tourism industry stems from its stunning fall foliage. The food-making process of leaves produces chlorophyll, a green-pigmented compound. Yellow and orange pigments, called carotenes, are also produced, however, these are largely masked by the vibrant green color throughout most of the leaf’s lifespan. As days begin to shorten, a signal that winter is arriving, food production in leaves stops, and chlorophyll begins to break down. This exposes the colors of the carotenes which are left behind, forming the beautiful colors of foliage. Although the onset of fall foliage is triggered largely by changes in daylight, the appearance and duration of such foliage, or “leaf phenology,” is largely dependent on temperatures. \ 
+
+The intensity of the red and purple colors which add beauty and depth to a foliaged landscape is determined by the presence of anthocyanin. Anthocyanin is formed by plants to protect themselves from overexposure to the sun as they begin to lose their leaves before winter and continue use the nutrients remaining in the dying leaves as efficiently as possible. The production of this compound is facilitated by low temperatures above freezing. Without cooler temperatures, less anthocyanin will be produced, and foliage may begin to appear dull colored and less visually appealing.\ 
+
+Additionally, the foliage season is terminated by the onset of frost. When freezing temperatures are reached, ice crystals are formed inside of the leaves, killing them immediately and ceasing all biological production. Eventually, leaves may be lost without a freeze, as trees gradually form a separation layer between itself and the leaf, allowing wind to easily blow the leaves away, as days shorten. However, this process is much more gradual than an immediate freeze, so an extended warm period may preserve the foliaged landscape for longer periods. \ 
+
+**Methods** \ 
+
+The National Oceanic and Atmospheric Association, or NOAA, has a large global network of daily temperature data, called the Global Historical Climate Network. This information is available for free on NOAA’s website. In order to assess the potential impact of New Hampshire temperatures on autumnal leaf phenology, I obtained temperature records from a station in Concord, New Hampshire ranging from April 4, 1939 to January 26, 2019. I imported this data into RStudio, where I analyzed the trends for both maximum and minimum temperatures in September, which has historically been the epicenter of foliage season. The null hypothesis which I was investigating here states that there is no relationship between temperature and time. The other data set which I analyzed was obtained via “civilian science.” A famous tourist destination in Northern New Hampshire, Polly’s Pancake Parlor, has been recording the start and end dates of the foliage season since 1975. I imported their data into Excel, where I calculated the number of days each season lasted. I then imported this data set into RStudio, where I analyzed the change in season length over time. Here, the null hypothesis was that there is no relationship between foliage season length and time. I investigated these null hypotheses using the p-value. If the p-value is less than 0.05, then the findings are considered to be statistically significant, and the null hypothesis may be rejected. \ 
+
+<center>
+
+![Polly's Pancake Parlor in Sugar Hill, NH](pollys1.jpg)
+
+</center>
+
+**Results** \ 
 
 <center>
 
@@ -55,20 +81,11 @@ September.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="0
 abline(coef(September.lm), col = "red")
 ```
 
-```{r, echo=FALSE}
-##Read Leaf Observation CSV Data
-leaf_observations <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/Leaf-Chart-1-1.csv")
-```
+</center>
 
-![Polly's Pancake Parlor in Sugar Hill, NH](pollys1.jpg)
+The linear regression model of the graph of maximum temperatures in September was found to have a positive slope. The p-value for this model was 0.03, which is lower than 0.05, meaning that the data is statistically significant, and that the null hypothesis may be rejected. The adjusted r2 value was 0.00013, indicating that the correlation between the data points and the linear model is low. \ 
 
-```{r, echo=FALSE}
-##Plot Leaf Observation Data
-plot(Range~Year, leaf_observations, ty='l', main = "Length of Foliage Season (days) vs. Year", xlab = "Foliage Season Length (days)", ylab = "Year", col.main = "red", col.lab = "red")
-##Add Best Fit Line
-c<-coef(lm(Range~Year, leaf_observations))
-abline(c, col="red")
-```
+<center>
 
 ```{r, echo=FALSE}
 ##Monthly Minimums
@@ -81,3 +98,28 @@ abline(coef(September.lm), col = "red")
 ```
 
 </center>
+
+The linear regression model of the graph of minimum temperatures in September was found to have a positive slope. The p-value for this model was 2.2e-11, which is lower than 0.05, meaning that the data is statistically significant, and that the null hypothesis may be rejected. The adjusted r2 value was 0.0015, indicating that the correlation between the data points and the linear model is low. \ 
+
+<center>
+
+```{r, echo=FALSE}
+##Read Leaf Observation CSV Data
+leaf_observations <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/Leaf-Chart-1-1.csv")
+```
+
+```{r, echo=FALSE}
+##Plot Leaf Observation Data
+plot(Range~Year, leaf_observations, ty='l', main = "Length of Foliage Season (days) vs. Year", xlab = "Foliage Season Length (days)", ylab = "Year", col.main = "red", col.lab = "red")
+##Add Best Fit Line
+c<-coef(lm(Range~Year, leaf_observations))
+abline(c, col="red")
+```
+
+</center>
+
+The linear regression model of the graph of foliage season length was found to have a positive slope. The p-value for this model was 1.5e-8, which is lower than 0.05, meaning that the data is statistically significant, and that the null hypothesis may be rejected. The adjusted r2 value was 0.54, indicating that the correlation between the data points and the linear model is relatively high, with the variable “year” accounting for approximately 54% of the data. \
+
+**Discussion** \ 
+
+**Conclusion** \ 
