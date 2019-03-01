@@ -49,15 +49,127 @@
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
 \usepackage{alltt}
+\usepackage{gensymb}
 
 \title{Visual Presentation of Data using R}
+
+
+
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \maketitle
 
-\section{Scatter Plot}
+\section{The Perfect Graphic}
+
+\subsection{Best Practices}
+
+There is no such thing as the perfect graphic, but there are conventions that can be used to guide us to create accurtate, accessible, and visually pleasing grahics. But like many things, it takes some practices. 
+
+Here are some general rules...
+
+\begin{itemize}
+  \item Data range and transformations
+  \item Axes labels with appropriate units
+  \item Axes label and values font size
+  \item Axes label orientation
+  \item Title
+  \item lines and points
+  \item B/W versus color
+  \item Caption
+\end{itemize}
+
+
+\section{Exploring the Histogram}
+
+Data exploration can include many steps, but starting with a histogram gives the researcher the ability to evaluate the distribution of the data.
+
+Below is a default histogram for TMAX values, where we might be able to visually how normally distributed the data might be.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{hist}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+
+\end{knitrout}
+
+The default graphic is hideous -- so, let's start fixing it. 
+
+\subsection{Title and Axis Labels}
+
+For stand alone figures, we usually add titles, but in papers and lab reports it's a good practice to remove the title and use the caption to describe the graphic. Changes to the title can be made with arguments within the plot command, i.e. `main=NULL'.
+
+In addition, we can change the x-axis label, with the 'xlab' argument. Specifying the units is also required. And in this case, we want to add the \degree symbol and create a text string with the axis label in quotes that can be referenced in the hist() funtion. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{xlabel} \hlkwb{<-} \hlstr{"Maximum Temperature (°C)"}
+\hlkwd{hist}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=xlabel)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+
+\end{knitrout}
+
+\subsection{Axes Values and Range}
+
+For scatter plots, which are more common, we use the same principles:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,])}
+\hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,])),} \hlkwc{col}\hlstd{=}\hlstr{'darkred'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+
+\end{knitrout}
+
+Let's fix the y-axis label as we did above (TMAX is not a very helpful label!). Furthermore, the x-axis needs to be calmed down some, so let's change the case for these. We will also change the symbols to make it less busy with the `pch' argument. You can look online to see the choices one has in R. 
+
+I am also not impress with the vertical orientation of the y-axis, so it's important to change these as well. 
+
+Finally, it's important that the image works in black and white. So, let's see if we can modify the graphic to make it less resource intensive. Finally, let's add a caption and reference to the figure (Figure \ref{}).
+
+\begin{figure}[h]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ylabel} \hlkwb{<-} \hlstr{"Maximum Temperature (°C)"}
+\hlkwd{plot}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,],}
+     \hlkwc{ylab}\hlstd{=ylabel,} \hlkwc{xlab}\hlstd{=}\hlstr{'Year'}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'gray'}\hlstd{)}
+
+\hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,}
+    \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,])),} \hlkwc{col}\hlstd{=}\hlstr{'black'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+
+\end{knitrout}
+\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
+\label{fig:maxtemp}
+\end{figure}
+
+
+\section{Boxplot}
+
+\subsection{Boxplot: Best Practice}
+
+\section{Scatter Plot -- Non-time series}
+
+\subsection{Histogram: Scaltter Plot}
+
+\subsection{Scatter Plot -- Time Series}
+
+\subsection{Time Series: Best Practice}
 
 \section{Bar Graphs}
+
+\subsection{Bar Chart: Best Practice}
 
 \section{Tables}
 
