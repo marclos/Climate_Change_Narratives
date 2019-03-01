@@ -110,7 +110,7 @@ leaf_observations <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/s
 
 ```{r, echo=FALSE}
 ##Plot Leaf Observation Data
-plot(Range~Year, leaf_observations, ty='l', main = "Length of Foliage Season (days) vs. Year", xlab = "Foliage Season Length (days)", ylab = "Year", col.main = "red", col.lab = "red")
+plot(Range~Year, leaf_observations, ty='l', main = "Length of Foliage Season (days) vs. Year", xlab = "Year", ylab = "Foliage Season Length (days)", col.main = "red", col.lab = "red")
 ##Add Best Fit Line
 c<-coef(lm(Range~Year, leaf_observations))
 abline(c, col="red")
@@ -118,8 +118,34 @@ abline(c, col="red")
 
 </center>
 
-The linear regression model of the graph of foliage season length was found to have a positive slope. The p-value for this model was 1.5e-8, which is lower than 0.05, meaning that the data is statistically significant, and that the null hypothesis may be rejected. The adjusted r2 value was 0.54, indicating that the correlation between the data points and the linear model is relatively high, with the variable “year” accounting for approximately 54% of the data. \
+The linear regression model of the graph of foliage season length was found to have a positive slope. The p-value for this model was 1.5e-8, which is lower than 0.05, meaning that the data is statistically significant, and that the null hypothesis may be rejected. The adjusted r2 value was 0.54, indicating that the correlation between the data points and the linear model is relatively high, with the variable “year” accounting for approximately 54% of the data. \ 
 
-**Discussion** \ 
+**Discussion and Conclusion**
 
-**Conclusion** \ 
+All three graphs demonstrated statistical significance, indicating that the null hypotheses may be rejected. This suggests that the results which the graphs show are credible. Although the r2 values are generally low, this does not negate the significance of the graph’s results. The variable “year” is truly just a proxy for a host of other changes which impact temperature and leaf phenology in more direct and significant ways. Examining change over time may be a powerful way to gain a general understanding of an issue, however, as time does not have a causal relationship with either temperature or foliage season length, it neglects to include the direct processes which impact these processes, which may lead to low correlative values without negating the high probability values.\ 
+
+With this understanding, these graphs may provide a powerful understanding of how a statistically significant warming trend is impacting New Hampshire’s foliage economy. Clearly, as the temperature and foliage season graphs demonstrate, as temperatures are warming, the foliage season is getting longer and longer. This correlation adheres to the leaf phenology principle discussed above, where delayed frost may extend the lifespan of foliaged landscapes. In and of itself, this is not a bad thing – in fact, a longer foliage season is good for New Hampshire. By extending the heightened tourism period, it becomes more likely that more money will ultimately be brought into the state. At Polly’s Pancake Parlor, the 2018 foliage season actually broke a record, bringing 800 people into the restaurant between 7 AM and 3 PM in a single day. \ 
+
+<center>
+
+![Franconia Notch in New Hampshire](Franconia Notch.jpg)
+
+</center>
+
+However, the warmth associated with an increased foliage season is not benefitting some of New Hampshire’s other tourist niches. As Christopher Bellis, the owner of a bed-and-breakfast Carroll County, said, “It may be good for my foliage business. But climate change is not necessarily good for my winter business.” Skiing, another huge tourism industry in New Hampshire, is already seeing a reduction in snow days, causing resorts and their companion service businesses to worry about their futures. Additionally, the long-term sustainability of increased foliage tourism anything but certain. As the graphs above show, both the maximum and minimum temperatures are increasing. As was discussed above, anthocyanin, a compound necessary to form foliage’s darker hues, is not produced robustly without cold nights. This would likely lead to a less vibrant foliage season. In fact, this change is already starting to occur. As local reporter David Brooks said, “The walling-off of the leaf is triggered by the daylight, which isn’t changing, but the color is triggered by the weather, which is changing. So it does seem like [warmer autumns are] resulting in less splendid splendor, shall we say.” \ 
+
+<center>
+
+![Skiing is an Important Component of the Tourist Economy in New Hampshire](Skiing.jpg)
+
+</center>
+
+The long-term implications of a “less splendid splendor” are, thus far, unclear. However, duller leaves aren’t the state’s only concern. As early as 2008, New Hampshire’s state government has expressed concerns regarding how climate change may impact the tourism leaf economy. Their worries include dulling leaves, but also increased pest and pathogen propagation and subsequent tree damage, northward tree movement, and the potential loss of the 3-million-dollar maple syrup industry. Given that these tourist industries are sustaining large portions of the state’s most vulnerable populations, their gradual disappearance bodes poorly for the long-term health of these economies and begs the question as to how these communities may continue to be supported in an area with very little industry. Coos County, located north of the White Mountains, has struggled to bring in a tourist economy for years – and consequently, has faced the greatest economic challenges in the state. Millions of governmental dollars have been poured into the county in an attempt to rebuild a firmer economy. However, this has largely been ineffective, with approximately 41% of the county’s residents living in poverty. In facing the loss of a significant tourist economy, New Hampshire must figure out a better way to support its struggling populations. \ 
+
+Although New Hampshire’s foliage tourism economy continues to flourish and even improve as warmer temperatures lengthen the foliage season, warming autumns likely mean less anthocyanin, and subsequently less vibrant colors. As the foliage in New Hampshire dims, it will likely become more and more difficult to draw the same tourist population to the state which has sustained some of its more vulnerable populations for more than a generation now. Additionally, although it was not analyzed here, past research has suggested that warming temperatures may already be damaging other critical components of the New Hampshire tourism economy. The seasonal extension which warming autumns have provided to foliage tourism will likely be offset by the depletion of the vibrant colors which make New Hampshire a popular tourist attraction to begin with as well as the diminishment of snow-dependent tourist industries, such as skiing. Particularly as these tourism industries are not only representative of the very culture and essence of New Hampshire but are sustaining some of the state’s most vulnerable populations, their loss would prove undeniably tragic for New Hampshire’s future. 
+
+<center>
+
+![Views from New Hampshire's Kancamagus Highway](Kancamagus.JPG)
+
+</center>
