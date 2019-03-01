@@ -1,6 +1,6 @@
 ---
 title: "Kylie's Topic of Interest"
-author: "Kylie"
+author: "Kylie Wong"
 date: "2/11/2019"
 output: html_document
 
@@ -9,20 +9,24 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+##Pearl River Basin Precipitation Trends
+start typing here 
+
+
 
 ##Guangzhou, China Temperature Graph 
+(this may not be relevant to my research)
 ```{r, read, echo = FALSE, results='hide'}
 #preparing and reading CSV file 
 #read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
 climate_data <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
 head(climate_data)
 str(climate_data)
-climate_data$TMAX
+#climate_data$TMAX
 plot(TMAX~DATE, climate_data)
 min(climate_data$TMAX)
 min(climate_data$TMAX, na.rm=T)
 ```
-
 
 ```{r, fixdates, echo = FALSE}
 ##Changing dates
@@ -34,7 +38,6 @@ strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
 ```
-
 
 ```{r, echo = FALSE}
 ##Preparing the monthly average plots 
@@ -48,7 +51,6 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 plot(MonthlyTMAXMean$TMAX, ty='l')
 ```
-
 
 ```{r, echo = FALSE}
 ##May Vector 
