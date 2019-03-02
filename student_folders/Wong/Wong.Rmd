@@ -1,7 +1,7 @@
 ---
-title: "Kylie's Topic of Interest"
-author: "Kylie"
-date: "2/11/2019"
+title: "What are the origins of the extreme flooding in Southeastern China?"
+author: "Kylie Wong"
+date: "Friday, March 1st, 2019"
 output: html_document
 
 ---
@@ -10,77 +10,154 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##Guangzhou, China Temperature Graph 
-```{r, read, echo = FALSE, results='hide'}
-#preparing and reading CSV file 
-#read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
-climate_data <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
-head(climate_data)
-str(climate_data)
-climate_data$TMAX
-plot(TMAX~DATE, climate_data)
-min(climate_data$TMAX)
-min(climate_data$TMAX, na.rm=T)
+![**Fig. 1** *Part of the Pearl River Delta that runs through the large metropolitan city of Hong Kong in Southeast China. Photo from Thailand Business News*](prd.png)   
+
+##Introduction 
+As China continues to climb up the global ranks with its recent goals for technological advancements and urban development, the natural landscape of the country is put at risk. Specifically in Southeast China, where urban development is centralized around the entire Pearl River Delta, large cities like Guangzhou and many others are at a high risk of flooding. As a result, the urban infrastructure is threatened. In addition, the entire livelihood of Chinese citizens are threatened with the high frequency of flash floods. The heavy rainfall and flooding in Southeast China in the summer of 2016 generated $1.1 billion in damages, left 200,000 people without a home, and took 36 lives. With climate change escalating extreme weather trends, the frequency of these floods are likely to increase, costing more lives and creating more damages.   
+
+In this blog, I will attempt to explore the origins of the floods in the Pearl River Basin of South China, and what triggers the intensity of the floods. In addition, I will analyze the impacts of the floods on the socio-economic infrastructure of Southeast China; therefore, I hypothesize that the intensity of rainfall is correlated to the power of flash floods in Southern China, which would lead to detrimental effects the socio-economic infrastructure in China.                                                                                                                                                                             
+
+
+####How are floods and precipitation related?  
+Floods occur after heavy and overflowing rainfall on land that is usually dry. The most dangerous floods are flash floods, which can flood an entire region in a short amount of time with high intensity. What makes these flood even more dangerous is its unpredictability, which can easily devastate a region that is under-prepared and also densely populated like Southeastern China.    
+
+
+
+##Methods  
+To conduct this study, I accessed the database on National Oceanic and Atmospheric Administration  (NOAA) to collect precipitation data in my region of study. I collected data from: Guangzhou, the delta region in the eastern part of the basin, and Guilin, which is closest to the northwestern part of the basin. I chose to graph two different sets of data to test if the differences in the geographic terrain of the watershed is correlated with the amounts of precipitation in each region. 
+
+To analyze the data, I will have to read and interpret the p and adjusted r squared values to ultimately test this null hypothesis: the precipitation levels of Pearl River Basin is dependent upon time. If the p value is greater than 0.05, then there is no significance in the data. If the p value is less than 0.05, then we reject the null hypothesis and conclude that there is significance in the data. For the adjusted r squared value, the higher the value means that the data has a strong correlation to its best fitted line of regression. To further the scope of my study, I accessed multiple peer review journals for the information about specific extreme climate patterns. 
+
+
+
+
+##Data
+```{r, echo = FALSE, results= 'hide'}
+read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
+guangzhou_precdata <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
+head(guangzhou_precdata)
+str(guangzhou_precdata)
+names(guangzhou_precdata)
+```
+
+```{r, echo = FALSE, results= 'hide'}
+#plotting guangzhou data
+#plot(PRCP~DATE, guangzhou_precdata)
+min(guangzhou_precdata$PRCP)
+strDates <- as.character(guangzhou_precdata$DATE)
+guangzhou_precdata$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+```
+
+```{r, echo = FALSE, results= 'hide'}
+#plot(PRCP~NewDate, guangzhou_precdata)
+prcp.lm=lm(PRCP~NewDate, data=guangzhou_precdata)
+#abline(coef(prcp.lm), col="red")
+```
+
+```{r, echo = FALSE, results= 'hide'}
+#monthly means for the year
+guangzhou_precdata$Month = format(as.Date(guangzhou_precdata$NewDate), format = "%m")
+guangzhou_precdata$Year = format(guangzhou_precdata$NewDate, format="%Y")
+MonthlyPRCPMean = aggregate(PRCP~Month+Year, guangzhou_precdata, mean)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+#plot(MonthlyPRCPMean$PRCP)
+```
+
+```{r, echo = FALSE, results= 'hide'}
+#mean for August
+#plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",], xlim=c(1951,2020))
+August.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",])
+#abline(coef(August.lm), col='red')
+summary(August.lm)
 ```
 
 
-```{r, fixdates, echo = FALSE}
-##Changing dates
-climate_data$TMAX[climate_data$TMAX==-9999] = NA
-climate_data$TMIN[climate_data$TMIN==-9999] = NA
-plot(TMAX~DATE, climate_data[1:1835,], ty='l')
-str(climate_data)
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
+
+```{r, echo = FALSE, results= 'hide'}
+#importing guilin prcp data
+read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/1628919.csv")
+guilin_precdata <-read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/1628919.csv")
+head(guilin_precdata)
+str(guilin_precdata)
+names(guilin_precdata)
 ```
 
-
-```{r, echo = FALSE}
-##Preparing the monthly average plots 
-lm(TMAX ~ NewDate, data=climate_data)
-summary(lm(TMAX ~ NewDate, data=climate_data))
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
-str(MonthlyTMAXMean)
-plot(MonthlyTMAXMean$TMAX, ty='l')
+```{r, echo = FALSE, results= 'hide'}
+#plotting guilin data
+#plot(PRCP~DATE, guilin_precdata)
+min(guilin_precdata$PRCP)
+strDates <- as.character(guilin_precdata$DATE)
+guilin_precdata$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+```{r, echo = FALSE, results= 'hide'}
+#plot(PRCP~NewDate, guilin_precdata)
+prcp2.lm=lm(PRCP~NewDate, data=guilin_precdata)
+#abline(coef(prcp.lm), col="red")
 ```
 
-
-```{r, echo = FALSE}
-##May Vector 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-summary(May.lm)
-abline(coef(May.lm), col="red")
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
+```{r, echo = FALSE, results= 'hide'}
+#monthly means for the year
+guilin_precdata$Month = format(as.Date(guilin_precdata$NewDate), format = "%m")
+guilin_precdata$Year = format(guilin_precdata$NewDate, format="%Y")
+MonthlyPRCP2Mean = aggregate(PRCP~Month+Year, guilin_precdata, mean)
+MonthlyPRCP2Mean$YEAR = as.numeric(MonthlyPRCP2Mean$Year)
+MonthlyPRCP2Mean$MONTH = as.numeric(MonthlyPRCP2Mean$Month)
+#plot(MonthlyPRCP2Mean$PRCP)
 ```
 
-
-```{r, echo = FALSE}
-##Monthly averages of daily minimum temperatures
-Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
-TMAXresult <- NA
-for (i in 1:12) {
-plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
-Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
-summary(Month.lm)
-abline(coef(Month.lm), col = "red")
-TMAXresult <- rbind(TMAXresult, cbind(Months[i],
-round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared, 3)))
-}
-
-plot(MonthlyTMINMean$TMIN, ty='l')
-
+```{r, echo = FALSE, results= 'hide'}
+#mean for August Guilin
+#plot(PRCP~YEAR, data=MonthlyPRCP2Mean[MonthlyPRCP2Mean$Month=="08",], xlim=c(1951,2020))
+August2.lm <- lm(PRCP~YEAR, data=MonthlyPRCP2Mean[MonthlyPRCP2Mean$Month=="08",])
+#abline(coef(August2.lm), col='red')
+summary(August2.lm)
 
 ```
+
+```{r, echo = FALSE, results= 'hide', fig.align='center', fig.cap= "Fig.3 The graphs displayed above represents the precipitation averages for the month of August from each year between 1951 and 2018 for both Guangzhou and Guilin, China."}
+#lining up the two graphs from guangzhou and guilin
+par(mfrow = c(1,2))
+
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",], xlim=c(1951,2020), 
+     main = "Guangzhou, China",
+     xlab = "YEAR",
+     ylab = "PRCP (mm)") 
+August.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",])
+abline(coef(August.lm), col='red')
+summary(August.lm)
+
+plot(PRCP~YEAR, data=MonthlyPRCP2Mean[MonthlyPRCP2Mean$Month=="08",], xlim=c(1951,2020),
+     main = "Guilin, China",
+     xlab = "YEAR",
+     ylab = "PRCP (mm)")
+August2.lm <- lm(PRCP~YEAR, data=MonthlyPRCP2Mean[MonthlyPRCP2Mean$Month=="08",])
+abline(coef(August2.lm), col='red')
+summary(August2.lm)
+```
+
+####What do the graphs show? 
+For Guangzhou, China, the p value is less than 0.01, which means that we reject the null hypothesis, concluding that the precipitation data has a weak relationship to the x-variable (year). The adjusted r-squared value for the same location is 0.0861. This means that only about 8.6% of the data is explanatory. 
+
+For Guilin, China, the p value is greater than 0.05, which means that we accept the null hypothesis, which concludes that the trends of precipitation are related to the x-variable (year). The adjusted r-squared value is 0.01127, which is even lower than the value from Guangzhou. This means that only about 1% of the data is explanatory; therefore, this data is very inconclusive and hard to explain. 
+
+
+####What does this data mean?
+Since it is shown that there are inconsistencies in the data, this must mean that there must be other factors influencing the precipitation values. It is important to note that in the most recent 10 years, there have been some pretty high levels of precipitation in both Guangzhou and Guilin. This may be due to increased levels of climate changes. 
+
+Although the regression lines are displaying an increase in precipitation over the years, the rainfall levels are different, and the statistical values are different. This is alarming when put into the context of climate change, because this highlights the need for scientists to conduct further studies to find out what causes the difference in rainfall across the basin. I suspect that the difference in rainfall may be due to the differences in geographic location and terrain of the stations; however, this calls for research beyond the scope of my study. 
+
+##Discussion 
+####What are the potential factors that result in this inconsistency and uncertainty in climate data? 
+**1. Seasonality:** One of the main reason that the climate data of Southeastern China is so inconsistent is due to the constant changes in seasonality and precipitation patterns. Scientists found that the frequencies of rainy days decreased, but the intensity increased throughout the Pearl River Basin (Q. Zhang et al 2009). However, these scientists also found that these patterns are insignificant due to its variability and constant changes.
+
+**2. Storms:** Another large factor that influences the precipitation patterns in the Pearl River Basin is the extreme climate events like [monsoons](https://en.wikipedia.org/wiki/Monsoon) and [typhoons](https://en.wikipedia.org/wiki/Typhoon) that are common in East Asia (Loo et al 2014). These storms are also exacerbated by climate change. Unfortunately, even the intensity and effects of these storms vary seasonally, which increases the difficulty of having consistent data. 
+
+**3. El Niño-Southern Oscillation (ENSO):** A less commonly talked about phenomenon is [ENSO](https://en.wikipedia.org/wiki/El_Ni%C3%B1o%E2%80%93Southern_Oscillation). This series of irregular wind patterns and abnormal sea surface temperature affects the tropical areas of the eastern Pacific Ocean immensely, specifically my research region, Southern China (Niu 2012). 
+
+**4. Human activity:** Since the there is so much civilization and settlements around the entire river basin, humans have brought in much damage to the natural processes of the region. For example, “Human activities, such as land use, regulation, reservoir, may lead to monotonic change or trends in river discharge, however, we can still detect the climatic driving forces on interannual discharge variations” (Gu et al. 2016). 
+
+With a large amount of factors that all have some sort of influence on the precipitation patterns of Southern China, there is not one single factor that directly leads to the increase of rainfall in the Pearl River Basin; therefore, the data that I have gathered, along with many scientists’ data, come to the conclusion that there are too many uncertainties. To further complicate this data, it is possible that these factors are linked! For example, ENSO may have an effect on the East Asian monsoons, which may all contribute to increased impacts in Southern China (Niu 2012). Since these climate phenomenons are linked and co-influential, these extreme events create a perpetual cycle that may or may not be further enhanced by climate change, exacerbating the consequences like extreme flooding in Southern China. 
 
 

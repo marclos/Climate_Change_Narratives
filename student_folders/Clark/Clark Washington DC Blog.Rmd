@@ -1,16 +1,23 @@
 ---
-title: "Extreme Weather Events in the Nation's Capital"
+title: "Rising Temperatures to Blame for Extreme Weather Events in the Nation's Capital?"
 author: "Chris Clark"
 date: "2/11/2019"
 output: html_document
 ---
+
 Background
 ---
-Washington, DC is a hub of government and culture for the United States. It is built on a drained swamp, making the climate humid with blistering summers and cold winters. The city has not been historically known for its extreme weather, but events such as hurricanes and blizzards have been increasing in frequency and intensity throughout the past century. These increases have also corresponded with atmospheric warming in DC in summer and winter months. This is troubling from a humanitarian perspective because of the rampant homelessness and income inequality in the nation’s capital. Changes in temperature that can influence these events may be very destructive and deadly to communities of lower income, and something must be done to mitigate these impacts. 
+
+```{r pic, echo=FALSE, out.width = '40%'}
+knitr::include_graphics("Capital Storm.jpg")
+```
+
+
+Washington, DC is a hub of government and culture for the United States. It is built on a drained swamp, making the climate humid with blistering summers and cold winters. The city has not been historically known for its extreme weather, but growing up there, I have seen that events such as hurricanes and blizzards have been increasing in frequency and intensity throughout the past century. I hypothesize that these increases have also corresponded with atmospheric warming in DC during summer and winter months. This is troubling from a humanitarian perspective because of the rampant homelessness and income inequality in the nation’s capital. Changes in temperature that can influence these events may be very destructive and deadly to communities of lower income, and something must be done to mitigate these impacts. 
 
 Methods
 ---
-Using  The National Oceanic and Atmospheric Association (NOAA) data base, I downloaded climate data from 1936-2019 taken from Reagan National Airport in Arlington, Virginia (3 miles south of Washington, DC). I then analyzed the relationship between temperatures and times over this 83 year span using the open source statistical analysis program RStudio. I analyzed the data to determine whether it rejects the null hypothesis that there is no relationship between temperature change and time. Data with p-values less than 0.05 are statistically significant and reject the null hypothesis. 
+Using  The National Oceanic and Atmospheric Association (NOAA) data base, I downloaded climate data from 1936-2019 taken from Reagan National Airport in Arlington, Virginia (3 miles south of Washington, DC). I then analyzed the relationship between temperatures and times over this 83 year span using the open source statistical analysis program RStudio. I analyzed the data to determine whether I could reject the null hypothesis that there is no relationship between temperature change and time. Data with p-values less than 0.05 are statistically significant and allow me to reject the null hypothesis. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -107,13 +114,13 @@ Dec.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 
 abline(coef(Dec.lm), col="red")
 ```
-Maximum Temperatures and Blizzards? December
+How do Increased Temperatures Relate to Blizzards? 
 ---
-Washington, DC is a quintessentially mid-atlantic area, straddling the line between the traditional north and south. As such, it is an area that has not historically been known for its blizzards. However, according to local news outlet WUSA9, 11 of the 15 worst winter storms in the DC metropolitan area since 1800 have occurred between the months of January and March from 1966 to the present. Why could this be happening? One hypothesis is that warming temperatures in the winter can cause increased evaporation, leading to more water vapor in the air and thus larger snowfall once the temperatures dip and the precipitation falls (Wallace et al. 2014). In the DC area this is supported by the fact that maximum temperatures in December have increased significantly since 1945 with a slope of .0299 degrees C per year and p-value of .027. Temperatures in January and February (DCs heaviest snowfall months) have not significantly decreased, but since the temperatures in December have, it is very possible the evaporation has increased leading to increases in major snowfall events in the region. 
+Washington, DC is a quintessentially mid-atlantic area, straddling the line between the traditional north and south. As such, it is an area that has not historically been known for its blizzards. However, according to local news outlet WUSA9, 11 of the 15 worst winter storms in the DC metropolitan area since 1800 have occurred between the months of January and March from 1966 to the present. Why could this be happening? One hypothesis is that warming temperatures in the winter can cause increased evaporation, leading to more water vapor in the air and thus larger snowfall once the temperatures dip and the precipitation falls (Wallace et al. 2014). In the DC area this is supported by the fact that maximum temperatures in December have increased significantly since 1945 with a slope of .0299 degrees Celcius (.0538 degrees Fahrenheit) per year and p-value of .0270. Temperatures in January and February (DCs heaviest snowfall months) have not significantly decreased, but since the temperatures in December have, it is very possible the evaporation has increased leading to increases in major snowfall events in the region. 
 ``` {r, echo=FALSE}
 # Including Plots
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
-ty='l', xlim=c(1945, 2020), main="December")
+ty='l', xlim=c(1945, 2020), main="December Maximum Temperatures") 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 abline(coef(Dec.lm), col="red")
 
@@ -122,11 +129,12 @@ abline(coef(Dec.lm), col="red")
 Maximum Temperatures and Hurricanes in August
 ---
 
-Atlantic hurricane season as designated by NOAA starts on June 1 and goes all the way through November 30. For the plot of maximum temperature against time for the month of August, there was a slope of .0222 degrees C per year and a p-value of 0.001436. This p-value being well below .05 shows a significant correlation between year and temperature, meaning that there has been significant warming in the Washington, DC area. This increased surface/atmospheric temperature lends itself to aiding in hurricane landfall, where previously cooler land and atmospheric conditions could not support the storms. This is supported by Smith’s article (1999) that shows that between 1970 and 1998 east coast hurricane frequency was increasing. Hurricane data from the National Weather Service also shows that through time, DC is experiencing more hurricanes, which may be partially explained by the increases in temperature. 
+Atlantic hurricane season as designated by NOAA starts on June 1 and goes all the way through November 30. For the plot of maximum temperature against time for the month of August, there was a slope of .0222 degrees Celsius (.0396 degrees Fahrenheit) per year and a p-value of 0.00144. This p-value being well below .05 shows a significant correlation between year and temperature, meaning that there has been significant warming in the Washington, DC area. This increased surface/atmospheric temperature lends itself to aiding in hurricane landfall, where previously cooler land and atmospheric conditions could not support the storms. This is supported by Smith’s article (1999) that shows that between 1970 and 1998 east coast hurricane frequency was increasing. Hurricane data from the National Weather Service (2012) also shows that through time, DC experienced hurricanes with more frequency than in the previous 150 years, which may be partially explained by the increases in temperature. 
+
 ``` {r, echo=FALSE}
 # Including Plots
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
-ty='l', xlim=c(1945, 2020), main="August")
+ty='l', xlim=c(1945, 2020), main="August Maximum Temperatures")
 Aug.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
 
 abline(coef(Aug.lm), col="red")
@@ -142,7 +150,7 @@ knitr::include_graphics("Homeless Blizzard.jpg")
 ```
 
 
-Above is a photo or a homeless person in DC trying to push their belongings through a blizzard. This photo highlights a larger problem that is very prevalent in Washington. It has been found in research that extreme weather events disproportionately affect people who are homeless or live in poverty. These events have been seen to magnify physical and mental health issues as well as substance use disorders in the impoverished and homeless (Pendrey et al. 2014). This has wide implications in DC, which, according to The Washington Legal Clinic for the Homeless, has a 19% poverty rate with more than 15,000 of the city’s 700,000 residents experiencing homelessness over the course of a typical year. Additionally, since it has been shown that climatic disasters are more destructive to places of lower income (Kahn 2005). With these two factors, it becomes apparent that increases in frequency and intensity of extreme weather events will wreak havoc on the lower income communities, and because of the tie between income and race, communities of color. This needs to be considered in planning for extreme weather events so that the city of Washington, DC so that displacement and casualties can be avoided as extreme weather comes more and more often. 
+Above is a photo of a homeless person in DC trying to push their belongings through a blizzard. This photo highlights a larger problem that is very prevalent in Washington. It has been found in research that extreme weather events disproportionately affect people who are homeless or live in poverty. These events have been seen to magnify physical and mental health issues as well as substance use disorders in the impoverished and homeless (Pendrey et al. 2014). This has wide implications in DC, which, according to The Washington Legal Clinic for the Homeless, has a 19% poverty rate with more than 15,000 of the city’s 700,000 residents experiencing homelessness over the course of a typical year (as of 2018). Additionally, it has been shown that climatic disasters are more destructive to places of lower income (Kahn 2005). With these two factors, it becomes apparent that increases in frequency and intensity of extreme weather events will wreak havoc on the lower income communities, and because of the tie between income and race, communities of color. There have been two winter storms in the past three years with at least eight inches of snow in one night. These types of storms are deviations from the region's winter norms and have put many people at risk. As warming further increases the frequency of extreme weather and the population of DC continues to grow more and more people will be vulnerable to the destructive powers of nature. In August of 2018 temperatures reached as high as 34 degrees celsius (94 Fahrenheit, not to mention the suffocating humidity). These kinds of temperatures, even if they don't result in storms, are dangerous for any person to endure without shelter. This needs to be considered in planning for extreme weather events so that the city of Washington, DC so that displacement and casualties can be avoided as extreme weather comes more and more often. 
 
 Sources 
 ---
