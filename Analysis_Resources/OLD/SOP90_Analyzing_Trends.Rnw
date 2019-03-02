@@ -1,0 +1,978 @@
+\documentclass{article}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{%
+  colorlinks = true,
+  linkcolor  = black
+}
+
+\title{SOP 90: Analyzing Climate Trends with R}
+\author{Marc Los Huertos}
+
+% Setting up the margins, etc for R
+<<echo = F, results='hide'>>=
+options(width=60)
+rm(list = ls())
+@
+
+<<echo=FALSE>>=
+# Importing Scripts
+source("../Custom_Code/CSV_import-fun.R")
+Thailand <- CSV_import("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/MLH/Thailand_GHCND:TH000048456.csv")
+@
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\begin{abstract}
+\noindent Trend and Time Series Analyses are very important in environmental monitoring. For our purposes, developing methods to analyze climate data can using a range of tools, from relatively simple methods to advanced statistical modelling. 
+
+This document is designed to introduce a few tools to analyze regularly (i.e. daily or monthly) collected data. First, we will use a standard regression model, mixed-effects models, and finally more advanced time-series modelling approaches.   
+
+\end{abstract}
+
+
+\section{Introduction}
+
+\subsection{Rational}
+
+In an age of industrialization and waste hazardous waste production, monitoring schemes have become ubiquitous to provide early warning and/or tracking environmental quality. To detect change or provide warning for public safety, we also need tools to assess if there are trends or if there are changes that might pose a hazard.
+
+For our purposes, trend analysis or time series analysis is used to evaluate the contested nature of climate change -- in particular, to determine if there weather changes at a regional level. 
+
+\subsection{Trend Analysis versus Time Series Analysis}
+
+Trend analysis statistics are a set of tools used to detect patterns of change exceed the relative variation of the system. Detecting these changes relies on the use of mathematical models meant to describe the patterns and processes of the system in question. 
+
+Trend analysis often refers to techniques for extracting an underlying pattern of behavior in a time series which would otherwise be partly or nearly completely hidden by noise. To determine if a trend is present, e.g. if the time series is non-stationary, models are used to partion or separate the trend from other sources of varation.
+These sources of varation may be internal or external to the system, may have regular periods (e.g. seasons) or part of some random process (e.g. random walk). If the trend can be assumed to be linear, trend analysis can be undertaken within a formal regression analysis. If the trends have other shapes than linear, trend testing can be done by non-parametric methods, e.g. Mann-Kendall test, which is a version of Kendall rank correlation coefficient. For testing and visualization of non-linear trends, smoothing techniques are extremely valuable. 
+
+\subsection{Generalized Steps}
+
+To conduct a trend analysis, it's useful to consider a pattern of steps:
+
+\begin{enumerate}
+  \item become knowledge about the structre and limitations of the data source;
+  \item plot the observed data over time;
+  \item consider methods used to transform the data; 
+  \item model and estimate average trend;
+  \item evaluate the validity of the model; and
+  \item interpret the trend data
+\end{enumerate}
+
+\subsection{Goals for This Document}
+
+This document provides EA students with developing statstical training to use various statistics to analyze climate data. To accomplish this, we explore the theoretical background and demonstrate the steps to analyze climate data. We also explain how the ``null'' hypothesis is used in frequentist statistics, the meaning of Type I and Type II errors, and how we draw conclusions based on the results of statistical tests. Finally, we demonstrate the steps to use selected statistical tools to analyze temperature and precipitation data collected from Bangkok, Thailand. 
+
+NOTE: I am not a statsitian. But I have written this because I have never found an adequate guide for undergraduates that is both accessible and complete enough for our project. However, no guide is perfect.
+
+First, this document is incomplete. There are hundreds of ways to analyze quantitive data and long theoretical history that supports these methods. I have selected just a few and barely delve in the the theory. Second, there are areas of confusion for me and these probably are visible in the document. Even when I understand the concepts and tools, my explanation may lead to confusion. In any case, I suggest you use this as ONE resource among many (e.g. textbooks, online guides, and other faculty). In addition, if you are confused by sections, please let me know because I work hard to improve it with each iteration. 
+
+\section{Frequentists and Bayesian Statistics}
+
+TBD
+
+%Statistics was born well before computer software had been developed, the development of statistical tools have both a historical context that is well beyond our project, but should be appreciated so we can use these tools without too much dificulty. 
+
+%First, we need to know there is a distinction between the Frenquentist and Bayesian statitician. Although the tools and approach are quite distinct, few students appreciate how different these approaches are until they are graduate school -- and being forced to 'pick' one versus the other in how they approach data analysis problems. 
+
+%I will reverse the typical order in most texts and describe Bayesian statistics first because we can use this to explicitly talk about probability and then we'll shift to Freqentist statistics -- which most of the tools in this text rely. 
+
+\subsection{Bayesian Statistics}
+
+TBD
+
+%Bayesian statistics, named for Thomas Bayes (1701–1761), is a theory in the field of statistics in which the evidence about the true state of the world is expressed in terms of degrees of belief known as Bayesian probabilities. 
+
+%Bayesian statistics is a system for describing epistemological uncertainty using the mathematical language of probability. In the 'Bayesian paradigm,' degrees of belief in states of nature are specified; these are non-negative, and the total belief in all states of nature is fixed to be one. Bayesian statistical methods start with existing 'prior' beliefs, and update these using data to give 'posterior' beliefs, which may be used as the basis for inferential decisions.
+
+%Bayesian inference is a method of statistical inference in which Bayes' theorem is used to update the probability for a hypothesis as more evidence or information becomes available. Bayesian inference is an important technique in statistics, and especially in mathematical statistics. Bayesian updating is particularly important in the dynamic analysis of a sequence of data. Bayesian inference has found application in a wide range of activities, including science, engineering, philosophy, medicine, sport, and law. 
+
+%To demonstrate Baysian approach, let's evaluate the distribution of temperatures from Bangkok, Thailand. 
+
+\url{https://www.r-bloggers.com/a-simple-intro-to-bayesian-change-point-analysis/}
+	
+\url{http://www.flutterbys.com.au/stats/tut/tut7.2b.html}
+
+\url{https://www.r-bloggers.com/bayesian-linear-regression-analysis-without-tears-r/}
+    
+\subsection{Frequentist Statistics}
+
+TBD
+
+%Frequentist inference has been associated with the frequentist interpretation of probability, specifically that any given experiment can be considered as one of an infinite sequence of possible repetitions of the same experiment, each capable of producing statistically independent results.[1] In this view, the frequentist inference approach to drawing conclusions from data is effectively to require that the correct conclusion should be drawn with a given (high) probability, among this notional set of repetitions. However, exactly the same procedures can be developed under a subtly different formulation. This is one where a pre-experiment point of view is taken. It can be argued that the design of an experiment should include, before undertaking the experiment, decisions about exactly what steps will be taken to reach a conclusion from the data yet to be obtained. These steps can be specified by the scientist so that there is a high probability of reaching a correct decision where, in this case, the probability relates to a yet to occur set of random events and hence does not rely on the frequency interpretation of probability. 
+
+\subsection{Examples of Frequentists Methods}
+
+TBD
+
+\subsection{Direct Comparision-- Bayes and Frequentists}
+
+TBD
+
+%There are two major differences in the frequentist and Bayesian approaches to inference that are not included in the above consideration of the interpretation of probability:
+
+%\begin{itemize}
+%  \item In a frequentist approach to inference, unknown parameters are often, but not always, treated as having fixed but unknown values that are not capable of being treated as random variates in any sense, and hence there is no way that probabilities can be associated with them. In contrast, a Bayesian approach to inference does allow probabilities to be associated with unknown parameters, where these probabilities can sometimes have a frequency probability interpretation as well as a Bayesian one. The Bayesian approach allows these probabilities to have an interpretation as representing the scientist's belief that given values of the parameter are true.
+
+%  \item While "probabilities" are involved in both approaches to inference, the probabilities are associated with different types of things. The result of a Bayesian approach can be a probability distribution for what is known about the parameters given the results of the experiment or study. The result of a frequentist approach is either a "true or false" conclusion from a significance test or a conclusion in the form that a given sample-derived confidence interval covers the true value: either of these conclusions has a given probability of being correct, where this probability has either a frequency probability interpretation or a pre-experiment interpretation.
+%\end{itemize}
+
+
+\section{Understanding the Data: The First Step}
+
+\subsection{Categorical versus Continuous Data}
+
+When we measure environmental data, they can be either continuous or categorical. Categorical data are sometimes called discrete data, e.g. count data might be considered discrete and categorical --- if they are relatively number of possible values (perhaps, less than 3-4). Predictor variables can also be either categorical or continuous --- where we think of values that can be integers with a great range and values between integers (i.e. values with decimals).
+
+\subsection{Types of Data Define Tests Available}
+
+Based on our understanding of the data, the choices of analysis become limited but also easier to choose from (Table %\ref{fig:tree}).
+
+\begin{figure}
+\caption{Decision tree for frequents inference depending on the predictor and response data types.}\label{fig:tree}
+\begin{center}
+%\setkeys{Gin}{width=0.5\textwidth} 
+<<echo = F, fig = FALSE, message=FALSE, label='Decision Tree'>>=
+# Descision Tree 1
+library (diagram)
+par(mar=c(1,1,1,1))
+openplotmat()
+
+elpos <- coordinates (c(1,1,2,4))
+fromto <- matrix(ncol=2, byrow=T, data=c(1,2,2,3,2,4,3,5,3,6,4,7,4,8))
+nr <- nrow(fromto)
+arrpos <- matrix(ncol=2,nrow=nr)
+
+for (i in 1:nr)
+ arrpos[i,] <- straightarrow (to=elpos[fromto[i,2],], from=elpos[fromto[i,1],],
+  lwd=2, arr.pos=0.6, arr.length=0.5)
+  
+textellipse(elpos[1,],0.1, lab="start", box.col="green", shadow.col="darkgreen",
+  shadow.size=0.005, cex=1.5)
+
+# First Binary
+textrect(elpos[2,],0.15,0.05, lab=c("Categorical", "Predictor?"),
+  box.col="lightblue", shadow.col="blue", shadow.size=0.005, cex=1.5)
+
+# Second Binary LEFT
+textrect(elpos[3,], 0.15, 0.05, lab=c("Categorical", "Response?"),
+  box.col="lightblue", shadow.col="blue", shadow.size=0.005, cex=1.5)
+# Second Binary RIGHT
+textrect(elpos[4,], 0.15, 0.05, lab=c("Categorical", "Response?"),
+  box.col="orange", shadow.col="red", shadow.size=0.005, cex=1.5)
+
+# Third Binary LEFT LEFT
+textellipse(elpos[5,],0.1, lab=c("Contigency"), box.col="lightblue", shadow.col="blue",
+  shadow.size=0.005, cex=1.5)
+
+#Third Binary LEFT RIGHT
+textellipse(elpos[6,],0.1, lab=c("ANOVA"), box.col="orange", shadow.col="red",
+  shadow.size=0.005, cex=1.5)
+  
+# Third Binary RIGHT LEFT
+textellipse(elpos[7,],0.1, lab=c("Logistic"), box.col="lightblue", shadow.col="blue",
+  shadow.size=0.005, cex=1.5)
+
+# Third Binary RIGHT RIGHT
+textellipse(elpos[8,],0.1, lab="Regression", box.col="orange", shadow.col="red",
+  shadow.size=0.005, cex=1.5)
+  
+  dd <- c(0.0, 0.025)
+  text(arrpos[2,1]+0.05, arrpos[2,2], "yes")
+  text(arrpos[3,1]-0.05, arrpos[3,2], "no")
+  text(arrpos[4,1]+0.05, arrpos[4,2]+0.05, "yes")
+  text(arrpos[5,1]-0.05, arrpos[5,2]+0.05, "no")
+  text(arrpos[6,1]+0.05, arrpos[4,2]+0.05, "yes")
+  text(arrpos[7,1]-0.05, arrpos[5,2]+0.05, "no")
+@
+\end{center}
+\end{figure}
+
+\subsection{Four Frequentists Approaches}
+
+Based on these four data combination types, we will give examples of each of the four types:
+
+\subsubsection{Contigency Tables}
+
+TBD
+
+%A contingency table (also known as a cross tabulation or crosstab) is a type of table in a matrix format that displays the (multivariate) frequency distribution of the variables. They are heavily used in survey research, business intelligence, engineering and scientific research. They provide a basic picture of the interrelation between two variables and can help find interactions between them. The term contingency table was first used by Karl Pearson in ''On the Theory of Contingency and Its Relation to Association and Normal Correlation,'' part of the Drapers' Company Research Memoirs Biometric Series I published in 1904.
+
+As an example, how many consequetive days of heat waves before 1960 and afterwards in some made up city!
+
+<<>>=
+heatwave_table = matrix(c(26, 31, 45, 68, 80, 100), ncol=2)
+
+# label the columns and rows
+colnames(heatwave_table) = c('pre1960', 'post1960')
+rownames(heatwave_table) = c('1', '2', '3')
+
+fisher.test(heatwave_table)
+chisq.test(heatwave_table)
+
+# convert to a table
+heatwave_table = as.table(heatwave_table)
+
+# add margins to calculate expected values!
+addmargins(heatwave_table)
+@
+
+\subsection{Analysis of Variance}
+
+%Analysis of variance (ANOVA) is a collection of statistical models used to analyze the differences among group means and their associated procedures (such as ''variation'' among and between groups), developed by statistician and evolutionary biologist Ronald Fisher. 
+
+%In the ANOVA setting, the observed variance in a particular variable is partitioned into components attributable to different sources of variation. In its simplest form, ANOVA provides a statistical test of whether or not the means of several groups are equal, and  generalizes the t-test to more than two groups. ANOVAs are useful for comparing (testing) three or more means (groups or variables) for statistical significance. 
+
+For example, we might partition the level of warming due to anthropogenic versus natural radiative forcings:
+
+
+
+\subsection{Linear Regression}
+
+TBD
+
+\subsection{Logistic Regression}
+
+TBD
+
+\subsubsection{Implementing Approaches in R}
+
+Table \ref{tab:2X2Matrix} describes the statistical approaches available to freqentists in relation to the characteristics of the data. 
+
+\begin{table}
+	\caption{2 x 2 Matrix of Inference Methods  --Going to insert graphics to give little pics of analysis...}
+	\label{tab:2X2Matrix}
+	
+		\begin{tabular}{|l|l||p{4cm}p{5cm}|} \hline
+				&	& \multicolumn{2}{c|}{Response}    \\ \hline
+				&			& Categorical 		& Continuous \\ \hline\hline
+				
+	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Predictor}}} & Categorical 		& \textbf{Tests of Association}	& \textbf{ANOVA} 						\\ 
+	&& \texttt{fisher.test()} & \texttt{aov(y $\sim$ x)}, \texttt{lm(y $\sim$ x)}, \texttt{mle(y $\sim$ x)}, \texttt{nlme(y $\sim$ x)}\\
+			& Continuous				&	\textbf{Logistic Regression}		& \textbf{Linear Regression}	\\ 
+	&& \texttt{lm(y $\sim$ x)}, \texttt{glm(y $\sim$ x)}, \texttt{gls(y $\sim$ x)} & \texttt{glm(y $\sim$ x,family=binomial(link='logit'))}\\ \hline
+		\end{tabular}
+
+\end{table}
+
+In our example, the temperature is obviously continuous. Date can be treated as continuous when their are lots of them, but as describe below, it might also be considered categorical -- in part because it's 'ordered' and it's divisible by day -- and not finer resolution, which is decidedly not continuous. However, because there are so many in these records, we can ignore that to continue our analysis. 
+
+\subsection{Data Quality Over Time}
+
+The results of all ecological studies, including time-series designs should be interpreted with caution because subtle problems can haunt the results:\footnote{These need to be revised...not completely appropriate.}
+
+\begin{itemize}
+  \item Data on exposure and outcome may be collected in different ways for different populations;
+  \item Studies usually rely on routine data sources, which may have been collected for other purposes;
+  \item Ecological studies do not allow us to answer questions about individual risks.
+\end{itemize}
+
+\subsection{Data Source and Metadata}
+
+TBD
+
+\subsection{Evaluating the Structure of Data}
+
+
+
+This is analogous to selection a column or row of numbers in Excel to find the mean and you can usually find it by just looking at your spreadsheet to find the data of interest. In R you have to think a bit about what you want. Using the \texttt{str} command is good start, but we could also just look at the top of the observations to see which variables are of interest. To this we use the function \texttt{head()}, which is short for header, which shows the variable names and the first six observations.
+
+<<>>= 
+head(Thailand)
+@
+
+
+\subsection{Evaluating for Completeness}
+
+NA is the R symbol for missing data and R requires the user to be fairly intentional about how to deal with missing data. Missing data usually mean the dataset is biased. In contrast to many software packages, R forces you to acknowledge the implications of missing data, which can be annoying, like a parent reminding you to clean your room or brush your teeth or take a shower once in the while. But the trade is worth it: you have dealt explicitly with missing data.
+
+
+\subsection{Evaluating the Central Tendencies}
+
+One of the first things you should do with your data is determine some of the central tendencies. For example, the mean, median, and standard deviation. Also some graphing of the data is also important. For example, what does the distribution of the data look like?
+
+Let's start with the easy stuff. We want to get the mean of the maximum temperatures. That means we need to get the values, named TMAX from the data frame. 
+
+Okay, so we want ``average.'' But typing average by itself doesn't show us anything except an error. Let's try \texttt{str} again. Notice the dollar symbols.  These symbols are use to signify a list of values inside the data frame. To access this list, we type
+
+<<echo = T, results = 'hide' >>=
+Thailand$TMAX
+@
+
+So, now we can get the number of observations, i.e. the length of the vector, by typing
+
+<<>>=
+length(Thailand$TMAX)
+@
+
+Okay, let's calculate the mean. In this case, it requires caution. Notice there are NAs in the data. 
+
+Typing \texttt{mean(Thailand\$TMAX)} gives an a ambiguous result, \texttt{NA}. Try it. R is basically saying that the mean can not be calculated because of missing values, thus the mean is also missing. So, can we not calculate the mean when data are missing?  No, we just have to tell R what to do with missing data.  In this case, we tell R to remove them, with the argument \texttt{na.rm="TRUE"}, where True can be abbreviated to T. na.rm="TRUE" roughly translates to 'please remove all the NAs.' 
+
+Okay as of \today, the average is \Sexpr{mean(Thailand$TMAX, na.rm=T)}\footnote{How many significant figures should you report? Have I reported this correctly?}. It will change next month when May 2010 is added to the data set. 
+Now let's determine the median and standard deviation.
+
+<<>>=
+median(Thailand$TMAX, na.rm=T)
+sd(Thailand$TMAX, na.rm=T)
+@
+
+If you would like a summary of each of the variables, the function is pretty easy to remember--but the output is not exceptionally pleasing. 
+
+<< echo = F >>=
+options(width=70)
+@
+
+<<>>=
+summary(Thailand)
+@
+
+<<echo = F >>=
+options(width=60)
+@
+
+Nevertheless, the output gives you a really good idea regarding the central tendencies of the entire data set.  Granted typing code might seem like a major step backwards in the computer world, but after a few weeks you will appreciate not having the search through arcane menus to find which button to push--even worse, in these push-button software systems, it often hard to figure out what they are doing. In the case of R, you have a really good idea of what it did, but were much more engaged in the process.
+
+\subsection{Evaluating Spread}
+
+When the mean and median diverge, it means that the distribution is skewed in some way. Let's see what the distribution looks like by creating a histogram.
+
+\begin{verbatim}
+hist(Thailand$TMAX)
+\end{verbatim}
+
+The one you have made probably does not look that pretty, but with some more advanced coding, this is what it might look like (Figure \ref{fig:histogram}). 
+
+% Additional LaTeX code to add caption to figure
+\begin{figure}[h]%
+\begin{center}
+% \setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
+
+% R code chunk that produces a graphic
+<<fig:histogram, echo = F, fig = 'true'>>=
+with(Thailand, {
+hist(TMAX,  ylab="Frequency", xlab="degrees C", xlim=c(18, 42),
+main="")
+})
+
+box("figure") # Adds box around figure
+@
+\caption{Histogram of Maximum Temperatures, Bangkok, Thailand.}
+\label{fig:histogram}
+\end{center}
+\end{figure}
+
+Congratulations, you have made it through the next step in R!  You now know how to do an exploratory analysis and even generate a basic histogram to view the distribution of a data set. Next, we use a standard statistical technique to determine the slope of the line and weather the line is statistically significant-- but first we need to understand something about hypothesis testing.
+
+\subsection{'Null Hypotheses' as the Foundation of Frequentist Statistics}
+
+The null hypothesis, H$_0$ is the commonly accepted fact; it is the opposite of the alternate hypothesis. Researchers work to reject, nullify or disprove the null hypothesis. Researchers come up with an alternate hypothesis (H$_A$), one that they think explains a phenomenon, and then work to reject the null hypothesis.
+
+The word “null” in this context means that it’s a commonly accepted fact that researchers work to nullify. It doesn’t mean that the statement is null itself! (Perhaps the term should be called the “nullifiable hypothesis” as that might cause less confusion).
+
+\subsection{Type I and Type II Errors}
+
+Adding to the confusion, is that there are times that the statistical test might be wrong!  Researchers try to protect themselves, but as we'll learn, it's impossible to protect ourselves completely. 
+
+A type I error occurs when the null hypothesis (H0) is true, but is rejected. It is asserting something that is absent, a false hit. A type I error may be likened to a so-called false positive (a result that indicates that a given condition is present when it actually is not present).
+
+The type I error rate or significance level is the probability of rejecting the null hypothesis given that it is true. It is denoted by the Greek letter $\alpha$ (alpha) and is also called the alpha level. Often, the significance level is set to 0.05 (5\%), implying that it is acceptable to have a 5\% probability of incorrectly rejecting the null hypothesis.
+
+A type II error occurs when the null hypothesis is false, but erroneously fails to be rejected. It is failing to assert what is present, a miss. A type II error may be compared with a so-called false negative (where an actual 'hit' was disregarded by the test and seen as a 'miss') in a test checking for a single condition with a definitive result of true or false. A Type II error is committed when we fail to believe a truth. In terms of folk tales, an investigator may fail to see the wolf ("failing to raise an alarm"). Again, H0: no wolf.
+
+The rate of the type II error is denoted by the Greek letter $\beta$ (beta) and related to the power of a test (which equals 1−$\beta$).
+
+We can represent these choices in a table, which makes it easy to see the various outcomes and types of errors (Table \ref{tab:TypeErrors}).
+
+\begin{table}[h]
+	\caption{2 x 2 Matrix of Inference Methods  --Going to insert graphics to give little pics of analysis...}
+	\label{tab:TypeErrors}
+	
+		\begin{tabular}{|l|l||ll|} \hline
+				&	& \multicolumn{2}{c|}{Reality}    \\ \hline
+				&			& Truth 		& Not True \\ \hline\hline
+				
+	\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{Statistical Result}}} & 
+	Belief & Correct Decision	& Type I 						\\ 
+	&& \includegraphics[scale=.05]{../graphics/smoking-non-sequitur.jpg} & \\
+			& Non-belief				&	Type II		& Correct Decision	\\ 
+	&&& \\ \hline
+		\end{tabular}
+
+\end{table}
+
+
+\subsection{Mathematical Mechanisms to Test Hypothesis}
+
+Using the linear model, we can analyze several types of data, when the response variable is continuous. If the have a predictor variable that is categorical, then we often analyze the data using the method known as analysis of variance or ANOVA. If the predictor variable is continuous, then we often analyze data using a regression analysis.
+
+\begin{figure}
+\includegraphics[scale=0.5]{../graphics/Type_One_and_Two_Error}
+\end{figure}
+
+\section{Linear Regression}
+
+\subsection{What is Linear Regression?}
+
+Linear regression is the most basic and commonly used predictive analysis.  Regression estimates are used to describe data and to explain the relationship between one dependent variable and one or more independent variables.  At the center of the regression analysis is the task of fitting a single line through a scatter plot.  The simplest form with one dependent and one independent variable is defined by the formula:
+
+\begin{equation}
+y = a + b*x.
+\end{equation}
+
+Sometimes the dependent variable is also called the response.  The independent variables are also predictor variables.  However, Linear Regression Analysis consists of more than just fitting a linear line through a cloud of data points.  It consists of 3 stages:
+
+\begin{enumerate}
+  \item analyzing the correlation and directionality of the data, 
+  \item estimating the model, i.e., fitting the line, and 
+  \item evaluating the validity and usefulness of the model.
+\end{enumerate}
+
+There are three major uses for Regression Analysis: 1) causal analysis, 2) forecasting an effect, 3) trend forecasting.  Other than correlation analysis, which focuses on the strength of the relationship between two or more variables, regression analysis assumes a dependence or causal relationship between one or more independent and one dependent variable.
+
+Firstly, it might be used to identify the strength of the effect that the independent variable(s) have on a dependent variable.  Typical questions are what is the strength of relationship between dose and effect, sales and marketing spending, age and income.
+
+Secondly, it can be used to forecast effects or impacts of changes.  That is, regression analysis helps us to understand how much the dependent variable will change when we change one or more independent variables.  Typical questions are, “How much additional Y do I get for one additional unit of X?”.
+
+Thirdly, regression analysis predicts trends and future values.  The regression analysis can be used to get point estimates.  Typical questions are, ``What will the price for gold be 6 month from now?'' ``What is the total effort for a tasks?''
+
+\subsection{Assumptions of Regression}
+
+Here is a list of assumptions to produce a valid regression model:
+
+\begin{description}
+  \item[Linear relationship] TBD
+  \item[Multivariate normality] TBD
+  \item[No or little multicollinearity] TBD
+  \item[No auto-correlation] TBD
+  \item[Homoscedasticity] or Homogeneity of Variance
+\end{description}
+
+\subsubsection{Time Series: Ordered and Autocorrelated}
+
+Time series data have a natural temporal ordering. This makes time series analysis distinct from other common data analysis problems.
+
+\subsection{Linear Models in R}
+
+The use of the linear model is the cornerstone of statistics. So ubiquitous it is rarely explained coherently. The linear model can be summarized at the equation for a line, but with the addition of error. You are probably familiar with the equation for a line where, 
+\begin{equation}
+y = m * x + b
+\end{equation}
+
+This equation defines a line, where $m$ is the slope, $b$ is the y-intercept, and the x and y are coordinates. The linear model is based on this form and is usually written as  
+
+\begin{equation}
+y \sim \alpha + \beta * x + \epsilon
+\end{equation}
+
+The order is usually changed, where the intercept is first, followed by the slope and x variable and the addition of error or noise. The error is usually symbolized as $\epsilon$. In general, in a statistical model, Greek letters are used and instead of an equals sign, we use a tilde, meaning that that left side of the equation is a function of the right side. Luckily, this is the approximate form that R expects, so if you understand this, you will have a pretty good idea of how to code a linear model in R. 
+
+The function to build a linear model is \texttt{lm()}. This function is extremely powerful and can be easily implemented, but this is a good time to see what the help menus look like in R. 
+
+<<echo = T, eval = F, results= 'verbatim' >>=
+help(lm)
+@
+
+I am not showing it here, but you should see a long complex looking help page window pop up. All help files in R are structured the same way, so in spite of the uninterpretable text, written by and for computer programmers, the structure will become familiar. Beginning with the description, the help screen describes the function, how to use it, and give some examples. Admittedly, I rarely understand much of the text, but I find the examples to be very useful! In fact, I suggest you paste the example into R and see what happens, I find this one of the best ways to learn R. Use an example that I know works, then change it to make it do what I want it to do.
+
+\subsection{Regression and Climate Change}
+
+One of the ourcomes of the linear regression is to estimate the best fit line
+
+\begin{equation}
+y = mx + b + \epsilon,
+\end{equation}
+
+where $\epsilon$ is an estimate of the error. In addition, two other estimates are provided, one for the slope, $m$, and the y-intercept, $b$. 
+
+But these estimates are also hypotheses, where the null hypothesis is:
+
+\begin{description}
+  \item[slope is zero] Rejecting the null hypothesis would be support the alternative hypothesis, or the estimate of the slope. 
+  \item[y-intercept is zero] Rejecting the null hypothesis would support the alternative hypothesis, the estimate of the y-intercept.
+\end{description}
+
+Okay, let's see if we can do this for our Bangkok data. Let's test if there is a significant change of daily maximum temperatures (TMAX) with time. Thus, in general terms, Maximum temperature is a function of time, or $TMAX = f(Time)$. 
+
+\begin{equation}
+TMAX \sim \alpha + \beta * time + \epsilon
+\end{equation}
+
+Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in SOP85. 
+
+Because these data are in a time series, they are serially correlated, meaning that the June sample will be more like the July sample than the August sample. In addition, the June 2010 sample will be similar to the June 2009 sample. These correlation violate the assumption of independence, but for now, we will ignore this violation and just create a linear model in bliss. 
+
+For the response variable, we will use the daily maximum temeratures, TMAX. Remember there are some missing data, it will be interesting to note how R deals with that.
+
+First, let's create a plot of data using \texttt{plot()}, whose format is \texttt{plot(x, y)} or \texttt{plot(y ~ x)}. We will use the later for now, 
+
+\begin{figure}
+\label{fig:test12}
+\caption{Maximum daily temperatures for Bangkok, Thailand.}
+<<label='Tmaxplot', echo = F, fig = 'true' >>=
+par(las=1)
+plot(TMAX ~ NewDate, data=Thailand, ylab="degrees C", xlab="Date", pch=20, main="TMAX, \n Bankok, Thailand" )
+@
+\end{figure}
+
+We use the \texttt{lm()} function that arrange the results in-line with a regression model. This syntax is  straight forward,  
+
+<<label='linearmodel'>>=
+lm(TMAX ~ NewDate, data=Thailand)
+@
+
+From this model, we learn that the change in $TMAX$ is 
+\Sexpr{round(coef(lm(TMAX ~ NewDate, data=Thailand))[2], 2)} degrees $year^{-1}$. Figure~\ref{fig:TMAX_trend} shows a trend of increasing maximum temperatures.
+
+% Additional LaTeX code to add caption to figure
+\begin{figure}
+\label{fig:TMAX_trend}
+\caption{Maximum Daily Temperatures in Bangkok, Thailand.}
+<<echo = F, fig = 'true' >>=
+par(las=1)
+plot(TMAX ~ NewDate, data=Thailand, type="l", ylab="degrees", xlab="Date", main="Maximum Daily Temperature, \n Bangkok, Thailand" )
+
+abline(coef(lm(TMAX~NewDate, data=Thailand)), col="red", lwd=2)
+@
+\end{figure}
+
+Now determine test the null hypotheses and use the \texttt{summary()} function to display many of the important regression results.
+
+<<label='summarylm_TMAX'>>=
+summary(lm(TMAX ~ NewDate, data=Thailand))
+@
+
+Based on the results, we reject the null hypotheses, i.e. the events that this might occur by chance is small: 2x10$^{-16}$ for the slope is zero and p < 2x10$^{-16}$ for the y-intercept is zero. 
+
+In addition, we have some information on the residuals, and $R^2$ estimates, which are important to interpret the model. 
+
+For now, we can appreciate the the temperature is changing, i.e. increasing, with a slope of 2.7x10$^{-5}$ degrees C per year. 
+
+\subsubsection{Creating Monthly Averages of Daily Maximum Temperatures}
+
+One of the first things to note is how messy the data look and there are lots of sources of variation. For example, we expect months to respond differently to the climate change. To assess this, we will now analyze the data for monthly means of the maximum temperatures.
+
+\subsubsection{Creating Monthly Means}
+
+To create monthly means, we need to disagragate the NewDate variable into a month and year variables.
+
+First we can use the \texttt{as.Date()} function to extract a portion of the date, where \%m is for month and \%Y is for a four digit year. Then, we create new variables in our dataframe, one for month and one for year.
+
+<<label='createmonthvar'>>=
+Thailand$Month = format(as.Date(Thailand$NewDate), format = "%m")
+Thailand$Year = format(Thailand$NewDate, format="%Y")
+@
+
+After creating the month and year as separate variables, we can use them to caculate the mean using the \texttt{aggregate()} function. In the code below, we can also calculate the standard deviation too, although I haven't used this measure in this document, several students have asked for this for their analysis.
+
+<<label='MonthlyTMAXmean'>>=
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, Thailand, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+
+MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, Thailand, sd)
+
+MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
+MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
+MonthlyTMAXSD$NewDate = MonthlyTMAXSD$YEAR + (MonthlyTMAXSD$MONTH - 1)/12
+
+head(MonthlyTMAXSD)
+@
+
+<<>>=
+plot(MonthlyTMAXMean$TMAX, ty='l')
+@
+
+Below is Standard Deviation
+
+<<>>=
+#plot(MonthlySD$TMAX, ty='l')
+
+#plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+#SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+#summary(SD.lm)
+
+#abline(coef(SD.lm), col="red")
+@
+
+Selecting for 1 Month -- May
+
+Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
+
+<<>>=
+#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020)) 
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+@
+
+Now, the change is \Sexpr{round(coef(May.lm)[2], 4)} degress C/year or \Sexpr{round(coef(May.lm)[2]*100, 3)} degress C/100 years with a probability of \Sexpr{round(summary(May.lm)$coefficients[2,4],4)}. Although we can't reject the null hypothesis, we find the method to be fairly straightforward! 
+
+%https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R
+
+\subsection{Testing all the Months}
+
+I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
+
+Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year. 
+
+\begin{figure}
+<<echo=FALSE, label='12MonthsTMAX'>>=
+Months = c("January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December")
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month==i], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+summary(Month.lm)
+
+abline(coef(Month.lm), col="red")
+
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3)))
+
+}
+@
+\end{figure}
+
+\subsection{Next Steps}
+
+\subsubsection{Analyzing Minimum Daily Temperatures}
+
+Alternatively, it might be important to evaluate changes to the daily mininum temperatures. Following the same steps we used before but using the TMIN instead of TMAX, let's analyze the monthly average of daily minimum temperatures by following these steps: 
+
+\begin{enumerate}
+
+\item First, let's plot the daily minimum temperatures, and as with the daily maximum temperatures, find tons of scatter (Table \ref{fig:TMIN_trend}).
+
+% Additional LaTeX code to add caption to figure
+\begin{figure}
+\label{fig:TMIN_trend}
+\caption{Minimum Daily Temperatures in Bangkok, Thailand.}
+<<echo = F, fig = 'true' >>=
+par(las=1)
+plot(TMIN ~ NewDate, data=Thailand, type="l", ylab="degrees", xlab="Date", main="Minimum Daily Temperature, \n Bangkok, Thailand" )
+
+abline(coef(lm(TMIN~NewDate, data=Thailand)), col="red", lwd=2)
+@
+\end{figure}
+
+There appears to be a trend, but it's clouded with lots of variation. 
+
+  \item We create a monthly TMIN mean for each month.
+
+<<label='CreateTMIN'>>=
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, Thailand, mean)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+@
+
+\item Create a plot of the monthly average of the daily minimum temperatures. 
+
+
+<<>>=
+plot(MonthlyTMINMean$TMIN, ty='l')
+@
+
+There is still lots of scatter and now we can subset our data by month. 
+
+\item Using the example above, we'll plot all 12 months at once to look for patterns (Table \ref{fig:TMIN}).
+
+\begin{figure}[ht]
+\caption{Twelve Months of Monthly Average Daily Minimum 
+Temperatures, Bangkok, Thailand}
+\label{fig:TMIN}
+<<echo=FALSE, label='12MonthsTMIN'>>=
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+
+summary(Month.lm)
+
+abline(coef(Month.lm), col="red")
+
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3)))
+}
+@
+\end{figure} 
+
+\item The change in minimum temperatures seems to be even more compelling than the maximum temperatures. To compare, look at the Table \ref{tab:results} to appreciate estimated slopes and their associated null hypothesis probabilities. 
+
+<<echo=T, results='asis'>>=
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13),2], TMIN_P = as.numeric(TMINresult[c(2:13),3]), TMINRsq = TMINresult[c(2:13),4], TMAXSlope = TMAXresult[c(2:13),2], TMAX_P = as.numeric(TMAXresult[c(2:13),3]), TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+@
+
+Based on the results above, the slopes are greatest during the dry season (starting in May) for the maximum temperatures -- but the minimum temperatures show the largest slopes (change) and peaking between January and April.  
+
+In addition, the $r^2$ values signify the amount of the variance explained by the predictor -- in the case of TMIN, most of the values are over 20\% meaning that over 20\% of the variance is explained by time. While in March and April over time explains 50\% of the variance. 
+
+This is very high for uncontrolled experiments. However, we should be cognizant that in many cases, especially for the maximum temperatures, it is less than 10\%. This means the the variation in temperature are not predicted by time -- thus, as a modeler, I would work very hard to capture other sources to better understand what is going on in Thailand. 
+
+Finally, we should also be very concerned about testing 2 dozen hypotheses with our little R code. It's easy to do, but based on change alone, with a critical value of 0.05, we should expect 1 in 20 tests to give us a Type I error, a signal when one doesn't exists. Since we did 12 tests, we should expect a good chance that one or more of our tests will reject the null hypothesis incorrectly. Yikes!  
+Please keep this in mind and be careful to avoid this potential problem. 
+
+As we might expect, the a small amount of the variance is explained by the ``Month.'' Many things predict temerpature, that year is one, is quite problematic.
+
+\item What we have not determined is the cause. So, be careful when you describe the results, cause and effect cannot be analyzed using this method.
+
+\end{enumerate}
+
+\subsubsection{Precipitation: Departure from Mean}
+
+Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
+
+Precipitation is something that might increase or decrease due to climate change. So, to analyze this, we will evaluate how much precipitation has deveated from the mean, by plotting the rainfall and the mean in a time-series plot. 
+
+Second, we need to remove the missing values and evalaute which years have complete years. If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season? We'll need to be consistent -- assuming that missing data are not zeros, we'll define complete years as over 300 days of data. 
+
+NOTE: The missing values have not been converted to NAs!
+<<>>=
+Thailand$PRCP[Thailand$PRCP==-9999] <- NA
+
+Missing <- aggregate(is.na(Thailand$PRCP), list(Thailand$Month, Thailand$Year), sum)
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+plot(x ~ Date, data=Missing)
+@
+
+Third, we will need to decide what level of aggredation -- monthly, yearly, etc.  Let's aggreate by month and year to get monthly totals. 
+
+There are loads of missing values in many months. Let's cut of the months that have more than 4 missing days. 
+
+<<>>=
+TotalPPT <- aggregate(Thailand$PRCP, list(Thailand$Month, Thailand$Year), sum, na.rm=T)
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+library(dplyr)
+PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
+head(PPT)
+@
+
+First, we need a "mean" -- The IPCC uses 1961-1990 as a norm for temperature, I don't know what is the standard for rainfall or Thailand, so we should look that up. For now, we'll use our filtered records to generate a mean.
+
+<<>>=
+PRCP_mean = mean(PPT$ppt)
+@
+
+<<>>=
+plot(ppt~Date, data=PPT)
+abline(h=PRCP_mean, col="blue")
+@
+
+Wow, these data look terrible -- the mean looks meaningless given the biased data set. I don't think we can do more analysis with this. But let's look at a few months and see what we can decipher.
+
+\begin{figure}
+<<echo=F>>=
+names(PPT) = c("Month", "Year", "ppt", "Missing", "Date")
+PPT$MONTH = as.numeric(PPT$Month)
+
+par(mfrow=c(4,3))
+for(i in 1:12){
+plot(ppt~Date, data=PPT[PPT$MONTH==i,], las=1)
+abline(coef(lm(ppt~Date, data=PPT[PPT$MONTH==i,])))
+}
+@
+\end{figure}
+ 
+%Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
+
+<<>>=
+#LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
+#YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
+#YearlySum$YEAR = as.numeric(YearlySum$Year) 
+#YearlyMean = mean(YearlySum$PRCP)
+@
+
+A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
+
+Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
+
+<<>>=
+#plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+#abline(h=YearlyMean, col="blue")
+#YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+#abline(coef(YearlySum.lm), col="green")
+
+#n <- 5
+#k <- rep(1/n, n)
+#k
+
+#y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+#lines(YearlySum$YEAR, y_lag, col="red")
+@
+
+%The model suggests that the precipitation is declining at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
+
+<<>>=
+#summary(YearlySum.lm)
+@
+
+\subsection{Assumptions of the Linear Regression}
+
+Regression models, like all statistics, rely on certain assumptions. Violations of these assumptions reduces the validity of the model. If the violations are serious, then the model could be misleading or even incorrect.
+
+TBD
+
+%Here is a list of assumptions to produce a valid regression model:
+
+%\begin{description}
+%  \item[Homogeneity of Variance]
+%  \item[something else]
+%\end{description}
+
+\subsubsection{Assumptions about $\epsilon$}
+
+The error term should have 
+
+
+\begin{description}
+  \item [E(et) = 0], zero mean
+
+  \item[E(et) = s], constant variance
+
+  \item[E(et, Xt) = 0] , no correlation with X 
+
+  \item[TBD] E(e , e ), no autocorrelation. t t-1
+
+  \item[e ~ Normally distributed] (for hypothesis testing). 
+
+\end{description}
+
+Assumption four is especially important and most likely not to be met when using time series data.
+
+Autocorrelation.
+
+1. It is not uncommon for errors to “track’ themselves; that is, for the error a time t to depend in part on its value at t - m, where m is a prior time period.
+
+\subsubsection{Model Diagnostics}
+
+With every statistical test done, researchers validate their model in some way or anther. Often this entails the use of diagnostics, a standardize battery of procedures to check to see if the data are following the assumptions. 
+
+In R four plots are created by default.  To see them all at the same time, we need to change the graphical parameters, using the par() function. In this case, we use \texttt{par(mfrow=c(2,2))} to create alter the graphics window expects four panels, in this case a 2 rows and two columns.
+
+Try not to get bogged down in the code at this point. But noting this function can be handy in a number of ways to improve one's graphics. 
+
+% Additional LaTeX code to add caption to figure
+\begin{figure}
+\label{fig:diagnostics}
+\caption{Default diagnostic plots for a linear model in R.}
+%\setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
+% R code chunk that produces a graphic
+<<echo = T, fig= 'true' >>=
+par(mfrow=c(2,2))
+plot(lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==1,]))
+@
+\end{figure}
+
+To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
+
+A properly specified model is shown in 
+
+%Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
+
+\section{The 'Null' Hypothesis versus Information Criteria}
+
+TBD
+
+\subsection{Model Comparison}
+
+TBD
+
+\subsection{AIC to make statements about strength of evidence}
+
+TBD
+
+\section{Relaxing Model Assumptions}
+
+TBD
+
+\subsection{Using Sources of Error in the Model}
+
+Instead of letting autocorrelation be 'hidden' problem in the data, we can incorporate the correlation structure into the model and use it to our advantage -- create a better, i.e. unbiased estimate of the model parameters.
+
+\subsection{Generalized Least Square (GLS) and Autocorrelation}
+
+To avoid some of our assumption violations, we can include aspects of autocorrectlion in the model, thus it won't be a confounding factor. We do this by using an alternative function, \texttt{gls()}, that is included in the \texttt{nmle} library. 
+
+<<>>=
+library(nlme)
+
+#TMAX.gls = gls(TMAX ~ NewDate, data = Thailand, na.action=na.omit)
+#summary(TMAX.gls)
+#TMAX.gls2 = gls(TMAX ~ NewDate, data = Thailand, correlation = corAR1(form=~1), na.action=na.omit)
+#summary(TMAX.gls2)
+
+#anova(TMAX.gls, TMAX.gls2)
+@
+
+
+\subsection{Adding Seasonality}
+
+TBD
+
+\section{Advance Modeling Approaches}
+
+TBD
+
+\subsection{Generalized Additive Models}
+
+You may want to examine the GAM package in R, as it can be adapted to do some (or all) of what you are looking for. The original paper (Hastie \& Tibshirani, 1986) is available via OpenAccess if you're up for reading it.
+
+Essentially, you model a single dependent variable as being an additive combination of 'smooth' predictors. One of the typical uses is to have time series and lags thereof as your predictors, smooth these inputs, then apply GAM.
+
+This method has been used extensively to estimate daily mortality as a function of smoothed environmental time series, especially pollutants. It's not OpenAccess, but (Dominici et al., 2000) is a superb reference, and (Statistical Methods for Environmental Epidemiology with R) is an excellent book on how to use R to do this type of analysis.
+
+\section{Time Series Analysis}
+
+TBD
+
+%Researchers might use time series analysis to evaluate the signal of the series by decomposing it for internal cycles, e.g. seasons and time of year, and determine if the signal is stationary or non-stationary, i.e. non-changing with time versus changing with time. A time series is a sequence of data points, measured typically at successive points in time spaced at uniform time intervals. Examples of time series are the daily closing value of the Dow Jones index and the annual flow volume of the Nile River at Aswan. Time series are very frequently plotted via line charts. Time series are used in statistics, signal processing, pattern recognition, econometrics, mathematical finance, weather forecasting, earthquake prediction, electroencephalography, control engineering, astronomy, and communications engineering.
+
+%Time series analysis refers to a particular collection of specialised regression methods that use integrated moving averages and other smoothing techniques to illustrate trends in the data. It involves a complex process that incorporates information from past observations and past errors in those observations into the estimation of predicted values.
+
+%Moving averages provide a useful way of presenting time series data, highlighting any long-term trends whilst smoothing out any short-term fluctuations. They are also commonly used to analyse trends in financial analysis. The calculation of moving averages is described in more detail here.
+
+%Methods for time series analyses may be divided into two classes: frequency-domain methods and time-domain methods. The former include spectral analysis and recently wavelet analysis; the latter include auto-correlation and cross-correlation analysis. In time domain correlation analyses can be made in a filter-like manner using scaled correlation, thereby mitigating the need to operate in frequency domain.
+
+%Whether or not you wish to forecast or not has nothing whatsoever to do with correct time series analysis. Time series methods can develop a robust model which can be used simply to characterize the relationship between a dependent series and a set of user-suggested inputs (a.k.a. user-specified predictor series) and empirically identified omitted variables be they deterministic or stochastic.Users at their option can then extend the "signal" into the future i.e. forecast with uncertainties based upon the uncertainty in the coefficients and the uncertainty in the future values of the predictor . Now these two kinds of empirically identified "omitted series" can be classified as 1) deterministic and 2) stochastic. The first type are simply Pulses, Level Shifts , Seasonal Pulses and Local Time Trends whereas the second type is represented by the ARIMA portion of your final model. When one omits one or more stochastic series from the list of possible predictors, the omission is characterized by the ARIMA component in your final model. Time series modelers refer to ARIMA models as a "Poor Man's Regression Model" because the past of the series is being used as a proxy for omitted stochastic input series.
+
+\section{References}
+
+%Bailey L, Vardulaki K, Langham J, Chandramohan D. Introduction to Epidemiology. Open University Press, 2005.
+
+%www.mchb.hrsa.gov/mchirc/_pubs/trend_analysis.pdf
+
+\end{document}
