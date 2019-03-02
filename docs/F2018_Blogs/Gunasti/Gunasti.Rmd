@@ -1,0 +1,124 @@
+---
+title: 'Breathing Fire: Identity and Health in The San Diego Witch Fire'
+author: "Jonathan Gunasti"
+date: "11/21/2018"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+[](51f4ad2dbaf56c205dd743bdfbb7c992.jpg)
+
+### Wildfires and Human Health
+
+Climate change is rapidly changing the fire ecology of Southern California. Rising temperatures, invasive species, and human activity has increased both the intensity and frequency of wildfires (Jin, 2015). Scholars have begun to refer to these newly large and long-lasting fires as “megafires” in order to recognize their remarkably large-scale negative impacts (Hudson, 2011). The ongoing Mendocino Complex megafire in Los Angeles, for example, has burned nearly 460,000 acres of land and destroyed 280 structures since July 27th (CalFire, 2018). The impacts of fires so large and long-lasting surpass state and regional boundaries: this summer, smoke from California and Oregon traveled as far as Denver, Chicago, and Boston (NOAA, 2018). As human activity increases the ranges at which wildfires can impact human wellbeing, we must begin to frame fire as a public health concern. 
+
+Wildfire smoke can travel for long distances while suspended in the air and cause both local and long-range health impacts. Studies have associated poor air quality due to forest fire smoke with increased emergency department (ED) visits for respiratory conditions like asthma, but also for cardiovascular symptoms, poor mental health, and poor birth outcomes (Cascio, 2018). Studies have noted that poor air quality due to forest fire smoke correlates more strongly with increased ED visits than poor air quality due to human activity (Liu, 2017). 
+ 
+
+![](Screen Shot 2018-10-10 at 9.26.48 PM.png)
+*The HRRR smoke smoke forecast from NOAA for August 16, 2018, shows smoke predicted to traveled across the United States from Northern Californian forest fires*
+
+### Smoke as a Toxin
+The chemical pollutants commonly found in wildfire smoke cause a wide variety of negative health outcomes. Smoke commonly contains carbon monoxide, ozone, nitrogen dioxide, particulate matter, hydrocarbons, polycyclic aromatic hydrocarbons (PAHs), volatile organic compounds (VOCs), and free radical species. Studies have found PAHs, for example, to cause cancer, birth defects, and genetic mutations (Hussein, 2016). The cumulative and simultaneous exposure to all of these pollutants causes more intense impacts than any one pollutant would have by itself (Morello-Frosch, 2011).
+
+Wildfire smoke is a toxin of particular concern due its dynamic chemical composition. The chemical species that comprise “smoke” vary in kind and concentration with local environmental factors. For example, the kind of biomass burning, the chemical species already in the air, and the synthetic chemicals on the ground, like pesticides and fertilizers, each inform the chemical species found in the smoke.  It is difficult to predict or assess species that may be present during any particular fire.
+
+Historically, studies have considered concentrations of PM2.5, or particulate matter with diameters shorter than 2.5 microns, to represent concentrations of smoke pollution. Because PM2.5 is a measurement of non-specific particulates suspended in the air, the nature of this matter can change even while its concentrations remain constant. The type of plants burning and the distance of the smoke from the fire, accordingly, may change the health impacts that arise from such pollution. While comprehensive public health studies would monitor the impacts of both individual pollutants and multifaceted “smoke,” the complexity of smoke pollution makes it difficult to generalize information from specific fires to national and global scales. 
+
+
+### Our Study
+The Witch Fire, California’s second largest fire in 2007, burned in San Diego from October 21, 2007, to November 6, 2007. In conjunction with the other fires of the “2007 California Firestorm," the Witch Fire caused the largest evacuation in Californian history. We chose this fire as a case study for the relationship between smoke and health due to the accessibility of its historic data. We propose that the health impacts experienced by people of differing social identities during a wildfire may vary in kind and severity. We examine this proposition using public hospital record data. 
+
+This analysis considers emergency department (ED) visits during the Witch Fire at two San Diego Hospitals: Scripps Memorial Hospital (SMH), a hospital located in a primarily white neighborhood, and Tri-City Medical Center (TCMC), a hospital located in a primarily non-white neighborhood. We hypothesized that these hospitals may see different partitioning of patient age, race, and primary diagnoses during the smoky period. Specifically, we predicted that the hospital located in the non-white area may see increased numbers of visits due to respiratory problems than the hospital located in a primarily white neighborhood. 
+ 
+
+![](Screen Shot 2018-10-10 at 10.07.01 PM.png)
+*Scripps Memorial Hospital (red) and Tri-City Medical Center (blue) shown on map*
+
+![](Screen Shot 2018-10-10 at 10.19.29 PM.png)
+*Racial segregation in San Diego County from the University of Virginia Dot Map*
+
+
+### Methods
+Our methodology was inspired by those of Liu et al. (2017), Le et al. (2014), and Delfino et al. (2014), who consider correlations between forest-fire specific PM2.5 levels and emergency department (ED) visits. Both studies investigate the differences in ED visits between pre-smoke, smoke, and post-smoke time periods. Additionally, Le and Liu consider differential outcomes among delineations of age, race, class, and gender, and determined that women and racial minorities face more adverse health impacts from wildfire smoke. 
+
+We obtained the daily ED demographic data for Tri-City Medical Center and Scripps Memorial Hospital for the dates of October 15 2007,to November 20, 2007 from the California Office of Statewide Health Planning and Development (OSHPD). The OSHPD cross-tabulated visit counts with principal diagnosis, age group, and race. Due to the time constraints and financial barriers imposed on our analysis, we could only obtain data for these two hospitals.   
+
+We obtained PM2.5 data for the county of San Diego for this same period of time using NOAA’s Climate Data Online (CDO) Daily Weather Record. The data obtained included PM2.5 measurements from six weather stations in San Diego County. The modeling software developed by Le et al. was not available to determine the daily concentrations of wildfire-specific PM2.5, however it is of note that their methodology was complex and warranted its own publication before their public health analysis. In order to simplify our methodology, we chose a “smoke period” of five days following the spike in PM2.5 on October 21st in the NOAA data. We assume for our purposes that increased levels in PM that follow the spike reflect the presence of wildfire smoke. We chose a pre-smoke control period that contained the same days of the week as the smoke period to control for intra-week fluctuations in air quality while still preceding the October 21st spike in PM2.5. 
+
+We compiled the the number of ED visits for the “pre-smoke” period of October 15-19 and for the “smoke” period of October 22-26 by race, age, and principal diagnosis. We then normalized visit numbers by total number of “smoke” period or “pre-smoke” period visits in order to identify changes in the composition of ED visits by social identities. We performed T-tests on the sets of daily percentage compositions for race, age, and primary diagnoses at each hospital in order to assess significance. We did not subject datasets that included masked values (values that the OSPDH intentionally did not report) to statistical analyses.
+ 
+### Results
+At the Tri-City Medical Center (TCMC), the percentage of total visits by White patients increased significantly during the smoke period while the percentage of total visits by Hispanic patients decreased. Data masking prevented analysis of Black, Asian, Native American, and Other patients. The percentage of total visits by patients in the 65+ age group increased during the smoke period. Visits for injury/drugs decreased in the smoke period while visits for nonspecific “symptoms” increased. Data masking prevented analysis of visits due to respiratory problems. The total number of visits increased by 7.5% at TCMC for the smoke period as compared to the pre-smoke period. 
+
+At Scripps Memorial Hospital (SMH), the percentage of total visits by White patients increased significantly during the smoke period while percentage of total visits by Black and Hispanic patients decreased. Masking prevented analysis for visits by Asian, Native American, and Other patients. Data masking prevented analysis for the 0-18 and 19-24 age groups, but there were no significant changes in the percentage composition of visits in 24-64 and 65+ age groups. Masking prevented analysis of changes in visits for respiratory conditions. The total percentage of visits classified for “symptoms” decreased during the smoke period. There was a 46.7% increase in total visits during the smoke period at SMH. 
+
+The raw tabulated data can be found [here] (Gunasti - Fire Blog - Raw Data.rmd). Average values that include “masked” data are reported as “MASK” and include no statistical analysis. 
+
+
+
+### Discussion
+The age composition of ED visitors during the smoke period changed significantly at TCMC but not at SMH. TCMC, notably, saw a significant increase in the percentage of visitors who were 65 or older during the smoke period. This data suggests that the 65+ population that uses TCMC during emergencies may be more vulnerable to the effects of wildfire smoke. Liu et al. notes that the elderly is particularly vulnerable to changes in air quality due to wildfire smoke and that, specifically, elderly black and female subpopulations can be among the most vulnerable. The elderly community that visits TCMC may belong to these subpopulations, and so changes in air quality may disproportionately affect these populations in contrast to the elderly populations that visit SMC. There was no observed change in age composition during the smoke period at SMC, which suggests that the elderly population in this area may be better able to adapt and protect themselves from smoke conditions. Further research is necessary in order to assess which subpopulations visit each hospital.
+
+Notably, during the smoke period, the number of total ED visits increased by 46.7% at SMH and only 8.5% at TCMC. The lack of changes in percentage composition between pre-smoke and smoke periods at SMH, however, may reflect an equal distribution of the health impacts of forest fire as opposed to TCMC, where changes in the age distribution show a clearly disproportionate burden on the elderly. Further research is necessary in order to determine whether increased ED visits reflect increased local demand or whether systems of patient-routing inform the local fluctuations in visit numbers.
+
+The increase in the percentage of visits from White patients and decrease in percentage visits from other racial subpopulations is notable at both SMH and TCMC. It remains to be determined whether hospital visits by different racial groups accurately represents the health concerns of the nearby localities given existing urban health inequities in the United States. It is possible that White populations are more concerned by the health consequences experienced when smoke is present, but it is also possible that White populations have greater access to healthcare to express these concerns. Further research may address these possibilities through lenses of differential access to health insurance and cultural perspectives on hospitalization.
+
+One large limitation in our analysis was the presence of “masked” data. Law requires the California OSHPD to conceal individual data with samples smaller than 11; for example, since fewer than 11 people between the ages of 0-18 visited Scripps Memorial Hospital on October 26, 2007, no data regarding the daily number of visits in this age group is available. The masking of respiratory visit data greatly limited the scope of this analysis. Respiratory primary diagnoses likely correspond most closely to most of the hospital visits for symptoms exacerbated by poor air quality. Future studies may request unmasked data or use a larger sample size to account for the lack of data.
+
+Other limitations of this study include the lack of wildfire-specific PM2.5 models and the lack of well-defined pre-smoke and smoke conditions. It is possible that previous, smaller forest fires in the San Diego region had already affected air quality before our study period began, biasing our results from what one might observe after an isolated wildfire. Furthermore, it is possible that or “smoke” period encompassed an improper span of time to account for lag effects or quick changes in air composition. Future studies should use more complex models for wildfire air pollution, monitoring both individual pollutants like PM2.5 but also aggregate “smoke,” including the perception of smoke from local residents.  
+ 
+
+### Conclusion
+The historic hospital data demonstrated significant changes in racial composition, age group prevalence, and primary diagnosis prevalence before and during the smoke period. While our data was inconclusive when addressing changes in respiratory diagnoses, the data showed temporal differences between a hospital in a primarily white neighborhood and a hospital in a primarily non-white neighborhood. The constraining sample size of two hospitals in this analysis means that we cannot extrapolate on trends of hospital siting or vulnerability to smoke. However, significant intra-hospital differences between the pre-smoke and smoke time periods warrant further study of hospital visitation, wildfires, and social identity.
+
+![](San_Diego_skyline_against_smoke_from_wildfires_Oct_2007_v3.jpg)
+*Wildfire smoke above the San Diego downtown skyline*
+
+Future studies must consider the impacts of both the individual constituents of wildfire smoke and also the cumulative impacts of the mixtures that constitute local wildfire smoke. This “cumulative impacts” approach suggests that wildfire smoke from different regions may have different impacts of local populations, as a product of smoke composition, but also of vulnerability and social identity. Given these differences, California policymakers should adopt a spatiotemporal approach when considering the impacts of wildfire on healthcare. Officials should allocate resources toward increasing the resilience of hospitals that may see more intense changes in visits during wildfire period as opposed to those that may not. Furthermore, local policymakers should allocate resources to increase resilience among the subpopulations most vulnerable to changes in air quality. 
+
+While our results are unique to San Diego county and are reflective of a historic environment, future studies should apply similar methodologies in other fire-prone areas to determine local relationships between identity, health, and smoke.  
+  
+
+
+
+```{bibliography}
+
+```
+
+
+
+
+#### Bibliography
+
+51f4ad2dbaf56c205dd743bdfbb7c992.jpg (1114×728). (n.d.). Retrieved October 9, 2018, from https://i.pinimg.com/originals/51/f4/ad/51f4ad2dbaf56c205dd743bdfbb7c992.jpg
+Community Vulnerability to Health Impacts of Wildland Fire Smoke Exposure - Environmental Science & Technology (ACS Publications). (n.d.). Retrieved October 8, 2018, from https://pubs-acs-org.ccl.idm.oclc.org/doi/10.1021/acs.est.6b06200
+Delfino, R. J., Brummel, S., Wu, J., Stern, H., Ostro, B., Lipsett, M., … Gillen, D. L. (2008). The relationship of respiratory and cardiovascular hospital admissions to the southern California wildfires of 2003. Occupational and Environmental Medicine. https://doi.org/10.1136/oem.2008.041376
+Environmental justice and regional inequality in southern California: implications for future research. (n.d.). Retrieved October 8, 2018, from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1241158/
+Fire Victims Struggle to Rebuild. (n.d.). Retrieved October 8, 2018, from http://www.nbcsandiego.com/news/local/Fire-Victims-Struggle-to-Rebuild-64725952.html
+Fowler, C. T. (2003). Human Health Impacts of Forest Fires in the Southern United States: A Literature Review. Journal of Ecological Antropology Vol. 7, P. 39-59. Retrieved from https://www.fs.usda.gov/treesearch/pubs/6467
+Hudson, M. (2011). Fire management in the american west : Forest politics and the rise of megafires. Boulder, Colo.: University Press of Colorado. (2011). Retrieved November 11, 2018, from INSERT-MISSING-DATABASE-NAME.
+
+
+Jin, Y., Goulden, M. L., Faivre, N., Veraverbeke, S., Sun, F., Hall, A., … Randerson, J. T. (2015). Identification of two distinct fire regimes in Southern California: implications for economic impact and future change. Environmental Research Letters, 10(9), 94005. https://doi.org/10.1088/1748-9326/10/9/094005
+Le, G. E., Breysse, P. N., McDermott, A., Eftim, S. E., Geyh, A., Berman, J. D., & Curriero, F. C. (2014). Canadian forest fires and the effects of long-range transboundary air pollution on hospitalizations among the elderly. ISPRS International Journal of Geo-Information, 3(2), 713–731. https://doi.org/10.3390/ijgi3020713
+Liu, J. C., Pereira, G., Uhl, S. A., Bravo, M. A., & Bell, M. L. (2015). A systematic review of the physical health impacts from non-occupational exposure to wildfire smoke. Environmental Research, 136, 120–132. https://doi.org/10.1016/j.envres.2014.10.015
+Liu, J. C., Wilson, A., Mickley, L. J., Dominici, F., Ebisu, K., Wang, Y., … Bell, M. L. (2017). Wildfire-specific Fine Particulate Matter and Risk of Hospital Admissions in Urban and Rural Counties. Epidemiology (Cambridge, Mass.), 28(1), 77–85. https://doi.org/10.1097/EDE.0000000000000556
+Maps & Data | OEHHA. (n.d.). Retrieved October 11, 2018, from https://oehha.ca.gov/calenviroscreen/maps-data
+Morello-Frosch, R. Understanding The Cumulative Impacts Of Inequalities In Environmental Health: Implications For Policy | Health Affairs. (n.d.). Retrieved November 21, 2018, from https://www.healthaffairs.org/doi/full/10.1377/hlthaff.2011.0153
+New Model Forecast Product Predicts Wildfire Smoke. (n.d.). Retrieved October 11, 2018, from http://www.weathernationtv.com/news/new-model-forecast-product-predicts-wildfire-smoke/
+Reid, C. E., Jerrett, M., Tager, I. B., Petersen, M. L., Mann, J. K., & Balmes, J. R. (2016). Differential respiratory health effects from the 2008 northern California wildfires: A spatiotemporal approach. Environmental Research, 150, 227–235. https://doi.org/10.1016/j.envres.2016.06.012
+rmrs_2016_wigtil_g001.pdf. (n.d.). Retrieved from https://www.fs.fed.us/rm/pubs_journals/2016/rmrs_2016_wigtil_g001.pdf
+socio.pdf. (n.d.). Retrieved from https://www.usfa.fema.gov/downloads/pdf/statistics/socio.pdf
+The Racial Dot Map: One Dot Per Person for the Entire U.S. (n.d.). Retrieved October 11, 2018, from https://demographics.virginia.edu/DotMap/index.html
+Untitled map. (n.d.). Retrieved October 11, 2018, from https://www.google.com/maps/d/u/0/new?cid=mp&cv=p80sGC1BQ-o.en.
+USA, K. M. from S. D. (2007). English: San Diego skyline in front of smoke from wildfires, sunrise, October 23, 2007. Retrieved from https://commons.wikimedia.org/wiki/File:San_Diego_skyline_against_smoke_from_wildfires_Oct_2007_v3.jpg
+Who Among the Elderly Is Most Vulnerable to Exposure to and Health Risks of Fine Particulate Matter From Wildfire Smoke? | American Journal of Epidemiology | Oxford Academic. (n.d.). Retrieved October 8, 2018, from https://academic-oup-com.ccl.idm.oclc.org/aje/article/186/6/730/3836014
+Wildland fire smoke and human health - ScienceDirect. (n.d.). Retrieved November 21, 2018, from https://www.sciencedirect.com/science/article/pii/S004896971733512X?via%3Dihub
+
+
+

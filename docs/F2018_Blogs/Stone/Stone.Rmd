@@ -1,0 +1,125 @@
+---
+title: "Comparing State and Federal Fire Treatments in California"
+author: "Billy Stone"
+date: "12/15/2018"
+output: html_document
+---
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Comparing State and Federal Fire Treatments in California
+
+###Introduction
+
+In the past forty years, the American West has experienced a drastic increase in forest fires  (Keeley, 2018). Rising fire severity can be blamed on a number of factors, including climate change, human ignition, or a history of poor management practices. This blog post will focus primarily on fire management practices in the state of California. Fires have made up a crucial part of North American forest ecosystems since the Miocine (about 20 million years ago), (Keeley, 2018), and the war against fire has been raged by the U.S. Forest Service (USFS) since the early 1900s (Williams, April 2005).  Fires are integral in allowing many flora to regenerate and clearing fuel - shrubs and dead plants - that build up on the forest floor.  After decades of widespread suppression efforts and fuel build up, the USFS realized fire’s integral ecological role in our forests. 
+ 
+Around the founding of the U.S. Forest Service, fire caused large scale destruction. The Peshtigo Fire of 1871 in Wisconsin, the Santiago Canyon Fire of 1889 in California, and the Great Fire of 1910 in Idaho and Montana killed thousands and burned millions of acres , (Williams, 2005).  The U.S. Forest Service used these fires as the catalyst for forest and park conservation, diverting funding for large scale suppression efforts; national parks used army services for fire suppression; fires reduced by about 30,000,000 acres yearly with the commission of Gifford Pinchot in 1890s. The USFS lived up to their motto: “by 10 a.m. the next day, fire should be out,” (Williams, 2005). With the increased severity of fires in the last forty years, markedly exhibited in the 1988 Yellowstone fire, the Forest Service has begun to reconsider these forest management practices (Williams, 2005). 
+ 
+Today, some Californians blame the Forest Service’s poor management practices for larger and more devastating fires (Rainey, 2018).  Recent California fires - from the Mendocino complex fire, to the Carr fire, to the Wallow fire - present a microcosm for increased fire severity nationwide.  Though CalFire (California’s state fire agency) and the USFS collaborate to some extent,, the fire agency run by the state of California, and the forest service (CAL FIRE - “The federal government”), the two organization are mainly responsible for their own areas.  Even county and city resources will also be directed toward fire suppression if the fire comes close enough to urban areas as it has in Southern California (Miller, 132). Increased percentages of USFS’s budget have been directed towards suppression, instead of controlled burns,  mechanical treatments, and other forest restoration (not abiding by California’s strict environmental laws) (Phillips, 2018). This echoes past suppression efforts and indicates that funding within the Forest Service itself has been used inefficiently - increasing suppression expenditures vs. decreasing prevention expenditures (USDA, 2018).  Some areas have already experienced a decrease in federal treatment: for example, in the San Gabriel valley in 2003, the treatment cost for forests in the San Bernardino and San Gabriel ranges totaled over $4000 per acre, and in years following was lowered to $2000 per acre (133, Miller).  Because of the substantial amount of dried or dying vegetation--with the amount of dead trees in California continuing to rise (USFS, 2017)--Southern Californian forests require more funding than the national average, but federal funding continues to decrease.
+ 
+In addition to funding constraints, agencies in California face other social constraints when treating forests.  In Northern California “prescribed burning annually covered only 38% of the area needed to fulfil land-management objectives, and 66% of managers indicated dissatisfaction with levels of prescribed fire activity,” (Quinn-Davidson, 2012).  My study focuses on California to ask how treatment of hazardous fuels varies under state v. federal management.  To address discrepancies between agencies applying controlled burns I compared federal and state agencies in California such as CALFIRE and USFS across different ecoregions[3] .  Based on Californian dissatisfaction with the US Forest Service, my hypothesis was that Federal agencies conduct less prescribed burns than state agencies. 
+
+###Preliminary Analysis:
+ 
+The data gathered shows controlled burns, mechanical treatments, and protection zones, split up into local, state, and federal, in the state of California.  I used data from the USDA Forest Service’s state level data sets - Direct Protection Areas for Wildland Fire Protection, and data from CalFire’s FRAP mapping datasets - Fire Perimeters Version 17_1 containing wildfire history, prescribed burns and other mechanical treatments.  The direct protection areas are divided between State, Local, and Federal protection (Figure 1)  My preliminary analysis (Table 1) looks at percent-controlled burns and mechanical treatments within federal and state protection zones.  I used ArcGIS Desktop to sum the total land treated by mechanical treatments and controlled burns under state and federal protection zones. 
+
+![Figure 1. Direct Protection Areas in California](grayDPAs.PNG)
+
+```{r map1, echo=FALSE}
+#library(png)
+#library(grid)
+#img <- readPNG("/home/CAMPUS/wrsa2017/grayDPAs.png")
+#grid.raster(img)
+```
+Table 1. Controlled burns and mechanical treatments on state and federal land
+
+```{r table, echo = FALSE}
+library(readr)
+FireData <- read.csv("PreliminaryAnalysis.csv")
+library(knitr)
+kable(FireData)
+```
+
+The federal government completes a much larger area of mechanical treatment than does the state government, while the state government uses controlled burns on much more of their land than the federal government.  This appears to be a stark contrast.  However, these statistics are influenced by several spatial features.  Whether an entity conducts controlled burns or mechanical treatments depends on the ecosystems and fire infrastructure of the entity’s land (Keeley 2018), as well as legal restrictions and social constraints[5]  (Quinn-Davidson, 2012).  While Northern California is dominated by trees and has adapted itself to burn at a low intensity to avoid fire in the crowns of the trees, fire in Southern California chaparral scrubs should burn at any intensity to the top of the bush, burning only every thirty to 130 years, (Keeley, 2018).  So because the ecosystems vary across the state, these statistics do not make sense on their own.
+ 
+#Secondary Analysis:
+ 
+To answer my hypothesis, I then decided to look at how prescribed controlled burns vary by state or federal agencies, controlling for ecosystem type.  Using ecoregions data for California mapped by the forest service, I was able to separate state and federal direct protection areas into eight ecological subregions shown in Table 2 and Figure 2.  Each region acted as a control to examine how prescriptions of controlled burns varied between federal and state agencies. 
+
+Table 2: Percentages of federal and state land within each ecoregion treated with prescribed controlled burns
+```{r firedata, echo=FALSE}
+firedata = read.csv("FinalFireData.csv")
+library(readr)
+FireData2 <- read.csv("SecondaryAnalysis.csv")
+library(knitr)
+kable(FireData2[])
+
+t.test(firedata$State,firedata$Federal)
+###boxplot(x = 1:2 ~ t.test(firedata$State,firedata$Federal))
+#explain differences between specific ecoregions
+
+```
+Figure 2: Ecoregions in California
+```{r map2, echo=FALSE}
+#library(readr)
+#![]("/home/CAMPUS/wrsa2017/EcoregionsMap-1.jpg")
+```
+Conducting a t test for percentage of prescribed burns in federal and state regions separated by ecoregion, one sees no significant difference overall between the two agencies in their treatment of controlled burns (p<0.05).  However, agreeing with the preliminary analysis, state agencies do overall prescribe controlled burns on their lands more than federal agencies.  We also see significantly greater rates of controlled burns on California Coastal Steppe-Mixed Forest-Redwood Forest Ecoregions, which follows from Keeley’s point that forest ecosystems require more consistent burns than do chaparral shrublands (Keeley, 2018). 
+
+To better understand the discrepancy between the two agencies and their forest treatments, I require a better understanding of the social constraints of forest treatments.  In most states as population disperses from urban centers to the Wildland Urban Interface (or WUI), the wildfire problem also disperses.  Humans are primarily responsible for wildfire rates in Southern California and nationwide; 84% of fires are caused by humans or human activity (Daley, 2017).  Our presence alone in wildland areas increases the chance of fire, as well as necessitates immediate suppression to protect structures and communities.   “In Montana, 39% of the area accorded wildfire protection by the state government is within the WUI, but over 66% of the wildfires suppressed occurred in the WUI,” (Hammer, 2009).
+ 
+ 
+#Proposal:
+ 
+To additionally inform effectiveness of federal and state treatments we looked at the data showing how close controlled burns are to WUIs and how much land within federal land vs. state land is made up of WUIs.  There exists much debate over whether to treat hazardous fuels to benefit WUIs near them vs. to treat the general ecology of the forests (Ager, 2010).   We applied a 400m buffer to the WUIs when analyzing which treatments intersected with WUI boundaries.  A useful data structure for analyzing proximity to WUIs is represented by the table 2.   In the table I’ve included our preliminary findings about the land managed specifically by state agencies.  In order to do a full analysis of the state intersections with different types of treatment and WUIs, there are 8*2^5 intersections in GIS to be calculated and inserted.
+
+Table 3: 
+```{r tableagain, echo=FALSE}
+library(readr)
+FireData2 <- read_csv("Proposal.csv")
+library(knitr)
+kable(FireData2[])
+```
+
+For the ecoregion column each ecoregion would be assigned a number 1 through 8.  For all columns except ecoregion, a 1 indicates that the specific quality was included in the intersection. 0 indicates that the quality was purposefully excluded.  na indicates that the quality was not considered.
+
+
+Though this analysis is beyond the scope of this blog post and an introductory GIS course, an analysis following the data structure above would deeply inform differences between state and federal fire treatment in California based on WUI expansion.  
+
+To conclude, the federal government allots more funding to mechanical treatments, while the state government allots more towards controlled burns.  However these initial findings are complicated when addressing effectiveness because of the myriad of other factors affecting how state and federal agencies treat fuels.  
+
+#Conclusion:
+ 
+In conclusion, overall there is a slight difference in total meters squared treated by prescribed burns between federal agencies and state agencies.  When controlling for ecoregion as defined by the forest service and performing a t test between percentages of land treated by prescribed burn on federal and state lands, there is no significant difference between state and federal treatment by prescribed burn.  These findings are complicated by also addressing WUI contained within state and federal protection groups.  In future studies, I’d recommend addressing prescribed burns as they relate to WUI location for both state and federal agencies. 
+
+#Works Cited
+
+Ager, Alan A., et al. “A Comparison of Landscape Fuel Treatment Strategies to Mitigate Wildland Fire Risk in the Urban Interface and Preserve Old Forest Structure.” Forest Ecology and Management, vol. 259, no. 8, Mar. 2010, pp. 1556–70. ScienceDirect, doi:10.1016/j.foreco.2010.01.032.
+
+Brusentsev, Vera, and Wayne Vroman. “Wildfires in the United States: A Primer.” Urban Institute, 4 June 2016, https://www.urban.org/research/publication/wildfires-united-states-primer.
+
+CAL FIRE - Federal Government. http://calfire.ca.gov/fire_protection/fire_protection_coop_efforts_federalgov. Accessed 15 Dec. 2018.
+
+Daley, Jason. “Study Shows 84% of Wildfires Caused by Humans.” Smithsonian, https://www.smithsonianmag.com/smart-news/study-shows-84-wildfires-caused-humans-180962315/. Accessed 22 Dec. 2018.
+
+Dennis-Parks, Reda M. “Healthy Forests Restoration Act -- Will It Really Protect Homes and Communities?” Ecology Law Quarterly, vol. 31, no. 3, Aug. 2004, pp. 639–64.
+
+Hammer, Roger B., et al. “Demographic Trends, the Wildland–Urban Interface, and Wildfire Management.” Society & Natural Resources, vol. 22, no. 8, Aug. 2009, pp. 777–82. Crossref, doi:10.1080/08941920802714042.
+
+Keeley, Jon. “The 2017 California Fires .” YouTube, Hixon Center for Sustainable Environmental Design, 22 Feb. 2018, www.youtube.com/watch?v=znrs8PK6B48.
+
+Kennedy, Mauree n C., and Morris C. Johnson. “Fuel Treatment Prescriptions Alter Spatial Patterns of Fire Severity around the Wildland–Urban Interface during the Wallow Fire, Arizona, USA.” Forest Ecology and Management, vol. 318, Apr. 2014, pp. 122–32. ScienceDirect, doi:10.1016/j.foreco.2014.01.014.
+
+Miller, Char. Not So Golden State : Sustainability Vs. The California Dream. Trinity University Press, 2016. EBSCOh. 
+
+Phillips, Kristine, et al. “A Record 'You Don't Want to See': Mendocino Complex Fire Has Become California's Largest Ever.” The Washington Post, WP Company, 7 Aug. 2018, www.washingtonpost.com/news/post-nation/wp/2018/08/06/wildfires-continue-to-char-california-but-one-fire-is-in-a-destructive-league-of-its-own/?noredirect=on&utm_term=.e83c256c7c80.
+
+Rainey, James. “California Is Managing Its Forests — but Is the President Managing Its Federal Lands?” NBC News, 2 Dec. 2018, https://www.nbcnews.com/news/us-news/california-managing-its-forests-president-managing-its-federal-lands-n942581.
+
+Williams, Gerald W. “The USDA Forest Service— The First Century.” Fs.fed.us, USDA Forest Service, Apr. 2005, www.fs.fed.us/sites/default/files/media/2015/06/The_USDA_Forest_Service_TheFirstCentury.pdf
+
+USDA. “Forest Service Wildland Fire Suppression Costs Exceed $2 Billion | USDA.” US Department of Agriculture, 14 Sept. 2018. https://www.usda.gov/media/press-releases/2017/09/14/forest-service-wildland-fire-suppression-costs-exceed-2-billion
+
+USFS. “Record 129 Million Dead Trees in California.” USFS Press Release, 11 Dec. 2017. https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd566303.pdf

@@ -1,0 +1,298 @@
+---
+title: "Socioeconomics Factors Affecting Fire Related Hospitalizations"
+author: "Mason Asato"
+date: "12/11/2018"
+output:
+  word_document: default
+  html_document: default
+fig_caption: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+Over the past few years, the health effects of wildfires have become an increasingly documented concern. Although death tolls offer a staggering and concrete reminder of fires’ ability to devastate communities, wildfires also instigate longer-term health effects. These negatively affect even those not in direct path of the fire’s flames. I investigated hospital admission demography during a smoky period at two hospitals. One hospital, Tri-City Medical Center, is located in a primarily non-white neighborhood with a median income below the state average, while the other hospital, Scripps Mercy Hospital, is located in a primarily white neighborhood with a median income above the state average. To answer the question, “is there a difference in the number of hospital admissions among various ages between primarily white and non-white communities, before, during and after forest fires?” I decided to analyze hospital admission data that includes race, age, and respiratory admissions to answer this question. Multiple studies have shown that various socioeconomic factors, such as racial demography and age, are more vulnerable to negative human health impacts caused by wildfires. My first null hypothesis was that there are no statistically significant differences before, during and after a fire period in White and Hispanic Hospital admission. I later test three different null hypotheses, one before, during and after a fire period, stating that there are no statistically significant differences in ages between hospital admission percentages and population percentages. To test my null hypothesis, I will use three different statistical tests, the t-test, an anova test and the chi-square test. These tests allow me to choose the number of variables that I wish to compare and calculate if there is a significant difference in the data. I chose to analyze socioeconomic factors that help explain the difference in hospital admissions between the two communities.
+
+## Background of Fire
+
+The fire that I am analyzing data from is the Witch Fire that occurred in the San Diego County from October 21st, 2007 through November 13th, 2007. This fire was the second largest wildfire of the 2007 California wildfire season after the Zaca Wildfire in Santa Barbara. The Witch Fire burned 197,990 acres (801 km2) alone and then merged with the Poomacha and McCoy Fires, where it burned 247,800 acres (1,003 km2) all together. The Witch–Poomacha Fire caused at least $1.3 billion (2007 USD) in insured damages alone, becoming the costliest wildfire of 2007. As of August 2018, the Witch Fire is the ninth-largest wildfire in modern California history, as well as the fifth-most destructive wildfire on record in California.
+
+```{r Witch Fire, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("Unknown.png")
+```
+
+## Hospital Admission Data
+
+I analyzed two hospital admission data. The first hospital is the Tri-City Medical Center and the second is Scripps Mercy Hospital. I chose these two hospitals because the primary communities that these hospitals serve have contrasting socioeconomic backgrounds. I used City-Data.com which takes a certain area code and provides various information such as the cities that the area code encompasses, population, race percentages, household income and more. When looking at other articles and studied socioeconomic factors, a popular method of choosing sampling area was to analyzing areas by zip-codes. I also decided to choose zip-codes as my method of measuring hospital admission data because it provided an appropriate sample size and I could compare it to other similar studies that also used zip-codes for their sample populations. City-Data gets its data from a mix of public and private sources. Most of the data originated from government agencies such as the United States Census Bureau, and municipal government sources. The table and graph below summarize the racial demography in both the Tri-City Medical Center and Scripps Mercy Hospital. 
+
+||White|Black|American Indian|Asian|Pacific Islander|Other Race|Two or More Races|Hispanic or Latino|Total|
+|------------|:--:|:--:|:--:|:--:|:--:|:--:|:------:|:--:|:--:|
+|Tri City Medical Center|29018|1706|179|3215|517|114|1610|15476|51853|
+|Scripps Mercy Hospital|22977|807|107|1779|63|79|866|4388|31066|
+
+## Tri-City Medical Care
+
+When comparing Tri-City Medical Center data admission to race and age, I analyzed the 92056 zip code (the zip code that the Tri-city medical center serves) of San Diego County which includes the cities of: Oceanside, Carlsbad and Vista. Demographics for the 92056 community are collected through a self-identification via census and are displayed in the table below. Some key demographics for this area is that 53% of the population is White and 28% of the population is Hispanic and the median age is 40.4 years old. 	
+
+||Population (in 2016) |Land Area (sq mi.)|Population Density (people per sq mi.)|Zip Code Median Resident Age|State Median Resident Age|Average Adjusted Gross Income (AGI)|State Average Adjusted Gross Income (AGI)|Unemployment|
+|--------------|:---:|:-------:|:----------------:|:--------------:|:-------------:|:-------------:|:--------------:|:-:|
+|Tri City Medical Center|34,358|3.8|9,123|39.5|36.4|$84,695 |$72,726 |3.80%|
+
+
+
+## Scripps Mercy Hospital
+The second hospital admission data that I analyzed was the Scripps Mercy Hospital. The Scripps Mercy Hospital is part of the 92103 zip code (the zip code that the Scripps Mercy Hospital serves) which includes the city of San Diego. Demographics of the 92103 community are displayed in the table below. Some key demographics for this area are that 67% of the population is White and 13% of the population is Hispanic and the median age is 39.5 years old. 
+
+||Population (in 2016) |Land Area (sq mi.)|Population Density (people per sq mi.)|Zip Code Median Resident Age|State Median Resident Age|Average Adjusted Gross Income (AGI)|State Average Adjusted Gross Income (AGI)|Unemployment|
+|--------------|:---:|:-------:|:----------------:|:-------------:|:-------------:|:--------------:|:--------------:|:-:|
+|Tri City Medical Center|54,693|12.4|4,407|40.4|36.4|$56,926|$72,726 |5.40%|
+
+## Tri-City Medical Care Race Admission Data
+
+Hospital admission data was analyzed from October 15th, 2007 through November 20th, 2007. Choosing these dates provided data one week prior to the fire and one week after the fire. 
+I used an anova test to determine if there is a significant change in hospital admission data for the Hispanic population during the fire compared to the periods of time before and after the fire. These anova test results showed that there was a significant change in hospital admission data (F(2,34) = 3.344, p = .0472). The calculated p-value (0.0472) is smaller than 0.05 showing that there is a significant difference in Hispanic population data, during the fire compared to the periods before and after the fire. Through these results I can conclude that this test rejected my null hypothesis. 
+I then used the same anova test to determine if there is a significant difference in hospital admission data for the White population during the fire and the periods before and after the fire. After anova test calculations, I determined that there was not a significant change in hospital admission data (F(2,34) = 0.333, p = .719). The calculated p-value (0.719) was larger than 0.05. As a result, the statistical tests agree with the null hypothesis. 
+
+
+```{r,results='hide', echo=FALSE}
+TCrace = read.csv("Anova Test.csv")
+TCrace
+boxplot(Hispanic~B.D.A,data=TCrace, main=" Hispanic Hospital Admission Data", ylab="Number of Hospital Admission")
+summary(aov(Hispanic~B.D.A,data=TCrace))
+```
+
+```{r,results='hide', echo=FALSE}
+TCrace = read.csv("Anova Test.csv")
+TCrace
+boxplot(White~B.D.A,data=TCrace, main=" White Hospital Admission Data", ylab="Number of Hospital Admission")
+summary(aov(White~B.D.A,data=TCrace))
+```
+
+```{r TCRace, results='hide', echo=FALSE}
+race=read.csv("Daily ED Admits 10-15-2007 to 11-20-2007, Select Facilities .csv")
+race$Date = as.Date(race$Admission.Date, format = "%y-%m-%d")
+race$Date = format(as.Date(race$Admission.Date), "%m/%d")
+colfunc <- colorRampPalette(c("red", "yellow"))
+colfunc(10)
+race.data = matrix(c(race$White, race$Hispanic), nrow=length(race$White))
+barplot(t(race.data), names.arg=race$Date, col=colfunc(2), ylim=c(0, 250), las=1, xlab="Date of Hospital Admission",ylab="Number of Hospital Admission")
+legend("top", inset = 0.00, c("White", "Hispanic"),  fill=colfunc(2), horiz=TRUE, cex=1.1, box.lty=0)
+```
+
+
+## Tri-City Medical Care Age Admission Data
+
+I used a statistical chi-square test to determine if there is a significant change in hospital admission data at the Tri-City Medical Center for various age groups. A chi-square test allowed me to compare the total population percentages for each age group to the hospital admission percentage for that same age group. I did three trials of the chi-square test for three different periods, before, during and after the fire. I did not include dates where there are missing data in my calculations because since the number of hospital admission data for that category that day was less than 11 patients, the hospital did not record the data. After calculations, I determined that there was not a significant change in hospital admission data before the fire, X2 (3) = 0.56331, p =0.9048. When analyzing during the fire period, I found that there was no significant change in hospital admission data, X2 (3) = 0.7886, p =0.8522. Finally, when analyzing the after the fire period, I determined that there was also no significant change in hospital admission data, X2 (3) = 1.6536, p =0.6473. 
+
+```{r TCAge, results='hide', echo=FALSE, fig.width=7,fig.height=6,fig.cap="* = admission data < 11"}
+age=read.csv("TC_Age.csv")
+age$Date = as.Date(age$Admission.Date, format = "%y-%m-%d")
+age$Date = format(as.Date(age$Date), "%m/%d")
+colfunc <- colorRampPalette(c("darkblue", "lightblue"))
+colfunc(10)
+age.data = matrix(c(age$X0.to.18,age$X19.to.24,age$X25.to.64,age$X65.), nrow=length(age$X0.to.18))
+barplot(t(age.data), names.arg=age$Date, col=colfunc(4), ylim=c(0, 250), las=1,xlab="Date of Hospital Admission",ylab="Number of Hospital Admission")
+text(15, 100, "*")
+text(32,100,"*")
+legend("top", inset = 0.00, c("0-18 yrs old", "19-24 yrs old", "25-64 yrs old", "65+ yrs old"),  fill=colfunc(4), horiz=TRUE, cex=1, box.lty=0) 
+```
+
+```{r, results='hide', echo=FALSE}
+TCbefore <- c(20.88,10.11,51.85,17.16)
+res <- chisq.test(TCbefore, p = c(.2061,.1011,.4922,.2006))
+res
+```
+
+
+```{r, results='hide', echo=FALSE}
+TCduring <- c(20.88,10.11,51.85,17.16)
+res <- chisq.test(TCduring, p = c(.1923,.0908,.5126,.2043))
+res
+```
+
+```{r, results='hide', echo=FALSE}
+TCafter <- c(20.88,10.11,51.85,17.16)
+res <- chisq.test(TCafter, p = c(.2175,.1030,.4627,.2168))
+res
+```
+
+## Tri-City Medical Care Respiratory Admission Data
+
+This data set looks at the patients who were treated for respiratory issues. There is a similar trend to the rest of the data where there was a spike in the first couple days of the fire, then a decrease in patients and finally an increase again towards the end of the fire.
+I used a statistical t-test to determine if there is a significant change in respiratory hospital admission data during the fire compared to periods before and after the fire and determined that there was not a significant change in hospital admission data from ages 65+ years old. (t-test, t=0.81, df=29, p>0.05). I did not include dates where there are missing data in my calculations because since the number of hospital admission data for that category that day was less than 11 patients, the hospital did not record the data.
+
+
+
+
+```{r TCRes, results='hide', echo=FALSE, fig.width=7,fig.height=6,fig.cap="* = admission data < 11"}
+res=read.csv("TC_Res.csv")
+res$Date = as.Date(res$Admission.Date, format = "%y-%m-%d")
+res$Date = format(as.Date(res$Admission.Date), "%m/%d")
+colfunc <- colorRampPalette(c("green", "lightgreen"))
+colfunc(10)
+res.data = matrix(c(res$Respiratory), nrow=length(res$Respiratory))
+barplot(t(res.data), names.arg=res$Date, col=colfunc(4), ylim=c(0, 20), las=1,xlab="Date of Hospital Admission",ylab="Number of Hospital Admission")
+text(4.5,5,"*")
+text(20,5,"*")
+text(24.5,5,"*")
+text(39,5,"*")
+text(43,5,"*")
+text(45,5,"*")
+legend("topright", inset = 0.00, c("Respiratory Data"),fill=colfunc(1), horiz=TRUE, cex=1.1, box.lty=0) 
+```
+
+## Scripps Mercy Hospital Race Admission Data
+
+When analyzing the racial statistics of the Scripps Mercy Hospital admission data from October 15th, 2007 through November 20th, 2007, there was a similar spike of hospital admission data the second and third day of the fire, October 22nd and October 23rd, 2007. However, after that there was a mild decrease in hospital admission data. This trend was similar the Tri-City Medical Center hospital admission data.
+I used an anova test to determine if there is a significant change in hospital admission data for the Hispanic population during the fire compared to the periods of time before and after the fire. These anova test results showed that there was not a significant change in hospital admission data (F(2,34) = 1.147, p = .33). The calculated p-value (0.33) is large than 0.05 showing that there is a no significant difference in Hispanic population data, during the fire compared to the periods before and after the fire. Through these results I can conclude that this test agrees with my null hypothesis. 
+I then used the same anova test to determine if there is a significant difference in hospital admission data for the White population during the fire and the periods before and after the fire. After anova test calculations, I determined that there was not a significant change in hospital admission data (F(2,34) = 1.432, p = .253). The calculated p-value (0.253) was larger than 0.05. As a result, the statistical tests agree with the null hypothesis. 
+
+
+
+```{r, results='hide', echo=FALSE}
+Srace = read.csv("SRace.csv")
+Srace
+boxplot(Hispanic~B.D.A,data=Srace, main=" Hispanic Hospital Admission Data", ylab="Number of Hospital Admission")
+summary(aov(Hispanic~B.D.A,data=Srace))
+```
+
+```{r, results='hide', echo=FALSE}
+Srace = read.csv("SRace.csv")
+Srace
+boxplot(White~B.D.A,data=Srace, main=" White Hospital Admission Data", ylab="Number of Hospital Admission")
+summary(aov(White~B.D.A,data=Srace))
+```
+
+```{r SRace, results='hide', echo=FALSE, fig.width=7,fig.height=6}
+SRace=read.csv("SRace.csv")
+SRace$Date = as.Date(SRace$Admission.Date, format = "%y-%m-%d")
+SRace$Date = format(as.Date(SRace$Admission.Date), "%m/%d")
+colfunc <- colorRampPalette(c("purple", "yellow"))
+colfunc(10)
+SRace1 = matrix(c(SRace$White,SRace$Hispanic), nrow=length(SRace$White))
+barplot(t(SRace1), names.arg=SRace$Date, col=colfunc(2), ylim=c(0, 150), las=1,xlab="Date of Hospital Admission",ylab="Number of Hospital Admission")
+legend("top", inset = 0.00, c("White", "Hispanic"),  fill=colfunc(2), horiz=TRUE, cex=1.1, box.lty=0) 
+```
+
+
+
+## Scripps Mercy Hospital Age Admission Data
+
+When analyzing this there are lots of missing data but that is because when hospital admissions are less that 11 patients then it does not record that data for that category/day. However, inferring from this graph, there is an overall trend where there is a spike in the beginning days of the fire then a decrease and then again, another spike towards the end of the fire.
+I used a statistical chi-square test to determine if there is a significant change in hospital admission data at the Scripps Mercy Hospital for various age groups. A chi-square test allowed me to compare the total population percentages for each age group to the hospital admission percentage for that same age group. I did three trials of the chi-square test for three different periods, before, during and after the fire. I did not include dates where there are missing data in my calculations because since the number of hospital admission data for that category that day was less than 11 patients, the hospital did not record the data. After calculations, I determined that there was not a significant change in hospital admission data before the fire, X2 (3) = 3.8566, p =0.2774. When analyzing during the fire period, I found that there was no significant change in hospital admission data, X2 (3) = 4.7665, p =0.1897. Finally, when analyzing the after the fire period, I determined that there was also no significant change in hospital admission data, X2 (3) = 4.8044, p =0.1867. 
+
+
+
+
+```{r SAge, results='hide', echo=FALSE, fig.width=7,fig.height=6,fig.cap="* = admission data < 11"}
+SAge=read.csv("SAge.csv")
+SAge$Admission_Date= as.Date(SAge$Admission_Date, format = "%y-%m-%d")
+SAge$Admission_Date = format(as.Date(SAge$Admission_Date), "%m/%d")
+colfunc <- colorRampPalette(c("blue", "orange"))
+colfunc(10)
+SAge1.data = matrix(c(SAge$`X0_to_18`,SAge$`X19_to_24`,SAge$`X25_to_64`,SAge$`X65.`), nrow = length(SAge$`X0_to_18`))
+barplot(t(SAge1.data), names.arg = SAge$Admission_Date, col = colfunc(4), ylim =c(0, 250), las=1,xlab="Date of Hospital Admission",ylab="Number of Hospital Admission")
+text(0, 100, "*")
+text(1,100,"*")
+text(2, 100, "*")
+text(3,100,"*")
+text(5.5, 100, "*")
+text(9,100,"*")
+text(11.5, 100, "*")
+text(14,100,"*")
+text(15, 100, "*")
+text(16,100,"*")
+text(17, 100, "*")
+text(18, 100, "*")
+text(20, 100, "*")
+text(21, 100, "*")
+text(25,100,"*")
+text(26,100,"*")
+text(27, 100, "*")
+text(29.5,100,"*")
+text(33, 100, "*")
+text(34,100,"*")
+text(35, 100, "*")
+text(36,100,"*")
+text(39, 100, "*")
+legend("top", inset = 0.00, c("0-18 yrs old", "19-24 yrs old", "25-64 yrs old", "65+ yrs old"),  fill=colfunc(4), horiz=TRUE, cex=1, box.lty=0) 
+```
+
+```{r, results='hide', echo=FALSE}
+Sbefore <- c(8.76,5.617,68.14,17.48)
+res <- chisq.test(Sbefore, p = c(0.08745,0.11875,0.64025,0.15355))
+res
+```
+
+```{r, results='hide', echo=FALSE}
+Sduring <- c(8.76,5.617,68.14,17.48)
+res <- chisq.test(Sduring, p = c(0.09425,0.1262,0.62935,0.1502))
+res
+```
+
+```{r, results='hide', echo=FALSE}
+Safter <- c(8.76,5.617,68.14,17.48)
+res <- chisq.test(Safter, p = c(0.0785,0.1278,0.6166,0.1771))
+res
+```
+
+## Scripps Mercy Hospital Respiratory Admission Data
+
+Similar to the graph above, there are quite a few missing days because there were less than 11 respiratory patients for that day. However, when analyzing the data that we do have, we can clearly see that the fire caused an initial increase in respiratory patients, then it went down as the fire continued and then increased again at the end of the fire.
+I used a statistical t-test to determine if there is a significant change in respiratory hospital admission data during the fire compared to periods before and after the fire and determined that there was not a significant change in hospital admission data from ages 65+ years old. (t-test, t=1.7619, df=12 p>0.05). I did not include dates where there are missing data in my calculations because since the number of hospital admission data for that category that day was less than 11 patients, the hospital did not record the data.
+
+
+
+```{r SRes, results='hide', echo=FALSE, fig.width=7,fig.height=6,fig.cap="* = admission data < 11"}
+SRes=read.csv("SRes.csv")
+SRes$Admission.Date=as.Date(SRes$Admission.Date, format = "%y-%m-%d")
+SRes$Admission.Date = format(as.Date(SRes$Admission.Date), "%m/%d")
+colfunc <- colorRampPalette(c("pink", "lightpink"))
+colfunc(10)
+SRes1.data = matrix(c(SRes$Respiratory), nrow = length(SRes$Respiratory))
+barplot(t(SRes1.data), names.arg = SRes$Admission.Date, col = colfunc(4), ylim = c(0,25), las=1,xlab="Date of Hospital Admission",ylab="Number of Hospital Admission")
+text(0, 10, "*")
+text(1, 10, "*")
+text(2, 10, "*")
+text(3, 10, "*")
+text(4, 10, "*")
+text(5, 10, "*")
+text(6, 10, "*")
+text(7, 10, "*")
+text(14, 10, "*")
+text(15, 10, "*")
+text(16, 10, "*")
+text(17, 10, "*")
+text(18, 10, "*")
+text(19, 10, "*")
+text(20, 10, "*")
+text(21, 10, "*")
+text(22, 10, "*")
+text(23, 10, "*")
+text(27, 10, "*")
+text(28, 10, "*")
+text(29, 10, "*")
+text(30, 10, "*")
+text(31, 10, "*")
+text(32, 10, "*")
+text(33, 10, "*")
+text(35.5, 10, "*")
+text(42.5, 10, "*")
+legend("topright", inset = 0.00, c("Respiratory Data"),fill=colfunc(1), horiz = TRUE, cex = 1.1, box.lty = 0)
+```
+
+## Is there a significant difference between Hispanic and White Hospital Admissions?
+I used an anova statistical test to compare the data between the White and Hispanic Hospital Admissions at both the Tri-City Medical Center and the Scripps Mercy Hospital. After calculations, I found a significant relationship between the admission demographics at the Tri-City Medical Center regarding racial composition of emergency department visits before, during and after the smoky period of a fire. This data set concludes that we can reject my null hypothesis hospital admission data in Hispanics at the Tri-City Medical Center which is located in a primarily non-white neighborhood with a median income below the state average. 
+
+## Is there a significant difference between age related Hospital Admissions before, during and after a fire period?
+I used a chi-squared statistical test to compare my data between various age groups at both the Tri-City Medical Center and the Scripps Mercy Hospital. After calculations, I did not find a significant relationship between the admission demographics at the Tri-City Medical Center regarding the age composition of emergency department visits before, during and after the smoky period of a fire. 
+
+## Proposal
+A recommendation to increase the accuracy of this experiment would be to get hospital admission data from a similar in size area that is not affected by the fire. This group would serve as the controlled group which would allow the studier to conduct a BACI test. The hospitals that are serving patients that have been affected by the fire would be the experimental group. A BACI test would allow the studier to have a base data to compare hospital admission data from the affected group. 
+
+## Conclusion
+
+In conclusion, I can reject my first null hypothesis of, “that there are no statistically significant differences before, during and after a fire period in White and Hispanic Hospital admission” because there was a significant difference between the admission demographics at the Tri-City Medical Center regarding the age composition of emergency department visits before, during and after the smoky period of a fire. However, due to no significant difference in my data after calculations, I cannot reject my other null hypothesis of, “that there are no statistically significant differences in ages between hospital admission percentages and population percentages” for before, during and after a fire period for both hospitals.
