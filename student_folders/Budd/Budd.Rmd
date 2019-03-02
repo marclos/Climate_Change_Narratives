@@ -3,7 +3,6 @@
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 <center>
 
 ### How Are Warming Autumns Impacting Fall Foliage and the Tourist Economy In New Hampshire?
@@ -46,7 +45,7 @@ Additionally, the foliage season is terminated by the onset of frost. When freez
 
 #### Methods \ 
 
-The National Oceanic and Atmospheric Association, or NOAA, has a large global network of daily temperature data, called the Global Historical Climate Network. This information is available for free on NOAA’s website. In order to assess the potential impact of New Hampshire temperatures on autumnal leaf phenology, I obtained temperature records from a station in Concord, New Hampshire ranging from April 4, 1939 to January 26, 2019. I imported this data into RStudio, where I analyzed the trends for both maximum and minimum temperatures in September, which has historically been the epicenter of foliage season. The null hypothesis which I was investigating here states that there is no relationship between temperature and time. The other data set which I analyzed was obtained via “civilian science.” A famous tourist destination in Northern New Hampshire, Polly’s Pancake Parlor, has been recording the start and end dates of the foliage season since 1975. I imported their data into Excel, where I calculated the number of days each season lasted. I then imported this data set into RStudio, where I analyzed the change in season length over time. Here, the null hypothesis was that there is no relationship between foliage season length and time. I investigated these null hypotheses using the p-value. If the p-value is less than 0.05, then the findings are considered to be statistically significant, and the null hypothesis may be rejected. \ 
+The National Oceanic and Atmospheric Association, or NOAA, has a large global network of daily temperature data, called the Global Historical Climate Network. This information is available for free on NOAA’s website. In order to assess the potential impact of New Hampshire temperatures on autumnal leaf phenology, I obtained temperature records from a station in Concord, New Hampshire ranging from April 4, 1939 to January 26, 2019. I imported this data into RStudio, where I analyzed the trends for both maximum and minimum temperatures in September, which has historically been the epicenter of foliage season. The null hypothesis which I was investigating here states that there is no relationship between temperature and time. The other data set which I analyzed was obtained via “civilian science.” A famous tourist destination in Northern New Hampshire, Polly’s Pancake Parlor, has been recording the start and end dates of the foliage season since 1975. I imported their data into Excel, where I calculated the number of days each season lasted. I then imported this data set into RStudio, where I analyzed the change in season length over time. Here, the null hypothesis was that there is no relationship between foliage season length and time. I investigated these null hypotheses using the p-value. If the p-value is less than 0.05, then the findings are considered to be statistically significant, and the null hypothesis may be rejected. I hypothesize that both fall temperatures and the length of the fall foliage season will increase with time. \ 
 
 <center>
 
