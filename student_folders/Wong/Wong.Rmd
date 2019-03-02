@@ -1,7 +1,7 @@
 ---
-title: "*What are the origins of the extreme flooding in Southeastern China?*"
+title: "What are the origins of the extreme flooding in Southeastern China?"
 author: "Kylie Wong"
-date: "03/01/2019"
+date: "Friday, March 1st, 2019"
 output: html_document
 
 ---
@@ -10,10 +10,15 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##Introduction 
-As China continues to climb up the global ranks with its recent goals for technological advancements and urban development, the natural landscape of the country is put at risk. Specifically in Southeast China, where urban development is centralized around the entire Pearl River Delta, large cities like Guangzhou and many others are at a high risk of flooding. As a result, the urban infrastructure is threatened. In addition, the entire livelihood of Chinese citizens are threatened with the high frequency of flash floods. The heavy rainfall and flooding in Southeast China in the summer of 2016 generated $1.1 billion in damages, left 200,000 people without a home, and took 36 lives (NSSL). With climate change escalating extreme weather trends, the frequency of these floods are likely to increase, costing more lives and creating more damages. 
+![**Fig. 1** *Part of the Pearl River Delta that runs through the large metropolitan city of Hong Kong in Southeast China. Photo from Thailand Business News*](prd.png)   
 
-In this blog, I will attempt to explore the origins of the floods in the Pearl River Basin of South China, and what triggers the intensity of the floods. In addition, I will analyze the impacts of the floods on the socio-economic infrastructure of Southeast China; therefore, I hypothesize that the intensity of rainfall is correlated to the power of flash floods in South China, which would lead to detrimental effects the socio-economic infrastructure in China.  
+##Introduction 
+As China continues to climb up the global ranks with its recent goals for technological advancements and urban development, the natural landscape of the country is put at risk. Specifically in Southeast China, where urban development is centralized around the entire Pearl River Delta, large cities like Guangzhou and many others are at a high risk of flooding. As a result, the urban infrastructure is threatened. In addition, the entire livelihood of Chinese citizens are threatened with the high frequency of flash floods. The heavy rainfall and flooding in Southeast China in the summer of 2016 generated $1.1 billion in damages, left 200,000 people without a home, and took 36 lives. With climate change escalating extreme weather trends, the frequency of these floods are likely to increase, costing more lives and creating more damages.   
+
+In this blog, I will attempt to explore the origins of the floods in the Pearl River Basin of South China, and what triggers the intensity of the floods. In addition, I will analyze the impacts of the floods on the socio-economic infrastructure of Southeast China; therefore, I hypothesize that the intensity of rainfall is correlated to the power of flash floods in South China, which would lead to detrimental effects the socio-economic infrastructure in China.                                                                                                                                                                                         
+<center>
+![**Fig. 2** *Flooding in Macau as a result of Typhoon Hato in 2017. Photo from Hong Kong Free Press*](macauflood.png)
+</center>
 
 
 
@@ -23,13 +28,14 @@ Floods occur after heavy and overflowing rainfall on land that is usually dry. T
 
 
 ##Methods  
-To conduct this study, I accessed the database on National Oceanic and Atmospheric Administration  (NOAA) to collect precipitation data in my region of study. I collected data from: Guangzhou, the delta region in the eastern part of the basin; Hechi, which is in the western part; and Guilin, which is closest to the northwestern part of the basin. I chose to graph three different sets of data to test if the differences in the geographic terrain of the watershed is correlated with the amounts of precipitation in each region. In addition, I accessed multiple peer review journals for the information about specific extreme climate patterns (which are all cited below). 
+To conduct this study, I accessed the database on National Oceanic and Atmospheric Administration  (NOAA) to collect precipitation data in my region of study. I collected data from: Guangzhou, the delta region in the eastern part of the basin, and Guilin, which is closest to the northwestern part of the basin. I chose to graph two different sets of data to test if the differences in the geographic terrain of the watershed is correlated with the amounts of precipitation in each region. 
+
+To analyze the data, I will have to read and interpret the p and adjusted r squared values. If the p value is greater than 0.05, then there is no significance in the data. If the p value is less than 0.05, then we reject the null hypothesis and conclude that there is significance in the data. For the adjusted r squared value, the higher the value means that the data has a strong correlation to its best fitted line of regression. To further the scope of my study, I accessed multiple peer review journals for the information about specific extreme climate patterns. 
 
 
 
 ##Data
-```{r,read, echo = FALSE, results= 'hide'}
-file.choose()
+```{r, echo = FALSE, results= 'hide'}
 read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
 guangzhou_precdata <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
 head(guangzhou_precdata)
@@ -37,98 +43,106 @@ str(guangzhou_precdata)
 names(guangzhou_precdata)
 ```
 
-```{r}
-#plotting
+```{r, echo = FALSE, results= 'hide'}
+#plotting guangzhou data
 #plot(PRCP~DATE, guangzhou_precdata)
 min(guangzhou_precdata$PRCP)
 strDates <- as.character(guangzhou_precdata$DATE)
-climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+guangzhou_precdata$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
 ```
 
-```{r}
-plot(PRCP~NewDate, guangzhou_precdata)
+```{r, echo = FALSE, results= 'hide'}
+#plot(PRCP~NewDate, guangzhou_precdata)
 prcp.lm=lm(PRCP~NewDate, data=guangzhou_precdata)
-abline(coef(prcp.lm), col="red")
-```
-```{r}
-guangzhou_precdata$PRCP[guangzhou_precdata$PRCP==-9999] <- NA
-Missing <- aggregate(is.na(guangzhou_precdata$PRCP), list(guangzhou_precdata$Month, guangzhou_precdata$Year), sum)
-
+#abline(coef(prcp.lm), col="red")
 ```
 
-
-
-
-##Guangzhou, China Temperature Graph 
-(this may not be relevant to my research)
-```{r, read, echo = FALSE, results='hide'}
-#preparing and reading CSV file 
-#read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
-climate_data <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/kyliewong_guangzhou_data.csv")
-head(climate_data)
-str(climate_data)
-#climate_data$TMAX
-plot(TMAX~DATE, climate_data)
-min(climate_data$TMAX)
-min(climate_data$TMAX, na.rm=T)
+```{r, echo = FALSE, results= 'hide'}
+#monthly means for the year
+guangzhou_precdata$Month = format(as.Date(guangzhou_precdata$NewDate), format = "%m")
+guangzhou_precdata$Year = format(guangzhou_precdata$NewDate, format="%Y")
+MonthlyPRCPMean = aggregate(PRCP~Month+Year, guangzhou_precdata, mean)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+#plot(MonthlyPRCPMean$PRCP)
 ```
 
-```{r, fixdates, echo = FALSE}
-##Changing dates
-climate_data$TMAX[climate_data$TMAX==-9999] = NA
-climate_data$TMIN[climate_data$TMIN==-9999] = NA
-plot(TMAX~DATE, climate_data[1:1835,], ty='l')
-str(climate_data)
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
-```
-
-```{r, echo = FALSE}
-##Preparing the monthly average plots 
-lm(TMAX ~ NewDate, data=climate_data)
-summary(lm(TMAX ~ NewDate, data=climate_data))
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
-str(MonthlyTMAXMean)
-plot(MonthlyTMAXMean$TMAX, ty='l')
-```
-
-```{r, echo = FALSE}
-##May Vector 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-summary(May.lm)
-abline(coef(May.lm), col="red")
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
+```{r, echo = FALSE, results= 'hide'}
+#mean for August
+#plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",], xlim=c(1951,2020))
+August.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",])
+#abline(coef(August.lm), col='red')
+summary(August.lm)
 ```
 
 
-```{r, echo = FALSE}
-##Monthly averages of daily minimum temperatures
-Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
-TMAXresult <- NA
-for (i in 1:12) {
-plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
-Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
-summary(Month.lm)
-abline(coef(Month.lm), col = "red")
-TMAXresult <- rbind(TMAXresult, cbind(Months[i],
-round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared, 3)))
-}
 
-plot(MonthlyTMINMean$TMIN, ty='l')
+```{r, echo = FALSE, results= 'hide'}
+#importing guilin prcp data
+read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/1628919.csv")
+guilin_precdata <-read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/1628919.csv")
+head(guilin_precdata)
+str(guilin_precdata)
+names(guilin_precdata)
+```
 
+```{r, echo = FALSE, results= 'hide'}
+#plotting guilin data
+#plot(PRCP~DATE, guilin_precdata)
+min(guilin_precdata$PRCP)
+strDates <- as.character(guilin_precdata$DATE)
+guilin_precdata$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+```{r, echo = FALSE, results= 'hide'}
+#plot(PRCP~NewDate, guilin_precdata)
+prcp2.lm=lm(PRCP~NewDate, data=guilin_precdata)
+#abline(coef(prcp.lm), col="red")
+```
+
+```{r, echo = FALSE, results= 'hide'}
+#monthly means for the year
+guilin_precdata$Month = format(as.Date(guilin_precdata$NewDate), format = "%m")
+guilin_precdata$Year = format(guilin_precdata$NewDate, format="%Y")
+MonthlyPRCP2Mean = aggregate(PRCP~Month+Year, guilin_precdata, mean)
+MonthlyPRCP2Mean$YEAR = as.numeric(MonthlyPRCP2Mean$Year)
+MonthlyPRCP2Mean$MONTH = as.numeric(MonthlyPRCP2Mean$Month)
+#plot(MonthlyPRCP2Mean$PRCP)
+```
+
+```{r, echo = FALSE, results= 'hide'}
+#mean for August Guilin
+#plot(PRCP~YEAR, data=MonthlyPRCP2Mean[MonthlyPRCP2Mean$Month=="08",], xlim=c(1951,2020))
+August2.lm <- lm(PRCP~YEAR, data=MonthlyPRCP2Mean[MonthlyPRCP2Mean$Month=="08",])
+#abline(coef(August2.lm), col='red')
+summary(August2.lm)
 
 ```
+
+```{r, echo = FALSE, results= 'hide', fig.align='center', fig.cap= "Fig.3 The graphs displayed above represents the precipitation averages for the month of August from each year between 1951 and 2018 for both Guangzhou and Guilin, China."}
+#lining up the two graphs from guangzhou and guilin
+par(mfrow = c(1,2))
+
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",], xlim=c(1951,2020), 
+     main = "Guangzhou, China",
+     xlab = "YEAR",
+     ylab = "PRCP (mm)") 
+August.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",])
+abline(coef(August.lm), col='red')
+summary(August.lm)
+
+plot(PRCP~YEAR, data=MonthlyPRCP2Mean[MonthlyPRCP2Mean$Month=="08",], xlim=c(1951,2020),
+     main = "Guilin, China",
+     xlab = "YEAR",
+     ylab = "PRCP (mm)")
+August2.lm <- lm(PRCP~YEAR, data=MonthlyPRCP2Mean[MonthlyPRCP2Mean$Month=="08",])
+abline(coef(August2.lm), col='red')
+summary(August2.lm)
+```
+
+####What do the graphs show? 
+For Guangzhou, China, the p value is less than 0.01, which means that we reject the null hypothesis, concluding that the precipitation data has a weak relationship to the x-variable (year). The adjusted r-squared value for the same location is 0.0861. This means that only about 8.6% of the data is explanatory.
+
+For Guilin, China, the p value is greater than 0.05, which means that we accept the null hypothesis, which concludes that the trends of precipitation are related to the x-variable (year). The adjusted r-squared value is 0.01127, which is even lower than the value from Guangzhou. This means that only about 1% of the data is explanatory; therefore, this data is very inconclusive and hard to explain. 
 
 
