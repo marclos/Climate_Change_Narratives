@@ -1,7 +1,7 @@
 ---
 title: 'From Fire to Floods: Climate Whiplash in Los Angeles County'
 author: "Toni Anderson"
-date: "2/23/2019"
+date: "3/1/2019"
 output:
   html_document: default
   word_document: default
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-Southern California, specifically Los Angeles County, is well known for its temperate climate and sunny beaches. The entertainment capital of the world has a reputation as one of the most idyllic climates in America; it only makes sense that it is the most populous county in the United States with over 10 million residents.^9^ However, LA county's warm climate hides a much more sinister environmental concern: the phenomenon known colloquially as “climate whiplash.” Put simply, this term denotes frequent transitions from very wet to very dry weather.^8^ This phenomenon is becoming more prevalent worldwide, but is easily identifiable in Southern California: at the end of 2018, for example, the hills of Burbank went from a raging fire to deadly mudslides in just a few weeks, causing massive property damage^6^ and prolonged evacuations of both people and livestock.^1^ Observed climate and precipitation trends support the hypothesis that temperature and therefore precipitation are not only increasing, but becoming more varied over time. This blog examines the observed trends of climate whiplash in Southern California. Using both scientific studies and raw climate data from the National Oceanic and Atmospheric Administration (NOAA), I will analyze evidence to support the existence of the above hypothesis in the Los Angeles County Region. From this data, I will then discuss the effects of this whiplash on the community itself; including flooding, fires, and water supply contamination. The effects of climate whiplash are still being unraveled from those attributed solely to global warming; this blog intends to demystify some of these misguided conclusions and bring awareness to the Los Angeles’ new reality of climate whiplash. 
+Southern California, thanks to its temperate climate and sunny beaches, has a reputation as one of the most idyllic climates in America. The heart of Southern California, Los Angeles county,is the most populous county in the United States with over 10 million residents.^9^ However, LA county's warm climate hides a much more sinister environmental concern: the phenomenon known colloquially as “climate whiplash.” Put simply, this term denotes frequent transitions from very wet to very dry weather.^8^ This phenomenon is becoming more prevalent worldwide, but is easily identifiable in Southern California: at the end of 2018, for example, the hills of Burbank went from a raging fire to deadly mudslides in just a few weeks, causing massive property damage^6^ and prolonged evacuations of both people and livestock.^1^ Observed climate and precipitation trends support the hypothesis that temperature and therefore precipitation are not only increasing, but becoming more varied over time. This blog examines the observed trends of climate whiplash in Southern California. Using both scientific studies and raw climate data from the National Oceanic and Atmospheric Administration (NOAA), I will analyze evidence to support the existence of the above hypothesis in the Los Angeles County Region. From this data, I will then discuss the effects of this whiplash on the community itself; including flooding, fires, and water supply contamination. The effects of climate whiplash are still being unraveled from those attributed solely to global warming; this blog intends to demystify some of these misguided conclusions and bring awareness to the Los Angeles’ new reality of climate whiplash. 
 
 ![LA County. Source: Google Maps](Burbank Maps.png)
 
@@ -118,7 +118,7 @@ abline(c, col="red")
 
 ```
 
-This graph shows Burbank’s average monthly maximum temperatures from 1940 until today, representing the entirety of the data set. This graph, while not entirely useful for the climate whiplash theory, showcases the seasonal variation in climate, as well as establishes a positive relationship between maximum temperature and time. With a p-value of 0.015, it is safe to reject the null hypothesis, establishing a relationship between time and temperature. 
+This graph shows Burbank’s average monthly maximum temperatures from 1940 until today, representing the entirety of the data set. With a p-value of 0.015, it is safe to reject the null hypothesis, establishing a concrete relationship between time and temperature. Furthemore, with a postive slope of 4.77 x 10^-5^, this graph asserts that this relationship is positive, or increasing over time. Though the slope itself may seem small, it is very significant because in a graph with such varied data, even a small net increase has big impacts on future variation patterns.^8^ In climate data especially, where even half a degree can cause major environmetnal impacts, even relatively small trends have big consequences.^4^
 
 
 ###Minimum Temperature Monthly Averages 
@@ -131,7 +131,7 @@ abline(c, col="blue")
 
 ```
 
-This graph also shows monthly average temperature, but this time, it is showcasing the minimums. Once again we can reject the null hypothesis with a p-value of 0.001. Comparing the trend to the TMAX graph, it is easy to see the while TMIN is still increasing, it is doing so far less rapidly than TMAX, leading to an icreasing gap between the daily TMAX and TMIN. This is the first indication of climate whiplash; as gaps become more pronounced and varied over time, there will be a large effect on precipitation consistency, therefore kickstarting whiplash climate patterns.^6^
+This graph also shows monthly average temperature, but this time, it is showcasing the minimums. Once again we can reject the null hypothesis with a p-value of 0.001. The slope is 4.62 x 10^-5^; again a relatively small slope, but one with important implications. While TMIN is still increasing, it is doing so far less rapidly than TMAX, leading to an icreasing gap between the daily TMAX and TMIN. This is the first indication of climate whiplash; as gaps become more pronounced and varied over time, there will be a large effect on precipitation consistency, therefore kickstarting whiplash climate patterns.^6^
 
 ###Precipitation Monthly Sums 
 
