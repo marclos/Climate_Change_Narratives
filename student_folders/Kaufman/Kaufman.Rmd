@@ -1,5 +1,5 @@
 ---
-title: "eves blog"
+title: "New York City Flood Risk Assessment"
 author: "eve kaufman"
 date: "2/11/2019"
 output: html_document
@@ -8,13 +8,16 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+
 ```
 
 
 ```{r}
 
 filepath = "/home/CAMPUS/eakb2016/Climate_Change_Narratives/student_folders/Kaufman/1606726.csv"
+filepath2 = "/home/CAMPUS/eakb2016/Climate_Change_Narratives/student_folders/Kaufman/1628915.csv"
 climate_data = read.csv(filepath)
+sealevel_data = read.csv(filepath2)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -24,12 +27,9 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
-#abline(coef(May.lm), col="red")
 
-
-
-Months = c("January", "February", "March", "April", "May", "June",
-"July", "August", "September", "October", "November", "December")
+Months = c("Temperature in January", "Temperature in February", "Temperature in March", "Temperature in April", "Temperature in May", "Temperature in June",
+"Temperature in July", "Temperature in August", "Temperature in September", "Temperature in October", "Temperature in November", "Temperature in December")
 
 TMAXresult <- NA
 
@@ -52,7 +52,6 @@ TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), ro
 
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
