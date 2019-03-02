@@ -16,11 +16,15 @@ strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y%m%d")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
+
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 
 #ylab <- expression('stuck'*'together'*'eg:'*mu*'liter')
 #xlab <- expression('sep'~'par'~'at'~'ed'~'eg:'~mu~'liter')
@@ -68,24 +72,45 @@ For stand alone figures, we usually add titles, but in papers and lab reports it
 In addition, we can change the x-axis label, with the 'xlab' argument. Specifying the units is also required. And in this case, we want to add the \degree symbol and create a text string with the axis label in quotes that can be referenced in the hist() funtion. 
 
 <<>>=
-xlabel <- "Maximum Temperature (°C)"
-hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=xlabel)
+TMAXlabel <- "Maximum Temperature (°C)"
+hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel)
 @
 
-\subsection{Axes Values and Range}
+\subsection{Putting Multiple Figures in a Row}
+
+To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns. It's often a good idea to set the graphic parameter back to the default afterwards. 
+
+<<>>=
+par(mfrow=c(1,2))
+hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel)
+TMINlabel <- "Minimum Temperature (°C)"
+hist(MonthlyTMINMean$TMIN, main=NULL, xlab=TMINlabel)
+par(mfrow=c(1,1))
+@
+
+
+\section{Boxplot}
+
+
+
+\section{Scatter Plot -- Non-time series}
+
+
+\subsection{Scatter Plot -- Time Series}
 
 For scatter plots, which are more common, we use the same principles:
 
 <<>>=
 plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])
-abline(coef(lm(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])), col='darkred')
+abline(coef(lm(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])),
+    col='darkred')
 @
 
 Let's fix the y-axis label as we did above (TMAX is not a very helpful label!). Furthermore, the x-axis needs to be calmed down some, so let's change the case for these. We will also change the symbols to make it less busy with the `pch' argument. You can look online to see the choices one has in R. 
 
 I am also not impress with the vertical orientation of the y-axis, so it's important to change these as well. 
 
-Finally, it's important that the image works in black and white. So, let's see if we can modify the graphic to make it less resource intensive. Finally, let's add a caption and reference to the figure (Figure \ref{}).
+Finally, it's important that the image works in black and white. So, let's see if we can modify the graphic to make it less resource intensive. Finally, let's add a caption and reference to the figure (Figure \ref{fig:maxtemp}).
 
 \begin{figure}[h]
 <<>>=
@@ -100,22 +125,29 @@ abline(coef(lm(TMAX ~ YEAR,
 \label{fig:maxtemp}
 \end{figure}
 
+Now, what if we only want to display part of the data. We can limit the x-axis range using the 'xlim' argument, where we create a vector of for the start and end of the range.  
 
-\section{Boxplot}
+\begin{figure}[h]
+<<>>=
+ylabel <- "Maximum Temperature (°C)"
+plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,],
+     xlim=c(1940, 2000),
+     ylab=ylabel, xlab='Year', pch=20, las=1, col='gray')
 
-\subsection{Boxplot: Best Practice}
+abline(coef(lm(TMAX ~ YEAR, 
+    data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])), col='black')
+@
+\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
+\label{fig:maxtemp}
+\end{figure}
 
-\section{Scatter Plot -- Non-time series}
+Alternatively, you may want to creat a best fit line that only covers the range for the existing data without extrapolating, which is usually a very good idea for most scientific endeavors!
 
-\subsection{Histogram: Scaltter Plot}
 
-\subsection{Scatter Plot -- Time Series}
 
-\subsection{Time Series: Best Practice}
 
 \section{Bar Graphs}
 
-\subsection{Bar Chart: Best Practice}
 
 \section{Tables}
 
