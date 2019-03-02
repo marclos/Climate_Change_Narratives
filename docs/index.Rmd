@@ -1,149 +1,30 @@
 ---
-title: "Attribution Science -- Do Extreme Events have a Climate Change Signature"
-subtitle: "Is there a Signal in the Noise?"
-author: "Environmental Analysis 30 Students, Pomona College"
-date: "`r Sys.Date()`"
-output:
-  tufte::tufte_html: default
-  tufte::tufte_handout:
-    citation_package: natbib
-    latex_engine: xelatex
-  tufte::tufte_book:
-    citation_package: natbib
-    latex_engine: xelatex
-bibliography: skeleton.bib
-link-citations: yes
+title: "Test"
+author: "marc"
+date: "3/1/2019"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
-library(tufte)
-# invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
-# What is Attribution Science
-
-Attribution Science is a subset of climate science that attempts to evaluate the effect of climate change on weather patterns, in particular extreme weather events. 
-
-The effort has focused on changes observed during the period of instrumental temperature record, particularly in the last 50 years. This is the period when human activity has grown fastest and observations of the atmosphere above the surface have become available. 
-
-## Scientific 'Progress': False Positives and Negatives
-
-## Epistomologies and Climate Science
-
-# Climate Science and Local Knowledges
-
-## Climate, Radiative Forcing, and Carbon Dioxide
-
-Although the Earth's climate has been changing for hundreds of thousands, even millions and billions of years, even small changes to the Earth's average temperatures has significant implications for human activities. 
-
-Climate change science can be extremely complex, but according to the Intergovernmental Panel on Climate Change (IPCC), it is ''extremely likely'' that human influence was the dominant cause of global warming between 1951 and 2010.
-
-### Signal and Noise
-
-Some of the main human activities that contribute to global warming are:
-
--- Increasing atmospheric concentrations of greenhouse gases 
-
-```{r maunaloa, echo=FALSE}
-address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
-#download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
-
-maunaloa <- read.table("maunaloa", skip=70)
-names(maunaloa) <- c("year", "month", "decimal.date", "average", "interpolated", "trend", "days")
-maunaloa$average[maunaloa$average==-99.99] <- NA
-maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=maunaloa$decimal.date, average=maunaloa$average)
-#head(maunaloa)
-#str(maunaloa)
-#write.csv(maunaloa, file = "H:\\My Documents\\My Webs\\Mauna_Loa.csv", eol = "\n", row.names = F)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r fig-margin, fig.margin = TRUE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
-par(las=1)
-plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
-main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
-abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
 ```
 
--- Global changes to land surface, such as deforestation
+## Including Plots
 
-FIGURE NEEDED
+You can also embed plots, for example:
 
--- Increasing atmospheric concentrations of aerosols.
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
 
-FIGURE NEEDED
-
--- In addition to human activities, some natural mechanisms can also cause climate change, including for example, climate oscillations, changes in solar activity, and volcanic activity.
-
-FIGURE NEEDED
-
-Multiple lines of evidence support attribution of recent climate change to human activities:
-
-* A basic physical understanding of the climate system: greenhouse gas concentrations have increased and their warming properties are well-established.
-
-* Historical estimates of past climate changes suggest that the recent changes in global surface temperature are unusual.
-
-* Computer-based climate models are unable to replicate the observed warming unless human greenhouse gas emissions are included.
-
-
-Natural forces alone (such as solar and volcanic activity) cannot explain the observed warming.
-The IPCC's attribution of recent global warming to human activities is a view shared by the scientific community, and is also supported by 196 other scientific organizations worldwide.
-
-Here are two well undertood proceses: 
-
-
-
-2) Human activity such as the burning of fossil fuels (coal, oil, gas) is rapidly increasing the amount of carbon dioxide in Earth’s atmosphere. Note: Not only are carbon dioxide emissions increasing, the rate is accelerating. 
-
-Based on these two processes, we can draw the following conclusion:
-
-We should expect the rising carbon dioxide concentration to warm our planet, with the warming becoming more severe as we add more carbon dioxide. But does this mean that we should also expect wildfires to increase as well?
-
-## Local Knowledges as Embodied Evidence
-
-Despite overwhelming support and proof of climate change, there are still climate skeptics, especially in the Southern United States. This comes as no surprise considering the South's heavy reliance on burning coal and oil for energy. [Vance 2019](S2019_Blogs/Vance/Vance.html) found evidence that the region may be hardest hit by the effects of climate change especially if we continue business as usual. 
-
-# What are Extreme Weather Events?
-
-
-
-## Attribution and Environmental Justice
-
-
-
-# What are the Regional Impacts of Climate Change?
-
-Our team reviewed a diverse collection of scientific literature to evaluate the implications of climate change and 
-
-
-[Budd 2019](S2019_Blogs/Budd/Budd.html)
-
-[Clark 2019](S2019_Blogs/Clark/Clark.html)
-
-[Generous 2019](S2019_Blogs/Generous/Generous.html)
-
-[Kaufman 2019](S2019_Blogs/Kaufman/Kaufman.html)
-
-[Namachivayam 2019](S2019_Blogs/Namachivayam/Namachivayam.html)
-
-## Public Safety and Health
-
-
-
-## Heat Waves and Mortality
-
-## Floods, Droughts -- Weather and Hydrology
-
-
-
-## Wildfire Risks and WUIs
-
-In Southern California, the climate is not simply warming or cooling. Thanks to ongoing changes in climate, the rainy season has begun a pendulum effect, swinging from storms and flooding to drought conditions almost yearly in a phenomenon known as `climate whiplash' [(Anderson 2019)](S2019_Blogs/Anderson/Anderson.html).
-
-## Previous Projects
-
-[Climate Change and Fires -- Is this a red herring or the alarm alarmists have been warning about?](Index_2018F.html)
-
-[Why Climate Change Will Affect You Personally?](Index_2017F.html)
-
-[Climate Change and Logical Fallacies](Index_2017S.html)
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
