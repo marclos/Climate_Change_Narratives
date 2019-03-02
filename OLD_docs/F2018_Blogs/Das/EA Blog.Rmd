@@ -1,0 +1,98 @@
+---
+title: "Area and Population Relating to Fires in California Counties"
+author: "Gabriel Das"
+date: "10/13/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+Fuel management is an important strategy in combating wildfires throughout the state of California. Fuel is defined as live or dead brush that has built up over time and assists fires to grow and spread. Brush removal is therefore a common type of fuel management. Given the large size of California, different techniques and priorities are used for each county, with differences being between northern and southern California, where the temperature and soil moisture vary among counties in either direction. Temperature tends to be higher in southern counties, and soil moisture tends to be higher in northern counties. This difference can be accredited to both natural and human causes. Increased pollution and consequently longer droughts increase temperature and reduce soil moisture in southern California. Pollution correlates to population density. Some counties are more populated than others, which is a major factor in determining which types of fuel management to use. In the case of more populated counties, prescribed fires may be discouraged in favor of other types of fuel management which are inforced through laws and regulations. Prescribed fires are unfavorable because they threaten the well-being of the high number of people who live in Wildland Urban Interfaces (WUIs). Prescribed fires are not preferred to be used in highly populated WUIs since it risks the public's safety. Another factor  is the area of each county. I examine how this may be related to the acres of land burned in each county. 
+
+## Methods 
+I selected data from the Cal Fire incident information website, where I found the total number of acres burned from wildfires, as well as the number of fires in each county of California that there was data for from March to October of 2018. Also on the website are links that give information about a few counties for the acres of prescribed fires and fuel management. Population data for each county was selected from the World Population Review website, and data for the areas of each county is from the California State Association of Counties website. An article from University of California, Berkeley also describes the relationship between fire and fuel management.
+
+## Fuel Management
+Fuel Management consists of prescribed burning in addition to brush removal, ensuring space between houses and WUIs, and creating a budget for combating fires when they do arise. The latter methods are more common in counties with a higher population. Fuel management such as brush removal and reducing tree population density. Prescribed fires are used after taking into account weather, climate and topography of the region (Husari, 2006)
+
+## Prescribed Burning
+
+Prescribed burns are designed to control and monitor certain regions to burn biomass which acts as fuel. This is supposed to reduce the risk of a wildfire returning. Below is a graph depicting prescribed fires of six different counties and how they relate to the acres of land burned in each county. Except for one outlier for an exceptionally large amount of burned acres in Shasta County, an exponentially decreasing function is present for counties that used prescribed fires.
+
+```{r,echo=F}
+acres=read.csv("Prescribed_fires_v_acres.csv")
+
+plot(acres$Prescribed~acres$Acres, type="p", xlim=c(0,7000), ylim=c(0,5000), xlab="Prescribed Fire (acres)", ylab="Land Burned (acres)")
+```
+
+
+The other graph below shows the relationship between prescribed fires and the number of fires. The more acres affected by prescribed fires in each county, the more fires there are in that same county. While this may seem to disprove the effect of prescribed fire on combating fire regimes, looking closer at the data suggests that while the number of fires increase, they tend to be smaller than in counties without prescribed burning. There are exceptions, of course.
+
+
+```{r,echo=F}
+nofires=read.csv("precribed_fires_v_number_of_fires.csv")
+
+plot(nofires$fires~nofires$Prescribed, type="p", xlim=c(0,7000), ylim=c(0,20), ylab="Number of Fires", xlab="Prescribed Fire (acres)")
+
+```
+
+## Area of Counties affected
+
+```{r pressured, echo=FALSE, fig.cap=" (Biggest Three CA Counties)."}
+knitr::include_graphics("Biggest 3 counties by area.PNG")
+```
+
+
+Kern and Los Angeles are two of the biggest counties in terms of area, who also have no prescribed fires. They also have among the largest amount of acres used for fuel management. 
+
+
+## Population
+
+```{r pressurea, echo=FALSE, fig.cap=" (California population density by county)."}
+knitr::include_graphics("California county population density.PNG")
+```
+
+
+
+The three counties with the highest population are:
+```{r pressureb, echo=FALSE, fig.cap=" (World Population Review 2018)."}
+knitr::include_graphics("Top 3 pop counties.PNG")
+```
+
+
+Los Angeles County suffered a total of 1,737 acres burned from 5 different fires
+San Diego County suffered a total of 713 acres burned with 15 different fires
+Orange County suffered a total of 330 acres burned from 3 different fires.
+
+
+The three counties with the lowest population are:
+```{r pressurec, echo=FALSE, fig.cap=" (World Population Review 2018)."}
+knitr::include_graphics("Lowest three pop counties.PNG")
+```
+
+
+Alpine and Sierra suffered no acres burned, since there have been no fires in these counties in 2018 thus far. Modoc County, on the other hand, suffered 58,569 acres of land burned from only 3 fires. This puts Modoc County among the top of counties in California that experienced the most acres burned. 
+
+
+## Discussion
+It seems that size of counties has no real effect on the amount of acres burned in each county. Big counties did not necessarily have bigger or more fires than small counties. Also, population in each county did seem to have a small effect. Counties with more people tended to have less fires than those with less people. In addition, larger counties did not use prescribed fires as much as smaller counties. These counties instead focused more on other types of fuel management which took up a great amount of acres. As a result, big counties with more people saw less fires or acres burned than small counties with a low population. One can compare Los Angeles County to Modoc County to observe this. 
+
+
+## Conclusion
+Fuel management obviously varies among California counties, and rightly so. Different counties have a different landscape and climate. Population and area are also shown to have an impact on determining what types of fuel management to use, as well as how much each county is affected by wildfires. While my analysis isn't conclusive, it shows a slight trend in the relationship between the aforementioned variables. There are many exceptions to observed trends, which tend to be outliers that likely have other causes not mentioned here. What can be said certainly is that bigger, more populated counties are less likely to use precribed fires, focusing more on biomass removal. As a result, these counties are less likely to see wildfires returning and burning as many acres as other California counties.
+
+
+## Bibliography
+
+http://www.fire.ca.gov/current_incidents
+
+http://worldpopulationreview.com/states/california-population/
+
+http://www.counties.org/pod/square-mileage-county
+
+https://nature.berkeley.edu/stephenslab/wp-content/uploads/2015/04/Husari-et-al-Stephens-Fuel-Man-AFE-9-06.pdf
+
+

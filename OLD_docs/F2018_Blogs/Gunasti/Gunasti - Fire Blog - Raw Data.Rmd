@@ -1,0 +1,60 @@
+---
+title: "Breathing Fire"
+author: "Jonathan Gunasti"
+date: "11/21/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Raw Results
+
+
+#####Average Percentage Emergency Department Visits at TCMC By Race
+Period | White | Black  | Hispanic  | Asian/Pacific Islander | Native American |  Other 
+------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------
+Pre-Smoke  | 54.1  |  MASK  | 30.3  | MASK  |   0.0  | MASK  | Content Cell
+Smoke  | 57.3  | MASK  | 28.0  | MASK  | MASK  | 0.0  | Content Cell
+Significant Difference?   | TRUE  |  X  |TRUE  |  X  |  X  |  X
+
+
+#####Average Percentage Emergency Department Visits at SMH By Race
+Period | White | Black  | Hispanic  | Asian/Pacific Islander | Native American |  Other 
+------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -------------
+Pre-Smoke  | 50.2  |  14.0  | 27.8  | MASK  |   MASK   | MASK  | Content Cell
+Smoke  | 56.0  | 12.9  | 24.4  | MASK  | MASK  | MASK  | Content Cell
+Significant Difference?   | TRUE  |  TRUE  |TRUE  |  X  |  X  |  X
+
+
+#####Average Percentage Emergency Department Visits at TCMC By Age
+Period | 0 to 18 | 19 to 24  | 25 to 64  | 65+  
+------------- | ------------- | ------------- | ------------- | ------------- | 
+Pre-Smoke  | 19.7  |  10.6  | 48.2  | 21.5  
+Smoke  | 20.5  | 9.1  | 47.1  | 23.2  
+Significant Difference?   | FALSE  |  TRUE  | FALSE  |  TRUE  
+
+
+#####Average Percentage Emergency Department Visits at SMH By Age
+Period | 0 to 18 | 19 to 24  | 25 to 64  | 65+  
+------------- | ------------- | ------------- | ------------- | ------------- | 
+Pre-Smoke  | MASK  |  MASK  | 65.5  | 17.1  
+Smoke  | MASK  | MASK  | 63.5  | 17.6  
+Significant Difference?   | X  |  X  | FALSE  |  FALSE
+
+
+#####Average Percentage Emergency Department Visits at TCMC By Primary Diagnosis
+Period | Injury/Drug | Respiratory  | Symptom  
+------------- | ------------- | ------------- | ------------- 
+Pre-Smoke  | 27.1  |  MASK  | 18.8  
+Smoke  | 20.1  | 13.2  | 21.4  
+Significant Difference?   | TRUE  |  X  | TRUE  
+
+
+#####Average Percentage Emergency Department Visits at SMH By Primary Diagnosis
+Period | Injury/Drug | Respiratory  | Symptom  
+------------- | ------------- | ------------- | ------------- 
+Pre-Smoke  | 22.1  |  MASK  | 22.4  
+Smoke  | 21.5  | MASK  | 19.7  
+Significant Difference?   | FALSE  |  X  | TRUE  
