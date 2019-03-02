@@ -4,7 +4,6 @@ author: "Toni Anderson"
 date: "3/1/2019"
 output:
   html_document: default
-  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -36,7 +35,7 @@ There are certain restrictions to only using one dataset and location for my ana
 
 ```{r include=FALSE}
 ##Read CSV Data
-filepath= "/home/CAMPUS/ttab2018/Climate_Change_Narratives/student_folders/Anderson/tonianderson_burbank_realdata.csv"
+filepath= "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/S2019_Blogs/Anderson/tonianderson_burbank_realdata.csv"
 climate_data = read.csv(filepath)
 head(climate_data)
 str(climate_data)
@@ -77,7 +76,7 @@ MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
 
 ##Precipitation Data (Initial Data)
-filepath= "/home/CAMPUS/ttab2018/Climate_Change_Narratives/student_folders/Anderson/tonianderson_burbank_realdata.csv"
+filepath= "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/S2019_Blogs/Anderson/tonianderson_burbank_realdata.csv"
 climate_data = read.csv(filepath)
 head(climate_data)
 str(climate_data)
