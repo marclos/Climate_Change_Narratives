@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # 
 ```{r,results="hide", echo=FALSE  }
-filepath="/home/CAMPUS/ecka2018/Climate_Change_Narratives/EmilyKuhn_Santabarbara_data.csv"
+filepath="EmilyKuhn_Santabarbara_data.csv"
 
 climate_data = read.csv(filepath)
 head(climate_data)
@@ -77,7 +77,7 @@ This graph shows the average temperature change in Santa Barbara during the mont
 Next, I wanted to see if over time there would be an indication of increased intensity in Santa Barbara wildfires. So I used the wildfire data (Hazard Mitigation Plan) to graph the number of acres burned in the  major fires recorded since 1920. 
 
 ```{r,results="hide", echo=FALSE  }
-firefile = "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/WildfireAcres.csv"
+firefile = "WildfireAcres.csv"
 wildfires = read.csv(firefile)
 
 str(wildfires)
@@ -100,7 +100,7 @@ This data did indeed indicate a significant relationship and a stark increase in
 
 ```{r,results="hide", echo=FALSE}
 
-filerangepath= "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/WildfireRanges.csv"
+filerangepath= "WildfireRanges.csv"
 ranges=read.csv(filerangepath)
 
 str(ranges)

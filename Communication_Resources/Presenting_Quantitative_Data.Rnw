@@ -47,7 +47,7 @@ Here are some general rules:
   \item Describe the graphic/table with a caption.
   \item Manage data range and transformations to effectively analyze and display the data.
   \item Make sure the axes are labeled with appropriate units
-  \item Manage axes label and values font size and orientation to make them easy to reads.
+  \item Manage axis labels, value font size, and orientation to make them easy to reads.
   \item Avoid graphic titles unless you have more than one panel, i.e. graphics that are side by side or on top of each other. 
   \item Do not connect data points with lines unless you can 'reasonable' interpolate between the points, e.g. a continous data set with some level of autocorrelation. 
   \item Are the graphics accessible?  For example, black and white can be better than color in terms of accessibility (universal design) and sustainability. 
@@ -64,6 +64,17 @@ Thus, for our purposes, the following is usually sufficient...
 
 You don't need to mention how you imported it, used Rstudio, or talk about the functions. In the text, you might mention that you used a linear model, regression, analysis of variance (AOV), but the details of the R code is usually not mentioned.
 
+However, you should also cite the program in your endnote: 
+\smallskip
+To cite R in publications use:
+\medskip
+\noindent R Core Team (2017). R: A language and environment for statistical
+  computing. R Foundation for Statistical Computing, Vienna, Austria. URL
+  https://www.R-project.org/.
+
+\smallskip
+\noindent You can get an updated version of the citation using the following function in R: citation(). 
+  
 
 \subsection{Reporting Results}
 
@@ -72,6 +83,10 @@ In statistics, we reject the null hypothesis -- and don't prove anything. So, we
 First, when we report statistics, do not report the p-value if the result in non-significant. Just report that null hypothesis cannot be rejected. If the p-value is less then 0.001, just report it as `p $<$ 0.001'. If the p-value is between 0.05 and 0.001, then I suggest you report the actual value (rounded to the nearest one-hundredth or thousandth as appropriate. 
 
 Second, when we report the r$^2$ value, round to the nearest one-hundredth and describe it as the 'amount of variation explained by the model'. In fact, if you multiply by 100, it's can thought of as a percent variation explained.
+
+Finally, avoid making the statistics the subject of the sentence! Describe the results as the subject/verb and then add a parenthetical about the stats, e.g.
+
+\noindent Water quality declined through the study period (p = 0.03; r$^2$ = 0.09), although little of the variation was explained by the model. 
 
 \section{Exploring the Histogram}
 
@@ -227,7 +242,9 @@ Rainfall data and other types of 'count' data are often best displayed as barcha
 
 
 <<fig.cap="Number of Unsafe Air Quality Days in Washington State due to Fires.", fig.height=3, fig.width=5>>=
-fires = data.frame(Year = 2010:2018, Fires = c(1, 0, 2, 0, 1, 13, 0, 16, 13))
+fires = data.frame(Year = 2010:2018, 
+                   Fires = c(1, 0, 2, 0, 1, 13, 0, 16, 13))
+# Note: barplot uses names.arg to assign the category names
 barplot(fires$Fires, names.arg = fires$Year, las=1, ylab="No. of Fires")
 @
 
@@ -236,27 +253,32 @@ Notice the figure cuts out every-other year. You'll need to decide if the reader
 
 \section{Tables}
 
-Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for the first drafts using a table and a histogram. Which do you think is more effective?
+Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for the first drafts using a table and a histogram. 
 
 <<echo=FALSE>>=
-grades = c(29.5, 36.5, 31.5, 2, 31)
+grades = c(22, 34, 22.5, 22.5, 28, 29.5, 36.5, 31.5, 31.5, 2, 31)
 library(xtable)
 options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 
 bins = cut(grades, seq(0,50,10))
 grades_tab = table(cut(grades, breaks = seq(0,50,10)))
-
+#names(grades_tab) <- c("<10", ">= 10-- < 20", ">= 20-- < 30", ">= 30-- < 40", "> 40")
+grades.df = data.frame(grades_tab)
+names(grades.df) = c("Range", "Frequency")
 #rownames(grades_tab) = "Score"
 @
 
 
 <<warning=FALSE, message=FALSE, results='asis'>>=
-print(xtable(grades_tab, 
-          caption='Table of First Blog Draft Scores', table.placement =''), 
-          caption.placement = "top")
+print(xtable(grades.df, 
+      caption='Table of First Blog Draft Scores'), 
+      caption.placement = "top")
 @
 
+The histogram is simple, but for these data, I am not sure it's all that useful. Which do you think is more effective?
+
+\bigskip
 <<fig.cap="Histogram of First Blog Draft Scores", fig.height=3, fig.width=3 >>=
 hist(grades, main=NULL, xlab="Score")
 @
