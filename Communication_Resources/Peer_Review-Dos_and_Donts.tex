@@ -106,19 +106,19 @@ This assignment is based on the EA learning outcome for writing and communicatin
 
 \section{What is the Peer Review Process?}
 
+Peer review is the evaluation of work by one or more people of similar competence to the producers of the work (peers). It constitutes a form of self-regulation by qualified members of a profession within the relevant field. Peer review methods are employed to maintain standards of quality, improve performance, and provide credibility. In academia, scholarly peer review is often used to determine an academic paper's suitability for publication. Peer review can be categorized by the type of activity and by the field or profession in which the activity occurs, e.g., medical peer review.
 
 \subsection{Characteristics Effective Peer Reviewing}
 
 \begin{enumerate}
-	\item Introduction, body and conclusion like other news stories
-	\item An objective explanation of the issue, especially complex issues
-	\item A timely news angle
-	\item Opinions from the opposing viewpoint that refute directly the same issues the writer addresses
-	\item The opinions of the writer delivered in a professional manner. Good editorials engage issues, not personalities and refrain from name-calling or other petty tactics of persuasion.
-	\item Alternative solutions to the problem or issue being criticized. Anyone can gripe about a problem, but a good editorial should take a pro-active approach to making the situation better by using constructive criticism and giving solutions.
-	\item A solid and concise conclusion that powerfully summarizes the writer's opinion. Give it some punch.
+	\item The first one is fairness and politeness. Good referees always maintain a positive and constructive tone and never make personal remarks about the authors, even if the work is not good. 
+	\item The second point is thoroughness and clarity. Authors and editors expect reviewers to give helpful feedback and provide concrete examples and advice on how the work can be improved. Here are a few other things you should keep in mind when writing and submitting a review:
+  \begin{itemize}
+    \item When writing up the results, always be friendly and constructive while remaining critical and attentive. Make sure that the results are technically sound and the claims sufficiently supported by the presented data. You should also assess the strengths and importance of the work and give clear recommendations on how it can be improved.
+    \item You should check, whether the title and the abstract (if present) describe the work properly, whether the methods section provides enough details for a reader to repeat the experiments, and whether the results and discussion are presented in a detailed, logical, and understandable way. They should also check and report any possible ethical issues.
+    \item A good way to organize your review is by starting with a summary of the paper, where you shortly describe what the author(s) did. Then you can include some general comments about the work, for example, some thoughts about the novelty of the findings, or the way the data is presented, and finally, you can provide a specific list describing the points that can be improved and how it can be done so. It is important to number your remarks, so that the authors can respond to them easily.
+    \item The final step is to upload your report into the journal' to Sakai. Be sure you use the form and your ID yourself using the assigned random number. 
 \end{enumerate}
-
 
 \section{Types of Peer Reviews}
 
@@ -132,18 +132,262 @@ This assignment is based on the EA learning outcome for writing and communicatin
 
 \section{Steps to Review Peer}
 
+\subsection{Peer Review Assignments}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Randomziation for Peer Review}
+
+\hlstd{roster} \hlkwb{<-} \hlkwd{c}\hlstd{(}  \hlstr{"51500"}\hlstd{,}
+              \hlstr{"67593"}\hlstd{,}
+              \hlstr{"88736"}\hlstd{,}
+              \hlstr{"87952"}\hlstd{,}
+              \hlstr{"55340"}\hlstd{,}
+              \hlstr{"33714"}\hlstd{,}
+              \hlstr{"38360"}\hlstd{,}
+              \hlstr{"Heather A. Thams"}\hlstd{,}
+              \hlstr{"Chelsea D. Neill"}\hlstd{,}
+              \hlstr{"Kyle O. Olejniczak"}\hlstd{,}
+              \hlstr{"Ashley M. Quackenbush"}\hlstd{,}
+              \hlstr{"Michael W. Esgro"}\hlstd{,}
+              \hlstr{"Sarah E. Finstad"}\hlstd{,}
+              \hlstr{"Jessica Missaghian"}\hlstd{,}
+              \hlstr{"John F. Inman"}\hlstd{)}
 
 
-
-\subsection{\ldots}
-
-
-\subsection{\ldots}
+\hlcom{# Doesn't like this for some reason...}
+\hlstd{roster} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/EA30SP19Roster.csv"}\hlstd{)}\hlopt{$}\hlstd{Student}
 
 
+\hlkwd{length}\hlstd{(roster)}
+\end{alltt}
+\begin{verbatim}
+## [1] 15
+\end{verbatim}
+\begin{alltt}
+\hlstd{sampler} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{author}\hlstd{) \{}
+  \hlstd{reviewer} \hlkwb{<-} \hlkwd{sample}\hlstd{(author)}
+  \hlstd{reviewer}
+  \hlstd{\}}
+
+\hlkwd{sampler}\hlstd{(roster);}
+\end{alltt}
+\begin{verbatim}
+##  [1] Meyer, Ella K.          Budd, Susannah         
+##  [3] Generous, Claire        Lai, Bailey            
+##  [5] Wong, Kylie             Yi, Claire             
+##  [7] Clark, Chris            Kaufman, Eve Alexandra 
+##  [9] Vance, Cheyenne         Anderson, Toni Thayer  
+## [11] Kuhn, Emily C.          Lane, Ximena           
+## [13] Bullock Floyd, Makeda   Randle, Jasmine        
+## [15] Namachivayam, Siddharth
+## 15 Levels: Anderson, Toni Thayer Budd, Susannah ... Yi, Claire
+\end{verbatim}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{123}\hlstd{)}
+\hlstd{repeats} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)}
+\hlkwa{while}\hlstd{(}\hlkwd{sum}\hlstd{(repeats)}\hlopt{>}\hlnum{0}\hlstd{) \{}
+\hlstd{Reviewer1}\hlkwb{=}\hlkwd{sampler}\hlstd{(roster); Reviewer1}
+\hlstd{Reviewer2}\hlkwb{=}\hlkwd{sampler}\hlstd{(roster); Reviewer2}
+\hlstd{Reviewer3}\hlkwb{=}\hlkwd{sampler}\hlstd{(roster); Reviewer3}
+
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(roster)) \{}
+\hlstd{repeats[i]} \hlkwb{=} \hlkwd{sum}\hlstd{(roster[i]}\hlopt{==}\hlstd{Reviewer1[i],roster[i]}\hlopt{==}\hlstd{Reviewer2[i],roster[i]}\hlopt{==}\hlstd{Reviewer3[i],}
+\hlstd{Reviewer1[i]}\hlopt{==}\hlstd{Reviewer2[i], Reviewer1[i]}\hlopt{==}\hlstd{Reviewer3[i], Reviewer2[i]}\hlopt{==}\hlstd{Reviewer3[i] )}
+\hlstd{\}}
+\hlstd{repeats}
+\hlstd{\}}
+
+\hlstd{rndnumbers} \hlkwb{=} \hlkwd{sample}\hlstd{(}\hlnum{1000}\hlopt{:}\hlnum{9999}\hlstd{,}\hlkwd{length}\hlstd{(roster)}\hlopt{*}\hlnum{3}\hlstd{);rndnumbers}
+\end{alltt}
+\begin{verbatim}
+##  [1] 2294 2679 5742 5495 4315 9850 3798 4901 9468 4102 3849 5381 4381 3844
+## [15] 6395 2790 9062 4733 3068 5867 2410 1058 5432 5010 8597 8949 9544 5504
+## [29] 3871 4072 9311 2157 9735 3529 4607 8279 4144 1871 1733 2447 7404 7965
+## [43] 1323 1213 7355
+\end{verbatim}
+\begin{alltt}
+\hlstd{ThreeReviewer} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Author}\hlstd{=roster,} \hlkwc{Reviewer1name}\hlstd{=Reviewer1,} \hlkwc{Reviewer2name}\hlstd{=Reviewer2,}
+\hlkwc{Reviewer3name}\hlstd{=Reviewer3,} \hlkwc{Repeated}\hlstd{=repeats,} \hlkwc{Reviewer1}\hlstd{=rndnumbers[}\hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(roster)],}
+\hlkwc{Reviewer2}\hlstd{=rndnumbers[}\hlkwd{c}\hlstd{(}\hlkwd{length}\hlstd{(roster)}\hlopt{+}\hlnum{1}\hlstd{)}\hlopt{:}\hlkwd{c}\hlstd{(}\hlkwd{length}\hlstd{(roster)}\hlopt{*}\hlnum{2}\hlstd{)],}
+\hlkwc{Reviewer3}\hlstd{=rndnumbers[}\hlkwd{c}\hlstd{(}\hlkwd{length}\hlstd{(roster)}\hlopt{*}\hlnum{2}\hlopt{+}\hlnum{1}\hlstd{)}\hlopt{:}\hlkwd{c}\hlstd{(}\hlkwd{length}\hlstd{(roster)}\hlopt{*}\hlnum{3}\hlstd{)]); ThreeReviewer}
+\end{alltt}
+\begin{verbatim}
+##                     Author           Reviewer1name           Reviewer2name
+## 1    Anderson, Toni Thayer             Wong, Kylie              Yi, Claire
+## 2           Budd, Susannah   Bullock Floyd, Makeda         Randle, Jasmine
+## 3    Bullock Floyd, Makeda   Anderson, Toni Thayer          Kuhn, Emily C.
+## 4             Clark, Chris  Kaufman, Eve Alexandra        Generous, Claire
+## 5         Generous, Claire         Randle, Jasmine            Lane, Ximena
+## 6   Kaufman, Eve Alexandra          Meyer, Ella K.   Anderson, Toni Thayer
+## 7           Kuhn, Emily C.             Lai, Bailey             Wong, Kylie
+## 8              Lai, Bailey        Generous, Claire          Meyer, Ella K.
+## 9             Lane, Ximena            Clark, Chris         Vance, Cheyenne
+## 10          Meyer, Ella K.          Budd, Susannah             Lai, Bailey
+## 11 Namachivayam, Siddharth              Yi, Claire  Kaufman, Eve Alexandra
+## 12         Randle, Jasmine            Lane, Ximena            Clark, Chris
+## 13         Vance, Cheyenne          Kuhn, Emily C. Namachivayam, Siddharth
+## 14             Wong, Kylie Namachivayam, Siddharth   Bullock Floyd, Makeda
+## 15              Yi, Claire         Vance, Cheyenne          Budd, Susannah
+##              Reviewer3name Repeated Reviewer1 Reviewer2 Reviewer3
+## 1           Budd, Susannah        0      2294      2790      9311
+## 2              Wong, Kylie        0      2679      9062      2157
+## 3           Meyer, Ella K.        0      5742      4733      9735
+## 4               Yi, Claire        0      5495      3068      3529
+## 5   Kaufman, Eve Alexandra        0      4315      5867      4607
+## 6             Lane, Ximena        0      9850      2410      8279
+## 7          Randle, Jasmine        0      3798      1058      4144
+## 8             Clark, Chris        0      4901      5432      1871
+## 9  Namachivayam, Siddharth        0      9468      5010      1733
+## 10          Kuhn, Emily C.        0      4102      8597      2447
+## 11        Generous, Claire        0      3849      8949      7404
+## 12   Anderson, Toni Thayer        0      5381      9544      7965
+## 13   Bullock Floyd, Makeda        0      4381      5504      1323
+## 14         Vance, Cheyenne        0      3844      3871      1213
+## 15             Lai, Bailey        0      6395      4072      7355
+\end{verbatim}
+\begin{alltt}
+\hlstd{Review1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Name}\hlstd{= ThreeReviewer}\hlopt{$}\hlstd{Reviewer1name,} \hlkwc{Random1}\hlstd{=ThreeReviewer}\hlopt{$}\hlstd{Reviewer1); Review1}
+\end{alltt}
+\begin{verbatim}
+##                       Name Random1
+## 1              Wong, Kylie    2294
+## 2    Bullock Floyd, Makeda    2679
+## 3    Anderson, Toni Thayer    5742
+## 4   Kaufman, Eve Alexandra    5495
+## 5          Randle, Jasmine    4315
+## 6           Meyer, Ella K.    9850
+## 7              Lai, Bailey    3798
+## 8         Generous, Claire    4901
+## 9             Clark, Chris    9468
+## 10          Budd, Susannah    4102
+## 11              Yi, Claire    3849
+## 12            Lane, Ximena    5381
+## 13          Kuhn, Emily C.    4381
+## 14 Namachivayam, Siddharth    3844
+## 15         Vance, Cheyenne    6395
+\end{verbatim}
+\begin{alltt}
+\hlstd{Review2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Name}\hlstd{= ThreeReviewer}\hlopt{$}\hlstd{Reviewer2name,} \hlkwc{Random2}\hlstd{=ThreeReviewer}\hlopt{$}\hlstd{Reviewer2); Review2}
+\end{alltt}
+\begin{verbatim}
+##                       Name Random2
+## 1               Yi, Claire    2790
+## 2          Randle, Jasmine    9062
+## 3           Kuhn, Emily C.    4733
+## 4         Generous, Claire    3068
+## 5             Lane, Ximena    5867
+## 6    Anderson, Toni Thayer    2410
+## 7              Wong, Kylie    1058
+## 8           Meyer, Ella K.    5432
+## 9          Vance, Cheyenne    5010
+## 10             Lai, Bailey    8597
+## 11  Kaufman, Eve Alexandra    8949
+## 12            Clark, Chris    9544
+## 13 Namachivayam, Siddharth    5504
+## 14   Bullock Floyd, Makeda    3871
+## 15          Budd, Susannah    4072
+\end{verbatim}
+\begin{alltt}
+\hlstd{Review3} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Name}\hlstd{= ThreeReviewer}\hlopt{$}\hlstd{Reviewer3name,} \hlkwc{Random3}\hlstd{=ThreeReviewer}\hlopt{$}\hlstd{Reviewer3); Review3}
+\end{alltt}
+\begin{verbatim}
+##                       Name Random3
+## 1           Budd, Susannah    9311
+## 2              Wong, Kylie    2157
+## 3           Meyer, Ella K.    9735
+## 4               Yi, Claire    3529
+## 5   Kaufman, Eve Alexandra    4607
+## 6             Lane, Ximena    8279
+## 7          Randle, Jasmine    4144
+## 8             Clark, Chris    1871
+## 9  Namachivayam, Siddharth    1733
+## 10          Kuhn, Emily C.    2447
+## 11        Generous, Claire    7404
+## 12   Anderson, Toni Thayer    7965
+## 13   Bullock Floyd, Makeda    1323
+## 14         Vance, Cheyenne    1213
+## 15             Lai, Bailey    7355
+\end{verbatim}
+\begin{alltt}
+\hlstd{combined} \hlkwb{<-} \hlkwd{merge}\hlstd{(Review1, Review2,} \hlkwc{by.x}\hlstd{=}\hlstr{"Name"}\hlstd{)}
+\hlstd{combined} \hlkwb{<-} \hlkwd{merge}\hlstd{(combined, Review3,} \hlkwc{by.x}\hlstd{=}\hlstr{"Name"}\hlstd{); combined}
+\end{alltt}
+\begin{verbatim}
+##                       Name Random1 Random2 Random3
+## 1    Anderson, Toni Thayer    5742    2410    7965
+## 2           Budd, Susannah    4102    4072    9311
+## 3    Bullock Floyd, Makeda    2679    3871    1323
+## 4             Clark, Chris    9468    9544    1871
+## 5         Generous, Claire    4901    3068    7404
+## 6   Kaufman, Eve Alexandra    5495    8949    4607
+## 7           Kuhn, Emily C.    4381    4733    2447
+## 8              Lai, Bailey    3798    8597    7355
+## 9             Lane, Ximena    5381    5867    8279
+## 10          Meyer, Ella K.    9850    5432    9735
+## 11 Namachivayam, Siddharth    3844    5504    1733
+## 12         Randle, Jasmine    4315    9062    4144
+## 13         Vance, Cheyenne    6395    5010    1213
+## 14             Wong, Kylie    2294    1058    2157
+## 15              Yi, Claire    3849    2790    3529
+\end{verbatim}
+\begin{alltt}
+\hlkwd{write.csv}\hlstd{(ThreeReviewer[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{6}\hlopt{:}\hlnum{8}\hlstd{)],} \hlkwc{file} \hlstd{=} \hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/PeerReviewers.csv"}\hlstd{)}
+\hlkwd{write.csv}\hlstd{(combined,} \hlkwc{file} \hlstd{=} \hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/PeerReviewedAssignments.csv"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 
-\section{Grading}
+% latex table generated in R 3.4.1 by xtable 1.8-2 package
+% Sun Mar  3 14:57:15 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & Author & Reviewer1 & Reviewer2 & Reviewer3 \\ 
+  \hline
+1 & Anderson, Toni Thayer & 2294 & 2790 & 9311 \\ 
+  2 & Budd, Susannah & 2679 & 9062 & 2157 \\ 
+  3 & Bullock Floyd, Makeda & 5742 & 4733 & 9735 \\ 
+  4 & Clark, Chris & 5495 & 3068 & 3529 \\ 
+  5 & Generous, Claire & 4315 & 5867 & 4607 \\ 
+  6 & Kaufman, Eve Alexandra & 9850 & 2410 & 8279 \\ 
+  7 & Kuhn, Emily C. & 3798 & 1058 & 4144 \\ 
+  8 & Lai, Bailey & 4901 & 5432 & 1871 \\ 
+  9 & Lane, Ximena & 9468 & 5010 & 1733 \\ 
+  10 & Meyer, Ella K. & 4102 & 8597 & 2447 \\ 
+  11 & Namachivayam, Siddharth & 3849 & 8949 & 7404 \\ 
+  12 & Randle, Jasmine & 5381 & 9544 & 7965 \\ 
+  13 & Vance, Cheyenne & 4381 & 5504 & 1323 \\ 
+  14 & Wong, Kylie & 3844 & 3871 & 1213 \\ 
+  15 & Yi, Claire & 6395 & 4072 & 7355 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Instructions}
+
+Please review 3 student blogs based on the assigned random numbers that you will recieved by email. 
+
+Begin by providing a summary of the paper, where you shortly describe what the author(s) did. Then you can include some general comments about the work, for example, some thoughts about the novelty of the findings, or the way the data is presented, and finally, you can provide a specific list describing the points that can be improved and how it can be done so. It is important to number your remarks, so that the authors can respond to them easily.
+
+Determine if the author states the question(s) and their objective. Determine how the hypotheses are linked to the question(s) being ask. Then evaluate if the data were analyzed clearly (hypothesis, statistical tests). Determine if the peer reviewed literature was used to support the text and and if the conclusions were clear. Be sure to make concrete suggestions about how the blog could be improved. Finally, between 1 (best) and 3 (weakest), rank each blog on the following criteria: 
+
+\begin{itemize}
+ \item Grammar and Style
+  \item Graphics 
+  \item Rational
+  \item Methods
+  \item Conclusions
+  \item Citation (format and effectiveness) (Use CSE format handout to check on style/formatting).
+\end{itemize}
+
+Use the provided form for the peer review.
+
+%\section{Grading}
 
 
 \end{document}
