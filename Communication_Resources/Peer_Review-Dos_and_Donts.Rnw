@@ -43,7 +43,7 @@
 
 \section{Rationale}
 
-\ldots
+Writing is a social process. So is science. As such, getting feedback on the quality of the science and the ability to communicate our science is a key part of the environmental scientist's world. 
 
 \subsection{Learning Objectives}
 
@@ -67,24 +67,29 @@ Peer review is the evaluation of work by one or more people of similar competenc
     \item When writing up the results, always be friendly and constructive while remaining critical and attentive. Make sure that the results are technically sound and the claims sufficiently supported by the presented data. You should also assess the strengths and importance of the work and give clear recommendations on how it can be improved.
     \item You should check, whether the title and the abstract (if present) describe the work properly, whether the methods section provides enough details for a reader to repeat the experiments, and whether the results and discussion are presented in a detailed, logical, and understandable way. They should also check and report any possible ethical issues.
     \item A good way to organize your review is by starting with a summary of the paper, where you shortly describe what the author(s) did. Then you can include some general comments about the work, for example, some thoughts about the novelty of the findings, or the way the data is presented, and finally, you can provide a specific list describing the points that can be improved and how it can be done so. It is important to number your remarks, so that the authors can respond to them easily.
-    \item The final step is to upload your report into the journal' to Sakai. Be sure you use the form and your ID yourself using the assigned random number. 
+    \item The final step is to upload your report to Sakai. Be sure you use the form and your ID yourself using the assigned random number. 
+    
+  \end{itemize}
+  
 \end{enumerate}
 
-\section{Types of Peer Reviews}
+\section{Peer Review Tone}
+
+A peer review can take one of several tones. For example, 
 
 \begin{description}
-	\item[\ldots] ...
-	\item[Criticize:] ...
-	\item[Persuade:] ...
-	\item[Praise:]...
+	\item[Criticize:] The reviewer takes the opportunity to find fault with the author. Although this might be done with the goal to improve the text, it often comes off negatively and can even be a traumatic experience. 
+	\item[Persuade:] The reviewer makes an argument that tries to convince the author of something, perhaps to make the communication more effective or that an alternative approach to the science should be considered. Either way, the author might find this advice unwelcome but may also decide that more work is needed before the final product is done. 
+	\item[Praise:] feels good. However, it's rare that a scientific work recieves universal praise. Thus, most authors find too much praise a bit suspect and don't always feel happy with the outcome -- what if the reviewer didn't really pay attention? what if the reviewer isn't qualified to give a strong opinion?  
 \end{description}
- 
+
+In the end, I suspect the best peer reviews include a combination of the three tones that help the reviewer feel like the reviewer was thoughtful and considerate while providing an avenue to make the best scientific contribution as possible. 
 
 \section{Steps to Review Peer}
 
 \subsection{Peer Review Assignments}
 
-<<>>=
+<<echo=FALSE, results='hide'>>=
 # Randomziation for Peer Review
 
 roster <- c(  "51500",
@@ -143,7 +148,7 @@ Review2 <- data.frame(Name= ThreeReviewer$Reviewer2name, Random2=ThreeReviewer$R
 Review3 <- data.frame(Name= ThreeReviewer$Reviewer3name, Random3=ThreeReviewer$Reviewer3); Review3
 
 combined <- merge(Review1, Review2, by.x="Name")
-combined <- merge(combined, Review3, by.x="Name"); combined
+combined <- merge(combined, Review3, by.x="Name"); #combined
 write.csv(ThreeReviewer[,c(1,6:8)], file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/PeerReviewers.csv")
 write.csv(combined, file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/PeerReviewedAssignments.csv")
 @
