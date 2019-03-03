@@ -10,25 +10,37 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-![**Fig. 1** *Part of the Pearl River Delta that runs through the large metropolitan city of Hong Kong in Southeast China. Photo from Thailand Business News*](prd.png)   
+![**Fig. 1** *Part of the Pearl River Delta that runs through the large metropolitan city of Hong Kong in Southeast China. Image from Thailand Business News*](prd.png)   
 
 ##Introduction 
-As China continues to climb up the global ranks with its recent goals for technological advancements and urban development, the natural landscape of the country is put at risk. Specifically in Southeast China, where urban development is centralized around the entire Pearl River Delta, large cities like Guangzhou and many others are at a high risk of flooding. As a result, the urban infrastructure is threatened. In addition, the entire livelihood of Chinese citizens are threatened with the high frequency of flash floods. The heavy rainfall and flooding in Southeast China in the summer of 2016 generated $1.1 billion in damages, left 200,000 people without a home, and took 36 lives. With climate change escalating extreme weather trends, the frequency of these floods are likely to increase, costing more lives and creating more damages.   
+As China continues to climb up the global ranks with its recent goals for technological advancements and urban development, the natural landscape of the country is put at risk. Specifically in Southeast China, where urban development is centralized around the entire Pearl River Delta, large cities like Guangzhou and many others are at a high risk of flooding. As a result, the urban infrastructure is threatened. In addition, the entire livelihood of Chinese citizens are threatened with the high frequency of flash floods. The heavy rainfall and flooding in Southeast China in the summer of 2016 generated $1.1 billion in damages, left 200,000 people without a home, and took 36 lives (Climate Signals 2018). With climate change escalating extreme weather trends, the frequency of these floods are likely to increase, costing more lives and creating more damages. 
 
-In this blog, I will attempt to explore the origins of the floods in the Pearl River Basin of South China, and what triggers the intensity of the floods. In addition, I will analyze the impacts of the floods on the socio-economic infrastructure of Southeast China; therefore, I hypothesize that the intensity of rainfall is correlated to the power of flash floods in Southern China, which would lead to detrimental effects the socio-economic infrastructure in China.                                                                                                                                                                             
+In this blog, I will attempt to explore the origins of the floods in the Pearl River Basin of South China, and what triggers the intensity of the floods. In addition, I will analyze the impacts of the floods on the socio-economic infrastructure of Southeast China; therefore, I hypothesize that the intensity of rainfall is correlated to the power of flash floods in South China, which would lead to detrimental effects the socio-economic infrastructure in China. 
 
+&nbsp;
 
 ####How are floods and precipitation related?  
-Floods occur after heavy and overflowing rainfall on land that is usually dry. The most dangerous floods are flash floods, which can flood an entire region in a short amount of time with high intensity. What makes these flood even more dangerous is its unpredictability, which can easily devastate a region that is under-prepared and also densely populated like Southeastern China.    
+Floods occur after heavy and overflowing rainfall on land that is usually dry. The most dangerous floods are flash floods, which can flood an entire region in a short amount of time with high intensity. What makes these flood even more dangerous is its unpredictability, which can easily devastate a region that is under-prepared and also densely populated like Southeastern China. 
 
+<center>
+
+&nbsp;
+
+
+![**Fig. 2** *Flooding in Macau in the less well-off part of town as a result of Typhoon Hato in 2017. Image from Hong Kong Free Press*](macauflood.png){width=500px}
+
+</center>
+
+&nbsp;
 
 
 ##Methods  
-To conduct this study, I accessed the database on National Oceanic and Atmospheric Administration  (NOAA) to collect precipitation data in my region of study. I collected data from: Guangzhou, the delta region in the eastern part of the basin, and Guilin, which is closest to the northwestern part of the basin. I chose to graph two different sets of data to test if the differences in the geographic terrain of the watershed is correlated with the amounts of precipitation in each region. 
+To conduct this study, I accessed the database on National Oceanic and Atmospheric Administration  (NOAA) to collect precipitation data in my region of study. I collected data from: Guangzhou, the delta region in the eastern part of the basin, and Guilin, which is closest to the northwestern part of the basin. I chose to graph two different sets of data to test if the differences in the geographic terrain of the watershed is correlated with the amounts of precipitation in each region. I chose to use the data from August, because that data had the greatest variability and a more unique trend to analyze, coming from the height of the monsoon season between April and October of each year (H. Zhang et al. 2017).
 
 To analyze the data, I will have to read and interpret the p and adjusted r squared values to ultimately test this null hypothesis: the precipitation levels of Pearl River Basin is dependent upon time. If the p value is greater than 0.05, then there is no significance in the data. If the p value is less than 0.05, then we reject the null hypothesis and conclude that there is significance in the data. For the adjusted r squared value, the higher the value means that the data has a strong correlation to its best fitted line of regression. To further the scope of my study, I accessed multiple peer review journals for the information about specific extreme climate patterns. 
+ 
 
-
+&nbsp;
 
 
 ##Data
@@ -137,27 +149,87 @@ abline(coef(August2.lm), col='red')
 summary(August2.lm)
 ```
 
+&nbsp;
+
 ####What do the graphs show? 
 For Guangzhou, China, the p value is less than 0.01, which means that we reject the null hypothesis, concluding that the precipitation data has a weak relationship to the x-variable (year). The adjusted r-squared value for the same location is 0.0861. This means that only about 8.6% of the data is explanatory. 
 
 For Guilin, China, the p value is greater than 0.05, which means that we accept the null hypothesis, which concludes that the trends of precipitation are related to the x-variable (year). The adjusted r-squared value is 0.01127, which is even lower than the value from Guangzhou. This means that only about 1% of the data is explanatory; therefore, this data is very inconclusive and hard to explain. 
 
+&nbsp;
 
 ####What does this data mean?
 Since it is shown that there are inconsistencies in the data, this must mean that there must be other factors influencing the precipitation values. It is important to note that in the most recent 10 years, there have been some pretty high levels of precipitation in both Guangzhou and Guilin. This may be due to increased levels of climate changes. 
 
-Although the regression lines are displaying an increase in precipitation over the years, the rainfall levels are different, and the statistical values are different. This is alarming when put into the context of climate change, because this highlights the need for scientists to conduct further studies to find out what causes the difference in rainfall across the basin. I suspect that the difference in rainfall may be due to the differences in geographic location and terrain of the stations; however, this calls for research beyond the scope of my study. 
+Although the regression lines are displaying an increase in precipitation over the years, the rainfall levels are different, and the statistical values are different. This is alarming when put into the context of climate change, because this highlights the need for scientists to conduct further studies to find out what causes the difference and variability in rainfall across the basin. I suspect that the difference in rainfall may be due to the differences in geographic location and terrain of the stations; however, this calls for research beyond the scope of my study. 
+
+&nbsp;
 
 ##Discussion 
-####What are the potential factors that result in this inconsistency and uncertainty in climate data? 
-**1. Seasonality:** One of the main reason that the climate data of Southeastern China is so inconsistent is due to the constant changes in seasonality and precipitation patterns. Scientists found that the frequencies of rainy days decreased, but the intensity increased throughout the Pearl River Basin (Q. Zhang et al 2009). However, these scientists also found that these patterns are insignificant due to its variability and constant changes.
 
-**2. Storms:** Another large factor that influences the precipitation patterns in the Pearl River Basin is the extreme climate events like [monsoons](https://en.wikipedia.org/wiki/Monsoon) and [typhoons](https://en.wikipedia.org/wiki/Typhoon) that are common in East Asia (Loo et al 2014). These storms are also exacerbated by climate change. Unfortunately, even the intensity and effects of these storms vary seasonally, which increases the difficulty of having consistent data. 
+&nbsp;
 
-**3. El Niño-Southern Oscillation (ENSO):** A less commonly talked about phenomenon is [ENSO](https://en.wikipedia.org/wiki/El_Ni%C3%B1o%E2%80%93Southern_Oscillation). This series of irregular wind patterns and abnormal sea surface temperature affects the tropical areas of the eastern Pacific Ocean immensely, specifically my research region, Southern China (Niu 2012). 
+####What are the potential factors that result in this inconsistency and uncertainty in climate data?  \
 
-**4. Human activity:** Since the there is so much civilization and settlements around the entire river basin, humans have brought in much damage to the natural processes of the region. For example, “Human activities, such as land use, regulation, reservoir, may lead to monotonic change or trends in river discharge, however, we can still detect the climatic driving forces on interannual discharge variations” (Gu et al. 2016). 
+*1. Seasonality:* One of the main reason that the climate data of Southeastern China is so inconsistent is due to the constant changes in seasonality and precipitation patterns. Scientists found that the frequencies of rainy days decreased, but the intensity increased throughout the Pearl River Basin (Q. Zhang et al. 2009). However, these scientists also found that these patterns are insignificant due to its variability and constant changes.
 
-With a large amount of factors that all have some sort of influence on the precipitation patterns of Southern China, there is not one single factor that directly leads to the increase of rainfall in the Pearl River Basin; therefore, the data that I have gathered, along with many scientists’ data, come to the conclusion that there are too many uncertainties. To further complicate this data, it is possible that these factors are linked! For example, ENSO may have an effect on the East Asian monsoons, which may all contribute to increased impacts in Southern China (Niu 2012). Since these climate phenomenons are linked and co-influential, these extreme events create a perpetual cycle that may or may not be further enhanced by climate change, exacerbating the consequences like extreme flooding in Southern China. 
+*2. Storms:* Another large factor that influences the precipitation patterns in the Pearl River Basin is the extreme climate events like [monsoons](https://en.wikipedia.org/wiki/Monsoon) and [typhoons](https://en.wikipedia.org/wiki/Typhoon) that are common in East Asia (Loo et al. 2014). These storms are also exacerbated by climate change. Unfortunately, even the intensity and effects of these storms vary seasonally, which increases the difficulty of having consistent data. 
 
+*3. El Niño-Southern Oscillation (ENSO):* A less commonly talked about phenomenon is [ENSO](https://en.wikipedia.org/wiki/El_Ni%C3%B1o%E2%80%93Southern_Oscillation). This series of irregular wind patterns and abnormal sea surface temperature affects the tropical areas of the eastern Pacific Ocean immensely, specifically my research region, Southern China (Niu 2012). 
+
+*4. Human activity:* Since the there is so much civilization and settlements around the entire river basin, humans have brought in much damage to the natural processes of the region. For example, “Human activities, such as land use, regulation, reservoir, may lead to monotonic change or trends in river discharge, however, we can still detect the climatic driving forces on interannual discharge variations” (Gu et al. 2016). 
+
+<center> 
+
+&nbsp;
+
+![**Fig. 4** *Pollution and recreational activities in the Pearl River Delta in Hong Kong. Image from QUARTZ*](hkprd.png){width=500px}
+
+</center> 
+
+&nbsp; 
+
+With a many factors that all have significant influence on the precipitation patterns of Southern China, there is not one single factor that directly leads to the increase of rainfall in the Pearl River Basin; therefore, the data that I have gathered, along with many scientists’ data, come to the conclusion that there are too many uncertainties. To further complicate this data, it is possible that these factors are linked! For example, ENSO may have an effect on the East Asian monsoons, which may all contribute to increased impacts in Southern China (Niu 2012). Since these climate phenomenons are linked and co-influential, these extreme events create a perpetual cycle that may or may not be further enhanced by climate change, exacerbating the consequences like extreme flooding in Southern China. 
+
+&nbsp;
+
+####Why is this important?
+Although we do not know exactly where the extreme flooding comes from around the Pearl River Basin, the effects of the flooding are unprecedented. The cities around the Pearl River Delta, are especially susceptible to flooding due to its high population density and lowland region (Yang et al. 2014). Those cities will also face the most drastic consequences since there is a high rate of sea-level rise in that region of 0.33-1cm per year (Yang et al. 2014). The cities that are most vulnerable are those who have the most exposure to the flooding, but also have the least ability to adapt to the flooding, as displayed in the figure below. 
+
+<center>
+
+&nbsp;
+
+![**Fig. 5** *An assessment of the relative vulnerability of different cities in the Pearl River Delta. Image from Yang et al 2014*](vulnerability charts.png){width=500px}
+
+</center>
+
+&nbsp;
+
+A city’s level of resilience to the extreme flooding is dependent upon risk identification, policy orientation, infrastructure construction, and socio-economic demographics (Yang et al. 2014). Communities based on agriculture around the Pearl River Basin would face harsh consequences as well, threatening the well-being of the farming communities and also harming food security in China (H. Zhang 2007); however, the purpose of my study remains focused on urban development. All in all, people of Southern China who do not have a stable source of income and other adequate resources are the most vulnerable to the consequences of the floods, as they will come to face the most challenges in recovering. These continuous occurrences of flash flooding impose imminent threat to the economic and social well-being of communities in Southern China. 
+
+&nbsp;
+
+##Conclusion: A call to action
+
+&nbsp;
+
+####What can be done moving forward? 
+The reason why many cities around the world, including a few cities in my research, has high adaptive capacities to extreme flooding, is because of adequate flood-control measures (Yang et al. 2014). I would like to suggest for the governments to enforce adequate flood-control measures, along with investing in technologies to predict extreme weather patterns coming from the Pacific Ocean. Scientists like Gu et al. claim that climate events like ENSO could be predicted one to two years in advance with an advance model (Gu et al. 2016); however, these technologies would not be successfully implemented without a larger investments from both researchers and the government. Furthermore, research on the topography and geography of the different terrains must be conducted to accurately interpret the variability in precipitation and flooding patterns across the Pearl River Basin. 
+
+Unfortunately, these initiatives would not be upheld without action from the localities; therefore, I conclude that one of the most important components to gaining resilience in times of extreme climate events is activism amongst peoples of the localities and other grassroots organization to raise awareness for the human rights issues that come with natural disasters. 
+
+As climate change is believed to have a correlation with the irregular climate patterns and events across the world, natural disasters become increasingly unpredictable and powerful. However, unless scientists conduct further research to find out clearly what factors are inducing an overall increase of rainfall, we will still be left without a clear understanding of why and how Southern China experiences excessive rainfall and dangerous flooding. All that we can do now is to find possible solutions to mitigate as much human risk and flood hazards as possible under the changing climate. 
+
+<center>
+
+&nbsp;
+
+![**Fig. 6** *Green landscape of the delta in Zhuhai, China. Image from NewsGD.com*](beautyprd.png){width=500px}
+
+</center>
+
+&nbsp;
+
+###References
 
