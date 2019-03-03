@@ -65,6 +65,14 @@ Thus, for our purposes, the following is usually sufficient...
 You don't need to mention how you imported it, used Rstudio, or talk about the functions. In the text, you might mention that you used a linear model, regression, analysis of variance (AOV), but the details of the R code is usually not mentioned.
 
 
+\subsection{Reporting Results}
+
+In statistics, we reject the null hypothesis -- and don't prove anything. So, we need to be careful how we report our results. 
+
+First, when we report statistics, do not report the p-value if the result in non-significant. Just report that null hypothesis cannot be rejected. If the p-value is less then 0.001, just report it as `p $<$ 0.001'. If the p-value is between 0.05 and 0.001, then I suggest you report the actual value (rounded to the nearest one-hundredth or thousandth as appropriate. 
+
+Second, when we report the r$^2$ value, round to the nearest one-hundredth and describe it as the 'amount of variation explained by the model'. In fact, if you multiply by 100, it's can thought of as a percent variation explained.
+
 \section{Exploring the Histogram}
 
 Data exploration can include many steps, but starting with a histogram gives the researcher the ability to evaluate the distribution of the data.
@@ -87,7 +95,7 @@ In addition, we can change the x-axis label, with the 'xlab' argument. Specifyin
 TMAXlabel <- "Maximum Temperature (°C)"
 hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel)
 @
-
+\clearpage
 \subsection{Putting Multiple Figures in a Row}
 
 To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns. It's often a good idea to set the graphic parameter back to the default afterwards. In this case, I added a title because we have a panel with two graphics. Often people will put letters, e.g. A and B to refer to each one separately, but I prefer to put the actually description in the title, so the reader doesn't have to go back and forth between the caption and the figures.
@@ -99,7 +107,7 @@ TMINlabel <- "Minimum Temperature (°C)"
 hist(MonthlyTMINMean$TMIN, main='Minimum Temperature', xlab=TMINlabel)
 par(mfrow=c(1,1))
 @
-
+\newpage
 Because the figure is rather distorted, I have constrained the size using a fig.height and fig.width option. 
 
 <<fig.cap="Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018))", fig.height=3.5, fig.width=6>>=
@@ -112,14 +120,24 @@ par(mfrow=c(1,1))
 
 \section{Boxplot}
 
+Box plots are great ways to display quantitative data from controlled experiments. For example, if you had high and low treatment categories and measured some response. Let's use the following example, ants colonies collected from three locations farm, grassland, and forest. 
 
+<<fig.cap='Number of ant colonies by habitat type', echo=FALSE>>=
+ants = data.frame(Location = c(rep("Farm", 4), rep("Grassland", 4), rep("Forest", 4)), Colonies = c(1, 0, 3, 4,        3, 5, 9, 4,    3, 2, 4, 1))
+boxplot(Colonies ~ Location, data=ants)
 
+@
+\newpage
 \section{Scatter Plot -- Non-time series}
+
+%For scatter plots, which are more common, we use the same principles:
 
 
 \subsection{Scatter Plot -- Time Series}
 
-For scatter plots, which are more common, we use the same principles:
+Time series data sets often require special treatment. For example, data are often autocorrelated, thus data can be represented by lines instead of points. However, this requires some careful thought. 
+
+When we are graphing temperature data from one year to the next, we are averaging many days and connecting one year to the next might be appropriate if the data series is long enough, e.g. more than 50 years. However, with shorter time-series, i.e. 15 or less, connect the years with a line might be problematic.
 
 <<>>=
 plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])
@@ -142,14 +160,15 @@ plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,],
 abline(coef(lm(TMAX ~ YEAR, 
     data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])), col='black')
 @
-\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
+\caption{Monthly Average of Daily Maximum Temperatures (\degree C).  Notice the slightly darker line in the x-axis for the middle section. I am not sure how to get rid of this, but it bugs me!}
 \label{fig:maxtemp}
 \end{figure}
 
+\clearpage
 Now, what if we only want to display part of the data. We can limit the x-axis range using the 'xlim' argument, where we create a vector of for the start and end of the range.  
 
-\begin{figure}[h]
-<<>>=
+%\begin{figure}[h]
+<<fig.cap='Monthly Average of Daily Maximum Temperatures (C).'>>=
 ylabel <- "Maximum Temperature (°C)"
 plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,],
      xlim=c(1940, 2000),
@@ -158,21 +177,89 @@ plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,],
 abline(coef(lm(TMAX ~ YEAR, 
     data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])), col='black')
 @
-\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
-\label{fig:maxtemp}
-\end{figure}
+%\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
+%\label{fig:maxtemp}
+%\end{figure}
 
 Alternatively, you may want to creat a best fit line that only covers the range for the existing data without extrapolating, which is usually a very good idea for most scientific endeavors!
 
+For example, we have seen several papers that select parts of the record to make dubious claims. 
+
+%\begin{figure}[ht]
+<<fig.height==3, fig.width=5>>=
+ylabel <- "Maximum Temperature (°C)"
+plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,],
+     #xlim=c(1940, 2000),
+     ylab=ylabel, xlab='Year', pch=20, las=1, col='gray')
+
+MonthlyTMAX.lm = (lm(TMAX ~ YEAR, 
+    data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5, ]))
+interpolated = predict(MonthlyTMAX.lm, 
+      MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])
+
+lines(MonthlyTMAXMean$YEAR[MonthlyTMAXMean$MONTH==5], 
+      interpolated, col='blue')
+
+MonthlyTMAX.lm2 = (lm(TMAX ~ YEAR, 
+    data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5 & 
+            MonthlyTMAXMean$YEAR>2000, ]))
+
+interpolated2 = predict(MonthlyTMAX.lm2, 
+            MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5 & 
+            MonthlyTMAXMean$YEAR>2000,])
+
+lines(MonthlyTMAXMean$YEAR[MonthlyTMAXMean$MONTH==5 & 
+            MonthlyTMAXMean$YEAR>2000], interpolated2, col='red')
+
+legend(1948, 38, legend=c("1952-2018 Record", "2000-2018 Record"), 
+       lty=1, col=c("blue", "red"))
+
+@
+%\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
+%\label{fig:maxtemp}
+%\end{figure}
 
 
-
+\clearpage
 \section{Bar Graphs}
 
+Rainfall data and other types of 'count' data are often best displayed as barcharts. 
+
+
+<<fig.cap="Number of Unsafe Air Quality Days in Washington State due to Fires.", fig.height=3, fig.width=5>>=
+fires = data.frame(Year = 2010:2018, Fires = c(1, 0, 2, 0, 1, 13, 0, 16, 13))
+barplot(fires$Fires, names.arg = fires$Year, las=1, ylab="No. of Fires")
+@
+
+
+Notice the figure cuts out every-other year. You'll need to decide if the reader will be bothered by that. If so, you can reduce the x-axis labels fonts or increase the width of the chart. 
 
 \section{Tables}
 
+Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for the first drafts using a table and a histogram. Which do you think is more effective?
 
+<<echo=FALSE>>=
+grades = c(29.5, 36.5, 31.5, 2, 31)
+library(xtable)
+options(xtable.floating = FALSE)
+options(xtable.timestamp = "")
+
+bins = cut(grades, seq(0,50,10))
+grades_tab = table(cut(grades, breaks = seq(0,50,10)))
+
+#rownames(grades_tab) = "Score"
+@
+
+
+<<warning=FALSE, message=FALSE, results='asis'>>=
+print(xtable(grades_tab, 
+          caption='Table of First Blog Draft Scores', table.placement =''), 
+          caption.placement = "top")
+@
+
+<<fig.cap="Histogram of First Blog Draft Scores", fig.height=3, fig.width=3 >>=
+hist(grades, main=NULL, xlab="Score")
+@
 
 
 

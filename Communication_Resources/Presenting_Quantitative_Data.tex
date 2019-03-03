@@ -91,6 +91,14 @@ Thus, for our purposes, the following is usually sufficient...
 You don't need to mention how you imported it, used Rstudio, or talk about the functions. In the text, you might mention that you used a linear model, regression, analysis of variance (AOV), but the details of the R code is usually not mentioned.
 
 
+\subsection{Reporting Results}
+
+In statistics, we reject the null hypothesis -- and don't prove anything. So, we need to be careful how we report our results. 
+
+First, when we report statistics, do not report the p-value if the result in non-significant. Just report that null hypothesis cannot be rejected. If the p-value is less then 0.001, just report it as `p $<$ 0.001'. If the p-value is between 0.05 and 0.001, then I suggest you report the actual value (rounded to the nearest one-hundredth or thousandth as appropriate. 
+
+Second, when we report the r$^2$ value, round to the nearest one-hundredth and describe it as the 'amount of variation explained by the model'. In fact, if you multiply by 100, it's can thought of as a percent variation explained.
+
 \section{Exploring the Histogram}
 
 Data exploration can include many steps, but starting with a histogram gives the researcher the ability to evaluate the distribution of the data.
@@ -127,7 +135,7 @@ In addition, we can change the x-axis label, with the 'xlab' argument. Specifyin
 
 
 \end{knitrout}
-
+\clearpage
 \subsection{Putting Multiple Figures in a Row}
 
 To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns. It's often a good idea to set the graphic parameter back to the default afterwards. In this case, I added a title because we have a panel with two graphics. Often people will put letters, e.g. A and B to refer to each one separately, but I prefer to put the actually description in the title, so the reader doesn't have to go back and forth between the caption and the figures.
@@ -149,7 +157,7 @@ To create two graphics in one row, we can change the graphic parameters with the
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
+\newpage
 Because the figure is rather distorted, I have constrained the size using a fig.height and fig.width option. 
 
 \begin{knitrout}
@@ -172,14 +180,26 @@ Because the figure is rather distorted, I have constrained the size using a fig.
 
 \section{Boxplot}
 
+Box plots are great ways to display quantitative data from controlled experiments. For example, if you had high and low treatment categories and measured some response. Let's use the following example, ants colonies collected from three locations farm, grassland, and forest. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} \caption[Number of ant colonies by habitat type]{Number of ant colonies by habitat type}\label{fig:unnamed-chunk-6}
+\end{figure}
 
 
+\end{knitrout}
+\newpage
 \section{Scatter Plot -- Non-time series}
+
+%For scatter plots, which are more common, we use the same principles:
 
 
 \subsection{Scatter Plot -- Time Series}
 
-For scatter plots, which are more common, we use the same principles:
+Time series data sets often require special treatment. For example, data are often autocorrelated, thus data can be represented by lines instead of points. However, this requires some careful thought. 
+
+When we are graphing temperature data from one year to the next, we are averaging many days and connecting one year to the next might be appropriate if the data series is long enough, e.g. more than 50 years. However, with shorter time-series, i.e. 15 or less, connect the years with a line might be problematic.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -189,7 +209,7 @@ For scatter plots, which are more common, we use the same principles:
     \hlkwc{col}\hlstd{=}\hlstr{'darkred'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
 
 \end{knitrout}
 
@@ -211,16 +231,17 @@ Finally, it's important that the image works in black and white. So, let's see i
     \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,])),} \hlkwc{col}\hlstd{=}\hlstr{'black'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
 
 \end{knitrout}
-\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
+\caption{Monthly Average of Daily Maximum Temperatures (\degree C).  Notice the slightly darker line in the x-axis for the middle section. I am not sure how to get rid of this, but it bugs me!}
 \label{fig:maxtemp}
 \end{figure}
 
+\clearpage
 Now, what if we only want to display part of the data. We can limit the x-axis range using the 'xlim' argument, where we create a vector of for the start and end of the range.  
 
-\begin{figure}[h]
+%\begin{figure}[h]
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -232,25 +253,121 @@ Now, what if we only want to display part of the data. We can limit the x-axis r
 \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,}
     \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,])),} \hlkwc{col}\hlstd{=}\hlstr{'black'}\hlstd{)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
+\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} \caption[Monthly Average of Daily Maximum Temperatures (C)]{Monthly Average of Daily Maximum Temperatures (C).}\label{fig:unnamed-chunk-9}
+\end{figure}
+
 
 \end{knitrout}
-\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
-\label{fig:maxtemp}
-\end{figure}
+%\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
+%\label{fig:maxtemp}
+%\end{figure}
 
 Alternatively, you may want to creat a best fit line that only covers the range for the existing data without extrapolating, which is usually a very good idea for most scientific endeavors!
 
+For example, we have seen several papers that select parts of the record to make dubious claims. 
+
+%\begin{figure}[ht]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ylabel} \hlkwb{<-} \hlstr{"Maximum Temperature (°C)"}
+\hlkwd{plot}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,],}
+     \hlcom{#xlim=c(1940, 2000),}
+     \hlkwc{ylab}\hlstd{=ylabel,} \hlkwc{xlab}\hlstd{=}\hlstr{'Year'}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'gray'}\hlstd{)}
+
+\hlstd{MonthlyTMAX.lm} \hlkwb{=} \hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,}
+    \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{, ]))}
+\hlstd{interpolated} \hlkwb{=} \hlkwd{predict}\hlstd{(MonthlyTMAX.lm,}
+      \hlstd{MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,])}
+
+\hlkwd{lines}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{YEAR[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{],}
+      \hlstd{interpolated,} \hlkwc{col}\hlstd{=}\hlstr{'blue'}\hlstd{)}
+
+\hlstd{MonthlyTMAX.lm2} \hlkwb{=} \hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,}
+    \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5} \hlopt{&}
+            \hlstd{MonthlyTMAXMean}\hlopt{$}\hlstd{YEAR}\hlopt{>}\hlnum{2000}\hlstd{, ]))}
+
+\hlstd{interpolated2} \hlkwb{=} \hlkwd{predict}\hlstd{(MonthlyTMAX.lm2,}
+            \hlstd{MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5} \hlopt{&}
+            \hlstd{MonthlyTMAXMean}\hlopt{$}\hlstd{YEAR}\hlopt{>}\hlnum{2000}\hlstd{,])}
+
+\hlkwd{lines}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{YEAR[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5} \hlopt{&}
+            \hlstd{MonthlyTMAXMean}\hlopt{$}\hlstd{YEAR}\hlopt{>}\hlnum{2000}\hlstd{], interpolated2,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
+
+\hlkwd{legend}\hlstd{(}\hlnum{1948}\hlstd{,} \hlnum{38}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"1952-2018 Record"}\hlstd{,} \hlstr{"2000-2018 Record"}\hlstd{),}
+       \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,} \hlstr{"red"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/fig_height__3-1} 
+
+\end{knitrout}
+%\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
+%\label{fig:maxtemp}
+%\end{figure}
 
 
-
+\clearpage
 \section{Bar Graphs}
 
+Rainfall data and other types of 'count' data are often best displayed as barcharts. 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{fires} \hlkwb{=} \hlkwd{data.frame}\hlstd{(}\hlkwc{Year} \hlstd{=} \hlnum{2010}\hlopt{:}\hlnum{2018}\hlstd{,} \hlkwc{Fires} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{13}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{16}\hlstd{,} \hlnum{13}\hlstd{))}
+\hlkwd{barplot}\hlstd{(fires}\hlopt{$}\hlstd{Fires,} \hlkwc{names.arg} \hlstd{= fires}\hlopt{$}\hlstd{Year,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"No. of Fires"}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} \caption[Number of Unsafe Air Quality Days in Washington State due to Fires]{Number of Unsafe Air Quality Days in Washington State due to Fires.}\label{fig:unnamed-chunk-10}
+\end{figure}
+
+
+\end{knitrout}
+
+
+Notice the figure cuts out every-other year. You'll need to decide if the reader will be bothered by that. If so, you can reduce the x-axis labels fonts or increase the width of the chart. 
 
 \section{Tables}
 
+Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for the first drafts using a table and a histogram. Which do you think is more effective?
 
+
+
+
+\begin{kframe}
+\begin{alltt}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(grades_tab,}
+          \hlkwc{caption}\hlstd{=}\hlstr{'Table of First Blog Draft Scores'}\hlstd{,} \hlkwc{table.placement} \hlstd{=}\hlstr{''}\hlstd{),}
+          \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{)}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.4.1 by xtable 1.8-2 package
+% 
+\begin{tabular}{rr}
+  \hline
+ & V1 \\ 
+  \hline
+(0,10] &   1 \\ 
+  (10,20] &   0 \\ 
+  (20,30] &   1 \\ 
+  (30,40] &   3 \\ 
+  (40,50] &   0 \\ 
+   \hline
+\end{tabular}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{hist}\hlstd{(grades,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} \caption[Histogram of First Blog Draft Scores]{Histogram of First Blog Draft Scores}\label{fig:unnamed-chunk-13}
+\end{figure}
+
+
+\end{knitrout}
 
 
 
