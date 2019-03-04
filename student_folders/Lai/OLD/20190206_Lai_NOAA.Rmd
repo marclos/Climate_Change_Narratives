@@ -1,0 +1,120 @@
+---
+title: "bljj2015_test"
+author: "bljj2015"
+date: "2/4/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+```
+
+## Chapter 1 and 2 of Temperature Trends Lab
+# Chapter 1 talks about how to find data
+
+```{r}
+## uploading noaa data from csv file
+climate_data <- read.csv("~/Climate_Change_Narratives/student_folders/Lai/Lai_castlerock_noaa.csv")
+head(climate_data)
+str(climate_data)
+```
+
+```{r}
+plot(TMAX~DATE, climate_data)
+```
+
+```{r}
+min(climate_data$TMAX)
+min(climate_data$TMAX, na.rm=T)
+max(climate_data$TMAX)
+max(climate_data$TMAX, na.rm=T)
+```
+
+```{r}
+climate_data$TMAX[climate_data$TMAX==-9999] = NA
+climate_data$TMIN[climate_data$TMIN==-9999] = NA
+```
+
+```{r}
+## converting dates
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+
+```{r}
+lm(TMAX ~ NewDate, data=climate_data)
+```
+
+```{r}
+summary(lm(TMAX~NewDate, data=climate_data))
+```
+
+```{r}
+## 12657 is after the missing data from 1951 to 1961
+## plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i], ty='l')
+```
+
+```{r}
+## reformatting the dates to get rid of the dashes, but continues to have dashes afterwards
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+
+
+```{r create plot with regression line}
+plot(TMAX~DATE, climate_data, ty='l')
+abline(lm(TMAX ~ NewDate, data=climate_data), col="red")
+```
+
+## Chapter 3 of R
+
+```{r}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+```
+
+```{r}
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+```
+
+```{r}
+## Plot of Monthly Max Temp
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+```{r}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+     ty='l', xlim=c(1890, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+```
+
+```{r only important if you find a m monthly data, eval=FALSE}
+# First I create a vector of months
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+# Create a panel so I can see all the figures at once.
+
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12) {
+  # plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month==i],
+  # ty='l')
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940,2020), main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data == MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+  
+  summary(Month.lm)
+  
+  abline(coef(Month.lm), col = "red")
+  
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
