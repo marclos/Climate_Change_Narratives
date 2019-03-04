@@ -43,7 +43,7 @@
 
 \section{Rationale}
 
-\ldots
+Writing is a social process. So is science. As such, getting feedback on the quality of the science and the ability to communicate our science is a key part of the environmental scientist's world. 
 
 \subsection{Learning Objectives}
 
@@ -57,43 +57,128 @@ This assignment is based on the EA learning outcome for writing and communicatin
 \section{What is the Peer Review Process?}
 
 Peer review is the evaluation of work by one or more people of similar competence to the producers of the work (peers). It constitutes a form of self-regulation by qualified members of a profession within the relevant field. Peer review methods are employed to maintain standards of quality, improve performance, and provide credibility. In academia, scholarly peer review is often used to determine an academic paper's suitability for publication. Peer review can be categorized by the type of activity and by the field or profession in which the activity occurs, e.g., medical peer review.
+
 \subsection{Characteristics Effective Peer Reviewing}
 
 \begin{enumerate}
-	\item Introduction, body and conclusion like other news stories
-	\item An objective explanation of the issue, especially complex issues
-	\item A timely news angle
-	\item Opinions from the opposing viewpoint that refute directly the same issues the writer addresses
-	\item The opinions of the writer delivered in a professional manner. Good editorials engage issues, not personalities and refrain from name-calling or other petty tactics of persuasion.
-	\item Alternative solutions to the problem or issue being criticized. Anyone can gripe about a problem, but a good editorial should take a pro-active approach to making the situation better by using constructive criticism and giving solutions.
-	\item A solid and concise conclusion that powerfully summarizes the writer's opinion. Give it some punch.
+	\item The first one is fairness and politeness. Good referees always maintain a positive and constructive tone and never make personal remarks about the authors, even if the work is not good. 
+	\item The second point is thoroughness and clarity. Authors and editors expect reviewers to give helpful feedback and provide concrete examples and advice on how the work can be improved. Here are a few other things you should keep in mind when writing and submitting a review:
+  \begin{itemize}
+    \item When writing up the results, always be friendly and constructive while remaining critical and attentive. Make sure that the results are technically sound and the claims sufficiently supported by the presented data. You should also assess the strengths and importance of the work and give clear recommendations on how it can be improved.
+    \item You should check, whether the title and the abstract (if present) describe the work properly, whether the methods section provides enough details for a reader to repeat the experiments, and whether the results and discussion are presented in a detailed, logical, and understandable way. They should also check and report any possible ethical issues.
+    \item A good way to organize your review is by starting with a summary of the paper, where you shortly describe what the author(s) did. Then you can include some general comments about the work, for example, some thoughts about the novelty of the findings, or the way the data is presented, and finally, you can provide a specific list describing the points that can be improved and how it can be done so. It is important to number your remarks, so that the authors can respond to them easily.
+    \item The final step is to upload your report to Sakai. Be sure you use the form and your ID yourself using the assigned random number. 
+    
+  \end{itemize}
+  
 \end{enumerate}
 
+\section{Peer Review Tone}
 
-\section{Types of Peer Reviews}
+A peer review can take one of several tones. For example, 
 
 \begin{description}
-	\item[\ldots] ...
-	\item[Criticize:] ...
-	\item[Persuade:] ...
-	\item[Praise:]...
+	\item[Criticize:] The reviewer takes the opportunity to find fault with the author. Although this might be done with the goal to improve the text, it often comes off negatively and can even be a traumatic experience. 
+	\item[Persuade:] The reviewer makes an argument that tries to convince the author of something, perhaps to make the communication more effective or that an alternative approach to the science should be considered. Either way, the author might find this advice unwelcome but may also decide that more work is needed before the final product is done. 
+	\item[Praise:] feels good. However, it's rare that a scientific work recieves universal praise. Thus, most authors find too much praise a bit suspect and don't always feel happy with the outcome -- what if the reviewer didn't really pay attention? what if the reviewer isn't qualified to give a strong opinion?  
 \end{description}
- 
+
+In the end, I suspect the best peer reviews include a combination of the three tones that help the reviewer feel like the reviewer was thoughtful and considerate while providing an avenue to make the best scientific contribution as possible. 
 
 \section{Steps to Review Peer}
 
+\subsection{Peer Review Assignments}
+
+<<echo=FALSE, results='hide'>>=
+# Randomziation for Peer Review
+
+roster <- c(  "51500",
+              "67593", 
+              "88736",
+              "87952",
+              "55340",
+              "33714",
+              "38360",
+              "Heather A. Thams",
+              "Chelsea D. Neill", 
+              "Kyle O. Olejniczak", 
+              "Ashley M. Quackenbush", 
+              "Michael W. Esgro", 
+              "Sarah E. Finstad", 
+              "Jessica Missaghian", 
+              "John F. Inman")
 
 
-
-\subsection{\ldots}
-
-
-\subsection{\ldots}
+# Doesn't like this for some reason...
+roster = read.csv("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/EA30SP19Roster.csv")$Student
 
 
+length(roster)
+
+sampler <- function(author) {
+  reviewer <- sample(author)
+  reviewer
+  }
+
+sampler(roster);
+
+set.seed(123)
+repeats <- c(1,2,3)
+while(sum(repeats)>0) {
+Reviewer1=sampler(roster); Reviewer1
+Reviewer2=sampler(roster); Reviewer2
+Reviewer3=sampler(roster); Reviewer3
+
+for(i in 1:length(roster)) {
+repeats[i] = sum(roster[i]==Reviewer1[i],roster[i]==Reviewer2[i],roster[i]==Reviewer3[i],
+Reviewer1[i]==Reviewer2[i], Reviewer1[i]==Reviewer3[i], Reviewer2[i]==Reviewer3[i] )
+}
+repeats
+}
+
+rndnumbers = sample(1000:9999,length(roster)*3);rndnumbers
+
+ThreeReviewer <- data.frame(Author=roster, Reviewer1name=Reviewer1, Reviewer2name=Reviewer2,
+Reviewer3name=Reviewer3, Repeated=repeats, Reviewer1=rndnumbers[1:length(roster)],
+Reviewer2=rndnumbers[c(length(roster)+1):c(length(roster)*2)],
+Reviewer3=rndnumbers[c(length(roster)*2+1):c(length(roster)*3)]); ThreeReviewer
+
+Review1 <- data.frame(Name= ThreeReviewer$Reviewer1name, Random1=ThreeReviewer$Reviewer1); Review1
+Review2 <- data.frame(Name= ThreeReviewer$Reviewer2name, Random2=ThreeReviewer$Reviewer2); Review2
+Review3 <- data.frame(Name= ThreeReviewer$Reviewer3name, Random3=ThreeReviewer$Reviewer3); Review3
+
+combined <- merge(Review1, Review2, by.x="Name")
+combined <- merge(combined, Review3, by.x="Name"); #combined
+write.csv(ThreeReviewer[,c(1,6:8)], file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/PeerReviewers.csv")
+write.csv(combined, file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/PeerReviewedAssignments.csv")
+@
 
 
-\section{Grading}
+<<echo=FALSE, results='asis'>>=
+library(xtable)
+xtable(ThreeReviewer[,c(1,6:8)])
+@
+
+\subsection{Instructions}
+
+Please review 3 student blogs based on the assigned random numbers that you will recieved by email. 
+
+Begin by providing a summary of the paper, where you shortly describe what the author(s) did. Then you can include some general comments about the work, for example, some thoughts about the novelty of the findings, or the way the data is presented, and finally, you can provide a specific list describing the points that can be improved and how it can be done so. It is important to number your remarks, so that the authors can respond to them easily.
+
+Determine if the author states the question(s) and their objective. Determine how the hypotheses are linked to the question(s) being ask. Then evaluate if the data were analyzed clearly (hypothesis, statistical tests). Determine if the peer reviewed literature was used to support the text and and if the conclusions were clear. Be sure to make concrete suggestions about how the blog could be improved. Finally, between 1 (best) and 3 (weakest), rank each blog on the following criteria: 
+
+\begin{itemize}
+ \item Grammar and Style
+  \item Graphics 
+  \item Rational
+  \item Methods
+  \item Conclusions
+  \item Citation (format and effectiveness) (Use CSE format handout to check on style/formatting).
+\end{itemize}
+
+Use the provided form for the peer review.
+
+%\section{Grading}
 
 
 \end{document}

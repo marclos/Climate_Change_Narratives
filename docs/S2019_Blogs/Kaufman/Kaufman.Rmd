@@ -1,8 +1,10 @@
 ---
-title: "New York City, Hurricane Sandy, and the Future of Extreme Weather Events" 
+title: "New York City, Hurricane Sandy, and the Future of Extreme Weather Events"
 author: "Eve Kaufman"
 date: "3/1/2019"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -33,8 +35,8 @@ In order to complete the assessment, I pursued the following steps
 
 ```{r}
 
-filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/S2019_Blogs/Kaufman/1606726.csv"
-filepath2 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/S2019_Blogs/Kaufmanj/1628915.csv"
+filepath = "1606726.csv"
+filepath2 = "1628915.csv"
 climate_data = read.csv(filepath)
 sealevel_data = read.csv(filepath2)
 strDates <- as.character(climate_data$DATE)
