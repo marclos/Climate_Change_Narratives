@@ -2,13 +2,15 @@
 title: "Rising Temperatures to Blame for Extreme Weather Events in the Nation's Capital?"
 author: "Chris Clark"
 date: "2/11/2019"
-output: html_document
+output:
+  html_document: default
+  word_document: default
 ---
 
 Blizzards and Hurricanes, Are They Increasing?
 ---
 
-```{r pic, echo=FALSE, out.width = '40%'}
+```{r pic, echo=FALSE, fig.width = 3}
 knitr::include_graphics("Capital Storm.jpg")
 ```
 
@@ -69,7 +71,7 @@ head(MonthlyTMINMean)
 Months = c("January", "February", "March", "April",
 "May", "June", "July", "August", "September", "October",
 "November", "December")
-par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+#par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
 TMAXresult <- NA
 for (i in 1:12){
 plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
@@ -134,7 +136,7 @@ abline(coef(Dec.lm), col="red")
 Have Maximum Temperatures increased Hurricanes?
 ---
 
-```{r picture1, echo=FALSE, out.width = '70%'}
+```{r picture1, echo=FALSE, fig.width = 3}
 knitr::include_graphics("cyclones-figure3-2016.png")
 ```
 
@@ -160,7 +162,7 @@ abline(coef(Aug.lm), col="red")
 Societal Implications & Homelessness
 ---
 
-```{r picture, echo=FALSE, out.width = '40%'}
+```{r picture, echo=FALSE, fig.width = 4}
 knitr::include_graphics("Homeless Blizzard.jpg")
 ```
 
