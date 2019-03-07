@@ -23,8 +23,8 @@ Using  The National Oceanic and Atmospheric Association (NOAA) data base, I down
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-climate_data<-read.csv("Chris_Arlington_Data.csv")
+read.csv("/home/CAMPUS/ccca2017/Climate_Change_Narratives/student_folders/Clark/Chris_Arlington_Data.csv")
+climate_data<-read.csv("/home/CAMPUS/ccca2017/Climate_Change_Narratives/student_folders/Clark/Chris_Arlington_Data.csv")
 strDates <- as.character(climate_data$DATE)
 head(strDates)
 CYear = sub("/([0-9]+)$", "/19\\1", strDates[1:23132])
