@@ -289,12 +289,42 @@ The histogram is simple, but for these data, I am not sure it's all that useful.
 BTW: The mean was for the first draft was \Sexpr{round(mean(grades1, na.rm=T), 1)} and the second draft was \Sexpr{round(mean(grades2, na.rm=T), 1)}. You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
 
 \bigskip
-<<fig.cap="Histogram of First Blog Draft Scores", fig.height=3, fig.width=5 >>=
+<<fig.cap="Histogram of Blog Scores", fig.height=3, fig.width=5 >>=
 par(mfrow=c(1,2))
-hist(grades1, main="1st Draft", xlab="Score", xlim=c(0,50))
-hist(grades2, main="2nd Draft", xlab="Score", xlim=c(0,50))
+hist(grades1, main="1st Draft", xlab="Score", 
+     xlim=c(0,50), col="green")
+hist(grades2, main="2nd Draft", xlab="Score", 
+     xlim=c(0,50), col="blue")
 @
 
+<<fig.cap="Probability Density for Scores", fig.height=5, fig.width=8>>=
 
+# Display the Student's t distributions with various
+# degrees of freedom and compare to the normal distribution
+x = seq(0, 50, by = 2)
+hx1 <- dnorm(x= x, mean = mean(grades1, na.rm=T), 
+             sd=sd(grades1, na.rm=T))
+hx2 <- dnorm(x= x, mean = mean(grades2, na.rm=T), 
+             sd= sd(grades2, na.rm=T))
+
+colors <- c("red", "blue", "darkgreen", "gold", "black")
+labels <- c("Draft 1", "Draft 2", "Draft 3", "Draft 4", "Draft 5")
+
+plot(x, hx1, type="l", lty=1, xlab="Score",
+  ylab="Density", main="Distribution of Scores", las=1, 
+  ylim=c(0,.1), col=colors[1])
+  lines(x, hx2, lwd=2, col=colors[2])
+  
+ttest = t.test(grades1, grades2)
+
+text(ttest$estimate[1], max(hx1), "Draft 1 Mean", pos=3)
+text(ttest$estimate[2], max(hx2), "Draft 2 Mean", pos=3)
+
+text(10, .07, paste("p-value = ", round(ttest$p.value, 3)))
+legend("topright", inset=.05, title="Distributions",
+  labels, lwd=2, lty=c(1, 1, 1, 1, 1), col=colors)
+
+
+@
 
 \end{document}
