@@ -348,7 +348,7 @@ Notice the figure cuts out every-other year. You'll need to decide if the reader
 
 \section{Tables}
 
-Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for the first drafts using a table and a histogram. 
+Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for each set of drafts using a table and a histogram. 
 
 
 
@@ -361,28 +361,31 @@ Sometimes (often times?), tables are better than graphs. In the case below, I su
 \end{alltt}
 \end{kframe}% latex table generated in R 3.4.1 by xtable 1.8-2 package
 % 
-\begin{tabular}{rlr}
+\begin{tabular}{rlrr}
   \hline
- & Range & Frequency \\ 
+ & Range & 1st Draft & 2nd Draft \\ 
   \hline
-1 & (0,10] &   3 \\ 
-  2 & (10,20] &   0 \\ 
-  3 & (20,30] &   5 \\ 
-  4 & (30,40] &   5 \\ 
-  5 & (40,50] &   0 \\ 
+1 & (0,10] &   3 &   0 \\ 
+  2 & (10,20] &   0 &   2 \\ 
+  3 & (20,30] &   7 &   0 \\ 
+  4 & (30,40] &   4 &   4 \\ 
+  5 & (40,50] &   0 &   0 \\ 
    \hline
 \end{tabular}
 
 
 The histogram is simple, but for these data, I am not sure it's all that useful. Which do you think is more effective?
 
-BTW: The mean was 22.4. You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
+\bigskip
+BTW: The mean was for the first draft was 21.1 and the second draft was 29.7. You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
 
 \bigskip
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{hist}\hlstd{(grades,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{)}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlkwd{hist}\hlstd{(grades1,} \hlkwc{main}\hlstd{=}\hlstr{"1st Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{))}
+\hlkwd{hist}\hlstd{(grades2,} \hlkwc{main}\hlstd{=}\hlstr{"2nd Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{))}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} \caption[Histogram of First Blog Draft Scores]{Histogram of First Blog Draft Scores}\label{fig:unnamed-chunk-13}

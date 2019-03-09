@@ -253,19 +253,26 @@ Notice the figure cuts out every-other year. You'll need to decide if the reader
 
 \section{Tables}
 
-Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for the first drafts using a table and a histogram. 
+Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for each set of drafts using a table and a histogram. 
 
 <<echo=FALSE>>=
-grades = c(22, 34, 22.5, 22.5, 28, 29.5, 36.5, 31.5, 31.5, 2, 31, 0.1, 0.1)
+grades1 = c(28.5, 36.5, 25, 31.5, 26, 22, 22.5,
+           2, 0.1, 22.5, 31.5, 6, 28, 34, 0)
+grades2 = c(38.1, NA, NA, 34.4, NA, NA, NA,
+            NA, 17.5, 34.8, NA, NA, 37, NA, 16.6)
 library(xtable)
 options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 
-bins = cut(grades, seq(0,50,10))
-grades_tab = table(cut(grades, breaks = seq(0,50,10)))
-#names(grades_tab) <- c("<10", ">= 10-- < 20", ">= 20-- < 30", ">= 30-- < 40", "> 40")
-grades.df = data.frame(grades_tab)
-names(grades.df) = c("Range", "Frequency")
+grades1_tab = table(cut(grades1, breaks = seq(0,50,10)))
+grades2_tab = table(cut(grades2, breaks = seq(0,50,10)))
+
+grades1.df = data.frame(grades1_tab)
+grades2.df = data.frame(grades2_tab)
+names(grades1.df) = c("Range", "1st Draft")
+names(grades2.df) = c("Range", "2nd Draft")
+
+grades.df = merge(grades1.df, grades2.df)
 #rownames(grades_tab) = "Score"
 @
 
@@ -278,11 +285,14 @@ print(xtable(grades.df,
 
 The histogram is simple, but for these data, I am not sure it's all that useful. Which do you think is more effective?
 
-BTW: The mean was \Sexpr{round(mean(grades), 1)}. You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
+\bigskip
+BTW: The mean was for the first draft was \Sexpr{round(mean(grades1, na.rm=T), 1)} and the second draft was \Sexpr{round(mean(grades2, na.rm=T), 1)}. You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
 
 \bigskip
-<<fig.cap="Histogram of First Blog Draft Scores", fig.height=3, fig.width=3 >>=
-hist(grades, main=NULL, xlab="Score")
+<<fig.cap="Histogram of First Blog Draft Scores", fig.height=3, fig.width=5 >>=
+par(mfrow=c(1,2))
+hist(grades1, main="1st Draft", xlab="Score", xlim=c(0,50))
+hist(grades2, main="2nd Draft", xlab="Score", xlim=c(0,50))
 @
 
 
