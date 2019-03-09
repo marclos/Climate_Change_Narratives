@@ -3,8 +3,8 @@ title: 'From Fire to Floods: How is Climate Whiplash Affecting Los Angeles Count
 author: "Toni Anderson"
 date: "3/1/2019"
 output:
-  html_document: default
   word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -77,7 +77,7 @@ MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
 
 ##Precipitation Data (Initial Data)
-filepath= "/home/CAMPUS/ttab2018/Climate_Change_Narratives/student_folders/Anderson/tonianderson_burbank_realdata.csv"
+filepath= "tonianderson_burbank_realdata.csv"
 climate_data = read.csv(filepath)
 head(climate_data)
 str(climate_data)
