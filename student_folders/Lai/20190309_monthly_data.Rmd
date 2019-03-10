@@ -1,0 +1,27 @@
+---
+title: "20190309_monthly_TMAX_data"
+author: "bljj2015"
+date: "3/9/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Boulder monthly TMAX all months}
+par(mfrow = c(4, 3), mar = c(1, 2, 2, 1) + 0.1) 
+TMAXresult <- NA 
+for (i in 1:12) { 
+  # plot(Boulder_MonthlyTMAXMean£TMAX[Boulder_MonthlyTMAXMean£Month==i], 
+  # ty='l') 
+  plot(TMAX ~ YEAR, data = Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  Boulder_Month.lm <- lm(TMAX ~ YEAR, data = Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$MONTH == i, ]) 
+  summary(Boulder_Month.lm)
+  abline(coef(Boulder_Month.lm), col = "red")
+  Boulder_TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Boulder_Month.lm)[2], 4), round(summary(Boulder_Month.lm)$coefficients[2, 4], 4), round(summary(Boulder_Month.lm)$r.squared, 3)))
+}
+```
+
+
+
