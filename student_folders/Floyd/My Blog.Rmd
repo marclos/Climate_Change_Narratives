@@ -59,7 +59,7 @@ Because of the statistical significance of the data, I was able to reject the nu
 
 
 ```{r, echo=FALSE,results='hide'}
-old_data=read.csv("/home/CAMPUS/mmba2018/Climate_Change_Narratives/student_folders/Floyd/Makeda_Los Angeles_data.csv")
+old_data=read.csv("Makeda_Los Angeles_data.csv")
 climate_data=old_data[3000:38565,]
 strDates=as.character(climate_data$DATE)
 climate_data$NewDate=as.Date(strDates, "%m/%d/%Y")
