@@ -2,7 +2,9 @@
 title: "How has climate-change induced seasonality impacted fire season in Spokane?"
 author: "Claire Generous"
 date: "3/11/2019"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 "Soft knock" Spokane
 ---
@@ -21,7 +23,7 @@ The bar graph above is influenced by the Spokane Clean Air Agency, showing how s
 Other research points more directly to how climate change is the driving force behind increased fire seasons. For example, researchers (Abatzoglou and Williams 2016) concluded that anthropogenic increases in temperature and vapor pressure in the atmosphere deficit significantly enhanced fuel aridity (for fires) across western US forests over the past several decades. Between 2000 and 2015, the human-caused increases in temperature and reduced vapor pressure contributed to 75% more forested area experiencing high fire-season fuel aridity and an average of nine additional days per year of high fire potential (Abatzoglou and Williams 2016, p. 11770). Their research also includes the following graph:
 
 ```{r picture, echo=FALSE, out.width = '40%'}
-knitr::include_graphics("PNAS graph.png")
+knitr::include_graphics("PNAS.png")
 ```
 
 This graph shows the combined effects of natural and anthropogenic climate-change caused fuel aridity for forest fire area. The large red line is the cumulative modeled forest fire area comprised of the black line, which signifies natural cases of fuel aridity, and the yellow line, which signifies anthropogenic climate change ((Abatzoglou and Williams 2016, p. 11773.
