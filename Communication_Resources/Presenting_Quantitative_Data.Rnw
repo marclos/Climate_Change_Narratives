@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{gensymb}
+\usepackage{hyperref}
 
 \title{Visual Presentation of Data using R}
 
@@ -65,15 +66,16 @@ Thus, for our purposes, the following is usually sufficient...
 You don't need to mention how you imported it, used Rstudio, or talk about the functions. In the text, you might mention that you used a linear model, regression, analysis of variance (AOV), but the details of the R code is usually not mentioned.
 
 However, you should also cite the program in your endnote: 
-\smallskip
-To cite R in publications use:
-\medskip
-\noindent R Core Team (2017). R: A language and environment for statistical
-  computing. R Foundation for Statistical Computing, Vienna, Austria. URL
-  https://www.R-project.org/.
 
 \smallskip
-\noindent You can get an updated version of the citation using the following function in R: citation(). 
+To cite R in publications use:
+
+\medskip
+\noindent R Core Team. 2017. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL \url{https://www.R-project.org/}.
+
+\smallskip
+
+\noindent You can get an updated version of the citation using the following function in R: citation(). Although the format isn't quite the same.
   
 
 \subsection{Reporting Results}
