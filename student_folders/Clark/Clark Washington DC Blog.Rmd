@@ -1,7 +1,7 @@
 ---
 title: "Rising Temperatures to Blame for Extreme Weather Events in the Nation's Capital?"
 author: "Chris Clark"
-date: "2/11/2019"
+date: "3/11/2019"
 output: html_document
 ---
 
@@ -17,9 +17,9 @@ knitr::include_graphics("Capital Storm.jpg")
 
 Washington, DC is a hub of government and culture for the United States. It is built on a drained swamp, making the climate humid with blistering summers and cold winters. The city has not been historically known for its extreme weather, but growing up there, I saw that events such as hurricanes and blizzards have been increasing in frequency and intensity throughout the past century. I hypothesize that these increases have also corresponded with atmospheric warming in DC during summer and winter months. This is troubling from a humanitarian perspective because of the rampant homelessness and income inequality in the nation’s capital. Changes in temperature that can influence these events may be very destructive and deadly to communities of lower income, and something must be done to mitigate these impacts. 
 
-Methods
+Analyzing Temperature Trends with NOAA Data
 ---
-Using  The National Oceanic and Atmospheric Association (NOAA) data base, I downloaded weather data from 1936-2019 taken from Reagan National Airport in Arlington, Virginia (3 miles south of Washington, DC). I then analyzed the relationship between temperatures and times over this 83 year span using the open source statistical analysis program RStudio to determine whether I could reject the null hypothesis that there is no relationship between temperature change and time. Data with p-values less than 0.05 are statistically significant and allow me to reject the null hypothesis. 
+Using  The National Oceanic and Atmospheric Association (NOAA) data base, I downloaded weather data from 1936-2019 taken from Reagan National Airport in Arlington, Virginia (3 miles south of Washington, DC). The relationship between temperatures and times was analyzed over this 83 year span using the open source statistical analysis program R to determine whether I could reject the null hypothesis of no relationship between temperature change and time. Data with α= 0.05 are statistically significant and allow me to reject the null hypothesis. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -118,11 +118,12 @@ abline(coef(Dec.lm), col="red")
 ```
 How do Increased Temperatures Relate to Blizzards? 
 ---
-Washington, DC is a quintessentially mid-atlantic area, straddling the line between the snow-prone north and storm-prone south. As such, it is an area that has not historically been known for its blizzards. However, according to local news outlet WUSA9, 11 of the 15 worst winter storms in the DC metropolitan area since 1800 have occurred between the months of January and March from 1966 to the present. Why could this increase in destructive weather be happening? One hypothesis is that warming temperatures in the winter can cause increased evaporation from plants as well as the nearby Potomac river and Chesapeake bay, leading to more water vapor in the air and thus larger snowfall once the temperatures dip and the precipitation falls (Wallace et al. 2014). In the DC area this is supported by the fact that maximum temperatures in December have increased significantly since 1945 with a slope of .03 degrees Celcius (.05 degrees Fahrenheit) per year and p-value of .03. Temperatures in January and February (DCs heaviest snowfall months) have not significantly decreased, but since the temperatures in December have, evaporation may have increased leading to increases in major snowfall events in the region. 
+Washington, DC is a quintessentially mid-atlantic area, straddling the line between the snow-prone north and storm-prone south. This zone between snow and storm has not historically been known for its blizzards. However, according to local news outlet WUSA9, 11 of the 15 worst winter storms in the DC metropolitan area since 1800 have occurred between the months of January and March from 1966 to the present. 
+What could be contributing to this increase in extreme weather? One hypothesis is that warming temperatures in the winter can cause increased evaporation from plants as well as the nearby Potomac river and Chesapeake bay, leading to more water vapor in the air and thus larger snowfall once the temperatures dip and the precipitation falls (Wallace et al. 2014). Maximum December temperatures in DC have actually increased significantly since 1945 with a slope of .03 degrees Celcius (.05 degrees Fahrenheit) per year and p-value of .03. Evapotranspiration has also increased all throughout the coterminous United States (Walter et al. 2004), possibly due to rising temperatures. Temperatures in January and February (DCs heaviest snowfall months) have not significantly decreased, but since the temperatures in December have increased , evaporation may have increased leading to increases in major snowfall events in the region. 
 ``` {r, echo=FALSE}
 # Including Plots
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
-ty='l', xlim=c(1945, 2020), main="December Maximum Temperatures") 
+ty='l', xlim=c(1945, 2020), main="December Maximum Temperatures", ylab= "Maximum Temperature °C" ) 
 Dec.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 abline(coef(Dec.lm), col="red")
 
@@ -134,6 +135,12 @@ abline(coef(Dec.lm), col="red")
 Have Maximum Temperatures increased Hurricanes?
 ---
 
+
+![_**Figure 3.**  North Atlantic Tropical Cyclone Activity According to the Power Dissipation Index, 1949–2015 Courtesy of EPA_] 
+
+Atlantic hurricane season as designated by NOAA starts on June 1 and goes all the way through November 30. For the plot of maximum temperature against time for the month of August, there was a slope of .02 degrees C (.04 degrees F) per year and a p-value of 0.001. This p-value being well below .05 shows a significant correlation between year and temperature, meaning that there has been significant warming in the Washington, DC area. This increased surface/atmospheric temperature lends itself to aiding in hurricane landfall, where previously cooler land and atmospheric conditions could not support the storms. This is supported by the above graph, as well as data that shows that between 1970 and 1998 east coast hurricane frequency was increasing (Smith 1999). Figure 3 also shows an upward trend through time of North Atlantic Tropical Cyclone activity. Hurricane data from the National Weather Service (2012) also shows that through time, DC experienced hurricanes with more frequency than in the previous 150 years, which may be partially explained by the increases in temperature. 
+
+
 ```{r picture1, echo=FALSE, out.width = '70%'}
 knitr::include_graphics("cyclones-figure3-2016.png")
 ```
@@ -141,12 +148,13 @@ knitr::include_graphics("cyclones-figure3-2016.png")
 
 ![_**Figure 3.**  North Atlantic Tropical Cyclone Activity According to the Power Dissipation Index, 1949–2015 Courtesy of EPA_] 
 
-Atlantic hurricane season as designated by NOAA starts on June 1 and goes all the way through November 30. For the plot of maximum temperature against time for the month of August, there was a slope of .02 degrees C (.04 degrees F) per year and a p-value of 0.001. This p-value being well below .05 shows a significant correlation between year and temperature, meaning that there has been significant warming in the Washington, DC area. This increased surface/atmospheric temperature lends itself to aiding in hurricane landfall, where previously cooler land and atmospheric conditions could not support the storms. This is supported by the above graph, as well as data that shows that between 1970 and 1998 east coast hurricane frequency was increasing (Smith 1999). Figure 3 also shows an upward trend through time of North Atlantic Tropical Cyclone activity. Hurricane data from the National Weather Service (2012) also shows that through time, DC experienced hurricanes with more frequency than in the previous 150 years, which may be partially explained by the increases in temperature. 
+
+
 
 ``` {r, echo=FALSE}
 # Including Plots
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
-ty='l', xlim=c(1945, 2020), main="August Maximum Temperatures")
+ty='l', xlim=c(1945, 2020), main="August Maximum Temperatures", ylab= "Maximum Temperature °C")
 Aug.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
 
 abline(coef(Aug.lm), col="red")
@@ -156,6 +164,9 @@ abline(coef(Aug.lm), col="red")
 
 
 ![_**Figure 4.** Plot of August Maximum Temperatures Over Time_] 
+
+
+
 
 Societal Implications & Homelessness
 ---
@@ -185,6 +196,8 @@ Smith E. 1999. Atlantic and East Coast hurricanes 1900–98: a frequency and int
 The Washington Legal Clinic for the Homeless. 2018. Fact Sheet on Homelessness and Housing Instability in DC [PDF]. Washington (DC): The Washington Legal Clinic for the Homeless.
 
 Wallace JM, Held IM, Thompson D, Trenberth KE, Walsh JE. 2014. Global warming and winter weather. Science 343:729–730. 
+
+Walter MT, Wilks DS, Parlange J-Y, Schneider RL (2004) Increasing evapotranspiration from the conterminous United States. J Hydrometeorol 5(3):405–408. 
 
 WUSA (US). 2018. DC's 15 worst winter storms. Washington (DC): CBS 
 
