@@ -261,7 +261,7 @@ Sometimes (often times?), tables are better than graphs. In the case below, I su
 grades1 = c(28.5, 36.5, 25, 31.5, 26, 22, 22.5,
            2, 0.1, 22.5, 31.5, 6, 28, 34, 0)
 grades2 = c(38.1, NA, NA, 34.4, NA, NA, NA,
-            NA, 17.5, 34.8, NA, 14.5, 37, NA, 16.6)
+            24.8, 17.5, 34.8, NA, 14.5, 37, NA, 16.6)
 library(xtable)
 options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
@@ -288,7 +288,10 @@ print(xtable(grades.df,
 The histogram is simple, but for these data, I am not sure it's all that useful. Which do you think is more effective?
 
 \bigskip
-BTW: The mean was for the first draft was \Sexpr{round(mean(grades1, na.rm=T), 1)} and the second draft was \Sexpr{round(mean(grades2, na.rm=T), 1)}. You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
+BTW: The mean was for the first draft was \Sexpr{round(mean(grades1, na.rm=T), 1)} and the second draft was \Sexpr{round(mean(grades2, na.rm=T), 1)}. Based on a paired t-test, the difference between the two grades is signficant. 
+
+You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
+
 
 \bigskip
 <<fig.cap="Histogram of Blog Scores", fig.height=3, fig.width=5 >>=
@@ -317,7 +320,7 @@ plot(x, hx1, type="l", lty=1, xlab="Score",
   ylim=c(0,.1), col=colors[1])
   lines(x, hx2, lwd=2, col=colors[2])
   
-ttest = t.test(grades1, grades2)
+ttest = t.test(grades1, grades2, paired=T)
 
 text(ttest$estimate[1], max(hx1), "Draft 1 Mean", pos=3)
 text(ttest$estimate[2], max(hx2), "Draft 2 Mean", pos=3)
