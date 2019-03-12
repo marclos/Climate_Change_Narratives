@@ -9,10 +9,18 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+
+```
+
+```{r}
+
+```
+
 ```{r Boulder monthly TMAX all months}
 par(mfrow = c(4, 3), mar = c(1, 2, 2, 1) + 0.1) 
 TMAXresult <- NA 
-for (i in 1:12) { 
+for (i in 8:10) { 
   # plot(Boulder_MonthlyTMAXMean£TMAX[Boulder_MonthlyTMAXMean£Month==i], 
   # ty='l') 
   plot(TMAX ~ YEAR, data = Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
@@ -21,7 +29,46 @@ for (i in 1:12) {
   abline(coef(Boulder_Month.lm), col = "red")
   Boulder_TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Boulder_Month.lm)[2], 4), round(summary(Boulder_Month.lm)$coefficients[2, 4], 4), round(summary(Boulder_Month.lm)$r.squared, 3)))
 }
+Boulder_Aug_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="08",])
+summary(Boulder_Aug_TMAX.lm)
+Boulder_Sep_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="09",])
+summary(Boulder_Sep_TMAX.lm)
+Boulder_Oct_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="10",])
+summary(Boulder_Oct_TMAX.lm)
 ```
 
+##Boulder_14_W
 
+```{r}
+Boulder$Month = format(as.Date(Boulder$NewDate), format = "%m")
+Boulder$Year = format(as.Date(Boulder$NewDate), format="%Y")
+```
+
+```{r}
+Boulder_MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, Boulder, mean)
+Boulder_MonthlyTMAXMean$YEAR = as.numeric(Boulder_MonthlyTMAXMean$Year)
+Boulder_MonthlyTMAXMean$MONTH = as.numeric(Boulder_MonthlyTMAXMean$Month)
+str(Boulder_MonthlyTMAXMean)
+plot(Boulder_MonthlyTMAXMean$TMAX, ty='l')
+```
+
+```{r Boulder monthly TMAX all months}
+par(mfrow = c(4, 3), mar = c(1, 2, 2, 1) + 0.1) 
+TMAXresult <- NA 
+for (i in 8:10) { 
+  # plot(Boulder_MonthlyTMAXMean£TMAX[Boulder_MonthlyTMAXMean£Month==i], 
+  # ty='l') 
+  plot(TMAX ~ YEAR, data = Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  Boulder_Month.lm <- lm(TMAX ~ YEAR, data = Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$MONTH == i, ]) 
+  summary(Boulder_Month.lm)
+  abline(coef(Boulder_Month.lm), col = "red")
+  Boulder_TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Boulder_Month.lm)[2], 4), round(summary(Boulder_Month.lm)$coefficients[2, 4], 4), round(summary(Boulder_Month.lm)$r.squared, 3)))
+}
+Boulder_Aug_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="08",])
+summary(Boulder_Aug_TMAX.lm)
+Boulder_Sep_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="09",])
+summary(Boulder_Sep_TMAX.lm)
+Boulder_Oct_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="10",])
+summary(Boulder_Oct_TMAX.lm)
+```
 
