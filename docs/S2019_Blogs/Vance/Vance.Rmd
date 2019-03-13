@@ -1,104 +1,231 @@
 ---
-title: "Should Alabamians be Concerned About Climate Change?"
-author: "Cheyenne Vance"
-date: "3/01/2019"
-output:
-  word_document: default
-  html_document: default
+title: "Cheyenne's Vlog"
+author: "Cheyenne"
+date: "2/11/2019"
+output: html_document
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##The Political Divide
-  According to a 2018 survey done by National Surveys on Energy and Environment, 60% of Americans believe that global warming is happening, and that “humans are at least partially responsible for the rising temperatures.” It was also found that only 35% of Republicans believe that climate change is partially a result of human actions, while 50% of Republicans do not believe climate change at all. (NSEE 2018) I chose to include this information because my area of interest,  Alabama, is a red state, meaning most people in the state align with Republican ideas. 
-Several politicians who are also climate skeptics hail from the south which is quite ironic considering the south is predicted to bear the brunt of climate change impacts. According to the Brookings Institute, Alabama will suffer the fifth highest economic loss, behind only Florida, Mississippi, Louisiana and Arkansas, all of which are red states. Aside from economic loss, the south will most likely see an increase in mortality, loss of coastal lands and homes, and decreased agricultural production. 
-![](Brookings Map.png)
+## R Markdown
 
-Figure 1: Percentage of economic losses caused by climate change
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-In this blog I will be testing the null hypothesis: Temperatures are not changing over time in Alabama. If I am able to reject this hypothesis, that means that the climate is changing, and Alabamians should in fact be concerned about climate change. I will first analyze climate trends in Northern Alabama, and then provide some detailed information on the impacts of these trends, including sea level rise, economic damage, and health risks. 
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-##Roots of Skepticism in the South
-How could climate change skeptics still exist despite the copious amounts of data pointing to climate change and the 95% of scientists who have confirmed it is happening? Well there are a few “logical” explanations for this skepticism. Many skeptics deny “global warming,” justifying their position with the record breaking winters we’ve been experiencing. For this reason I would like to avoid using the phrase global warming, and instead use climate change. In his book A Global Warming Primer, Jeffrey Bennett provides a detailed explanation of how global warming actually works. He states that, “global warming really means an increase in energy in the atmosphere and oceans,” which then increases the chances of “hurricanes, thunderstorms, and other extreme weather events,” (Bennett 2016). This also includes severe winter weather. 
-	With this newfound knowledge, we can quickly point out the logical fallacy present in the following tweets from President Trump. 
+## Import Data
+```{r Importdata}
+summary(cars)
+
+##Huntsville Data
+## Reading csv file
+filepath = ## Reading csv file
+filepath = "/home/CAMPUS/cbva2017/Climate_Change_Narratives/student_folders/Vance/Vance_Huntsville_Data.csv"
+climate_data = read.csv(filepath)
+##head(climate_data)
+str(climate_data)
+
+##Fixing Dates
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d") 
+##Plot Data
+plot(TMAX~NewDate, climate_data, ty='l')
+plot(PRCP~NewDate, climate_data, ty='l')
+
+
+## Best Fit Line
+c <- coef(lm(TMAX~NewDate, climate_data))
+abline(c, col="red")
+
+##Plot stuff
+ lm(TMAX ~ NewDate, data=climate_data)
+
+## Call:
+ lm(formula = TMAX ~ NewDate, data = climate_data)
+ summary(lm(formula = TMAX ~ NewDate, data = climate_data))
+
+
+## Creating Monthly Means
+ climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+ climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+
+##Defining MonthlyTMAXMean
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+```{r}
+
+##Defining MonthlyTMINMean
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+```
+
+```{r}
+##Precipitation
+
+##Stand Dev
+MonthlyPRCPsum = aggregate(PRCP ~ Month + Year, climate_data, sum)
+MonthlyPRCPsum$YEAR = as.numeric(MonthlyPRCPsum$Year)
+MonthlyPRCPsum$MONTH = as.numeric(MonthlyPRCPsum$Month)
+str(MonthlyPRCPsum)
+plot(MonthlyPRCPsum$PRCP, ty='l')
+```
+
+```{r}
+##Selecting for 1 month Jan Climate
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],
+ty='l', ylab = "Min Temps" , main = "Average Yearly Temps in Janurary (Huntsville)", xlim=c(1958, 2019))
+Jan4.lm <- lm(TMIN~YEAR,data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+summary(Jan4.lm)
+abline(coef(Jan4.lm), col="blue")
  
-![](trump.png)	
 
 
-![](Trumptweet1.png)	
-In fact, with our understanding that global warming causes extreme weather events, President Trump’s tweets support the fact that the climate is changing drastically in all parts of the world. However, many southerners have chosen to stick with the idea that global warming strictly means  drastically warmer temperatures, which are not as prevalent in the southern states. 
-After acquiring Alabama NOAA temperature records from over a 60 year period, I used the program R to graph the climate trends in Huntsville, AL. The graph shows the average temperature trend in the hottest month, July, over a 60 year time period. 
+## Fixing Dates
 
-![Figure 2: Average max temperatures recorded in July from 1958 to 2019 in Huntsville, AL (slope: 0.0128 p-value: 0.263)](Trend1.png)
-
-Based off of my graph there seems to only be a small upward trend in maximum temperatures, but not a trend significant enough to alarm Alabamians. Furthermore, NOAA posted data on temperature anomalies in the U.S. which suggest that the south is one of the few places in the U.S. that has not seen significant changes in temperatures. 
-
-![Figure 4: Temperature anomalies recorded in February from 1895-2016](Warminghole1.png)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
 
-Based off of this data, it makes sense why southerners may object to climate change or simply not care about it. If it doesn’t affect them, should they care? Well, it does affect them. The southern United States appears to be one of the few regions in the world that is actually cooling in some localized areas. 
+```
 
-##The “Warming Hole” 
-The third National Climate Assessment reported that there was unusual cooling happening in the Southeast between 1991 and 2012. They stated that this was “unusual compared to the rest of the U.S. and the globe.” This phenomenon has been dubbed the “global warming hole.” (National Geographic 2014) Intrigued by this cooling phenomenon, I decided to analyze the minimum average monthly temperatures in Huntsville, Alabama. From this data I observed a much more striking heating trend, however there were a lot of extreme low temperatures recorded. From the data, the "warming hole" seems to be represented by the sharp dips and lack of high temperature extremes that occurs between 1990 and 2020. However, there is a sharp increase around 2018 suggesting that the warming hole is probably no longer occuring. 
+## Plot Tmax Mean
+```{r TmaxMean}
 
-![Figure 5: Average minimum temperatures recorded in January from 1958 to 2019 in Huntsville](Trend3.png)
+##Selecting for 1 month, July
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07", ],
+ty='l', main = "Average Yearly Temps in July (Huntsville)", xlim=c(1958, 2019))
+July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+summary(July.lm)
+abline(coef(July.lm), col="red")
+```
+
+``` {r}
+##Selecting for 1 month Jan lowest temperature
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+ty='l', main = "Average Yearly Temps in Janurary (Huntsville)", xlim=c(1958, 2019))
+Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(Jan.lm)
+abline(coef(Jan.lm), col="blue")
+```
+
+```{r}
+##Selecting for 1 month Jan Climate
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],
+ty='l', ylab = "Max Temps" , main = "Average Yearly Temps in Janurary (Huntsville)", xlim=c(1958, 2019))
+Jan4.lm <- lm(TMIN~YEAR,data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+summary(Jan4.lm)
+abline(coef(Jan4.lm), col="blue")
+```
+
+```{r}
+##Selecting for 1 month lowest rain Oct
+plot(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="10",],
+ty='l',main = "Average Yearly Precipiation in October (Huntsville)", xlim=c(1958, 2019))
+Oct.lm <- lm(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="10",])
+summary(Oct.lm)
+abline(coef(Oct.lm), col="green")
+```
+
+```{r}
+##Selecting for 1 month Decemember Highest Dec
+plot(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="12",],
+ty='l', main = "Average Yearly Precipiation in December (Huntsville)", xlim=c(1958, 2019))
+Dec.lm <- lm(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="12",])
+summary(May.lm)
+abline(coef(Dec.lm), col="cyan")
+
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+```
 
 
-The p-value for this model was .039 with a slope of 0.04, meaning the trend is statistically significant, and that I can reject the null hypothesis: Temperatures are not changing over time in Alabama. In short, yes Alabamians should be concerned about climate change. However, they should not just be concerned about long-term warming trends, but also localized cooling trends and increases in extreme weather events. While the causes of the warming hole are debated, a team of researchers have done an attribution study to figure out this mystery. 
-
-![Figure 6: Precipitation trends from 1895-2016](Warming hole 2.png)
 
 
-The team concluded that aerosols were most likely the cause of the warming hole. Aerosols are “minute particles suspended in the atmosphere,” (NASA 1996) and can be naturally occurring or man-made. They also discuss the complexity of the role aerosols play. They can either cause cooling or warming depending on the atmospheric interactions that occur. Airborne absorbing aerosols have been reported to raise regional temperature by reducing the local large-scale cloud cover (Yu et. al 2014), but an increase in particulates in the air could also cause cooling. A 2012 study published in the journal Atmospheric Chemistry and Physics by Leibensperger and colleagues explored this possibility. They found “that particulate pollution over the eastern United States has delayed the warming that we would expect to see from increasing greenhouse gases," (Leibensperger 2012). Sulfate aerosols absorb no sunlight but they reflect it, thereby reducing the amount of sunlight reaching the Earth's surface, and leading to cooling in heavily industrialized areas (NASA 1996). While many of these possibilities are likely at play, there are many other factors to consider such as high population density and energy, and combustion-related atmospheric emission. (Yu et. al 2014) To conduct my statistical analysis, I only analyzed the data from two stations, and couldn’t take into account the several other factors involved in climate change, which is a common problem when approaching these sorts of research questions. One thing is for certain: anthropogenic activities play a large role in these climate trends.
+```{r}
+##Mobile Data
 
-##What is at Stake?
+## Reading csv file
+filepath = "/home/CAMPUS/cbva2017/Climate_Change_Narratives/student_folders/Vance/Vance_Mobile_Data.csv"
+climate_data2 = read.csv(filepath)
+head(climate_data2)
+str(climate_data2)
 
-  Alabama, along with the other southern states, will face some of the largest economic and ecological impacts if they continue business as usual. A very likely cause of increased particulate matter is the burning of coal, which the South is heavily reliant on. The south is already experiencing rising sea-levels, an increase in severe storms such as hurricanes, and heat spells (National Climate Assessment). There are several studies documenting sea level rise along the Gulf Coast and its impacts which include the loss of coastal forests, salt‐marshes, coral reefs, and shallow marine benthic communities. In 1990, rates of relative sea‐level rise along the Gulf of Mexico were documented as high as 11.9 mm yr−1 in Louisiana (Penland & Ramsey, 1990), and have since been going up. 
+## Fixing Dates
 
-The economic impacts will be severe, especially along the coast.  The Gulf of Mexico contributes over $2.2 trillion to the U.S. Gross Domestic Product (NOAA-NOS 2008). It is the seventh largest economy in the world, producing 1.2 billion pounds of seafood per year, and includes six of the top ten ports in the U.S. (Ellis et. al 2010) Hurricanes and sea level rise are destroying properties, and threatening the economies along the coast. As I mentioned before, southern states will suffer the most severe economic losses from climate change if they do not convert to more sustainable forms of energy. 
+strDates <- as.character(climate_data2$DATE)
+climate_data2$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
-These extreme weather events are also particularly dangerous for vulnerable groups of people. In a more global context climate change has been associated with increases in malnutrition, increased deaths, disease and injury due to heat waves, floods, storms, fires and droughts; the increased burden of diarrhoeal disease; and the increased frequency of cardio-respiratory diseases due to higher concentrations of ground level ozone related to climate change (IPOC 2007). The elderly, children, and those with health conditions will especially be affected by these impacts. While these conditions may not pose a significant problem for the wealthy, those with lower incomes will have a hard time adapting, and will disproportionately suffer the impacts of climate change, while reaping very few of the benefits.
+```
 
-![Figure 7: Total percent change in climate-related costs](Climatecosts.png)
+```{r}
+##Selecting for 1 month Jan Climate
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+ty='l', ylab = "Max Temps" , main = "Average Yearly Temps in Janurary (Mobile)", xlim=c(1958, 2019))
+Jan2.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(Jan2.lm)
+abline(coef(Jan2.lm), col="blue")
+```
 
-##Conclusion
+```{r}
+##Selecting for 1 month July
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",],
+ty='l', ylab = "Max Temps" , main = "Average Yearly Temps in July (Mobile)", xlim=c(1958, 2019))
+July2.lm <- lm(TMAX~YEAR,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+summary(July2.lm)
+abline(coef(July2.lm), col="red")
+```
 
-  Several scientists across the country are in agreement that climate change is occurring and have the data to show it. As mentioned earlier, my data confirms that yes, Alabamians should be concerned, but what else can we do? A few major steps that the south can take is adopting cleaner energy sources, and reducing energy usage overall. However, a major step is first admitting that climate change is occurring and educating ourselves on the matter. Climate change should not be a partisan issue because it affects all of us and will affect future generations. I hope that a major take away from this blog is that climate change is not simply warming temperatures, but an increase in extreme weather events overall. Finally while part of climate change is due to natural processes, human activity is playing a significant role in exacerbating the issue. 
+```{r}
+##Precipitation
 
-##Works Cited
-Leibensperger, E. M., Mickley, L. J., Jacob, D. J., Chen, W.-T., Seinfeld, J. H., Nenes, A., Adams, P. J., Streets, D. G., Kumar, N., and Rind, D.: Climatic effects of 1950–2050 changes in US anthropogenic aerosols – Part 2: Climate response, Atmos. Chem. Phys., 12, 3349-3362, https://doi.org/10.5194/acp-12-3349-2012, 2012.
+##Stand Dev
+ MonthlyPRCPsum = aggregate(PRCP ~ Month + Year, climate_data2, sum)
+MonthlyPRCPsum$YEAR = as.numeric(MonthlyPRCPsum$Year)
+MonthlyPRCPsum$MONTH = as.numeric(MonthlyPRCPsum$Month)
+str(MonthlyPRCPsum)
+plot(MonthlyPRCPsum$PRCP, ty='l')
 
-Penland S, Ramsey KE (1990) Relative sea‐level rise in Louisiana and the Gulf of Mexico: 1908–1988. Journal of Coastal Research, 6, 323–342.
+```
 
-Yu, Shaocai, et al. "Attribution of the United States “warming hole”: Aerosol indirect effect and precipitable water vapor." Scientific reports 4 (2014): 6929.
+```{r}
+##Selecting for 1 month October lowest rain Oct
+plot(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="10",],
+ty='l', main = "Average Yearly Precipiation in October (Mobile)", xlim=c(1958, 2019))
+Oct2.lm <- lm(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="10",])
+summary(Oct2.lm)
+abline(coef(Oct2.lm), col="green")
+```
 
-Change, Intergovernmental Panel On Climate. "Climate change 2007: Impacts, adaptation and vulnerability." Genebra, Suíça (2001).
+```{r}
+##Selecting for 1 month July heaviest rain
+plot(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="07",],
+ty='l', main = "Average Yearly Precipiation in July (Mobile)", xlim=c(1958, 2019))
+July3.lm <- lm(PRCP~YEAR, data=MonthlyPRCPsum[MonthlyPRCPsum$Month=="07",])
+summary(July3.lm)
+abline(coef(July3.lm), col="cyan")
 
-Ellis, Jean T., et al. "An assessment of coastal land-use and land-cover change from 1974–2008 in the vicinity of Mobile Bay, Alabama." Journal of Coastal Conservation 15.1 (2011): 139-149.
 
-Desantis, Larisa RG, et al. "Sea‐level rise and drought interactions accelerate forest decline on the Gulf Coast of Florida, USA." Global Change Biology 13.11 (2007): 2349-2360.
+```
 
-Bennett, Jeffrey O. A Global Warming Primer : Answering Your Questions About the Science, the Consequences, and the Solutions. Big Kid Science, 2016.
 
-##Further Reading
-Wise, Justin. "Poll: Record number of Americans believe in man-made climate change." The Hill, July 2018
-https://thehill.com/policy/energy-environment/396487-poll-record-number-of-americans-believe-in-man-made-climate-change
 
-National Surveys on Energy and Environment."As Americans Experienced the Warmest May on Record Their Acceptance of Global Warming Reaches a New High." July, 2018
-http://closup.umich.edu/files/ieep-nsee-2018-spring-climate-belief.pdf
+```
 
-Howard, Brian. "As the World Warms, Part of the American Southeast Cools." National Geographic, May 2014.
-https://news.nationalgeographic.com/news/2014/05/140509-global-warming-hole-southeast-climate-change-science/
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
-Howard, Brian. "Climate Report Provides Opportunity for Bridging Political Divide" National Geographic, May 2014.
-https://news.nationalgeographic.com/news/2014/05/140506-national-climate-assessment-global-warming-policy-politics/
 
-"Atmospheric Aerosols: What Are They, and Why Are They So Important?" Nasa, August 1996.
-https://www.nasa.gov/centers/langley/news/factsheets/Aerosols.html
-
-Hill, Taylor."Climate Change Wallops Alabama, but the State Climatologist Is a Climate Skeptic." TakePart, November 2016.
-http://www.takepart.com/article/2016/11/01/alabama-drought-shows-state-mind-climate-change
 
 
 

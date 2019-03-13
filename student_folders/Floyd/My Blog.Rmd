@@ -1,120 +1,203 @@
 ---
-title: "Los Angeles Weather"
+title: "Can We Trust Trends? Long Term Rising Temperature Trends in Los Angeles"
 author: "Makeda Bullock Floyd"
-date: "2/9/2019"
+date: "3/1/2019"
 output: html_document
 ---
+<style>
+body {
+    background-color: #FFD39B;
+}
 
+div.a {
+  text-align: center;
+}
+
+.caption {
+    font-size: x-small;
+}
+</style>
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-
-
-
-
 ```
+<div class="a">
+![Figure 1: Downtown Los Angeles, California (Source: Konstantin Sutyagin/Shutterstock) ](download.jpg)
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+</div>
+Most people in the United States likely remember the series of catastrophic flames that hit California in the summer of 2018, with over 8,500 fires burning an area of about 1.8 million acres of land in California, including parts of Los Angeles. It would be hard to forget such mass destruction. What some may have forgotten so quickly is that accompanying these fires were scorching heat waves.
+In July 2018, all time heat records were approached, and in some cases, surpassed. On July 6 Temperatures reached 108°F (42°C) in downtown Los Angeles, 109°F (43°C) by Long Beach Airport, 112°F (44°C) in Escondido, and 118°F (48°C) in Riverside. This heat left a soon to be retired mail deliverer dead in her truck, fueled fires leading to hundreds of evacuations, and left thousands without power for up to 24 hours. So how did this all come to be?
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+<div class="a">
+##What is a Heat Wave, Anyway?
+</div>
+![Figure 2: Urban Heat Island Effect (Source: Word Press)](urban-heat-island-and-its-planning-measurement-2-638.jpg)
 
-```{r cars}
-summary(cars)
-```
+![Figure 3: Santa Ana Winds (Source: CNN)](171206135213-weather-santa-ana-winds-explainer-large-169.jpg)
 
-## Including Plots
+Noting that definitions vary by region in the United States, Tamrazian et al. (2007) states that a heatwave can be defined most commonly as “a period of at least three consecutive days above 90°F (32°C)” Two major causes of heat waves that are particularly relevant to Los Angeles are the urban heat island effect and Santa Ana winds. The former can occur in metropolitan areas where the surface is covered in concrete and asphalt. When weather is already warm, these structures absorb and subsequently release heat much more slowly than plants and other natural structures, causing them to warm the surrounding air. This can raise the temperature of the urban air by 2 to 10°F (-17 to -12 °C) compared to the surrounding countryside. Santa Ana winds can contribute to heat waves as the marine layer breaks up in the summer, and winds begin to blow from the land to the sea, causing warm air to be pushed down along mountain ranges and compressed (Thompson 2018).
 
-You can also embed plots, for example:
+<div class="a">
+##Heat Rising
 
-```{r, echo=FALSE}
-old_data=read.csv("/home/CAMPUS/mmba2018/Climate_Change_Narratives/student_folders/Floyd/Makeda_Los Angeles_data.csv")
+![Figure 4: People cooling off from a Los Angeles heat wave (Source: LA Times)](images.jpg)
+
+
+</div>
+In California, and Los Angeles specifically, Arbi Tamrazian et al. (2008) found that the occurrence of heat waves has been increasing on average by about 3 events annually over the 100-year period (as of 2006). The study also explains that during the peak of the July 2006 heat wave, Los Angeles County saw the “highest temperature ever,” in the area, reaching 119°F (48 °C). The increasing trend displayed in my more recent data analysis of LA temperature suggests that this number may have continued, if not increased, since Tamrazian’s study.
+
+<div class="a">
+##Why should I care?
+</div>
+So it’s hotter more often, but what does that really mean? Actually quite a lot…
+•	Wildfires: Heat waves are often accompanied by dry weather, making plants more susceptible to fire (Tamrazian et al). This is especially a concern in California, an area already prone to wildfires 
+•	Heat island effect: since concrete absorbs heat so well, temperatures stay hotter at night, threatening human health and other systems already stressed by increased air temperature (Thompson).
+•	Heat-related deaths: As temperatures rises and is sustained at a level far above normal, bodies cannot always compensate. This is exacerbated by the heat island effect, as the body has a harder time recovering from the heat of the day. Children and the elderly are especially vulnerable to this (Tamrazian et al). 
+•	Power drain: As temperature rises in urban areas, so does energy demand, which strains water and power systems (Burillo et al. 2019) 
+Unjustly, yet unsurprisingly, lower income and minority communities are typically most vulnerable to this. They may not have air conditioning or adequate fans, they may not have easy access to medical care for heat related illness, they may live in hotter parts of the city, and so on. Additionally, immigrants and people who don’t speak English may be at risk of being harmed by heat waves because they don’t understand emergency warnings in English. Similarly, low income and homeless people may have limited to no access to news sources to even see those warnings (Kahn 2010).
+Whatever the risk, records suggest that LA will be among the first areas to heat in California. In order to better understand the long-term trends of Los Angeles temperature, I began analyzing data with the following hypothesis: there is a positive relationship between temperature and time. Let’s take a closer look…
+
+<div class="a">
+##Methods
+</div>
+Using the National Oceanic and Atmospheric Administration’s climate data for Downtown Los Angeles, I graphed temperatures from 1920 (When the NOAA data was first consistently available for LA) to January 2019. I then conducted statistical analysis using R (CRAN 2019). I  broke the data down by month, such that the mean maximum and minimum temperatures from 1920 to 2019 for a given month. Additionally, I analyzed annual mean trends for both minimum and maximum temperatures. I then evaluated the null hypothesis for statistical significance. If a trend had a p-value of less than 0.05, it is considered statistically significant. Additionally, I used R-squared values to determine how much of the change in temperature could be explained by time. 
+
+<div class="a">
+##Breaking Down the Trends 
+</div>
+For maximum air temperatures, every single month showed an increasing trend from 1920 to 2018. 10 out of 12 months (November and December) were statistically significant. For minimum air temperatures, only 2 months (January and November) had trends that were not statistically significant. Of the 10 remaining statistically significant months, 9 showed an increasing trend. Only one month (December) was both statistically significant and showed a decreasing trend. Furthermore, the annual mean graphs for both maximum and minimum temperatures (see figure __ ) show highly statistically significant increasing trends (p= 1.258e-11 and p= 1.964e-11 respectively).
+For the monthly trends of maximum temperatures, R-squared values ranged from none to 18%, however for the annual mean maximum graph, this number jumped to 37%. As for minimum temperatures, R-squared values for monthly trends ranged from none to 37%, again with 37% for the annual mean minimum graph. These percentages may seem small, but it is important to consider that R-squared values do not have the final say on the value of the data. Coefficient estimates frequently have biases, such as in the way the regression predicts the data. Thus, I can still rely of the p-values in this case for the final say on my hypothesis.
+Because of the statistical significance of the data, I was able to reject the null hypothesis, suggesting that temperature is increasing in Los Angeles.
+
+
+```{r, echo=FALSE,results='hide'}
+old_data=read.csv("Makeda_Los Angeles_data.csv")
 climate_data=old_data[3000:38565,]
 strDates=as.character(climate_data$DATE)
 climate_data$NewDate=as.Date(strDates, "%m/%d/%Y")
-plot(TMAX~NewDate, climate_data, ty='l')
-abline(lm(TMAX~NewDate,climate_data),col="red")
+```
+
+```{r,echo=FALSE,results='hide'}
 lm(TMAX ~ NewDate, data=climate_data)
-summary(lm(TMAX ~ NewDate, data=climate_data))
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+AnnualTMAXMean = aggregate(TMAX ~ Year, climate_data, mean)
+AnnualTMAXMean$YEAR = as.numeric(AnnualTMAXMean$Year)
+#plot(AnnualTMAXMean$TMAX, ty='l')
+plot(TMAX ~ YEAR, data = AnnualTMAXMean[AnnualTMAXMean$YEAR<2019,], ty = "l",col="grey", las = 1, xlim = c(1920, 2018), ylab = "Maximum Temperature (C)", xlab= "Year")
+abline(lm(TMAX~YEAR,AnnualTMAXMean[AnnualTMAXMean$YEAR<2019,]),col="red")
+Annual.lm <- lm(TMAX~YEAR,AnnualTMAXMean[AnnualTMAXMean$YEAR<2019,])
+```
+
+```{r,echo=FALSE,results='hide'}
+
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
-plot(MonthlyTMAXMean$TMAX, ty='l')
+#plot(MonthlyTMAXMean$TMAX, ty='l')
 # First I create a vector of months
 Months = c("January", "February", "March", "April",
 "May", "June", "July", "August", "September", "October",
 "November", "December")
-# Create a panel so I can see all the figures at
-# once.
 par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
 TMAXresult <- NA
 
 par(mfrow=c(1,1))
-plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
-5, ], ty = "l", las = 1, xlim = c(1920, 2020))
+#plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 5, ], ty = "l", las = 1, xlim = c(1920, 2020))
+```
 
+```{r, echo=FALSE, results='hide'}
 
 
 for (i in 1:12) {
-# plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
-# ty='l')
-plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
-i, ], ty = "l", las = 1, xlim = c(1940, 2020),
-main = Months[i])
+
+#plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+#i, ], ty = "l", las = 1, xlim = c(1920, 2020),
+#main = Months[i])
 Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
 i, ])
-summary(Month.lm)
-abline(coef(Month.lm), col = "red")
+#abline(coef(Month.lm), col = "red")
 TMAXresult <- rbind(TMAXresult, cbind(Months[i],
 round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
 4], 4), round(summary(Month.lm)$r.squared,
 3)))
-print(summary(Month.lm))
 }
 
-
-
-plot(TMIN~NewDate, climate_data, ty='l')
-abline(lm(TMIN~NewDate,climate_data),col="red")
+#plot(TMIN~NewDate, climate_data, ty='l')
+#abline(lm(TMIN~NewDate,climate_data),col="red")
 lm(TMIN ~ NewDate, data=climate_data)
-summary(lm(TMIN ~ NewDate, data=climate_data))
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+AnnualTMINMean = aggregate(TMIN ~ Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-plot(MonthlyTMINMean$TMIN, ty='l')
+AnnualTMINMean$YEAR = as.numeric(AnnualTMINMean$Year)
+#plot(AnnualTMINMean$TMAX, ty='l')
+plot(TMIN ~ YEAR, data = AnnualTMINMean[AnnualTMINMean$YEAR<2019,], ty = "l", col= "grey", las = 1, xlim = c(1920, 2018), ylab = "Minimum Temperature (C)", xlab= "Year")
+abline(lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2019,]),col="red")
+Annual.lm <- lm(TMAX~YEAR,AnnualTMAXMean[AnnualTMAXMean$YEAR<2019,])
+
+#plot(MonthlyTMINMean$TMIN, ty='l')
 # First I create a vector of months
 Months = c("January", "February", "March", "April",
 "May", "June", "July", "August", "September", "October",
 "November", "December")
-# Create a panel so I can see all the figures at
-# once.
 par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
 TMINresult <- NA
 
 par(mfrow=c(1,1))
-plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
-5, ], ty = "l", las = 1, xlim = c(1920, 2020))
+#plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+#5, ], ty = "l", las = 1, xlim = c(1920, 2020))
 
 
 
 for (i in 1:12) {
 # plot(MonthlyTMINMean£TMAX[MonthlyTMINMean£Month==i],
 # ty='l')
-plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
-i, ], ty = "l", las = 1, xlim = c(1940, 2020),
-main = Months[i])
+#plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+#i, ], ty = "l", las = 1, xlim = c(1940, 2020),
+#main = Months[i])
 Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
 i, ])
-summary(Month.lm)
-abline(coef(Month.lm), col = "red")
+#abline(coef(Month.lm), col = "red")
 TMINresult <- rbind(TMINresult, cbind(Months[i],
 round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
 4], 4), round(summary(Month.lm)$r.squared,
 3)))
-print(summary(Month.lm))
 }
+```
+<div class="a">
+##Conclusion
+</div>
+The bottom line is that Los Angeles is warming and has been doing so since data was first available. As of 2006, the average annual maximum temperature in Los Angeles had warmed by 5°F (3°C), and the average annual minimum temperature had warmed by 4°F (2°C) (Tamrazian et al. 2007) Consistent with my data, they found that the greatest rate of change was during the summer months for both maximum and minimum temperature, with late fall and early winter having the least rates of change. As discussed above, this could have serious implications for power, both electrical and socio economic. Fires, heat deaths, power strains can be expected, to name a few, as this trend continues. The good news is there are potential solutions. While these solutions are not the primary focus of this blog, they are crucial to tackling climate issues, and should be highly supported on multiple levels, from the government, to private entities, to individuals. Some solutions currently in practice include cool pavement, greenroofs, and having more trees. Thus, I encourage careful readers to look a little deeper and question what they can each do to helo. Equally important is actively seeking out trends to reference whenever a claim is made. Keeping these two practices in mind, we can spread awareness about climate change events, and do something about it. 
+
+<div class="a">
+##Sources
+</div>
+Andone D. 2018. Thousands without power in Los Angeles after high demand due to heat wave [Internet]. CNN. Cable News Network; [cited 2019Mar1]. Available from: https://www.cnn.com/2018/07/07/us/heat-wave-los-angeles-wxc/index.html
+
+Angeles NWSL. 2019. This just in at 10am: Downtown Los Angeles just hit the 14.93 inch mark for normal annual rainfall for the 2018-19 water year. The last time they did was the 2016-17 water year. #cawx #larain #castorm [Internet]. Twitter. Twitter; [cited 2019Mar1]. Available from: https://twitter.com/NWSLosAngeles/status/1096108356224323585
+
+Burillo D, Chester MV, Pincetl S, Fournier ED, Reyna J. 2019. Forecasting peak electricity demand for Los Angeles considering higher air temperatures due to climate change. Applied Energy. 236:1–9. 
+
+California Sof. 2018. California Statewide Fire Map [Internet]. Fire Statistics. [cited 2019Mar1]. Available from: http://cdfdata.fire.ca.gov/incidents/incidents_cur_search_results?search=2018
+
+Cbs/ap. 2018. Southern California heat wave breaks records [Internet]. CBS News. CBS Interactive; [cited 2019Mar1]. Available from: https://www.cbsnews.com/news/southern-california-heat-wave-breaks-records-in-los-angeles-today-2018-07-06/
+
+Chiland E. 2019 Storms put LA at above-average yearly rainfall [Internet]. Curbed LA. Curbed LA; [cited 2019Mar1]. Available from: https://la.curbed.com/2019/2/11/18221012/los-angeles-rain-forecast-yearly-average
+
+Fry H, Reyes-Velarde A. 2019. Snow comes to L.A., with powder in Malibu, Pasadena, West Hollywood [Internet]. Los Angeles Times. Los Angeles Times; [cited 2019Mar1]. Available from: https://www.latimes.com/local/lanow/la-me-california-snow-20190221-story.html
+
+Kahn ME. 2018. Climatopolis: how our cities will thrive in the hotter future. New York: Basic Books, a member of the Perseus Books Group; 2010.Service NOAANW. National Weather Service - NWS Los Angeles/Oxnard [Internet]. NOAANWSWestern Region GeoRSS News Headline. NOAA’s National Weather Service; [cited 2019Mar1].
+
+Service NOAANW. 2018. National Weather Service - NWS Los Angeles/Oxnard [Internet]. NOAANWSWestern Region GeoRSS News Headline. NOAA’s National Weather Service; [cited 2019Mar1]. Available from: https://www.wrh.noaa.gov/climate/monthdisp.php?stn=KCQT&p=temperature&mon=2&wfo=lox&year=2019
+
+Sweeney D. 2018. ‘She was going to retire soon.’ Postal carrier dies in truck in 117-degree heat wave [Internet]. sacbee. The Sacramento Bee; [cited 2019Mar1]. Available from: https://www.sacbee.com/news/state/california/article214616420.html
+
+R Core Team. 2017. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/. 
+
+Tamrazian A, Ladochy S, Willis J, Patzert WC. 2007. Heat Waves in Southern California: Are They Becoming More Frequent and Longer Lasting? Yearbook of the Association of Pacific Coast Geographers.
+
+Thompson A. 2018. L.A.’s Not Just Sizzling, It’s Sultry: Why California’s July Heat Wave Is So Weird [Internet]. Scientific American. Scientific American; [cited 2019Mar1]. Available from: https://www.scientificamerican.com/article/l-a-s-not-just-sizzling-its-sultry-why-californias-july-heat-wave-is-so-weird/
