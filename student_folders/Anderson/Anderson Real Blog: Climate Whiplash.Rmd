@@ -1,7 +1,7 @@
 ---
-title: 'From Fire to Floods: How is Climate Whiplash Affecting Los Angeles County?'
+title: 'From Fire to Floods: What is Climate Whiplash?'
 author: "Toni Anderson"
-date: "3/1/2019"
+date: "3/12/2019"
 output:
   html_document: default
   word_document: default
@@ -16,23 +16,27 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #Climate Whiplash: Where, Why, and How?
 
-Southern California, thanks to its temperate climate and sunny beaches, has a reputation as one of the most idyllic climates in America. The heart of Southern California, Los Angeles County, is the most populous county in the United States with over 10 million residents (US Census Bureau 2018). However, LA county's warm climate hides a much more sinister environmental concern: the phenomenon known colloquially as “climate whiplash.” Put simply, this term denotes frequent transitions from very wet to very dry weather (Hall et al. 2018). This phenomenon is becoming more prevalent worldwide, but is easily identifiable in Southern California: at the end of 2018, for example, the hills of Burbank went from a raging fire to deadly mudslides in just a few weeks, causing massive property damage (Hammer et al. 2007). and prolonged evacuations of both people and livestock (Carroll et al. 2006). But how does precipitation variation create this ongoing from the wet and dry seasons? And what kind of effects will it have on extreme events in the region? How will this, in turn, effect LA county’s population? Observed climate and precipitation trends support the hypothesis precipitation rates are not only increasing but becoming more varied over time. This blog examines the observed trends of climate whiplash in Southern California. Using both scientific studies and raw climate data from the National Oceanic and Atmospheric Administration (NOAA), I will analyze evidence to support the existence of the above hypothesis in the Los Angeles County Region. From this data, I will then discuss the effects of this whiplash on the community itself; including flooding, fires, and water supply contamination. Climate whiplash will increase the frequency of these extreme weather events, which in turn will cause infrastructure and agricultural damage, as well as public unrest and unease due to unorganized evacuations. The effects of climate whiplash are still being unraveled from those attributed solely to global warming; this blog intends to demystify some of these misguided conclusions and bring awareness to the Los Angeles’ new reality of climate whiplash.  
+Southern California, thanks to its temperate climate and sunny beaches, has a reputation as one of the most idyllic climates in America. The heart of Southern California, Los Angeles County, is the most populous county in the United States with over 10 million residents (US Census Bureau 2018). However, LA county's warm climate hides a much more sinister environmental concern: the phenomenon known colloquially as “climate whiplash.” Put simply, this term denotes frequent transitions between very wet and very dry weather (Hall et al. 2018). 
+
+But what is the cause of climate whiplash? Several studies have confirmed that the increased variation in precipitation that causes the swings from wet to dry is linked to changes in climate variation (Hall et al. 2018). This means that increases *and* decreases in local temperature are responsible. And what effects will whiplash have on Los Angeles County? Rapid swings from wet to dry have the potential for devastating extreme events. At the end of 2018, for example, the hills of Malibu went from a raging fire to deadly mudslides in just a few weeks, causing massive property damage (Law 2018).  In Los Angeles county, climate whiplash, a product of increased temperature and therefore precipitation variation, is responsible for an increase in extreme weather events.
+
+This blog examines the observed trends of climate whiplash in Southern California. To do so, I analyzed climate data from the National Oceanic and Atmospheric Administration (NOAA) in the stastical program R (CRAN 2019) to support the existence of the above hypothesis. Using these data, I then researched the effects of the subsequent fires and floods on the community and the unequal effect on lower-income communities. The effects of climate whiplash are still being unraveled from other natural disasters; this blog intends to demystify some of these misguided conclusions and bring awareness to the Los Angeles’ new reality of climate whiplash. 
 
 ![LA County. Source: Google Maps](Burbank Maps.png)
 
-# Methods
+# Putting the Data Together
 
-For this analysis, I obtained daily summaries of temperature and precipitation data for Burbank. Then, using the program R-Studio, I graphed the data in order to assess relationships between time and precipitation. In order to confirm or deny a relationship between the two variables I used the null hypothesis method. The relationship is codified in the data as the ‘p-value.’ If the p-value (calculated in R-Studio) is less than .05, then the null hypothesis may be rejected; this means that there is without question a relationship between the two variables. However, if the p-value is greater than .05, there is still a possibility that the relationship does not exist.  
+For this analysis, I obtained daily summaries of temperature and precipitation data for Burbank. Then I graphed the temperature averages and precipitation sums of the fall months to compare variation over time. In order to confirm or deny a relationship between the two variables (time and temperature/precipitation) I used the null hypothesis method. The relationship is assessed with the ‘p-value’ of the data. If the p-value (calculated in R) is less than .05 then there is without question a relationship between the two variables and the null hypothesis can be rejected. However, if the p-value is greater than .05, the relationship is still unconfirmed. 
 
-###The Data
+###Where Did the Data Come From?
 
-My climate data came from the National Oceanic and Atmospheric Administration (NOAA), which keeps an extensive climate database compiled from weather stations across the United States. Using their Climate Data Online program, I downloaded daily summaries of precipitation data from the Burbank Valley Pump Plant (Station GHCND:USC00041194). This specific dataset covered all the way from 1939 to the present day, and had a 99% coverage rate, meaning that only 1% of data was left unaccounted for in the form of a gap or lapse in the data.
+My climate data came from the National Oceanic and Atmospheric Administration (NOAA), which maintains an extensive climate database compiled from weather stations across the United States. Using their Climate Data Online program, I downloaded daily summaries of precipitation data from the Burbank Valley Pump Plant (Station GHCND:USC00041194). This specific dataset covered all the way from 1939 to the present day, and had a 99% coverage rate, i.e. only 1% of the data was missing.
 
-###Drawbacks
+###Restrictions and Fallacies of the Dataset
 
-There are certain restrictions to only using one dataset and location for my analysis. Because I am using just one location and then applying trends I see there to the entirety of LA county, there is the potential for misgeneralizations to be made to locations with different microclimates than Burbank. However, a singular dataset simplified the analysis process, and, since this particular set has a very long and consistent set of results, I can use it to reliably track trends without the fear of missing data or gaps skewing the results. The station has moved only slightly in its time of recording, though it has existed for the most part in a parking lot. The asphalt can create a ‘heat island’ effect where heat is trapped in a small area an subsequently makes it warmer than the climate itself. While this could artificially inflate temperature data, the urban location of the weather station do not have a large impact on my data, because I am looking solely at precipitation, not temperature. Furthermore, thanks to Burbank's central location, it is a reasonable assumption that trends collected here will be similar enough to trends observed throughout the county that basic generalizations can be made (with the understanding that exact precipitation totals will be slightly different depending on the area.) All precipitation is in the form of rain, as Burbank’s climate does not allow for snow, so there are no inconsistencies in measured volume of precipitation.  
+My analysis uses only dataset from one weather station in Burbank. There are several different potential errors in the datas because of this, most notably is the location of the station.The station has moved only slightly during its recording period, however it has always been located in a parking lot. The asphalt can create a ‘heat island’ wherein heat is trapped in a small area which is warmed more than the climate itself. This could artificially inflate temperature data numbers; however, since all of the data are inflated like this, the trends will remain unchanged. As such, the ‘heat island’ effect should not unduly affect my analysis. There is also the potential for misgeneralizations to be made when applying the climate data collected in Burbank to entirety of Los Angeles County. However, thanks to the completeness of the data set (only 1% messing) and to Burbank's central location, it is the trends seen here will be similar enough to the rest of the county that simple generalizations can be made (with the understanding that exact numbers will be slightly different depending on the area.) 
 
-# Preciptation Rates and Whiplash Evidence
+# What Trends Actually Exist?
 
 ```{r include=FALSE}
 ##Read CSV Data
@@ -109,30 +113,58 @@ PRCP.lm <- lm(PRCP ~ YEAR, data = MonthlyPRCPSum)
 summary(PRCP.lm)
 ```
 
-
 ###Precipitation Annual Data
 
-This graph displays the sum of all precipitation data from each month from 1940 to the present day (the entirety of the dataset). What is important to note here is high variation in total precipitation. With a p-value of 0.755, there is certainly no way we can reject the null hypothesis. As shown in the graph, precipitation does not increase or decrease over time; rather there is a series of sharp spikes and large dips. Historically, much of California’s precipitation occurs in short, intense bursts during the stormy season (Hall et al. 2018), which is shown by the constant spikes and valleys in the graphs. However as the temperature begins to vary more, these storms can become more intense and less frequent, contributing to the rapid shifts from wet to dry that characterize climate whiplash. The conclusion to draw from this graph that the precipitation rates are becoming more varied over time, with taller spikes and wider valleys. 
+To prove the existence of precipitation variation and therefore climate whiplash, I first graphed the sum of the monthly precipitation data over the entire time period of data collection (1940 to the present). The sharp spikes and long valleys demonstrate the yearly variation in preciptition rates, which is indicative of climate whiplash. With a p-value of 0.755, there is certainly no way we can reject the null hypothesis. This means there is no direct increase of decrease in precipitation over time, only a wide variation.
 
 ```{r echo=FALSE}
 
 ##Plot Data
-plot(PRCP~NewDate, climate_data, ty='l', ylim=c(0, 300), main="Precipitation vs. Time(Years)", xlab="Time(Years)", ylab="Precipitation (Milimeters)", col.main="black" )
+plot(PRCP~NewDate, climate_data, ty='l', ylim=c(0, 300), main="Precipitation vs. Years", xlab="Years", ylab="Precipitation (mm)", col.main="black" )
 c <- coef(lm(PRCP~NewDate, climate_data))
 abline(c, col="green")
 ```
 
-###Precipitation Fall Season Data (Sum)
+###Precipitation and Temperature in the Fall
 
-This variation becomes even more apparent when looking at just a few months at a time. The fall season, shown through the three months of October, November, and December, is particularly significant for climate whiplash because it is the annual transitional period between the wet and dry season. Over time, as shown in these three graphs it has amassed a very volatile climate pattern as the fire season extends into the traditionally short and intense rainy season (Hall et al. 2018). While October is increasing precipitation and temperature, November is significantly decreasing after a series of giant spikes in the mid-1900s. December’s trend line remains stagnant, however, the plotted data points showcase a huge variation in precipitation year to year, with significant valleys and spikes all over the graph. Each month has incredible variation in their precipitation totals; however, what stands out to me is that precipitation spikes are not consistent month to month. For example, October has a precipitation spike in the early 2000s, November suffers a distinct valley in the same year. This shows that the wet and dry seasons in LA County are constantly changing places, both year to year and month to month. This is the trademark sign of climate whiplash; and according to the graphs, this discord in rain schedule is only becoming more pronounced as the maximum and minimum temperatures change around it. Historically, this has been demonstrated through a series of multi-year droughts interrupted by very wet seasons (Hall et al. 2018).  If these trends continue, the possibility for dangerous flooding, fires, and other disasters increases exponentially (Abatzoglou et al. 2017).
+With the existence of whiplash demonstrated, I now needed to see if it was correlated to variations in temperature. The graphs show the daily maximum temperatures, daily minimum temperatures (blue) and precipitation totals (green) over the season of Fall. The data for the Fall months is displayed because Fall is the annual transitional period between the wet and dry season, and has recently amassed a very volatile climate pattern as the fire season has begun to extend into the rainy season (Hall et al. 2018) 
 
-```{r echo=FALSE, fig.height=2.5}
+```{r echo=FALSE}
+##Fall Season
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+par(mfrow = c(1, 3), mar = c(5, 4, 3, 2) + 0.1 )
+TMAXresult <- NA 
+for (i in 10:12) {
+  plot(TMAX ~ YEAR, data =  MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(15, 35), xlab="Years", ylab="Temperature (Degrees Celcius)", main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+```
+```{r echo=FALSE}
+##Fall Season
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+par(mfrow = c(1, 3), mar = c(5, 4, 3, 2) + 0.1 )
+TMINresult <- NA 
+for (i in 10:12) {
+  plot(TMIN ~ YEAR, data =  MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(0, 20),xlab="Years", ylab="Temperature (Degrees Celcius)", main = Months[i])
+Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "blue")
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+The daily maximum temperature increased at about the same each month. The minimum temperature graphs, however, display unique trends each month. October shows a consistent dramatic increase, November remains stagnant, while December shows a steady decrease. These trends assert that the gap between maximum and minimum temperatures is becoming more pronounced. These gaps contribute to climate variation, which creates wild swings between warm, cold, wet, and dry weather (Hall et al. 2018). The distinct differences in the temperature variation from month to month contributes to highly varied precipitation rates, therefore supporting the existence of climate whiplash in the LA  County region (Hall et al. 2018).
+
+```{r echo=FALSE}
 #Fall Season
 Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
  par(mfrow = c(1, 3), mar = c(5, 4, 3, 2) + 0.1 )
  PRCPresult <- NA 
  for (i in 10:12) {
-plot(PRCP ~ YEAR, data =  MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(0, 300), main = Months[i], xlab="Year", ylab="Total Precipitation (Milimeters)", col.main="black" )
+plot(PRCP ~ YEAR, data =  MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), ylim=c(0, 300), main = Months[i], xlab="Year", ylab="Total Precipitation (mm)", col.main="black" )
 Month.lm <- lm(PRCP ~ YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ])
 summary(Month.lm)
 abline(coef(Month.lm), col = "green")
@@ -140,37 +172,45 @@ PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.lm)[2], 4), ro
 }
 ```
 
-#Discussion
+Each month has incredible variation in their precipitation totals; however, just like the temperature gap shown above, month to month totals are very different. For example, October has a precipitation spike in the early 2000s, November suffers a distinct valley in the same year. This shows that the wet and dry seasons in LA County are constantly changing places, both year to year and month to month. However, there is not a clear correlation between increases and decreases in temperature and those in precipitation. That said, just because temperature and precipitation do not increase and decrease together does not mean there is no correlation at all; as said above, the variation in temperature and gaps between maximum and minimum are what create precipitation variation (Hall et al. 2018). While an exact relationship between the two cannot be proven from these graphs, the existence of both temperature and precipitation variation is clear to see. 
 
-The presence of climate whiplash is clear, based on temperature and precipitation data. However, the changing precipitation patterns and subsequent dry and wet extremes have potentially severe consequences for LA County, some of which we are already beginning to experience. Fires, floods, droughts, and water contamination are all very real problems facing the community as climate whiplash stands poised on the horizon.
+#How Does it Affect LA County?
 
-![Fire in the Burbank hills. Source:The LA Times](BurFire.jpg)
+The presence of climate whiplash is clear, though the cause cannot be conclusively proven. However, this does not diminish its devastating effects on LA County. The changing precipitation patterns and subsequent dry and wet extremes have potentially severe consequences for LA County, some of which we are already occurring. Fires, floods, and droughts are all very real problems facing the community as climate whiplash stands poised on the horizon.
+
+![The La Tuna Fire devours the Burbank hills. Source:The LA Times](BurFire.jpg)
 
 ###Fire Danger
 
-As climate patterns continue on their path of whiplash, short, intense droughts will become more common, interspersed by occasional very wet seasons (Hall et al. 2018). Before the wet season of 2017, California experienced one of the most extreme four-year droughts in over a millennium (Abatzoglou et al. 2017). According to projections, events like these will become even more frequent as variation in precipitation patterns continue to grow (Hall et al. 2018).
+The increasing variation in climate and unpredictability of wet and dry weather puts the region at an even higher risk for fires than ever before (Abatzoglou et al. 2017).  A late start to seasonal precipitation, especially following several years of drought, predisposes the region for fires because it dries out the vegetation (and everything else) in the area, making it far easier for fires to start (Keeley, Syphard 2018).  The Thomas fire in 2017 is a prime example, having occurred during one of the longest dry spells on record in the last 60 years. The wetting precipitation did not begin truly begin until January, leaving the region dry and vulnerable to the deadly blaze (Abatzoglou et al. 2017).
 
-However, it is not just the dry years that indicate a fire threat. Several of the most recent Southern California fires actually occurred following the wettest modern winters (Hall et al. 2018). The high contrast between the dry years and the suddenly wet winter causes the landscape to produce more underbrush and grasses which quickly dries out because the varied precipitation cannot support the high concentration of plant life (Hall et al. 2018). While wilderness management tasks, such as controlled burns and manual clearing of underbrush can help mitigate some fire hazards, as the climate continues its back-and-forth trajectory, both urban and rural areas will become even more at risk.
+However, it is not just the dry years that indicate a fire threat. Several of the most recent Southern California fires actually occurred following the wettest modern winters (Hall et al. 2018). The high contrast between the dry years and the suddenly wet winter causes the landscape to produce more underbrush which quickly dries out as the wet season abruptly ends (Hall et al. 2018). While wilderness management tasks, such as controlled burns and manual clearing of underbrush can help mitigate some fire hazards, as the climate continues its back-and-forth trajectory, both urban and rural areas will become even more at risk.
 
-As fires become more prevalent in urban areas, however, the danger of evacuations come with them. Very few municipalities have set evacuation plans in place, resulting in confusion, traffic jams, and dangerous situations for residents unable to escape (Carroll et al. 2006). This presents a social justice issue: low-income communities are far less likely to have evacuation plans in place, and are often higher at risk from wildfires because of high population concentration in these areas (Brennan et al. 2012). Additionally, people living in more rural areas are at an even high risk; in a 2012 study, scientists found that areas with housing interspersed with wild vegetation had the highest rate of property loss in Southern California (Brennan et al. 2012). Communities like this exist all over Los Angeles County including the livestock cities of Sylmar, Sunland, and La Tuna Canyon; most are low-income and primarily comprised of non-white populations (US Census Bureau 2010). As fire danger increases thanks to climate whiplash, low-income communities are put at a disproportionately higher risk for property loss  and damage than higher income communities. 
+### Danger Disparities
 
-![Evacuated horses wait on the beach during Woolsely fires in Malibu. Source: People Magazine](Horfs.png)
+As fire danger increases thanks to climate whiplash, low-income communities are put at a disproportionately higher risk for property loss  and damage than higher income communities. People living in rural areas are at the highest risk of fire damage; in a 2012 study, scientists found that areas with housing interspersed with wild vegetation had the highest rate of property loss in Southern California (Brennan et al. 2012). Communities like this exist all over Los Angeles County including the livestock cities of Sylmar, Sunland, and La Tuna Canyon. Most are low-income and primarily comprised of non-white populations (US Census Bureau 2010). Fires stemming from climate whiplash will disproportionatly affect rural, low-income communities, causing damage and losses that the inhabitants cannot afford to fix or replace. 
+
+![Evacuated horses wait on the beach during the Woolsely fires in Malibu. Source: People Magazine](Horfs.png)
 
 ### From Floods to Drought
 
 As climate patterns continue on their path of whiplash, short, intense droughts will become more common, interspersed by occasional very wet seasons (Hall et al. 2018). The drought, in addition to raising prices of water, will exacerbate the fire dangers discussed above. Before the wet season of 2017, California experienced one of the most extreme four-year droughts in over a millennium, in conjunction with the highest recorded temperatures in history (Abatzoglou et al. 2017). According to projections, events like these will become even more frequent as variation in precipitation patterns continue to grow (Hall et al. 2018).
 
-What characterizes climate whiplash, however, is not the presence of just drought and flood, but rather the existence of both in one region over a short period of time. The factors that allow the Los Angeles climate to be so temperate are the same ones that enable these rapid swings between drought and floods, especially during the fall season (Hall et al. 2018). The Los Angeles example of the Woosley fire in Malibu turning quickly into the Malibu floods and mudslides is a preface of what will soon become the norm in Los Angeles (Hall et al. 2018). A study conducted at the University of California, Los Angeles in 2018 discovered strong evidence for heavy increases in seasonal precipitation, projecting that all of California would experience a 100% to 200% total increase in precipitation over the next few decades (Hall et al. 2018). 
+What characterizes climate whiplash, however, is not the presence of just drought and flood, but rather the existence of both in one region over a short period of time. The light seasonal precipitaton and circulation cells that allow Los Angeles to be so temperate also enable these rapid swings between drought and floods (Hall et al. 2018). Despite the current devere drought, it is projected that all of California will experience a 100% to 200% total increase in precipitation over the next few decades (Hall et al. 2018). 
 
 However, whiplash not only contributes to a more intense rainy season; it also predisposes the region to heavy storms outside of the typical timeframe (similar to the drastic swings between October and November shown on my graphs). Regional flooding, such as the mudslides in Malibu, is linked closely to these severe and longer lasting storms outside of the rainy season (Hall et al. 2018) that contribute a large part of the annual precipitation over a short time period. As many parts of California do not have the infrastructure to redirect that amount of water, it quickly oversaturated the soil, the spews outwards creating flash floods and mudslides across the county. 
 
 ![Mudslides envelop a parking garage in Montecito. Source:ABC7 News](Mudslide.jpg)
 
-While both the flooding and drought are dangerous on their own, it is the dramatic swings between the two sides that are truly devastating. The UCLA study describes a serious whiplash event in 2016 when a four-year drought came to close with several months of extremely heavy rainfall. Roads and bridges throughout California were damaged due to flooding and mudslides. A few months later, the cumulative runoff from this precipitation was a major factor in the failure of the Oroville Dam’s primary spillway. This crisis was utterly unexpected, and forced a quarter of a million people to evacuate the area (Hall et al. 2018). Further impacts on Los Angeles include damage to dams thanks to an increased amount of sediment in the water (Barnard et al. 2018), as well as reduced agriculture production as fields are ruined, or crops simply cannot adapt to the sudden temperature and precipitation changes (Cahill et al. 2007). The humans themselves may have problems adapting to these new changes, as the rapid changes from flood to drought disturb the careful balance between flood control and water storage that is already set off kilter by the beginning of climate whiplash patterns.
+While both the flooding and drought are dangerous on their own, it is the dramatic swings between the two sides that are truly devastating. A serious whiplash event in 2016 began when the four-year drought came to close with several months of extremely heavy rainfall. Roads and bridges throughout California were damaged due to flooding and mudslides (Hall et al. 2018). Further impacts on Los Angeles include damage to dams thanks to an increased amount of sediment in the water (Barnard et al. 2018), as well as reduced agriculture production as fields are ruined, or crops simply cannot adapt to the sudden temperature and precipitation changes (Cahill et al. 2007).
 
-#Conclusion
+#Looking Back...
 
-Climate whiplash is a very real problem that is occurring right now in Los Angeles County. The data shows the characteristic variations in precipitation, while numerous other studies, most prominently Swain at UCLA, have confirmed it through other means. The future ramifications of climate whiplash are concerning; the constant pendulum swing between severe drought and extreme flooding leaves the door open for natural disasters and health hazards across the county. Humans can do little to stop the climate whiplash itself from happening; however, they have several optional next steps in order to mitigate the damage this whiplash will cause. Setting more decisive policies about the storage of water and use of water, both to regulate it in a drought and have a place to send it in flood time, would help to keep the political balance between drought and flood (Hall et al. 2018). Furthermore, as LA county exists in a perpetual state of high fire danger, raising awareness about urban fire safety as well as the creation of municipal evacuation plans, either through a local government or neighborhood organization is a necessary endeavor (Carroll et al. 2006). Raised awareness in low-income areas would help to bridge the property damage gap, as would organized evacuation plans that ensure all residents can get themselves and hopefully some valuables out of their home safely. California and Los Angeles country are in for a rough ride as they adjust to the new normal of climate whiplash. However, armed with knowledge of climate trends, disaster preparedness, and strong infrastructure, Los Angeles County will be ready to tackle this challenge head-on.
+Climate whiplash is a very real problem that is occurring right now in Los Angeles County. The data shows the existence of the characterizing variation in precipitation patterms, although variations in temperature cannot be directly linked to this variation, disaproving my hypothesis. To find a more conclusive relationships (or lack therefore of), research should be conducted with more data from several different weather stations, with a focus on specific periods of time to narrow down specfics flucuatiosn in both variables.
+
+#What Happens Next?
+
+  The future ramifications of climate whiplash are concerning; the constant pendulum swing between severe drought and extreme flooding leaves the door open for natural disasters across the county. Humans can do little to stop the climate whiplash itself from happening; however, they have several optional next steps in order to mitigate the damage. Setting more decisive policies about the storage of water and use of water, both to regulate it in a drought and have a place to send it in flood time, will help to keep the political balance between drought and flood (Hall et al. 2018). Furthermore, as LA county exists in a perpetual state of high fire danger, raising awareness about fire safety and prevention is imperative for preventing unessecary damage. The creation of municipal or community evacuation plans, particularly for livestock, would also help to prevent the loss of life and property in fire-prone areas (Carroll et al. 2006).  California and Los Angeles country are in for a rough ride as they adjust to the new normal of climate whiplash. However, armed with knowledge of climate trends, disaster preparedness, and strong infrastructure, Los Angeles County will be ready to tackle this challenge head-on.
 
 #Citations
 
@@ -186,11 +226,15 @@ Cahill KN, Field CB, Lobell DB. 2007. Historical effects of temperature and prec
 
 Carroll MS, Cohn PJ, Kumagai Y. 2006. Evacuation Behavior during Wildfires: Results of Three Case Studies. Western Journal of Applied Forestry. 21(1):39–48, 
 
+Climate Data Online. 2019. Burbank Valley Pump Plant (Station GHCND:USC00041194). National Oceanic and Atmospheric Administration.
+
 Hammer RB, Hawbaker TJ, Radeloff VC, Stewart SI. 2007. Defining the Wildland Urban Interface. Journal of Forestry 105:201-207.
  
 Hall A, Langenbrunner B, Neelin JD, Swain DL. 2018. Increasing precipitation volatility in twenty-first-century California. Nature Climate Change. 8:427-433.
 
 Keeley JE, Syphard AD. 2018. Historical patterns of wildfire ignition sources in California ecosystems. International Journal of Wildland Fire. (27):781-799.	
+
+Law T. 2018. California Areas Torched By Wildfires Face New Dangers—Flooding and Mudslides. Time Magazine.
 
 US Census Bureau. 2010. United States Census 2010. US Census Bureau. 
 
