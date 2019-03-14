@@ -2,7 +2,9 @@
 title: "How has climate-change induced seasonality impacted fire season in Spokane?"
 author: "Claire Generous"
 date: "3/14/2019"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 Climate change in Spokane: Extreme events vs. “soft knock” Spokane
 ---
@@ -36,8 +38,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r, include=FALSE}
 ## Upload data into R
-filepath =  "/home/CAMPUS/ccgb2017/Climate_Change_Narratives/student_folders/Generous/claireg_spokane_data.csv"
-filepath2 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Generous/claireg_spokane_data.csv"
+filepath =  "claireg_spokane_data.csv"
 
 climate_data = read.csv(filepath)
 head(climate_data)

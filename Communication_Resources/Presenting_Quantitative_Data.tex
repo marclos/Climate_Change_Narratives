@@ -351,8 +351,21 @@ For example, we have seen several papers that select parts of the record to make
 \clearpage
 \section{Bar Graphs}
 
-Rainfall data and other types of 'count' data are often best displayed as barcharts. 
+\subsection{What are Barcharts}
 
+Bar charts are used when you are graphing categorical data with continuous data that are a sum of something, for example dollars spent, no of events, and such. Rainfall is a good variable to put into barcharts with monthly or annual sums. 
+
+\subsection{Introducing a Figure and Table}
+
+We introduce our figures and tables in the text before the appear in the text. Just like a good friend, we introduce them to new people so they don't have to try to initiate a conversation without any context. Thus, we provide a bit of context to help the reader with the figure. 
+
+One important note here -- when you report the results of a figure or a table, do not use the table or figure as the subject of the sentence. Instead use the results as the subject and reference the table or figure as a parenthetical. 
+
+For example, 'The number of wildfires has dramatically increased after 2014 (Figure 7). 
+
+In my example, the figure should land after the text if possible. 
+
+This is preferable to 'Figure 7 shows that the number of wildfires has increased after 2014.' The emphasis is placed on the figure, which detracts to what the focus of the text should be on. Now there may be times when we want to put the focus on a table or complex figure, but usually we reserve that type of text for the figure caption. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -369,8 +382,11 @@ Rainfall data and other types of 'count' data are often best displayed as barcha
 
 \end{knitrout}
 
+\subsection{When to use Barcharts}
 
-Notice the figure cuts out every-other year. You'll need to decide if the reader will be bothered by that. If so, you can reduce the x-axis labels fonts or increase the width of the chart. 
+Rainfall data and other types of 'count' data are often best displayed as barcharts. 
+
+Notice how Figure 7 cuts out every-other year. You'll need to decide if the reader will be bothered by that. If so, you can reduce the x-axis labels fonts or increase the width of the chart. 
 
 \section{Tables}
 
@@ -395,7 +411,7 @@ Sometimes (often times?), tables are better than graphs. In the case below, I su
   2 & (10,20] &   0 &   3 &   0 \\ 
   3 & (20,30] &   7 &   1 &   0 \\ 
   4 & (30,40] &   4 &   5 &   0 \\ 
-  5 & (40,50] &   0 &   0 &   1 \\ 
+  5 & (40,50] &   0 &   0 &   3 \\ 
    \hline
 \end{tabular}
 
@@ -412,11 +428,13 @@ You will have 5 opportunities to re-submit to improve your grade, but only two w
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{))}
 \hlkwd{hist}\hlstd{(grades1,} \hlkwc{main}\hlstd{=}\hlstr{"1st Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
      \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"green"}\hlstd{)}
 \hlkwd{hist}\hlstd{(grades2,} \hlkwc{main}\hlstd{=}\hlstr{"2nd Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
      \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{hist}\hlstd{(grades3,} \hlkwc{main}\hlstd{=}\hlstr{"3rd Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
+     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"darkgreen"}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} \caption[Histogram of Blog Scores]{Histogram of Blog Scores}\label{fig:unnamed-chunk-13}
@@ -430,7 +448,7 @@ You will have 5 opportunities to re-submit to improve your grade, but only two w
 \begin{alltt}
 \hlcom{# Display the Student's t distributions with various}
 \hlcom{# degrees of freedom and compare to the normal distribution}
-\hlstd{x} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{50}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlstd{x} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{50}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{1.35}\hlstd{)}
 \hlstd{hx1} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T),}
              \hlkwc{sd}\hlstd{=}\hlkwd{sd}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T))}
 \hlstd{hx2} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T),}
@@ -445,7 +463,7 @@ You will have 5 opportunities to re-submit to improve your grade, but only two w
   \hlkwc{ylab}\hlstd{=}\hlstr{"Density"}\hlstd{,} \hlkwc{main}\hlstd{=}\hlstr{"Distribution of Scores"}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,}
   \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{.1}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{1}\hlstd{])}
   \hlkwd{lines}\hlstd{(x, hx2,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{2}\hlstd{])}
-\hlcom{#  lines(x, hx3, lwd=2, col=colors[3])  }
+  \hlkwd{lines}\hlstd{(x, hx3,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{3}\hlstd{])}
 \hlstd{ttest} \hlkwb{=} \hlkwd{t.test}\hlstd{(grades1, grades2,} \hlkwc{paired}\hlstd{=T)}
 
 \hlkwd{text}\hlstd{(ttest}\hlopt{$}\hlstd{estimate[}\hlnum{1}\hlstd{],} \hlkwd{max}\hlstd{(hx1),} \hlstr{"Draft 1 Mean"}\hlstd{,} \hlkwc{pos}\hlstd{=}\hlnum{3}\hlstd{)}
