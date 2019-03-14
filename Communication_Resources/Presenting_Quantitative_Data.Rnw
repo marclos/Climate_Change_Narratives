@@ -116,9 +116,9 @@ hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel)
 
 \subsection{Putting Multiple Figures in a Row}
 
-To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns. It's often a good idea to set the graphic parameter back to the default afterwards. In this case, I added a title because we have a panel with two graphics. Often people will put letters, e.g. A and B to refer to each one separately, but I prefer to put the actually description in the title, so the reader doesn't have to go back and forth between the caption and the figures.
+To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns, e.g. 'par(mfrow=c(1, 2))'. It's often a good idea to set the graphic parameter back to the default afterwards. In this case, I added a title because we have a panel with two graphics. Often people will put letters, e.g. A and B to refer to each one separately, but I prefer to put the actually description in the title, so the reader doesn't have to go back and forth between the caption and the figures.
 
-<<fig.cap="Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018))">>=
+<<fig.cap="Mean monthly maximum and minimum tempetures (C) ((Bangkok, Thailand, 1940-2018))">>=
 par(mfrow=c(1,2))
 hist(MonthlyTMAXMean$TMAX, main='Maximum Temperature', xlab=TMAXlabel)
 TMINlabel <- "Minimum Temperature (°C)"
