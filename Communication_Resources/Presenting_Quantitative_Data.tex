@@ -116,6 +116,29 @@ Finally, avoid making the statistics the subject of the sentence! Describe the r
 
 \noindent Water quality declined through the study period (p = 0.03; r$^2$ = 0.09), although little of the variation was explained by the model. 
 
+\subsection{On Rounding and Decimaled Numbers}
+
+When numbers are less than 1 and reported as decimals, always report the leading zero, e.g. 0.02 instead of .02. It reduces ambiguities and helps ensure you haven't misreported the values with a typo.
+
+We always want to round to the highest signficant figure. Thus, if temperatures are reported to the nearest degree, then can't report and average of 4.00324432$\degree$ C. For an average, we can report one decimal to the right of the reported instrument precision, thus 4.0$\degree$ C would be appropriate. By reporting the following zero, we are explicit about the significant figures -- thus is a reporting requirement. 
+
+\subsection{Special Symbols}
+
+Science often relies on specialized characters, e.g. $\degree$ for degrees, $\alpha$ for our statistical test criteria. Here's a short list of some of the ones we use most often:
+
+\begin{table}
+\begin{tabular}{lll}\hline
+Symbol  & Markdown Code & \LaTeX code \\ \hline\hline
+
+$\alpha$ & \$\textbackslash alpha\$ & \$\textbackslash alpha\$ \\
+
+$\mu$ & \$\textbackslash mu\$ & \$\textbackslash mu\$ \\
+
+$\degree$ & \&deg; & \$\textbackslash degree\$ \\ 
+\hline
+\end{tabular}
+\end{table}
+
 \section{Exploring the Histogram}
 
 Data exploration can include many steps, but starting with a histogram gives the researcher the ability to evaluate the distribution of the data.
@@ -359,20 +382,20 @@ Sometimes (often times?), tables are better than graphs. In the case below, I su
 \begin{kframe}
 \begin{alltt}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(grades.df,}
-      \hlkwc{caption}\hlstd{=}\hlstr{'Table of First Blog Draft Scores'}\hlstd{),}
+      \hlkwc{caption}\hlstd{=}\hlstr{'Table of Blog Draft Scores'}\hlstd{),}
       \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{)}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.4.1 by xtable 1.8-2 package
 % 
-\begin{tabular}{rlrr}
+\begin{tabular}{rlrrr}
   \hline
- & Range & 1st Draft & 2nd Draft \\ 
+ & Range & 1st Draft & 2nd Draft & 3nd Draft \\ 
   \hline
-1 & (0,10] &   3 &   0 \\ 
-  2 & (10,20] &   0 &   3 \\ 
-  3 & (20,30] &   7 &   1 \\ 
-  4 & (30,40] &   4 &   5 \\ 
-  5 & (40,50] &   0 &   0 \\ 
+1 & (0,10] &   3 &   0 &   0 \\ 
+  2 & (10,20] &   0 &   3 &   0 \\ 
+  3 & (20,30] &   7 &   1 &   0 \\ 
+  4 & (30,40] &   4 &   5 &   0 \\ 
+  5 & (40,50] &   0 &   0 &   1 \\ 
    \hline
 \end{tabular}
 
@@ -412,6 +435,8 @@ You will have 5 opportunities to re-submit to improve your grade, but only two w
              \hlkwc{sd}\hlstd{=}\hlkwd{sd}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T))}
 \hlstd{hx2} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T),}
              \hlkwc{sd}\hlstd{=} \hlkwd{sd}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T))}
+\hlstd{hx3} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T),}
+             \hlkwc{sd}\hlstd{=} \hlkwd{sd}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T))}
 
 \hlstd{colors} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"red"}\hlstd{,} \hlstr{"blue"}\hlstd{,} \hlstr{"darkgreen"}\hlstd{,} \hlstr{"gold"}\hlstd{,} \hlstr{"black"}\hlstd{)}
 \hlstd{labels} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Draft 1"}\hlstd{,} \hlstr{"Draft 2"}\hlstd{,} \hlstr{"Draft 3"}\hlstd{,} \hlstr{"Draft 4"}\hlstd{,} \hlstr{"Draft 5"}\hlstd{)}
@@ -420,7 +445,7 @@ You will have 5 opportunities to re-submit to improve your grade, but only two w
   \hlkwc{ylab}\hlstd{=}\hlstr{"Density"}\hlstd{,} \hlkwc{main}\hlstd{=}\hlstr{"Distribution of Scores"}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,}
   \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{.1}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{1}\hlstd{])}
   \hlkwd{lines}\hlstd{(x, hx2,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{2}\hlstd{])}
-
+\hlcom{#  lines(x, hx3, lwd=2, col=colors[3])  }
 \hlstd{ttest} \hlkwb{=} \hlkwd{t.test}\hlstd{(grades1, grades2,} \hlkwc{paired}\hlstd{=T)}
 
 \hlkwd{text}\hlstd{(ttest}\hlopt{$}\hlstd{estimate[}\hlnum{1}\hlstd{],} \hlkwd{max}\hlstd{(hx1),} \hlstr{"Draft 1 Mean"}\hlstd{,} \hlkwc{pos}\hlstd{=}\hlnum{3}\hlstd{)}

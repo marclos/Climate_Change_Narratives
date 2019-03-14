@@ -90,6 +90,29 @@ Finally, avoid making the statistics the subject of the sentence! Describe the r
 
 \noindent Water quality declined through the study period (p = 0.03; r$^2$ = 0.09), although little of the variation was explained by the model. 
 
+\subsection{On Rounding and Decimaled Numbers}
+
+When numbers are less than 1 and reported as decimals, always report the leading zero, e.g. 0.02 instead of .02. It reduces ambiguities and helps ensure you haven't misreported the values with a typo.
+
+We always want to round to the highest signficant figure. Thus, if temperatures are reported to the nearest degree, then can't report and average of 4.00324432$\degree$ C. For an average, we can report one decimal to the right of the reported instrument precision, thus 4.0$\degree$ C would be appropriate. By reporting the following zero, we are explicit about the significant figures -- thus is a reporting requirement. 
+
+\subsection{Special Symbols}
+
+Science often relies on specialized characters, e.g. $\degree$ for degrees, $\alpha$ for our statistical test criteria. Here's a short list of some of the ones we use most often:
+
+\begin{table}
+\begin{tabular}{lll}\hline
+Symbol  & Markdown Code & \LaTeX code \\ \hline\hline
+
+$\alpha$ & \$\textbackslash alpha\$ & \$\textbackslash alpha\$ \\
+
+$\mu$ & \$\textbackslash mu\$ & \$\textbackslash mu\$ \\
+
+$\degree$ & \&deg; & \$\textbackslash degree\$ \\ 
+\hline
+\end{tabular}
+\end{table}
+
 \section{Exploring the Histogram}
 
 Data exploration can include many steps, but starting with a histogram gives the researcher the ability to evaluate the distribution of the data.
@@ -263,26 +286,34 @@ grades1 = c(28.5, 36.5, 25, 31.5, 26, 22, 22.5,
            2, 0.1, 22.5, 31.5, 6, 28, 34, 0)
 grades2 = c(38.1, NA, NA, 34.4, NA, NA, NA,
             24.8, 17.5, 34.8, 37.9, 14.5, 37, NA, 16.6)
+
+grades3 = c(42.6, NA, NA, NA, NA, NA, NA,
+            NA, NA, NA, NA, NA, NA, NA, NA)
 library(xtable)
 options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 
 grades1_tab = table(cut(grades1, breaks = seq(0,50,10)))
 grades2_tab = table(cut(grades2, breaks = seq(0,50,10)))
+grades3_tab = table(cut(grades3, breaks = seq(0,50,10)))
+
 
 grades1.df = data.frame(grades1_tab)
 grades2.df = data.frame(grades2_tab)
+grades3.df = data.frame(grades3_tab)
 names(grades1.df) = c("Range", "1st Draft")
 names(grades2.df) = c("Range", "2nd Draft")
+names(grades3.df) = c("Range", "3nd Draft")
 
-grades.df = merge(grades1.df, grades2.df)
+grades12.df = merge(grades1.df, grades2.df)
+grades.df = merge(grades12.df, grades3.df, by="Range")
 #rownames(grades_tab) = "Score"
 @
 
 
 <<warning=FALSE, message=FALSE, results='asis'>>=
 print(xtable(grades.df, 
-      caption='Table of First Blog Draft Scores'), 
+      caption='Table of Blog Draft Scores'), 
       caption.placement = "top")
 @
 
@@ -312,6 +343,8 @@ hx1 <- dnorm(x= x, mean = mean(grades1, na.rm=T),
              sd=sd(grades1, na.rm=T))
 hx2 <- dnorm(x= x, mean = mean(grades2, na.rm=T), 
              sd= sd(grades2, na.rm=T))
+hx3 <- dnorm(x= x, mean = mean(grades3, na.rm=T), 
+             sd= sd(grades3, na.rm=T))
 
 colors <- c("red", "blue", "darkgreen", "gold", "black")
 labels <- c("Draft 1", "Draft 2", "Draft 3", "Draft 4", "Draft 5")
@@ -320,7 +353,7 @@ plot(x, hx1, type="l", lty=1, xlab="Score",
   ylab="Density", main="Distribution of Scores", las=1, 
   ylim=c(0,.1), col=colors[1])
   lines(x, hx2, lwd=2, col=colors[2])
-  
+#  lines(x, hx3, lwd=2, col=colors[3])  
 ttest = t.test(grades1, grades2, paired=T)
 
 text(ttest$estimate[1], max(hx1), "Draft 1 Mean", pos=3)
