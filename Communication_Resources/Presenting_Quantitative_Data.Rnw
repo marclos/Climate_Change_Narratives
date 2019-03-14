@@ -113,6 +113,7 @@ TMAXlabel <- "Maximum Temperature (°C)"
 hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel)
 @
 \clearpage
+
 \subsection{Putting Multiple Figures in a Row}
 
 To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns. It's often a good idea to set the graphic parameter back to the default afterwards. In this case, I added a title because we have a panel with two graphics. Often people will put letters, e.g. A and B to refer to each one separately, but I prefer to put the actually description in the title, so the reader doesn't have to go back and forth between the caption and the figures.
@@ -182,7 +183,7 @@ abline(coef(lm(TMAX ~ YEAR,
 \end{figure}
 
 \clearpage
-Now, what if we only want to display part of the data. We can limit the x-axis range using the 'xlim' argument, where we create a vector of for the start and end of the range.  
+Now, what if we only want to display part of the data. We can limit the x-axis range using the 'xlim' argument, where we create a vector of for the start and end of the range.  Finally, we can improve the plot by adding 'las=1' to rotate the y-axis labels. 
 
 %\begin{figure}[h]
 <<fig.cap='Monthly Average of Daily Maximum Temperatures (C).'>>=
