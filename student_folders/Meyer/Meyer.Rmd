@@ -46,6 +46,7 @@ To tackle this question, I utilized climate data from the National Oceanic and A
 A best-fit line of all the maximum temperatures in the NOAA data set has a positive trend, but is not statistically significant. On the other hand, the data set of the minimum temperatures shows a slightly steeper best-fit line with a very significant p-value of less than 0.01, but with a positive slope that is still less than 0.01 degrees Celsius per 100 years. The significance of the minimum temperature data demonstrates a slight warming over the last 71 years in Seattle. However, the different seasons in Seattle do not all experience the same level of warming. The summer months included below experienced significantly more warming than most other months.
 
 ```{r, echo=FALSE, include=FALSE}
+
 ## UPLOAD DATA INTO R
 
 filepath = "/home/CAMPUS/ekma2018/Climate_Change_Narratives/student_folders/Meyer/ella_seattle_data.csv"
