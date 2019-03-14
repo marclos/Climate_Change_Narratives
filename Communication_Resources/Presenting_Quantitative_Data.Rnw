@@ -303,7 +303,7 @@ grades1 = c(28.5, 36.5, 25, 31.5, 26, 22, 22.5,
 grades2 = c(38.1, NA, NA, 34.4, NA, NA, NA,
             24.8, 17.5, 34.8, 37.9, 14.5, 37, NA, 16.6)
 
-grades3 = c(42.6, NA, NA, 42.8, 42.9, NA, NA,
+grades3 = c(42.6, NA, NA, 42.8, 43.8, NA, NA,
             NA, NA, NA, NA, NA, NA, NA, NA)
 library(xtable)
 options(xtable.floating = FALSE)
@@ -356,7 +356,7 @@ hist(grades3, main="3rd Draft", xlab="Score",
 
 # Display the Student's t distributions with various
 # degrees of freedom and compare to the normal distribution
-x = seq(0, 50, by = 1.35)
+x = seq(0, 50, by = 1)
 hx1 <- dnorm(x= x, mean = mean(grades1, na.rm=T), 
              sd=sd(grades1, na.rm=T))
 hx2 <- dnorm(x= x, mean = mean(grades2, na.rm=T), 
@@ -369,7 +369,7 @@ labels <- c("Draft 1", "Draft 2", "Draft 3", "Draft 4", "Draft 5")
 
 plot(x, hx1, type="l", lty=1, xlab="Score",
   ylab="Density", main="Distribution of Scores", las=1, 
-  ylim=c(0,.1), col=colors[1])
+  ylim=c(0,.15), col=colors[1])
   lines(x, hx2, lwd=2, col=colors[2])
   lines(x, hx3, lwd=2, col=colors[3])  
 ttest = t.test(grades1, grades2, paired=T)
@@ -377,8 +377,8 @@ ttest = t.test(grades1, grades2, paired=T)
 text(ttest$estimate[1], max(hx1), "Draft 1 Mean", pos=3)
 text(ttest$estimate[2], max(hx2), "Draft 2 Mean", pos=3)
 
-text(10, .07, paste("p-value = ", round(ttest$p.value, 4), "or better p < 0.001"))
-legend("topright", inset=.05, title="Distributions",
+text(10, .05, paste("p-value = ", round(ttest$p.value, 4), "or better p < 0.001"))
+legend("topleft", inset=.05, title="Distributions",
   labels, lwd=2, lty=c(1, 1, 1, 1, 1), col=colors)
 
 
