@@ -82,7 +82,7 @@ To cite R in publications use:
 
 In statistics, we reject the null hypothesis -- and don't prove anything. So, we need to be careful how we report our results. 
 
-First, when we report statistics, do not report the p-value if the result in non-significant. Just report that null hypothesis cannot be rejected. If the p-value is less then 0.001, just report it as `p $<$ 0.001'. If the p-value is between 0.05 and 0.001, then I suggest you report the actual value (rounded to the nearest one-hundredth or thousandth as appropriate. 
+First, when we report statistics, do not report the p-value if the result in non-significant. Just report that null hypothesis cannot be rejected. For example, "there was no relationship between y and x". If the p-value is less then 0.001, just report it as `p $<$ 0.001'. If the p-value is between 0.05 and 0.001, then I suggest you report the actual value (rounded to the nearest one-hundredth or thousandth as appropriate. For example, "evidence suggest that y depends on x (p = 0.03)." 
 
 Second, when we report the r$^2$ value, round to the nearest one-hundredth and describe it as the 'amount of variation explained by the model'. In fact, if you multiply by 100, it's can thought of as a percent variation explained.
 
