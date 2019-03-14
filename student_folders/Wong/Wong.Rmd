@@ -47,8 +47,8 @@ To analyze the data, I will have to read and interpret the p and adjusted r squa
 
 ##Data
 ```{r, echo = FALSE, results= 'hide'}
-read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
-guangzhou_precdata <- read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/guangzhouprecip.csv")
+read.csv("guangzhouprecip.csv")
+guangzhou_precdata <- read.csv("guangzhouprecip.csv")
 head(guangzhou_precdata)
 str(guangzhou_precdata)
 names(guangzhou_precdata)
@@ -91,8 +91,8 @@ summary(August.lm)
 
 ```{r, echo = FALSE, results= 'hide'}
 #importing guilin prcp data
-read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/1628919.csv")
-guilin_precdata <-read.csv("/home/CAMPUS/hwab2018/Climate_Change_Narratives/student_folders/Wong/1628919.csv")
+read.csv("1628919.csv")
+guilin_precdata <-read.csv("1628919.csv")
 head(guilin_precdata)
 str(guilin_precdata)
 names(guilin_precdata)

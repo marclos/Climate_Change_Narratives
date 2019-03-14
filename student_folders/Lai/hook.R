@@ -1,0 +1,1 @@
+#Lai (2019) looks at the September 2013 floods in Boulder and Northeast Colorado as a case study of efforts to attribute global climate change to extreme local weather events.

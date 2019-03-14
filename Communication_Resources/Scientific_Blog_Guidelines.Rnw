@@ -32,7 +32,7 @@
     \setlength{\parskip}{0pt}}%
   {\end{enumerate}}
 
-\title{Scientific Blogs Writing Guidelines %\thanks{}
+\title{Scientific Blogs Writing Guidelines -- Not Done Yet! %\thanks{}
 }
 \author[Marc Los Huertos]{Marc Los Huertos}
 %\date{} 
@@ -45,7 +45,7 @@
 
 Communication is one of the key outcomes of an educated person. And in environmental issues, communication is critical to developing ways to engage and address a range of environmental issue. Using digital media has become an increasinly popular way to express our ideas and even used to communicate science -- and for many an easy way to critize science outside the peer review process. 
 
-Blogs... can be used in 
+Blogs can be used to communicate scientific information, even technical and complex concepts into digestable forms. However, as type of 'translation', the process is not easy. It requires an interative process to hone our use of language to develop an accessible and compelling narrative. 
 
 \subsection{Learning Objectives}
 
@@ -58,60 +58,93 @@ This assignment is based on the EA learning outcome for writing and communicatin
 
 \section{What is a Blog? and how can it be used effectively to communicate science?}
 
+Usually a blog\footnote{Must be the ugliest word in the English language.}, is a series of digtial editorials. In many cases, these are use to promote a certain opinion or communicate information or act as a personal reflection. 
 
+In our case, we use the blog to communicate and discuss contraversial issues in science with a hope to provide a nuanced and sophisticated view. 
 
 \subsection{Characteristics of a Blog}
 
+The are several characteristics of a blog. The list below is a good summary -- please note that are not to be used to structure the order of the blog. I'll discuss that below. 
+
 \begin{enumerate}
 	\item Introduction, body and conclusion like other news stories
+	\item The use of data that can be used to confront various preconceptions about some environmental issue.
 	\item An objective explanation of the issue, especially complex issues
-	\item A timely news angle
+%	\item A timely news angle
 	\item Opinions from the opposing viewpoint that refute directly the same issues the writer addresses
-	\item The opinions of the writer delivered in a professional manner. Good editorials engage issues, not personalities and refrain from name-calling or other petty tactics of persuasion.
-	\item Alternative solutions to the problem or issue being criticized. Anyone can gripe about a problem, but a good editorial should take a pro-active approach to making the situation better by using constructive criticism and giving solutions.
-	\item A solid and concise conclusion that powerfully summarizes the writer's opinion. Give it some punch.
+%	\item The opinions of the writer delivered in a professional manner. Good editorials engage issues, not personalities and refrain from name-calling or other petty tactics of persuasion.
+%	\item Alternative solutions to the problem or issue being criticized. Anyone can gripe about a problem, but a good editorial should take a pro-active approach to making the situation better by using constructive criticism and giving solutions.
+%	\item A solid and concise conclusion that powerfully summarizes the writer's opinion. Give it some punch.
 \end{enumerate}
 
 
-\section{Types of Blogs}
+%\section{Types of Blogs}
 
-\begin{description}
-	\item[Explain or interpret:] 
-	\item[Criticize:] 
-	
-	\item[Persuade:] 
-	
-	\item[Praise:] 
-	
-\end{description}
+%\begin{description}
+%	\item[Explain or interpret:] 	\item[Criticize:] 	\item[Persuade:] 	\item[Praise:] 
+%\end{description}
  
-
-
 
 \section{Writing a Blog}
 
-Give a concise, but thorough, background on the issue. Remember, the majority of people reading the story may not have an understanding of the issue. Give a thoughtful, yet brief, background on the issue before venturing into more details of the campaign.
+Give a concise background on the issue, but just enough to understand the objective of the blog. I see that as a teaser, how to engage your reader so they can 'buy in' to your project.
 
-Strengthen your message by citing national or international trends that show support for your thesis. Some factors  that influence public option on environmental issues include: a strong economy, the bipartisan support for the issue, the strength and diversity of the constituency, and the broad range of social benefits that might be gained.
+Next, try to outline a general approach that you have taken. For example, what is your goal or objective, what questions do you want to answer, and finally, if you have hypotheses, you might describe them as a way to provide some 'prediction' that the reader might be interested in. 
 
-Localize the story. Although environmental issues might be very broad and touches many lives across the USA or world, the readers for your opinion editorial will want to know how your thesis affects their community. Provide the audience with specific, well-known examples of how the successful implementation of your thesis can benefit the community in the future.
+For example: Based on recent fires in Idaho, the objective of this blog is to describe how climate change might be influencing the regional fire regime. Thus, I'd like to know, to what extent has fire frequency and intensity changed in recent years. Based my observations, I predict that fires have been increasing over time and that increasing summer temperpatures are correlated. 
+
+After you describe your objectives and approach, I suggest you describe the data sources and data characteristics that you can use to answer the question(s) and test your hypotheses.
+
+It's tricky to decide how much information to cover in these sections, that might be 'termed' as methods. We need enough for others to follow, but space is precious and our readers time is far from infinite. Thus, I suggest you side on a minimalize approach. 
+
+For example: To test my predictions, I obtained NOAA curated temperature and precipation records from Boise (Station: ID033204) from 1885 to 2017. This station has been moved three times during the recoreded period, but have passed through the strict NOAA QA/QC process. Although there were several months of missing precipation data. Thus, to avoid the bias of missing data for monthly totals, if any day's precipation was missing, the entire month was coded as missing. 
+
+Data processing, graphics, and analyses used the R programming environment (CRAN 2017). 
+
+Reporting statistics is one of the hardest things to do in a scientific blog. We want to 'invite readers' and not turn them off with terse, complext terminalogy. And nothing can do this faster than having to report the results of statistical tests. There are several approaches:
+
+\begin{description}
+\item[Explain All the Gory Detail]
+\item[Explain Just Enough]
+\item[Don't Explain Anything]
+
+\end{description}
+
+\subsection{On headers}
+
+When we begin a scientific blog, it's convenient to start with general headers that look like lab reports, "Introdcution", "Materials and Methods", "Results", "Discussion", and "Conclusion". But I am not convinced that the general public reader will find these very compelling. In fact, I am not sure that the separation between the methods and the results is all at that useful in an online context. 
+
+Thus, I suggest you start with these as headers and as you develop your blog, create more compelling headers. 
+
+For example, instead of "Methods", "Obtaining 110 Years of Boise Weather Data". This allows the reader to know what the methods is doing and this will also allow you to describe the quality and quantity of the data. 
+
+For the next section, you'll want to discuss your own results. When you begin reporting your results, think of it as a chance to introduce your data -- so, if you have a figure, write some text about the results -- and then cite the figure.
+
+For example, Forest fires have increased each year (Figure 3). 
+This is much better than Figure 3 shows how forest fires have increased each year. 
 
 
-Although most newspapers keep an open mind in determining the content of their opinion editorials, some newspapers will be more inclined to publish an opinion piece on a subset of topics. Thus, it is important to research the newspaper in advance to appreciate the type of editorials it publishes, as well as what issues are covered in publication as a whole. Remember that a newspaper will not publish a story unless the editorial board feels it represents a unique or different perspective.
 
-\subsection{Choose your topic wisely}
 
-For maximum impact, choose an issue that has been making the headlines recently. For instance, if the Presidential elections are around the corner, focus on a particular topic with political implications. Additionally, be very specific about the issue you wish to focus on. You might have a lot to say about a dozen issues, but save your knowledge for later. Narrow down your area of interest with as much precision as is possible. This is a great opportunity to practice writing less and saying more!
+%Localize the story. Although environmental issues might be very broad and touches many lives across the USA or world, the readers for your opinion editorial will want to know how your thesis affects their community. Provide the audience with specific, well-known examples of how the successful implementation of your thesis can benefit the community in the future.
 
-\subsection{Declare your agenda outright}
+%Although most newspapers keep an open mind in determining the content of their opinion editorials, some newspapers will be more inclined to publish an opinion piece on a subset of topics. Thus, it is important to research the newspaper in advance to appreciate the type of editorials it publishes, as well as what issues are covered in publication as a whole. Remember that a newspaper will not publish a story unless the editorial board feels it represents a unique or different perspective.
 
-An editorial without an unequivocal opinion is bound to fall flat on its face. Right at the very beginning, define your agenda in clear terms. Make sure that you state your opinion or thesis coherently. Remember those research papers and thesis statements you wrote in college. It's time to refresh your memory and concentrate on thesis statement writing skills. This course on how to write a thesis should help you immensely. The essential structure of a thesis statement in an editorial remains the same, only the language is more informal and journalistic.
+%\subsection{Choose your topic wisely}
+
+%For maximum impact, choose an issue that has been making the headlines recently. For instance, if the Presidential elections are around the corner, focus on a particular topic with political implications. Additionally, be very specific about the issue you wish to focus on. You might have a lot to say about a dozen issues, but save your knowledge for later. Narrow down your area of interest with as much precision as is possible. This is a great opportunity to practice writing less and saying more!
+
+%\subsection{Declare your agenda outright}
+
+%An editorial without an unequivocal opinion is bound to fall flat on its face. Right at the very beginning, define your agenda in clear terms. Make sure that you state your opinion or thesis coherently. Remember those research papers and thesis statements you wrote in college. It's time to refresh your memory and concentrate on thesis statement writing skills. This course on how to write a thesis should help you immensely. The essential structure of a thesis statement in an editorial remains the same, only the language is more informal and journalistic.
 
 \subsection{Build your argument}
 
-A good editorial expresses your point of view while a great one manages to persuade others to join your camp. To persuade people, you need a sound argument based on facts and analogies, not vitriol and diatribe. Once you have stated your thesis, acknowledge contradictory opinions and explain why you disagree with them. Use facts, statistics, quotations and theoretical explanations for criticizing your opponents' views and cite your sources. Rejecting them outright without any explanation screams of cowardice and unprofessional ethics. Using external sources without citing them leaves you vulnerable to accusations that you made up the data or using the data inappropriately. 
+A scientific expresses your point of view while a great one manages to persuade others to join your camp. To persuade people, you need a sound argument based on facts, evidence, and analogies, not vitriol and diatribe. 
 
-To build a foolproof argument, you will need to achieve a balance between content and style. Not only will you need substantial data, you will also need to structure it coherently. Take this course to learn the basics of writing with writing with precision and clarity.
+Once you have stated your thesis, acknowledge contradictory opinions and explain why you disagree with them. Use facts, statistics, evidence, quotations, and theoretical explanations for criticizing your opponents' views and cite your sources. Rejecting them outright without any explanation screams of cowardice and unprofessional ethics. Using external sources without citing them leaves you vulnerable to accusations that you made up the data or using the data inappropriately. Thus, cite all your sources AND use highly respected sources.
+
+To build a foolproof argument, you will need to achieve a balance between content and style. Not only will you need substantial data, you will also need to structure it coherently. Writing with precision and clarity is a learned process and as anyone can tell you, it like a complex puzzle with lots of pieces. But unlike a puzzle, there is not perfect place for each piece -- and pieces change shape you as you try to use them. So, try to have an open mind as you are working to refine your blog. 
 
 
 %\subsection{Strengthen your argument with analogies}
@@ -120,79 +153,43 @@ To build a foolproof argument, you will need to achieve a balance between conten
 %\subsection{Provide possible solutions}
 
 
-\section{Structuring your Op-Ed}
-
-\subsection{Lead with an Objective Explanation of the Issue/Controversy}
-
-\begin{enumerate}
-	\item Include the five W's  (Who, what, where, when, and why) and the H (How). 
-\end{enumerate}
-
-\section{Grading}
-
-You will be grading for the following criteria with a goal of meeting the first standard for each:
-
-\subsection{Communication}
-
-Define a compelling and timely problem in your own words. 
-
-Standards
-
-\begin{enumerate*}
-	\item Identifies the problem that demonstrates the topic is both compelling and timely with numerous supporting details and examples which are organized logically and coherently.		
-	\item Identifies the problem with some supporting details and examples in an organized manner.	
-	\item Identifies the problem with few details or examples in a somewhat organized manner.	
-	\item Identifies the problem poorly with few or no details or states the main idea or problem verbatim from other sources.
-	\item Does not identify problem.
-\end{enumerate*}
-
-\subsection{Analysis}
-
-Present the opposition's argument with integrity and develop reasonable objections.
-
-\begin{enumerate*}
-	\item Uses specific inductive or deductive reasoning to make inferences regarding premises; addresses implications and consequences; identifies facts and relevant information correctly.	
-	\item Uses logical reasoning to make inferences regarding solutions; addresses implications and consequences; Identifies facts and relevant information correctly.		
-	\item Uses superficial reasoning to make inferences regarding solutions; Shows some confusion regarding facts, opinions, and relevant, evidence, data, or information.	
-	\item Makes unexplained, unsupported, or unreasonable inferences regarding solutions; makes multiple errors in distinguishing fact from fiction or in selecting relevant evidence. 	
-	\item Does not analyze multiple solutions.
-\end{enumerate*}
 
 
-\subsection{Problem Solving}
-Select and defend your chosen solution.	
+%\begin{enumerate*}
+%	\item Identifies the problem that demonstrates the topic is both compelling and timely with numerous supporting details and examples which are organized logically and coherently.			\item Identifies the problem with some supporting details and examples in an organized manner.		\item Identifies the problem with few details or examples in a somewhat organized manner.		\item Identifies the problem poorly with few or no details or states the main idea or problem verbatim from other sources.	\item Does not identify problem.
+%\end{enumerate*}
 
-\begin{enumerate*}
-	\item Thoroughly identifies and addresses key aspects of the problem and insightfully uses facts and relevant evidence from analysis to support and defend potentially valid solutions.	
-	\item Identifies and addresses key aspects of the problem and uses facts and relevant evidence from analysis to develop potentially valid conclusions or solutions.	Identifies and addresses some aspects of the problem;  develops possible conclusions or solutions using some inappropriate opinions and irrelevant information from analysis. 	
-	\item Identifies and addresses only one aspect of the problem but develops untestable hypothesis; or develops invalid conclusions or solutions based on opinion or irrelevant information.	
-	\item Does not select and defend a solution.
-\end{enumerate*}
+%\subsection{Analysis}
 
-\subsection{Evaluation}
+%Present the opposition's argument with integrity and develop reasonable objections.
 
-Identify weaknesses in your chosen solution.	
+%\begin{enumerate*}
+%	\item Uses specific inductive or deductive reasoning to make inferences regarding premises; addresses implications and consequences; identifies facts and relevant information correctly.		\item Uses logical reasoning to make inferences regarding solutions; addresses implications and consequences; Identifies facts and relevant information correctly.			\item Uses superficial reasoning to make inferences regarding solutions; Shows some confusion regarding facts, opinions, and relevant, evidence, data, or information.		\item Makes unexplained, unsupported, or unreasonable inferences regarding solutions; makes multiple errors in distinguishing fact from fiction or in selecting relevant evidence. 		\item Does not analyze multiple solutions.
+%\end{enumerate*}
 
-\begin{enumerate*}
-	\item Insightfully interprets data or information; identifies obvious as well as hidden assumptions, establishes credibility of sources on points other than authority alone, avoids fallacies in reasoning; distinguishes appropriate arguments from extraneous elements; provides sufficient logical support. 	
-	\item Accurately interprets data or information;
-identifies obvious assumptions, establishes credibility of sources on points other than authority alone, avoids fallacies in reasoning; distinguishes appropriate arguments from extraneous elements; provides sufficient logical support.	
-	\item Makes some errors in data or information interpretation; makes arguments using weak evidence; provides superficial support for conclusions or solutions.	Interprets data or information incorrectly; 
-	\item Supports conclusions or solutions without evidence or logic; uses data, information, or evidence skewed by invalid assumptions; uses poor sources of information; uses fallacious arguments.	
-	\item Does not evaluate data, information, or evidence related to chosen solution. 
-\end{enumerate*}
 
-\subsection{Synthesis}
+%\subsection{Problem Solving}
+%Select and defend your chosen solution.	
 
-Suggest ways to improve/strengthen your chosen solution.
+%\begin{enumerate*}
+%	\item Thoroughly identifies and addresses key aspects of the problem and insightfully uses facts and relevant evidence from analysis to support and defend potentially valid solutions.		\item Identifies and addresses key aspects of the problem and uses facts and relevant evidence from analysis to develop potentially valid conclusions or solutions.	Identifies and addresses some aspects of the problem;  develops possible conclusions or solutions using some inappropriate opinions and irrelevant information from analysis. 		\item Identifies and addresses only one aspect of the problem but develops untestable hypothesis; or develops invalid conclusions or solutions based on opinion or irrelevant information.		\item Does not select and defend a solution.
+%\end{enumerate*}
 
-\begin{enumerate*}
-	\item Insightfully relates concepts and ideas from multiple sources; uses new information to enhance chosen solution; recognizes missing information; correctly identifies potential effects of new information.	
-	\item Accurately relates concepts and ideas from multiple sources; uses new information to enhance chosen solution; correctly identifies potential effects of new information.	
-	\item Inaccurately or incompletely relates concepts and ideas from multiple sources; shallow determination of effect of new information on chosen solution.	
-	\item Poorly integrates information from more than one source to support chosen solution; Incorrectly predicts the effect of new information on chosen solution.	
-	\item Does not identify new information for chosen solution.	
-\end{enumerate*}
+%\subsection{Evaluation}
+
+%Identify weaknesses in your chosen solution.	
+
+%\begin{enumerate*}
+%	\item Insightfully interprets data or information; identifies obvious as well as hidden assumptions, establishes credibility of sources on points other than authority alone, avoids fallacies in reasoning; distinguishes appropriate arguments from extraneous elements; provides sufficient logical support. 	\item Accurately interprets data or information; identifies obvious assumptions, establishes credibility of sources on points other than authority alone, avoids fallacies in reasoning; distinguishes appropriate arguments from extraneous elements; provides sufficient logical support.		\item Makes some errors in data or information interpretation; makes arguments using weak evidence; provides superficial support for conclusions or solutions.	Interprets data or information incorrectly; 	\item Supports conclusions or solutions without evidence or logic; uses data, information, or evidence skewed by invalid assumptions; uses poor sources of information; uses fallacious arguments.		\item Does not evaluate data, information, or evidence related to chosen solution. 
+%\end{enumerate*}
+
+%\subsection{Synthesis}
+
+%Suggest ways to improve/strengthen your chosen solution.
+
+%\begin{enumerate*}
+%	\item Insightfully relates concepts and ideas from multiple sources; uses new information to enhance chosen solution; recognizes missing information; correctly identifies potential effects of new information.		\item Accurately relates concepts and ideas from multiple sources; uses new information to enhance chosen solution; correctly identifies potential effects of new information.		\item Inaccurately or incompletely relates concepts and ideas from multiple sources; shallow determination of effect of new information on chosen solution.		\item Poorly integrates information from more than one source to support chosen solution; Incorrectly predicts the effect of new information on chosen solution.		\item Does not identify new information for chosen solution.	
+%\end{enumerate*}
 
 %\section{Grading}
 

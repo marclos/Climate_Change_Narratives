@@ -13,7 +13,13 @@ When submiting to the Sakai site, please include the `hook' in the exported file
 
 \section{Naming your Blog}
 
-Please name your blog with your surname only, e.g. `LosHuertos.Rmd', then I can make links from the introduction you have written to your blog in a relatively straighforward way. 
+Please name your blog with your surname only, e.g. `LosHuertos.Rmd', then I can make links from the introduction you have written to your blog in a relatively straighforward way. With each new version, please add a version number, e.g. `LosHuertos2.Rmd', which will create a new html that I can link to easily. 
+
+\subsection{Creating a Universal Path}
+
+When we created our links to the files, such as our csv files, we had a long path name that links to our home directory. However, for this blogs to be posted, it's better to remove the path and just have the file name. 
+
+Delete all references to the path (folder structure) before the csv file name. Re-knit to make sure nothing has broken. 
 
 \section{Cleaning up Directory}
 
@@ -35,7 +41,6 @@ In the lower right window, natigate to the `Files' tab. Click on `New Folder' an
 \includegraphics[width=\textwidth]{MoveFiles}
 \caption{Again, moving folders is pretty straightforward, if you can select then navigate to the gear icon.}
 \end{figure}
-
 
 Later, you can delete these old files too, but there's not hurry -- you might need to dredge code up from an old file, so hanging on to them can serve you later. 
 
