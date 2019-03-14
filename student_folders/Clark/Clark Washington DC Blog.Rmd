@@ -4,6 +4,19 @@ author: "Chris Clark"
 date: "3/11/2019"
 output: html_document
 ---
+<style>
+body {
+    background-color: #FFEDBA;
+}
+
+div.a {
+  text-align: center;
+}
+
+.caption {
+    font-size: x-small;
+}
+</style>
 
 Blizzards and Hurricanes, Are They Increasing?
 ---
@@ -140,7 +153,7 @@ Have Maximum Temperatures increased Hurricanes?
 ---
 
 
-  Atlantic hurricane season as designated by NOAA starts on June 1 and goes all the way through November 30. As shown in figure 3, maximum temperatures in August have increased with a slope of .02 degrees C (.04 degrees F) per year with a p-value< 0.01. August high temperatures historically have ranged from 20 to 34 degrees C (68-93 F). This p-value shows a significant correlation between year and temperature, meaning that there has been significant warming in the Washington, DC area. This increased surface/atmospheric temperature lends itself to aiding in hurricane landfall, where previously cooler land and atmospheric conditions could not support the storms. This is supported by the above graph, as well as data that shows that between 1970 and 1998 east coast hurricane frequency was increasing (Smith 1999). Figure 4 also shows an upward trend through time of North Atlantic Tropical Cyclone activity. Hurricane data from the National Weather Service (2012) also shows that through time, DC experienced hurricanes with more frequency than in the previous 150 years, which may be partially explained by the increases in temperature. 
+  Atlantic hurricane season as designated by NOAA starts on June 1 and goes all the way through November 30. As shown in figure 3, maximum temperatures in August have increased with a slope of .02 degrees C (.04 degrees F) per year with a p-value< 0.01. August high temperatures historically have ranged from 20 to 34 degrees C (68-93 F). This p-value shows a significant correlation between year and temperature, meaning that there has been significant warming in the Washington, DC area. This increased surface/atmospheric temperature supports hurricane landfall, where previously cooler land and atmospheric conditions could not support the storms. This is supported by the above graph, as well as data that shows that between 1970 and 1998 east coast hurricane frequency was increasing (Smith 1999). Figure 4 also shows an upward trend through time of North Atlantic Tropical Cyclone activity. Additionally, hurricane data from the National Weather Service (2012) shows that through time, DC experienced hurricanes with more frequency than in the previous 150 years, which may be partially explained by the increases in temperature. 
 
 
 
@@ -177,7 +190,7 @@ knitr::include_graphics("cyclones-figure3-2016.png")
 Limitations & Future Research Directions
 ---
 
-Much of the literature I have employed is very broad in scope and admittedly it is unlikely that warming-caused evaporation is the sole cause of increases in extreme weather. However, based on existing literature and my own analyses I believe that they are at the very least significant contributors. To prove this, long-term studies looking at various atmospheric factors and storm behaviors would be needed, but I believe this is a good start.
+Much of the literature I have employed is very broad in scope and admittedly, it is unlikely that warming-caused evaporation is the sole cause of increases in extreme weather. However, based on existing literature and my own analyses I believe that they are at the very least significant contributors. To prove this, long-term studies looking at various atmospheric factors and storm behaviors would be needed, but I believe this is a good start.
 
 Societal Implications: Poverty & Homelessness
 ---
