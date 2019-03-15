@@ -87,7 +87,7 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
 ```{r, echo=FALSE}
 ##New Plots
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month == "09",], ty = 'l', xlim = c(1939, 2019), main = "TMAX for September (degrees Celsius) vs Time (years)", xlab = "Time (years)", ylab = "TMAX for September (degrees Celsius)", col.main = "red", col.lab = "red")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month == "09",], ty = 'l', xlim = c(1939, 2019), main = "Maximum Temperature for September (°C) vs Time (years)", xlab="Time (years)", ylab="Maximum Temperature for September (°C)", pch=20, las=1, col="black")
 September.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
 abline(coef(September.lm), col = "red")
 ```
@@ -103,7 +103,7 @@ The linear regression model of the graph of maximum temperatures in September wa
 MonthlyTMINMean = aggregate(TMIN~Month+Year, climate_data, mean)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month == "09",], ty = 'l', xlim = c(1939, 2019), main = "TMIN for September (degrees Celsius) vs Time (years)", xlab = "Time (years)", ylab = "TMIN for September (degrees Celsius)", col.main = "red", col.lab = "red")
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month == "09",], ty = 'l', xlim = c(1939, 2019), main = "Minimum Temperature for September (°C) vs Time (years)", xlab = "Time (years)", ylab = "Minimum Temperature for September (°C)", pch=20, las=1, col="black")
 September.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
 abline(coef(September.lm), col = "red")
 ```
@@ -121,7 +121,7 @@ leaf_observations <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/s
 
 ```{r, echo=FALSE}
 ##Plot Leaf Observation Data
-plot(Range~Year, leaf_observations, ty='l', main = "Length of Foliage Season (days) vs. Year", xlab = "Year", ylab = "Foliage Season Length (days)", col.main = "red", col.lab = "red")
+plot(Range~Year, leaf_observations, ty='l', main = "Length of Foliage Season (days) vs. Year", xlab = "Year", ylab = "Foliage Season Length (days)",pch=20, las=1, col="black")
 ##Add Best Fit Line
 c<-coef(lm(Range~Year, leaf_observations))
 abline(c, col="red")

@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r 190315 attempt to create monthly PRCP sum for September}
 
 ```
 
@@ -72,3 +72,10 @@ Boulder_Oct_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_Monthl
 summary(Boulder_Oct_TMAX.lm)
 ```
 
+```{r}
+Boulder_MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, Boulder, sum)
+Boulder_MonthlyTMAXMean$YEAR = as.numeric(Boulder_MonthlyTMAXMean$Year)
+Boulder_MonthlyTMAXMean$MONTH = as.numeric(Boulder_MonthlyTMAXMean$Month)
+str(Boulder_MonthlyTMAXMean)
+plot(Boulder_MonthlyTMAXMean$TMAX, ty='l')
+```
