@@ -124,12 +124,14 @@ We always want to round to the highest signficant figure. Thus, if temperatures 
 
 \subsection{Special Symbols}
 
-Science often relies on specialized characters, e.g. $\degree$ for degrees, $\alpha$ for our statistical test criteria. Here's a short list of some of the ones we use most often:
+Science often relies on specialized characters, e.g. $\degree$ for degrees, $\alpha$ for our statistical test criteria. Table \ref{tab:symbols} shows the codes for symbols for Rmarkdown and \LaTeX.
 
 \begin{table}
+\caption{Special Symbols for Rmarkdown and \LaTeX}
+\label{tab:symbols}
 \begin{tabular}{lll}\hline
 Symbol  & Markdown Code & \LaTeX code \\ \hline\hline
-
+r$^2$     & r\^{}2\^{} &  r\$\textbackslash\^{}2\$ \\
 $\alpha$ & \$\textbackslash alpha\$ & \$\textbackslash alpha\$ \\
 
 $\mu$ & \$\textbackslash mu\$ & \$\textbackslash mu\$ \\
@@ -161,13 +163,13 @@ The default graphic is hideous -- so, let's start fixing it.
 
 For stand alone figures, we usually add titles, but in papers and lab reports it's a good practice to remove the title and use the caption to describe the graphic. Changes to the title can be made with arguments within the plot command, i.e. `main=NULL'.
 
-In addition, we can change the x-axis label, with the 'xlab' argument. Specifying the units is also required. And in this case, we want to add the \degree symbol and create a text string with the axis label in quotes that can be referenced in the hist() funtion. 
+In addition, we can change the x-axis label, with the 'xlab' argument. Specifying the units is also required. And in this case, we want to add the \degree symbol and create a text string with the axis label in quotes that can be referenced in the hist() funtion. Notice that I rotated the y-axis values (las=1). 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{TMAXlabel} \hlkwb{<-} \hlstr{"Maximum Temperature (°C)"}
-\hlkwd{hist}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=TMAXlabel)}
+\hlkwd{hist}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=TMAXlabel,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} \caption[Histogram of Maximum Temperatures (°C) (XXX, Thailand, 1940-2018)]{Histogram of Maximum Temperatures (°C) (XXX, Thailand, 1940-2018)}\label{fig:unnamed-chunk-3}
@@ -179,7 +181,9 @@ In addition, we can change the x-axis label, with the 'xlab' argument. Specifyin
 
 \subsection{Putting Multiple Figures in a Row}
 
-To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns, e.g. 'par(mfrow=c(1, 2))'. It's often a good idea to set the graphic parameter back to the default afterwards. In this case, I added a title because we have a panel with two graphics. Often people will put letters, e.g. A and B to refer to each one separately, but I prefer to put the actually description in the title, so the reader doesn't have to go back and forth between the caption and the figures.
+To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns, e.g. 'par(mfrow=c(1, 2))'. It's often a good idea to set the graphic parameter back to the default afterwards. In this case, I added a title because we have a panel with two graphics. Often people will put letters, e.g. A and B to refer to each one separately, but I prefer to put the actually description in the title, so the reader doesn't have to go back and forth between the caption and the figures. 
+
+Note: the title is too long! So, I will need to figure out how to adjust the size of the font at some point using 'cex' arguments. See the boxplots below to see how that can be done.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -210,7 +214,33 @@ Because the figure is rather distorted, I have constrained the size using a fig.
 \hlkwd{hist}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{main}\hlstd{=}\hlstr{'Monthly Minimum Temperature'}\hlstd{,} \hlkwc{xlab}\hlstd{=TMINlabel)}
 \end{alltt}
 \end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} \caption[Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018))]{Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018))}\label{fig:unnamed-chunk-5}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} \caption[Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018))]{Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018)).}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+\begin{kframe}\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Note that the title is too big and is cut off. In general, most publications prefer you put the description in the caption and avoid long titles. So, for the next example, I'll create a caption to refer to both figures as panel letters and get rid of the figure titles (main=NULL).
+
+Altnernatively, I could change the relative size of the titles, using 'cex.main = 0.8', which multiplies the size by 0.8. 
+
+To create the panel letters, we'll use mtext for margin text. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlkwd{hist}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=TMAXlabel)}
+\hlstd{TMINlabel} \hlkwb{<-} \hlstr{"Minimum Temperature (°C)"}
+\hlkwd{mtext}\hlstd{(}\hlstr{"A"}\hlstd{,} \hlkwc{side}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{line}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{adj}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.4}\hlstd{)}
+\hlkwd{hist}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=TMINlabel)}
+\hlkwd{mtext}\hlstd{(}\hlstr{"B"}\hlstd{,} \hlkwc{side}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{line}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{adj}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.4}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} \caption[Mean monthly maximum (Panel A) and minimum (Panel B) tempetures (C) ((Bangkok, Thailand, 1940-2018))]{Mean monthly maximum (Panel A) and minimum (Panel B) tempetures (C) ((Bangkok, Thailand, 1940-2018)).}\label{fig:unnamed-chunk-6}
 \end{figure}
 
 \begin{kframe}\begin{alltt}
@@ -225,11 +255,31 @@ Box plots are great ways to display quantitative data from controlled experiment
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} \caption[Number of ant colonies by habitat type]{Number of ant colonies by habitat type}\label{fig:unnamed-chunk-6}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} \caption[Number of ant colonies by habitat type]{Number of ant colonies by habitat type.}\label{fig:unnamed-chunk-7}
 \end{figure}
 
 
 \end{knitrout}
+
+
+The boxplot can be improved dramatically by rotating the y-axis values ('las=1'), increasing the size of the axis labels ('cex.lab') and axis values ('cex.axis') (Figure~\ref{fig:boxplot}.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{boxplot}\hlstd{(Colonies} \hlopt{~} \hlstd{Location,} \hlkwc{data}\hlstd{=ants,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,}
+        \hlkwc{ylab}\hlstd{=}\hlstr{"No. of Colonies"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Habitat"}\hlstd{,} \hlkwc{cex.lab}\hlstd{=}\hlnum{1.6}\hlstd{,}
+        \hlkwc{cex.axis}\hlstd{=}\hlnum{1.4}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"gray"}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure}
+\includegraphics[width=\maxwidth]{figure/boxplot-1} \caption[Number of ant colonies by habitat type]{Number of ant colonies by habitat type.}\label{fig:boxplot}
+\end{figure}
+
+
+\end{knitrout}
+
+
+
+
 \newpage
 \section{Scatter Plot -- Non-time series}
 
@@ -250,7 +300,7 @@ When we are graphing temperature data from one year to the next, we are averagin
     \hlkwc{col}\hlstd{=}\hlstr{'darkred'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
+\includegraphics[width=\maxwidth]{figure/plot1-1} 
 
 \end{knitrout}
 
@@ -272,7 +322,7 @@ Finally, it's important that the image works in black and white. So, let's see i
     \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,])),} \hlkwc{col}\hlstd{=}\hlstr{'black'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
+\includegraphics[width=\maxwidth]{figure/plot2-1} 
 
 \end{knitrout}
 \caption{Monthly Average of Daily Maximum Temperatures (\degree C).  Notice the slightly darker line in the x-axis for the middle section. I am not sure how to get rid of this, but it bugs me!}
@@ -295,7 +345,7 @@ Now, what if we only want to display part of the data. We can limit the x-axis r
     \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{5}\hlstd{,])),} \hlkwc{col}\hlstd{=}\hlstr{'black'}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} \caption[Monthly Average of Daily Maximum Temperatures (C)]{Monthly Average of Daily Maximum Temperatures (C).}\label{fig:unnamed-chunk-9}
+\includegraphics[width=\maxwidth]{figure/plot3-1} \caption[Monthly Average of Daily Maximum Temperatures (C)]{Monthly Average of Daily Maximum Temperatures (C).}\label{fig:plot3}
 \end{figure}
 
 
@@ -340,7 +390,7 @@ For example, we have seen several papers that select parts of the record to make
        \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,} \hlstr{"red"}\hlstd{))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/fig_height__3-1} 
+\includegraphics[width=\maxwidth]{figure/plot4-1} 
 
 \end{knitrout}
 %\caption{Monthly Average of Daily Maximum Temperatures (\degree C).}
@@ -361,11 +411,11 @@ We introduce our figures and tables in the text before the appear in the text. J
 
 One important note here -- when you report the results of a figure or a table, do not use the table or figure as the subject of the sentence. Instead use the results as the subject and reference the table or figure as a parenthetical. 
 
-For example, 'The number of wildfires has dramatically increased after 2014 (Figure 7). 
+For example, 'The number of wildfires has dramatically increased after 2014 (Figure \ref{fig:barchart}). 
 
 In my example, the figure should land after the text if possible. 
 
-This is preferable to 'Figure 7 shows that the number of wildfires has increased after 2014.' The emphasis is placed on the figure, which detracts to what the focus of the text should be on. Now there may be times when we want to put the focus on a table or complex figure, but usually we reserve that type of text for the figure caption. 
+This is preferable to 'Figure \ref{fig:barchart}' shows that the number of wildfires has increased after 2014.' The emphasis is placed on the figure, which detracts to what the focus of the text should be on. Now there may be times when we want to put the focus on a table or complex figure, but usually we reserve that type of text for the figure caption. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -376,7 +426,7 @@ This is preferable to 'Figure 7 shows that the number of wildfires has increased
 \hlkwd{barplot}\hlstd{(fires}\hlopt{$}\hlstd{Fires,} \hlkwc{names.arg} \hlstd{= fires}\hlopt{$}\hlstd{Year,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"No. of Fires"}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} \caption[Number of Unsafe Air Quality Days in Washington State due to Fires]{Number of Unsafe Air Quality Days in Washington State due to Fires.}\label{fig:unnamed-chunk-10}
+\includegraphics[width=\maxwidth]{figure/barchart-1} \caption[Number of Unsafe Air Quality Days in Washington State due to Fires]{Number of Unsafe Air Quality Days in Washington State due to Fires.}\label{fig:barchart}
 \end{figure}
 
 
@@ -386,11 +436,11 @@ This is preferable to 'Figure 7 shows that the number of wildfires has increased
 
 Rainfall data and other types of 'count' data are often best displayed as barcharts. 
 
-Notice how Figure 7 cuts out every-other year. You'll need to decide if the reader will be bothered by that. If so, you can reduce the x-axis labels fonts or increase the width of the chart. 
-
+Notice how Figure \ref{fig:barchart} cuts out every-other year. You'll need to decide if the reader will be bothered by that. If so, you can reduce the x-axis labels fonts or increase the width of the chart. 
+\clearpage
 \section{Tables}
 
-Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for each set of drafts using a table and a histogram. 
+Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for each set of drafts using a table (Table 1) and through a series of histograms (Figure \ref{fig:scoreshist}). 
 
 
 
@@ -398,28 +448,33 @@ Sometimes (often times?), tables are better than graphs. In the case below, I su
 \begin{kframe}
 \begin{alltt}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(grades.df,}
-      \hlkwc{caption}\hlstd{=}\hlstr{'Table of Blog Draft Scores'}\hlstd{),}
-      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{)}
+      \hlkwc{caption}\hlstd{=}\hlstr{'Table of Blog Draft Scores'}\hlstd{),} \hlkwc{type}\hlstd{=}\hlstr{'latex'}\hlstd{,}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,}
+      \hlkwc{label}\hlstd{=}\hlstr{"tab:scores"}\hlstd{)}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.4.1 by xtable 1.8-2 package
 % 
-\begin{tabular}{rlrrr}
+\begin{tabular}{rlrrrr}
   \hline
- & Range & 1st Draft & 2nd Draft & 3nd Draft \\ 
+ & Range & 1st Draft & 2nd Draft & 3nd Draft & 4th Draft \\ 
   \hline
-1 & (0,10] &   3 &   0 &   0 \\ 
-  2 & (10,20] &   0 &   3 &   0 \\ 
-  3 & (20,30] &   7 &   1 &   0 \\ 
-  4 & (30,40] &   4 &   5 &   0 \\ 
-  5 & (40,50] &   0 &   0 &   3 \\ 
+1 & (0,10] &   3 &   0 &   0 &   0 \\ 
+  2 & (10,20] &   0 &   3 &   0 &   0 \\ 
+  3 & (20,30] &   7 &   1 &   0 &   0 \\ 
+  4 & (30,40] &   4 &   5 &   0 &   0 \\ 
+  5 & (40,50] &   0 &   1 &   3 &   1 \\ 
    \hline
 \end{tabular}
 
 
-The histogram is simple (Figure 8), but for these data, I am not sure it's all that useful. Which do you think is more effective?
+\bigskip
+
+The histogram is simple (Figure \ref{fig:scoreshist}), but for these data, I am not sure it's all that useful. Which do you think is more effective? 
+
+The use of color in for this figure is really unnecessary. But it's worth illustrating. It's important that the use of color doesn't distract or confuse readers, especially those that are visually impaired, e.g. color blind.
 
 \bigskip
-BTW: The mean was for the first draft was 21.1 and the second draft was 28.4. Based on a paired t-test, the difference between the two grades is signficant. 
+BTW: The mean was for the first draft was 21.1 and the second draft was 30. Based on a paired t-test, the difference between the two grades is signficant. 
 
 You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
 
@@ -428,7 +483,7 @@ You will have 5 opportunities to re-submit to improve your grade, but only two w
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{))}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{),} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{)}
 \hlkwd{hist}\hlstd{(grades1,} \hlkwc{main}\hlstd{=}\hlstr{"1st Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
      \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"green"}\hlstd{)}
 \hlkwd{hist}\hlstd{(grades2,} \hlkwc{main}\hlstd{=}\hlstr{"2nd Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
@@ -437,18 +492,22 @@ You will have 5 opportunities to re-submit to improve your grade, but only two w
      \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"darkgreen"}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} \caption[Histogram of Blog Scores]{Histogram of Blog Scores}\label{fig:unnamed-chunk-13}
+\includegraphics[width=\maxwidth]{figure/scoreshist-1} \caption[Histogram of Blog Scores]{Histogram of Blog Scores}\label{fig:scoreshist}
 \end{figure}
 
 
 \end{knitrout}
 
+
+\section{Probability Density}
+
+Another useful way to display data is by using probability densities (Figure~\ref{fig:scoresdensity}). 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# Display the Student's t distributions with various}
 \hlcom{# degrees of freedom and compare to the normal distribution}
-\hlstd{x} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{50}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlstd{x} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlopt{-}\hlnum{10}\hlstd{,} \hlnum{60}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{1}\hlstd{)}
 \hlstd{hx1} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T),}
              \hlkwc{sd}\hlstd{=}\hlkwd{sd}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T))}
 \hlstd{hx2} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T),}
@@ -474,10 +533,11 @@ You will have 5 opportunities to re-submit to improve your grade, but only two w
   \hlstd{labels,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),} \hlkwc{col}\hlstd{=colors)}
 \end{alltt}
 \end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-14-1} \caption[Probability Density for Scores]{Probability Density for Scores}\label{fig:unnamed-chunk-14}
+\includegraphics[width=\maxwidth]{figure/scoresdensity-1} \caption[Probability Density for Scores]{Probability Density for Scores}\label{fig:scoresdensity}
 \end{figure}
 
 
 \end{knitrout}
 
+Notice how the probabilities go well beyond the scale possible, less than 0 and greater than 50. There are a number of ways of dealing with these issues, but that's beyond our scope. Suffice to say that a normal distribution is not appropriate for all data types. 
 \end{document}
