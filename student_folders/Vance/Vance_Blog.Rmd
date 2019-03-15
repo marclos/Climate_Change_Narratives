@@ -2,6 +2,7 @@
 title: "Should Alabamians be Concerned About Climate Change?"
 author: "Cheyenne Vance"
 date: "3/01/2019"
+date: "3/14/2019"
 output: html_document
 ---
 ```{r setup, include=FALSE}
@@ -9,35 +10,36 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ##The Political Divide
-  According to a 2018 survey done by National Surveys on Energy and Environment, 60% of Americans believe that global warming is happening, and that “humans are at least partially responsible for the rising temperatures.” However, only 35% of Republicans believe that climate change is partially a result of human actions, while 50% of Republicans do not believe climate change at all (National Surveys on Energy and Environment 2018). In the case of my hometown Alabama, a Republican stronghold, we might expect skepticism to be even higher than the national average. Several politicians who are also climate skeptics hail from the south which is quite ironic considering the south is predicted to bear the brunt of climate change impacts.By the year 2080 Alabama will suffer the fifth highest economic loss, behind only Florida, Mississippi, Louisiana and Arkansas, all of which are red states (Brookings Institute 2017). Aside from economic loss, the south will most likely see an increase in mortality, loss of coastal lands and homes, and decreased agricultural production. 
+  According to a 2018 survey done by National Surveys on Energy and Environment, 60% of Americans believe that global warming is happening, and that “humans are at least partially responsible for the rising temperatures.” However, only 35% of Republicans believe that climate change is partially a result of human actions, while 50% of Republicans do not believe climate change at all (National Surveys on Energy and Environment 2018). In the case of my hometown Alabama, a Republican stronghold, we might expect skepticism to be even higher than the national average. Several politicians who are also climate skeptics hail from the south which is quite ironic considering the south is predicted to bear the brunt of climate change impacts.By the year 2080 Alabama will suffer the fifth highest economic loss, behind only Florida, Mississippi, Louisiana and Arkansas, all of which tend to have conservative leanings (Brookings Institute 2017). Aside from economic loss, the south will most likely see an increase in mortality, loss of coastal lands and homes, and decreased agricultural production. 
 ![](Brookings Map.png)
 
 Figure 1: Percentage of economic losses caused by climate change (Hsiang et. al. 2017)
 
-In this blog I will be testing the null hypothesis: Temperatures are not changing over time in Huntsville, Alabama. If I am able to reject this hypothesis based on the data, then Huntsville, Alabama is experiencing a change in temperatures. This hypothesis will only test whether or not Huntsville is experiencing climate change directly, but several studies have shown that climate change has indirect impacts on a global scale. I will first analyze climate trends in Northern Alabama, and then provide some detailed information on the impacts of these trends and climate change in general, including sea level rise, economic damage, and health risks. 
+In this blog I will be testing the null hypothesis: Temperatures are not changing over time in Huntsville, Alabama. If I am able to reject this hypothesis based on the data, then Huntsville, Alabama is experiencing a change in temperatures. I will first analyze climate trends in Northern Alabama, and then provide some detailed information on the impacts of these trends and climate change in general, including sea level rise, economic damage, and health risks. 
 
 ##Roots of Skepticism in the South
-How could climate change skeptics still exist despite the copious amounts of data pointing to climate change and the 95% of scientists who have confirmed it is happening? Well there are a few “logical” explanations for this skepticism. Many skeptics deny “global warming,” justifying their position with the record breaking winters we’ve been experiencing. For this reason I would like to avoid using the phrase global warming, and instead use climate change. In his book A Global Warming Primer, Jeffrey Bennett provides a detailed explanation of how global warming actually works. He states that, “global warming really means an increase in energy in the atmosphere and oceans,” which then increases the chances of “hurricanes, thunderstorms, and other extreme weather events,” (Bennett 2016). This also includes severe winter weather. 
-	With this newfound knowledge, we can quickly point out the logical fallacy present in the following tweets from President Trump. 
+So why is there skepticism surrounding climate change despite the copious amounts of evidence?   Many skeptics deny “global warming,” justifying their position with the record breaking winters we’ve been experiencing. For this reason I would like to avoid using the phrase global warming, and instead use climate change. In his book A Global Warming Primer, Jeffrey Bennett provides a detailed explanation of how global warming actually works. He states that global warming is an increase in energy in the atmosphere and oceans, which causes extreme weather events. With this newfound knowledge, we can quickly point out the logical fallacy present in the following tweets from President Trump. 
  
 ![](trump.png)	
 
 
 ![](Trumptweet1.png)	
-In fact, with our understanding that global warming causes extreme weather events, President Trump’s tweets support the fact that the climate is changing drastically in all parts of the world. However, many southerners have chosen to stick with the idea that global warming strictly means  drastically warmer temperatures, which are not as prevalent in the southern states. 
-After acquiring Alabama NOAA temperature records from over a 60 year period, I created graphs of the climate trends in Huntsville, AL. The graph shows the average temperature trend in the hottest month, July, over a 60 year time period. Since climate change is a slow process, a more thorough and comprehensive observation could be made if I had access to a larger timeframe of data. However, I was able to observe some slight trends over a 60 year period. 
+In fact, with our understanding that global warming causes extreme weather events, President Trump’s tweets support the fact that the climate is changing drastically in all parts of the world. However, some people believe that global warming only leads to warmer temperatures; this assumption may not hold in the south. 
+After acquiring Alabama NOAA temperature records from over a 60 year period, I analyzed the climate trends in Huntsville, AL. From this data I observed an increase in maximum temperature, and a decrease in minimum temperature. The graph shows the average temperature trend in the hottest month, July, over a 60 year time period. Ideally we would want to analyze a longer record, which would probably show a stronger trend, but a 60 year timeframe is about what most humans today might be able to remember. The trend I observed in maximum temperatures was not statistically signficant, and if shown to Alabamians it probably wouldn't raise any concerns. 
 
-![Figure 2: Average max temperatures recorded in July from 1958 to 2019 in Huntsville, AL (slope: 0.0128 p-value: 0.263)](Max.png)
+![Figure 2: Average max temperatures recorded in July from 1958 to 2019 in Huntsville, AL (slope: 0.0128 degree/year; p = 0.263)](Max.png)
 
-Based off of my graph there seems to only be a small upward trend in maximum temperatures, but not a trend significant enough to alarm Alabamians. Furthermore, NOAA posted data on temperature anomalies in the U.S. which suggest that the south is one of the few places in the U.S. that has not seen significant changes in temperatures. 
+It's also important to note that NOAA suggests that the south is one of the few places in the U.S. that has not seen significant changes in temperatures (Figure 4). 
 
 ![Figure 4: Statistically significant (95% confidence level) temperature anomalies recorded in February from 1895-2016 (NOAA Climate 2017)](Map1.png)
 
 
-Based off of this data, it makes sense why southerners may object to climate change or simply not care about it. If it doesn’t affect them, should they care? Well, it does affect them. The southern United States appears to be one of the few regions in the world that is actually cooling in some localized areas. 
+Based off of these data, it makes sense why southerners may object to climate change or simply not care about it. If it doesn’t affect them, should they care? Well, it does affect them. The southern United States appears to be one of the few regions in the U.S. that is actually cooling in some localized areas. 
 
 ##The “Warming Hole” 
-The third National Climate Assessment reported that there was unusual cooling happening in the Southeast between 1991 and 2012. They stated that this was “unusual compared to the rest of the U.S. and the globe.” This phenomenon has been dubbed the “global warming hole.” (National Geographic 2014) Intrigued by this cooling phenomenon, I decided to analyze the minimum average monthly temperatures in Huntsville, Alabama. From this data I observed a much more striking heating trend, however there were a lot of extreme low temperatures recorded. From the data, the "warming hole" seems to be represented by the sharp dips and lack of high temperature extremes that occurs between 1990 and 2020. However, there is a sharp increase around 2018 suggesting that the warming hole is probably no longer occuring. 
+The third National Climate Assessment reported that there was unusual cooling happening in the Southeast between 1991 and 2012. They stated that this was “unusual compared to the rest of the U.S. and the globe.” This phenomenon has been dubbed the “global warming hole” (National Geographic 2014). Intrigued by this cooling phenomenon, I decided to explore whether Huntsville had experienced an increase in minimum temperatures or not. 
+
+. From this data I observed a much more striking heating trend, however there were a lot of extreme low temperatures recorded. From the data, the "warming hole" seems to be represented by the sharp dips and lack of high temperature extremes that occurs between 1990 and 2020. However, there is a sharp increase around 2018 suggesting that the warming hole is probably no longer occuring. 
 
 ![Figure 5: Average minimum temperatures recorded in January from 1958 to 2019 in Huntsville](Min.png)
 
