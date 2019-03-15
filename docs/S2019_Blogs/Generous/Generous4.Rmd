@@ -3,7 +3,6 @@ title: "How has climate change impacted fire season in Spokane?"
 author: "Claire Generous"
 date: "3/14/2019"
 output:
-  word_document: default
   html_document: default
 ---
 Climate change in Spokane: Extreme events vs. “soft knock” Spokane
@@ -215,13 +214,13 @@ summary(Summer.lm)
 Summer2.lm = lm(TMIN~YEAR, SummerTMINMean[SummerTMINMean$YEAR>1980,])
 summary(Summer2.lm)
 abline(coef(Summer.lm), col = "red")
-abline(coef(Summer2.lm), col = "blue")
+#abline(coef(Summer2.lm), col = "blue")
 
 mean(SummerTMINMean$TMIN)
 mean(SummerTMINMean$TMIN[SummerTMINMean$YEAR>1980])
-
-#interpolated = predict(Summer2.lm, SummerTMINMean[SummerTMINMean$YEAR>1980,2])
-#lines(SummerTMINMean$TMIN[SummerTMINMean$YEAR>1980], interpolated, col='blue')
+new <- data.frame(YEAR = SummerTMINMean$YEAR[SummerTMINMean$YEAR>1980])
+interpolated = predict(Summer2.lm, newdata=new)
+lines(new$YEAR, interpolated, col='blue')
 
 
 colors <- c("red", "blue")
