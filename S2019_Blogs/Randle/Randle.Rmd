@@ -1,0 +1,112 @@
+---
+title: "climate change and the polar vortex in chicago"
+author: "jaz"
+date: "3/1/2019"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+introduction
+
+chicago has always been known for its infamously cold winters. these frigid winters with a record low of minus 27 degree f in january 1985 (cbs 2019), cause serious social and political implications. however, are these extreme weather temperatures normal for the midwest region or could some of the these extreme temperatures be due to climate change? 
+
+the global society has collectively become more conscious of climate change. essentially, due to the anthropogenic factors of pollution and use of carbon fuels, the global climate is warming. this leads to extreme weather events respective to various climate regions all over the world. climate change or global warming has also been linked to issues of sea level rise due to glacial melting, extreme drought, and flooding (wallace, held, et al. 2014). 
+
+According to some climate change science, global warming not only leads to extreme warmer temperatures regional temperatures in some places, but also, global warming will cause extreme cold temperatures in other regions. particularly in the case region of chicago, global warming severely impacts the polar vortex (screen, bracegirdle, et al 2018) which in turn makes the windy city more prone to even colder winters (francis and vavrus 2012). 
+
+well how does this work exactly? let's take a look at this lovely infographic( noaa 2019).
+ 
+essentially climate change distorts the flow of the polar vortex which allows the cold air  the polar vortex insulates to escape and reach further south than it normally world have (jones, miller, 2019). when this happens, this makes a chicago winter even colder.
+
+this extreme cold weather has huge social implications for people who live in the city. generally on these extreme cold days schools close and people how have been systematically disenfranchised freeze to death. a chicago winter is not a natural disaster but rather a form systematic genocide. my hypotheses for this blog is that extreme weather events in chicago severely negatively impacts the well-being of people of color and poor folks; this problem will become exacerbated as climate change and racial capitalism persist. 
+
+![](https://www.noaa.gov/sites/default/files/styles/no_style/public/thumbnails/image/GRAPHIC%20-%20polarvortex_explained_updated%20012919%20-%204034x2912.png?itok=4YZfZ0tg)
+
+data description 
+to address my hypothesis, i used the national centers for environmental information (noaa) to access data i needed to analyze the climate trends in chicago from 1920-2000. i used the program r studio, to process the data and created monthly graphs to analyze the monthly trends.
+
+
+graphs and summary statistics 
+
+the data i found graphed all the monthly temperature averages between 1920-2000 in chicago. although this data is interesting, this data is not every helpful in addressing my stated hypothesis. here are some major issues with the data 1. data doesn't show trend relationship between weather and social factors (e.g deaths due to cold or school closures because of the cold) 2. data doesn't take into account of wind-chill. wind-chill in chicago is a important factor to how the temperature actually feels. for example the temperature maybe -10f but with wind chill it can feel like -40f.  3. the monthly averages does not allow for extreme cold days within the context of the month in that year to be legible. 4. the data set time frame is very limited. in order to actually understand the temperature trends in the chicago area i would need data from 1750-2019. this lack of data significantly impact my analysis . i am missing the last 20 years 2000-2019.
+
+for example this chart below shows the cold dates and years in which the weather was below 20 degrees. however, the chart does not indicate anything about the social impact from these days. how many people died due to the cold? how many school closures? it appears that the duration of coldest days have maintain pretty stagnant up until 1994. it is hard to say the impact climate change has had on this data without data from  1750-1900 and 2000-2019. 
+##          Date      Date2 Duration
+
+## 1  1933-02-08 1933-02-12        5
+
+## 2  1936-01-22 1936-02-02       12
+
+## 3  1936-02-08 1936-02-11        4
+
+## 4  1942-01-04 1942-01-08        5
+
+## 5  1955-01-26 1955-01-29        4
+
+## 6  1963-01-13 1963-01-16        4
+
+## 7  1963-01-20 1963-01-25        6
+
+## 8  1963-12-18 1963-12-21        4
+
+## 9  1966-01-27 1966-01-30        4
+
+## 10 1970-01-19 1970-01-22        4
+
+## 11 1979-01-02 1979-01-06        5
+
+## 12 1982-01-14 1982-01-17        4
+
+## 13 1983-12-22 1983-12-26        5
+
+## 14 1984-01-18 1984-01-21        4
+
+## 15 1988-01-04 1988-01-07        4
+
+## 16 1994-01-14 1994-01-20        7
+
+also this graph shows the weather temperatures for january, but does not give any information about social factors or wind-chill. 
+
+![](https://pasteboard.co/I3vpko3.png)
+ 
+discussions and conclusions
+the disruption of the polar vortex has serious negative impacts for poor folks in chicago. january 2019 the weather temperature considering wind chill dipped to -46f (wgn9 2019). this weather is cold enough that people will freeze to death for being outside for long periods of time. when the weather drops this low, generally schools and variety of other establishments are closed. while the city and the state paints this extreme cold weather even as natural disaster, it is truly a human right violation. when school’s and other public places are not closed due to cold weather people literally freeze to death. in the oppressive whtie surpemesical capalisit and colalnis state, weather has had a clear relationship to the well being of poc and poor folks. in the summer poc are subject to police violence because they are more visible and in the winter poc and poor folks freeze. this is a form slow violence (nixon 2011). each fridge chicago winter countless numbers of children a adults die silently  because they purposely disenfranchised by the state. not protecting these marginalized  populations during a fridge winter when we have the resources to do so, is just one of the many ways systems of power invest in material and infrastructural technologies to maintain certain imbalances” (fleetwood 2007). 
+
+as climate change persists, the disruption of the polar vortex will only become more severe. colder winters means a silent genocide that will continue to go unnoticed unless we (as a society) divest from racial capitalism. in regards to my hypothesis i do not have the data to prove it. it is important to call attention to the fact the western science intentionally isn't capable of capturing such numbers because western science also has material investment in maintaining white supremacy, capitalism and the hetero patriarchy.  
+
+
+citations 
+
+1. cbs chicago. what are the current records for cold temperatures in chicago? – cbs chicago [internet]. [cited 2019 mar 1]. available from: https://chicago.cbslocal.com/2019/01/26/what-are-the-current-records-for-cold-temperatures-in-chicago/
+2. fleetwood nr. failing narratives, initiating technologies: hurricane katrina and the production of a weather media event. am q. 2007;
+3. francis ja, vavrus sj. evidence linking arctic amplification to extreme weather in mid-latitudes. geophys res lett [internet]. john wiley & sons, ltd; 2012 mar 28 [cited 2019 mar 1];39(6):n/a-n/a. available from: http://doi.wiley.com/10.1029/2012gl051000
+4. jones j, miller b. polar vortex explained: your questions answered - cnn [internet]. cnn. 2019 [cited 2019 mar 1]. available from: https://amp.cnn.com/cnn/2019/01/28/us/polar-vortex-explained-wxc/index.html
+5. nixon r. slow violence and the environmentalism of the poor [internet]. 2011 [cited 2019 mar 1]. available from: https://southwarknotes.files.wordpress.com/2018/10/slow-violence-and-the-environmentalism-of-the-poor.pdf
+6. noaa. the science behind the polar vortex | national oceanic and atmospheric administration [internet]. [cited 2019 mar 1]. available from: https://www.noaa.gov/multimedia/infographic/science-behind-polar-vortex
+7. screen ja, bracegirdle tj, simmonds i. polar climate change as manifest in atmospheric circulation. curr clim chang reports [internet]. springer international publishing; 2018 dec 2 [cited 2019 mar 1];4(4):383–95. available from: http://link.springer.com/10.1007/s40641-018-0111-4
+8. wallace jm, held im, thompson dwj, trenberth ke, walsh je. global warming and winter weather. science (80- ) [internet]. 2014 feb 14 [cited 2019 mar 1];343(6172):729–30. available from: http://www.sciencemag.org/cgi/doi/10.1126/science.343.6172.729
+9. wgn9 chicago. life-threatening cold heads toward chicago; many schools, businesses to close wednesday | wgn-tv [internet]. 2019 [cited 2019 mar 1]. available from: https://wgntv.com/2019/01/29/record-breaking-bitter-cold-entering-chicago-area-cps-among-several-schools-closed-wednesday/
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
