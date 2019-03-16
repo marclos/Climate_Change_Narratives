@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{gensymb}
+\usepackage[T1]{fontenc}
 \usepackage{hyperref}
 
 \title{Visual Presentation of Data using R}
@@ -105,10 +106,13 @@ Science often relies on specialized characters, e.g. $\degree$ for degrees, $\al
 \label{tab:symbols}
 \begin{tabular}{lll}\hline
 Symbol  & Markdown Code & \LaTeX code \\ \hline\hline
-r$^2$     & r\^{}2\^{} &  r\$\textbackslash\^{}2\$ \\
+r$^2$     & r\^{}2\^{} &  r\$\^{}2\$ \\
+CO$_2$    & CO<sub>2<\textbackslash sub> & CO\$\_2\$\\
+
 $\alpha$ & \$\textbackslash alpha\$ & \$\textbackslash alpha\$ \\
 
 $\mu$ & \$\textbackslash mu\$ & \$\textbackslash mu\$ \\
+
 
 $\degree$ & \&deg; & \$\textbackslash degree\$ \\ 
 \hline
