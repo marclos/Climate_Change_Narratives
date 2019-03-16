@@ -1,7 +1,7 @@
 ---
-title: "Attribution Science -- Do Extreme Events have a Climate Change Signature"
-subtitle: "Is there a Signal in the Noise?"
-author: "Environmental Analysis 30 Students, Pomona College"
+title: "Extreme Weather and Climate Change?"
+subtitle: "Does climate change influence extreme events?"
+author: "EA30 Students, Pomona College"
 date: "`r Sys.Date()`"
 output:
   tufte::tufte_html: default
@@ -21,11 +21,16 @@ library(tufte)
 knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 ```
-# What is Attribution Science
+# What is Attribution Science?
 
 Attribution Science is a subset of climate science that attempts to evaluate the effect of climate change on weather patterns, in particular extreme weather events.  Determining the climate change signature on these extreme events relies a wide range of observations and data sources, such as weather instruments, records, and modeling, as well as, historic climate events and proxy data of weather.  
 
-Unfortunately, climate science has become so politicized reports of extreme events, which can even lead to misunderstandings of these climate events. For example, Vance documents how social media has been used to make claims about extreme events that obscure important long-term trends. In particular, in the (US) South, climate change skepticism runs, as well as, the use of coal for electrical generation. However, this region may be may be hardest hit by the effects of climate change unless we curb CO<sub>2</sub> global emissions. 
+
+```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='2015 Flood in Fenton, Missouri. Human developing in the flood plain is a hazard. But do these hazards increase in frequency or intensity with climate change?'}
+knitr::include_graphics('S2019_Blogs/Fenton_MI_2015Flood.jpg')
+```
+
+Unfortunately, climate science has become so politicized reports of extreme events, which can even lead to misunderstandings of these climate events. For example, [Vance (2019)](S2019_Blogs/Vance/Vance2.html) documents how social media has been used to make claims about extreme events that obscure important long-term trends. In particular, in the (US) South, climate change skepticism runs, as well as, the use of coal for electrical generation. However, this region may be may be hardest hit by the effects of climate change unless we curb CO<sub>2</sub> global emissions. 
 
 ## Operationalizing Questions in Attribution Science
 
