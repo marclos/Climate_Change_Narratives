@@ -1,0 +1,171 @@
+---
+title: "Fuel Management in Varying Locations in California"
+author: "Maia Pauley"
+date: "10/21/2018"
+output:
+  html_document: default
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Definitions
+
+
+Definitions: 
+“Fuel” - Buildup of underbrush, that is highly flammable, and allows wildfires to spread and increase in intensity. 
+
+“Prescribed burns” - the controlled and monitored burning of certain areas to reduce fuel loads, and prevent susceptibility to larger wildfires. A tactic of fuel management.   
+
+##	Introduction
+
+The recent increase in destructive wildfires in California has stirred up fearful questions about climate change, drought, and management practices. There are many theories about how to mitigate deadly wildfires, and this study planned to show that prescribed burining and fuel management may be a piece of the puzzle. Early into this study, it became clear that the state of California prefers to allocate their resources to mitigate the effect of wildfires thruogh supression and containment. I began by looking at several counties in California, the number of wildfires, and acres burned, across each county. I then looked at the California Strategic Wildfire Plans of seven counties, checking for a correlation between comprehensive fire plan (or lack thereof), and duration, strength, and intensity of wildfires in the region. I proposed that through fuel management techniques, and prescribed burns, a given county would be less likely to experience large fires. However, the differences in location may explain the variability of these results. Many scientists have proposed that fuel management practices should be location-specific and based off of extensive local research regarding vegetation makeup. This study hopes to show that utilizing location-specific fuel management practices can help return an ecosystem to itsnatural fire regiments.
+
+##Hypotheses
+
+Null Hypothesis 1: Prescribed burns and fuel management have no effect on amount of acres burned from wildfires.
+Null Hypothesis 2: The number and size of wildfires are not correlated with the self-reported amount of prescribed burning and fuel management in Cal Fire Strategic Fire Plans. 
+Null Hypothesis 3: The location and vegetation composition has no effect on the amount of prescribed burning and fuel management within different counties in California. 
+## Analysis of R test:
+
+
+```{r readcsv2datafram}
+pauley.df <- read.csv("Pauley Data.csv")
+```
+
+
+```{r ToBeRemovedLater, results='hide'}
+str(pauley.df)
+```
+
+
+
+## Testing Hypothesis
+
+
+```{r linearmodel}
+Hypoth1 <- lm(Acres ~ PF, data=pauley.df)
+# log(y)~x)
+Data2=pauley.df[pauley.df$Location!="Nevada-Yuba",] 
+Data3=Data2[Data2$Location!="Shasta",] 
+Hypoth2 <- lm(log(Acres)~PF, data=Data3 )
+```
+
+
+
+Evaluate results:
+
+```{r summary}
+summary(Hypoth2)
+
+```
+
+
+
+## Acres burned from wildfire as a function of Prescribed Fire Acres: 
+
+ 
+
+
+
+```{r,echo=FALSE}
+plot(Acres~PF,data=Data3)
+text(6000,3500,"unique fire")
+
+PFvalues <- seq(0,7000, 100)
+acres.exponential <- exp(predict(Hypoth2,list(PF=PFvalues)))
+lines(PFvalues, acres.exponential, lwd=2, col = "red")
+
+
+
+```
+
+	I first analyzed how the acres of prescribed fire would affect total acres burned from wildfires. The graph shows that an increase in prescribed fires exponentially decreases the total acres burned from wildfires. This graph proves half of our first null hypothesis wrong.  I removed an outlier from this graph–of 277,884 acres burned in Shasta County which was due to an abnormally large fire compared to the other fires we are analyzing. 
+ 
+## Acres Burned as a function of Fuel Management Acres:
+```{r}
+plot(Acres~FM,data=pauley.df, ylim=c(0,5000))
+
+
+```
+
+
+	Next, I looked at how the acres of fuel management would affect total acres burned from wildfires. The right half shows that an increase in prescribed fires rapidly decreases the total acres burned from wildfires. The leftmost point on the graph is inconsistent with the data because Santa Barbara county's Strategic Wildfire Plan had no data record of acres of fuel management. It is unlikely that there were no fuel management operations in Santa Barbara.I also removed an anomaly from the dataset: Shasta County's 277884 acres of wildfires far exceeded the acres of wildfires in the other datapoints. 
+ 
+## Number of Wildfires as a function of Fuel Management Acres:
+```{r}
+plot(number~FM, data=pauley.df)
+```
+	
+	In this graph compares how the acres of fuel management affects the number of fires burned from wildfires (instead of acres). This graph showed no significant pattern. This is likely due to several other factors and a lack of counties that we analyzed. 
+
+ 
+## Number of Fires as a function of Prescribed Fire Acres:
+```{r}
+plot(number~PF, data=pauley.df)
+```
+	
+	In this graph I analyzed how the acres of prescribed fire would affect the number of fires burned from wildfires. Contrary to our belief, this graph shows that an increase in acres of prescribed fires increases the number of wildfires. This graph doesn’t show however how big these fires are. For example, Riverside has the highest number of fires. But I noticed that all of Riverside’s fires were extremely small. I speculate that although fuel management may not decrease the number of fires, it decreases the relative size of fires. It is possible that with an increase of fuel management, fires will less likely grow rapidly. On the other hand, Nevada-Yuba county had by far the most acres of fuel management and only had 4 fires, which was an anomaly in the trend. 
+
+### Location Implications for Fuel Management
+
+### Santa Barbara
+![Caption](Santa Barbara.png)
+
+
+
+Santa Barbara lies in a chaparral biome–with flat plains, rocky hills, mountain slopes, and some grasslands. The fact that Santa Barbara had little information or data on fuel management and prescribed fires likely has to do with the fact that certain fuel management techniques such as fuel removal is much more difficult in a chaparral landscape. Because there are few trees, “removing the underbrush” does not seem practical because most vegetation in the area is underbrush. Some people argue that fuel reduction and prescribed fire should not be used in chaparral-covered hillsides in California in the same way that fuel reduction is used in forests. 
+Riverside and Los Angeles
+
+### Riverside and Los Angeles
+![Caption](LA.png)
+
+On the other hand, Riverside County, also an urban area within a chaparral biome, had the largest amount of documented prescribed fire and fuel management acreage and the fewest acres burned from wildfire within the 7 counties we looked at. Santa Barbara had over 14x more acreage burned than Riverside, indicating that despite the ecological controversy, it may have been successful. Los Angeles, also a largely urban area documented no prescribed fire acres, but documented 4,712 acres of fuel management. There were in fact far more acres burned by wildfire in LA County compared to Riverside despite their close proximity. This may be due to prescribed fires in Riverside, and the lack there of in LA.
+
+### Kern
+![Caption](Kern2.png)
+
+Kern County is further east than the two previous counties. Within Kern County, there is the Mojave Desert, chaparral, and some conifer forests. The desert biome is particularly prone to fires caused by lightning. Because there is little vegetation in the eastern half, it is reasonable that Kern County didn’t have any documented acres of prescribed fire.
+
+
+### Nevada-Yuba
+![Caption](Nevada-Yuba.png)
+
+Nevada-Yuba, located in Northern California, is composed of much different vegetation than what is often found in the south. Some Scientists claim that ecosystems with grasslands, oak woodlands, and conifer forests can more effectively clear overgrown fuel in the underbrush compared to chaparral biomes. Nevada-Yuba documented the most prescribed fire acres (6,841 acres) and the fourth most fuel management acres (3,721 acres) in the 7 counties we compared. Our hypothesis expected Nevada-Yuba to have a comparitively small amount of acres burned from wildfires, however it had the 3rd highest amount. I would speculate that Nevada-Yuba may not focus so heavily on suppression and allows the natural fire regime to occur.
+
+###Tulare 
+![Caption](Tulare.png)
+
+Tulare County, located above Kern County, had a very small amount of prescribed fire acres and fuel management acres, at 292 and 176 respectively. Tulare has a very diverse vegetation with a small portion in the Mojave Desert, along with some chaparral, conifer and juniper forests. With the presence of juniper and chaparral, fuel management practices may be difficult due to the homogeneity in the height of the trees. People may be reluctant to invest resources into fuel management when prescribed burns or fuel removal might damage the natural ecosystem of the shorter shrubbery with little underbrush. Despite the lack of documented acreage of prescribed fire and fuel management, Tulare had the second smallest acreage of burns from wildfire. 
+
+### Shasta 
+![Caption](Shasta.png)
+
+Shasta County, located in the uppermost section of California, is mainly dominated with Conifer forests. Shasta was the outlier in our data with a strikingly large amount of total acres burned by wildfire at 277,884 acres–over 55 times more acreage than the next highest at 5,017 in Kern County. This figure is from the massive Carr Fire that occurred in August, that spanned across both Shasta and Trinity Counties. Despite this being an anomaly in the data, Shasta County had less than 1,400 combined acres of prescribed fires and fuel management. Because this county is largely dominated with conifer forests, there is no reason why fuel management practices were sparse. 
+
+
+
+## Conclusion
+Wildfires are bound to happen in California. Our original belief, that Southern California has used excessive suppression techniques, has now shifted after looking at the data in terms of location. Our original thought was that fire suppression was disrupting natural fire regimes. And while this very well may be true, we must separate many more factors out of the equation to validate this conclusion. This may be true in northern counties with large portions of conifer forests, but southern counties are limited in their ability to practice fuel management because of their vegetation makeup. The data presented in the R analysis shows to be inconclusive, however some anomalies in these graphs seem to explain these anomalies.
+
+In the future, if this test were to be redone, scientists should compare data in counties in close proximity. The inconsistency in the cdf Strategic Fire Plans throughout counties shows that that fuel management practices are locally specific. I do believe however comparing these data would be made much easier if each county was accountable for updating data on fuel management techniques. A centralized website to find these data is a good way for researchers to understand what techniques are working and which aren’t. A centralized website also ensures that researchers are not accidentally double counting fires because he or she needed to reference multiple. 
+
+ In looking again at the three null hypothesis, we can state with reasonable certainty that fuel management techniques and prescribed burning help to reduce total acreage burned. The total number of fires, in contrast, does not seem to have a correlation with total acreage burned. It may help, however, with reducing the duration, intensity, and heat of fires. 
+ 
+California’s wildfire epidemic is highly involved with location based policies. Understanding how and why fuel management should be utilized will help California restore natural fire regimes as well as improve safety for California residents.    
+
+
+## References
+
+References:
+	“Biomes of California.” Home, civilizedape.weebly.com/biomes-of-california.html.
+California, State of. “California Statewide Maps.” CAL FIRE - Home, www.fire.ca.gov/current_incidents/?page=19.
+California, State of. “Fire Plans.” Fire Statistics, cdfdata.fire.ca.gov/fire_er/fpp_planning_plans.
+
+
+
+
+
+

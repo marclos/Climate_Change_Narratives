@@ -1,0 +1,302 @@
+---
+title: "How has climate-change induced seasonality impacted fire season in Spokane?"
+author: "Claire Generous"
+date: "3/11/2019"
+output:
+  word_document: default
+  html_document: default
+---
+"Soft knock" Spokane
+---
+Spokane is a mid-sized city located in eastern Washington state. Spokane’s weather, relative to the rest of the United States, appears rather temperate. While tornadoes and severe storms ravage other parts of the United States, Spokane experiences these events more similar to a “soft knock” (Loyd and Weiford 2018). However, one outlying weather event in Spokane is fire. Spokane’s wildfire season has become longer, more intense, and less manageable in the past 40 years. 
+
+Wildfire Season in Spokane
+---
+
+```{r, echo=FALSE}
+fires = data.frame(Year = 2010:2018, Fires = c(1,0,2,0,1,13,0,16,13))
+barplot(fires$Fires, names.arg = fires$Year, las=1, xlab= "Year", ylab= "No. of Unsafe Smoke Days", main="Wildfire Seasons in Spokane since 2010")
+```
+
+The bar graph above is influenced by the Spokane Clean Air Agency, showing how since 2010, the number of days of smoke that exceed health-based air quality standards have significantly increased. The trend of fire seasons intensifying in Spokane is consistent with the surrounding Pacific Northwest (PNW) area. Since the early 1970’s, area burned by fire in the Northwest by nearly 5,000 percent (Westerling 2016). In Washington alone, an estimated 4.1 acres burned from 2000 to 2017 (Shinn 2018). The 2017 Washington fire season had 40 days at the highest level of preparedness (level 5) which was almost three weeks more than during the severe 2015 fire season (Length of Northwest Forest Fire Season Continues to Grow 2018).
+
+Other research points more directly to how climate change is the driving force behind increased fire seasons. For example, researchers (Abatzoglou and Williams 2016) concluded that anthropogenic increases in temperature and vapor pressure in the atmosphere deficit significantly enhanced fuel aridity (for fires) across western US forests over the past several decades. Between 2000 and 2015, the human-caused increases in temperature and reduced vapor pressure contributed to 75% more forested area experiencing high fire-season fuel aridity and an average of nine additional days per year of high fire potential (Abatzoglou and Williams 2016, p. 11770). Their research also includes the following graph:
+
+```{r picture, echo=FALSE, out.width = '40%'}
+knitr::include_graphics("PNAS.png")
+```
+
+This graph shows the combined effects of natural and anthropogenic climate-change caused fuel aridity for forest fire area. The large red line is the cumulative modeled forest fire area comprised of the black line, which signifies natural cases of fuel aridity, and the yellow line, which signifies anthropogenic climate change ((Abatzoglou and Williams 2016, p. 11773.
+
+Does climate change have to do with fire increases?
+---
+To address the question of to what extent does climate change have to do with fire increases, I used NOAA data from the station Spokane International Airport, to test whether climate change driven temperature levels and precipitation levels increase during certain seasons and how those increases contribute to increases in Spokane’s fire season intensity. Given that the industrial revolution began in the 1980’s, I tried to look for additional trends in the data since 1980.
+
+How does precipitation impact fire season ?
+---
+According to NOAA’s National Climate Report for 2017, in Washington, from the period 1895-2017 during the Spring months March through May, precipitation was much above average. This trend is supported in Spokane’s data as well. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, include=FALSE}
+## Upload data into R
+filepath =  "claireg_spokane_data.csv"
+
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+names(climate_data)
+```
+
+```{r,results='hide'}
+## Fix Dates
+strDates <-as.character(climate_data$DATE)
+CYear1 <-as.Date(strDates[1:3805], "%Y-%m-%d")
+
+CYear2 = as.Date(sub("/([0-9]+)$", "/19\\1", strDates[3806:40320]), "%m/%d/%Y") # Defined for this dataset! 
+CYear3 = c(CYear1, CYear2, as.Date(sub("/([0-9]+)$", "/20\\1", strDates[40321:47286]), "%m/%d/%Y"))
+CYear3[sample(1:47286, 5)]
+
+climate_data$NewDate <- as.Date(CYear3, "%m/%d/%Y")
+
+head(strDates)
+head(climate_data)
+```
+
+```{r, include=FALSE}
+## Make Plots
+# make linear model
+climate_data.lm = lm(TMAX ~ NewDate, data=climate_data)
+
+plot(TMAX ~ NewDate, data=climate_data, ty='l')
+
+abline(coef(climate_data.lm),col="red")
+summary(climate_data.lm)
+```
+
+```{r, include=FALSE}
+## Monthly Averages... by month
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1890, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+#head(MonthlyTMINMean)
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+#par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1890, 2020), main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+plot(MonthlyTMAXMean$TMAX, ty='l')
+
+```
+
+```{r, results='hide',}
+## PRCP
+
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP), list(climate_data$Month, climate_data$Year), sum)
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+#plot(x ~ Date, data=Missing)
+
+
+TotalPPT <- aggregate(climate_data$PRCP,
+list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)] 
+#library(dplyr)
+PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+PPT$Date <- as.numeric(PPT$Group.2) + as.numeric(PPT$Group.1)/12
+SpringPPT = subset(PPT,subset=as.numeric(Group.1)> 2& as.numeric(Group.1) < 6)
+SpringPPT$Year=as.numeric(SpringPPT$Group.2)
+SpringPPT2 = aggregate(SpringPPT$ppt,list(SpringPPT$Year), sum)
+```
+
+```{r, results='hide', fig.cap="Caption: These data points are the summation of the average precipitation levels during the months March through May. The p value is p <0.01. The slope is 0.24."}
+plot(x~Group.1,data=SpringPPT2, las=1, xlab = "Year", ylab="Precipitation levels (mm)")
+SpringPPT2.lm=lm(x~Group.1,data=SpringPPT2)
+summary(SpringPPT2.lm)
+     
+#SpringPPT3.lm = lm(x~Group.1, SpringPPT2 [SpringPPT2$Group.1>1980,])
+
+#summary(SpringPPT3.lm)
+abline(coef(SpringPPT2.lm), col = "blue")
+#abline(coef(SpringPPT3.lm), col = "red")
+head(PPT)
+
+PRCP_mean = mean(PPT$ppt)
+
+#plot(ppt~Date, data=PPT, pch=20)
+#abline(h=PRCP_mean, col="blue")
+#summary(lm(ppt~Date, data=PPT))
+str(PPT)
+#plot(ppt~Date, data=PPT[PPT$Group.1=="01",], pch=20)
+#summary(lm(ppt~Date, data=PPT[PPT$Group.1=="12",]))
+```
+
+The overall slope is 0.24 meaning that on average, since 1890, the rainfall increases by 0.24 mm each year. The p value is extremely significant with a value p <0.01. The data since 1890 rejects the null hypothesis that precipitation has not significantly increased with time. 
+The increase in precipitation during the spring months results in an increase in fire fuels, specifically, more grasses that allow fires to carry (2017 Pacific Northwest Fire Narrative 2017; Wildland Fire Summary and Statistics Annual Report 2017 2017).
+
+To check for potential biases in my data, I looked at NOAA’s Land-Based Station Data for the station that my data came from. The station was relocated four times, in 2006, 1979, 1965, and 1941, which could have impacted the quality of temperature data. Obstructions that were recorded in 2005, 2002, 1997, and 1993 involved wind issues and buildings (Daily Summaries Station Details 2019).
+
+What do higher temperatures have to do with fire season?
+---
+Due to the increases in precipitation during the winter and spring months which result in more grass growth, variability in temperatures in summer months are extremely consequential (2017 Pacific Northwest Fire Narrative 2017; Wildland Fire Summary and Statistics Annual Report 2017 2017). NOAA’s National Climate Report for 2017 displays that in Washington, from the period 1895-2017 during the summer months June through August, temperature was much above average. The NOAA report also displays that the heat extremes which resulted in destructive fires extended throughout the summer and well into autumn.
+
+
+```{r, include=FALSE}
+## TMIN
+
+plot(TMIN ~ NewDate, data=climate_data, ty='l')
+abline(lm(TMIN ~ NewDate, data=climate_data),col="red")
+lm(TMIN ~ NewDate, data=climate_data)
+summary(lm(TMIN ~ NewDate, data=climate_data))
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+#plot(MonthlyTMINMean£TMIN[MonthlyTMINMean£Month=="05"], ty='l')
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",],
+ty='l', xlim=c(1890, 2020))
+May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+```
+
+
+```{r, results='hide', fig.cap="Caption: These data points are the minimum average temperatures for the months June through August. Since 1890, the p value is 0.75, and the slope is less than 0.001. Since 1980, the p value is p <0.01, and the slope is 0.07."}
+
+# Create TMIN values by month
+#MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+#MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+#MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+#MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+#head(MonthlyTMINMean)
+#Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+# summer averages
+# subsetted months
+subsetted = subset(MonthlyTMINMean, subset=MONTH > 4 & MONTH<10)
+SummerTMINMean = aggregate(TMIN ~ Year, subsetted, mean)
+SummerTMINMean$YEAR = as.numeric(SummerTMINMean$Year)
+plot(TMIN~YEAR, SummerTMINMean, las=1, xlab = "Year", ylab="Minimum Temperature (C)")
+Summer.lm = lm(TMIN~YEAR, SummerTMINMean)
+summary(Summer.lm)
+Summer2.lm = lm(TMIN~YEAR, SummerTMINMean[SummerTMINMean$YEAR>1980,])
+summary(Summer2.lm)
+abline(coef(Summer.lm), col = "red")
+abline(coef(Summer2.lm), col = "blue")
+
+colors <- c("red", "blue")
+labels <- c("1890-2019", "1980-2019")
+legend(1970,12.8, legend=c("1890-2019", "1980-2019"), lty=1, col=c("red", "blue"))
+
+#par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+#TMINresult <- NA
+#for (i in 1:12){
+#plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1890, 2020), main = Months[i])
+#Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+#summary(Month.lm)
+#abline(coef(Month.lm), col = "red")
+#TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+#}
+#plot(MonthlyTMINMean$TMIN, ty='l')
+
+```
+
+The red trendline from 1890 to the present has a p value of 0.75. The blue trendline from 1980 to the present is much more significant with a p value p < 0.01 and a slope of 0.07. These values reject the null hypothesis that temperatures have not increased, and thus affected fire season.
+
+Clearly the warming trend during summer months that has impacted the PNW has also impacted Spokane and thus Spokane’s fire season. The exceptionally dry environment needed for a flash drought also makes fires highly susceptible. The high precipitation levels in the winter and spring combined with the warm temperatures in early summer resulted in significant plant growth. Precipitation decreases and temperature increases resulted in high evapotranspiration rates, leading to rapid curing of grasses, rapid loss of moisture from dead woody fuels, and rapid development of drought stress in live fuels such as trees and shrubs” (2017 Pacific Northwest Fire Narrative  2017, p. 6). The increasingly dry climate from rising temperatures contributed to the increase in Spokane and other PNW area’s fire seasons.
+
+To check for biases in the temperature data, I also used the limitations concerning the station’s data quality for precipitation in the previous section. I also recognize that II was not able to obtain average temperatures which could have given more holistic results. Within the minimum temperature data, some years exceptionally cool or hot which could have leveraged the trends slightly, but not significantly.
+
+Projected outcomes of increased fires
+---
+If these precipitation and temperature trends continue, fire seasons will continue to increase. A climate impacts group predict forests will contain less wood, and thus less carbon, as well as vegetation shifts (Berton, 2017). The Department of Ecology in the State of Washington claims that as the frequency and intensity of wildfires increases, forestlands and its resources as well as habitats for wildlife will be damaged. The Department of Ecology also points to social impacts of increased fire seasons, including more unhealthy levels of air quality that create respiratory problems for certain groups and threats to homes, property, and agriculture (Wildfires, air quality & climate change [date unknown]). Increased fire seasons will result in thousands of illnesses and premature deaths occurring due to particulates released into the air by fires (Fann N, et al. 2018). Because of warmer and drier summers, “the typical annual area burned by fire in the Northwest is projected to double by the 2040s and quadruple by the 2080s” (Confronting Climate Change in Washington  2018).
+
+In Spokane, if temperature and precipitation levels continue to rise, minority groups will be the most affected. The US Department of Housing and Urban Development listed Spokane as having one of the highest homeless populations for cities of a similar size (Henry 2018). Without adequate shelter, access to healthcare, and basic resources to live, Spokane’s homeless population is left with little protection against increased fire seasons and resulting degraded air quality. Spokane’s indigenous tribes are also put at high risk during fire seasons. In 2016, Hart Fire burned on the Spokane Indian Reservation, but the Department of Natural Resources did not give equal support to the reservation compared to fires burning in other areas of Spokane. Only 150 firefighters were sent to fight Hart Fire while in two other locations in Spokane, 550 firefighters were sent in total. The fires in the reservation destroyed 13 homes while the fires in the two other locations destroyed 12. While the reason behind this has to do with the fact that tribal land is sovereign which brings up questions of jurisdiction and payments, clearly Spokane does not prioritize its indigenous populations as much as the rest of the population (Schwing 2016).
+
+
+Looking forward
+---
+Although in comparison to other parts of the country, the Pacific Northwest and Spokane are experiencing “soft-knock” climate change, these areas must still be given appropriate attention. While the seasonal rises in temperatures and precipitation may not necessarily be solely due to climate change, the impacts are still damning for the PNW and Spokane’s future.
+
+In the early 1900s, state and federal governments began to aggressively fight wildfires, but this caused denser and more fire-prone forests (Meyer 2017). The Natural Resource Defense Council says that “prematurely putting out small fires that could have cleared away undergrowth leaves some forests clogged with highly flammable small trees and shrubs. Unnecessarily suppressing them can increase the risks of subsequent fires being bigger and harder to control” (Where There’s Fire, There’s Smoke, p. 2, 2013).
+
+Finding ways to effectively manage fire seasons will be difficult which is why it is also essential to work on preventative measures. For example, in Oregon, a new Carbon Policy office is considering a “carbon cap and invest” bill similar to California’s Assembly Bill 398. On the Washington State ballot in November 2018, Initiative 1631, also known as the Protect Washington Act, “proposes collecting a pollution-reduction fee from “large emitters, based on the carbon content of fossil fuels and electricity...sold or used within this state” (Shinn 2018). The Washington Department of Natural Resources has developed a 20-Year Forest Health Strategic Plan for eastern Washington through increasing forest and watershed resilience and protecting communities, property, ecosystems, assets and working forests.
+
+Spokane has done some work with being more equitable regarding fire management for the national Community Risk Reduction priority populations, older adults, people living with disabilities, immigrants and refugees, families with young children, and low income households, through programming such as smoke alarm installation, home safety visits for low income households, preschool and grade school fire safety curriculum, first responder interaction for refugees and immigrants, and fire and fall prevention programming for older adults (2017 Annual Report). More work must continue to be done for disadvantaged groups like these because they are the groups most affected by fire seasons.
+
+Reflections on methods
+---
+Some limitations of my research are that I did not measure other factors, besides precipitation and temperature, that affect fires. I only examined factors that sustain fires, but did not research the main causes of fires starting: humans and lightning, which could have given me more information about how weather impacts fire season. I also did not research how specific fires are more severe than others and are differently affected by temperature and precipitation levels such as ground fires, surface fires, and crown fires (Forest Fires - An Overview). Another factor that I did not examine is flash drought potential. The rapid change in temperatures in the summer months combined with decreased precipitation after the heavy rainfall during the spring months created a flash drought potential (2017 Pacific Northwest Fire Narrative 2017) which could have made an impact on fire season intensity.
+
+I also only found a significant weather trend since 1980 in the temperature levels, not the precipitation levels, so my data does not necessarily prove that climate change has induced weather trends. 
+
+Conclusion
+---
+Even though weather patterns in Spokane may not be as extreme as other areas and I could not definitely prove that climate change has caused increasing precipitation and temperature levels,, weather patterns that impact Spokane’s fire season still impacts the lives of Spokanites and the natural environment, especially those who are less advantaged. Spokane is far behind Seattle in forest fire mitigation and prevention and must raise their standard for fire management to mitigate and prevent future increases in fire seasons. By utilizing prevention tactics like the ones described above, Spokane can change the fire season trend before it becomes irreversible. 
+
+Bibliography
+---
+Abatzoglou J, Williams A. 2016. Impact of anthropogenic climate change on wildfire across western US forests. Proceedings of the National Academy of Sciences. 113.
+
+Confronting Climate Change in Washington (2018). 2018. Union of Concerned Scientists. [cited 2019 Mar 1]. Available from: http://www.wfpa.org/news-resources/blog/length-northwest-forest-fire-season-continues-grow/
+
+Daily Summaries Station Details. 2019. NOAA National Centers for Environmental Information: State of the Climate. [cited 2019 Mar 11]. Available from: https://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:USW00024157/detail
+Fann N, et al. 2018. The health impacts and economic value of wildland fire episodes in the U.S.: 2008-2012. Science of the Total Environment. 610-611.
+
+Forest Fires - An Overview. [date unknown.] World Boreal Science & Innovation. [cited 2019 Mar 11] Available from: http://www.borealforest.org/world/innova/forest_fire.htm
+
+Franz H, et al. 2017. 20-Year Forest Health Strategic Plan. Washington State Dept of Natural Resources. 
+
+Henry M, et al. 2018. The 2018 Annual Homeless Assessment Report (AHAR) to Congress. The U.S. Department of Housing and Urban Development: Office of Community Planning and Development. 
+
+Length of Northwest Forest Fire Season Continues to Grow. 2018. Washington Forest Protection Association. [cited 2019 Mar 1]. Available from: http://www.wfpa.org/news-resources/blog/length-northwest-forest-fire-season-continues-grow/
+
+Loyd N. 2018. Weathercatch: Severe weather events — there’s something about May. Washington State University: WSU Insider. [cited 2019 Mar 1]. Available from: https://news.wsu.edu/2018/05/16/theres-something-about-may/
+
+Meyer R. 2017. Has Climate Change Intensified 2017’s Western Wildfires?. The Atlantic: Science. [cited 2019 Mar 1]. Available from: https://www.theatlantic.com/science/archive/2017/09/why-is-2017-so-bad-for-wildfires-climate-change/539130/
+
+National Climate Report for Annual 2017. 2018. NOAA National Centers for Environmental Information: State of the Climate. [cited 2019 Mar 1]. Available from: https://www.ncdc.noaa.gov/sotc/national/201713
+ 
+Schwing E. 2016. Resources Come Slow As Wildfire Ravages Spokane Reservation. KNKX.
+
+Shinn L. 2018. In the Pacific Northwest, Testing Out New WIldfire Defenses on the Front Lines. Natural Resources Defense Council. [cited 2019 Mar 1]. Available from: https://www.nrdc.org/stories/pacific-northwest-testing-out-new-wildfire-defenses-front-lines
+
+Westerling A. 2016. Wildfires in West have gotten bigger, more frequent and longer since the 1980s. The Conversation. [cited 2019 Mar 1]. Available from: https://theconversation.com/wildfires-in-west-have-gotten-bigger-more-frequent-and-longer-since-the-1980s-42993
+
+Where There’s Fire, There’s Smoke: Wildfire Smoke Affects Communities Distant from Deadly Flames. 2013. Natural Resources Defense Council.
+
+Wildfire Smoke. [date unknown]. Spokane Regional Clean Air Agency. [cited 2019 Mar 1]. Available from: https://www.spokanecleanair.org/wildfire-smoke
+
+Wildfires, air quality & climate change. [date unknown]. Department of Ecology State of Washington. [cited 2019 Mar 1]. Available from: https://ecology.wa.gov/Air-Climate/Climate-change/About-climate-change/Wildfire-risks
+
+Wildland Fire Summary and Statistics Annual Report 2017. 2017. Predictive Services; National Interagency Coordination Center. 
+
+2017 Annual Report. Spokane Fire Department. 2017. Spokane City.
+
+2017 Pacific Northwest Fire Narrative. 2017. USDA Forest Service and DOI Bureau of Land Management.

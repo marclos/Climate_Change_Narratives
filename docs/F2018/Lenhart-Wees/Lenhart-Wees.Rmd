@@ -1,0 +1,95 @@
+---
+title: "Wildfire and the Coastal Plains of Northern Florida"
+author: "Kyle Lenhart-Wees"
+date: "21/12/2018"
+output: html_document
+---
+During the summer, Florida's Costal Plains can experience more than 2000 wildfires and in the past has burned more than 200,000 ha of forest (Brose 2002). As the population grows and the homes of people push further into contact with the nature and wildlife, the frequency of wildfires increases.  These communities approach the issue of wildfires, but looking for the best method to prevent their houses from burning down. Fire risk for homes is not the only concern foresters have about wildfires though. 
+
+The focus of this blog, will be on Florida and even more specifically the effectiveness of several preventive measures on the forests of the Coastal Plains in North Florida. Hopefully when viewed in conjunction with the other blogs  focusing on other locations (list at the end of blog), a better understanding of wildfires and treatment methods can be gained.
+
+![MapOfFlorida](FloridaMap.png)
+Highlighted is the section of Florida from where the data was collected, and the conclusions drawn most directly apply.
+
+#Ecology of Coastal Plains
+Understanding the ecology of a region can be key in understand the mechanics behind the fire regime for the area. Traits of the plant, such as height and flammability dictate how fire spreads through the area. The Florida Coastal Plains are home to flatwoods pine forests, which are dominated by two main tree species, the longleaf pine and the slash pine. The ground cover also called the "rough" of this ecosystem is composed in large part by grasses and shrub (Brose 2002). Each of these species have partially developed according to a specific fire regime of this area that has resulted in fast growing ground cover and the fire-resistant trees, named above. The rough can achieve full regrowth in about 5 years following either a fire or thinning event. Meanwhile, the pines in the area have adapted to survive burns to their needles, as long as the rest of the tree is relatively unharmed.
+
+The rough is a very important element in the fire ecology of this region, because it is the primary fuel type consumed by the fires. The greater the number of shrubs covering the ground, the easier the fire spreads. As these shrubs mature, they stand taller, increasing the likelihood the fire will spread to the crown of the trees. The rough also plays an important role in determining how easily the firefighting crews can move around the area and suppress wildfires when they occur. 
+
+
+#Methods
+Two data sets from different studies were analyzed to try to illuminate the issues around Wildfires in California. The first looked at three sites in the Coastal Plains and recorded the effects across several years of three different treatment methods on the forest, particularly looking at the height of the rough and the hypothetical behavior of a fire under these conditions. The treatment methods examined included thinning, prescribed burns and herbicide. Thinning was defined as whole tree removal and reduction of rough. Prescribed burns were handled by the Forest Service, in which an area of the forest was intentionally ignited during the dormant season. Herbicide was sprayed in stands to kill rough growth and prevent succession and replacement.
+
+The other study looked at the effect of 3 treatment methods in ecosystems across the US on carbon levels. The data was compiled and loaded into R, where several of the recorded variables were evaluated for significance in their effects on the carbon levels. The three treatment methods analyzed were mechanical, prescribed fire and combination of the two. Mechanical was defined similarly to thinning treatments
+<!-- Define this better for the final version of blog--> 
+
+##Findings from the first study
+<!-- Marc, Path needs to be changed--> 
+![HeightVSTreatment](HeightVSTreatment.gif)
+
+This graphic shows the height of the rough, the plants in the understory, before each treatment and in the following years. Unt stands for untreated and the number correspond to the number of years since the treatment was applied to the area.(Brose 2002)
+<!-- Marc, Path needs to be changed--> 
+![SpeedVSTreatment](SpeedVSTreatment.gif)
+
+This graphic shows the modeled speeds of a wildfire, if one was to ignite in these areas. The graphic differentiates between what the speeds would be like both in a drought and non-drought conditions. On average, speeds were about 30 percent lower under normal (non-drought) conditions. (Brose 2002))
+
+#Evaluation of the control techniques
+There are numerous variables to consider with wildfires, but a very important element of this conversation is perspective. What is valued in these various models and tests is greatly influenced by the observer's point of view. Is the purpose of controlling the wildfires to maximize the profits humans can obtain from forests, to create a healthy ecosystem, minimize risk to nearby residential communities, something else, or maybe a little bit of everything? No matter what, perspective will be key to evaluating which control technique is â€œthe bestâ€. 
+
+###Thinning
+Thinning is a practice used in the commercial areas of forests. It does a pretty good job of keeping the trees productive and harvestable, but the average cycle between thinning events is significantly longer than fire regime of the flatwood pine area. The plants of the rough can grow back and reach adult size within 5 years of the previous generation being cut down. Meanwhile thinning occurs traditionally every 15 to 20 years, this means there is a long period of time where the fuel load has a high potential to cause destruction. Not only are fire crews hindered by the thick growth in the understory, but the mature plants allow for large fires, increasing the potential to spread to the crown of the tree. Looking at the two graphs, thinning produces good results in the first couple of years after the treatment, reducing fire hazards to surrounding communities and likely not greatly disturbing the natural ecology of the forest. But in order for thinning to be a reliable method to reduce hazards to residential communities, it would need to be done around every two years, which is very physically and financially demanding. 
+
+###Prescribed Fire
+Prescribed fire was shown to be quite comparable in effectiveness to thinning in the few years following the treatment. Similar levels of decline in both height of the rough and fire spread speed. The drawbacks of this method though include liability concerns for the Forest Service, who conduct the prescribed burns. Each treatment with this method has the possibility of getting out of control and becoming the destructive wildfire that they were trying to prevent in the first place. They are also liable for all of the smoke generated by the fires, and population centers can be negatively affected by it. Considering how quickly the rough regrows, the government tends to view the practice as rather expensive, since they have to keep returning to the site every 5 years or so. Moreover, the fire can stress the trees, marring the wood if used for industry and increasing the likelihood of bark beetles, which can decimate the population of a stand. 
+
+###Herbicide
+Although it appears from the graphs that this treatment method may be the most effective in reducing the severity of wildfires, there are other important elements at play. The first is that herbicide does not remove any of the plant material in the understory. Instead it simply kills the plant, which is why the height of the rough in the first year is still relatively high. The plant may be dead or dying, but it is still standing, posing a potential fire hazard. In the subsequent years, it is ever more likely that the dead bush will have been brought down by some force, and so we see a negative trend in understory height, following the treatment, whereas in the other methods it is positive; indicative of the new growth. Because the dead plant material is not removed though, the forest floor develops a thicker layer of duff than is traditional in forests. This duff encourages the growth of tree roots closer to the surface, where they become more exposed to fire. With the treatment of herbicide, even in a lower severity fire, tree mortality rates can increase, due to the roots of the tree being burned. Flatwood pine ecology is well adapted to surviving crown fires, at rate of around 95%. So even though herbicide tend to create forest ecosystem that allows firefighters to easily fight and control wildfires, that does not mean the treeâ€™s will survive the fires as well. Herbicide in this way could be a very anthropocentric model for fighting fires, great at keeping residential communities relatively safe, since the fires are easy and cheap to put out, but the overall ecology of the forest is highly affected and the trees are more likely to perish.
+
+
+##Findings from the second study
+```{r include =FALSE, eval=F}
+import = read.csv("Raw Fire Data - Sheet1 (1).csv")
+#Marc, you will have to change the path above. This will be the csv data set
+str(import)
+```
+```{r echo = FALSE, eval=F}      
+par(mar=c(8, 4.1, 4.1, 2.1)) 
+plot(Delta~Treatment, data=import, las=2, xlab="") 
+mtext(text="Treatment", side=1, line=6.5)
+#plot(Delta~Treatment, data = import)
+#Figure out how to make the display look nicer, so that the variables aren't cut off
+#plot(Delta~Site, data = import)
+#Condense the plots so they are next to eachother
+
+```
+
+This boxplot compares the change in carbon levels post-treatment for the four types of treatments. Data from (Beorner 2008).
+```{r echo = FALSE, eval=FALSE}   
+treatmentsite.aov = aov(Delta~Site * Treatment, data = import)
+summary(treatmentsite.aov)
+
+#treatment.aov=aov(Delta~Treatment, data=import) 
+#summary(treatment.aov) 
+
+```
+An ANOVA table showing the significance of each variable, Treatment and Site, as well as the two variables combined. Data from (Beorner 2008).
+
+The p-values of this analysis indicate, that the different treatments used in this study were significant from each other with a value of .00 and that location was significant in determining the overall effectiveness of fire prevention treatments with a p value of .00 as well. Interestingly though, this data set does not indicate that a specific treatment method is most effective for a particular area. The p-value for the two variables considered together is insignificant at .43. 
+
+
+This data set included information from various locations in the USA, including the Coastal Plains of Florida, but unfortunatly there were too many holes in the data for that region to be able to draw any useful conclusions specifically for Floria. To generalize the conclusions, it appears that the combination of treatment methods produced the best results in lowering carbon concentrations in the ecosystem. Prescibed fire helped to reduce levels some. While also benefical in reducing carbon concentrations, the mechanical treatment method was far more variable.
+
+
+#Conclusions
+The best fire prevention technique is highly dependent upon the goals the management service (such as Forest Service) wants to set for the area. If the forested area is close to human communities, and the top priority of the Forest Service is to keep those communities safe, they may want to employ a combination of thinning and herbicide. If they care more about sustaining or restoring a natural ecology to the area, then prescriptive burns could be the best option, as it replicates the cycles of this environment as if humans werenâ€™t a factor. From the first study it appears that combining techniques would likely be the most productive way to reduce fire severity and allow for the fighting of wildfires, but more data needs to be collected to directly quantify that. The second study found across the locations that the combination of treatment methods produced the best results for reducing carbon, so that would tend to support this conclusion as well. 
+
+Even though the findings of these studies cannot indicate what treatment method is best for a specific ecosystem, it can be concluded that treatments can be evaluated on a smaller scale of what is best for the nearby community and the priorities of the fire service. 
+
+Look to (Tolentino-Serrano 2018), (Zhuo 2018), (Ward 2018), (Reyes-Salazar 2008) and (Scanlon 2018) for more studies on treatment methods across the globe.
+
+#Literature Cited
+1. Beorner, Ralph, et al. â€œFire, Thinning, and the Carbon Economy: Effects of Fire and Fire Surrogate Treatments on Estimated Carbon Storage and Sequestration Rate.â€ NeuroImage, Academic Press, 7 Jan. 2008, www.sciencedirect.com/science/article/pii/S0378112707008900?via%3Dihub#fig1.
+
+2. Brose, patrick. Potential Fire Behavior in Pine Flatwood Forests Following Three Different Fuel Reduction Techniques. Forest Ecology and Management, June 2002, www-sciencedirect-com.ccl.idm.oclc.org/science/article/pii/S037811270100528X.
+
+3. Wallheiser, Mark. â€œFlorida Wildfire That Destroyed 36 Homes Was Sparked by Controlled Burn, Authorities Say.â€ CBS News, Associated Press, 27 June 2018, www.cbsnews.com/news/florida-wildfire-that-destroyed-36-homes-was-sparked-by-controlled-burn-authorities-say-2018-06-27/.
