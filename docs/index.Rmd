@@ -1,30 +1,34 @@
 ---
-title: "Test 3"
-author: "marc"
-date: "3/15/2019"
-output: html_document
+title: "Attribution Science -- Do Extreme Events have a Climate Change Signature"
+subtitle: "Is there a Signal in the Noise?"
+author: "Environmental Analysis 30 Students, Pomona College"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_html: default
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: xelatex
+bibliography: skeleton.bib
+link-citations: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
 ```
+# What is Attribution Science
 
-## R Markdown
+Attribution Science is a subset of climate science that attempts to evaluate the effect of climate change on weather patterns, in particular extreme weather events. Determining the climate change signature on these extreme events relies a wide range of observations and data sources, such as weather instruments, records, and modeling, as well as, historic climate events and proxy data of weather.  
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Unfortunately, climate science has become so politicized reports of extreme events, which can even lead to misunderstandings of these climate events. For example, Vance documents how social media has been used to make claims about extreme events that obscure important long-term trends. In particular, in the (US) South, climate change skepticism runs, as well as, the use of coal for electrical generation. However, this region may be may be hardest hit by the effects of climate change unless we curb CO<sub>2</sub> global emissions. 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Operationalizing Questions in Attribution Science
 
-```{r cars}
-summary(cars)
-```
+Asking how climate change influenced a certain extreme event is one of the first stages of attribution science. For example, after extensive flooding in Colorad in 2013, researchers formulated a testable hypothesis to evaluate the role of climate change on the flooding, but the results were contested. 
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+lai used the 2013 Colorado flood as a case study to discuss how weather records, weather modeling, and scientific research to understand the causes of the flood.
