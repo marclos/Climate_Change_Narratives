@@ -1,0 +1,203 @@
+---
+title: "20190309_monthly_TMAX_data"
+author: "bljj2015"
+date: "3/9/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r D1 monthly PRCP, }
+D1_daily_precip$Month = format(as.Date(D1_daily_precip$date), format = "%m") 
+D1_daily_precip$Year = format(D1_daily_precip$date, format="%Y")
+D1_MonthlyPRCPsum = aggregate(pppt_tot ~ Month + Year, D1_daily_precip, sum)
+D1_MonthlyPRCPsum$YEAR = as.numeric(D1_MonthlyPRCPsum$Year)
+D1_MonthlyPRCPsum$MONTH = as.numeric(D1_MonthlyPRCPsum$Month)
+str(D1_MonthlyPRCPsum)
+##plot
+plot(pppt_tot~YEAR, data=D1_MonthlyPRCPsum[D1_MonthlyPRCPsum$Month=="09",], ty='l', xlim=c(1890, 2020)) 
+D1_PRCP.lm <- lm(pppt_tot~YEAR, data=D1_MonthlyPRCPsum[D1_MonthlyPRCPsum$Month=="09",]) 
+abline(coef(D1_PRCP.lm), col="red")
+summary(D1_PRCP.lm)
+#YEAR = 0.07644 , p-value = 0.782 , adj r2 = -0.01806
+```
+
+
+
+```{r Saddle monthly PRCP, }
+Saddle_daily_precip$Month = format(as.Date(Saddle_daily_precip$date), format = "%m") 
+Saddle_daily_precip$Year = format(Saddle_daily_precip$date, format="%Y")
+Saddle_MonthlyPRCPsum = aggregate(ppt_tot ~ Month + Year, Saddle_daily_precip, sum)
+Saddle_MonthlyPRCPsum$YEAR = as.numeric(Saddle_MonthlyPRCPsum$Year)
+Saddle_MonthlyPRCPsum$MONTH = as.numeric(Saddle_MonthlyPRCPsum$Month)
+str(Saddle_MonthlyPRCPsum)
+##plot
+plot(ppt_tot~YEAR, data=Saddle_MonthlyPRCPsum[Saddle_MonthlyPRCPsum$Month=="09",], ty='l', xlim=c(1890, 2020)) 
+Saddle_PRCP.lm <- lm(ppt_tot~YEAR, data=Saddle_MonthlyPRCPsum[Saddle_MonthlyPRCPsum$Month=="09",]) 
+abline(coef(Saddle_PRCP.lm), col="red")
+summary(Saddle_PRCP.lm)
+#YEAR = 0.5643 , p-value = 0.476 , adj r2 = -0.01317
+```
+
+
+
+```{r C1 monthly PRCP, }
+C1_daily_precip$Month = format(as.Date(C1_daily_precip$date), format = "%m") 
+C1_daily_precip$Year = format(C1_daily_precip$date, format="%Y")
+C1_MonthlyPRCPsum = aggregate(ppt_tot ~ Month + Year, C1_daily_precip, sum)
+C1_MonthlyPRCPsum$YEAR = as.numeric(C1_MonthlyPRCPsum$Year)
+C1_MonthlyPRCPsum$MONTH = as.numeric(C1_MonthlyPRCPsum$Month)
+str(C1_MonthlyPRCPsum)
+##plot
+plot(ppt_tot~YEAR, data=C1_MonthlyPRCPsum[C1_MonthlyPRCPsum$Month=="09",], ty='l', xlim=c(1890, 2020)) 
+C1_PRCP.lm <- lm(ppt_tot~YEAR, data=C1_MonthlyPRCPsum[C1_MonthlyPRCPsum$Month=="09",]) 
+abline(coef(C1_PRCP.lm), col="red")
+summary(C1_PRCP.lm)
+#YEAR = -0.07338 , p-value = 0.758 , adj r2 = -0.01433
+```
+
+
+
+```{r B14W monthly PRCP}
+Boulder_14_W$Month = format(as.Date(Boulder_14_W$NewDate), format = "%m") 
+Boulder_14_W$Year = format(Boulder_14_W$NewDate, format="%Y")
+B14W_MonthlyPRCPsum = aggregate(PRCP ~ Month + Year, Boulder_14_W, sum)
+B14W_MonthlyPRCPsum$YEAR = as.numeric(B14W_MonthlyPRCPsum$Year)
+B14W_MonthlyPRCPsum$MONTH = as.numeric(B14W_MonthlyPRCPsum$Month)
+str(B14W_MonthlyPRCPsum)
+##plot
+plot(PRCP~YEAR, data=B14W_MonthlyPRCPsum[B14W_MonthlyPRCPsum$Month=="09",], ty='l', xlim=c(1990, 2020)) 
+B14W_PRCP.lm <- lm(PRCP~YEAR, data=B14W_MonthlyPRCPsum[B14W_MonthlyPRCPsum$Month=="09",]) 
+abline(coef(B14W_PRCP.lm), col="red")
+summary(B14W_PRCP.lm)
+# YEAR | ADJ R2 | P-VALUE | STAT SIG?
+# 1.155 | -0.06123 | 0.719 | no
+```
+
+
+
+```{r CCC monthly PRCP}
+Coal_Creek_Canyon$Month = format(as.Date(Coal_Creek_Canyon$NewDate), format = "%m") 
+Coal_Creek_Canyon$Year = format(Coal_Creek_Canyon$NewDate, format="%Y")
+CCC_MonthlyPRCPsum = aggregate(PRCP ~ Month + Year, Coal_Creek_Canyon, sum)
+CCC_MonthlyPRCPsum$YEAR = as.numeric(CCC_MonthlyPRCPsum$Year)
+CCC_MonthlyPRCPsum$MONTH = as.numeric(CCC_MonthlyPRCPsum$Month)
+str(CCC_MonthlyPRCPsum)
+##plot
+plot(PRCP~YEAR, data=CCC_MonthlyPRCPsum[CCC_MonthlyPRCPsum$Month=="09",], ty='l', xlim=c(1890, 2020)) 
+CCC_PRCP.lm <- lm(PRCP~YEAR, data=CCC_MonthlyPRCPsum[CCC_MonthlyPRCPsum$Month=="09",]) 
+abline(coef(CCC_PRCP.lm), col="red")
+summary(CCC_PRCP.lm)
+##YEAR = 0.3374, p-value = 0.637, adj r2 = -0.02327
+```
+
+
+
+
+```{r Boulder monthly PRCP}
+Boulder$Month = format(as.Date(Boulder$NewDate), format = "%m") 
+Boulder$Year = format(Boulder$NewDate, format="%Y")
+Boulder_MonthlyPRCPsum = aggregate(PRCP ~ Month + Year, Boulder, sum)
+Boulder_MonthlyPRCPsum$YEAR = as.numeric(Boulder_MonthlyPRCPsum$Year)
+Boulder_MonthlyPRCPsum$MONTH = as.numeric(Boulder_MonthlyPRCPsum$Month)
+str(Boulder_MonthlyPRCPsum)
+##plot
+plot(PRCP~YEAR, data=Boulder_MonthlyPRCPsum[Boulder_MonthlyPRCPsum$Month=="09",], ty='l', xlim=c(1890, 2020)) 
+Boulder_PRCP.lm <- lm(PRCP~YEAR, data=Boulder_MonthlyPRCPsum[Boulder_MonthlyPRCPsum$Month=="09",]) 
+abline(coef(Boulder_PRCP.lm), col="red")
+summary(Boulder_PRCP.lm)
+##YEAR = 0.2008, p-value = 0.123, adjusted R2=0.01176
+```
+
+
+
+
+
+
+##old table 3 of daily prcp, replaced w/ monthly prcp sum
+_**Table 3:** Linear regression model of daily precipitation_
+
+Climate Station | change in daily PRCP | Adjusted R-squared | p-value | Statistical significance?
+--------------- | ----------- | ------------- | ------------ | ---------------
+1. D-1               | +2.24e-05 | 0.000262  | 0.0164 | yes
+2. Saddle            | +2.57e-04 | 0.00725  | <2e-16 | yes
+3. C-1               | -8.74e-05 | 0.00954   | <2e-16 | yes
+4. Boulder 14 W      | +8.30e-05 | 0.000492 | 0.0531 | no
+5. Coal Creek Canyon | +5.15e-06 | -6.66e-05 | 0.688 | no
+6. Boulder           | +1.62e-06 | -5.28e-06 | 0.379 | no
+
+
+## OLD D1 DAILY TMAX GRAPH I USED BEFORE MARC SAID IT WASN'T INFORMATIVE SINCE THE GRAPH DOESN'T TELL MUCH
+
+```{r D1 daily TMAX & PRCP graphs, echo=FALSE}
+plot(airtemp_max~date, D1_daily_temp, main="Figure 5 DELETEME. Daily Max Temp at D-1 Station", xlab = "Date (Year)", ylab = "Daily Max Temperature (°C)", ty='l', las=1)
+abline(lm(airtemp_max ~ date, data=D1_daily_temp), col="red")
+
+```
+
+##**OLD**##
+
+```{r Boulder monthly TMAX all months}
+par(mfrow = c(4, 3), mar = c(1, 2, 2, 1) + 0.1) 
+TMAXresult <- NA 
+for (i in 8:10) { 
+  # plot(Boulder_MonthlyTMAXMean£TMAX[Boulder_MonthlyTMAXMean£Month==i], 
+  # ty='l') 
+  plot(TMAX ~ YEAR, data = Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  Boulder_Month.lm <- lm(TMAX ~ YEAR, data = Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$MONTH == i, ]) 
+  summary(Boulder_Month.lm)
+  abline(coef(Boulder_Month.lm), col = "red")
+  Boulder_TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Boulder_Month.lm)[2], 4), round(summary(Boulder_Month.lm)$coefficients[2, 4], 4), round(summary(Boulder_Month.lm)$r.squared, 3)))
+}
+Boulder_Aug_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="08",])
+summary(Boulder_Aug_TMAX.lm)
+Boulder_Sep_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="09",])
+summary(Boulder_Sep_TMAX.lm)
+Boulder_Oct_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="10",])
+summary(Boulder_Oct_TMAX.lm)
+```
+
+##Boulder_14_W
+
+```{r}
+Boulder$Month = format(as.Date(Boulder$NewDate), format = "%m")
+Boulder$Year = format(as.Date(Boulder$NewDate), format="%Y")
+```
+
+```{r}
+Boulder_MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, Boulder, mean)
+Boulder_MonthlyTMAXMean$YEAR = as.numeric(Boulder_MonthlyTMAXMean$Year)
+Boulder_MonthlyTMAXMean$MONTH = as.numeric(Boulder_MonthlyTMAXMean$Month)
+str(Boulder_MonthlyTMAXMean)
+plot(Boulder_MonthlyTMAXMean$TMAX, ty='l')
+```
+
+```{r Boulder monthly TMAX all months}
+par(mfrow = c(4, 3), mar = c(1, 2, 2, 1) + 0.1) 
+TMAXresult <- NA 
+for (i in 8:10) { 
+  # plot(Boulder_MonthlyTMAXMean£TMAX[Boulder_MonthlyTMAXMean£Month==i], 
+  # ty='l') 
+  plot(TMAX ~ YEAR, data = Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  Boulder_Month.lm <- lm(TMAX ~ YEAR, data = Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$MONTH == i, ]) 
+  summary(Boulder_Month.lm)
+  abline(coef(Boulder_Month.lm), col = "red")
+  Boulder_TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Boulder_Month.lm)[2], 4), round(summary(Boulder_Month.lm)$coefficients[2, 4], 4), round(summary(Boulder_Month.lm)$r.squared, 3)))
+}
+Boulder_Aug_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="08",])
+summary(Boulder_Aug_TMAX.lm)
+Boulder_Sep_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="09",])
+summary(Boulder_Sep_TMAX.lm)
+Boulder_Oct_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="10",])
+summary(Boulder_Oct_TMAX.lm)
+```
+
+```{r}
+Boulder_MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, Boulder, sum)
+Boulder_MonthlyTMAXMean$YEAR = as.numeric(Boulder_MonthlyTMAXMean$Year)
+Boulder_MonthlyTMAXMean$MONTH = as.numeric(Boulder_MonthlyTMAXMean$Month)
+str(Boulder_MonthlyTMAXMean)
+plot(Boulder_MonthlyTMAXMean$TMAX, ty='l')
+```
