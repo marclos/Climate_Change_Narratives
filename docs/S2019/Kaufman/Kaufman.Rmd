@@ -1,10 +1,8 @@
 ---
-title: "New York City, Hurricane Sandy, and the Future of Extreme Weather Events"
+title: "What Can Hurricane Sandy, Tell Us About the Future of Extreme Weather Events In NYC?" 
 author: "Eve Kaufman"
 date: "3/1/2019"
-output:
-  word_document: default
-  html_document: default
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -14,29 +12,33 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-###Goals
-It was my goal of this study to determine whether rainfall increased with a rise in temperatures. In light of Hurricane Sandy, it is clear weather events are getting more extreme, and as New York City rests on the coast of the Atlantic Ocean, the flooding caused by Hurricane Sandy was just a taste of what might be to come.
+####Goals
 
 
+The goal of this study is to determine if flooding during Hurricane Sandy, in addition to future floods in New York City, are caused by higher percentages of rainfall. Additionally, I hoped to find if New York City has rising temperatures that might show whether global warming impacts the region as well, and is ultimately responsible for the increase in precipitation.
 
-In order to complete the assessment, I pursued the following steps
-
-  1) Downloaded and extracted temperature and precipitation data 
-  
-  2) Assessed a change in temperature by celsius 
-  
-  3) Assessed a change in precipitation levels by millimeter 
-  
-  4) Compared the two for correlation 
 
 
 </br>
 
 
+####Methods
+
+First, I downloaded data from the National Oceanic and Atmospheric Administration (NOAA) an online database. The data was of maximum temperature recordings and precipitation rates in New York City, measured at a station in Central Park from 1935 to 2015. I subsequently analyzed the data using Rstudio, an online open source software. I then measured the two categories of data, using extreme, opposite months, March and September, for significant changes. I drew a line which represents the slope of the average. The slope of the line was based on changes in precipitation by the millimeter, and by celsius for temperature, throughout the timeline. By observing the significance of each, I then determined if there was any correlation.
+
+
+
+</br>
+
+
+####Limitations
+
+Limitations to my research rest in multiple factors, primarily that my data is not expansive. I only compared two data sets, and included few other factors in testing my hypothesis. Furthermore, there is still a great deal of external research which has yet to be conducted, and I therefore cannot incorporate as a result. Additionally, on a personal level, as an environmentalist I am inherently bias to whatever result I get, as I am emotionally involved.
+
 ```{r}
 
-filepath = "1606726.csv"
-filepath2 = "1628915.csv"
+filepath = "/home/CAMPUS/eakb2016/Climate_Change_Narratives/student_folders/Kaufman/1606726.csv"
+filepath2 = "/home/CAMPUS/eakb2016/Climate_Change_Narratives/student_folders/Kaufman/1628915.csv"
 climate_data = read.csv(filepath)
 sealevel_data = read.csv(filepath2)
 strDates <- as.character(climate_data$DATE)
@@ -100,7 +102,7 @@ TMAXresult <- rbind(TMAXresult, cbind(Months[9], round(coef(Month.lm)[2], 4), ro
 
 </br>           
 
-*I then compared the month opposite September, March, to test for extremes on either end. Data from this actually proved to be even more drastic in its changes.*  
+I then compared the month opposite September, March, to test for extremes on either end. Data from this actually proved to be even more drastic in its changes.
   
 </br>
 
@@ -131,28 +133,40 @@ TMAXresult <- rbind(TMAXresult, cbind(Months[3], round(coef(Month.lm)[2], 4), ro
 ####Results
 
 
-My data shows that, indeed, the temperature in the NYC region is on the rise, which can be linked back to global warming on the whole.
-That said, my data also exhibited no meaningful change in percipitation levels, suggesting that increased flooding can be attributed to other factors. 
+My data shows a significant trend in warming that affects New York City. The p-value of the slope, a show of significance, is less than .01 in both measured cases. It also has r-squared values of .24 in March and and .1 in September, exemplifying that it is not a coincidence.
+
+The p-value for precipitation change was .27 in March, and .26 in September, showing very little significance, with an r-squared value of .002 in both cases. 
+
+This means there was no indication of increased levels of precipitation, despite flooding. It suggests that precipitation is in no way impacted by temperature increase, nor does it clearly add to flooding conditions and extreme weather. Temperature, however, is definitely on the rise. 
 
 
 ![Precipitation Significance](prcp.png) ![Temperature Significance](temp.png)
 
 </br>
 
+
+
+
+
+
 ####Other Explanations
-Science has generally agreed that rising sea levels impacted the degree of damage significantly. This can be directly correlated to rising global temperatures.  
+
+If precipitation has nothing to do with flooding, then what does? Deeper research for what causes increased flooding still points to global warming as a cause (NOAA 2017), a trend that corroborates with increased temperatures in NYC. Global warming causes higher temperatures which are responsible for rising sea levels (UCS 2013), the culprit behind an increase in storm surge- the ultimate factor in flooding (Hill et al. 2012). 
+
+ 
 </br>
 It is worthwhile to note the importance of combining different datasets in order to create a more robust understanding of our global changes. Thus, despite getting negative results to my hypothesis, it is clear there is more at play that can be combined with the understanding of rising temperatures, and perhaps more data on percipitation will help this hypothesis in the future.     
 
 </br>
 
-####What does this mean for the future?  
 
 
-Hurricane Sandy was a wakeup call for many residents and legislators within the New York metropolitan region. Damages cost billions of dollars, and are still in the process of being undone. Projected reports show that Hurricane Sandy is just the first of many similar events, and within the near future another storm of similar magnitude is meant to hit New York again.
-With every storm, housing is destroyed, infrastructure is damaged and the city has difficulty staying open. Train tunnels are still corroding from the saltwater of river flooding in 2012, close to seven years ago, and homes have yet to be rebuilt- that is if they ever will be. 
+![](infographic.jpg)
 
+</br>
 
+#### What do the Results Say?
+Climate change is responsible for more extreme weather events, such as Hurricane Sandy in the east coast (EPA 2016). Though the null hypothesis, which postulated that increase in precipitation influenced the amount of flooding, was correct, trends found in global warming throughout NYC during extreme months proved through higher temperatures, that climate change was responsible. 
 
 
 ![](flood3.jpg) ![](sandy.jpg)
@@ -160,9 +174,24 @@ With every storm, housing is destroyed, infrastructure is damaged and the city h
 
 </br>
 
-####What is there to be done?
 
-Time and time again it has been repeated that the only way to avoid the extreme worsening of these events is to limit global warming. If temperatures are set to increase on the extreme upper estimate of 5 degrees celsius, New York will find much of itself permanently underwater by 2050. The map belows show future projections of water levels based on pressure reports in various stations along the rivers. One is the lower end of consequences, with a rise of only 2 degrees. The right depiction, shows a more dire consequence.  
+####Social Consequences
+
+Homelessness, water shortages, and an overcrowding in schools were only part of the impacts of Sandy (Faber 2015). Trains and other forms of public transportation also suffered outages and barring people from going to work and school. The effects of Sandy on trains still remain today, construction for repairs closing stations on weekends, even 7 years later. Damages averaged out to above $65,000,000,000 at this point along with destroying 650,000 homes and 300,000 business, a financial burden the city was burdened with taking (NOAA 2013).
+
+</br>
+
+####What Can Be Done?
+
+Hurricane Sandy was the most extreme weather event in recent New York City history. It generated a greater awareness about the negative impacts of global warming, between citizens and government alike (Hill et al. 2013). 
+
+New York City is still investing money into flood protection, with estimates of $11.6 billion for just for downtown manhattan (WNYC 2019). This is because more extreme weather events are expected to take place in New York City (IPCC 2013). Thus, despite such a fortification’s exorbitant price, the government recognizes it as a necessary action.
+
+In January of 2018, the New York City government took action, and sued large oil companies for their role in climate change, as a means to subsidize flood planning. Government officials, along with Mayor De Blasio, that those accountable should compensate. Unfortunately, six months later the suit was dismissed by a federal judge (CNBC 2018).
+
+Scientists and urban planners are collaborating on the matter as well (Washburn 2013). Together the two are responsible for the flood maps, seen above, that were updated for the first time in over twenty years. 
+
+
 ![](future.png)
 </br>
 </br>
