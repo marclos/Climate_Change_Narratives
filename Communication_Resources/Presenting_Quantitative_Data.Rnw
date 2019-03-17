@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{gensymb}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
 
 \title{Visual Presentation of Data using R}
 
@@ -65,28 +67,57 @@ Thus, for our purposes, the following is usually sufficient...
 You don't need to mention how you imported it, used Rstudio, or talk about the functions. In the text, you might mention that you used a linear model, regression, analysis of variance (AOV), but the details of the R code is usually not mentioned.
 
 However, you should also cite the program in your endnote: 
-\smallskip
-To cite R in publications use:
-\medskip
-\noindent R Core Team (2017). R: A language and environment for statistical
-  computing. R Foundation for Statistical Computing, Vienna, Austria. URL
-  https://www.R-project.org/.
 
 \smallskip
-\noindent You can get an updated version of the citation using the following function in R: citation(). 
+To cite R in publications use:
+
+\medskip
+\noindent R Core Team. 2017. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL \url{https://www.R-project.org/}.
+
+\smallskip
+
+\noindent You can get an updated version of the citation using the following function in R: citation(). Although the format isn't quite the same.
   
 
 \subsection{Reporting Results}
 
 In statistics, we reject the null hypothesis -- and don't prove anything. So, we need to be careful how we report our results. 
 
-First, when we report statistics, do not report the p-value if the result in non-significant. Just report that null hypothesis cannot be rejected. If the p-value is less then 0.001, just report it as `p $<$ 0.001'. If the p-value is between 0.05 and 0.001, then I suggest you report the actual value (rounded to the nearest one-hundredth or thousandth as appropriate. 
+First, when we report statistics, do not report the p-value if the result in non-significant. Just report that null hypothesis cannot be rejected. For example, "there was no relationship between y and x". If the p-value is less then 0.001, just report it as `p $<$ 0.001'. If the p-value is between 0.05 and 0.001, then I suggest you report the actual value (rounded to the nearest one-hundredth or thousandth as appropriate. For example, "evidence suggest that y depends on x (p = 0.03)." 
 
 Second, when we report the r$^2$ value, round to the nearest one-hundredth and describe it as the 'amount of variation explained by the model'. In fact, if you multiply by 100, it's can thought of as a percent variation explained.
 
 Finally, avoid making the statistics the subject of the sentence! Describe the results as the subject/verb and then add a parenthetical about the stats, e.g.
 
 \noindent Water quality declined through the study period (p = 0.03; r$^2$ = 0.09), although little of the variation was explained by the model. 
+
+\subsection{On Rounding and Decimaled Numbers}
+
+When numbers are less than 1 and reported as decimals, always report the leading zero, e.g. 0.02 instead of .02. It reduces ambiguities and helps ensure you haven't misreported the values with a typo.
+
+We always want to round to the highest signficant figure. Thus, if temperatures are reported to the nearest degree, then can't report and average of 4.00324432$\degree$ C. For an average, we can report one decimal to the right of the reported instrument precision, thus 4.0$\degree$ C would be appropriate. By reporting the following zero, we are explicit about the significant figures -- thus is a reporting requirement. 
+
+\subsection{Special Symbols}
+
+Science often relies on specialized characters, e.g. $\degree$ for degrees, $\alpha$ for our statistical test criteria. Table \ref{tab:symbols} shows the codes for symbols for Rmarkdown and \LaTeX.
+
+\begin{table}
+\caption{Special Symbols for Rmarkdown and \LaTeX}
+\label{tab:symbols}
+\begin{tabular}{lll}\hline
+Symbol  & Markdown Code & \LaTeX code \\ \hline\hline
+r$^2$     & r\^{}2\^{} &  r\$\^{}2\$ \\
+CO$_2$    & CO<sub>2<\textbackslash sub> & CO\$\_2\$\\
+
+$\alpha$ & \$\textbackslash alpha\$ & \$\textbackslash alpha\$ \\
+
+$\mu$ & \$\textbackslash mu\$ & \$\textbackslash mu\$ \\
+
+
+$\degree$ & \&deg; & \$\textbackslash degree\$ \\ 
+\hline
+\end{tabular}
+\end{table}
 
 \section{Exploring the Histogram}
 
@@ -104,18 +135,21 @@ The default graphic is hideous -- so, let's start fixing it.
 
 For stand alone figures, we usually add titles, but in papers and lab reports it's a good practice to remove the title and use the caption to describe the graphic. Changes to the title can be made with arguments within the plot command, i.e. `main=NULL'.
 
-In addition, we can change the x-axis label, with the 'xlab' argument. Specifying the units is also required. And in this case, we want to add the \degree symbol and create a text string with the axis label in quotes that can be referenced in the hist() funtion. 
+In addition, we can change the x-axis label, with the 'xlab' argument. Specifying the units is also required. And in this case, we want to add the \degree symbol and create a text string with the axis label in quotes that can be referenced in the hist() funtion. Notice that I rotated the y-axis values (las=1). 
 
 <<fig.cap='Histogram of Maximum Temperatures (°C) (XXX, Thailand, 1940-2018)'>>=
 TMAXlabel <- "Maximum Temperature (°C)"
-hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel)
+hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel, las=1)
 @
 \clearpage
+
 \subsection{Putting Multiple Figures in a Row}
 
-To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns. It's often a good idea to set the graphic parameter back to the default afterwards. In this case, I added a title because we have a panel with two graphics. Often people will put letters, e.g. A and B to refer to each one separately, but I prefer to put the actually description in the title, so the reader doesn't have to go back and forth between the caption and the figures.
+To create two graphics in one row, we can change the graphic parameters with the par() function. In this case, we'll create two column panels in one row using the 'mfrow' option and a vector that defines the number of rows and the number of columns, e.g. 'par(mfrow=c(1, 2))'. It's often a good idea to set the graphic parameter back to the default afterwards. In this case, I added a title because we have a panel with two graphics. Often people will put letters, e.g. A and B to refer to each one separately, but I prefer to put the actually description in the title, so the reader doesn't have to go back and forth between the caption and the figures. 
 
-<<fig.cap="Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018))">>=
+Note: the title is too long! So, I will need to figure out how to adjust the size of the font at some point using 'cex' arguments. See the boxplots below to see how that can be done.
+
+<<fig.cap="Mean monthly maximum and minimum tempetures (C) ((Bangkok, Thailand, 1940-2018))">>=
 par(mfrow=c(1,2))
 hist(MonthlyTMAXMean$TMAX, main='Maximum Temperature', xlab=TMAXlabel)
 TMINlabel <- "Minimum Temperature (°C)"
@@ -125,7 +159,7 @@ par(mfrow=c(1,1))
 \newpage
 Because the figure is rather distorted, I have constrained the size using a fig.height and fig.width option. 
 
-<<fig.cap="Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018))", fig.height=3.5, fig.width=6>>=
+<<fig.cap="Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018)).", fig.height=3.5, fig.width=6>>=
 par(mfrow=c(1,2))
 hist(MonthlyTMAXMean$TMAX, main='Monthly Maximum Temperature', xlab=TMAXlabel)
 TMINlabel <- "Minimum Temperature (°C)"
@@ -133,15 +167,45 @@ hist(MonthlyTMINMean$TMIN, main='Monthly Minimum Temperature', xlab=TMINlabel)
 par(mfrow=c(1,1))
 @
 
+Note that the title is too big and is cut off. In general, most publications prefer you put the description in the caption and avoid long titles. So, for the next example, I'll create a caption to refer to both figures as panel letters and get rid of the figure titles (main=NULL).
+
+Altnernatively, I could change the relative size of the titles, using 'cex.main = 0.8', which multiplies the size by 0.8. 
+
+To create the panel letters, we'll use mtext for margin text. 
+
+<<fig.cap="Mean monthly maximum (Panel A) and minimum (Panel B) tempetures (C) ((Bangkok, Thailand, 1940-2018)).", fig.height=3.5, fig.width=6>>=
+par(mfrow=c(1,2))
+hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel)
+TMINlabel <- "Minimum Temperature (°C)"
+mtext("A", side=3, line=0, adj=0, cex=1.4)
+hist(MonthlyTMINMean$TMIN, main=NULL, xlab=TMINlabel)
+mtext("B", side=3, line=0, adj=0, cex=1.4)
+par(mfrow=c(1,1))
+
+@
+
 \section{Boxplot}
 
 Box plots are great ways to display quantitative data from controlled experiments. For example, if you had high and low treatment categories and measured some response. Let's use the following example, ants colonies collected from three locations farm, grassland, and forest. 
 
-<<fig.cap='Number of ant colonies by habitat type', echo=FALSE>>=
+<<fig.cap='Number of ant colonies by habitat type.', echo=FALSE>>=
 ants = data.frame(Location = c(rep("Farm", 4), rep("Grassland", 4), rep("Forest", 4)), Colonies = c(1, 0, 3, 4,        3, 5, 9, 4,    3, 2, 4, 1))
 boxplot(Colonies ~ Location, data=ants)
 
 @
+
+
+The boxplot can be improved dramatically by rotating the y-axis values ('las=1'), increasing the size of the axis labels ('cex.lab') and axis values ('cex.axis') (Figure~\ref{fig:boxplot}.
+<<boxplot, fig.cap='Number of ant colonies by habitat type.', echo=TRUE>>=
+boxplot(Colonies ~ Location, data=ants, las=1, 
+        ylab="No. of Colonies", xlab="Habitat", cex.lab=1.6, 
+        cex.axis=1.4, col="gray")
+
+@
+
+
+
+
 \newpage
 \section{Scatter Plot -- Non-time series}
 
@@ -154,7 +218,7 @@ Time series data sets often require special treatment. For example, data are oft
 
 When we are graphing temperature data from one year to the next, we are averaging many days and connecting one year to the next might be appropriate if the data series is long enough, e.g. more than 50 years. However, with shorter time-series, i.e. 15 or less, connect the years with a line might be problematic.
 
-<<>>=
+<<plot1>>=
 plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])
 abline(coef(lm(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,])),
     col='darkred')
@@ -167,7 +231,7 @@ I am also not impress with the vertical orientation of the y-axis, so it's impor
 Finally, it's important that the image works in black and white. So, let's see if we can modify the graphic to make it less resource intensive. Finally, let's add a caption and reference to the figure (Figure \ref{fig:maxtemp}).
 
 \begin{figure}[h]
-<<>>=
+<<plot2>>=
 ylabel <- "Maximum Temperature (°C)"
 plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,], 
      ylab=ylabel, xlab='Year', pch=20, las=1, col='gray')
@@ -180,10 +244,10 @@ abline(coef(lm(TMAX ~ YEAR,
 \end{figure}
 
 \clearpage
-Now, what if we only want to display part of the data. We can limit the x-axis range using the 'xlim' argument, where we create a vector of for the start and end of the range.  
+Now, what if we only want to display part of the data. We can limit the x-axis range using the 'xlim' argument, where we create a vector of for the start and end of the range.  Finally, we can improve the plot by adding 'las=1' to rotate the y-axis labels. 
 
 %\begin{figure}[h]
-<<fig.cap='Monthly Average of Daily Maximum Temperatures (C).'>>=
+<<plot3, fig.cap='Monthly Average of Daily Maximum Temperatures (C).'>>=
 ylabel <- "Maximum Temperature (°C)"
 plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,],
      xlim=c(1940, 2000),
@@ -201,7 +265,7 @@ Alternatively, you may want to creat a best fit line that only covers the range 
 For example, we have seen several papers that select parts of the record to make dubious claims. 
 
 %\begin{figure}[ht]
-<<fig.height==3, fig.width=5>>=
+<<plot4, fig.height=5, fig.width=5>>=
 ylabel <- "Maximum Temperature (°C)"
 plot(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==5,],
      #xlim=c(1940, 2000),
@@ -238,53 +302,165 @@ legend(1948, 38, legend=c("1952-2018 Record", "2000-2018 Record"),
 \clearpage
 \section{Bar Graphs}
 
-Rainfall data and other types of 'count' data are often best displayed as barcharts. 
+\subsection{What are Barcharts}
 
+Bar charts are used when you are graphing categorical data with continuous data that are a sum of something, for example dollars spent, no of events, and such. Rainfall is a good variable to put into barcharts with monthly or annual sums. 
 
-<<fig.cap="Number of Unsafe Air Quality Days in Washington State due to Fires.", fig.height=3, fig.width=5>>=
+\subsection{Introducing a Figure and Table}
+
+We introduce our figures and tables in the text before the appear in the text. Just like a good friend, we introduce them to new people so they don't have to try to initiate a conversation without any context. Thus, we provide a bit of context to help the reader with the figure. 
+
+One important note here -- when you report the results of a figure or a table, do not use the table or figure as the subject of the sentence. Instead use the results as the subject and reference the table or figure as a parenthetical. 
+
+For example, 'The number of wildfires has dramatically increased after 2014 (Figure \ref{fig:barchart}). 
+
+In my example, the figure should land after the text if possible. 
+
+This is preferable to 'Figure \ref{fig:barchart}' shows that the number of wildfires has increased after 2014.' The emphasis is placed on the figure, which detracts to what the focus of the text should be on. Now there may be times when we want to put the focus on a table or complex figure, but usually we reserve that type of text for the figure caption. 
+
+<<barchart, fig.cap="Number of Unsafe Air Quality Days in Washington State due to Fires.", fig.height=3, fig.width=5>>=
 fires = data.frame(Year = 2010:2018, 
                    Fires = c(1, 0, 2, 0, 1, 13, 0, 16, 13))
 # Note: barplot uses names.arg to assign the category names
 barplot(fires$Fires, names.arg = fires$Year, las=1, ylab="No. of Fires")
 @
 
+\subsection{When to use Barcharts}
 
-Notice the figure cuts out every-other year. You'll need to decide if the reader will be bothered by that. If so, you can reduce the x-axis labels fonts or increase the width of the chart. 
+Rainfall data and other types of 'count' data are often best displayed as barcharts. 
 
+Notice how Figure \ref{fig:barchart} cuts out every-other year. You'll need to decide if the reader will be bothered by that. If so, you can reduce the x-axis labels fonts or increase the width of the chart. 
+\clearpage
 \section{Tables}
 
-Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for the first drafts using a table and a histogram. 
+Sometimes (often times?), tables are better than graphs. In the case below, I summarized the grades for each set of drafts using a table (Table 1) and through a series of histograms (Figure \ref{fig:scoreshist}). 
 
 <<echo=FALSE>>=
-grades = c(22, 34, 22.5, 22.5, 28, 29.5, 36.5, 31.5, 31.5, 2, 31, 0.1, 0.1)
+grades1 = c(28.5, 36.5, 25, 31.5, 26, 22, 22.5,
+           2, 0, 22.5, 31.5, 6, 28, 34, 0)
+grades2 = c(38.1, 39.9, 44.8, 34.4, NA, 28.4, NA,
+            24.8, 17.5, 34.8, 37.9, 14.5, 37, NA, 16.6)
+
+grades3 = c(42.6, NA, NA, 42.8, 43.8, NA, NA,
+            34.8, NA, NA, NA, NA, 43.8, NA, NA)
+
+grades4 = c(NA, NA, NA, 44.3, 46.5, NA, NA,
+            NA, NA, NA, NA, NA, NA, NA, NA)
+
+grades5 = c(NA, NA, NA, NA, 46.5, NA, NA,
+            NA, NA, NA, NA, NA, NA, NA, NA)
+
+grades6 = c(NA, NA, NA, NA, 48.5, NA, NA,
+            NA, NA, NA, NA, NA, NA, NA, NA)
+
 library(xtable)
 options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 
-bins = cut(grades, seq(0,50,10))
-grades_tab = table(cut(grades, breaks = seq(0,50,10)))
-#names(grades_tab) <- c("<10", ">= 10-- < 20", ">= 20-- < 30", ">= 30-- < 40", "> 40")
-grades.df = data.frame(grades_tab)
-names(grades.df) = c("Range", "Frequency")
+grades1_tab = table(cut(grades1, breaks = seq(0,50,10), right=F))
+grades2_tab = table(cut(grades2, breaks = seq(0,50,10), right=F))
+grades3_tab = table(cut(grades3, breaks = seq(0,50,10), right=F))
+grades4_tab = table(cut(grades4, breaks = seq(0,50,10), right=F))
+grades5_tab = table(cut(grades5, breaks = seq(0,50,10), right=F))
+grades6_tab = table(cut(grades6, breaks = seq(0,50,10), right=F))
+
+grades1.df = data.frame(grades1_tab)
+grades2.df = data.frame(grades2_tab)
+grades3.df = data.frame(grades3_tab)
+grades4.df = data.frame(grades4_tab)
+grades5.df = data.frame(grades5_tab)
+grades6.df = data.frame(grades6_tab)
+
+names(grades1.df) = c("Range", "1st Draft")
+names(grades2.df) = c("Range", "2nd Draft")
+names(grades3.df) = c("Range", "3nd Draft")
+names(grades4.df) = c("Range", "4th Draft")
+names(grades5.df) = c("Range", "5th Draft")
+names(grades6.df) = c("Range", "Final")
+
+grades12.df = merge(grades1.df, grades2.df)
+grades123.df = merge(grades12.df, grades3.df, by="Range")
+grades1234.df = merge(grades123.df, grades4.df, by="Range")
+grades12345.df = merge(grades1234.df, grades5.df, by="Range")
+grades.df = merge(grades12345.df, grades6.df, by="Range")
 #rownames(grades_tab) = "Score"
 @
 
 
-<<warning=FALSE, message=FALSE, results='asis'>>=
+<<scorestable, warning=FALSE, message=FALSE, results='asis'>>=
 print(xtable(grades.df, 
-      caption='Table of First Blog Draft Scores'), 
-      caption.placement = "top")
+      caption='Table of Blog Draft Scores'), type='latex', 
+      caption.placement = "top",
+      label="tab:scores")
 @
-
-The histogram is simple, but for these data, I am not sure it's all that useful. Which do you think is more effective?
-
-BTW: The mean was \Sexpr{round(mean(grades), 1)}. You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
 
 \bigskip
-<<fig.cap="Histogram of First Blog Draft Scores", fig.height=3, fig.width=3 >>=
-hist(grades, main=NULL, xlab="Score")
+
+The histogram is simple (Figure \ref{fig:scoreshist}), but for these data, I am not sure it's all that useful. Which do you think is more effective? 
+
+The use of color in for this figure is really unnecessary. But it's worth illustrating. It's important that the use of color doesn't distract or confuse readers, especially those that are visually impaired, e.g. color blind.
+
+\bigskip
+BTW: The mean was for the first draft was \Sexpr{round(mean(grades1, na.rm=T), 1)} and the second draft was \Sexpr{round(mean(grades2, na.rm=T), 1)}. Based on a paired t-test, the difference between the two grades is significant. 
+
+You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
+
+
+\bigskip
+<<scoreshist, fig.cap="Histogram of Blog Scores", fig.height=2.5, fig.width=6 >>=
+par(mfrow=c(1,4), las=1)
+hist(grades1, main="1st Draft", xlab="Score", 
+     xlim=c(0,50), col="green")
+hist(grades2, main="2nd Draft", xlab="Score", 
+     xlim=c(0,50), col="blue")
+hist(grades3, main="3rd Draft", xlab="Score", 
+     xlim=c(0,50), col="darkgreen")
+hist(grades4, main="4th Draft", xlab="Score", 
+     xlim=c(0,50), col="purple")
 @
 
 
+\section{Probability Density}
 
+Another useful way to display data is by using probability densities (Figure~\ref{fig:scoresdensity}). 
+<<scoresdensity, fig.cap="Probability Density for Scores", fig.height=5, fig.width=8>>=
+
+# Display the Student's t distributions with various
+# degrees of freedom and compare to the normal distribution
+x = seq(-10, 60, by = 1)
+hx1 <- dnorm(x= x, mean = mean(grades1, na.rm=T), 
+             sd=sd(grades1, na.rm=T))
+hx2 <- dnorm(x= x, mean = mean(grades2, na.rm=T), 
+             sd= sd(grades2, na.rm=T))
+hx3 <- dnorm(x= x, mean = mean(grades3, na.rm=T), 
+             sd= sd(grades3, na.rm=T))
+hx4 <- dnorm(x= x, mean = mean(grades4, na.rm=T), 
+             sd= sd(grades3, na.rm=T))
+hx5 <- dnorm(x= x, mean = mean(grades5, na.rm=T), 
+             sd= sd(grades3, na.rm=T))
+hxF <- dnorm(x= x, mean = mean(grades6, na.rm=T), 
+             sd= sd(grades3, na.rm=T))
+
+colors <- c("red", "blue", "darkgreen", "gold", "violet", "black")
+labels <- c("Draft 1", "Draft 2", "Draft 3", "Draft 4", "Draft 5", "Final")
+
+plot(x, hx1, type="l", lty=1, lwd=3, xlab="Score",
+  ylab="Density", main="Distribution of Scores", las=1, 
+  ylim=c(0,.15), col=colors[1])
+  lines(x, hx2, lwd=3, col=colors[2])
+  lines(x, hx3, lwd=3, col=colors[3])
+  lines(x, hx4, lwd=3, col=colors[4])
+ttest = t.test(grades1, grades2, paired=T)
+
+#text(ttest$estimate[1], max(hx1), "Draft 1 Mean", pos=3)
+#text(ttest$estimate[2], max(hx2), "Draft 2 Mean", pos=3)
+
+text(10, .05, paste("p-value = ", round(ttest$p.value, 4), "or better reported as p < 0.001"))
+legend("topleft", inset=.05, title="Distributions",
+  labels, lwd=2, lty=c(1, 1, 1, 1, 1), col=colors)
+
+
+@
+
+Notice how the probabilities go well beyond the scale possible, less than 0 and greater than 50. There are a number of ways of dealing with these issues, but that's beyond our scope. Suffice to say that a normal distribution is not appropriate for all data types. 
 \end{document}
