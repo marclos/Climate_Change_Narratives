@@ -56,7 +56,7 @@ The locations of the three weather stations in relation to downtown Chicago are 
 
 <div class="a">
 ```{r annualminbarrington_plot, echo=FALSE, results='hide' }
-climate_data<-read.csv( "/home/CAMPUS/syaa2016/Climate_Change_Narratives/student_folders/Yi/claireyi_climatedata_chicago.csv")
+climate_data<-read.csv( "claireyi_climatedata_chicago.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$Year <- as.Date(strDates, "%m/%d/%Y")
 
@@ -73,7 +73,7 @@ The graph above shows the daily minimum temperature(TMIN°C) of Barrington stati
 
 <div class="a">
 ```{r annualminparkforest_plot, echo=FALSE, results='hide'}
-climate_data1<-read.csv("/home/CAMPUS/syaa2016/Climate_Change_Narratives/student_folders/Yi/ParkForest_climatedata_claireyi.csv")
+climate_data1<-read.csv("ParkForest_climatedata_claireyi.csv")
 strDates <- as.character(climate_data1$DATE)
 climate_data1$Year <- as.Date(strDates, "%m/%d/%Y")
 
@@ -90,7 +90,7 @@ Similar to Barrington station, the minimum temperature in Park forest shows an u
 
 <div class="a">
 ```{r annualminmidway_plot, echo=FALSE, results='hide'}
-climate_data2<-read.csv("/home/CAMPUS/syaa2016/Climate_Change_Narratives/student_folders/Yi/climatedata_cliareyi_midway.csv")
+climate_data2<-read.csv("climatedata_cliareyi_midway.csv")
 strDates <- as.character(climate_data2$DATE)
 climate_data2$Year <- as.Date(strDates, "%d/%m/%Y")
 
