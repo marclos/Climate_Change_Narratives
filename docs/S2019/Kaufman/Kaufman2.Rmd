@@ -1,8 +1,10 @@
 ---
-title: "What Can Hurricane Sandy, Tell Us About the Future of Extreme Weather Events In NYC?" 
+title: What Can Hurricane Sandy, Tell Us About the Future of Extreme Weather Events
+  In NYC?
 author: "Eve Kaufman"
 date: "3/1/2019"
-output: html_document
+output:
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -37,8 +39,8 @@ Limitations to my research rest in multiple factors, primarily that my data is n
 
 ```{r}
 
-filepath = "/home/CAMPUS/eakb2016/Climate_Change_Narratives/student_folders/Kaufman/1606726.csv"
-filepath2 = "/home/CAMPUS/eakb2016/Climate_Change_Narratives/student_folders/Kaufman/1628915.csv"
+filepath = "1606726.csv"
+filepath2 = "1628915.csv"
 climate_data = read.csv(filepath)
 sealevel_data = read.csv(filepath2)
 strDates <- as.character(climate_data$DATE)
