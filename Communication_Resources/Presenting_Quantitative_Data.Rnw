@@ -433,7 +433,7 @@ ttest = t.test(grades1, grades2, paired=T)
 #text(ttest$estimate[1], max(hx1), "Draft 1 Mean", pos=3)
 #text(ttest$estimate[2], max(hx2), "Draft 2 Mean", pos=3)
 
-text(10, .05, paste("p-value = ", round(ttest$p.value, 4), "or better p < 0.001"))
+text(10, .05, paste("p-value = ", round(ttest$p.value, 4), "or better reported as p < 0.001"))
 legend("topleft", inset=.05, title="Distributions",
   labels, lwd=2, lty=c(1, 1, 1, 1, 1), col=colors)
 
