@@ -1,7 +1,7 @@
 ---
-title: 'From Fire to Floods: What is Climate Whiplash?'
+title: 'From Fire to Floods in Southern California: What is Climate Whiplash?'
 author: "Toni Anderson"
-date: "3/12/2019"
+date: "3/16/2019"
 output:
   html_document: default
   word_document: default
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-![The picturesque Burbank skyline. Source: Gettyimages](Burbank View.jpg)
+![Figure 1: The picturesque Burbank skyline. Source: Gettyimages](Burbank View.jpg)
 
 #Climate Whiplash: Where, Why, and How?
 
@@ -20,21 +20,19 @@ Southern California, thanks to its temperate climate and sunny beaches, has a re
 
 But what is the cause of climate whiplash? Several studies have confirmed that the increased variation in precipitation that causes the swings from wet to dry is linked to changes in climate variation (Hall et al. 2018). This means that increases *and* decreases in local temperature are responsible. And what effects will whiplash have on Los Angeles County? Rapid swings from wet to dry have the potential for devastating extreme events. At the end of 2018, for example, the hills of Malibu went from a raging fire to deadly mudslides in just a few weeks, causing massive property damage (Law 2018).  In Los Angeles county, climate whiplash, a product of increased temperature and therefore precipitation variation, is responsible for an increase in extreme weather events.
 
-This blog examines the observed trends of climate whiplash in Southern California. To do so, I analyzed climate data from the National Oceanic and Atmospheric Administration (NOAA) in the stastical program R (CRAN 2019) to support the existence of the above hypothesis. Using these data, I then researched the effects of the subsequent fires and floods on the community and the unequal effect on lower-income communities. The effects of climate whiplash are still being unraveled from other natural disasters; this blog intends to demystify some of these misguided conclusions and bring awareness to the Los Angeles’ new reality of climate whiplash. 
+In this blog, I examine the observed trends of climate whiplash in Southern California. This blog intends to demystify climate whiplash and bring awareness to the causes and potentially dangerous effects. To do so, I analyzed climate data from the National Oceanic and Atmospheric Administration (NOAA) in the stastical program R (CRAN 2019). Using these data, I then researched the effects of the subsequent fires and floods on the community and the unequal effect on lower-income communities. 
 
-![LA County. Source: Google Maps](Burbank Maps.png)
+![Figure 2: LA County. Source: Google Maps](Burbank Maps.png)
 
 # Putting the Data Together
 
-For this analysis, I obtained daily summaries of temperature and precipitation data for Burbank. Then I graphed the temperature averages and precipitation sums of the fall months to compare variation over time. In order to confirm or deny a relationship between the two variables (time and temperature/precipitation) I used the null hypothesis method. The relationship is assessed with the ‘p-value’ of the data. If the p-value (calculated in R) is less than .05 then there is without question a relationship between the two variables and the null hypothesis can be rejected. However, if the p-value is greater than .05, the relationship is still unconfirmed. 
-
-###Where Did the Data Come From?
+For this analysis, I obtained daily summaries of temperature and precipitation data for Burbank. Then I used R to create graphics and analyse the data. In order to confirm or deny a relationship between the variables (time and temperature/precipitation) I used the null hypothesis or 'p-value' method. If the p-value (calculated in R) is less than .05 then the null hypothesis can be rejected. However, if the p-value is greater than .05, the relationship is still unconfirmed, and the null hypothesis cannot be rejected. 
 
 My climate data came from the National Oceanic and Atmospheric Administration (NOAA), which maintains an extensive climate database compiled from weather stations across the United States. Using their Climate Data Online program, I downloaded daily summaries of precipitation data from the Burbank Valley Pump Plant (Station GHCND:USC00041194). This specific dataset covered all the way from 1939 to the present day, and had a 99% coverage rate, i.e. only 1% of the data was missing.
 
 ###Restrictions and Fallacies of the Dataset
 
-My analysis uses only dataset from one weather station in Burbank. There are several different potential errors in the datas because of this, most notably is the location of the station.The station has moved only slightly during its recording period, however it has always been located in a parking lot. The asphalt can create a ‘heat island’ wherein heat is trapped in a small area which is warmed more than the climate itself. This could artificially inflate temperature data numbers; however, since all of the data are inflated like this, the trends will remain unchanged. As such, the ‘heat island’ effect should not unduly affect my analysis. There is also the potential for misgeneralizations to be made when applying the climate data collected in Burbank to entirety of Los Angeles County. However, thanks to the completeness of the data set (only 1% messing) and to Burbank's central location, it is the trends seen here will be similar enough to the rest of the county that simple generalizations can be made (with the understanding that exact numbers will be slightly different depending on the area.) 
+My analysis uses only data from one weather station in Burbank. It is possible that trends my chosen station onserve do not match the ones seen in the entirety of Los ANneles County, as my analysis assumes. However, thanks to Burbank's central location (as seen in Figure 2) simple generalizations can be made with the understanding that exact numbers will differ slightly depending on the area. Additionally, because the station is located in a parking lot, the data could be inflated with a 'heat isalnd' effect (a small area of trapped heat far warmer than the actual climate). This could artificially inflate temperature data numbers; however, since all of the data are inflated like this, the trends I am analyzing will remain unchanged. 
 
 # What Trends Actually Exist?
 
@@ -113,17 +111,18 @@ PRCP.lm <- lm(PRCP ~ YEAR, data = MonthlyPRCPSum)
 summary(PRCP.lm)
 ```
 
-###Precipitation Annual Data
+###Yearly Precipitation Variance: Accepting the Null Hypothesis
 
-To prove the existence of precipitation variation and therefore climate whiplash, I first graphed the sum of the monthly precipitation data over the entire time period of data collection (1940 to the present). The sharp spikes and long valleys demonstrate the yearly variation in preciptition rates, which is indicative of climate whiplash. With a p-value of 0.755, there is certainly no way we can reject the null hypothesis. This means there is no direct increase of decrease in precipitation over time, only a wide variation.
+Climate whiplash patterns present themselves in a series rapid shifts (four years or less) between very wet years (100 mm or more) and very dry years (Below 50 mm) (Hall et al. 2018). Because I am testing for an increase in variation rather than an increase in values, the null hypothesis (that there is no relationship between time and preciptiation rates) actually supports my argument. To test the null hypothesis, I graphed the monthly precipitation rates in R. While the graph is full of spikes and valleys, there is no clear increase or decrease. With a p-value of 0.755, there is certainly no way we can reject the null hypothesis. This demonstrate the yearly variation in preciptition rates, which is indicative of climate whiplash. 
 
 ```{r echo=FALSE}
 
 ##Plot Data
-plot(PRCP~NewDate, climate_data, ty='l', ylim=c(0, 300), main="Precipitation vs. Years", xlab="Years", ylab="Precipitation (mm)", col.main="black" )
+plot(PRCP~NewDate, climate_data, ty='l', ylim=c(0, 250), main="Precipitation vs. Years", xlab="Years", ylab="Precipitation (mm)", col.main="black")
 c <- coef(lm(PRCP~NewDate, climate_data))
 abline(c, col="green")
 ```
+#######Figure 3
 
 ###Precipitation and Temperature in the Fall
 
@@ -142,6 +141,7 @@ abline(coef(Month.lm), col = "red")
 TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
 }
 ```
+#######Figure 4
 ```{r echo=FALSE}
 ##Fall Season
 Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
@@ -155,6 +155,7 @@ abline(coef(Month.lm), col = "blue")
 TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
 }
 ```
+#######Figure 5
 
 The daily maximum temperature increased at about the same each month. The minimum temperature graphs, however, display unique trends each month. October shows a consistent dramatic increase, November remains stagnant, while December shows a steady decrease. These trends assert that the gap between maximum and minimum temperatures is becoming more pronounced. These gaps contribute to climate variation, which creates wild swings between warm, cold, wet, and dry weather (Hall et al. 2018). The distinct differences in the temperature variation from month to month contributes to highly varied precipitation rates, therefore supporting the existence of climate whiplash in the LA  County region (Hall et al. 2018).
 
@@ -171,6 +172,7 @@ abline(coef(Month.lm), col = "green")
 PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
 }
 ```
+#######Figure 6
 
 Each month has incredible variation in their precipitation totals; however, just like the temperature gap shown above, month to month totals are very different. For example, October has a precipitation spike in the early 2000s, November suffers a distinct valley in the same year. This shows that the wet and dry seasons in LA County are constantly changing places, both year to year and month to month. However, there is not a clear correlation between increases and decreases in temperature and those in precipitation. That said, just because temperature and precipitation do not increase and decrease together does not mean there is no correlation at all; as said above, the variation in temperature and gaps between maximum and minimum are what create precipitation variation (Hall et al. 2018). While an exact relationship between the two cannot be proven from these graphs, the existence of both temperature and precipitation variation is clear to see. 
 
