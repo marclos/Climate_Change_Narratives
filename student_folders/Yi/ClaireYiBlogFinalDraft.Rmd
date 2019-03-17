@@ -1,7 +1,7 @@
 ---
-title: "How does the Urban Heat Island(UHI) Effect impact selected neighborhoods in Chicago and Surrounding Municipalities?"
+title: "How does the Urban Heat Island (UHI) Effect Exacercate the Impact of Climate Change in Chicagoland Area?"
 author: "ClaireYi"
-date: "3/1/2019"
+date: "3/16/2019"
 output: html_document
 ---
 
@@ -19,19 +19,31 @@ knitr::include_graphics("Image1.jpg")
 <div class="a">
 ##Introduction
 </div>
-The term “urban heat island” describes a metropolitan area that is significantly warmer than its surrounding rural areas due to human activities. Urban heat islands(UHI) become extremely vulnerable (Coseo and Larsen 2014) when heat and cold waves strike due to its discrepancy in heating and cooling rates and has led to high heat-related mortalities in the past, especially within marginalized communities. This has concerned urban planners, public health officials and policy makers as we are entering an era of increasingly unstable climate. To put this issue in content, we are going to zoom into the supposedly “windy city” Chicago to discuss the impact of UHI over time by analyzing the records from three different weather stations in the city. Based on results of previous studies (Coseo and Larsen 2014), I hypothesize that the temperature trend of the neighborhoods are positively correlated to their distance to downtown and coverage of green infrastructure nearby, including all green area such as parks, gardens and green roofs. We also expect the air temperature during heat waves increases with time in all three stations.
+The term “urban heat island” describes a metropolitan area that is significantly warmer than its surrounding rural areas due to human activities. These urban heat islands become especially vulnerable (Stone and Norman 2016) during heat waves due to the discrepancy in their short-term cooling and warming rates. Consequently, residents living in urban areas experience a higher possibility of heat-related mortality (Coseo and Larsen 2014) than residents of the surrounding rural areas. In the context of global warming and urban population growth, mitigating the UHI effect has become one of the most pressing issues in urban planning and urban climatology (Stewart 2011). 
+
+Makes sense in theory, right? In reality, however, the UHI effect is an extremely complicated system if we try to explain the mechanisms behind it. Scientists are still at the beginning of fully understanding the local climates in urban areas. Although previous studies have identified some of the most prominent factors that could cause the UHI effect (Coseo and Larsen 2014), such as building heights and configuration, proximity to traffic infrastructure and land cover variables, they admit the potential impact of other factors and the difficulty of evaluation, especially when local climate respond to those factors differently within less than a hundred mile of distance. 
+
+In this blog, I would like to address such nuances by zooming into specific neighborhoods of Chicagoland area, a historically urbanized area where at least three spatially varied weather stations have recorded extensive climate data over several decades. I would like to start with analyzing and comparing the temperature trends for all three locations to put local climate in the context of the regional one. I will then continue to test the correlation between local temperature trend and two different land use factors, distance to urban center and coverage of green infrastructure using regression analysis, both mentioned but not fully explained by Coseo and Larsen’s research. I hypothesize that there is an increasing trend of air temperature over time in all three stations. Meanwhile, the extent of increase in temperature are positively correlated to each station’s distance to downtown and coverage of green infrastructure nearby, including all green area such as parks, gardens and green roofs. 
+
+The objective of this blog is not only to explore the correlation between land use factors and temperature change in neighborhood-scale microclimates to showcase the effect of UHI, but also to draw attention to the inherent complexity of urban climatology studies and its socio-economic implications. Additionally, I hope to provide insights for future research projects and policies on the topic of mitigating UHI effects for urban communities, which will be further explained in the discussion section. 
 
 <div class="a">
 ```{r, echo=FALSE}
 knitr::include_graphics("Image2.jpg")
 ```
-![Fig.1. Urban Heat Islands seem to occur within the city center where the highest concentration of high buildings and industrial area are.Image Source: U.S. Global Change Research Program]
+![Fig.1. Urban Heat Islands seem to occur within the city center where the highest concentration of high buildings and industrial area are. Image Source: U.S. Global Change Research Program]
 
+
+<div class="a">
+##Where is my Data from and How will I use it?
+</div>
+The raw data, including daily precipitation rate, maximum and minimum temperature, was provided by National Oceanic and Atmospheric Administration (NOAA) from three weather stations located in different neighbourhoods of Chicagoland area: Barrington (1962-2019), Park forest (1952-2019) and Midway airport (1928-2019). Each set contains 20,000 to 30,000 days of weather data. However, not all datasets are complete. For example, there is a gap between 1990 and 2000 in Barrington station, which equals 3650 days of data. Therefore, I will not be able to compare the temperature trend in Barrington with the other two locations during this period, which includes a heat wave in summer 1995.
+
+NOAA has generated a rubric to evaluate each weather station's quality...#add later
 
 <div class="a">
 ##Analyzing Weather Data: is there a heating trend?
 </div>
-The raw data, including daily maximum and minimum temperature, was provided by National Oceanic and Atmospheric Administration (NOAA) from three weather stations located in three different neighbourhoods of Chicago: Barrington (1962/11/01-2019/02/24), Park forest (1952/09/06-2019/02/12) and Midway airport (1928/02/29-2019/02/23). Each set contains 20,000 to 30,000 days of data. However, not all datasets are complete: there is a gap between 1990 and 2020 in Barrington station. Therefore, the comparison between the three data sets should not be made during that period. The accuracy of collected data could also be compromised based on the set-ups of the stations, especially since this is a research project focused on microclimates within specific neighborhoods. 
 
 <div class="a">
 ```{r, echo=FALSE}
@@ -39,11 +51,8 @@ knitr::include_graphics("Image4.png")
 ```
 ![Fig.2. Three Weather Stations in Barrington, Park Forest, and Midway Airport, IL]
 
-
 </div>
-<br>
-Let’s start with looking at the minimum temperature(TMIN°C) of the three stations for the past 60 years to determine whether there had been a warming pattern in each of the three neighbourhoods. 
-
+The locations of the three weather stations in relation to downtown Chicago are shown in this figure above. Midway Airport is within the urbanized area and is the closest from downtown, Park Forest is south-west of downtown, and Barrington is the furthest to the north west, with a much higher vegetation coverage than the other two locations.
 
 <div class="a">
 ```{r annualminbarrington_plot, echo=FALSE, results='hide' }
@@ -52,15 +61,15 @@ strDates <- as.character(climate_data$DATE)
 climate_data$Year <- as.Date(strDates, "%m/%d/%Y")
 
 plot(TMIN~Year, climate_data, ty='l')
-abline(lm(TMIN~Year,data=climate_data),col="red")
+abline(lm(TMIN~Year,data=climate_data),col="black")
+summary(lm(TMIN ~Year, data=climate_data))
 lm(TMIN ~Year, data=climate_data)
 ```
 <center>  Fig.3. Minimum Daily Temperature from 1960 to 2020 in Barrington, IL </center> 
 </div>
 <br>
-There seems to be a slight upward trend in the minimum daily temperature in our first weather station, Barrington, IL. It is possible that Barrington is relatively unaffected by the UHI effect due to its long distance from the urban center(32mi/51.4km). Let's look at our next station, Park Forest, a neighbourhood that is 28mi/45.58km from downtown Chicago.  
 
-
+The graph above shows the daily minimum temperature(TMIN°C) of Barrington station for the past 60 years. As previously mentioend, there is a gap signifying missing data from 1990 to 2000. There is a slight upward trend with a slope of less than 0.001, but it has statistically significant increase since the p-value of this model is less than 0.001. Adjusted R-squared value is a low 0.002, which means data points are highly scattered and the best fit line does not explain the variability. This means I can reject the null hypothesis and state that there has been an increase trend in Barrington's temperature over time. The temperature varies highly throughout the years, which is natural considering seasonal changes. Let's look at our next station, Park Forest, a neighbourhood that is 28mi/45.58km from downtown Chicago.  
 
 <div class="a">
 ```{r annualminparkforest_plot, echo=FALSE, results='hide'}
@@ -69,13 +78,14 @@ strDates <- as.character(climate_data1$DATE)
 climate_data1$Year <- as.Date(strDates, "%m/%d/%Y")
 
 plot(TMIN~Year, climate_data1, ty='l')
-abline(lm(TMIN~Year,data=climate_data1),col="blue")
+abline(lm(TMIN~Year,data=climate_data1),col="black")
+summary(lm(TMIN~Year, data=climate_data1))
 lm(TMIN~Year, data=climate_data1)
 ```
 <center>  Fig.4. Minimum Daily Temperature from 1960 to 2020 in Park Forest, IL </center> 
 </div>
 <br>
-The minimum temperature in Park forest shows a bigger upward trend than Barrington: the meanline y intercept is 4.4 comparing to the earlier 2.76. The last station we are going to look at is Midway Airport which is 12mi/20km from the city center.
+Similar to Barrington station, the minimum temperature in Park forest shows an upward trend, but the slope is less than 0.001. P-value is less than 0.001, signifying that this model is statistically significant. We have evidence that Park Forest's temperature also increases over time. The last station we are going to look at is Midway Airport which is 12mi/20km from the city center.
 
 
 <div class="a">
@@ -85,25 +95,25 @@ strDates <- as.character(climate_data2$DATE)
 climate_data2$Year <- as.Date(strDates, "%d/%m/%Y")
 
 plot(TMIN~Year, climate_data2, ty='l')
-abline(lm(TMIN~Year,data=climate_data2),col="yellow")
+abline(lm(TMIN~Year,data=climate_data2),col="black")
+summary(lm(TMIN~Year, data=climate_data2))
 lm(TMIN~Year, data=climate_data2)
 ```
 <center>  Fig.5. Minimum Daily Temperature from 1960 to 2020 in Midway Airport, IL </center> 
 </div>
 <br>
-The meanline y intercept is 4.74, which means the minimum air temperature is increasing in a higher rate than both Barrington and Park Forest. Overall, all three weather stations have recorded a steady increase in minimum daily air temperature from 1960 to 2019.
+With a slightly larger slope, although still below 0.001, the Midway Airport data has also shown an warming trend. P-value for this model is less than 0.001 as well. Overall, we can reject the null hypotheses since there is strong evidence showing that all three weather stations have recorded a steady increase in minimum daily air temperature from 1960 to 2019.
 
 
 
 <div class="a">
 ##Is There a Correlation between UHI and Landuse Factors?
 </div>
-In their 2014 study (Coseo and Larsen 2014), Coseo and Larsen have identified some of the most prominent factors that could exacerbate the UHI effect in previous studies, including building configuration, proximity to industrial and traffic infrastructure, land cover variables and upwind conditions, etc. They concluded that land cover variables is the most significant contributor to UHIs at nighttime while upwind conditions contributes more during daytime. Although upwind conditions could attribute to the surrounding environment, their study did not fully explain the effect of UHI in relation to the neighborhood’s proximity to different land use and infrastructure types as the hypothesis set out to achieve. In this blog, I attempt to analyze two sets of correlations that fell into such discrepancy: correlation between proximity to urban center and coverage of green infrastructure nearby and UHI effect. 
+As mentioned in the introduction, Coseo and Larsen's study did not fully explain the effect of UHI in relation to the neighborhood’s proximity to different land use and infrastructure types as the hypothesis set out to achieve. In this blog, I attempt to analyze two sets of correlations that fell into such discrepancy: correlation between distance to urban center and coverage of green infrastructure nearby and UHI effect. 
 
-Unlike Coseo and Larsen’s research, the data I am using will only indicate daily minimum temperature. It will not detect the difference between nighttime and daytime, but will exemplify a long term temperature trend in relation to each factor. This may be more transferable as a reference for urban planners and policy makers since their work mostly concerns a larger time frame than changes within a day. Additionally, each “neighborhood” in this research is defined by geological area instead of administrative boundaries to reduce uncertainties in municipal size. I marked a circumference of 2 km (~10 city blocks) radius around each station to determine a “neighborhood” using Google Earth.
+I hope to exemplify a long term minimum temperature trend in relation to each factor. This may be transferable as a reference for urban planners and policy makers since their work mostly concerns a larger time frame. Additionally, each “neighborhood” in this research is defined by geological area instead of administrative boundaries to reduce uncertainties in municipal size. I marked a circumference of 2 km (~10 city blocks) radius around each station to determine a “neighborhood” using Google Earth.
 
-As the overall temperature warms up throughout the past few decades, the UHI effect seems to be the most significant during summer months and amplifies heat waves if they occur, according to Stone's studies (Stone 2012). Due to capacity of this blog, let’s just compare the daily minimum air temperature in the three stations during month of July in relation to each factor.
-
+As the overall temperature warms up throughout the past few decades, the UHI effect seems to be the most significant during summer months and amplifies heat waves if they occur, according to Stone's studies (Stone 2012). The graphs below show the daily minimum temperature change every year in July for the past 60 years. Later in this section, I will also try to capture the level of UHI effect by graphing the temperature difference between nighttime and daytime from years between 1999 and 2019 when heat waves occured.
 
 
 <div class="a">
@@ -117,11 +127,11 @@ MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 str(MonthlyTMINMean)
-plot(MonthlyTMINMean$TMIN, ty='l')
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",],ty='l', xlim=c(1960, 2020))
+#plot(MonthlyTMINMean$TMIN, ty='l')
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",],ty='p', xlim=c(1960, 2020))
 July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 summary(July.lm)
-abline(coef(July.lm), col="red")
+abline(coef(July.lm), col="black")
 ```
 <center>  Fig.6. July Minimum Daily Temperature in Barrington, IL, 1960-2019 </center> 
 
@@ -137,11 +147,11 @@ MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data1, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 str(MonthlyTMINMean)
-plot(MonthlyTMINMean$TMIN, ty='l')
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",],ty='l', xlim=c(1960, 2020))
+#plot(MonthlyTMINMean$TMIN, ty='l')
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",],ty='p', xlim=c(1960, 2020))
 July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 summary(July.lm)
-abline(coef(July.lm), col="blue")
+abline(coef(July.lm), col="black")
 ```
 <center>  Fig.7. July Minimum Daily Temperature in Park Forest, IL, 1960-2019] </center> 
 
@@ -157,30 +167,29 @@ MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data2, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 str(MonthlyTMINMean)
-plot(MonthlyTMINMean$TMIN, ty='l')
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",],ty='l', xlim=c(1960, 2020))
+#plot(MonthlyTMINMean$TMIN, ty='l')
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",],ty='p', xlim=c(1960, 2020))
 July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 summary(July.lm)
-abline(coef(July.lm), col="yellow")
+abline(coef(July.lm), col="black")
 ```
 <center>  Fig.8. July Minimum Daily Temperature in Midway Airport, IL, 1960-2019] </center> 
 </div>
 <br>
-Overall, all three stations have shown a steep increase trend in daily minimum air temperature in July fronm 1960 tp 2019. The Midway airport trend is particularly interesting: although it is a clear increase overall, there seem to be a sudden decrease since 2015. Further research is required to rationalize this sudden change. 
+P-values for each of the three models is less than 0.01, confirming a warming trend in month of July for all locations over the past 60 years. The Midway airport trend shows a peculiarity: although it is a clear increase overall, there seem to be a sudden decrease since 2015. Further research is required to rationalize this sudden change. 
 
 Now let's explore the correlation between the increasing temperature and the two previously mentioned factor: proximity to urban center and number of green infrastructure.
-
 
 
 <div class="a">
 ##Is There a Correlation between Proximity to Urban Center and UHI effect? {#css_id}
 </div>
 
-| Weather Station| Promximity to City Center (km) | Increase in TMIN in July (P Value) |
-|--------------:|--------------|:------------------------------:|
-|Barrington    |  51.41        |    0.015                      |
-|Park Forest   |  45.58        |    0.023                      |
-|Midway Airport|  20.79        |    9.29e-07                   |
+| Weather Station | Promximity to City Center (km)  | Increase in minimum temperature in July | P Value | 
+|------:|:-----|---------|:------:|
+| Barrington|51.4| 0.02 | 0.015|
+| Park Forest | 45.6 | 0.017 | 0.023 |
+| Midway Airport | 20.8 | 0.043 | <0.001 |
 
 ![Table.1. Analysis of Minimum Daily Temperature Increase from 1960 to 2020 in relation to Distance between Weather Station and City Center]
 
@@ -190,17 +199,15 @@ Now let's explore the correlation between the increasing temperature and the two
 ##Is There a Correlation between Number of Green Infrastructure and UHI effect? {#css_id}
 </div>
 
-| Weather Station | Coverage of Green Infrastructure[^1] | Increase in TMIN in July (P Value) |
-|-------------:|-------------|:-------------------------------:|
-|Barrington    |    98%       |    0.015                      |
-|Park Forest   |    30%       |    0.023                      |
-|Midway Airport|    13%       |    9.29e-07                   |
+| Weather Station | Coverage of Green Infrastructure[^1]  | Increase in minimum temperature in July | P Value | |------:|:-----|---------|:------:|
+|Barrington|98%| 0.02 | 0.015|
+| Park Forest | 30% | 0.017 | 0.023 |
+| Midway Airport | 13% | 0.043 | 	<0.001 |
 
 [^1]: Estimates made based on data from Center for Neighborhood Technology, http://greenmapping.cnt.org/maps.php. 
 ![Table.2. Analysis of Minimum Daily Temperature Increase from 1960 to 2020 in relation to Number of Green Infrastructur in Neighborhood]
 
-
-The P values indicates the statistical significance of the model. The smaller P value is, the geater the evidence against the null hypothesis. As tables shown above, P value increases as both factors decrease. Although it is hard to tell to what extent each factor is influencing the temperature trend, we can accept the hypothesis that the temperature increase of the neighborhoods are positively correlated to their distance from downtown and coverage of green infrastructure nearby by associating the tables with previous plots.
+Although it is hard to tell to what extent each factor is influencing the temperature trend, we can accept the hypothesis that the temperature increase of the neighborhoods are positively correlated to their distance from downtown and coverage of green infrastructure nearby by associating the tables with previous plots.
 
 I realize that the tables above do not grant the rigor or the quantity of information that is sufficient to make any definitive conclusion. I would like to acknowledge the complicated nature of climate science and urban studies in this context. There is not only a potential, but also necessity for future studies to unpack the dynamic among all factors that play a role in UHI effect. 
 
@@ -231,6 +238,8 @@ Jenerette et al. 2007. Regional relationships between surface temperature, veget
 Klinenberg E. 2002. Heat Wave: a social autopsy of disaster in chicago. University of Chicago Press. 	
 
 Naughton et al. 2002. Heat-related mortality during a 1999 heat wave in Chicago. AJPM 56(3):221-227.
+
+R Core Team. 2017. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www. R-project.org/.
 
 Sharma et al. 2016. Green and cool roofs to mitigate urban heat island effects in the Chicago metropolitan area: evaluation with a regional climate model. Environ. Res. Lett. 11 (2016):064004.
 
