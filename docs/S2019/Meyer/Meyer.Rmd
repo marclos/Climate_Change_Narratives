@@ -1,10 +1,11 @@
 ---
-title: "Will Climate Change Convert Rainy Seattle to Smokey Seattle?"
+title: 'Will Climate Change Convert Rainy Seattle to Smokey Seattle?'
 author: "Ella Meyer"
 date: "March 1st, 2019"
 output:
-  word_document: default
   html_document: default
+  pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -16,13 +17,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 When it’s a nice day in Seattle, you might hear the phrase “The mountain is out,” a.k.a. the sky is clear enough that you can see Mount Rainier behind the cityscape. For a period of time during the last two summers in Seattle, however, the mountain was hidden by something other than rain clouds. Wildfire smoke had engulfed the city. Historically, Seattle has been unaffected by wildfires (Sistek 2018). Below is a graph of air quality records in Seattle beginning in 2000. The highest points in 2017 and 2018 are the air quality records from the last wildfire smoke events. 
 
-![Figure 1. Air quality Index in Seattle (Puget Sound Clean Air Agency 2018).](Screen Shot 2019-02-20 at 3.45.50 PM.png)
+![Figure 1. Air quality Index in Seattle (Puget Sound Clean Air Agency 2018).](/home/CAMPUS/ekma2018/Climate_Change_Narratives/student_folders/Meyer/OLD/Screen Shot 2019-02-20 at 3.45.50 PM.png)
 
 With an average of 152 days of rain per year, and a close proximity to the Puget Sound, Seattle might be the last place expected to be influenced so extremely by wildfires. The smoke from wildfires in surrounding forests gets trapped in Seattle because of wind patterns and the geography of the region, making air quality especially bad (Sistek 2018). Vox reports, “Breathing Seattle’s air right now is like smoking 7 cigarettes. Blame wildfires” (Irfan 2018). Vox and other news outlets have taken advantage of the smoky situation to create stories, and reports often point to climate change as the cause. Studies using attribution science conclude that, while a warming climate may put us at higher risk for more frequent and intense wildfires, climate change by itself is not to blame (Wimberly and Liu 2014). 
 
 To evaluate if the climate is having a multiplying effect on wildfires surrounding Seattle, we first need to determine if there actually is climate change in this region. The Intergovernmental Panel on Climate Change (IPCC) identified a warming trend of 1.5 degrees in the 20th century in the Pacific Northwest (Mote and Salathe 2010). In this blog, I will analyze Seattle's climate data. If there is a warming trend, then climate change may have a multiplying effect on the region’s wildfires and air quality. 
 
-![Figure 2. Photo by Sigma Sreedharan of wildfire smoke turning the sun over the Space Needle a shade of red. August 20th. 2018](GUYVCARPLY4PXNQIH5B3RREEWY.jpg)
+![Figure 2. Photo by Sigma Sreedharan of wildfire smoke turning the sun over the Space Needle a shade of red. August 20th. 2018](/home/CAMPUS/ekma2018/Climate_Change_Narratives/student_folders/Meyer/OLD/GUYVCARPLY4PXNQIH5B3RREEWY.jpg)
 
 ## Obtaining and Analyzing the Weather at SeaTac Airport
 
@@ -40,7 +41,7 @@ However, climate change signals differ by season. For example...
 
 ## UPLOAD DATA INTO R
 
-filepath = "ella_seattle_data.csv"
+filepath = "/home/CAMPUS/ekma2018/Climate_Change_Narratives/student_folders/Meyer/ella_seattle_data.csv"
 climate_data = read.csv(filepath)
 head(climate_data)
 str(climate_data)
