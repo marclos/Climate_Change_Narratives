@@ -84,7 +84,7 @@ plot(MonthlyPRCPsum$PRCP, ty='l')
 ```{r}
 ##Selecting for 1 month Jan Climate
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],
-ty='l', ylab = "Min Temps" , main = "Average Yearly Temps in Janurary (Huntsville)", xlim=c(1958, 2019))
+ty='l', xlab = "Year", ylab = "Min Temperature (°C)" , main = "Average Yearly Temperature in Janurary (Huntsville)", xlim=c(1958, 2019))
 Jan4.lm <- lm(TMIN~YEAR,data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 summary(Jan4.lm)
 abline(coef(Jan4.lm), col="blue")
@@ -104,7 +104,7 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
 ##Selecting for 1 month, July
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07", ],
-ty='l', main = "Average Yearly Temps in July (Huntsville)", xlim=c(1958, 2019))
+ty='l', main = "Average Yearly Temperature in July (Huntsville)", xlab = "Year", ylab = "Max Temperature (°C)" , xlim=c(1960, 2018))
 July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
 summary(July.lm)
 abline(coef(July.lm), col="red")
