@@ -3,7 +3,6 @@ title: "Can We Trust Trends? Long Term Rising Temperature Trends in Los Angeles"
 author: "Makeda Bullock Floyd"
 date: "3/17/2019"
 output:
-  word_document: default
   html_document: default
 ---
 <style>
@@ -80,7 +79,7 @@ Additionally, 37% of the change in both annual mean maximum and minimum temperat
 
 
 ```{r, echo=FALSE,results='hide'}
-old_data=read.csv("Makeda_Los Angeles_data.csv")
+old_data=read.csv("../../../Data/SP19/Bullock_Floyd_Los_Angeles.csv")
 climate_data=old_data[3000:38565,]
 strDates=as.character(climate_data$DATE)
 climate_data$NewDate=as.Date(strDates, "%m/%d/%Y")
