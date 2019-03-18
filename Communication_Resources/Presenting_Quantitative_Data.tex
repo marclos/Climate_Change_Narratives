@@ -50,6 +50,7 @@
 
 \usepackage{alltt}
 \usepackage{gensymb}
+\usepackage[T1]{fontenc}
 \usepackage{hyperref}
 
 \title{Visual Presentation of Data using R}
@@ -131,10 +132,13 @@ Science often relies on specialized characters, e.g. $\degree$ for degrees, $\al
 \label{tab:symbols}
 \begin{tabular}{lll}\hline
 Symbol  & Markdown Code & \LaTeX code \\ \hline\hline
-r$^2$     & r\^{}2\^{} &  r\$\textbackslash\^{}2\$ \\
+r$^2$     & r\^{}2\^{} &  r\$\^{}2\$ \\
+CO$_2$    & CO<sub>2<\textbackslash sub> & CO\$\_2\$\\
+
 $\alpha$ & \$\textbackslash alpha\$ & \$\textbackslash alpha\$ \\
 
 $\mu$ & \$\textbackslash mu\$ & \$\textbackslash mu\$ \\
+
 
 $\degree$ & \&deg; & \$\textbackslash degree\$ \\ 
 \hline
@@ -454,15 +458,15 @@ Sometimes (often times?), tables are better than graphs. In the case below, I su
 \end{alltt}
 \end{kframe}% latex table generated in R 3.4.1 by xtable 1.8-2 package
 % 
-\begin{tabular}{rlrrrr}
+\begin{tabular}{rlrrrrrr}
   \hline
- & Range & 1st Draft & 2nd Draft & 3nd Draft & 4th Draft \\ 
+ & Range & 1st Draft & 2nd Draft & 3nd Draft & 4th Draft & 5th Draft & Final \\ 
   \hline
-1 & (0,10] &   3 &   0 &   0 &   0 \\ 
-  2 & (10,20] &   0 &   3 &   0 &   0 \\ 
-  3 & (20,30] &   7 &   1 &   0 &   0 \\ 
-  4 & (30,40] &   4 &   5 &   0 &   0 \\ 
-  5 & (40,50] &   0 &   1 &   3 &   2 \\ 
+1 & [0,10) &   4 &   0 &   0 &   0 &   0 &   0 \\ 
+  2 & [10,20) &   0 &   3 &   0 &   0 &   0 &   1 \\ 
+  3 & [20,30) &   7 &   2 &   1 &   0 &   0 &   3 \\ 
+  4 & [30,40) &   4 &   6 &   2 &   0 &   0 &   5 \\ 
+  5 & [40,50) &   0 &   1 &   5 &   2 &   1 &   6 \\ 
    \hline
 \end{tabular}
 
@@ -474,67 +478,59 @@ The histogram is simple (Figure \ref{fig:scoreshist}), but for these data, I am 
 The use of color in for this figure is really unnecessary. But it's worth illustrating. It's important that the use of color doesn't distract or confuse readers, especially those that are visually impaired, e.g. color blind.
 
 \bigskip
-BTW: The mean was for the first draft was 21.1 and the second draft was 30. Based on a paired t-test, the difference between the two grades is significant. 
 
-You will have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
+You have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
 
 
 \bigskip
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{4}\hlstd{),} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{)}
-\hlkwd{hist}\hlstd{(grades1,} \hlkwc{main}\hlstd{=}\hlstr{"1st Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
-     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"green"}\hlstd{)}
-\hlkwd{hist}\hlstd{(grades2,} \hlkwc{main}\hlstd{=}\hlstr{"2nd Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
-     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{hist}\hlstd{(grades3,} \hlkwc{main}\hlstd{=}\hlstr{"3rd Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
-     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"darkgreen"}\hlstd{)}
-\hlkwd{hist}\hlstd{(grades4,} \hlkwc{main}\hlstd{=}\hlstr{"4th Draft"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
-     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=}\hlstr{"purple"}\hlstd{)}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{),} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlstd{colors} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"darkgreen"}\hlstd{,} \hlstr{"blue"}\hlstd{,} \hlstr{"darkgoldenrod3"}\hlstd{,} \hlstr{"violet"}\hlstd{,} \hlstr{"darkred"}\hlstd{,} \hlstr{"black"}\hlstd{)}
+\hlstd{labels} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Draft 1"}\hlstd{,} \hlstr{"Draft 2"}\hlstd{,} \hlstr{"Draft 3"}\hlstd{,} \hlstr{"Draft 4"}\hlstd{,} \hlstr{"Draft 5"}\hlstd{,} \hlstr{"Final Blog"}\hlstd{)}
+
+\hlkwd{hist}\hlstd{(grades1,} \hlkwc{main}\hlstd{=labels[}\hlnum{1}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
+     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{1}\hlstd{])}
+\hlkwd{hist}\hlstd{(grades2,} \hlkwc{main}\hlstd{=labels[}\hlnum{2}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
+     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{2}\hlstd{])}
+\hlkwd{hist}\hlstd{(grades3,} \hlkwc{main}\hlstd{=labels[}\hlnum{3}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
+     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{3}\hlstd{])}
+\hlkwd{hist}\hlstd{(grades4,} \hlkwc{main}\hlstd{=labels[}\hlnum{4}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
+     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{4}\hlstd{])}
+\hlkwd{hist}\hlstd{(grades5,} \hlkwc{main}\hlstd{=labels[}\hlnum{5}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
+     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{5}\hlstd{])}
+\hlkwd{hist}\hlstd{(grades6,} \hlkwc{main}\hlstd{=labels[}\hlnum{6}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
+     \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{6}\hlstd{])}
 \end{alltt}
 \end{kframe}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/scoreshist-1} \caption[Histogram of Blog Scores]{Histogram of Blog Scores}\label{fig:scoreshist}
 \end{figure}
 
-
+\begin{kframe}\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
+\end{alltt}
+\end{kframe}
 \end{knitrout}
 
 
 \section{Probability Density}
 
-Another useful way to display data is by using probability densities (Figure~\ref{fig:scoresdensity}). 
+Another useful way to display data is by using probability densities (Figure~\ref{fig:scoresdensity}). Based on the normal distribution, but modified for small N, the t-distribution can be used to test the probability of differences between each draft.
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Display the Student's t distributions with various}
-\hlcom{# degrees of freedom and compare to the normal distribution}
-\hlstd{x} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlopt{-}\hlnum{10}\hlstd{,} \hlnum{60}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{1}\hlstd{)}
-\hlstd{hx1} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T),}
-             \hlkwc{sd}\hlstd{=}\hlkwd{sd}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T))}
-\hlstd{hx2} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T),}
-             \hlkwc{sd}\hlstd{=} \hlkwd{sd}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T))}
-\hlstd{hx3} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T),}
-             \hlkwc{sd}\hlstd{=} \hlkwd{sd}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T))}
-
-\hlstd{colors} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"red"}\hlstd{,} \hlstr{"blue"}\hlstd{,} \hlstr{"darkgreen"}\hlstd{,} \hlstr{"gold"}\hlstd{,} \hlstr{"black"}\hlstd{)}
-\hlstd{labels} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Draft 1"}\hlstd{,} \hlstr{"Draft 2"}\hlstd{,} \hlstr{"Draft 3"}\hlstd{,} \hlstr{"Draft 4"}\hlstd{,} \hlstr{"Draft 5"}\hlstd{)}
-
-\hlkwd{plot}\hlstd{(x, hx1,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
-  \hlkwc{ylab}\hlstd{=}\hlstr{"Density"}\hlstd{,} \hlkwc{main}\hlstd{=}\hlstr{"Distribution of Scores"}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,}
-  \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{.15}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{1}\hlstd{])}
-  \hlkwd{lines}\hlstd{(x, hx2,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{2}\hlstd{])}
-  \hlkwd{lines}\hlstd{(x, hx3,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{3}\hlstd{])}
-\hlstd{ttest} \hlkwb{=} \hlkwd{t.test}\hlstd{(grades1, grades2,} \hlkwc{paired}\hlstd{=T)}
-
-\hlkwd{text}\hlstd{(ttest}\hlopt{$}\hlstd{estimate[}\hlnum{1}\hlstd{],} \hlkwd{max}\hlstd{(hx1),} \hlstr{"Draft 1 Mean"}\hlstd{,} \hlkwc{pos}\hlstd{=}\hlnum{3}\hlstd{)}
-\hlkwd{text}\hlstd{(ttest}\hlopt{$}\hlstd{estimate[}\hlnum{2}\hlstd{],} \hlkwd{max}\hlstd{(hx2),} \hlstr{"Draft 2 Mean"}\hlstd{,} \hlkwc{pos}\hlstd{=}\hlnum{3}\hlstd{)}
-
-\hlkwd{text}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{.05}\hlstd{,} \hlkwd{paste}\hlstd{(}\hlstr{"p-value = "}\hlstd{,} \hlkwd{round}\hlstd{(ttest}\hlopt{$}\hlstd{p.value,} \hlnum{4}\hlstd{),} \hlstr{"or better p < 0.001"}\hlstd{))}
-\hlkwd{legend}\hlstd{(}\hlstr{"topleft"}\hlstd{,} \hlkwc{inset}\hlstd{=}\hlnum{.05}\hlstd{,} \hlkwc{title}\hlstd{=}\hlstr{"Distributions"}\hlstd{,}
-  \hlstd{labels,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),} \hlkwc{col}\hlstd{=colors)}
+\hlstd{ttest} \hlkwb{=} \hlkwd{t.test}\hlstd{(grades1, grades2,} \hlkwc{paired}\hlstd{=F)}
+\hlstd{ttestp} \hlkwb{=} \hlkwd{t.test}\hlstd{(grades1, grades2,} \hlkwc{paired}\hlstd{=T)}
 \end{alltt}
-\end{kframe}\begin{figure}
+\end{kframe}
+\end{knitrout}
+
+The mean was for the first draft was 21.1 and the second draft was 30.7. We can test the null hypothesis that were was no difference between the two scores. Since the difference  between the scores of the first and second submission was 9.7 points, we can reject the null hypothesis that the difference was zero using the t.test() function in R and obtain a p-value of 0.0375. We can also run the test as a pair test, where each student's first score is matched with their second score. This is useful when you have data from the same individuals; in this case the p-value is \ensuremath{10^{-4}}. However, once the probability is below 0.001, we report it as p < 0.001. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/scoresdensity-1} \caption[Probability Density for Scores]{Probability Density for Scores}\label{fig:scoresdensity}
 \end{figure}
 
@@ -542,4 +538,6 @@ Another useful way to display data is by using probability densities (Figure~\re
 \end{knitrout}
 
 Notice how the probabilities go well beyond the scale possible, less than 0 and greater than 50. There are a number of ways of dealing with these issues, but that's beyond our scope. Suffice to say that a normal distribution is not appropriate for all data types. 
+
+Finally, please note how the scores changed when students took full advantage of the drafting process. With each draft the mean increased, but because not everyone took advantage of the drafting process, the final mean $\bar{x}_{Final}$ was quite abit lower than that mean for scores after Draft 3, 4, and 5. 
 \end{document}
