@@ -57,8 +57,8 @@ To analyze the data, I will have to read and interpret the p and adjusted r^2^ v
 
 ##Reading Precipitation Data
 ```{r, echo = FALSE, results= 'hide'}
-read.csv("guangzhouprecip.csv")
-guangzhou_precdata <- read.csv("guangzhouprecip.csv")
+filepath  = "../../../Data/SP19/Wong_Guangzhou.csv"
+guangzhou_precdata <- read.csv(filepath)
 head(guangzhou_precdata)
 str(guangzhou_precdata)
 names(guangzhou_precdata)
@@ -101,8 +101,8 @@ summary(August.lm)
 
 ```{r, echo = FALSE, results= 'hide'}
 #importing guilin prcp data
-read.csv("1628919.csv")
-guilin_precdata <-read.csv("1628919.csv")
+filepath2="../../../Data/SP19/Wong_Guilin.csv"
+guilin_precdata <-read.csv(filepath2)
 head(guilin_precdata)
 str(guilin_precdata)
 names(guilin_precdata)
