@@ -423,7 +423,6 @@ par(mfrow=c(2,3), las=1)
 colors <- c("darkgreen", "blue", "darkgoldenrod3", "violet", "darkred", "black")
 labels <- c("Draft 1", "Draft 2", "Draft 3", "Draft 4", "Draft 5", "Final Blog")
 
-
 hist(grades1, main=labels[1], xlab="Score", 
      xlim=c(0,50), col=colors[1])
 hist(grades2, main=labels[2], xlab="Score", 
@@ -451,7 +450,7 @@ ttestp = t.test(grades1, grades2, paired=T)
 
 The mean was for the first draft was \Sexpr{round(mean(grades1, na.rm=T), 1)} and the second draft was \Sexpr{round(mean(grades2, na.rm=T), 1)}. We can test the null hypothesis that were was no difference between the two scores. Since the difference  between the scores of the first and second submission was \Sexpr{round(ttest$estimate[2]-ttest$estimate[1], 1)} points, we can reject the null hypothesis that the difference was zero using the t.test() function in R and obtain a p-value of \Sexpr{round(ttest$p.value, 4)}. We can also run the test as a pair test, where each student's first score is matched with their second score. This is useful when you have data from the same individuals; in this case the p-value is \Sexpr{round(ttestp$p.value, 4)}. However, once the probability is below 0.001, we report it as p < 0.001. 
 
-<<scoresdensity, fig.cap="Probability Density for Scores", fig.height=5, fig.width=8>>=
+<<scoresdensity, fig.cap="Probability Density for Scores", fig.height=5, fig.width=8, echo=F>>=
 
 # Display the Student's t distributions with various
 # degrees of freedom and compare to the normal distribution
@@ -463,15 +462,15 @@ hx2 <- dnorm(x= x, mean = mean(grades2, na.rm=T),
 hx3 <- dnorm(x= x, mean = mean(grades3, na.rm=T), 
              sd= sd(grades3, na.rm=T))
 hx4 <- dnorm(x= x, mean = mean(grades4, na.rm=T), 
-             sd= sd(grades3, na.rm=T))
+             sd= sd(grades4, na.rm=T))
 hx5 <- dnorm(x= x, mean = mean(grades5, na.rm=T), 
-             sd= sd(grades3, na.rm=T))
+             sd= sd(grades5, na.rm=T))
 hxF <- dnorm(x= x, mean = mean(grades6, na.rm=T), 
-             sd= sd(grades3, na.rm=T))
+             sd= sd(grades6, na.rm=T))
 
 plot(x, hx1, type="l", lty=1, lwd=3, xlab="Score",
   ylab="Density", main="Distribution of Scores", las=1, 
-  ylim=c(0,.12), col=colors[1])
+  ylim=c(0,.22), col=colors[1])
   lines(x, hx2, lwd=3, col=colors[2])
   lines(x, hx3, lwd=3, col=colors[3])
   lines(x, hx4, lwd=3, col=colors[4])
@@ -504,5 +503,5 @@ legend("topleft", inset=.05, title="Drafts",
 
 Notice how the probabilities go well beyond the scale possible, less than 0 and greater than 50. There are a number of ways of dealing with these issues, but that's beyond our scope. Suffice to say that a normal distribution is not appropriate for all data types. 
 
-Finally, please note how students did that too full advantage of the drafting process. With each draft the mean increased, but because not everyone took advantage of the drafting process, the final mean $\bar{x}_{Final}$ was quite abit lower than that mean for scores after Draft 3, 4, and 5. 
+Finally, please note how the scores changed when students took full advantage of the drafting process. With each draft the mean increased, but because not everyone took advantage of the drafting process, the final mean $\bar{x}_{Final}$ was quite abit lower than that mean for scores after Draft 3, 4, and 5. 
 \end{document}

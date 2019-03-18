@@ -490,7 +490,6 @@ You have 5 opportunities to re-submit to improve your grade, but only two weeks 
 \hlstd{colors} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"darkgreen"}\hlstd{,} \hlstr{"blue"}\hlstd{,} \hlstr{"darkgoldenrod3"}\hlstd{,} \hlstr{"violet"}\hlstd{,} \hlstr{"darkred"}\hlstd{,} \hlstr{"black"}\hlstd{)}
 \hlstd{labels} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Draft 1"}\hlstd{,} \hlstr{"Draft 2"}\hlstd{,} \hlstr{"Draft 3"}\hlstd{,} \hlstr{"Draft 4"}\hlstd{,} \hlstr{"Draft 5"}\hlstd{,} \hlstr{"Final Blog"}\hlstd{)}
 
-
 \hlkwd{hist}\hlstd{(grades1,} \hlkwc{main}\hlstd{=labels[}\hlnum{1}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
      \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{50}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{1}\hlstd{])}
 \hlkwd{hist}\hlstd{(grades2,} \hlkwc{main}\hlstd{=labels[}\hlnum{2}\hlstd{],} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
@@ -531,55 +530,7 @@ Another useful way to display data is by using probability densities (Figure~\re
 The mean was for the first draft was 21.1 and the second draft was 30.7. We can test the null hypothesis that were was no difference between the two scores. Since the difference  between the scores of the first and second submission was 9.7 points, we can reject the null hypothesis that the difference was zero using the t.test() function in R and obtain a p-value of 0.0375. We can also run the test as a pair test, where each student's first score is matched with their second score. This is useful when you have data from the same individuals; in this case the p-value is \ensuremath{10^{-4}}. However, once the probability is below 0.001, we report it as p < 0.001. 
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Display the Student's t distributions with various}
-\hlcom{# degrees of freedom and compare to the normal distribution}
-\hlstd{x} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlopt{-}\hlnum{10}\hlstd{,} \hlnum{70}\hlstd{,} \hlkwc{by} \hlstd{=} \hlnum{1}\hlstd{)}
-\hlstd{hx1} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T),}
-             \hlkwc{sd}\hlstd{=}\hlkwd{sd}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T))}
-\hlstd{hx2} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T),}
-             \hlkwc{sd}\hlstd{=} \hlkwd{sd}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T))}
-\hlstd{hx3} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T),}
-             \hlkwc{sd}\hlstd{=} \hlkwd{sd}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T))}
-\hlstd{hx4} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades4,} \hlkwc{na.rm}\hlstd{=T),}
-             \hlkwc{sd}\hlstd{=} \hlkwd{sd}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T))}
-\hlstd{hx5} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades5,} \hlkwc{na.rm}\hlstd{=T),}
-             \hlkwc{sd}\hlstd{=} \hlkwd{sd}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T))}
-\hlstd{hxF} \hlkwb{<-} \hlkwd{dnorm}\hlstd{(}\hlkwc{x}\hlstd{= x,} \hlkwc{mean} \hlstd{=} \hlkwd{mean}\hlstd{(grades6,} \hlkwc{na.rm}\hlstd{=T),}
-             \hlkwc{sd}\hlstd{=} \hlkwd{sd}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T))}
-
-\hlkwd{plot}\hlstd{(x, hx1,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Score"}\hlstd{,}
-  \hlkwc{ylab}\hlstd{=}\hlstr{"Density"}\hlstd{,} \hlkwc{main}\hlstd{=}\hlstr{"Distribution of Scores"}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,}
-  \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{.12}\hlstd{),} \hlkwc{col}\hlstd{=colors[}\hlnum{1}\hlstd{])}
-  \hlkwd{lines}\hlstd{(x, hx2,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{2}\hlstd{])}
-  \hlkwd{lines}\hlstd{(x, hx3,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{3}\hlstd{])}
-  \hlkwd{lines}\hlstd{(x, hx4,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{4}\hlstd{])}
-  \hlkwd{lines}\hlstd{(x, hx5,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{5}\hlstd{])}
-  \hlkwd{lines}\hlstd{(x, hxF,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{6}\hlstd{],} \hlkwc{lty}\hlstd{=}\hlnum{2}\hlstd{)}
-
-\hlkwd{text}\hlstd{(}\hlkwd{mean}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{.05}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{1}\hlstd{],}
-     \hlkwd{bquote}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlkwd{bar}\hlstd{(x)[}\hlnum{1}\hlstd{],} \hlstr{" = "}\hlstd{,} \hlkwd{.}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(grades1,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{0}\hlstd{)))))}
-
-\hlkwd{text}\hlstd{(}\hlkwd{mean}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{.06}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{2}\hlstd{],}
-     \hlkwd{bquote}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlkwd{bar}\hlstd{(x)[}\hlnum{2}\hlstd{],} \hlstr{" = "}\hlstd{,} \hlkwd{.}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(grades2,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{0}\hlstd{)))))}
-
-\hlkwd{text}\hlstd{(}\hlkwd{mean}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{.07}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{3}\hlstd{],}
-     \hlkwd{bquote}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlkwd{bar}\hlstd{(x)[}\hlnum{3}\hlstd{],} \hlstr{" = "}\hlstd{,} \hlkwd{.}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(grades3,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{0}\hlstd{)))))}
-
-\hlkwd{text}\hlstd{(}\hlkwd{mean}\hlstd{(grades4,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{.06}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{4}\hlstd{],}
-     \hlkwd{bquote}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlkwd{bar}\hlstd{(x)[}\hlnum{4}\hlstd{],} \hlstr{" = "}\hlstd{,} \hlkwd{.}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(grades4,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{0}\hlstd{)))))}
-
-\hlkwd{text}\hlstd{(}\hlkwd{mean}\hlstd{(grades5,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{.08}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{5}\hlstd{],}
-     \hlkwd{bquote}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlkwd{bar}\hlstd{(x)[}\hlnum{5}\hlstd{],} \hlstr{" = "}\hlstd{,} \hlkwd{.}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(grades5,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{0}\hlstd{)))))}
-
-\hlkwd{text}\hlstd{(}\hlkwd{mean}\hlstd{(grades6,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{.1}\hlstd{,} \hlkwc{col}\hlstd{=colors[}\hlnum{6}\hlstd{],}
-     \hlkwd{bquote}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlkwd{bar}\hlstd{(x)[Final],} \hlstr{" = "}\hlstd{,} \hlkwd{.}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(grades6,} \hlkwc{na.rm}\hlstd{=T),} \hlnum{0}\hlstd{)))))}
-
-\hlkwd{legend}\hlstd{(}\hlstr{"topleft"}\hlstd{,} \hlkwc{inset}\hlstd{=}\hlnum{.05}\hlstd{,} \hlkwc{title}\hlstd{=}\hlstr{"Drafts"}\hlstd{,}
-  \hlstd{labels,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),} \hlkwc{col}\hlstd{=colors)}
-\end{alltt}
-\end{kframe}\begin{figure}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
 \includegraphics[width=\maxwidth]{figure/scoresdensity-1} \caption[Probability Density for Scores]{Probability Density for Scores}\label{fig:scoresdensity}
 \end{figure}
 
@@ -588,5 +539,5 @@ The mean was for the first draft was 21.1 and the second draft was 30.7. We can 
 
 Notice how the probabilities go well beyond the scale possible, less than 0 and greater than 50. There are a number of ways of dealing with these issues, but that's beyond our scope. Suffice to say that a normal distribution is not appropriate for all data types. 
 
-Finally, please note how students did that too full advantage of the drafting process. With each draft the mean increased, but because not everyone took advantage of the drafting process, the final mean $\bar{x}_{Final}$ was quite abit lower than that mean for scores after Draft 3, 4, and 5. 
+Finally, please note how the scores changed when students took full advantage of the drafting process. With each draft the mean increased, but because not everyone took advantage of the drafting process, the final mean $\bar{x}_{Final}$ was quite abit lower than that mean for scores after Draft 3, 4, and 5. 
 \end{document}
