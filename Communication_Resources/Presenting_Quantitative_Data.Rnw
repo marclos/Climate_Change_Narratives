@@ -339,13 +339,13 @@ Sometimes (often times?), tables are better than graphs. In the case below, I su
 grades1 = c(28.5, 36.5, 25, 31.5, 26, 22, 22.5,
            2, 0, 22.5, 31.5, 6, 28, 34, 0)
 grades2 = c(38.1, 39.9, 44.8, 34.4, 37.9, 28.4, NA,
-            24.8, 17.5, 34.8, NA, 14.5, 37, NA, 16.6)
+            24.8, 17.5, 34.8, NA, 14.5, 37, 39.4, 16.6)
 
-grades3 = c(42.6, NA, NA, 42.8, 43.8, NA, NA,
+grades3 = c(42.6, 44.7, 47, 42.8, 43.8, NA, NA,
             34.8, NA, 43, NA, 24.1, 43.8, NA, 30.2)
 
-grades4 = c(NA, NA, NA, 44.3, 46.5, NA, NA,
-            NA, NA, NA, NA, NA, NA, NA, NA)
+grades4 = c(46.1, NA, NA, 44.3, 46.5, NA, NA,
+            40.4, NA, NA, NA, NA, NA, NA, NA)
 
 grades5 = c(NA, NA, NA, NA, 46.5, NA, NA,
             NA, NA, NA, NA, NA, NA, NA, NA)
@@ -412,14 +412,11 @@ The histogram is simple (Figure \ref{fig:scoreshist}), but for these data, I am 
 
 The use of color in for this figure is really unnecessary. But it's worth illustrating. It's important that the use of color doesn't distract or confuse readers, especially those that are visually impaired, e.g. color blind.
 
-\bigskip
+You have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this (Due: March 17, 2019). Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. However, as I mentioned in an announcement, I am willing to provide the final feedback for submissions by the 17th and receive all submissions until the 22nd of March for the final grade. 
 
-You have 5 opportunities to re-submit to improve your grade, but only two weeks to accomplish this. Since it takes two days to read them, you'll need to submit every 2 days if you want to take full advange of this opportunity. 
-
-
-\bigskip
 <<scoreshist, fig.cap="Histogram of Blog Scores", fig.height=5.0, fig.width=6 >>=
 par(mfrow=c(2,3), las=1)
+
 colors <- c("darkgreen", "blue", "darkgoldenrod3", "violet", "darkred", "black")
 labels <- c("Draft 1", "Draft 2", "Draft 3", "Draft 4", "Draft 5", "Final Blog")
 
@@ -486,7 +483,7 @@ text(mean(grades2, na.rm=T), .06, col=colors[2],
 text(mean(grades3, na.rm=T), .07, col=colors[3], 
      bquote(paste(bar(x)[3], " = ", .(round(mean(grades3, na.rm=T), 0)))))
 
-text(mean(grades4, na.rm=T), .06, col=colors[4], 
+text(mean(grades4, na.rm=T), .15, col=colors[4], 
      bquote(paste(bar(x)[4], " = ", .(round(mean(grades4, na.rm=T), 0)))))
 
 text(mean(grades5, na.rm=T), .08, col=colors[5], 
