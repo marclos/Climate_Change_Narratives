@@ -137,8 +137,8 @@ For stand alone figures, we usually add titles, but in papers and lab reports it
 
 In addition, we can change the x-axis label, with the 'xlab' argument. Specifying the units is also required. And in this case, we want to add the \degree symbol and create a text string with the axis label in quotes that can be referenced in the hist() funtion. Notice that I rotated the y-axis values (las=1). 
 
-<<fig.cap='Histogram of Maximum Temperatures (°C) (XXX, Thailand, 1940-2018)'>>=
-TMAXlabel <- "Maximum Temperature (°C)"
+<<fig.cap='Histogram of Maximum Temperatures (\\degree C) (Bangkok, Thailand, 1940-2018)'>>=
+TMAXlabel <- "Temperature (°C)"
 hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel, las=1)
 @
 \clearpage
@@ -149,36 +149,35 @@ To create two graphics in one row, we can change the graphic parameters with the
 
 Note: the title is too long! So, I will need to figure out how to adjust the size of the font at some point using 'cex' arguments. See the boxplots below to see how that can be done.
 
-<<fig.cap="Mean monthly maximum and minimum tempetures (C) ((Bangkok, Thailand, 1940-2018))">>=
+<<fig.cap="Mean monthly maximum and minimum tempetures (\\degree C) ((Bangkok, Thailand, 1940-2018))">>=
 par(mfrow=c(1,2))
 hist(MonthlyTMAXMean$TMAX, main='Maximum Temperature', xlab=TMAXlabel)
-TMINlabel <- "Minimum Temperature (°C)"
+TMINlabel <- "Temperature (°C)"
 hist(MonthlyTMINMean$TMIN, main='Minimum Temperature', xlab=TMINlabel)
 par(mfrow=c(1,1))
 @
 \newpage
 Because the figure is rather distorted, I have constrained the size using a fig.height and fig.width option. 
 
-<<fig.cap="Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018)).", fig.height=3.5, fig.width=6>>=
+<<fig.cap="Mean monthly maximum and minimum tempetures (\\degree C) ((Bangkok, Thailand, 1940-2018)).", fig.height=3.5, fig.width=6>>=
 par(mfrow=c(1,2))
 hist(MonthlyTMAXMean$TMAX, main='Monthly Maximum Temperature', xlab=TMAXlabel)
-TMINlabel <- "Minimum Temperature (°C)"
+TMINlabel <- "Temperature (°C)"
 hist(MonthlyTMINMean$TMIN, main='Monthly Minimum Temperature', xlab=TMINlabel)
 par(mfrow=c(1,1))
 @
 
 Note that the title is too big and is cut off. In general, most publications prefer you put the description in the caption and avoid long titles. So, for the next example, I'll create a caption to refer to both figures as panel letters and get rid of the figure titles (main=NULL).
 
-Altnernatively, I could change the relative size of the titles, using 'cex.main = 0.8', which multiplies the size by 0.8. 
+Altnernatively, I could change the relative size of the titles, using 'cex.main = 0.8', which multiplies the size by 0.8. However, for our purposes, it's preferable to avoid using titles in a panel situation, unless a title is short and descriptive, e.g. "Mininum Tempertures" and "Maximum Temperatures" might work. 
 
 To create the panel letters, we'll use mtext for margin text. 
 
-<<fig.cap="Mean monthly maximum (Panel A) and minimum (Panel B) tempetures (C) ((Bangkok, Thailand, 1940-2018)).", fig.height=3.5, fig.width=6>>=
-par(mfrow=c(1,2))
+<<fig.cap="Mean monthly maximum (Panel A) and minimum (Panel B) temperatures (\\degree C) (Bangkok, Thailand, 1940-2018).  Notice the y-axis is noted once and the y-axis values have been rotated.", fig.height=3.5, fig.width=6>>=
+par(mfrow=c(1,2), las=1)
 hist(MonthlyTMAXMean$TMAX, main=NULL, xlab=TMAXlabel)
-TMINlabel <- "Minimum Temperature (°C)"
 mtext("A", side=3, line=0, adj=0, cex=1.4)
-hist(MonthlyTMINMean$TMIN, main=NULL, xlab=TMINlabel)
+hist(MonthlyTMINMean$TMIN, main=NULL, xlab=TMINlabel, ylab=NULL)
 mtext("B", side=3, line=0, adj=0, cex=1.4)
 par(mfrow=c(1,1))
 
@@ -467,7 +466,7 @@ hxF <- dnorm(x= x, mean = mean(grades6, na.rm=T),
 
 plot(x, hx1, type="l", lty=1, lwd=3, xlab="Score",
   ylab="Density", main="Distribution of Scores", las=1, 
-  ylim=c(0,.22), col=colors[1])
+  ylim=c(0,.2), col=colors[1])
   lines(x, hx2, lwd=3, col=colors[2])
   lines(x, hx3, lwd=3, col=colors[3])
   lines(x, hx4, lwd=3, col=colors[4])
@@ -486,11 +485,12 @@ text(mean(grades3, na.rm=T), .07, col=colors[3],
 text(mean(grades4, na.rm=T), .15, col=colors[4], 
      bquote(paste(bar(x)[4], " = ", .(round(mean(grades4, na.rm=T), 0)))))
 
-text(mean(grades5, na.rm=T), .08, col=colors[5], 
+text(mean(grades5, na.rm=T), .09, col=colors[5], 
      bquote(paste(bar(x)[5], " = ", .(round(mean(grades5, na.rm=T), 0)))))
 
-text(mean(grades6, na.rm=T), .1, col=colors[6], 
+text(mean(grades6, na.rm=T), .17, col=colors[6], cex=1.2,
      bquote(paste(bar(x)[Final], " = ", .(round(mean(grades6, na.rm=T), 0)))))
+lines(x=c(mean(grades6, na.rm=T), mean(grades6, na.rm=T)), y=c(.04, .16), lty=2)
 
 legend("topleft", inset=.05, title="Drafts",
   labels, lwd=2, lty=c(1, 1, 1, 1, 1), col=colors)

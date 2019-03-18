@@ -172,11 +172,11 @@ In addition, we can change the x-axis label, with the 'xlab' argument. Specifyin
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{TMAXlabel} \hlkwb{<-} \hlstr{"Maximum Temperature (°C)"}
+\hlstd{TMAXlabel} \hlkwb{<-} \hlstr{"Temperature (°C)"}
 \hlkwd{hist}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=TMAXlabel,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} \caption[Histogram of Maximum Temperatures (°C) (XXX, Thailand, 1940-2018)]{Histogram of Maximum Temperatures (°C) (XXX, Thailand, 1940-2018)}\label{fig:unnamed-chunk-3}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} \caption[Histogram of Maximum Temperatures (\degree C) (Bangkok, Thailand, 1940-2018)]{Histogram of Maximum Temperatures (\degree C) (Bangkok, Thailand, 1940-2018)}\label{fig:unnamed-chunk-3}
 \end{figure}
 
 
@@ -194,11 +194,11 @@ Note: the title is too long! So, I will need to figure out how to adjust the siz
 \begin{alltt}
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
 \hlkwd{hist}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{main}\hlstd{=}\hlstr{'Maximum Temperature'}\hlstd{,} \hlkwc{xlab}\hlstd{=TMAXlabel)}
-\hlstd{TMINlabel} \hlkwb{<-} \hlstr{"Minimum Temperature (°C)"}
+\hlstd{TMINlabel} \hlkwb{<-} \hlstr{"Temperature (°C)"}
 \hlkwd{hist}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{main}\hlstd{=}\hlstr{'Minimum Temperature'}\hlstd{,} \hlkwc{xlab}\hlstd{=TMINlabel)}
 \end{alltt}
 \end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} \caption[Mean monthly maximum and minimum tempetures (C) ((Bangkok, Thailand, 1940-2018))]{Mean monthly maximum and minimum tempetures (C) ((Bangkok, Thailand, 1940-2018))}\label{fig:unnamed-chunk-4}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} \caption[Mean monthly maximum and minimum tempetures (\degree C) ((Bangkok, Thailand, 1940-2018))]{Mean monthly maximum and minimum tempetures (\degree C) ((Bangkok, Thailand, 1940-2018))}\label{fig:unnamed-chunk-4}
 \end{figure}
 
 \begin{kframe}\begin{alltt}
@@ -214,11 +214,11 @@ Because the figure is rather distorted, I have constrained the size using a fig.
 \begin{alltt}
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
 \hlkwd{hist}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{main}\hlstd{=}\hlstr{'Monthly Maximum Temperature'}\hlstd{,} \hlkwc{xlab}\hlstd{=TMAXlabel)}
-\hlstd{TMINlabel} \hlkwb{<-} \hlstr{"Minimum Temperature (°C)"}
+\hlstd{TMINlabel} \hlkwb{<-} \hlstr{"Temperature (°C)"}
 \hlkwd{hist}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{main}\hlstd{=}\hlstr{'Monthly Minimum Temperature'}\hlstd{,} \hlkwc{xlab}\hlstd{=TMINlabel)}
 \end{alltt}
 \end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} \caption[Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018))]{Mean monthly maximum and minimum tempetures (C) ((XXX, Thailand, 1940-2018)).}\label{fig:unnamed-chunk-5}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} \caption[Mean monthly maximum and minimum tempetures (\degree C) ((Bangkok, Thailand, 1940-2018))]{Mean monthly maximum and minimum tempetures (\degree C) ((Bangkok, Thailand, 1940-2018)).}\label{fig:unnamed-chunk-5}
 \end{figure}
 
 \begin{kframe}\begin{alltt}
@@ -229,22 +229,21 @@ Because the figure is rather distorted, I have constrained the size using a fig.
 
 Note that the title is too big and is cut off. In general, most publications prefer you put the description in the caption and avoid long titles. So, for the next example, I'll create a caption to refer to both figures as panel letters and get rid of the figure titles (main=NULL).
 
-Altnernatively, I could change the relative size of the titles, using 'cex.main = 0.8', which multiplies the size by 0.8. 
+Altnernatively, I could change the relative size of the titles, using 'cex.main = 0.8', which multiplies the size by 0.8. However, for our purposes, it's preferable to avoid using titles in a panel situation, unless a title is short and descriptive, e.g. "Mininum Tempertures" and "Maximum Temperatures" might work. 
 
 To create the panel letters, we'll use mtext for margin text. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{),} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{)}
 \hlkwd{hist}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=TMAXlabel)}
-\hlstd{TMINlabel} \hlkwb{<-} \hlstr{"Minimum Temperature (°C)"}
 \hlkwd{mtext}\hlstd{(}\hlstr{"A"}\hlstd{,} \hlkwc{side}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{line}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{adj}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.4}\hlstd{)}
-\hlkwd{hist}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=TMINlabel)}
+\hlkwd{hist}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{main}\hlstd{=}\hlkwa{NULL}\hlstd{,} \hlkwc{xlab}\hlstd{=TMINlabel,} \hlkwc{ylab}\hlstd{=}\hlkwa{NULL}\hlstd{)}
 \hlkwd{mtext}\hlstd{(}\hlstr{"B"}\hlstd{,} \hlkwc{side}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{line}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{adj}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.4}\hlstd{)}
 \end{alltt}
 \end{kframe}\begin{figure}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} \caption[Mean monthly maximum (Panel A) and minimum (Panel B) tempetures (C) ((Bangkok, Thailand, 1940-2018))]{Mean monthly maximum (Panel A) and minimum (Panel B) tempetures (C) ((Bangkok, Thailand, 1940-2018)).}\label{fig:unnamed-chunk-6}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} \caption[Mean monthly maximum (Panel A) and minimum (Panel B) temperatures (\degree C) (Bangkok, Thailand, 1940-2018)]{Mean monthly maximum (Panel A) and minimum (Panel B) temperatures (\degree C) (Bangkok, Thailand, 1940-2018).  Notice the y-axis is noted once and the y-axis values have been rotated.}\label{fig:unnamed-chunk-6}
 \end{figure}
 
 \begin{kframe}\begin{alltt}
