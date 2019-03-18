@@ -1,11 +1,12 @@
 ---
-title: "The Tourist Economy and Climate Change: What Does it Mean for the Future of Fall Foliage in New Hampshire?"
+title: 'The Tourist Economy and Climate Change: What Does it Mean for the Future of
+  Fall Foliage in New Hampshire?'
 author: "Susannah Budd"
 date: "3/17/2019"
-fig_caption: yes
 output:
-  html_document: default
   word_document: default
+  html_document: default
+fig_caption: yes
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -72,7 +73,7 @@ The analysis of maximum temperature data in New Hampshire showed a clear warming
 
 ```{r, echo=FALSE}
 ##Read CSV Data
-climate_data <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/susannah_concordnh_data.csv")
+climate_data <- read.csv("susannah_concordnh_data.csv")
 ```
 
 ```{r, echo=FALSE}
@@ -137,7 +138,7 @@ The analysis of foliage season length data in New Hampshire showed a very clear 
 
 ```{r, echo=FALSE}
 ##Read Leaf Observation CSV Data
-leaf_observations <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/Leaf-Chart-1-1.csv")
+leaf_observations <- read.csv("Leaf-Chart-1-1.csv")
 ```
 
 ```{r, echo=FALSE}
