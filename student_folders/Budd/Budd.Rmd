@@ -95,8 +95,17 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 ```{r, echo=FALSE}
 ##New Plots
 fig.cap=TRUE
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month == "09",], xlim = c(1939, 2019), main = "Max. Temp. for Sept. (°C) vs Time (yrs.)", xlab="Time (years)", ylab="Maximum Temperature for September (°C)", pch=20, las=1, col="black")
+par(mfrow=c(1,2))
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month == "09",], xlim = c(1939, 2019), main = "Mean September Maximum Temp.", xlab="Years", ylab="Maximum Temp. (°C)", pch=20, las=1, col="black",cex.main=.8, cex.lab=.8)
 September.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+abline(coef(September.lm), col = "red")
+
+MonthlyTMINMean = aggregate(TMIN~Month+Year, climate_data, mean)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month == "09",],xlim = c(1939, 2019), main = "Mean September Minimum Temp.", xlab = "Years", ylab = "Minimum Temp. (°C)", pch=20, las=1, col="black", cex.main=.8, cex.lab=.8)
+September.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
 abline(coef(September.lm), col = "red")
 ```
 
@@ -112,16 +121,6 @@ Figure 4: Scatterplot Graph of Maximum Temperature for September (°C) versus Ti
 The analysis of minimum temperature data in New Hampshire also showed a clear warming trend between 1939 and 2019  (p= <0.001, r^2^=<0.01). The linear regression model used again captures a vanishingly small amount of the variation. \ 
 
 <center>
-
-```{r, echo=FALSE}
-##Monthly Minimums
-MonthlyTMINMean = aggregate(TMIN~Month+Year, climate_data, mean)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month == "09",],xlim = c(1939, 2019), main = "Min. Temp. for Sept. (°C) vs Time (yrs.)", xlab = "Time (years)", ylab = "Minimum Temperature for September (°C)", pch=20, las=1, col="black")
-September.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
-abline(coef(September.lm), col = "red")
-```
 
 </center>
 
