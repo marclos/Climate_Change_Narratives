@@ -1,0 +1,239 @@
+---
+title: "20190224_boulder_graphs"
+author: "bljj2015"
+date: "2/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r read NWT and NOAA data, include=FALSE}
+library(readr)
+C1_daily_precip <- read_csv("~/Climate_Change_Narratives/student_folders/Lai/C1_daily_precip.csv")
+C1_daily_temp <- read_csv("~/Climate_Change_Narratives/student_folders/Lai/C1_daily_temp.csv")
+D1_daily_temp <- read_csv("~/Climate_Change_Narratives/student_folders/Lai/D1_daily_temp.csv")
+D1_daily_precip <- read_csv("~/Climate_Change_Narratives/student_folders/Lai/D1_daily_precip.csv")
+Saddle_daily_temp <- read_csv("~/Climate_Change_Narratives/student_folders/Lai/Saddle_daily_temp.csv")
+NOAA <- read_csv("~/Climate_Change_Narratives/student_folders/Lai/NOAA_boulder_area_temp_precip.csv")
+```
+
+```{r combining different date formats from Clair Generous}
+strDates <-as.character(climate_data$DATE)
+CYear1 <-as.Date(strDates[1:3805], "%Y-%m-%d")
+
+CYear2 = as.Date(sub("/([0-9]+)$", "/19\\1", strDates[3806:40320]), "%m/%d/%Y") # Defined for this dataset! 
+CYear3 = c(CYear1, CYear2, as.Date(sub("/([0-9]+)$", "/20\\1", strDates[40321:47286]), "%m/%d/%Y"))
+CYear3[sample(1:47286, 5)]
+
+climate_data$NewDate <- as.Date(CYear3, "%m/%d/%Y")
+
+head(strDates)
+head(climate_data)
+
+plot(TMAX ~ NewDate, data=climate_data, ty='l')
+```
+
+```{r my attempt at changing dates}
+strDates <-as.character(NOAA$DATE)
+CYear1 <-as.Date(strDates[1:60719], "%m/%d/%Y") #1/1/1900 onward
+CYear2 = as.Date(strDates[60720:62190], "%Y-%m-%d") #1893-10-01 to 1899-12-31
+CYear3 = c(CYear1, CYear2) 
+CYear3[sample(1:62190, 10)] #sample 10 dates to see if they're all the same format: YYYY-MM-DD
+NOAA$NewDate <- CYear3
+```
+
+```{r separating NOAA data into three separate data frames for each of the 3 stations, echo = FALSE}
+Boulder <- NOAA[ which(NOAA$STATION=='USC00050848'),]
+Boulder_14_W <- NOAA[ which(NOAA$STATION=='USW00094075'),]
+Coal_Creek_Canyon <- NOAA[ which(NOAA$STATION=='USC00051681'),]
+```
+
+
+####Daily Max Temperature graphs
+
+```{r C-1 daily TMAX graph & linear regression model, echo=FALSE}
+plot(airtemp_max~date, C1_daily_temp, main="Daily Max Temp at C-1 Station", ty='l') & abline(lm(airtemp_max ~ date, data=C1_daily_temp), col="red")
+summary(lm(airtemp_max~date, data=C1_daily_temp))
+```
+slope = +9.226e-05  
+p-value < 2e-16, STATISTICALLY SIGNIFICANT  
+
+```{r D-1 daily TMAX graph & linear regression model, echo=FALSE}
+plot(airtemp_max~date, D1_daily_temp, main="Daily Max Temp at D-1 Station", ty='l') & abline(lm(airtemp_max ~ date, data=D1_daily_temp), col="red")
+summary(lm(airtemp_max~date, data=D1_daily_temp))
+```
+slope = -3.691e-05  
+p-value = 7.08e-05, STATISTICALLY SIGNIFICANT  
+
+```{r Saddle daily TMAX graph & linear regression model, echo=FALSE}
+plot(airtemp_max~date, Saddle_daily_temp, main="Daily Max Temp at Saddle Station", ty='l') & abline(lm(airtemp_max ~ date, data=Saddle_daily_temp), col="red")
+summary(lm(airtemp_max~date, data=Saddle_daily_temp))
+```
+slope = +1.254e-04  
+p-value = 1.15e-08 -> STATISTICALLY SIGNIFICANT  
+
+```{r Boulder daily TMAX graph & linear regression model, echo=FALSE}
+plot(TMAX~NewDate, Boulder, main="Daily Max Temp at USC00050848 (Boulder) Station", ty='l') & abline(lm(TMAX ~ NewDate, data=Boulder), col="red")
+summary(lm(TMAX~NewDate, data=Boulder))
+```
+slope = +4.741e-05  
+p-value < 2e-16 -> STATISTICALLY SIGNIFICANT  
+
+```{r Coal Creek Canyon daily TMAX graph & linear regression model, echo=FALSE}
+plot(TMAX~NewDate, Coal_Creek_Canyon, main="Daily Max Temp at USC00051681 (Coal Creek Canyon) Station", ty='l') & abline(lm(TMAX ~ NewDate, data=Coal_Creek_Canyon), col="red")
+summary(lm(TMAX~NewDate, data=Coal_Creek_Canyon))
+```
+slope = +3.645e-05  
+p-value = 0.124, NOT STATISTICALLY SIGNIFICANT  
+
+```{r Boulder 14 W daily TMAX graph & linear regression model, echo=FALSE}
+plot(TMAX~NewDate, Boulder_14_W, main="Daily Max Temp at USW00094075 (Boulder 14 W) Station", ty='l') & abline(lm(TMAX ~ NewDate, data=Boulder_14_W), col="red")
+summary(lm(TMAX~NewDate, data=Boulder_14_W))
+```
+slope = +2.385e-04  
+p-value = 0.00247, STATISTICALLY SIGNIFICANT 
+  
+  
+####Daily Precipitation graphs
+
+```{r testing C1 daily precipitation, echo=FALSE}
+plot(ppt_tot~date, main="Daily Precipitation at C-1 Station", C1_daily_precip, ty='l') & abline(lm(ppt_tot ~ date, data=C1_daily_precip), col="red")
+summary(lm(ppt_tot~date, data=C1_daily_precip))
+```
+slope = -8.744e-05
+p-value < 2e-16 -> STATISTICALLY SIGNIFICANT
+
+```{r testing D1 daily precipitation, echo=FALSE}
+plot(pppt_tot~date, main="Daily Precipitation at D-1 Station", D1_daily_precip, ty='l') & abline(lm(pppt_tot ~ date, data=D1_daily_precip), col="red")
+summary(lm(pppt_tot~date, data=D1_daily_precip))
+```
+slope = +2.243e-05  
+p-value = 0.0164 -> NOT STATISTICALLY SIGNIFICANT
+
+```{r testing Saddle daily precipitation, echo=FALSE}
+plot(ppt_tot~date, main="Daily Precipitation at Saddle Station", Saddle_daily_precip, ty='l') & abline(lm(ppt_tot ~ date, data=Saddle_daily_precip), col="red")
+summary(lm(ppt_tot~date, data=Saddle_daily_precip))
+```
+slope = +2.571e-04  
+p-value < 2e-16, STATISTICALLY SIGNIFICANT
+
+```{r Boulder daily PRCP graph & linear regression model, echo=FALSE}
+plot(PRCP~NewDate, main="Daily Precipitation at USC00050848 (Boulder) Station", Boulder, ty='l') & abline(lm(PRCP ~ NewDate, data=Boulder), col="red")
+summary(lm(PRCP~NewDate, data=Boulder))
+```
+slope = +1.621e-06  
+p-value = 0.379, NOT STATISTICALLY SIGNIFICANT  
+
+```{r creating NOAA station graph and linear regression model for Coal Creek Canyon, echo=FALSE}
+plot(PRCP~NewDate, main="Daily Precipitation at USC00051681 (Coal Creek Canyon) Station", Coal_Creek_Canyon, ty='l') & abline(lm(PRCP ~ NewDate, data=Coal_Creek_Canyon), col="red")
+summary(lm(PRCP~NewDate, data=Coal_Creek_Canyon))
+```
+slope = +5.154e-06  
+p-value = 0.688 -> NOT STATISTICALLY SIGNIFICANT 
+
+```{r creating NOAA station graph and linear regression model for Boulder 14 W, echo=FALSE}
+plot(PRCP~NewDate, main="Daily Precipitation at USW00094075 (Boulder 14 W) Station", Boulder_14_W, ty='l') & abline(lm(PRCP ~ NewDate, data=Boulder_14_W), col="red")
+summary(lm(PRCP~NewDate, data=Boulder_14_W))
+```
+slope = +8.296e-05  
+p-value = 0.0531 -> NOT STATISTICALLY SIGNIFICANT (but close!)  
+
+
+
+
+##converting the "NaN" characters to NA values??? never figured it out
+```{r}
+as.numeric(C1_daily_precip$ppt_tot)
+is.nan(as.numeric(C1_daily_precip$ppt_tot)) #shows whether value is NaN
+
+```
+
+##creating monthly comparisons for Boulder
+```{r}
+Boulder$Month = format(as.Date(Boulder$NewDate), format = "%m")
+Boulder$Year = format(as.Date(Boulder$NewDate), format="%Y")
+```
+
+```{r}
+Boulder_MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, Boulder, mean)
+Boulder_MonthlyTMAXMean$YEAR = as.numeric(Boulder_MonthlyTMAXMean$Year)
+Boulder_MonthlyTMAXMean$MONTH = as.numeric(Boulder_MonthlyTMAXMean$Month)
+str(Boulder_MonthlyTMAXMean)
+plot(Boulder_MonthlyTMAXMean$TMAX, ty='l')
+```
+
+```{r Boulder TMAX averages for May}
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1890, 2020))
+Boulder_May_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="05",])
+summary(Boulder_May_TMAX.lm)
+##
+## Call:
+## lm(formula = TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month ==
+## "05", ])
+##
+7
+## Residuals:
+## Min 1Q Median 3Q Max
+## -2.85376 -0.93210 -0.04633 0.81231 3.15347
+##
+## Coefficients:
+## Estimate Std. Error t value Pr(>|t|)
+## (Intercept) 17.238621 13.753642 1.253 0.214
+## YEAR 0.008756 0.006946 1.261 0.211
+##
+## Residual standard error: 1.302 on 73 degrees of freedom
+## Multiple R-squared: 0.0213,Adjusted R-squared: 0.007897
+## F-statistic: 1.589 on 1 and 73 DF, p-value: 0.2115
+abline(coef(Boulder_May_TMAX.lm), col="red")
+```
+
+```{r Boulder TMAX averages for June}
+#plot(Boulder_MonthlyTMAXMean$TMAX[Boulder_MonthlyTMAXMean$Month=="06"], ty='l')
+plot(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="06",],
+ty='l', xlim=c(1890, 2020))
+Boulder_Jun_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="06",])
+summary(Boulder_Jun_TMAX.lm)
+abline(coef(Boulder_Jun_TMAX.lm), col="red")
+```
+
+```{r Boulder TMAX averages for July}
+#plot(Boulder_MonthlyTMAXMean$TMAX[Boulder_MonthlyTMAXMean$Month=="07"], ty='l')
+plot(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="07",],
+ty='l', xlim=c(1890, 2020))
+Boulder_Jul_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="07",])
+summary(Boulder_Jul_TMAX.lm)
+abline(coef(Boulder_Jul_TMAX.lm), col="red")
+```
+
+```{r Boulder TMAX averages for August}
+#plot(Boulder_MonthlyTMAXMean$TMAX[Boulder_MonthlyTMAXMean$Month=="08"], ty='l')
+plot(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="08",],
+ty='l', xlim=c(1890, 2020))
+Boulder_Aug_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="08",])
+summary(Boulder_Aug_TMAX.lm)
+abline(coef(Boulder_Aug_TMAX.lm), col="red")
+```
+
+```{r Boulder TMAX averages for September}
+#plot(Boulder_MonthlyTMAXMean$TMAX[Boulder_MonthlyTMAXMean$Month=="09"], ty='l')
+plot(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="09",],
+ty='l', xlim=c(1890, 2020))
+Boulder_Sep_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="09",])
+summary(Boulder_Sep_TMAX.lm)
+abline(coef(Boulder_Sep_TMAX.lm), col="red")
+```
+
+```{r Boulder TMAX averages for October}
+#plot(Boulder_MonthlyTMAXMean$TMAX[Boulder_MonthlyTMAXMean$Month=="10"], ty='l')
+plot(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="10",],
+ty='l', xlim=c(1890, 2020))
+Boulder_Oct_TMAX.lm <- lm(TMAX~YEAR, data=Boulder_MonthlyTMAXMean[Boulder_MonthlyTMAXMean$Month=="10",])
+summary(Boulder_Oct_TMAX.lm)
+abline(coef(Boulder_Oct_TMAX.lm), col="red")
+```
+
+
