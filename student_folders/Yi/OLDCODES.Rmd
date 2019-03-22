@@ -1,0 +1,135 @@
+---
+title: "Oldcodes"
+author: "ClaireYi"
+date: "3/18/2019"
+output: html_document
+---
+#OLD PLOT FOR PARKFOREST WARMING TREND(MAY NOT USE LATER)
+```{r annualminparkforest_plot, echo=FALSE, results='hide'}
+climate_data1<-read.csv("/home/CAMPUS/syaa2016/Climate_Change_Narratives/student_folders/Yi/ParkForest_climatedata_claireyi.csv")
+strDates <- as.character(climate_data1$DATE)
+climate_data1$Year <- as.Date(strDates, "%m/%d/%Y")
+
+plot(TMIN~Year, climate_data1, ty='l')
+abline(lm(TMIN~Year,data=climate_data1),col="black")
+summary(lm(TMIN~Year, data=climate_data1))
+lm(TMIN~Year, data=climate_data1)
+```
+
+#TRY PLOT TMIN DATA YEARLY MEAN FOR ALL THREE STATIONS
+```{r annualminbarrington_plot, echo=FALSE, results='hide' }
+#PREPARING TMIN DATA FOR BARRINGTON
+climate_data<-read.csv( "/home/CAMPUS/syaa2016/Climate_Change_Narratives/student_folders/Yi/claireyi_climatedata_chicago.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$Year <- as.Date(strDates, "%m/%d/%Y")
+
+lm(TMIN ~ Year, data=climate_data)
+climate_data$Month = format(as.Date(climate_data$Year), format = "%m")
+climate_data$Year = format(climate_data$Year, format="%Y")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+AnnualTMINMean = aggregate(TMIN ~ Year, climate_data, mean)
+AnnualTMINMean$YEAR = as.numeric(AnnualTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+
+par(mfrow=c(1,1))
+
+for (i in 1:12) {
+Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+i, ])
+TMINresult <- rbind(TMINresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+#PLOT BARRINGTON DATA
+plot(TMIN ~ YEAR, data = AnnualTMINMean[AnnualTMINMean$YEAR<2020,], ty = "l", las = 1, xlim = c(1960, 2019), ylab = "Barrington Minimum Temperature (°C)", xlab= "Year")
+abline(lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,]),col="black")
+Annual.lm <- lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,])
+summary(lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,]))
+lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,])
+```
+
+#PARKFOREST PLOT
+```{r echo=FALSE, results='hide'}
+#PREPARING TMIN DATA FOR PARK FOREST
+climate_data1<-read.csv("/home/CAMPUS/syaa2016/Climate_Change_Narratives/student_folders/Yi/ParkForest_climatedata_claireyi.csv")
+strDates <- as.character(climate_data1$DATE)
+climate_data1$Year <- as.Date(strDates, "%m/%d/%Y")
+
+lm(TMIN ~ Year, data=climate_data1)
+climate_data1$Month = format(as.Date(climate_data1$Year), format = "%m")
+climate_data1$Year = format(climate_data1$Year, format="%Y")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data1, mean)
+AnnualTMINMean = aggregate(TMIN ~ Year, climate_data1, mean)
+AnnualTMINMean$YEAR = as.numeric(AnnualTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMIN1result <- NA
+
+par(mfrow=c(1,1))
+
+for (i in 1:12) {
+Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+i, ])
+TMINresult <- rbind(TMINresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+
+plot(TMIN ~ YEAR, data = AnnualTMINMean[AnnualTMINMean$YEAR<2020,], ty = "l", las = 1, xlim = c(1960, 2019), ylab = "Park Forest Minimum Temperature (°C)", xlab= "Year")
+abline(lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,]),col="black")
+Annual.lm <- lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,])
+summary(lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,]))
+lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,])
+```
+
+#MIDWAY PLOT
+```{r echo=FALSE, results='hide' }
+#PREPARING TMIN DATA FOR MIDWAY
+climate_data2<-read.csv("/home/CAMPUS/syaa2016/Climate_Change_Narratives/student_folders/Yi/climatedata_cliareyi_midway.csv")
+strDates <- as.character(climate_data2$DATE)
+climate_data2$Year <- as.Date(strDates, "%d/%m/%Y")
+
+lm(TMIN ~ Year, data=climate_data2)
+climate_data2$Month = format(as.Date(climate_data2$Year), format = "%m")
+climate_data2$Year = format(climate_data2$Year, format="%Y")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data2, mean)
+AnnualTMINMean = aggregate(TMIN ~ Year, climate_data2, mean)
+AnnualTMINMean$YEAR = as.numeric(AnnualTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+
+par(mfrow=c(1,1))
+
+for (i in 1:12) {
+Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH ==
+i, ])
+TMINresult <- rbind(TMINresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+
+plot(TMIN ~ YEAR, data = AnnualTMINMean[AnnualTMINMean$YEAR<2020,], ty = "l", las = 1, xlim = c(1960, 2019), ylab = "Midway Airport Minimum Temperature (°C)", xlab= "Year")
+abline(lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,]),col="black")
+Annual.lm <- lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,])
+summary(lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,]))
+lm(TMIN~YEAR,AnnualTMINMean[AnnualTMINMean$YEAR<2020,])
+```
+
