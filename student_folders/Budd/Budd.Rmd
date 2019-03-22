@@ -1,7 +1,7 @@
 ---
 title: "The Tourist Economy and Climate Change: What Does it Mean for the Future of Fall Foliage in New Hampshire?"
 author: "Susannah Budd"
-date: "3/17/2019"
+date: "3/22/2019"
 fig_caption: yes
 output:
   html_document: default
@@ -40,7 +40,8 @@ Although the onset of fall foliage is triggered largely by changes in daylight, 
 
 <center>
 
-![Figure 2: The Life Cycle of Leaf Phenology](Leaf Phenology Diagram.png){width=450px}
+![Figure 2: The Life Cycle of Leaf Phenology](Leaf Phenology Diagram Final.PNG){width=600px}
+
 
 </center>
 
@@ -97,14 +98,14 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 fig.cap=TRUE
 par(mfrow=c(1,2))
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month == "09",], xlim = c(1939, 2019), main = "Mean September Maximum Temp.", xlab="Years", ylab="Maximum Temp. (°C)", pch=20, las=1, col="black",cex.main=.8, cex.lab=.8)
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month == "09",], xlim = c(1939, 2019), xlab="Years", ylab="Maximum Temp. (°C)", pch=20, las=1, col="black",cex.main=.8, cex.lab=.8)
 September.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
 abline(coef(September.lm), col = "red")
 
 MonthlyTMINMean = aggregate(TMIN~Month+Year, climate_data, mean)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month == "09",],xlim = c(1939, 2019), main = "Mean September Minimum Temp.", xlab = "Years", ylab = "Minimum Temp. (°C)", pch=20, las=1, col="black", cex.main=.8, cex.lab=.8)
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month == "09",],xlim = c(1939, 2019), xlab = "Years", ylab = "Minimum Temp. (°C)", pch=20, las=1, col="black", cex.main=.8, cex.lab=.8)
 September.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
 abline(coef(September.lm), col = "red")
 ```
@@ -113,7 +114,7 @@ abline(coef(September.lm), col = "red")
 
 <center> 
 
-Figure 4: Scatterplot Graph of Maximum Temperature for September (°C) versus Time (years) shows a statistically significant positive slope
+Figure 4: Scatterplot graphs of both mean maximum and mean minimum temperatures for September in °C versus years shows a statistically significant positive slope.
 
 </center>
 
@@ -125,8 +126,6 @@ The analysis of minimum temperature data in New Hampshire also showed a clear wa
 </center>
 
 <center> 
-
-Figure 5: Scatterplot Graph of Minimum Temperature for September (°C) versus Time (years) shows a statistically significant positive slope
 
 </center>
 
@@ -141,7 +140,7 @@ leaf_observations <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/s
 
 ```{r, echo=FALSE}
 ##Plot Leaf Observation Data
-plot(Range~Year, leaf_observations, main = "Length of Foliage Season (days) vs. Time (yrs.)", xlab = "Time (years)", ylab = "Foliage Season Length (days)",pch=20, las=1, col="black")
+plot(Range~Year, leaf_observations, xlab = "Time (years)", ylab = "Foliage Season Length (days)",pch=20, las=1, col="black")
 ##Add Best Fit Line
 c<-coef(lm(Range~Year, leaf_observations))
 abline(c, col="red")
@@ -151,7 +150,7 @@ abline(c, col="red")
 
 <center> 
 
-Figure 6: Scatterplot Graph of Foliage Season Length (days) versus Time (years) shows a statistically significant positive slope
+Figure 5: Scatterplot graph of foliage season length in days versus years shows a statistically significant positive slope.
 
 </center>
 
@@ -170,7 +169,7 @@ With this understanding, these graphs may provide a powerful understanding of ho
 
 &nbsp;
 
-![Figure 7: Franconia Notch in Autumn. Retrieved from http://www.franconianotch.org/things-to-do/great-outdoors/.](Franconia Notch.jpg){width=600px}
+![Figure 6: Franconia Notch in Autumn. Retrieved from http://www.franconianotch.org/things-to-do/great-outdoors/.](Franconia Notch.jpg){width=600px}
 
 </center>
 
@@ -184,7 +183,7 @@ The long-term implications of a “less splendid splendor” are, thus far, uncl
 
 &nbsp;
 
-![Figure 8: Skiing is an Important Component of the Tourist Economy in New Hampshire. Retrieved from https://familyskitrips.com/newengland/top-ten-family-ski-resorts-in-new-england/.](Skiing.jpg){width=600px}
+![Figure 7: Skiing is an Important Component of the Tourist Economy in New Hampshire. Retrieved from https://familyskitrips.com/newengland/top-ten-family-ski-resorts-in-new-england/.](Skiing.jpg){width=600px}
 
 </center>
 
@@ -200,7 +199,7 @@ These preliminary results indicate that New Hampshire temperatures increasing al
 
 <center>
 
-![Figure 9: Views from New Hampshire's Kancamagus Highway. Retrieved from https://www.roamingthenortheast.com/blog/2017/12/3/driving-the-kancamagus-new-englands-best-fall-foliage-drive.](Kancamagus.JPG){width=600px}
+![Figure 8: Views from New Hampshire's Kancamagus Highway. Retrieved from https://www.roamingthenortheast.com/blog/2017/12/3/driving-the-kancamagus-new-englands-best-fall-foliage-drive.](Kancamagus.JPG){width=600px}
 
 </center>
 
