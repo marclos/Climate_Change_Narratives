@@ -1,0 +1,120 @@
+---
+title: 'New Orleans in the Cold: the 1970''s'
+author: "Ximena Lane"
+date: "1/1/2019"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Welcome to this Blog!
+
+When we think of the southern United States, we tend to think of warm, humid, even sunny weather. But, like most places, the south experiences seasons and a range of extreme weather events. For this blog, I will be taking a look at the National Oceanic and Atmospheric Administration’s (NOAA) data on the city of New Orleans, Louisiana from 1950-1980. This particular stretch of data has lower average temperatures than the data before and after it, leaving me to wonder what caused this particular cold spell. I will analyze the literature attempting to explain this anomaly and make some hypotheses as to what exactly caused the 1970’s New Orleans cold spell. 
+![Courtesy NASA](nola.png)
+
+Background:
+
+Located in the southeastern United States, New Orleans, Louisiana (29.95°N 90.08°W) is located at the tip of the state with a majority of the city resting below sea level. Mild winters and wet hot summers justify its status as a humid sub-tropical climate. Even in the winter, the temperature rarely dips below freezing. It is within the Mississippi River Delta and much of the city is located right next to the Mississippi River. Its coastal location paired with its low altitude makes New Orleans especially prone to hurricanes and flooding, with Katrina in 2005 being one of the better known hurricanes that affected the city. (Henderson 1997) New Orleans has experienced a changing climate, with monthly high and low temperatures on the rise (according to NOAA data). How this change has affected other weather events, the environment, and the living beings in the city is being studied extensively by climate scientists. 
+
+
+Greater Context:
+![Courtesy: EPA](nola sw.png)
+
+
+New Orleans, Louisiana falls in the Southeastern portion of the United States, which includes the states in purple above. According to the Environmental Protection Agency, cities in direct contact with the coast have seen an increase in average temperatures as well as more floods and higher sea level measurements. These changes have been linked to more intense hurricane seasons and higher levels of salinity in typically freshwater bodies.
+
+![Courtesy: U.S. Global Climate Change Research Program](nola seasons.png)
+
+What this Blog Found:
+
+I took NOAA’s temperature data on New Orleans from 1893 to 2019, formatted and plotted it using the program ‘R’ so that I could better visualize temperature changes over time. It was in this plot of the monthly average temperatures that I noticed the large decrease in mean temp between 1950 and 1980. Having plotted significantly lower in the graph than the rest of the data (which was ultimately trending upward in temperature), I set out looking for any other temperature analysis of this period of time in New Orleans.
+
+
+```{r}
+filepath = "lane_nola_retry.csv"
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+#plot(TMAX~DATE, climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+#plot(TMAX~NewDate, climate_data)
+summary(lm(TMAX ~ NewDate, data=climate_data))
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+#plot(MonthlyTMAXMean$TMAX, ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1893, 2019))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+```
+
+```{r, echo=FALSE}
+# Formatting Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+# create a vector of months
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+# see all the figures at once.
+png(filename = "Lane_4panel.png")
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 1) + 0.1)
+TMAXresult <- NA
+for (i in 1:12) {
+# plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+# ty='l')
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ], ty = "l", las = 1, xlim = c(1940, 2020),
+main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+dev.off()
+```
+![caption](Lane_4panel.png)
+
+
+(Dickson 1976) In an article published in 1976, ocean climatologists tried to determine whether variations in Greenland’s pressure fields was increasing the magnitude of winter weather in the Eastern Atlantic seaboard. “…Mean winter air temperatures have undergone stepwise changes of regime in recent decades with a period of abnormal warmth in 1948 - 57 giving way to a period of extreme cold in 1958 - 70 and, subsequently, to a renewal of warm conditions in succeeding winters.” (Dickson 1976, 1256) The authors found a link in the Greenland pressure change and the winter dips in mean temperature, and drew the conclusion that when the low pressure affected the Atlantic, more intense storm activity could be seen further down the coast, proving the involvement of the pressure system. 
+
+![Courtesy: Dickson 1976](new orleans temp map.png)
+
+
+In my search for literature attempting to explain this cold in New Orleans’ history, I have come to find only the one article (above). This was perplexing, so I made sure to double check my NOAA data to make sure that I had not incurred a formatting issue and accidentally created an interesting data malformation. The code and the raw data looked normal! 
+
+After reading the Dickson article from 1976, I am struggling to draw a firm conclusion. The bounce from high levels of warmth to extreme cold then back to high levels of warmth again were mirrored in data from other cities in the Eastern Atlantic. This makes me think that (like Dickson said) a pressure system had to be dipping much further south than usual to get a number of southern cities that cold. I feel that this is the only thing I can conclude with mild certainty, only because I am not a meteorologist or climatologist— and having been presented with little scientific literature, I have to agree with the claims made by Dickson. 
+
+New Orleans experienced a historic cold spell between the 1950’s and the 1980’s, and there’s very little climate scientists know about it! New Orleans is only getting hotter after this cold anomaly, so I think that finding a the reasons for the dip in temperature could be helpful in our quest to understand how the earth regulates itself. As I continue to learn more about modeling climate data and attempting to analyze how climate change models are effected by the constantly morphing climate, I think I will return to this data set and dive deeper. I think creating a temperature frequency model using the Fourier Transform method (a method used in electrical engineering) could be a new and helpful perspective on this New Orleans model.
+
+![Courtesy: EPA “The number of days reaching temperatures over 95°F in the Southeast is projected to increase during this century. This graph compares historic patterns from 1971-2000 to future estimates for 2041-2070 under a scenario with high greenhouse gas emissions. Adapted from: USGCRP (2014)”](historical climatenola.png)
+
+
+End References: 
+
+Henderson Kg and Ra Muller. 1997. Extreme Temperature Days in the South-Central United States. Clim Rsrch, 8:151–162.
+
+Dickson, R. 1976. North American Influences on the Circulation and Climate of the North Atlantic Sector. Mon Wthr Rev. 24(4): 265.
+
+
+
+
+
+
+
