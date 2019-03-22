@@ -13,8 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 # 
-```{r,results="hide", echo=FALSE  }
-filepath="EmilyKuhn_Santabarbara_data.csv"
+```{r,results="hide", echo=FALSE }
+filepath= "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/EmilyKuhn_Santabarbara_data.csv"
 
 climate_data = read.csv(filepath)
 head(climate_data)
@@ -47,8 +47,8 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],
-ty='l', xlim=c(1893, 2020), ylab="Max Temp (C)")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04"])
+ty='l' xlim=c(1893, 2020), ylab="Max Temp (C)")
 April.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
 summary(April.lm)
 
@@ -69,38 +69,40 @@ TMAXresult <- NA
 library(xtable)
 
 ```
+Figure 1: Temperature changes in Santa Barbara during the month of April from 1893 up until the present.
 
 
-This graph shows the average temperature change in Santa Barbara during the month of April. The positive slope of 0.012 indicates that average temperature is increasing at a rate of about 1 degree per every century. We know that this is significant data because the P-value is less than 5%
+The positive slope of 0.012 indicates that average temperature is increasing at a rate of about 1 degree per every century. We know that this is significant data because the P-value is less than 5%
 
 # Wildfire Acres Burned
-Next, I wanted to see if over time there would be an indication of increased intensity in Santa Barbara wildfires. So I used the wildfire data (Hazard Mitigation Plan 2017) to graph the number of acres burned in the  major fires recorded since 1920. 
+Next, I created another graph to test whether there would be an indication of increased intensity in Santa Barbara wildfires over time. I used the wildfire data (Hazard Mitigation Plan 2017) to graph the number of acres burned in the  major fires recorded since 1920. 
 
 ```{r,results="hide", echo=FALSE  }
-firefile = "WildfireAcres.csv"
+firefile = "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/WildfireAcres.csv"
 wildfires = read.csv(firefile)
-
+wildfires$AcresT=wildfires$Acres.Burned/1000
 str(wildfires)
-plot(Acres.Burned ~ Year, data= wildfires)
+plot(AcresT~ Year, data= wildfires, las=1, ylab = "Acres (thousands)")
 
-wildfires.lm = lm(Acres.Burned ~ Year, data= wildfires)
+wildfires.lm = lm(AcresT ~ Year, data= wildfires)
 summary(wildfires.lm)
 abline(coef(wildfires.lm))
 
 
 
 ```
+Figure 2: Number of acres burned from wildfires in Santa Barbara County between the 1920s and the 2000s.
 
-Unfortunately, the data had so much variance in the number of acres burned per year that there was no real relationship found. 
+The data had so much variance in the number of acres burned per year that there was no real relationship found between time and acres burned.  
 
-However, I did notice that there seemed to be more fires in recent years, so I decided to graph the instances of major wildfires to see if they would show a significant increase since 1920. 
+However, there seemed to be an observable increase in the number of fires as time went on, so I decided to graph the instances of major wildfires to see if they would show a significant increase since 1920. 
 
 # Wildfire Instances
 This data did indeed indicate a significant relationship and a stark increase in the the number of fires that ocurred each year. The slope of 0.083 indicates that in the 2000s there is estimated to be thirteen times the number of wildfires that ocurred in 1920. The R squared value (0.6421) indicates that about 64% of the variance in the data is explained by the line and the P-value of 0.0094 indicates that the data is significant. 
 
 ```{r,results="hide", echo=FALSE}
 
-filerangepath= "WildfireRanges.csv"
+filerangepath= "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/WildfireRanges.csv"
 ranges=read.csv(filerangepath)
 
 str(ranges)
@@ -112,6 +114,7 @@ abline(fires.lm, col="red")
 summary(fires.lm)
 
 ```
+Figure 3: Number of major wildfires in Santa Barbara County from the early 1900s to the early 2000s.
 
 # Conclusion
 
@@ -124,7 +127,7 @@ If I had more time, I would've found and graphed more data that could corroborat
 
 # Sources
 
-Ainsworth J, Doss TA. 1995. Natural History of Fire & Flood Cycles.
+Ainsworth J, Doss TA. 1995. Natural History of Fire & Flood Cycles. [blog]. California Coastal Commission. [Accessed 2019 March 13] https://www.coastal.ca.gov/fire/ucsbfire.html 
 
 2019. National Oceanic and Atmospheric Administration. Accessed 2019.
 
