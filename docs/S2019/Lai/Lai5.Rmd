@@ -1,0 +1,201 @@
+---
+title: "The  2013 Boulder Floods: Can We Attribute Specific Extreme Weather Events to Climate Change?"
+author: "Bailey Lai"
+date: "21 March 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r read NWT and NOAA data, include=FALSE}
+library(readr)
+C1_daily_precip <- read_csv("C1_daily_precip.csv")
+C1_daily_temp <- read_csv("C1_daily_temp.csv")
+D1_daily_temp <- read_csv("D1_daily_temp.csv")
+D1_daily_precip <- read_csv("D1_daily_precip.csv")
+Saddle_daily_temp <- read_csv("Saddle_daily_temp.csv")
+Saddle_daily_precip <- read_csv("Saddle_daily_precip.csv")
+NOAA <- read_csv("Lai_Boulder_Area.csv")
+```
+
+```{r my attempt at changing dates, include=FALSE}
+strDates <-as.character(NOAA$DATE)
+CYear1 <-as.Date(strDates[1:60719], "%m/%d/%Y") #1/1/1900 onward
+CYear2 = as.Date(strDates[60720:62190], "%Y-%m-%d") #1893-10-01 to 1899-12-31
+CYear3 = c(CYear1, CYear2) 
+CYear3[sample(1:62190, 10)] #sample 10 dates to see if they're all the same format: YYYY-MM-DD
+NOAA$NewDate <- CYear3
+```
+
+```{r separating NOAA data into three separate data frames for each of the 3 stations, include=FALSE}
+Boulder <- NOAA[ which(NOAA$STATION=='USC00050848'),]
+Boulder_14_W <- NOAA[ which(NOAA$STATION=='USW00094075'),]
+Coal_Creek_Canyon <- NOAA[ which(NOAA$STATION=='USC00051681'),]
+```
+###Were the 2013 Boulder Floods Exacerbated by Climate Change-Induced Increased Precipitation?
+  
+  
+![_**Figure 1.** A road washed out by an overflowing stream in the foothills of Boulder, September 2013 (Source: City of Boulder website)._](flood_banner.png) 
+  
+  
+For decades, climate scientists have warned the public of the effects of historic and present anthropogenic greenhouse gas emissions on global climate patterns. In the emerging field of attribution science, climatologists and meteorologists attempt to pinpoint direct causal relationships between global and regional climate change with the probability of specific extreme weather events like the Boulder floods. Yet the scientific community continues to struggle to convey how climate change leads to an increase in regional natural disasters to the general public. Along with the politicized nature of climate science in America, the media in the United States has been quick to conflate or dismiss potential relationships between short-term weather-induced natural disasters with long-term global climatic patterns. The devastating September 2013 rainstorm and floods in Colorado became a prime example of such premature conclusions.   
+  
+In one week in the middle of September 2013, news of heavy rain and flooding along the Front Range Corridor of Colorado dominated national headlines. The rainstorm hit the Rocky Mountain foothills of Boulder County particularly hard: in one week the area received one of the largest continuous volume of precipitation since meteorological records began. From the 9th to the 16th of September, Boulder received 17.15 inches of rain, accounting for 86% of the rain that would normally be distributed over a year. (Brennan and Aguilar 2013; CCC 2013). Three days after the deluge began, the county received over 10 inches in just one day, the highest in recorded history (Brennan and Aguilar 2013; CCC 2013). Ensuing floods killed 4 people in the county, injured dozens and caused the evacuation of nearly 2,000 residents by road and helicopter (Brennan and Aguilar 2013). Overflowing waters in the region's waterways destroyed 345 homes and damaged 557 homes, and caused over a billion dollars in property and economic damage (Brennan and Aguilar 2013; Figures 1 & 2). In the aftermath, FEMA declared the entire county a disaster zone, and public and private reconstruction efforts around the county continued for years.
+  
+  
+![_**Figure 2.** A bridge collapse in Lafayette, CO causes three cars to fall into a creek on 13 September 2013 (Source: Cliff Grassmick of Daily Camera)._](Bridge_out_car_in_creek.png) 
+  
+  
+A year after the floods, local newspaper Daily Camera declared “2013’s flood-triggering rains not caused by climate change” (Brennan 2014). This bold claim was based on a local study whose model predicted a lower probability of increased precipitation in Northeast Colorado as a result of anthropogenic-induced warming (Hoerling et al. 2014). They focused on two thirty-year periods, the years 1871-1900 and 1984-2013, but do not explain why they selected these two thirty-year periods.
+  
+However, other attribution science researchers What attribution science researchers focused on was the fact that much of the humid air causing the floods came from two concurrent hurricanes on Mexico's east and west coasts. In mid-September 2013, sea surface temperature around Mexico were the highest globally and likely exacerbated by anthropogenic climate change, fueling Hurricanes Manuel and Ingrid on the Gulf of Mexico and Gulf of California (Trenberth et al. 2015). Fast-moving humid air from the two hurricanes moved north and clashed with a dry cold front above Colorado, creating the conditions for what the *Daily Camera* called a "1000-year rain and 100-year flood" (Brennan and Aguilar 2013; Brennan 2014). One later study concluded anthropogenic-induced sea surface warming had increased the historic rainfall up to 30% in 2013 when compared to regional climate models with anthropogenic variables removed (Pall et al. 2017; Brennan 2017). As seen in the 2013 Boulder floods, the attribution of climate change to any single extreme weather event continues to incite immense scientific discussion.
+  
+  
+####What are the aims and objectives of this study?
+  
+  
+Using the 2013 Boulder floods as a case study, I wanted to test whether larger regional climate change in Colorado and climate change around the world could be measured by short-term conditions like daily temperatures and precipitation in the Boulder area. Because daily precipitation is highly variable, I use the daily summaries to create monthly averages for September instead. I hypothesized the six climate stations increase in daily maximum temperatures over time and increase in monthly average precipitation over time. To test the plausibility of this alternative hypothesis, I test whether the null hypothesis (that daily maximum temperature and/or precipitation will not increase) can be rejected. 
+  
+  
+  
+###Methodology: How Did I Conduct My Study?
+
+For this study, I chose six sites (Table 1; Figure 3) based on their location within the Boulder Creek watershed ("Boulder Area" 2013; USGS [date unknown]). I reviewed daily maximum temperature and precipitation summaries from three climate stations obtained from the National Oceanic and Atmospheric Administration's online database of daily summaries from the Global Historical Climate Network (NOAA GHCN 2019). In days where data is missing, NOAA omits the data rather than estimating with a model. I also reviewed three climate stations from the site of the Niwot Ridge Long Term Ecological Research program (NWT LTER [date unknown]) close to the headwaters of the Boulder Creek watershed (Table 1, Figures 3 and 4). In the Niwot Ridge LTER data, "various circumstances" required the data compilers to estimate daily summaries for days with missing values in each station's daily summaries (NWT LTER [date unknown]).
+  
+  
+_**Table 1:** Climate stations analyzed for daily maximum temperatures and daily precipitation_
+  
+  
+Climate Station | Daily maximum Temperature Start/End Date | Daily Precipitation Start/End Date | Altitude (m) |  Agency/Program
+--------------- | --------------- | --------------- | --------------- | ---------------
+1. [D-1](http://niwot.colorado.edu/data/climate/d1-meteorological-data)                | 1952-10-01 to 2017-12-31 | 1964-10-01 to 2017-12-31 | 3739 | NWT LTER
+2. [Saddle](http://niwot.colorado.edu/data/climate/saddle-meteorological-data)         | 1981-07-09 to 2017-12-31 | 1981-07-31 to 2019-01-01 | 3528 | NWT LTER
+3. [C-1](http://niwot.colorado.edu/data/climate/c1-meteorological-data)                | 1952-10-01 to 2017-12-31 | 1952-10-01 to 2017-12-31 | 3022 | NWT LTER
+4. [USW00094075 - Boulder 14 W](https://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:USW00094075/detail) | 2003-09-28 to 2019-02-11 | 2003-09-28 to 2019-02-11 | 2996 | NOAA GHCN
+5. [USC00051681 - Coal Creek Canyon](https://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:USC00051681/detail) | 1984-07-01 to 2018-12-31 | 1984-07-01 to 2018-12-31 |  2728 | NOAA GHCN
+6. [USC00050848 - Boulder](https://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:USC00050848/detail) | 1893-10-01 to 2019-02-11 | 1893-10-01 to 2019-02-11 | 1672 | NOAA GHCN
+  
+  
+![_**Figure 3.** Topographic of climate station locations with corresponding numbers (#3 hidden behind #4). Map created via ArcGIS Online._](boulder_stations_map.png)
+  
+  
+![_**Figure 4.** North-facing side elevation of NWT climate station locations, or numbers 1-3 in Figure 3. (Source: NWT LTER website). _](NWT_station_elev_map.png)
+  
+Statistical analysis was conducted using R (CRAN 2019). I used a linear regression model for the daily maximum temperature and precipitation of each site to test whether the historical data has an increase or decrease, how much of the variability in the data can be explained by the model, and whether such results are statistically significant.  
+  
+  
+  
+###Is Daily maximum Temperature and Monthly Precipitation Correlated?   
+Two of the three NWT stations, Saddle and C-1, and two of the three NOAA climate stations, Boulder 14 W and Boulder, had statistically significant increases in daily maximum temperature over time (Table 2). Four stations' daily maximum temperature increased 3.37°C to 8.72°C per 100 years (adjusted R^2^ = 0.001 to 0.004; p-value = <0.001 to 0.002). In contrast, daily maximum temperatures at D-1 Canyon decreased -1.4°C per 100 years (adjusted R^2^=0.001; p-value=<0.001).
+  
+  
+_**Table 2:** Linear regression model of daily maximum temperatures_
+
+Climate Station | change in maximum temperature per 100 years (°C) | Adjusted R^2^ | p-value | Statistical significance?
+--------------- | ----------- | ------------- | ------------ | ---------------
+1. D-1               | -1.35 | 0.001   | <0.001 | yes
+2. Saddle            | +4.56 | 0.002    | <0.001 | yes
+3. C-1               | +3.37 | 0.004   | < 0.001 | yes
+4. Boulder 14 W      | +8.72 | 0.001 | 0.002 | yes
+5. Coal Creek Canyon | +1.33 | 0.0001 | 0.124 | no
+6. Boulder           | +1.73 | 0.004 | < 0.001 | yes
+  
+  
+Just one of the six stations, D-1, have a statistically significant increase in precipitation over time (Table 3).  In five of the six stations' precipitation models, including the statistically significant model for D-1, the adjusted R^2^ was less than zero (Table 3). This means these linear models are a worse predictor of the data's variation than the null hypothesis, regardless of the models' p-values. The adjusted R^2^ for all sites' daily temperature and precipitation are below 0.02, meaning even the statistically significant linear models for temperature explained less than 2% of the variability in the data.
+  
+  
+_**Table 3:** Linear regression model of daily precipitation_
+
+  
+Climate Station | precipitation change per 100 years (mm) | Adjusted R^2^ | p-value | Statistical significance?
+--------------- | ----------- | ------------- | ------------ | ---------------
+1. D-1               | +7.64 | -0.018 | 0.016 | yes
+2. Saddle            | +50.6 |-0.013  | 0.476 | no
+3. C-1               | -7.34 |  -0.014 | 0.758 | no
+4. Boulder 14 W      | +100. | -0.061 | 0.719 | no
+5. Coal Creek Canyon | +33.7 | -0.023 | 0.637 | no
+6. Boulder           | +20.1 | +0.012 | 0.123 | no
+  
+  
+I provide the monthly sum precipitation graph I created for Boulder station below (Figure 5), showing the sums of daily precipitation each September from the start of records to the present and the corresponding linear regression model. The large variability in monthly precipitation by year makes it difficult to discern any pattern beyond the mean. The height of the 2013 floods is clearly visible as the tallest spike on the right side of Figure 5. I purposely omit the graphs of the other stations to prevent cluttering up the results section.
+
+
+```{r Boulder monthly PRCP graph, echo=FALSE}
+Boulder$Month = format(as.Date(Boulder$NewDate), format = "%m") 
+Boulder$Year = format(Boulder$NewDate, format="%Y")
+Boulder_MonthlyPRCPsum = aggregate(PRCP ~ Month + Year, Boulder, sum)
+Boulder_MonthlyPRCPsum$YEAR = as.numeric(Boulder_MonthlyPRCPsum$Year)
+Boulder_MonthlyPRCPsum$MONTH = as.numeric(Boulder_MonthlyPRCPsum$Month)
+Boulder_Sep_PRCP <- aggregate 
+##plot
+plot(PRCP~YEAR, data=Boulder_MonthlyPRCPsum[Boulder_MonthlyPRCPsum$Month=="09",], xlim=c(1890, 2020), main="Figure 5. September Precipitation by Year, Boulder Station", xlab = "Date (Year)", ylab = "Total Precipitation in September (mm)", ty='l', las=1) 
+Boulder_PRCP.lm <- lm(PRCP~YEAR, data=Boulder_MonthlyPRCPsum[Boulder_MonthlyPRCPsum$Month=="09",]) 
+abline(coef(Boulder_PRCP.lm), col="red")
+```
+  
+  
+I found the six stations' varying results intriguing, since I chose all six based on their geographic proximity and location around the Boulder watershed. Rather than the expected consistent trend among all stations, each station's daily temperatures and precipitation seemed to trend in different directions. 
+  
+  
+  
+###Interpreting Flood Probability with Weather Station Data and Other Methods
+These results highlight how wide variations in local, short-term collection of weather data are unreliable predictors of larger climate trends. One noteworthy comparison is between the C-1 weather station data from Niwot Ridge LTER and Boulder 14 W data from NOAA's GHCN database. The two stations are within 100 meters of each other (Figure 3), making me assume the maximum temperature and precipitation linear models would be very close. Both C-1 and Boulder 14 W have statistically significant increases in the model, but I find it surprising that there is a difference of 5.35°C per 100 years between the two (Table 2). Looking at only daily weather does not full encapsulate changes in seasons over years and decades, nor does it take into account atmospheric conditions such as changing global wind currents.
+  
+The time range and availability of data from the LTER and NOAA websites vary widely, and future studies should take this into account. For example, daily summaries from Boulder (USC00050848) began October 1893, whereas daily summaries from Coal Creek Canyon (USC00051681) began July 1984. Researchers may create models for a station's missing daily data based on the topography and distance of other nearby stations in Niwot Ridge that recorded data. They may also create models for obtaining proxy data from tree rings or local geomorphology. Combining monthly and yearly models obtained from the daily data with global wind and current patterns may more accurately attribute long-term temperature and precipitation changes.
+  
+Local preparedness for future floods must take into account a variety of physical factors on top of daily weather conditions (Ternberth et al. 2015; Pall 2017). One way of addressing these issues may be modeling predicted future water flow of streams converging downstream into urbanized areas. After analyzing peak water flow in 15 streams affected by the 2013 Boulder floods, Yochum and Moore (2013) found flooding varied greatly depending on factors like stream depth, stream width, and surrounding stream bank topography. In Boulder County, multiple streams running down the Front Range mountain valleys and converge into the city of Boulder, concentrating flooding along areas closest to the waterways. Impervious surfaces, reservoir maintenance, and other elements of built-up environments can affect which areas will be most predisposed to future flood events. 
+  
+Communities most affected by local and regional precipitation changes have first-hand knowledge on how climate-induced precipitation changes affect their lives (Gustafson et al. 2018). Many Boulder residents have voiced concerns with funding cuts to FEMA and other public agenices. In 2018, a re-interpretation of FEMA rules threatened to remove up to $70 million in reimbursements for Boulder County's flood recovery projects, even as officials estimated up to $500 million would be needed to rebuild to the highest flood-resistant standards (Lounsberry 2018). Even when government money appears, an NPR investigation found richer and whiter communities receive disproportionately the most federal aid for natural disasters, yet poorer communities and communities of color often bear the brunt of economic and livelihood impacts (Hersher and Benincasa 2019). This is worrisome because the study also found an increasing number of natural disasters afflicting our country in the past century. Our society's unequal response to different groups affected by natural disasters creates a major environmental justice issue that will grow more pressing as natural disasters increase in the 21st century.
+  
+  
+  
+###Attributing Extreme Weather Events in the Future
+Observing daily temperature and precipitation changes in the Boulder Creek watershed limited the scope and applicability of my study. Though four of the six climate stations saw a meaningful increase in daily maximum temperature, none saw a meaningful increase in monthly precipitation in September, the month the 2013 floods happened. However, I show how the range of data within a local area can vary considerably, despite close proximity. This narrow focus on daily weather can obscure the larger trends of regional climate over long periods of time. Arguments in the climate debate that rely exclusively on daily weather conditions should be taken with high caution due to its inability to accurately reflect larger trends. At the same time, local accounts of how long-term climate change affect short-term conditions in weather should be taken into account rather than dismissed.
+  
+The unusual September 2013 rainstorm across Colorado created once-in-a-lifetime floods across the highly populated foothills of Boulder County. As global anthropogenic climate change continues, scientists warn such unusual regional events may become increasingly common. Attribution science will play a prominent role finding relationships between long-term climate with short-term extreme weather. Establishing a relationship between global precipitation patterns and the future likelihood of floods like the disastrous Boulder floods will help us prepare for a more unpredictable future. We must incorporate all community voices into attribution science so we can best adapt for increasing "natural" disasters in an equitable manner. 
+  
+  
+  
+###References
+  
+2013 Flood maps. [Internet]. c2013. Boulder, CO: City of Boulder, Colorado; [cited 2019 Feb 18]. Available from https://bouldercolorado.gov/flood/flood-maps
+  
+Brennan C. [Internet]. 2014 Sep 29. Boulder researcher: 2013’s flood-triggering rains not caused by climate change.  Boulder, CO: Daily Camera; [cited 2019 Feb 24]. Available from http://www.dailycamera.com/news/boulder-flood/ci_26626817/boulder-researcher-2013s-flood-triggering-rains-not-caused
+  
+Brennan C. [Internet]. 2015 Jun 22. Boulder scientist ties severity of Colorado’s 2013 flood to climate change. Boulder, CO: Daily Camera; [cited 2019 Feb 24] Available from http://www.dailycamera.com/news/boulder-flood/ci_28360775/boulder-scientist-ties-severity-colorados-2013-flood-climate
+  
+Brennan C. [Internet]. 2017 Jul 31. Study promotes link between climate change, intensity of Boulder rains in 2013 flood. Boulder, CO: Daily Camera; [updated 2017 Jul 31; cited 2019 Feb 24]. Available from http://www.dailycamera.com/boulder-county-news/ci_31177629/study-promotes-link-between-climate-change-intensity-boulder
+  
+Brennan C and Aguilar J. [Internet]. 2013 Sep 21. Eight days, 1,000-year rain, 100-year flood. Boulder, CO: Daily Camera; [updated 2013 Sep 22; cited 2019 Feb 18]. Available from http://www.dailycamera.com/news/boulder-flood/ci_24148258/boulder-county-colorado-flood-2013-survival-100-rain-100-year-flood
+  
+[CCC] Colorado Climate Center. [Internet]. 2013. Colorado flood 2013. Fort Collins, CO: Colorado State University; [cited 2019 Feb 18]. Available from http://coflood2013.colostate.edu/index.html
+  
+Hersher R and Benincasa R. [Internet]. 2019 Mar 5. How federal disaster money favors the rich. NPR; [cited 2019 Mar 15]. Available from https://www.npr.org/2019/03/05/688786177/how-federal-disaster-money-favors-the-rich
+  
+Hoerling M, Wolter K, Perlwitz J, Quan X, Eischeid J, Wang H, Schubert S, Diaz H, Dole R. [Internet]. 2014. Northeast Colorado extreme rains interpreted in a climate change context. Explaining extreme events of 2013 from a climate perspective; B Am Meterol Soc. [cited 2019 Feb 25]; 95(9): S15-S18. 
+  
+Gustafson S, Cadena AJ, Hartman P. [Internet]. 2018. Adaptation planning in the Lower Mekong Basin: merging scientific data with local perspective to improve community resilience to climate change.  Clim Dev; [cited 2019 Feb 17]; 10(2): 152–166. 
+    
+Lounsberry S. [Internet]. 2018 Nov 5. Congressmen call on FEMA to reimburse Boulder, Larimer flood recovery projects. Boulder, CO: Daily Camera; [updated 2018 Nov 6; cited 2019 Feb 18]. Available from http://www.dailycamera.com/boulder-county-news/ci_32252902/legislators-call-fema-reimburse-boulder-larimer-flood-recovery
+  
+Nash LL, & Gleick PH. 1991. Sensitivity of streamflow in the Colorado Basin to climatic changes. J Hydrol [Internet]. [cited 2019 Feb 24]; 125(3): 221–241.
+  
+[NOAA GCHN] National Oceanic and Atmospheric Administration - Global Historical Climatology Network. [Internet]. 2019. Global Historical Climatology Network (GHCN). USA: NOAA; [updated 2019 Feb 26; cited 2019 Feb 26]. Available from https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/global-historical-climatology-network-ghcn 
+  
+[NWT LTER] Niwot Ridge Long Term Ecological Research. [Internet]. [date unknown]. Boulder, CO: University of Colorado. [cited 2019 Feb 18]. Available from http://niwot.colorado.edu/
+  
+Pall P, Patricola CM, Wehner MF, Stone, DA, Paciorek CJ, Collins WD. 2017 Sep. Diagnosing conditional anthropogenic contributions to heavy Colorado rainfall in September 2013. Weather Clim Extr [Internet]. [cited 2019 Feb 25]; 17: 1–6.
+
+R Core Team. 2017. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www. R-project.org/. 
+  
+Trenberth KE, Fasullo JT, Shepherd TG. 2015. Attribution of climate extreme events. Nat Clim Change [Internet]. [cited 2019 Feb 18]; 5(8): 725–730.
+  
+Watershed. [Internet]. 2013. Boulder, CO: Boulder Area Sustainability Information Network; [updated 2013 Dec 18; cited 2019 Feb 24]. Available from http://bcn.boulder.co.us/basin/watershed/
+  
+[USGS] US Geological Survey. [Internet]. 2017. USGS water resources links for HUC 10190005 - St. Vrain. US Geological Survey; [updated 2017 Dec 30; cited February 25, 2019]. Available from https://water.usgs.gov/lookup/getwatershed?10190005/www/cgi-bin/lookup/getwatershed
+  
+Yochum SE and Moore DS. [Internet]. Colorado front range flood of 2013: Peak flow estimates at selected mountain stream locations.  Final technical report 2013 Dec 13. Colorado: USDA NRCS; [cited 2019 Feb 26]. 38 p.
