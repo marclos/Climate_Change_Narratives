@@ -58,7 +58,7 @@ The locations of the three weather stations in relation to downtown Chicago are 
 
 <div class="a">
 ```{r annualminbarrington_plot, echo=FALSE, results='hide' }
-climate_data<-read.csv( "claireyi_climatedata_chicago.csv")
+climate_data<-read.csv( "Yi_Chicago.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$Year <- as.Date(strDates, "%m/%d/%Y")
 
@@ -120,7 +120,7 @@ As the overall temperature warms up throughout the past few decades, the UHI eff
 
 <div class="a">
 ```{r julybarrington_plot, echo=FALSE, results='hide'}
-climate_data<-read.csv( "claireyi_climatedata_chicago.csv")
+climate_data<-read.csv( "Yi_Chicago.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
