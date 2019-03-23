@@ -5,12 +5,12 @@ date: "3/22/2019"
 output: html_document
 ---
 
-# Why I Chose this Topic
+# The Thomas Fire and Positive Feedback Loops
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
- After witnessing firsthand the incredible destruction that the Thomas Fire brought to my hometown, I became determined to bring awareness to the correlation between climate change, extreme weather, and natural disasters. The Santa Barbara County Multi-Jurisdictional Hazard Mitigation Plan (Hazard Mitigation Plan 2017) categorizes Wildfire as a “high probability/medium impact hazard.” In this blog, I will compare climate data from the National Oceanic and Atmospheric Administration (NOAA) with wildfire data from the Hazard Mitigation Plan to asses whether climate change is exacerbating natural hazards such as wildfire. I will attempt to prove my hypothesis that climate change is causing wildfires in Santa Barbara to become more frequent and intense.
-
+ For weeks after the Thomas Fire began, the sky in Santa Barbara appeared to be yellow, ashes drifted down to settle on the tops of cars, and those who could help it didn’t dare go outside without masks because of the hazardous air quality (Thomas Fire Creating ‘Hazardous’ Air-Quality Conditions in Santa Barbara 2017).
 
 # SB Climate Since April 1893
 ```{r,results="hide", echo=FALSE }
@@ -21,10 +21,24 @@ head(climate_data)
 str(climate_data)
 
 ```
+##(IMAGE OF FIRE/AIR)
 
-Santa Barbara is a coastal city in California that is vulnerable to a number of natural hazards that could be exacerbated by climate change. Some of the most impactful and likely of these events include drought/water shortage, flooding/sea level rise, and wildfires (Hazard Mitigation Plan 2017).
+Santa Barbara is a coastal city in California that is vulnerable to a number of natural hazards that could be exacerbated by climate change. Some of the most impactful and likely events include drought/water shortage, flooding/sea level rise, and wildfires (Hazard Mitigation Plan 2017). For the purpose of this blog, I will focus on understanding the relationship between climate change and wildfires in Santa Barbara County because they are categorized as a “high probability/medium impact hazard.”
 
-Although I didn't have enough time to thoroughly show a correlation between some of these threats and climate change, I will briefly discuss the inferences that I have made based on my research.
+##(feedback graphic)
+
+After witnessing firsthand the incredible destruction that the 2017 Thomas Fire brought to Santa Barbara and Ventura County, I began researching the correlations between climate change, extreme weather, and natural disasters. The United Nation’s “Ecosystem Management, Climate Change” (2011) and “Migration, Environment, And Climate Change” (2018) convinced me that the 2014-2017 Santa Barbara drought, the Thomas Fire, and the Montecito Floods were all a part of a larger positive feedback loop that had been initiated and exacerbated by climate change.
+
+##(Hazard table)
+
+
+##Wildfire Methodology
+I will prove my hypothesis that there is a relationship between climate change and wildfire in Santa Barbara County by comparing climate data from the National Oceanic and Atmospheric Administration (NOAA) with wildfire data from the Hazard Mitigation Plan. I will use this data to answer my driving question: Is climate change is causing wildfires in Santa Barbara to become more frequent and intense?
+
+##SB April Climate since 1893
+
+The first step that I took towards proving my hypothesis about wildfires was graphing Santa Barbara climate data that had been recorded from 1820 to the present. 
+
 
 ```{r, results="hide", echo=FALSE }
 # We need to create a new date format -- the default is not a useful format as demonatrated with str(), structure of dataframe...
@@ -43,7 +57,7 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",], las=1, 
 ty='p', xlim=c(1893, 2020), pch=20, ylab="Max Temp (C)") # several commas missing. Also, I changed to points, I think that is more appropriate. pch = is the symbol type. 
 April.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
 summary(April.lm)
@@ -57,7 +71,7 @@ MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 (MonthlyTMINMean)
 Months=c("January", "February", "March", "April",
 "May", "June", "July", "August", "September", "October",
-"November", "December")
+"November", "December") 
 par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
 TMAXresult <- NA
 
@@ -68,8 +82,7 @@ library(xtable)
 
 Figure 1: Temperature changes in Santa Barbara during the month of April from 1893 up until the present.
 
-
-The positive slope of 0.012 indicates that average temperature is increasing at a rate of about 1 degree per every century. We know that this is significant data because the P-value is less than 5%
+This graph shows the average temperature change in Santa Barbara during the month of April. The positive slope of 0.012 indicates that average temperature is increasing at a rate of about 1 degree per every century (P = 0.019).
 
 # Wildfire Acres Burned
 Next, I created another graph to test whether there would be an indication of increased intensity in Santa Barbara wildfires over time. I used the wildfire data (Hazard Mitigation Plan 2017) to graph the number of acres burned in the  major fires recorded since 1920. 
@@ -88,14 +101,17 @@ abline(coef(wildfires.lm))
 
 
 ```
+
 Figure 2: Number of acres burned from wildfires in Santa Barbara County between the 1920s and the 2000s.
 
 The data had so much variance in the number of acres burned per year that there was no real relationship found between time and acres burned.  
 
 However, there seemed to be an observable increase in the number of fires as time went on, so I decided to graph the instances of major wildfires to see if they would show a significant increase since 1920. 
 
+
 # Wildfire Instances
-This data did indeed indicate a significant relationship and a stark increase in the the number of fires that ocurred each year. The slope of 0.083 indicates that in the 2000s there is estimated to be thirteen times the number of wildfires that ocurred in 1920. The R squared value (0.6421) indicates that about 64% of the variance in the data is explained by the line and the P-value of 0.0094 indicates that the data is significant. 
+There was a stark increase in the the number of annual fires indicated by the  data. The slope of 0.083 indicates that in the 2000s there was about thirteen times the number of wildfires that occurred in 1920. The R squared value (0.6421) indicates that about 64% of the variance in the data is explained by the line and the P-value of 0.0094 indicates that the data is significant.
+
 
 ```{r,results="hide", echo=FALSE}
 
@@ -105,31 +121,46 @@ ranges=read.csv(filerangepath)
 str(ranges)
 fires.lm = lm(Fires~Time,data=ranges)
 
-plot(Fires~Time,data=ranges)
+plot(Fires~Time,data=ranges, las=1)
 abline(fires.lm, col="red")
 
 summary(fires.lm)
 
 ```
+
 Figure 3: Number of major wildfires in Santa Barbara County from the early 1900s to the early 2000s.
 
 # Conclusion
 
-The Thomas fire burned a total of 281,893 acres (CalFire.calgov), making it the largest fire in Califorinia's recorded history. This came on the heels of the 2012–2014 California drought which was cumulatively the worst unbroken drought of the last millennium (Hazard Mitigation Plan, 2017). Though the state of California declared the drought over in 2014, Santa Barbara remained in drought conditions until 2017 with its two main water sources at 14.9% capacity 0.2% capacity in 2016 (Hazard Mitigation Plan, 2017). Although I was not able to find comprehensive research on whether the drought contributed to the severity of the Thomas Fire, I presume that the link between hotter temperatures and increased wildfire instances is the extended drought conidtions. I suspect that drought caused an accumulation of dry vegetation that acted as fuel for the fire. To further the damaging positive feedback loop that a warming climate has imposed on Santa Barbara county, post fire landscapes in the Chapparal biome are subject to significantly increased erosion rates capable of producing large destructive debris flows (Natural History of Fire & Flood Cycles, 1995). This became evident when the post Thomas fire storms were immediately followed by devastating floods in Monteciteo.
+The Thomas fire burned a total of 281,893 acres (CalFire.calgov 2018), making it the largest fire in California's recorded history. This came on the heels of the 2012–2014 California drought which was cumulatively the worst unbroken drought of the last millennium (Hazard Mitigation Plan, 2017). Though the state of California declared the drought over in 2014, Santa Barbara remained in drought conditions until 2017 with its two main water sources at 14.9% capacity 0.2% capacity in 2016 (Hazard Mitigation Plan 2017). 
 
-Globally we’ve seen about a 330% increase in hurricanes, droughts, wildfires and extreme storms since 1980 (Drought, Fire, and Flood: Climate Change and Our New Normal 2018) The consequences of these extreme weather
-events have disastrous impacts on the communities where they take place and can often trigger a positive feedback loop of disasters as we have seen with Santa Barbara County. 
+Although wildfires in Santa Barbara County may not be showing an obvious increase in their intensity (by number of acres burned), I was able to prove my hypothesis by showing that there has been an observable increase in the number of major wildfires that have occured since 1893. These two conclusions are also validated by the fact that higher frequency burning causes fires to be less severe and the resultant emissions to be lower (Hurteau 2019). 
 
 
-# Sources
+The main issue I faced was with finding reliable data that would help me to expand upon anthropogenic activity factors such as land‐cover change, population, and fire suppression that also play a role in attributing wildfire with climate change (Abatzoglou 2019). To further the damaging positive feedback loop that a warming climate has imposed on Santa Barbara County, post fire landscapes in the Chaparral biome are subject to significantly increased erosion rates capable of producing large destructive debris flows (Natural History of Fire & Flood Cycles 1995). This factor was made evident when the post Thomas fire storms were immediately followed by devastating floods in Montecito. 
+
+Globally we’ve seen roughly a 330% increase in hurricanes, droughts, wildfires and extreme storms since 1980 (Drought, Fire, and Flood: Climate Change and Our New Normal 2018). We must take notice of these changes because they often have disastrous and long-lasting social, economic, and environmental impacts in the communities where they take place, as we have seen with the climate-induced positive feedback loop in Santa Barbara County.
+
+##Sources
+Abatzoglou, John T., A. Park Williams, and Renaud Barbero. 2019. "Global emergence of anthropogenic climate change in fire weather indices." Geophysical Research Letters 
 
 Ainsworth J, Doss TA. 1995. Natural History of Fire & Flood Cycles. [blog]. California Coastal Commission. [Accessed 2019 March 13] https://www.coastal.ca.gov/fire/ucsbfire.html 
-2019. National Oceanic and Atmospheric Administration. Accessed 2019.
+
+Hurteau, Matthew D., et al. 2019. "Vegetation-fire feedback reduces projected area burned under climate change." Scientific Reports 9.1, 2838.
+2019.National Oceanic and Atmospheric Administration.
 
 Santa Barbara County Office of Emergency Management. 2017. Santa Barbara County Multi-Jurisdictional Hazard Mitigation Plan.
- 
-UCSB Bren School of Environmental Science & Management, the Community
-Environmental Council, the Santa Barbara Foundation, and the Santa Barbara Museum of Natural History. 2018. Drought, Fire, and Flood: Climate Change and Our New Normal.
+
+UCSB Bren School of Environmental Science & Management, the Community Environmental Council, the Santa Barbara Foundation, and the Santa Barbara Museum of Natural History. 2018. Drought, Fire, and Flood: Climate Change and Our New Normal.
+
+Salvador Aruj, Roberto and Priotto, Guillermo. “Migration, Environment, And Climate Change; 
+Case Studies in South America.” International Organization for Migration.
+http://www.environmentalmigration.iom.int/migraci%C3%B3n-ambiente-y-cambio-clim%C3%A1tico-estudios-de-caso-en-am%C3%A9rica-del-sur Accessed 2 Nov. 2017.
+
+Chazalnoël, Mariam, Mach, Eva and Lonesco, Dina. “Extreme Heat and Migration.” 
+International Organization of Migration, 2017.
+http://publications.iom.int/books/extreme-heat-and-migration Accessed 23 Oct.
+
  
 
 
