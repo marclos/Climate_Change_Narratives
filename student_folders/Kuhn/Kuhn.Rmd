@@ -12,9 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
  After witnessing firsthand the incredible destruction that the Thomas Fire brought to my hometown, I became determined to bring awareness to the correlation between climate change, extreme weather, and natural disasters. The Santa Barbara County Multi-Jurisdictional Hazard Mitigation Plan (Hazard Mitigation Plan 2017) categorizes Wildfire as a “high probability/medium impact hazard.” In this blog, I will compare climate data from the National Oceanic and Atmospheric Administration (NOAA) with wildfire data from the Hazard Mitigation Plan to asses whether climate change is exacerbating natural hazards such as wildfire. I will attempt to prove my hypothesis that climate change is causing wildfires in Santa Barbara to become more frequent and intense.
 
 
-# 
-```{r,results="hide", echo=FALSE  }
-filepath="EmilyKuhn_Santabarbara_data.csv"
+# SB Climate Since April 1893
+```{r,results="hide", echo=FALSE }
+filepath= "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/EmilyKuhn_Santabarbara_data.csv"
 
 climate_data = read.csv(filepath)
 head(climate_data)
@@ -26,20 +26,8 @@ Santa Barbara is a coastal city in California that is vulnerable to a number of 
 
 Although I didn't have enough time to thoroughly show a correlation between some of these threats and climate change, I will briefly discuss the inferences that I have made based on my research.
 
-
-
 ```{r, results="hide", echo=FALSE }
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates,"%Y-%m-%d")
-
-```
-
-## SB April Climate since 1893
-The first step that I took towards proving my hypothesis about wildfires was graphing Santa Barbara climate data that had been recorded from 1820 to the present. 
-
-
-```{r, results="hide", echo=FALSE }
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Month = format(as.Date(climate_data$NewDate) format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
@@ -47,8 +35,8 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],
-ty='l', xlim=c(1893, 2020), ylab="Max Temp (C)")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04"])
+ty='l' xlim=c(1893, 2020), ylab="Max Temp (C)")
 April.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
 summary(April.lm)
 
@@ -70,37 +58,40 @@ library(xtable)
 
 ```
 
+Figure 1: Temperature changes in Santa Barbara during the month of April from 1893 up until the present.
 
-This graph shows the average temperature change in Santa Barbara during the month of April. The positive slope of 0.012 indicates that average temperature is increasing at a rate of about 1 degree per every century. We know that this is significant data because the P-value is less than 5%
+
+The positive slope of 0.012 indicates that average temperature is increasing at a rate of about 1 degree per every century. We know that this is significant data because the P-value is less than 5%
 
 # Wildfire Acres Burned
-Next, I wanted to see if over time there would be an indication of increased intensity in Santa Barbara wildfires. So I used the wildfire data (Hazard Mitigation Plan 2017) to graph the number of acres burned in the  major fires recorded since 1920. 
+Next, I created another graph to test whether there would be an indication of increased intensity in Santa Barbara wildfires over time. I used the wildfire data (Hazard Mitigation Plan 2017) to graph the number of acres burned in the  major fires recorded since 1920. 
 
 ```{r,results="hide", echo=FALSE  }
-firefile = "WildfireAcres.csv"
+firefile = "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/WildfireAcres.csv"
 wildfires = read.csv(firefile)
-
+wildfires$AcresT=wildfires$Acres.Burned/1000
 str(wildfires)
-plot(Acres.Burned ~ Year, data= wildfires)
+plot(AcresT~ Year, data= wildfires, las=1, ylab = "Acres (thousands)")
 
-wildfires.lm = lm(Acres.Burned ~ Year, data= wildfires)
+wildfires.lm = lm(AcresT ~ Year, data= wildfires)
 summary(wildfires.lm)
 abline(coef(wildfires.lm))
 
 
 
 ```
+Figure 2: Number of acres burned from wildfires in Santa Barbara County between the 1920s and the 2000s.
 
-Unfortunately, the data had so much variance in the number of acres burned per year that there was no real relationship found. 
+The data had so much variance in the number of acres burned per year that there was no real relationship found between time and acres burned.  
 
-However, I did notice that there seemed to be more fires in recent years, so I decided to graph the instances of major wildfires to see if they would show a significant increase since 1920. 
+However, there seemed to be an observable increase in the number of fires as time went on, so I decided to graph the instances of major wildfires to see if they would show a significant increase since 1920. 
 
 # Wildfire Instances
 This data did indeed indicate a significant relationship and a stark increase in the the number of fires that ocurred each year. The slope of 0.083 indicates that in the 2000s there is estimated to be thirteen times the number of wildfires that ocurred in 1920. The R squared value (0.6421) indicates that about 64% of the variance in the data is explained by the line and the P-value of 0.0094 indicates that the data is significant. 
 
 ```{r,results="hide", echo=FALSE}
 
-filerangepath= "WildfireRanges.csv"
+filerangepath= "/home/CAMPUS/ecka2018/Climate_Change_Narratives/student_folders/Kuhn/WildfireRanges.csv"
 ranges=read.csv(filerangepath)
 
 str(ranges)
@@ -112,20 +103,19 @@ abline(fires.lm, col="red")
 summary(fires.lm)
 
 ```
+Figure 3: Number of major wildfires in Santa Barbara County from the early 1900s to the early 2000s.
 
 # Conclusion
 
 The Thomas fire burned a total of 281,893 acres (CalFire.calgov), making it the largest fire in Califorinia's recorded history. This came on the heels of the 2012–2014 California drought which was cumulatively the worst unbroken drought of the last millennium (Hazard Mitigation Plan, 2017). Though the state of California declared the drought over in 2014, Santa Barbara remained in drought conditions until 2017 with its two main water sources at 14.9% capacity 0.2% capacity in 2016 (Hazard Mitigation Plan, 2017). Although I was not able to find comprehensive research on whether the drought contributed to the severity of the Thomas Fire, I presume that the link between hotter temperatures and increased wildfire instances is the extended drought conidtions. I suspect that drought caused an accumulation of dry vegetation that acted as fuel for the fire. To further the damaging positive feedback loop that a warming climate has imposed on Santa Barbara county, post fire landscapes in the Chapparal biome are subject to significantly increased erosion rates capable of producing large destructive debris flows (Natural History of Fire & Flood Cycles, 1995). This became evident when the post Thomas fire storms were immediately followed by devastating floods in Monteciteo.
 
-Globally we’ve seen roughly a 330% increase in hurricanes, droughts, wildfires and extreme storms since 1980 (Drought, Fire, and Flood: Climate Change and Our New Normal 2018) The consequences of these extreme weather
+Globally we’ve seen about a 330% increase in hurricanes, droughts, wildfires and extreme storms since 1980 (Drought, Fire, and Flood: Climate Change and Our New Normal 2018) The consequences of these extreme weather
 events have disastrous impacts on the communities where they take place and can often trigger a positive feedback loop of disasters as we have seen with Santa Barbara County. 
 
-If I had more time, I would've found and graphed more data that could corroborate my positive feedback loop theory of disaster further and strenghten my claim that a warming climate in Santa Barbara has contributed to more frequent and severe wildfires. 
 
 # Sources
 
-Ainsworth J, Doss TA. 1995. Natural History of Fire & Flood Cycles.
-
+Ainsworth J, Doss TA. 1995. Natural History of Fire & Flood Cycles. [blog]. California Coastal Commission. [Accessed 2019 March 13] https://www.coastal.ca.gov/fire/ucsbfire.html 
 2019. National Oceanic and Atmospheric Administration. Accessed 2019.
 
 Santa Barbara County Office of Emergency Management. 2017. Santa Barbara County Multi-Jurisdictional Hazard Mitigation Plan.
