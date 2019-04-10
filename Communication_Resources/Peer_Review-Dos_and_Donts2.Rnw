@@ -96,25 +96,9 @@ In the end, I suspect the best peer reviews include a combination of the three t
 <<echo=FALSE, results='hide'>>=
 # Randomziation for Peer Review
 
-roster <- c(  "51500",
-              "67593", 
-              "88736",
-              "87952",
-              "55340",
-              "33714",
-              "38360",
-              "Heather A. Thams",
-              "Chelsea D. Neill", 
-              "Kyle O. Olejniczak", 
-              "Ashley M. Quackenbush", 
-              "Michael W. Esgro", 
-              "Sarah E. Finstad", 
-              "Jessica Missaghian", 
-              "John F. Inman")
+input = read.csv("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/EA30SP19.csv")
 
-
-# Doesn't like this for some reason...
-roster = read.csv("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/EA30SP19Roster.csv")$Student
+roster = input$Student
 
 
 length(roster)
@@ -153,8 +137,18 @@ Review3 <- data.frame(Name= ThreeReviewer$Reviewer3name, Random3=ThreeReviewer$R
 
 combined <- merge(Review1, Review2, by.x="Name")
 #combined <- merge(combined, Review3, by.x="Name"); #combined
+str(input)
+assignments <- merge(combined, input[,c(3,5)], by.x="Name", by.y="Student")
+
+FirstMiddlename = sub('.*,\\s*', '', assignments$Name)
+assignments$Firstname = gsub( " .*$", "", FirstMiddlename)
+assignments$Lastname = gsub(",.*$", "", assignments$Name)
+
+
+#strsplit(as.character(assignments$Name), ",")[[2]][1]
+
 write.csv(ThreeReviewer[,c(1,6:7)], file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/PeerReviewers.csv")
-write.csv(combined, file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/PeerReviewedAssignments.csv")
+write.csv(assignments, file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/PeerReviewAssignments.csv")
 @
 
 Each student is assigned two random numbers (sent to you by email). Using these numbers, determine which author you will be reviewing. You might be reviewing a topic closely aligned with yours -- that's proably not ideal, but with a class this small, the changes are pretty high that this will happen -- in any case, try to be as fair as you can. 
@@ -175,7 +169,7 @@ Determine if the author states the question(s) and their objective. Determine ho
 
 \subsection{Submission Format and Naming Convention}
 
-Use the provided form (on the Sakai assignment too) for the peer review. Save and submit the form as a pdf, with the following naming convention -- where you cite the author and XXXX refers to your random number.
+Please write out your comments using a word processor. Save and submit the form as a pdf, with the following naming convention -- where you cite the author and XXXX refers to your random number.
 
 \smallskip
 \begin{center}
