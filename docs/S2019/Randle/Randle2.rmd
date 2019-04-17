@@ -1,0 +1,180 @@
+---
+title: " What Are The Environmental And Social Implications Of Climate Change And The Polar Vortex In Chicago?  "
+author: "Jasmine Randle"
+date: "2/11/2019"
+output: html_document
+---
+<style>
+body {
+    background-color: #FFEDBA;
+}
+
+div.a {
+  text-align: center;
+}
+
+.caption {
+    font-size: x-small;
+}
+</style>
+
+    
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+Chicago has always been known for its infamously cold winters. Yet when these frigid  winters reach extreme temperatures as low as 27 below zero˚ F; -2.77 C in January 1985 (CBS 2019), public health hazards dominate the news. However, are these extreme winter weather temperatures normal for the Midwest region or are they linked to climate change? 
+
+My intention with this blog is to talk critically about the impact of climate change on the disruption of the polar vortex, and ultimately its social impacts on poor and low income communities in Chicago.  The global society via the media has collectively become more conscious of climate change (Anderson 2017). Essentially, due to the anthropogenic factors of pollution such as the burning of fossil fuels, the global climate is warming. This leads to extreme weather events respective to various climate regions all over the world. Climate change or global warming has been linked to issues of sea level rise due to glacial melt, extreme drought, and flooding (Wallace et al. 2014).  Furthermore, climate scientist have evidence that global warming will generate heat waves, droughts, and hurricanes from high sea surface temperature (Zhang et al. year),  but what about extreme cold events? 
+
+In the context of global warming, cold weather is generally left out of the conversations. We need to put current climate change ideas in conversations with one another. Climate change has both serious warm and cold weather implications. In 2014 there is evidence that climate change not only leads to extreme warmer temperatures regional temperatures in some places, but also, global warming will cause extreme cold temperatures in other regions. Particularly in the region of Chicago, global warming severely impacts the polar vortex (Screen et al. 2018) which in turn makes the windy city more prone to even colder winters (Francis and Vavrus 2012). 
+
+## How Does Climate Change Influence The Polar Vortex? 
+
+Figure 1. Illustrates the polar vortex as a large area of low pressure and cold air that circulates around the north pole. As illustrated on the right side of the diagram, during the winter months in the Northern Hemisphere the polar vortex becomes less stable and it expands which sends cold air southbound (NOAA 2019). Climate change seems to further distort the flow of the polar vortex, which allows the cold air the polar vortex insulates to escape and reach further south than it normally world have (Jones and Miller 2019). When this happens, this makes a Chicago winter even colder.
+
+[](noaa.png) 
+
+Figure 1: This diagram illustrates how the  polar vortex works ( NOAA 2019).
+
+## What Are The Implications Of Climate Change And The Polar Vortex In Chicago?
+
+This extreme cold weather has huge social implications for people who live in the city. Generally, on these extreme cold days schools close and people how have been systematically disenfranchised freeze to death. A Chicago winter is not a natural disaster but rather a form systematic genocide. My hypothesis for this blog is testing if climate change is causing Chicago to have increased extreme cold days. This hypothesis has serious implications because extreme cold weather events in Chicago severely negatively impacts the well-being of people of color and poor folks; this problem will become exacerbated as climate change and racial capitalism persist. 
+
+## Data Description 
+To address my hypothesis, I used the National Centers for Environmental Information (NOAA) to access data I needed to analyze the climate trends in Chicago from 1920-2000.  Statistical analysis was conducted using R (CRAN 2019).
+
+## Graphs and Summary Statistics 
+
+No significant relationship exists between temperature and year. The number of coldest days in which the weather was below 20 degrees in Chicago throughout the years had significant variation and showed no increasing or decreasing pattern.
+However, the results do not indicate anything about the social impact from these days. How many people died due to the cold? How many school closures? It is hard to say the impact climate change has had on this data without data from 1750-1900 and 2000-2019. 
+
+```{r, echo=FALSE, results='hide'}
+filepath = "../../../Data/SP19/Randle_Chicago.csv"
+climate_data = read.csv(filepath)
+head(climate_data)
+str(climate_data)
+names(climate_data)
+climate_data$TMAX
+head(climate_data)
+str(climate_data)
+names(climate_data)
+#plot(TMAX ~ DATE, data = climate_data)
+min(climate_data$TMAX)
+min(climate_data$TMAX, na.rm = T)
+climate_data$TMAX[climate_data$TMAX==-9999]= NA
+climate_data$TMIN[climate_data$TMIN==-9999]= NA
+#plot(TMAX~DATE, climate_data[1:1835,], ty='1')
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+
+
+#plot(TMAX ~ NewDate, data = climate_data)
+summary(lm(TMAX ~ NewDate, data= climate_data))
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format= "%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+
+
+new = subset(climate_data,subset = TMIN <=-20)
+library(plyr)
+counts=count(new,c("Year"))
+counts$YEAR=as.numeric(counts$Year)
+plot(freq~YEAR,data = counts,xlab="Year", ylab= "Maximum Temperature (C)")
+counts.lm= lm(freq~YEAR,data = counts)
+summary(counts.lm)
+abline(coef(counts.lm))
+
+
+#plot(MonthlyTMAXMean$TMAX, ty= 'l')
+#plot(monthlyTMAXmean£TMAX[MonthlyTMAXmean£Month== "05"], ty =' l')
+#plot(TMAX ~ Year, data = MonthlyTMAXMean [MonthlyTMAXMean$Month== "05",], ty= 'l', xlim=c(1950,2020))
+May.lm <- lm (TMAX~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month== "05",])
+summary(May.lm)
+#abline(coef(May.lm), col="blue")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+#par(mfrow= c(1, 1), mar = c(5, 4, 3, 2) + 0.1)
+#TMAXresult <- NA
+#for (i in 1:12)
+ # plot(TMAX ~ YEAR, data =  MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,], ty= "l", las = 1, xlim = c(1928, 2020), main = Months [i])
+#Month.lm <- lm (TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,])
+#summary(Month.lm)
+#abline(coef(Month.lm), col = "blue")
+
+
+```
+
+Furthermore, this data doesn't consider of wind-chill. Windchill in Chicago is an important factor to determine how the temperature actually feels. For example, the temperature maybe -10 degrees F but with wind chill it can feel like -40 degrees F. Also the data  time frame is very limited. In order to actually understand the temperature trends in the Chicago area I would need data from 1750-2019. This lack of data significantly impacts my analysis of the effect of climate change on the polar vortex.
+
+## Climate Change, The Polar Vortex, And Slow Violence
+
+The disruption of the polar vortex has serious negative impacts for poor folks in Chicago. January 2019 the weather temperature considering wind chill dipped to -46F (WGN9 2019). This weather is cold enough that people will freeze to death for being outside for long periods of time. When the weather drops this low, generally schools and variety of other establishments are closed. While the city and the state paints this extreme cold weather event as natural disaster, it should be considered a human rights violation. When schools and other public places are not closed due to cold weather people literally freeze to death. 
+
+### The Implications  
+
+1)	Each frigid Chicago winter countless numbers of children and adults die silently because they purposely disenfranchised by the state. This is a form slow violence (Nixon 2011). Not protecting these marginalized  populations during a fridge winter when we have the resources to do so, is one way that systems of power invest in material and infrastructural technologies to maintain certain imbalances” (Fleetwood 2007), where in the summer POC are subject to police violence because they are more visible and, in the winter, POC and poor folks freeze.
+
+2)	As climate change persists, the disruption of the polar vortex will only become more severe. Colder winters means a silent genocide that will continue to go unnoticed unless we (as a society) do something. 
+
+3)  This begs the question what's the connection between lack of capital and lower health outcomes? What does it mean for historically marginalized folks to be barred from making enough capital to survive and extreme cold winter events? Doesn't everyone deserve the right to live and be safe regardless of the capital they posse? Aren’t there enough resources to ensure everyone has a place to live and be healthy? 
+
+## Temperature Records and the Need for Nuanced Research Methods
+
+In regard to my hypothesis I the data I analyzed did not find a significant relationship between temperature and year. This means that there is no increasing or decreasing trend in cold weather events in Chicago. This is interesting because it’s possible that maybe climate change hasn’t been impacting Chicago’s  cold weather events or maybe I don’t have the most up to date data. Also, to address my hypothesis, I would have needed data for the number of coldest days in Chicago as it related to the number of school, public building closures, and mortality rates during this time period. Furthermore, I would need recent climate data for this region in order to determine the significance of if the polar vortex is being impacted by climate change. If I had more time I would have researched the number of schools/public building snow/cold day closures as well as the researched how many deaths due to weather in the city happened during this time period. Overall, I would need a more information about climate data for this regions as well as social data to fully understand the implications of my hypothesis. 
+
+However, in my preliminary research phase this information has been difficult to find. Why? Well one needs not look far into history to understand that our government does not care whether or not poor folks or POC die due to extreme weather events( Fleetwood 2007). That makes my research questions even more important. Within the oppressive white supremacist, capitalist, and colonialist state in which we live, governmental response to weather has had a clear relationship to the well-being of POC and poor folks. If there is evidence that supports the claim of  there being link between death in poor and POC communities as a result of extreme weather conditions it will be easier to hold the state accountable for not ensuring the safety of these marginalized people.  
+
+## Next Steps 
+
+The impacts of climate change has likelihood that as it disrupts the polar vortex it will only increasingly create more extreme cold weather in the Midwest region. These extreme weather events is just one of the systemic ways our government kill off the less valued our society. We need to ask critical questions to understand the nuance of this issue and possible solutions. What role does the government play in ensuring that certain people don't have access to the resources they need to take care of themselves? If one does not have access to lot of capital, do they deserve to die? Are these people less valuable than people who obtain lots of capital? How does climate change impact these questions?
+
+The disregard of the poor is not new. However, as part of the racialized colonization project, we need to explicitly link climate change to existing and unjust power structures. As Audre Lorde says, “the master's tools will never dismantle the master's house.” Therefore, we must constantly work towards decolonizing our minds and create new tools that don't adopt the problematics ideologies we currently are forced to adhere to. We must become more involved in our communities and be in solidarity with other communities to help alleviate climate justice issues. This is how we create change that positively benefits everyone for generations to come. Below are some environmental justice organizations you can become involved in today:
+
+* http://www.lvejo.org/about-us/coalitions/ 
+* https://www.naacp.org/climate-justice-resources/resource-organizations/ 
+* https://350.org/ 
+* https://www.thegreenspotlight.com/2017/07/environmental-justice-groups/
+
+###Citations 
+
+Anderson AA. 2017. Effects of Social Media Use on Climate Change Opinion, Knowledge, and Behavior [Internet]. Vol. 1. Oxford University Press; Available from: http://oxfordre.com/climatescience/view/10.1093/acrefore/9780190228620.001.0001/acrefore-9780190228620-e-369
+
+CBS Chicago. 2019.What Are The Current Records For Cold Temperatures In Chicago? – CBS Chicago [Internet]. Available from: https://chicago.cbslocal.com/2019/01/26/what-are-the-current-records-for-cold-temperatures-in-chicago/
+
+Fleetwood NR.  2007. Failing Narratives, Initiating Technologies: Hurricane Katrina and the Production of a Weather Media Event. Am Q. (
+
+Francis JA, Vavrus SJ. 2012. Evidence linking Arctic amplification to extreme weather in mid-latitudes. Geophys Res Lett [Internet]. John Wiley & Sons, Ltd;39(6):n/a-n/a. 
+
+Jones J, Miller B.  2019. Polar vortex explained: Your questions answered - CNN [Internet]. Available from: https://amp.cnn.com/cnn/2019/01/28/us/polar-vortex-explained-wxc/index.html
+
+Nixon R. 2011. Slow violence and the environmentalism of the poor [Internet]. Cambridge, Mass. : Harvard University Press. 353 p. 
+
+NOAA. The science behind the polar vortex | National Oceanic and Atmospheric Administration [Internet]. [cited 2019 Mar 1]. Available from: https://www.noaa.gov/multimedia/infographic/science-behind-polar-vortex
+
+ Core Team. 2017. R: A language and environment for statistical computing.
+           R Foundation for Statistical Computing, Vienna, Austria. URL https://www.
+           R-project.org/ .
+
+Screen JA, Bracegirdle TJ, Simmonds I. Polar Climate Change as Manifest in Atmospheric Circulation. Curr Clim Chang Reports [Internet]. Springer International Publishing; 2018 Dec 2 [cited 2019 Mar 1];4(4):383–95.
+
+Wallace JM, Held IM, Thompson DWJ, Trenberth KE, Walsh JE. Global Warming and Winter Weather. Science (80- ) [Internet]. 2014 Feb 14 [cited 2019 Mar 1];343(6172):729–30. Available from: http://www.sciencemag.org/cgi/doi/10.1126/science.343.6172.729
+
+WGN9 Chicago. Life-threatening cold heads toward Chicago; many schools, businesses to close Wednesday | WGN-TV [Internet]. 2019 [cited 2019 Mar 1]. Available from: https://wgntv.com/2019/01/29/record-breaking-bitter-cold-entering-chicago-area-cps-among-several-schools-closed-wednesday/
+
+Zhang X, Wan H, Zwiers FW, Hegerl GC, Min S-K. Attributing intensification of precipitation extremes to human influence. Geophys Res Lett [Internet]. 2013 Oct 16 [cited 2019 Mar 13]. 40(19):5252–7. 
+
+
+
+

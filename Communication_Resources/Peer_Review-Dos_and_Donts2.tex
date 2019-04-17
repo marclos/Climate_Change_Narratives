@@ -1,0 +1,210 @@
+\documentclass{tufte-handout}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage{amsmath}
+%\usepackage{natbib}
+%\bibfont{\small} % Doesn't see to work...
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+% \graphicspath{{graphics/}}
+
+\setsidenotefont{\color{blue}}
+% \setcaptionfont{hfont commandsi}
+% \setmarginnotefont{\color{blue}}
+% \setcitationfont{\color{gray}}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+\newenvironment{itemize*}%
+  {\begin{itemize}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{itemize}}
+	
+\newenvironment{enumerate*}%
+  {\begin{enumerate}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{enumerate}}
+
+\title{Peer Review -- Dos and Don'ts %\thanks{}
+}
+\author[Marc Los Huertos]{Marc Los Huertos}
+%\date{}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\maketitle
+
+\section{Rationale}
+
+Writing is a social process. So is science. As such, getting feedback on the quality of the science and the ability to communicate our science is a key part of the environmental scientist's world. 
+
+Reviewing a public product is a priviledge. And for the `reviewed' it's a gift. Thus, for each, the reviewer and reviewed, the value for the greater good is indisputable. 
+
+As you review your collegeues work, try to keep in mind that you are promoting a better outcome and better science. In addition, pay attention to thinks that might have escaped your own process and that you find yourself saying, ``wow, that's a cool approach!''  Perhaps, you might adapt some of the things you read into your own writing!
+
+\subsection{Learning Objectives}
+
+This assignment is based on the EA learning outcome for writing and communicating: 
+
+\begin{itemize}
+	\item Understand the real-world processes and implications of environmental problem-solving and decision making.
+	\item Speak and write clearly and persuasively.
+\end{itemize}
+
+\section{What is the Peer Review Process?}
+
+Peer review is the evaluation of work by one or more people of similar competence to the producers of the work (peers). It constitutes a form of self-regulation by qualified members of a profession within the relevant field. Peer review methods are employed to maintain standards of quality, improve performance, and provide credibility. In academia, scholarly peer review is often used to determine an academic paper's suitability for publication. Peer review can be categorized by the type of activity and by the field or profession in which the activity occurs, e.g., medical peer review.
+
+\subsection{Characteristics Effective Peer Reviewing}
+
+\begin{enumerate}
+	\item The first one is fairness and politeness. Good referees always maintain a positive and constructive tone and never make personal remarks about the authors, even if the work is not good. 
+	\item The second point is thoroughness and clarity. Authors and editors expect reviewers to give helpful feedback and provide concrete examples and advice on how the work can be improved. Here are a few other things you should keep in mind when writing and submitting a review:
+  \begin{itemize}
+    \item When writing up the results, always be friendly and constructive while remaining critical and attentive. Make sure that the results are technically sound and the claims sufficiently supported by the presented data. You should also assess the strengths and importance of the work and give clear recommendations on how it can be improved.
+    \item You should check, whether the title and the abstract (if present) describe the work properly, whether the methods section provides enough details for a reader to repeat the experiments, and whether the expected results are presented in an effective way and align with the hypothesis to be tested and the questions to answered.
+    \item A good way to organize your review is by starting with a summary of the paper, where you shortly describe what the author(s) did. Then you can include some general comments about the work, for example, some thoughts about the novelty of the findings, or the way the data is presented, and finally, you can provide a specific list describing the points that can be improved and how it can be done so. It is important to number your remarks, so that the authors can respond to them easily.
+    \item The final step is to upload your evaluation to Sakai. Be sure you use the form and your ID yourself using the assigned random number. 
+    
+  \end{itemize}
+  
+\end{enumerate}
+
+\section{Peer Review Tone}
+
+A peer review can take one of several tones. For example, 
+
+\begin{description}
+	\item[Criticize:] The reviewer takes the opportunity to find fault with the author. Although this might be done with the goal to improve the text, it often comes off negatively and can even be a traumatic experience. 
+	\item[Persuade:] The reviewer makes an argument that tries to convince the author of something, perhaps to make the communication more effective or that an alternative approach to the science should be considered. Either way, the author might find this advice unwelcome but may also decide that more work is needed before the final product is done. 
+	\item[Praise:] feels good. However, it's rare that a scientific work recieves universal praise. Thus, most authors find too much praise a bit suspect and don't always feel happy with the outcome -- what if the reviewer didn't really pay attention? what if the reviewer isn't qualified to give a strong opinion?  
+\end{description}
+
+In the end, I suspect the best peer reviews include a combination of the three tones that help the reviewer feel like the reviewer was thoughtful and considerate while providing an avenue to make the best scientific contribution as possible. 
+
+\section{Steps to Review Peer}
+
+\subsection{Peer Review Assignments}
+
+
+
+Each student is assigned two random numbers (sent to you by email). Using these numbers, determine which author you will be reviewing. You might be reviewing a topic closely aligned with yours -- that's proably not ideal, but with a class this small, the changes are pretty high that this will happen -- in any case, try to be as fair as you can. 
+
+% latex table generated in R 3.4.1 by xtable 1.8-2 package
+% Wed Apr 10 00:38:50 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrr}
+  \hline
+ & Author & Reviewer1 & Reviewer2 \\ 
+  \hline
+1 & Anderson, Toni Thayer & 1209 & 4697 \\ 
+  2 & Budd, Susannah & 8606 & 8424 \\ 
+  3 & Bullock Floyd, Makeda & 7136 & 1325 \\ 
+  4 & Clark, Chris & 3715 & 5497 \\ 
+  5 & Generous, Claire & 7420 & 7260 \\ 
+  6 & Kaufman, Eve Alexandra & 5994 & 2489 \\ 
+  7 & Kuhn, Emily C. & 6646 & 6651 \\ 
+  8 & Lai, Bailey & 3856 & 4402 \\ 
+  9 & Lane, Ximena & 1673 & 8742 \\ 
+  10 & Meyer, Ella K. & 6244 & 4050 \\ 
+  11 & Namachivayam, Siddharth & 2460 & 8210 \\ 
+  12 & Randle, Jasmine & 8707 & 2279 \\ 
+  13 & Vance, Cheyenne & 1296 & 3372 \\ 
+  14 & Wong, Kylie & 4144 & 9252 \\ 
+  15 & Yi, Claire & 3779 & 2339 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+\subsection{Assignment}
+
+To assess the research proposals, each student will review two proposals and submit an evaluation form for each. Proposals are assigned to you randomly
+
+Begin by providing a summary of the proposal, where you shortly describe what the author(s) did. Then you can include some general comments about the work, for example, some thoughts about the novelty of the proposal, or how expected data will be collected, and finally, you can provide a specific list describing the points that can be improved and how it can be done so. It is important to number your remarks, so that the authors can respond to them easily.
+
+Determine if the author states the question(s) and their objective. Determine how the hypotheses are linked to the question(s) being asked. Then evaluate if expected data can be analyzed clearly (hypothesis, statistical tests). Determine if the peer reviewed literature supports the text and and if project is compelling. Be sure to make concrete suggestions about how the proposal could be improved. 
+
+\subsection{Submission Format and Naming Convention}
+
+Please write out your comments using a word processor. Save and submit the form as a pdf, with the following naming convention -- where you cite the author and XXXX refers to your random number.
+
+\smallskip
+\begin{center}
+\noindent ``Author\_XXXX.pdf''
+\end{center}
+\bigskip
+
+%\subsubsection{Blog Peer Review Grading}
+
+%The Climate Science Reports will be grading using Table \ref{tab:blogpeerreviewgrading}. 
+
+%\begin{table}[h]
+%\caption{Blog Peer Review Grading Standards.}
+%\label{tab:blogpeerreviewgrading}
+%\begin{tabular}{lll}\hline
+%Standard      &   Percent   & \\ \hline\hline
+%\hline
+%\end{tabular}
+%\end{table}
+
+\end{document}
