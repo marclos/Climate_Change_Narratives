@@ -1,0 +1,23 @@
+---
+title: "lettuce_results"
+author: "bljj2015"
+date: "4/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r t-test for non-averaged, separated #1 & #2 samples (10 samples total)}
+t.test(sep_BG_UB$Unbagged, sep_BG_UB$Bagged)
+```
+
+```{r t-test for averaged 5 stores' samples (5 samples total)}
+t.test(avg_BG_UB$Unbagged, avg_BG_UB$Bagged)
+```
+
+```{r wilcox signed-rank test (assumes non-parametric)}
+
+```
+
