@@ -463,9 +463,9 @@ Sometimes (often times?), tables are better than graphs. In the case below, I su
   \hline
 1 & [0,10) &   4 &   0 &   0 &   0 &   0 &   0 \\ 
   2 & [10,20) &   0 &   3 &   0 &   0 &   0 &   1 \\ 
-  3 & [20,30) &   7 &   2 &   1 &   0 &   0 &   3 \\ 
-  4 & [30,40) &   4 &   7 &   2 &   1 &   0 &   2 \\ 
-  5 & [40,50) &   0 &   2 &   7 &   4 &   2 &   9 \\ 
+  3 & [20,30) &   7 &   2 &   1 &   0 &   0 &   2 \\ 
+  4 & [30,40) &   4 &   8 &   2 &   1 &   0 &   2 \\ 
+  5 & [40,50) &   0 &   2 &   8 &   6 &   2 &  10 \\ 
    \hline
 \end{tabular}
 
@@ -523,7 +523,7 @@ Another useful way to display data is by using probability densities (Figure~\re
 \end{kframe}
 \end{knitrout}
 
-The mean was for the first draft was 21.1 and the second draft was 32.5. We can test the null hypothesis that were was no difference between the two scores. Since the difference  between the scores of the first and second submission was 11.4 points, we can reject the null hypothesis that the difference was zero using the t.test() function in R and obtain a p-value of 0.0133. We can also run the test as a pair test, where each student's first score is matched with their second score. This is useful when you have data from the same individuals; in this case the p-value is \ensuremath{9\times 10^{-6}}. However, once the probability is below 0.001, we report it as p < 0.001. 
+The mean was for the first draft was 21.1 and the second draft was 32.9. We can test the null hypothesis that were was no difference between the two scores. Since the difference  between the scores of the first and second submission was 11.8 points, we can reject the null hypothesis that the difference was zero using the t.test() function in R and obtain a p-value of 0.0089. We can also run the test as a pair test, where each student's first score is matched with their second score. This is useful when you have data from the same individuals; in this case the p-value is \ensuremath{3\times 10^{-6}}. However, once the probability is below 0.001, we report it as p < 0.001. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}

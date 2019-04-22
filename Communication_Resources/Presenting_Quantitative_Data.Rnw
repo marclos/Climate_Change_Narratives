@@ -337,19 +337,20 @@ Sometimes (often times?), tables are better than graphs. In the case below, I su
 <<echo=FALSE>>=
 grades1 = c(28.5, 36.5, 25, 31.5, 26, 22, 22.5,
            2, 0, 22.5, 31.5, 6, 28, 34, 0)
-grades2 = c(38.1, 39.9, 44.8, 34.4, 37.9, 28.4, NA,
+
+grades2 = c(38.1, 39.9, 44.8, 34.4, 37.9, 28.4, 39.1,
             24.8, 17.5, 34.8, 46.5, 14.5, 37, 39.4, 16.6)
 
 grades3 = c(42.6, 44.7, 47, 42.8, 43.8, NA, NA,
-            34.8, NA, 43, NA, 24.1, 43.8, NA, 30.2)
+            34.8, NA, 43, NA, 24.1, 43.8, 46.8, 30.2)
 
-grades4 = c(46.1, NA, NA, 44.3, 46.5, NA, NA,
-            40.4, NA, NA, NA, NA, NA, NA, 38.1)
+grades4 = c(46.1, 48, NA, 44.3, 46.5, NA, NA,
+            40.4, NA, 48.3, NA, NA, NA, NA, 38.1)
 
 grades5 = c(NA, NA, NA, NA, 46.5, NA, NA,
             43.7, NA, NA, NA, NA, NA, NA, NA)
 
-grades6 = c(NA, NA, NA, NA, NA, NA, NA,
+grades6 = c(NA, NA, NA, NA, 47.1, NA, NA,
             NA, NA, NA, NA, NA, NA, NA, NA)
 
 library(xtable)
@@ -450,7 +451,7 @@ The mean was for the first draft was \Sexpr{round(mean(grades1, na.rm=T), 1)} an
 
 # Display the Student's t distributions with various
 # degrees of freedom and compare to the normal distribution
-x = seq(-5, 65, by = 1)
+x = seq(-5, 60, by = 1)
 hx1 <- dnorm(x= x, mean = mean(grades1, na.rm=T), 
              sd=sd(grades1, na.rm=T))
 hx2 <- dnorm(x= x, mean = mean(grades2, na.rm=T), 
@@ -466,7 +467,7 @@ hxF <- dnorm(x= x, mean = mean(grades6, na.rm=T),
 
 plot(x, hx1, type="l", lty=1, lwd=3, xlab="Score",
   ylab="Density", main="Distribution of Scores", las=1, 
-  ylim=c(0,.2), col=colors[1])
+  ylim=c(0,.22), col=colors[1])
   lines(x, hx2, lwd=3, col=colors[2])
   lines(x, hx3, lwd=3, col=colors[3])
   lines(x, hx4, lwd=3, col=colors[4])
@@ -482,11 +483,11 @@ text(mean(grades2, na.rm=T), .06, col=colors[2],
 text(mean(grades3, na.rm=T), .07, col=colors[3], 
      bquote(paste(bar(x)[3], " = ", .(round(mean(grades3, na.rm=T), 0)))))
 
-text(mean(grades4, na.rm=T), .15, col=colors[4], 
-     bquote(paste(bar(x)[4], " = ", .(round(mean(grades4, na.rm=T), 0)))))
+text(mean(grades4, na.rm=T), .11, col=colors[4], 
+     bquote(paste(bar(x)[4], " = ", .(round(mean(grades4, na.rm=T), 1)))))
 
-text(mean(grades5, na.rm=T), .09, col=colors[5], 
-     bquote(paste(bar(x)[5], " = ", .(round(mean(grades5, na.rm=T), 0)))))
+text(mean(grades5, na.rm=T), .21, col=colors[5], 
+     bquote(paste(bar(x)[5], " = ", .(round(mean(grades5, na.rm=T), 1)))))
 
 text(mean(grades6, na.rm=T), .17, col=colors[6], cex=1.2,
      bquote(paste(bar(x)[Final], " = ", .(round(mean(grades6, na.rm=T), 0)))))
