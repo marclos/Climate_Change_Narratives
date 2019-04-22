@@ -1,0 +1,81 @@
+---
+title: "Lab Report"
+author: "Susannah"
+date: "4/22/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r}
+##Q-Q Plot Bagged
+library(ggpubr)
+ggqqplot(bagged)
+##Shapiro-Wilk normality test Bagged
+shapiro.test(bagged)
+```
+
+
+```{r}
+##Q-Q Plot Unbagged
+library(ggpubr)
+ggqqplot(unbagged)
+##Shapiro-Wilk normality test Unbagged
+shapiro.test(unbagged)
+```
+
+
+```{r}
+# Data in two numeric vectors
+# ++++++++++++++++++++++++++
+# Microplastics in Bagged Lettuce
+bagged <-c(57.500, 41.625, 35.625, 30.000, 33.750)
+# Microplastics in Unbagged Lettuce
+unbagged <-c(21.625, 37.125, 33.875, 37.5000, 33.750)
+# Create a data frame
+bagged_unbagged <- data.frame(group = rep(c("bagged", "unbagged"), each = 5), microplastics = c(bagged,  unbagged))
+```
+
+```{r}
+##Paired Samples Wilcoxon Test and T-Test Bagged/Unbagged
+library("dplyr")
+group_by(bagged_unbagged, group) %>%
+  summarise(
+    count = n(),
+    median = median(microplastics, na.rm = TRUE),
+    IQR = IQR(microplastics, na.rm = TRUE))
+
+library("ggpubr")
+ggboxplot(bagged_unbagged, x = "group", y = "microplastics", 
+          color = "group", palette = c("#00AFBB", "#E7B800"),
+          order = c("bagged", "unbagged"),
+          ylab = "# Microplastics", xlab = "Groups")
+
+wilcox.test(microplastics ~ group, data = bagged_unbagged, paired = TRUE)
+
+t.test(bagged, unbagged, var.equal = TRUE)
+```
+
