@@ -11,43 +11,26 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r warning=FALSE, comment=FALSE, message=FALSE, echo=FALSE} 
+###Results
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 # Data in two numeric vectors
 # ++++++++++++++++++++++++++
 # Microplastics in Bagged Lettuce
-bagged <-c(57.500, 41.625, 35.625, 30.000, 33.750)
+Bagged <-c(57.500, 41.625, 35.625, 30.000, 33.750)
 # Microplastics in Unbagged Lettuce
-unbagged <-c(21.625, 37.125, 33.875, 37.5000, 33.750)
+Unbagged <-c(21.625, 37.125, 33.875, 37.5000, 33.750)
 # Create a data frame
-bagged_unbagged <- data.frame(group = rep(c("bagged", "unbagged"), each = 5), microplastics = c(bagged,  unbagged))
+bagged_unbagged <- data.frame(Group = rep(c("Bagged", "Unbagged"), each = 5), Microplastics = c(Bagged,  Unbagged))
 ```
 
-```{r warning=FALSE, comment=FALSE, message=FALSE, echo=FALSE} 
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
-##Q-Q Plot Bagged
-library("ggpubr")
-ggqqplot(bagged)
+library("knitr")
+kable(bagged_unbagged[1:10,], caption="Microplastics in Bagged and Unbagged Lettuce")
 ```
 
-```{r include=FALSE}
-##Shapiro-Wilk normality test Bagged
-shapiro.test(bagged)
-```
-
-```{r warning=FALSE, comment=FALSE, message=FALSE, echo=FALSE} 
-knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
-##Q-Q Plot Unbagged
-library("ggpubr")
-ggqqplot(unbagged)
-```
-
-```{r include=FALSE}
-##Shapiro-Wilk normality test Unbagged
-shapiro.test(unbagged)
-```
-
-```{r warning=FALSE, comment=FALSE, message=FALSE, echo=FALSE} 
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 ##Box Plot
 library("ggpubr")
@@ -57,22 +40,39 @@ ggboxplot(bagged_unbagged, x = "group", y = "microplastics",
           ylab = "# Microplastics", xlab = "Groups")
 ```
 
+###Normality Tests \
+
+The data collection yielded five replicates and five pseduo-replicates for both bagged and unbagged lettuce, as two bagged and unbagged heads were purchased at each store
+
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
-#Table
-library("dplyr")
-group_by(bagged_unbagged, group) %>%
-  summarise(
-    count = n(),
-    median = median(microplastics, na.rm = TRUE),
-    IQR = IQR(microplastics, na.rm = TRUE))
+##Q-Q Plot Bagged
+library("ggpubr")
+ggqqplot(Bagged)
 ```
 
-```{r warning=FALSE, comment=FALSE, echo=FALSE} 
+```{r include=FALSE}
+##Shapiro-Wilk normality test Bagged
+shapiro.test(Bagged)
+```
+
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
+##Q-Q Plot Unbagged
+library("ggpubr")
+ggqqplot(Unbagged)
+```
+
+```{r include=FALSE}
+##Shapiro-Wilk normality test Unbagged
+shapiro.test(Unbagged)
+```
+
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 #Paired Samples Wilcoxon Test
-wilcox.test(microplastics ~ group, data = bagged_unbagged, paired = TRUE)
+wilcox.test(Microplastics ~ Group, data = bagged_unbagged, paired = TRUE)
 #Paired Samples T-Test
-t.test(bagged, unbagged, var.equal = TRUE)
+t.test(Bagged, Unbagged, var.equal = TRUE)
 ```
 
