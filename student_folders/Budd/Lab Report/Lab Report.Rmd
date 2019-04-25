@@ -1,8 +1,9 @@
 ---
 title: "Microplastics in Lettuce: Results"
 author: "Susannah Budd"
-date: "4/22/2019"
+date: "4/25/2019"
 output: 
+  html_document: default
   word_document: default
 ---
 
@@ -10,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-###Results
+#### Results
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 # Data in two numeric vectors
@@ -23,6 +24,8 @@ Unbagged <-c(21.625, 37.125, 33.875, 37.5000, 33.750)
 bagged_unbagged <- data.frame(Group = rep(c("Bagged", "Unbagged"), each = 5), Microplastics = c(Bagged,  Unbagged))
 ```
 
+The data collection yielded five replicates and five pseduo-replicates for both bagged and unbagged lettuce, as two bagged and unbagged heads were purchased at five different stores. In order to more accurately reflect these replicates, the number of microplastics found on each head of lettuce was averaged with its pair. For example, the number of microplastics found on each bagged lettuce head purchased at Cardenas were averaged with one another. The graph below shows the box plots of these averages for bagged and unbagged lettuce.
+
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 ##Box Plot
@@ -30,9 +33,13 @@ library("ggpubr")
 ggboxplot(bagged_unbagged, x="Group", y="Microplastics", color="Group", palette=c("#00AFBB", "#E7B800"), order=c("Bagged", "Unbagged"), ylab="# Microplastics", xlab="Groups")
 ```
 
-###Normality Tests \
+#### Normality Tests \
 
-The data collection yielded five replicates and five pseduo-replicates for both bagged and unbagged lettuce, as two bagged and unbagged heads were purchased at each store
+This experiment was designed to test the null hypothesis of “there is no difference in microplastic quantities in romaine lettuce with or without plastic packaging.” In order to determine whether or not to reject the null hypothesis, whether or not the data fell within normal distribution was first assessed, using Q-Q Plots and the Shapiro-Wilk normality test.
+
+##### Bagged
+
+For bagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.2768, indicating that it is within the bounds of normal distribution. The Q-Q test, shown below, also demonstrates that most points fall within the expected bounds.
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
@@ -46,6 +53,10 @@ ggqqplot(Bagged)
 shapiro.test(Bagged)
 ```
 
+##### Unbagged
+
+For unbagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.04526, indicating that it is not within the bounds of normal distribution. The Q-Q test, shown below, also demonstrates that, while most points fall within the expected bounds, some are much further out of normal distribution than they were for the bagged lettuce data.
+
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 ##Q-Q Plot Unbagged
@@ -58,7 +69,11 @@ ggqqplot(Unbagged)
 shapiro.test(Unbagged)
 ```
 
-```{r warning=FALSE, message=FALSE, echo=FALSE} 
+#### Statistical Analysis
+
+As the unbagged data fell outside of normal distribution, a Paired Samples Wilcoxon Test was used to evaluate the data. Using this test, a p-value of 0.5839 was yielded. This p-value does not demonstrate statistical significance, meaning that the null hypothesis may not be rejected. A two-sample t-test was also conducted, yielding a p-value of 0.2538. This also does not demonstrate statistical significance, indicating that statistical significane likely would not be demonstrated even if the data fell within normal distribution.
+
+```{r inclue=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 #Paired Samples Wilcoxon Test
 wilcox.test(Microplastics ~ Group, data = bagged_unbagged, paired = TRUE)
