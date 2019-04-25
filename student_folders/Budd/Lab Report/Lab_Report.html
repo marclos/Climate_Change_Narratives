@@ -404,28 +404,6 @@ $(document).ready(function () {
 <div id="statistical-analysis" class="section level4">
 <h4>Statistical Analysis</h4>
 <p>As the unbagged data fell outside of normal distribution, a Paired Samples Wilcoxon Test was used to evaluate the data. Using this test, a p-value of 0.5839 was yielded. This p-value does not demonstrate statistical significance, meaning that the null hypothesis may not be rejected. A two-sample t-test was also conducted, yielding a p-value of 0.2538. This also does not demonstrate statistical significance, indicating that statistical significane likely would not be demonstrated even if the data fell within normal distribution.</p>
-<pre class="r"><code>knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align=&quot;center&quot;)
-#Paired Samples Wilcoxon Test
-wilcox.test(Microplastics ~ Group, data = bagged_unbagged, paired = TRUE)</code></pre>
-<pre><code>## 
-##  Wilcoxon signed rank test with continuity correction
-## 
-## data:  Microplastics by Group
-## V = 7, p-value = 0.5839
-## alternative hypothesis: true location shift is not equal to 0</code></pre>
-<pre class="r"><code>#Paired Samples T-Test
-t.test(Bagged, Unbagged, var.equal = TRUE)</code></pre>
-<pre><code>## 
-##  Two Sample t-test
-## 
-## data:  Bagged and Unbagged
-## t = 1.2296, df = 8, p-value = 0.2538
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -6.062277 19.912277
-## sample estimates:
-## mean of x mean of y 
-##    39.700    32.775</code></pre>
 </div>
 
 
