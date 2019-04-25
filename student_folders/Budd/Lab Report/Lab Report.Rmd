@@ -3,7 +3,6 @@ title: "Microplastics in Lettuce: Results"
 author: "Susannah Budd"
 date: "4/22/2019"
 output: 
-  html_document: default
   word_document: default
 ---
 
@@ -26,18 +25,9 @@ bagged_unbagged <- data.frame(Group = rep(c("Bagged", "Unbagged"), each = 5), Mi
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
-library("knitr")
-kable(bagged_unbagged[1:10,], caption="Microplastics in Bagged and Unbagged Lettuce")
-```
-
-```{r warning=FALSE, message=FALSE, echo=FALSE} 
-knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 ##Box Plot
 library("ggpubr")
-ggboxplot(bagged_unbagged, x = "group", y = "microplastics", 
-          color = "group", palette = c("#00AFBB", "#E7B800"),
-          order = c("bagged", "unbagged"),
-          ylab = "# Microplastics", xlab = "Groups")
+ggboxplot(bagged_unbagged, x="Group", y="Microplastics", color="Group", palette=c("#00AFBB", "#E7B800"), order=c("Bagged", "Unbagged"), ylab="# Microplastics", xlab="Groups")
 ```
 
 ###Normality Tests \
