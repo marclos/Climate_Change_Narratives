@@ -1,81 +1,83 @@
 ---
-title: "Lab Report"
-author: "Susannah"
-date: "4/22/2019"
-output: pdf_document
+title: "Microplastics in Lettuce: Results"
+author: "Susannah Budd"
+date: "4/25/2019"
+output: 
+  html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-
-```{r}
-##Q-Q Plot Bagged
-library(ggpubr)
-ggqqplot(bagged)
-##Shapiro-Wilk normality test Bagged
-shapiro.test(bagged)
-```
-
-
-```{r}
-##Q-Q Plot Unbagged
-library(ggpubr)
-ggqqplot(unbagged)
-##Shapiro-Wilk normality test Unbagged
-shapiro.test(unbagged)
-```
-
-
-```{r}
+#### Results
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 # Data in two numeric vectors
 # ++++++++++++++++++++++++++
 # Microplastics in Bagged Lettuce
-bagged <-c(57.500, 41.625, 35.625, 30.000, 33.750)
+Bagged <-c(57.500, 41.625, 35.625, 30.000, 33.750)
 # Microplastics in Unbagged Lettuce
-unbagged <-c(21.625, 37.125, 33.875, 37.5000, 33.750)
+Unbagged <-c(21.625, 37.125, 33.875, 37.5000, 33.750)
 # Create a data frame
-bagged_unbagged <- data.frame(group = rep(c("bagged", "unbagged"), each = 5), microplastics = c(bagged,  unbagged))
+bagged_unbagged <- data.frame(Group = rep(c("Bagged", "Unbagged"), each = 5), Microplastics = c(Bagged,  Unbagged))
 ```
 
-```{r}
-##Paired Samples Wilcoxon Test and T-Test Bagged/Unbagged
-library("dplyr")
-group_by(bagged_unbagged, group) %>%
-  summarise(
-    count = n(),
-    median = median(microplastics, na.rm = TRUE),
-    IQR = IQR(microplastics, na.rm = TRUE))
+The data collection yielded five replicates and five pseduo-replicates for both bagged and unbagged lettuce, as two bagged and unbagged heads were purchased at five different stores. In order to more accurately reflect these replicates, the number of microplastics found on each head of lettuce was averaged with its pair. For example, the number of microplastics found on each bagged lettuce head purchased at Cardenas were averaged with one another. The graph below shows the box plots of these averages for bagged and unbagged lettuce.
 
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
+##Box Plot
 library("ggpubr")
-ggboxplot(bagged_unbagged, x = "group", y = "microplastics", 
-          color = "group", palette = c("#00AFBB", "#E7B800"),
-          order = c("bagged", "unbagged"),
-          ylab = "# Microplastics", xlab = "Groups")
+ggboxplot(bagged_unbagged, x="Group", y="Microplastics", color="Group", palette=c("#00AFBB", "#E7B800"), order=c("Bagged", "Unbagged"), ylab="# Microplastics", xlab="Groups")
+```
 
-wilcox.test(microplastics ~ group, data = bagged_unbagged, paired = TRUE)
+#### Normality Tests \
 
-t.test(bagged, unbagged, var.equal = TRUE)
+This experiment was designed to test the null hypothesis of “there is no difference in microplastic quantities in romaine lettuce with or without plastic packaging.” In order to determine whether or not to reject the null hypothesis, whether or not the data fell within normal distribution was first assessed, using Q-Q Plots and the Shapiro-Wilk normality test.
+
+##### Bagged
+
+For bagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.2768, indicating that it is within the bounds of normal distribution. The Q-Q plot, shown below, also demonstrates that most points fall within the expected bounds.
+
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
+##Q-Q Plot Bagged
+library("ggpubr")
+ggqqplot(Bagged)
+```
+
+```{r include=FALSE}
+##Shapiro-Wilk normality test Bagged
+shapiro.test(Bagged)
+```
+
+##### Unbagged
+
+For unbagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.04526, indicating that it is not within the bounds of normal distribution. The Q-Q plot, shown below, also demonstrates that, while most points fall within the expected bounds, some are much further out of normal distribution than they were for the bagged lettuce data.
+
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
+##Q-Q Plot Unbagged
+library("ggpubr")
+ggqqplot(Unbagged)
+```
+
+```{r include=FALSE}
+##Shapiro-Wilk normality test Unbagged
+shapiro.test(Unbagged)
+```
+
+#### Statistical Analysis
+
+As the unbagged data fell outside of normal distribution, a Paired Samples Wilcoxon Test was used to evaluate the data. Using this test, a p-value of 0.5839 was yielded. This p-value does not demonstrate statistical significance, meaning that the null hypothesis may not be rejected. A Two-Sample T-Test was also conducted, yielding a p-value of 0.2538. This also does not demonstrate statistical significance, indicating that statistical significane likely would not be demonstrated even if the data fell within normal distribution.
+
+```{r include=FALSE} 
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
+#Paired Samples Wilcoxon Test
+wilcox.test(Microplastics ~ Group, data = bagged_unbagged, paired = TRUE)
+#Paired Samples T-Test
+t.test(Bagged, Unbagged, var.equal = TRUE)
 ```
 
