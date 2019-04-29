@@ -1,0 +1,39 @@
+---
+title: "lettuce_results"
+author: "bljj2015"
+date: "4/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+```
+
+```{r read lettuce data, include=FALSE}
+lettuce_results <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/student_folders/Lai/microplastics/lettuce_results.csv")
+avg_BG_UB <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/student_folders/Lai/microplastics/avg_BG_UB.csv")
+sep_BG_UB <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/student_folders/Lai/microplastics/separate_BG_UB.csv")
+```
+
+```{r t-test for non-averaged, separated #1 & #2 samples (10 samples total)}
+t.test(avg_BG_UB$Unbagged, avg_BG_UB$Bagged, paired=TRUE)
+t.test(sep_BG_UB$Unbagged, sep_BG_UB$Bagged, paired=TRUE)
+```
+
+```{r wilcox signed-rank test (assumes non-parametric)}
+wilcox.test(avg_BG_UB$Unbagged, avg_BG_UB$Bagged, paired=TRUE)
+wilcox.test(sep_BG_UB$Bagged, sep_BG_UB$Unbagged, paired=TRUE)
+```
+
+```{r graphs for all lettuce data, echo=FALSE}
+boxplot(
+  lettuce_results$Average[lettuce_results$`U.B. / Bagged` =="UB"], 
+  lettuce_results$Average[lettuce_results$`U.B. / Bagged`=="BG"],
+  main="Microplastic Count Filtering Unbagged versus Bagged Lettuce",
+  ylab="Number of microplastics",
+  names = c("Unbagged", "Bagged"),
+  col = c("lightgreen", "lightblue")
+  )
+```
+
