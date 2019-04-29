@@ -23,7 +23,7 @@ Unbagged <-c(21.625, 37.125, 33.875, 37.5000, 33.750)
 bagged_unbagged <- data.frame(Group = rep(c("Bagged", "Unbagged"), each = 5), Microplastics = c(Bagged,  Unbagged))
 ```
 
-The data collection yielded five replicates and five pseduo-replicates for both bagged and unbagged lettuce, as two bagged and unbagged heads were purchased at five different stores. In order to more accurately reflect these replicates, the number of microplastics found on each head of lettuce was averaged with its pair. For example, the number of microplastics found on each bagged lettuce head purchased at Cardenas were averaged with one another. The graph below shows the box plots of these averages for bagged and unbagged lettuce.
+The data collection yielded five replicates and five pseudo-replicates for both bagged and unbagged lettuce, as two bagged and unbagged heads were purchased at five different stores. In order to more accurately reflect these replicates, the number of microplastics found on each head of lettuce was averaged with its pair. For example, the number of microplastics found on each bagged lettuce head purchased at Cardenas were averaged with one another. The graph below shows the box plots of these averages for bagged and unbagged lettuce.
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
