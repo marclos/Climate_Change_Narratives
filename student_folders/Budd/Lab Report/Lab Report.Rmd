@@ -1,9 +1,8 @@
 ---
 title: "Microplastics in Lettuce: Results"
 author: "Susannah Budd"
-date: "4/25/2019"
+date: "4/28/2019"
 output: 
-  html_document: default
   word_document: default
 ---
 
@@ -71,7 +70,7 @@ shapiro.test(Unbagged)
 
 #### Statistical Analysis
 
-As the unbagged data fell outside of normal distribution, a Paired Samples Wilcoxon Test was used to evaluate the data. Using this test, a p-value of 0.5839 was yielded. This p-value does not demonstrate statistical significance, meaning that the null hypothesis may not be rejected. A Two-Sample T-Test was also conducted, yielding a p-value of 0.2538. This also does not demonstrate statistical significance, indicating that statistical significane likely would not be demonstrated even if the data fell within normal distribution.
+As the unbagged data fell outside of normal distribution, a Paired Samples Wilcoxon Test was used to evaluate the data. Using this test, a p-value of 0.5839 was yielded. This p-value does not demonstrate statistical significance, meaning that the null hypothesis may not be rejected. A Two-Sample T-Test was also conducted, yielding a p-value of 0.2538. This also does not demonstrate statistical significance, indicating that statistical significance likely would not be demonstrated even if the data fell within normal distribution.
 
 ```{r include=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
