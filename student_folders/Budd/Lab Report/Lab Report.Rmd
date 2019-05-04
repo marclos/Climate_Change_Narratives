@@ -10,6 +10,28 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+#### Abstract
+
+#### Introduction
+
+#### Methods
+
+1. Obtain Romaine lettuce. Purchase two unpackaged heads of romaine lettuce and two heads of romaine lettuce in plastic packaging (pre-chopped for salad is acceptable) from 5 nearby stores - Sprouts on Foothill Boulevard, Stater Bros. on N. Garey Avenue, Cardenas on E. Holt Avenue, El Super on E. Holt Avenue, and Super King on Auto Center Drive. Upon purchasing the lettuce, ensure that it is carried out in individual paper bags to avoid contamination. Seal the bags to avoid contamination with airborne particulates, however, some contamination will likely be unavoidable.\ 
+2. In the lab, obtain a glass blender. If unbagged, thoroughly wash one head of lettuce with deionized water, and then fill the blender with leaves until they reach the top. If bagged insert leaves into blender until they reach the top without washing, as the lettuce is labeled pre-washed.\ 
+3. Add 200 mL of Milli-Q deionized water to the blender. Blend for 30 seconds on the slower “grind” setting, then for 60 seconds on the faster “cream” setting.\ 
+4. Strain the contents of each beaker through a stainless steel filter with a mesh size of 5 mm to capture larger organic fibers while allowing all particles meeting the qualification of “microplastic” (>5mm) to pass through until 100 mL of solution is obtained. Place this solution in a glass beaker covered with aluminum foil to avoid airborne contamination.\ 
+5. Extract 5 mL of the blended lettuce solution using a glass pipette and place in a 100 mL glass beaker. Due to the large quantities of cellulose in lettuce, use the enzyme cellulase from Niger Aspergillus niger to digest the remaining organic material while leaving any microplastic particles intact. Add 5 mL of cellulase and 10 mL of a phosphate-buffered saline (PBS) solution (1 L prepared with 8 g sodium chloride, 200 mg potassium chloride, 1.44 g disodium phosphate and 240 mg monopotassium phosphate in deionized water, set to pH 5.0 using hydrochloric acid). Cover beaker with aluminum foil.\ 
+6. Incubate the solution at 50° C for 4 days.\ 
+7. Repeat steps 2-6 for every purchased head of lettuce.\ 
+8. Add NaCl in solution with deionized water (density=1.2g/mL, stirred for 10 minutes) to the incubated solution until the beaker has 100 mL of solution in it. Allow solution to settle for 30 minutes, then use a vacuum system to collect the top 40 mL of each sample and any floating microplastics within it.\ 9. Add 5 mL of 0.08 g/mL Nile red dye solution to this extracted solution and wait 30 minutes to allow staining to occur.\ 
+10. Run this extracted and stained solution through vacuum filtration with an entirely glass apparatus to separate stained fibers from their liquid matrix.
+Place the resulting filter paper in a glass beaker, cover with aluminium foil, and allow it to dry overnight.\ 
+11. Use RStudio to generate random coordinate points. Create a grid on the dried filter paper, and plot four random points onto this grid on each paper.\ 
+12. Use the digital Revolve microscope with fluorescent light (4x zoom lens, TXRED fluorescent/FL overlay at 100% brightness, 110 ms capture) and use ocular techniques to count the number of fluorescent particles present at each marked location on the paper.\ 
+13. Repeat steps 8-12 with each incubated solution.\ 
+14. In order to mitigate the impacts of contamination or procedural error, corroborated the results through the use of blanks. 3 water “samples” should go through steps 2-11 alongside the experimental samples, but with 100 mL of deionized water rather than solution material. All equipment used should be washed thoroughly before and after touching any sample, and all water used to wash should be deionized so as to avoid contamination from the water.\ 
+15. The methods of Löder et al. 2017, Maes et al. 2017, Wang and Wang 2018, Karlsson et al. 2017, and Quinn et al. 2018 were consulted in developing these proposed procedures.
+
 #### Results
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
@@ -80,3 +102,6 @@ wilcox.test(Microplastics ~ Group, data = bagged_unbagged, paired = TRUE)
 t.test(Bagged, Unbagged, var.equal = TRUE)
 ```
 
+#### Discussion
+
+#### Conclusion
