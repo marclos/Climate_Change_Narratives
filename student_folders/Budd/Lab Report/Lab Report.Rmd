@@ -1,38 +1,48 @@
 ---
-title: "Microplastics in Lettuce: Results"
+title: "Microplastics in Lettuce"
 author: "Susannah Budd"
-date: "4/28/2019"
+date: "05/04/2019"
 output: 
-  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#### Abstract
+### Abstract
 
-#### Introduction
+### Introduction
 
-#### Methods
+Microplastics have become a consistent component of the environment of the entire biosphere. Plastics and their additives have been located throughout every major body of water and in many species, including humans (GESAMP 2016). The ubiquity of microplastics is of particular concern as many plastic additives, such as BPA, have been shown to be harmful to human health (Calafat et al. 2008). However, the vehicles through which microplastics are transmitted to the human body are not fully understood. One suspected pathway for bioaccumulation is through foodways, however, research into the presence of microplastics in food (other than seafood) has been limited (Karbalaei et al. 2018). This research hopes to delve into a component of microplastics in food which has not yet been explored - produce. Additionally, it intends to investigate if human dependence on plastic packaging is impacting dietary microplastic exposure, and consequently related health effects.\ 
 
-1. Obtain Romaine lettuce. Purchase two unpackaged heads of romaine lettuce and two heads of romaine lettuce in plastic packaging (pre-chopped for salad is acceptable) from 5 nearby stores - Sprouts on Foothill Boulevard, Stater Bros. on N. Garey Avenue, Cardenas on E. Holt Avenue, El Super on E. Holt Avenue, and Super King on Auto Center Drive. Upon purchasing the lettuce, ensure that it is carried out in individual paper bags to avoid contamination. Seal the bags to avoid contamination with airborne particulates, however, some contamination will likely be unavoidable.\ 
-2. In the lab, obtain a glass blender. If unbagged, thoroughly wash one head of lettuce with deionized water, and then fill the blender with leaves until they reach the top. If bagged insert leaves into blender until they reach the top without washing, as the lettuce is labeled pre-washed.\ 
-3. Add 200 mL of Milli-Q deionized water to the blender. Blend for 30 seconds on the slower “grind” setting, then for 60 seconds on the faster “cream” setting.\ 
-4. Strain the contents of each beaker through a stainless steel filter with a mesh size of 5 mm to capture larger organic fibers while allowing all particles meeting the qualification of “microplastic” (>5mm) to pass through until 100 mL of solution is obtained. Place this solution in a glass beaker covered with aluminum foil to avoid airborne contamination.\ 
-5. Extract 5 mL of the blended lettuce solution using a glass pipette and place in a 100 mL glass beaker. Due to the large quantities of cellulose in lettuce, use the enzyme cellulase from Niger Aspergillus niger to digest the remaining organic material while leaving any microplastic particles intact. Add 5 mL of cellulase and 10 mL of a phosphate-buffered saline (PBS) solution (1 L prepared with 8 g sodium chloride, 200 mg potassium chloride, 1.44 g disodium phosphate and 240 mg monopotassium phosphate in deionized water, set to pH 5.0 using hydrochloric acid). Cover beaker with aluminum foil.\ 
+Concerns surrounding the impacts of microplastics on human health have been growing alongside scientific understanding of how plasticizers and polymers may impact human health. A major concern surrounding both issues has been bioaccumulation. Recently, studies have shown strong evidence for bioaccumulation following ingestion in marine bodies from bivalves to fin whales (Fossi et al. 2016, Batel et al. 2016). Additionally, as was discussed by Wright and Kelly (2017), the body of scientific literature surrounding non-plastic particle accumulation and leaching suggests than microplastics and their associated chemicals will be able to bioaccumulate in humans as well. Given the emerging understanding of the potential health impacts of significant microplastic exposure, more in-depth research regarding the scope of foodway microplastic exposure is certainly warranted.\ 
+
+One particular area of consumption which has not had significant scientific investigation is that of produce. Due to the density of microplastics in the ocean, investigation into microplastic proliferation has largely centered around oceanic products, such as seafood (Karbalaei et al. 2018). Additionally, many of these studies focus on these products well before they are intended for human consumption, including areas which usually aren’t consumed by humans, such as the gastrointestinal tract (Baalkhuyur et al. 2018, Rochman et al. 2015, Karlsson et al. 2017). Because of this, there is no scientific consensus regarding how significant dietary ingestion of microplastics is to overall microplastic exposure. By investigating produce at the stage of production nearest to consumption (in the grocery store), this research aims to begin to create a more robust understanding of how all foodways impact human microplastic exposure, and how processing tactics, such as packaging, play a role in exposure.\ 
+
+In order to begin to investigate these aims, the questions to investigate must first be developed. For the purpose of this particular research, the overarching questions are: Are there detectable microplastics in romaine lettuce intended for human consumption? If yes, do microplastic concentrations vary depending on whether or not they were packaged in plastics? Because of romaine’s availability both in unpackaged heads and prepared plastic bags, it serves as the ideal produce through which to investigate how the phenomenon of how packaging impacts microplastic exposure and subsequent leaching. Furthermore, this research will be conducted using a hypothesis test, where a null hypothesis will be rejected or not rejected based on whether a p-value of < 0.05 is obtained. For the purpose of this research, the null hypothesis is “there is no difference in microplastic quantities in romaine lettuce with or without plastic packaging.” This metric will be used to assess the impact of plastic packaging on foodway microplastic exposure.\ 
+
+Most of the scientific body of research surrounding foodway paths to microplastic exposure is focused on seafood or foods obtained many steps before they would be presented for human consumption (Karbalaei et al. 2018). This research aims both to focus on an area of food which has not been previously investigated (packaged vs. unpackaged produce), and investigate it in a phase near human consumption so as to gain a more thorough understanding of how significant dietary microplastic exposure truly is. As is discussed by Rist et al. (2018), the focus on pre-production seafood is representative of an incredibly minute amount of microplastic exposure when compared to overall human exposure. As they go on to note, focusing on such a relatively small issue risks drawing attention away from the more significant and systematic issues of plastic consumption. By drawing the attention of dietary microplastics away from pre-production seafood, and focusing on the more systematic issue of packaging, hopefully this research may begin to diversity the body of scientific literature surrounding microplastics in food.\ 
+
+### Methods
+
+1. Obtain Romaine lettuce. Purchase **two unpackaged heads of romaine lettuce** and **two heads of romaine lettuce in plastic packaging** (pre-chopped for salad is acceptable) from 5 nearby stores - Sprouts on Foothill Boulevard, Stater Bros. on N. Garey Avenue, Cardenas on E. Holt Avenue, El Super on E. Holt Avenue, and Super King on Auto Center Drive. Upon purchasing the lettuce, ensure that it is carried out in **individual paper bags** to avoid contamination. Seal the bags to avoid contamination with airborne particulates, however, some contamination will likely be unavoidable.\ 
+2. In the lab, obtain a **glass blender**. If unbagged, thoroughly wash one head of lettuce with deionized water, and then fill the blender with leaves until they reach the top. If bagged insert leaves into blender until they reach the top without washing, as the lettuce is labeled pre-washed.\ 
+3. Add **200 mL of Milli-Q deionized water** to the blender. Blend for 30 seconds on the slower “grind” setting, then for 60 seconds on the faster “cream” setting.\ 
+4. Strain the contents of each beaker through a **stainless steel filter with a mesh size of 5 mm** to capture larger organic fibers while allowing all particles meeting the qualification of “microplastic” (>5mm) to pass through until 100 mL of solution is obtained. Place this solution in a glass beaker covered with **aluminum foil** to avoid airborne contamination.\ 
+5. Extract 5 mL of the blended lettuce solution using a **glass pipette** and place in a **100 mL glass beaker**. Due to the large quantities of cellulose in lettuce, use the enzyme cellulase from Niger Aspergillus niger to digest the remaining organic material while leaving any microplastic particles intact. Add **5 mL of cellulase** and **10 mL of a phosphate-buffered saline (PBS) solution** (1 L prepared with **8 g sodium chloride**, **200 mg potassium chloride**, **1.44 g disodium phosphate** and **240 mg monopotassium phosphate in deionized water**, set to pH 5.0 using hydrochloric acid). Cover beaker with **aluminum foil**.\ 
 6. Incubate the solution at 50° C for 4 days.\ 
 7. Repeat steps 2-6 for every purchased head of lettuce.\ 
-8. Add NaCl in solution with deionized water (density=1.2g/mL, stirred for 10 minutes) to the incubated solution until the beaker has 100 mL of solution in it. Allow solution to settle for 30 minutes, then use a vacuum system to collect the top 40 mL of each sample and any floating microplastics within it.\ 9. Add 5 mL of 0.08 g/mL Nile red dye solution to this extracted solution and wait 30 minutes to allow staining to occur.\ 
-10. Run this extracted and stained solution through vacuum filtration with an entirely glass apparatus to separate stained fibers from their liquid matrix.
-Place the resulting filter paper in a glass beaker, cover with aluminium foil, and allow it to dry overnight.\ 
-11. Use RStudio to generate random coordinate points. Create a grid on the dried filter paper, and plot four random points onto this grid on each paper.\ 
-12. Use the digital Revolve microscope with fluorescent light (4x zoom lens, TXRED fluorescent/FL overlay at 100% brightness, 110 ms capture) and use ocular techniques to count the number of fluorescent particles present at each marked location on the paper.\ 
+8. Add **NaCl in solution with deionized water** (density=1.2g/mL, stirred for 10 minutes) to the incubated solution until the beaker has 100 mL of solution in it. Allow solution to settle for 30 minutes, then use a vacuum system to collect the top 40 mL of each sample and any floating microplastics within it.\ 9. Add **5 mL of 0.08 g/mL Nile red dye solution** to this extracted solution and wait 30 minutes to allow staining to occur.\ 
+10. Run this extracted and stained solution through **vacuum filtration with an entirely glass apparatus** to separate stained fibers from their liquid matrix.
+Place the resulting filter paper in a **glass beaker**, cover with **aluminium foil**, and allow it to dry overnight.\ 
+11. Use **RStudio** to generate random coordinate points. Create a grid on the dried filter paper, and plot four random points onto this grid on each paper.\ 
+12. Use the **digital Revolve microscope with fluorescent light** (4x zoom lens, TXRED fluorescent/FL overlay at 100% brightness, 110 ms capture) and use ocular techniques to count the number of fluorescent particles present at each marked location on the paper.\ 
 13. Repeat steps 8-12 with each incubated solution.\ 
-14. In order to mitigate the impacts of contamination or procedural error, corroborated the results through the use of blanks. 3 water “samples” should go through steps 2-11 alongside the experimental samples, but with 100 mL of deionized water rather than solution material. All equipment used should be washed thoroughly before and after touching any sample, and all water used to wash should be deionized so as to avoid contamination from the water.\ 
+14. In order to mitigate the impacts of contamination or procedural error, corroborated the results through the use of **blanks**. 3 water “samples” should go through steps 2-11 alongside the experimental samples, but with 100 mL of deionized water rather than solution material. All equipment used should be washed thoroughly before and after touching any sample, and all water used to wash should be deionized so as to avoid contamination from the water.\ 
 15. The methods of Löder et al. 2017, Maes et al. 2017, Wang and Wang 2018, Karlsson et al. 2017, and Quinn et al. 2018 were consulted in developing these proposed procedures.
 
-#### Results
+### Results
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 # Data in two numeric vectors
@@ -102,6 +112,10 @@ wilcox.test(Microplastics ~ Group, data = bagged_unbagged, paired = TRUE)
 t.test(Bagged, Unbagged, var.equal = TRUE)
 ```
 
-#### Discussion
+### Discussion
 
-#### Conclusion
+### Conclusion
+
+### Bibliography
+
+### Appendix I: Raw Data
