@@ -119,3 +119,12 @@ t.test(Bagged, Unbagged, var.equal = TRUE)
 ### Bibliography
 
 ### Appendix I: Raw Data
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+final_results <- read.csv("/home/CAMPUS/scba2018/Climate_Change_Narratives/student_folders/Budd/Lab Report/Results - Sheet1.csv")
+library(knitr)
+library(kableExtra)
+final_results %>%
+  kable() %>%
+  kable_styling()
+```
+
