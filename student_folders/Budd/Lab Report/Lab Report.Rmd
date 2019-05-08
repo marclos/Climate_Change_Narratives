@@ -84,14 +84,10 @@ This experiment was designed to test the null hypothesis of "there is no differe
 For bagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.2768, indicating that it is within the bounds of normal distribution. The Q-Q plot, shown below, also demonstrates that most points fall within the expected bounds.For unbagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.04526, indicating that it is not within the bounds of normal distribution. The Q-Q plot, shown below, also demonstrates that, while most points fall within the expected bounds, some are much further out of normal distribution than they were for the bagged lettuce data.
 
 ```{r warning=FALSE, message=FALSE, echo=FALSE} 
-knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5)
-par(mfrow=c(1,2))
-
-library("ggpubr")
-ggqqplot(Bagged)
-
-library("ggpubr")
-ggqqplot(Unbagged)
+require(gridExtra)
+plot1 <- ggqqplot(Bagged)
+plot2 <- ggqqplot(Unbagged)
+grid.arrange(plot1, plot2, ncol=2)
 ```
 
 ```{r include=FALSE}
