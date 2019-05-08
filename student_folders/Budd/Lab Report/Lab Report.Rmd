@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Abstract
 
-Microplastic contamination is a pressing issue, and one of particular concern for the spheres of ecosystem and human health. Dietary microplastic contamination has been of significant concern recently as a potential pathway for bioaccumulation of microplastics in humans. However, this body of literature has focused largely on the risk of contamination through seafood, as microplastic contamination in the ocean is particularly high. This research aimed to investigate microplastic levels in romaine lettuce intended for human consumption and investigate the role of plastic packaging in potential microplastic contamination in order to gain a new perspective on dietary exposure routes. In comparing packaged and unpackaged lettuce, the null hypothesis of "there is no difference in microplastic quantities in romaine lettuce with or without plastic packaging" could not be rejected (p-value = 0.5839). This reality brings up further questions concerning the extent of laboratory microplastic contamination and the future of research into microplastics and produce.
+Microplastic contamination has become so ubiquitous as to pose a significant risk to  the spheres of ecosystem and human health across the world. Dietary microplastic contamination has been of significant concern recently as a potential pathway for bioaccumulation of microplastics in humans. However, this body of literature has focused largely on the risk of contamination through seafood, as microplastic contamination in the ocean is particularly high. This research aimed to investigate microplastic levels in romaine lettuce intended for human consumption and investigate the role of plastic packaging in potential microplastic contamination in order to gain a new perspective on dietary exposure routes. In comparing packaged and unpackaged lettuce, the null hypothesis of "there is no difference in microplastic quantities in romaine lettuce with or without plastic packaging" could not be rejected (p-value = 0.5839). This reality brings up further questions concerning the extent of laboratory microplastic contamination and the future of research into microplastics and produce.
 
 ### Introduction
 
@@ -74,7 +74,7 @@ The data collection yielded five replicates and five pseudo-replicates for both 
 knitr::opts_chunk$set(message=FALSE, warning=FALSE, fig.height=4, fig.width=5, fig.align="center")
 ##Box Plot
 library("ggpubr")
-ggboxplot(bagged_unbagged, x="Group", y="Microplastics", color="Group", palette=c("#00AFBB", "#E7B800"), order=c("Bagged", "Unbagged"), ylab="# Microplastics", xlab="Groups")
+ggboxplot(bagged_unbagged, x="Group", y="Microplastics", color="Group", palette=c("#00AFBB", "#E7B800"), order=c("Bagged", "Unbagged"), ylab="No. of Microplastics", xlab="Groups")
 ```
 
 #### Normality Tests \
