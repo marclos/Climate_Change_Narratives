@@ -37,3 +37,13 @@ boxplot(
   )
 ```
 
+```{r avg for blanks, comparing with bagged/unbagged}
+avg_blanks <- data.frame("Blank Number" = c(1,2,3), "Average" = c(lettuce_results$Average[21], lettuce_results$Average[22], lettuce_results$Average[23]))
+avg <- data.frame("Average" = c(mean(avg_BG_UB$Unbagged), mean(avg_BG_UB$Bagged), mean(avg_blanks$Average)), "Blanks" = c(mean(avg_blanks$Average), mean(avg_blanks$Average), mean(avg_blanks$Average)))
+avg_microplastics <- data.frame(
+  "Type" = c("Unbagged", "Bagged", "Blank"), 
+  "Average" = c(avg$Average),
+  "Net" = c(avg$Average - avg$Blanks)
+)
+```
+

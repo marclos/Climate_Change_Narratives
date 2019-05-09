@@ -45,6 +45,10 @@ boxplot(
   col = c("lightgreen", "lightblue")
   )
 ```
+
+```{r q-q plot figure out how it works, do I need to have all the samples of bagged/unbagged in one row??}
+qqplot(avg_BG_UB$Unbagged)
+```
   
 _**Figure 1.** Boxplot of Microplastic Counts_
   
