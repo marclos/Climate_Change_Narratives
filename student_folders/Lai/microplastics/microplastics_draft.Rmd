@@ -53,52 +53,22 @@ boxplot(
   )
 ```
 
-<<<<<<< HEAD
 _**Figure 1.** Boxplot of Microplastic Counts_
-
+  
 ```{r qqplot for UB, echo=FALSE}
-=======
-<<<<<<< HEAD
-_**Figure 1.** Boxplot of Microplastic Counts_
-
-```{r qqplot for UB, echo=FALSE}
-=======
-```{r qqplot for UB}
->>>>>>> b9b7d5775347677d862e1e280efe78231e0f9a8a
->>>>>>> e50c72b84e5b1abcc1991c1dc81cf8c175564993
 lettuce_avg_UB <- lettuce_results$Average[lettuce_results$`U.B. / Bagged` == "UB"]
 qqnorm(lettuce_avg_UB, main="Normal Q-Q Plot of Unbagged Lettuce")
 qqline(lettuce_avg_UB)
 ```
-<<<<<<< HEAD
 
 _**Figure 2.** Normal Q-Q Plot of Unbagged Lettuce_
   
 ```{r qqplot for BG, echo=FALSE}
-=======
-<<<<<<< HEAD
-
-_**Figure 2.** Normal Q-Q Plot of Unbagged Lettuce_
-  
-```{r qqplot for BG, echo=FALSE}
-=======
-_**Figure 2.** Normal Q-Q Plot of Unbagged Lettuce_
-  
-```{r qqplot for BG}
->>>>>>> b9b7d5775347677d862e1e280efe78231e0f9a8a
->>>>>>> e50c72b84e5b1abcc1991c1dc81cf8c175564993
 lettuce_avg_BG <- lettuce_results$Average[lettuce_results$`U.B. / Bagged` == "BG"]
 qqnorm(lettuce_avg_BG, main="Normal Q-Q Plot of Bagged Lettuce")
 qqline(lettuce_avg_BG)
 ``` 
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> b9b7d5775347677d862e1e280efe78231e0f9a8a
->>>>>>> e50c72b84e5b1abcc1991c1dc81cf8c175564993
 _**Figure 3.** Normal Q-Q Plot of Bagged Lettuce_
   
 Type | Average Count | Net Experimental Count
