@@ -1,7 +1,7 @@
 ---
-title: "lettuce_results"
+title: "lettuce_results_NEW_code"
 author: "bljj2015"
-date: "4/22/2019"
+date: "5/9/2019"
 output: html_document
 ---
 
@@ -14,16 +14,19 @@ library(readr)
 lettuce_results <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/student_folders/Lai/microplastics/lettuce_results.csv")
 avg_BG_UB <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/student_folders/Lai/microplastics/avg_BG_UB.csv")
 sep_BG_UB <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/student_folders/Lai/microplastics/separate_BG_UB.csv")
+lettuce_results$Net <- c(lettuce_results$Average - mean(avg_blanks$Average))
 ```
 
 ```{r t-test for non-averaged, separated #1 & #2 samples (10 samples total)}
 t.test(avg_BG_UB$Unbagged, avg_BG_UB$Bagged, paired=TRUE)
 t.test(sep_BG_UB$Unbagged, sep_BG_UB$Bagged, paired=TRUE)
+t.test(avg_BG_UB$`Unbagged Net`, avg_BG_UB$`Bagged Net`, paired=TRUE)
 ```
 
 ```{r wilcox signed-rank test (assumes non-parametric)}
 wilcox.test(avg_BG_UB$Unbagged, avg_BG_UB$Bagged, paired=TRUE)
 wilcox.test(sep_BG_UB$Bagged, sep_BG_UB$Unbagged, paired=TRUE)
+wilcox.test(avg_BG_UB$`Unbagged Net`, avg_BG_UB$`Bagged Net`, paired=TRUE)
 ```
 
 ```{r graphs for all lettuce data, echo=FALSE}
@@ -37,7 +40,8 @@ boxplot(
   )
 ```
 
-```{r avg for blanks, comparing with bagged/unbagged}
+
+```{r avg for blanks, comparing with bagged/unbagged, mean of blanks = 24.75}
 avg_blanks <- data.frame("Blank Number" = c(1,2,3), "Average" = c(lettuce_results$Average[21], lettuce_results$Average[22], lettuce_results$Average[23]))
 avg <- data.frame("Average" = c(mean(avg_BG_UB$Unbagged), mean(avg_BG_UB$Bagged), mean(avg_blanks$Average)), "Blanks" = c(mean(avg_blanks$Average), mean(avg_blanks$Average), mean(avg_blanks$Average)))
 avg_microplastics <- data.frame(
@@ -45,4 +49,21 @@ avg_microplastics <- data.frame(
   "Average" = c(avg$Average),
   "Net" = c(avg$Average - avg$Blanks)
 )
+mean(lettuce_net)
 ```
+
+
+
+
+
+
+
+```{r tests for net-amount of microplastics after subtracting from blanks}
+#LOL this is unnecessary, just subtract 24.75 from "Average" in lettuce_results to get the net average minus the blanks!!!
+#point_1 <- c(lettuce_results$`Point 1` - 24.75)
+#point_2 <- c(lettuce_results$`Point 2` - 24.75)
+#point_3 <- c(lettuce_results$`Point 3` - 24.75)
+#point_4 <- c(lettuce_results$`Point 4` - 24.75)
+#lettuce_net <- data.frame("Store" = c(lettuce_results$Store), "U.B. / Bagged" = c(lettuce_results$`U.B. / Bagged`) , "Sample #" = c(lettuce_results$`Sample #`), "Point 1" = c(point_1), "Point 2" = c(point_2), "Point 3" = c(point_3), "Point 4" = c(point_4), "Net Average" = 
+```
+
