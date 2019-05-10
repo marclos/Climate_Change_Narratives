@@ -1,7 +1,7 @@
 ---
-title: "Comparing Microplastic Pollution in Romaine Lettuce Sold With or Without Plastic Packaging"
-author: "bljj2015"
-date: "4/22/2019"
+title: "Salad with a Side of Plastic: Comparing Microplastic Pollution in Romaine Lettuce Sold with or without Plastic Packaging"
+author: "Bailey Lai"
+date: "2019 May 09"
 output: 
   html_document: default
   pdf_document: default
@@ -10,6 +10,10 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readr)
+#install.packages("dplyr")
+#install.packages("ggpubr")
+#library("dplyr")
+#library("ggpubr")
 ```
   
 ```{r read lettuce data, include=FALSE}
@@ -17,12 +21,13 @@ lettuce_results <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/stu
 avg_BG_UB <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/student_folders/Lai/microplastics/avg_BG_UB.csv")
 sep_BG_UB <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/student_folders/Lai/microplastics/separate_BG_UB.csv")
 ```
+###Introduction  
   
 ### Methods  
   
 The following methods are based off of prior established methods for obtaining microplastic counts from food products (Löder et al. 2017, Maes et al. 2017, Wang and Wang 2018, Karlsson et al. 2017, and Quinn et al. 2018).  
   
-We purchased two unpackaged heads of romaine lettuce and two bags of romaine lettuce in plastic packaging from each of the chosen five stores in the cities of Claremont and Pomona. We chose only stores that sell both unpackaged heads AND packaged lettuce (lettuce packaged as chopped salad is acceptable). This led us to select the following supermarkets: Sprouts on Foothill Blvd, State Bros. on N Garey Ave, Cardenas on E Holt Ave, El Super on E Holt Ave, and Super King on Auto Center Dr. We put the unpackaged romaine lettuce into paper bags to minimize contamination during transit.  
+We purchased two unpackaged heads of romaine lettuce and two bags of romaine lettuce in plastic packaging from each of the chosen five stores in the cities of Claremont and Pomona. We chose only stores that sell both unpackaged heads AND packaged lettuce (lettuce packaged as chopped salad is acceptable). This led us to select the following supermarkets: Sprouts on Foothill Blvd, Stater Bros. on N Garey Ave, Cardenas on E Holt Ave, El Super on E Holt Ave, and Super King on Auto Center Dr. We put the unpackaged romaine lettuce into paper bags to minimize contamination during transit.  
   
 In the lab, we used a glass blender to homogenize the lettuce with water. All equipment in contact with lettuce were first thoroughly washed with Milli-Q deionized water for each successive sample. For each sample of unbagged lettuce, we washed the head in Milli-Q deionized water, then tore out leaves and inserted them into the blender until it reached the top. Bagged lettuce was not washed, since they are labeled “pre-washed” and we wanted to test the difference. Bagged lettuce was poured straight from the bag into the blender until it reached the top. Afterwards, we poured in 200 mL of Milli-Q deionized water into the blender. We blended the mix of lettuce and water for 30 seconds under the slower "aaaa” setting, then 60 seconds under the faster "bbbb” setting. We strained the homogenized lettuce and water through a 5 mm stainless steel sieve into a glass beaker to obtain 100 mL of solution. This process was repeated for each sample, for a total of 20 experimental samples (two unbagged, two bagged from each of the five stores).  
   
@@ -30,7 +35,7 @@ To break down the cellulose in the lettuce solution, we added 5 mL cellulase fro
   
 After incubation, we added 50 mL NaCl solution to each beaker (density = 1.2 g NaCl / 1 mL water, 1440 mL solution stirred in 2 L volumetric flask for 10 minutes). For each beaker, 5 mL of 0.08 g/mL Red Nile dye solution was added and allowed to stain the sample solution for 30 minutes. For each of the 23 total samples, 40 mL of solution was extracted from the top of the beaker using a glass vacuum and glass pipette through a sheet of filter paper. The filter paper was placed in glass containers and covered with aluminium foil to let dry overnight. We then used a digital microscope with fluorescent light (red fluorescent 100% brightness, 110 ms capture) to count stained microplastic particles next to four randomly generated points at XXX zoom for each sample of filter paper. Four microplastic counts were obtained for each of the 20 experimental samples and 3 blank samples.  
   
-Statistical analysis was conducted using the program R (CRAN 2019). In the analysis, we paired the average of the two unbagged counts with the average of the two bagged counts for each of the five stores to test if there was a statistically significant difference between the two groups. The parametric t-test (for normal distribution) and nonparametric Wilcoxon signed-rank test (for non-normal distribution) were used to obtain the p-value. 
+Statistical analysis was conducted using the program R (CRAN 2019). In the analysis, we paired the average of the two unbagged counts with the average of the two bagged counts for each of the five stores to test if there was a statistically significant difference between the two groups (Appendix 1. Since the he parametric t-test for normal distribution and nonparametric Wilcoxon signed-rank test for non-normal distribution were used to obtain p-values. 
   
   
 ### Results
@@ -46,19 +51,36 @@ boxplot(
   )
 ```
 
-```{r q-q plot figure out how it works, do I need to have all the samples of bagged/unbagged in one row??}
-qqplot(avg_BG_UB$Unbagged)
-```
-  
 _**Figure 1.** Boxplot of Microplastic Counts_
+
+```{r qqplot for UB, echo=FALSE}
+lettuce_avg_UB <- lettuce_results$Average[lettuce_results$`U.B. / Bagged` == "UB"]
+qqnorm(lettuce_avg_UB, main="Normal Q-Q Plot of Unbagged Lettuce")
+qqline(lettuce_avg_UB)
+```
+
+_**Figure 2.** Normal Q-Q Plot of Unbagged Lettuce_
   
+```{r qqplot for BG, echo=FALSE}
+lettuce_avg_BG <- lettuce_results$Average[lettuce_results$`U.B. / Bagged` == "BG"]
+qqnorm(lettuce_avg_BG, main="Normal Q-Q Plot of Bagged Lettuce")
+qqline(lettuce_avg_BG)
+``` 
+
+_**Figure 3.** Normal Q-Q Plot of Bagged Lettuce_
   
+Type | Average Count | Net Experimental Count
+---- | ---- | ----
+Unbagged | 32.775 | 8.025
+Bagged | 39.700 | 14.950
+Blank | 24.750 | -
+_**Table 1.** Average Microplastic Count in Grocery-Bought Romaine Lettuce_
   
 Test | p-value | Statistical significance?
 ---- | ---- | ----
 1. paired t-test | 0.38 | no
 2. Wilcoxon signed-rank test | 0.58 | no
-_**Table 1.** Test of differences between bagged and unbagged microplastic counts paired with each store_
+_**Table 2.** Test of differences between bagged and unbagged microplastic counts paired with each store_
   
 We did both the parametric and non-parametric paired tests because there was one outlier in each of the unbagged and bagged averages that caused the distribution to be non-normal (Figure 1). We do not reject the null hypothesis based on the lack of statistical significance in the paired t-test and Wilcoxon signed-rank test (Table 1). This indicates there is no significant difference in microplastic count between unbagged heads of romaine lettuce and romaine lettuce bagged in plastic packaging. 
   

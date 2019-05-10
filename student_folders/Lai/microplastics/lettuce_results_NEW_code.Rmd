@@ -40,6 +40,18 @@ boxplot(
   )
 ```
 
+```{r qqplot for UB}
+lettuce_avg_UB <- lettuce_results$Average[lettuce_results$`U.B. / Bagged` == "UB"]
+qqnorm(lettuce_avg_UB, main="Normal Q-Q Plot of Unbagged Lettuce")
+qqline(lettuce_avg_UB)
+```
+
+```{r qqplot for BG}
+lettuce_avg_BG <- lettuce_results$Average[lettuce_results$`U.B. / Bagged` == "BG"]
+qqnorm(lettuce_avg_BG, main="Normal Q-Q Plot of Bagged Lettuce")
+qqline(lettuce_avg_BG)
+```
+
 
 ```{r avg for blanks, comparing with bagged/unbagged, mean of blanks = 24.75}
 avg_blanks <- data.frame("Blank Number" = c(1,2,3), "Average" = c(lettuce_results$Average[21], lettuce_results$Average[22], lettuce_results$Average[23]))
