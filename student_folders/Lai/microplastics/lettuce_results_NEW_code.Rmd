@@ -17,6 +17,12 @@ sep_BG_UB <- read_csv("/home/CAMPUS/bljj2015/Climate_Change_Narratives/student_f
 lettuce_results$Net <- c(lettuce_results$Average - mean(avg_blanks$Average))
 ```
 
+```{r shapiro-wilk test for normality}
+shapiro.test(avg_BG_UB$Unbagged)
+shapiro.test(avg_BG_UB$Bagged)
+```
+
+
 ```{r t-test for non-averaged, separated #1 & #2 samples (10 samples total)}
 t.test(avg_BG_UB$Unbagged, avg_BG_UB$Bagged, paired=TRUE)
 t.test(sep_BG_UB$Unbagged, sep_BG_UB$Bagged, paired=TRUE)
