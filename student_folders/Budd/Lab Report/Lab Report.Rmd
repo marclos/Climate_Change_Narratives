@@ -77,29 +77,6 @@ library("ggpubr")
 ggboxplot(bagged_unbagged, x="Group", y="Microplastics", color="Group", palette=c("#00AFBB", "#E7B800"), order=c("Bagged", "Unbagged"), ylab="No. of Microplastics", xlab="Groups")
 ```
 
-#### Normality Tests \
-
-This experiment was designed to test the null hypothesis of "there is no difference in microplastic quantities in romaine lettuce with or without plastic packaging." In order to determine whether or not to reject the null hypothesis, whether or not the data fell within normal distribution was first assessed, using Q-Q Plots and the Shapiro-Wilk normality test.
-
-For bagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.2768, indicating that it is within the bounds of normal distribution. The Q-Q plot, shown below, also demonstrates that most points fall within the expected bounds.For unbagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.04526, indicating that it is not within the bounds of normal distribution. The Q-Q plot, shown below, also demonstrates that, while most points fall within the expected bounds, some are much further out of normal distribution than they were for the bagged lettuce data.
-
-```{r warning=FALSE, message=FALSE, echo=FALSE} 
-require(gridExtra)
-plot1 <- ggqqplot(Bagged)
-plot2 <- ggqqplot(Unbagged)
-grid.arrange(plot1, plot2, ncol=2)
-```
-
-```{r include=FALSE}
-##Shapiro-Wilk normality test Bagged
-shapiro.test(Bagged)
-```
-
-```{r include=FALSE}
-##Shapiro-Wilk normality test Unbagged
-shapiro.test(Unbagged)
-```
-
 #### Statistical Analysis
 
 As the unbagged data fell outside of normal distribution, a Paired Samples Wilcoxon Test was used to evaluate the data. Using this test, a p-value of 0.5839 was yielded. This p-value does not demonstrate statistical significance, meaning that the null hypothesis may not be rejected. A Two-Sample T-Test was also conducted, yielding a p-value of 0.2538. This also does not demonstrate statistical significance, indicating that statistical significance likely would not be demonstrated even if the data fell within normal distribution.
@@ -191,3 +168,23 @@ final_results %>%
 ```
 
 ### Appendix II: Normality Tests
+This experiment was designed to test the null hypothesis of "there is no difference in microplastic quantities in romaine lettuce with or without plastic packaging." In order to determine whether or not to reject the null hypothesis, whether or not the data fell within normal distribution was first assessed, using Q-Q Plots and the Shapiro-Wilk normality test.
+
+For bagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.2768, indicating that it is within the bounds of normal distribution. The Q-Q plot, shown below, also demonstrates that most points fall within the expected bounds.For unbagged lettuce data, the Shapiro-Wilk normality test yielded a p-value of 0.04526, indicating that it is not within the bounds of normal distribution. The Q-Q plot, shown below, also demonstrates that, while most points fall within the expected bounds, some are much further out of normal distribution than they were for the bagged lettuce data.
+
+```{r warning=FALSE, message=FALSE, echo=FALSE} 
+require(gridExtra)
+plot1 <- ggqqplot(Bagged)
+plot2 <- ggqqplot(Unbagged)
+grid.arrange(plot1, plot2, ncol=2)
+```
+
+```{r include=FALSE}
+##Shapiro-Wilk normality test Bagged
+shapiro.test(Bagged)
+```
+
+```{r include=FALSE}
+##Shapiro-Wilk normality test Unbagged
+shapiro.test(Unbagged)
+```
