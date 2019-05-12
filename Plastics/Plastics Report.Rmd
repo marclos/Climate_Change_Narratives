@@ -19,15 +19,13 @@ Significance
 Microplastics come from almost all plastic products used by humans and can be found in water, soil, and even in the air. They can also have impacts on human health, as well as on numerous ecosystems, even being as poisoning and killing marine life (Karbalaei et al. 2018). When not properly disposed of, plastics can break down into toxic chemicals that bioaccumulate and enter the food chain, poisoning and possibly killing many organisms ranging from plants all the way up to humans (Huerta et al. 2017). In urban areas, the contamination can be high, with levels of microplastics in waste water being seen at 260-320 x 103 particle m-3 in cities such as Paris (Dris et al. 2015).
 As utilization of single-use plastics increase, concern about microplastics in food and water sources is rising (Koelmans et al. 2019). This added to the significance of the study of microplastics in urban environments. In order to improve mitigation strategies for microplastics in human-consumed products, research must be done to determine concentrations in treated tap water and untreated fresh water. While seeking to fill in knowledge gaps about microplastics in freshwater systems, we hypothesized that microplastic levels would be higher in the local body of fresh water than in tap water, which may in turn lead to bioaccumulation of microplastics throughout the surrounding habitat and region.
 
-```{r cars}
-summary(cars)
-```
-
 Current Literature and Known Techniques
 
 The analysis of microplastics in water is a process that can be complex due to their ubiquitous presence (Liu et al. 2019). As such, techniques are different depending on the sizes of the microplastics that researchers seek to identify, however there were a few main techniques that are more widely used by researchers. To preliminarily obtain the plastics there were three main methods, selective, bulk, and volume reducing sampling (Wang and Wang 2018). For the purposes of our project we will use bulk sampling of water as it is the most appropriate method for comparing plastics in these water sources (Wang and Wang 2018).
+
 There were also many ways to analyze and identify plastics after obtaining them. For example, larger microplastics can be visually identified with a microscope or other visual aid, though only after going through a wet sieve process to separate the water from the solid matter (Masura et al. 2015). For many studies, visual identification is not enough because plastics may not be visible to the naked eye, so additional measures are taken. The main method found in much of the literature today is outlined in Masura’s guide for analysis of microplastics in water. This involves a wet sieve, followed by determining the mass of total solids, wet peroxide oxidation (WPO), with subsequent density separation and microscope identification (Masura et al 2015). This method was used in a study that found microplastic concentrations in Canada’s Lake Winnipeg to be equal to or greater than those in the Great Lakes basin (Anderson et al.
 2017).
+
 Another technique widely used is infrared spectroscopy. This technique entails filtering a water sample using a vacuum set up through a filter paper and subsequently staining and drying the paper. After this, the paper is put under an infrared microscope and particles are identified.
 The limitation with this technique is its inability to identify particles less than 20 µm, for which a different type of spectroscopy is needed (Schymanski et al. 2018). If these technologies are not available, optical techniques using microscopes and dyes are common for identification (Wang and Wang 2018). For this project, we decided to use this optical technique using red dye, and infrared light, and a microscope. This method was the most plausible given the resources available to us, as well as the budgetary and time constraints placed upon this project.
 Additionally, we have experience with this technique already, allowing us to possibly reduce human error in data collection and analysis.
@@ -56,20 +54,42 @@ As the data collected was discrete, we used a one-tailed t-test to examine any d
 samples and treated water samples. Results have been compiled and presented in tables and figures below so that they may be easily understood by all, regardless of scientific background.
 
 Results
+---
 To quantify the microplastics in each of our samples, we divided each filter paper in 8
 sections and chose three at random to count the number of plastics. All objects larger than 400 micrometers were disregarded during observation. The water from pHake Lake, had a higher average microplastic concentration per sector than both the campus water and the blank (Table 1). Each Sector is about 1/8 of the filter paper. This means that sector averages need to be multiplied by 8 to get the average number of micro plastics per 500mL of water. For Lake water, this number is 114.9 microplastics and for campus water this number is 30.91 microplastics per 500mL water with 2.64 microplastics for the blank. A t-test was used to determine if there was any significance between our two treatment groups. This test showed our results to be highly significant (p <.01), meaning that there is almost no way the difference in microplastic concentrations between our two sites is random or natural. Figure 1 shows a boxplot of average number of microplastics per sector of filter paper for both treatment groups. As such, we can conclude that there are factors (most likely anthropogenic) that are leading to increased levels of microplastics in pHake Lake and possibly the Bernard Field Station as a whole.
 
 
-Table 1: Average Number of Microplastics Per Sector
+Average Microplastics Per 62.5 mL
 
-Lake Water      Campus Water       Blank
-14.36           3.864              0.333
+Lake Water: 14.36       
 
-```{r pic, echo=FALSE, fig.width = 3}
-knitr::include_graphics("fullsizeoutput_ale.jpeg")
+Campus Water: 3.864     
+
+Blank: 0.333
+                        
+![_**Table 1.** Average Number of Microplastics Per Sector_]
+
+
+```{r pic, echo=FALSE, fig.width = 2}
+knitr::include_graphics("fullsizeoutput_a1e.jpeg")
 ```
 ![_**Figure 1.** Average Microplastic Concentration by Site_]
 
+Discussion 
+---
+Though much of the literature focused on aquatic pollution surrounds estuarine and marine environments, urbanization also has a negative impact on the health of urban freshwater systems (Walsh et al. 2005).  More microplastics occurred in the local freshwater lake than in the tap water on Pomona College’s campus possibly due to atmospheric deposition or the proximity of
+the lake to urban development as found in Liu et al. (2019). Dris et al. (2015) found high levels of microplastics were found both in waste water and in the River Seine in Paris, supporting our findings of high levels of particles in urban water supplies.
+
+As previously mentioned, there is a lack of high quality data on microplastic distributions in urban freshwater systems due to variability of sample collection and a non-standard method of identifying plastics. (Koelmans et al. 2019). Additionally, a recent study found that differences in microplastic concentrations across urban environments may be partially due to differences in land use (Liu et al. 2019). The results showed that commercial and industrial areas emitted more microplastics than residential and highway areas, with commercial areas having as many as 22,894 plastics m-3. This same article mentions how differences in plastic concentrations can be partly attributed to errors in data collection and instrumentation, showing how difficulty quality control and assurance are in this field. We doubt that we conducted our study without error and thus feel as though we must mention that some of our observed difference may have been procedural error on our part. However, our blanks had fewer microplastics than the water from campus, leading us to believe that our method was reliable.
+
+This study is important because it contributes to the emerging area of studying microplastics in small freshwater areas. New research has found that urban rivers contain significantly elevated levels of microplastics and that microplastic pollution in small water bodies is more serious than in estuaries and coastal waters, where much of the existing literature is based (Luo et al. 2019). This supports our findings regarding urbanization surrounding a small body of freshwater. This also adds another layer of significance to the study as, because of the previous emphasis on estuaries and coastal waters, little was known about the importance or trends in smaller freshwater bodies.
+
+pHake Lake is home to many organisms, from isopods to ducks to bass. If these organisms ingest the plastics present in the lake, they may bioaccumulate up the food chain, or remain in the lake for years in the sediment after organisms die and decompose (Worm et al. 2017). Furthermore, there is evidence in the existing literature that urbanization is a major factor influencing the ingestion of microplastics in river basins (Peters and Bratton 2016). This has implications concerning human health also, as some urban lakes are also drinking water
+reservoirs for communities and sources of food. Our study highlights some areas where more investigation is necessary and could lead to more significant discoveries in this area.
+
+Conclusion and Future Directions
+---
+The results address our preliminary question of whether microplastic levels are significantly elevated between water sources in the Claremont area. Now that we have gained more insight into this question, there are some further questions that merit investigation. Expanding the geographic scale to other lakes in Southern California or Mediterranean climates would allow us to establish more meaningful trends in microplastic distributions. Additionally, looking at the proximity of Southern California lakes to foothills would allow us to draw more conclusions about urbanization in the region and its impacts on isolated freshwater bodies. Studying these relationships could prove very valuable in determining future development actions and mitigation strategies to keep this pollution problem from becoming unfixable. 
 
 
 
@@ -79,8 +99,57 @@ knitr::include_graphics("fullsizeoutput_ale.jpeg")
 
 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Literature Cited
+---
+Bhateria R, Jain D. 2016 Water quality assessment of lake water: a review. Sustain Water Resour Manag 2. 161–173
+
+
+Dris R, Gasperi J, Rocher V, Saad M, Renault N, Tassin B. 2015. Microplastic contamination in an urban area: a case study in Greater Paris. Environ Chem. 12:592–599.
+
+
+Eerkes-Medrano D, Thompson RC, Aldridge DC. 2015. Microplastics in freshwater systems: a review of the emerging threats, identification of knowledge gaps and prioritisation of research needs. Water Res. 75:63-82
+
+
+Karbalaei S, Hanachi P, Walker TR, Cole M. 2018. Occurrence, sources, human health impacts and mitigation of microplastic pollution. Environ Sci Pollut. 25:36046–36063
+
+
+Koelmans AA, Nor NHM, Hermsen E, Kooi M, Mintenig SM, De France J. 2019. Microplastics in Freshwaters and Drinking Water: Critical Review and Assessment of Data Quality. Water res. 155:410-422.
+
+
+Liu F, Olesen K, Borregaard A, Vollertsen J. 2019. Microplastics in urban and highway stormwater retention ponds. Sci Total Environ. 671:992-1000
+
+
+Luo W, Su L, Craig NJ, Du F, Wu C, Shi H. 2019. Comparison of microplastic pollution in different water bodies from urban creeks to coastal waters. Environ Pollut. 246:174-182
+
+
+Masura J, Baker JE, Foster GD, Arthur C, Herring C. 2015. Laboratory methods for the analysis of microplastics in the marine environment: recommendations for quantifying synthetic particles in waters and sediments.
+
+
+Peters CA, Bratton S. 2016. Urbanization is a major influence on microplastic ingestion by sunfish in the Brazos River Basin, Central Texas, USA. Environ Pollut. 210:380-387
+
+
+Schymanski D, Goldbeck C, Humpf HU, Fürst P. 2018. Analysis of microplastics in water by micro-Raman spectroscopy: release of plastic particles from different packaging into mineral water, Water Res. 129:154-162
+
+
+Su L, Xue Y, Li L, Yang D, Kolandhasamy P, Li D, Shi H. 2016. Microplastics in taihu lake, China. Environ Pollut. 216:711-719
+
+
+Walsh CJ, Roy AH, Feminella JW, Cottingham PD, Groffman PM, Morgan RP. 2005 The urban stream syndrome: current knowledge and the search for a cure. J N AMER BENTHOL SOC. 24:706–723.
+
+
+
+Wang W, Wang J. 2018. Investigation of micropalstics in aquatic environemnts: an overview of the method used, from field sampling to laboratory analysis. Trends Anal Chem. 108:195-202
+
+
+
+Worm B, Lotze HK, Jubinville I, Wilcox C, Jambeck J. 2017. Plastic as a persistent marine pollutant. Annu Rev Environ Resour. 42:1-26.
+
+
+Appendix I: Timeline
+Due to the busy schedules of the research team, we cannot collect all samples together on one certain day, but all samples will be collected no later than Friday, April 12th. Results will be delivered by the 15th, with analyses to be completed by the 22nd with a final draft submitted no later than May 14th.
+
+
+
+Appendix II: Materials needed
+We will need a depth sampler, 20 500mL glass containers, acetone, Nile red dye, filter paper, glass-fiber vacuum filter, watch glass, Echo Revolve RVL-100-B microscope and blue LED infrared light.
