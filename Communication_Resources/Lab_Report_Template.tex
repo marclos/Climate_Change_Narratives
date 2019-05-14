@@ -51,6 +51,7 @@
 \usepackage{alltt}
 \usepackage{authblk}  % To create author affiliations
 \usepackage[round]{natbib}
+\usepackage{graphicx}
 
 
 \title{Lab Report Title}
@@ -89,14 +90,37 @@ Add if appropriate .. e.g. where you did your research if no in the lab... \cite
 
 \section{Results}
 
+Some cool image...that are already made...(Figure~\ref{fig:boxplot}).
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figure/boxplot-1} % This can be a pdf, jpg, or png file
+\caption{This is a boxplot.}
+\label{fig:boxplot}
+\end{figure}
+
+Or you can make figure using R... (Figure~\ref{fig:carsplot}).
+
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(cars)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-1-1} 
+
+\end{knitrout}
+\caption{A figure that can be made using R and we can make the r code disappear too...}
+\label{fig:carsplot}
+\end{figure}
+
 \section{Discussion}
 
 \section{Conclusion}
 
-\bibliographystyle{cbe}
+\bibliographystyle{cbe} % To get this to work, we need the cbe.bst file in the directory that you are using to run the rnw file!
+
 \bibliography{bibexample}
-
-
 
 
 
