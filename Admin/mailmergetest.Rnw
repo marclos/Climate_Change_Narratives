@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage{lstdoc,booktabs,filecontents}
+\begin{filecontents}{stdletter.dat}
+We are happy to enclose our new catalogue.
+\vspace{20pt}
+
+Regards,
+\vspace{20pt}
+
+Some CEO
+\end{filecontents}
+\begin{document}
+\pagestyle{plain}
+\makeatletter
+\let\alist\@empty
+\let\blist\@empty
+
+\def\addtolist#1#2{%
+  \lst@lAddTo#1{#2}
+}
+
+\def\addtolist#1#2{%
+  \lst@lAddTo#1{#2}
+}
+
+
+\def\RB#1|#2|#3|#4|#5;{%
+   \addtolist{\alist}{#1#2,}% 
+   % macro for table
+   \expandafter\gdef\csname#1#2@table\endcsname{\textit{#1}&#2&#3&#4\cr\relax}
+   % macro for salutation
+   \expandafter\gdef\csname#1#2@salut\endcsname{Dear #3 #2\relax}
+   \lst@BubbleSort{\alist}
+}
+
+%% adding the data now
+\RB Nisbet|John|Mr.| 235, Highlands, Scotland | United Kingdom;
+\RB Guevara|Che|Dr.| 527 Main Street, Havana | Cuba;
+\RB Zapata|Emiliano|Mr.| 5237, Mexico City | Mexico;
+\RB von Kleist-Schmenzin|Herr| Ewald| Greens, Dubberow| Germany;
+
+%% typesetting the table
+\def\addresslist{%
+\newsavebox{\tempbox}
+\savebox{\tempbox}{
+\centering
+\begin{tabular}{llll}
+  \toprule[1pt]
+  First Name & Second Name & Salutation & Address\\
+  \midrule
+  \@for\i:=\alist \do{\csname\i @table\endcsname}
+  \vspace{-14pt}\\\bottomrule
+\end{tabular}}
+
+\begin{table}
+\usebox{\tempbox}
+\caption{Client List}
+\end{table}
+}
+
+
+\addresslist
+
+\mbox{}\newpage
+
+\@for\i:=\alist \do{\csname\i\endcsname
+\csname\i \endcsname
+\expandafter\csname \i @salut\endcsname
+\par\medskip
+\input{stdletter.dat}
+
+\pagebreak
+}
+
+\makeatletter
+
+\end{document}

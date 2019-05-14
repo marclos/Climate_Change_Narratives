@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage{authblk}  % To create author affiliations
+\usepackage[round]{natbib}
+
+
+\title{Lab Report Title}
+
+\author[1]{First Author}
+\author[2]{Second Author}
+\author[1]{Third Author}
+\author[3]{Fourth Author}
+\affil[1]{Pitzer College, address...}
+\affil[2]{Scripps Collge, address...}
+\affil[3]{Pomona College, address...}
+
+%\date{} % Remove Comment if you want to remove the date 
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This is my abstract for a minimum working Rnw for creating a lab report...
+
+\end{abstract}
+
+\section{Introduction}
+
+
+\section{Methods}
+
+\subsection{Site Description}
+
+Add if appropriate .. e.g. where you did your research if no in the lab... \citep{dris2015beyond}
+
+\subsection{Procedures}
+
+\subsection{Statistical Analysis}
+
+\section{Results}
+
+\section{Discussion}
+
+\section{Conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{bibexample}
+
+
+
+
+
+\end{document}
