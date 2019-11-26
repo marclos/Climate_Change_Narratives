@@ -1,0 +1,52 @@
+---
+title: 'New Orleans in the Cold: the 1970''s'
+author: "Ximena Lane"
+date: "2/20/2019"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+New Orleans is a city trending warmer and warmer. How can scientists explain the cold spell of the 1970’s amidst the heat of The Big Easy?
+
+  A common assumption about the southern United States, is that it perpetually experiences warm, humid, and sunny weather. But, as many local southerners know, the region experiences seasons and a range of extreme weather events. I aim to examine one of these abnormal extreme weather events: the New Orleans cold spell that spanned from the 1950s to the early 1980s. After analyzing National Oceanic and Atmospheric Administration’s (NOAA) data (this particular stretch of data has lower average temperatures than the data before and after it, leaving me to wonder what caused this particular cold spell) on the city of New Orleans, Louisiana and the literature attempting to explain this anomaly, I came to the conclusion that a convergence of atmospheric conditions were responsible for the big dip. 
+ 
+![Courtesy NASA's Landsat 7](nola.png)
+
+  Located in the southeastern United States, New Orleans, Louisiana is located at the southern tip of the state with a majority of the city resting below sea level. Mild winters and wet hot summers give it a humid sub-tropical climate. Even in the winter, the temperature rarely dips below freezing. Located in the Mississippi River Delta, much of the city is located right next to the Mississippi River. New Orleans has experienced a changing climate, with monthly high and low temperatures on the rise. How this change has affected other weather events, the environment, and the living beings in the city is being studied extensively by climate scientists.
+
+	Why did a warming city have such an intense cold spell? NOAA’s temperature data on New Orleans from 1893 to 2019, when plotted to display monthly average temperatures, showed a large decrease in mean temp between 1950 and 1980. The graph was ultimately trending upward in temperature, so I was curious as to what scientists have been saying about this small cold period of time in New Orleans.
+
+![Data Courtesy of NOAA’s LSU Field Station, plotted by Ximena Lane.](ximena data.png)
+
+  Different scholars have similar theories. (Dickson 1976) There could be a link between the Greenland pressure change and the winter dips in mean temperature and drew the conclusion that when the low pressure affected the Atlantic, more intense storm activity could be seen further down the coast, proving the involvement of the pressure system. In an article published in 1976, ocean climatologists tried to determine whether variations in Greenland’s pressure fields was increasing the magnitude of winter weather in the Eastern Atlantic seaboard. “…Mean winter air temperatures have undergone stepwise changes of regime in recent decades with a period of abnormal warmth in 1948 - 57 giving way to a period of extreme cold in 1958 - 70 and, subsequently, to a renewal of warm conditions in succeeding winters.” (Dickson 1976, 1256) 
+  
+	(Gastineau 2014) Every few decades, cold polar sea surface temperature systems converge in the eastern Atlantic region, in the form of a crescent moon. Only two of these crescent dips have happened since scientists have been actively recording weather data, and there are many variables that effect weather in the North Atlantic, so it’s difficult to narrow down the exact amount of influence that the sea surface temperatures. (Yeager) That being said, temperature models of the crescent align with North Atlantic temperature data sets, and the region has had a lot of work done to improve modeling of the convergence done despite its only decadal appearance.  
+	
+	New Orleans experienced a historic cold spell between the 1950’s and the 1980’s, But there are some good guesses as to what caused it!  As I continue to learn more about modeling climate data and attempting to analyze how climate change models are effected by the constantly morphing climate, I think I will return to this data set and dive deeper. I think creating a temperature frequency model using the Fourier Transform method (a method used in electrical engineering) could be a new and helpful perspective on this New Orleans model.
+
+![Courtesy: EPA “The number of days reaching temperatures over 95°F in the Southeast is projected to increase during this century. This graph compares historic patterns from 1971-2000 to future estimates for 2041-2070 under a scenario with high greenhouse gas emissions. Adapted from: USGCRP (2014)”](historical climatenola.png)
+
+
+
+End References: 
+
+Dickson, R. 1976. North American Influences on the Circulation and Climate of the North Atlantic Sector. Mon Wthr Rev. 24(4): 265.
+
+Henderson Kg and Ra Muller. 1997. Extreme Temperature Days in the South-Central United States. Clim Rsrch, 8:151–162.
+
+Gastineau, G. 2014. Influence of the North Atlantic SST Variability on the Atmospheric Circulation during the Twentieth Century. Journ of Clim. 28: 1396-1416.
+
+Yeager, S.D. 2017. Recent Progress in Understanding and Predicting Atlantic Decadal Climate Variability. Curr Clim Change Rep. 3:112–127.
+
+
+
+
+
+
+
