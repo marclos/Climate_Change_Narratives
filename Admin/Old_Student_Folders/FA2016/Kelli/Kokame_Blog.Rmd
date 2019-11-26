@@ -1,0 +1,338 @@
+---
+title: "Temperature and Precipitation Changes at Ewa Plantation on O`ahu"
+author: "Kelli Kokame"
+date: "2/6/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Is there climate change in Hawaii?
+Hawaii is the island home to a multitude of people, cultures, and biodiversity. For many people, this blend of culture and environment makes Hawaii a highly sought after vacation destination. However, for about 1.5 million people, it is also home. But the characteristics and elements that truly make Hawaii the special place that it is are being put in jeopardy by changing climate. Some individuals claim that they are not observing any change of climate in Hawaii, however, a robust evaluation of climate cannot be based solely on individual observation. Climate trends must be monitored over extended periods of time, “extended periods” being preferably at least half of a century or more. Only over longer periods of time does an observable trend emerge. Therefore, conducting a climate analysis requires datasets that provide regular climatic measurements. The National Oceanic and Atmospheric Administration provides climatic datasets collected by several stations nationwide. To focus on climate trends in Hawaii, I selected a dataset from a station on the island of O`ahu, the island where I was born and raised. This dataset took climate readings from the years 1905–2006, specifically focusing on temperature and precipitation. The goal of this data analysis was to determine if there could be a relationship between temperature or precipitation trends and time, which could then point to the presence of climate change in this region. 
+
+
+## About our selected station: Ewa Plantation
+
+Ewa Plantation began in 1890 as a sugarcane plantation mill. Through the 1920s and 1930s, Ewa Plantation was a booming and growing business. Perhaps the plantation began monitoring climate because of its impacts on sugarcane, but in any case, they had a climatic dataset beginning in 1905. Currently, sugar plantations in Hawai`i are no longer in operation; therefore, the Ewa Plantation now serves as a historic landmark. However, they continued collecting climatic data even after they were no longer a functioning plantation, collecting data up until the year 2006.  
+
+![Above: Location of Ewa Plantation on O`ahu](Ewa_Plantation.png)
+  
+  
+  
+  ![Above: Ewa Plantation as an active mill](Ewa_Plantation1.jpg) 
+
+After downloading their dataset off of NOAA's climate database for the Ewa Plantation station on the island of O`ahu, I inputted it into R for processing. This dataset includes variables like maxmimum temperature, minimum temperature, and precipitation. As said before, this blog will explore trends in temperature and precipitation at this specific station. In this blog, I will also spell out the the step-by-step process required to effectively analyze and visualize data downloaded off of NOAA's climate database. 
+
+
+```{r importingCSV}
+# Importing Scripts
+
+file = "/home/CAMPUS/kak22013/Climate_Change_Narratives/Kelli/Kokame.csv"
+
+import = read.csv(file)
+```
+## Let's take a look at our raw data: 
+
+*For the purpose of clarity, I changed the raw label of "TMAX" to "Maxmimum Temperatures", and the raw label of "DATE" to "Year". 
+
+```{r checking}
+plot(TMAX~DATE, import, ylab = "Maxmimum Temperatures (F)", xlab = "Year")
+```
+
+When we first import the data, it is not yet in a form that we can use and visualize well. As you can see, there are several values that don't make sense. How could the maximum temperatures be almost -10000 degrees fahrenheit? It's actually not--the value -9999 is used to represent having no data. We can change these values to "NA" to ensure that the large negative values do not skew our data. As you can see, the dates are also in a format that are currently ineffective, and we will need to address this issue as well.  
+
+```{r missings}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+
+After changing the -9999 values to NA (or no data), we can check to see if our data is now usable:
+
+```{r}
+plot(TMAX~DATE, import[import$DATE<19131231,], ty='l', ylab = "Maxmimum Temperature (F)", xlab = "Year") 
+```
+
+Even though we removed the missing values, the data is still unusable. The reason why has to do with how data used to be recorded. Instead of chronologically entering data in a way that Excel could read and turn into a continous timeline, dates used to be inputted in the format of YYYYMMDD. This means that, for example, 19131231 (December 31, 1913) would then turn into 19140101 (January 1, 1914). Chronologically, there are several missing values in between which is why there are so many gaps. The data still needs to be changed into a form in which dates are continuous and numerically consecutive. In this way, it is true scientists have to manipulate data--but it is not so much the content of the data as the format.  
+
+
+```{r}
+#plot(TMAX~DATE, import[import$DATE<19130102,], ty='l')
+```
+
+## How can we convert these dates into a form we can use? 
+
+To get the data to organize like we want it to, we first need to convert the date to "string" or character values. After that, we can convert the strings to a data format. 
+
+```{r}
+strDates <- as.character(import$DATE)
+#head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+### Let's test out our date-corrected graph: 
+```{r}
+plot(TMAX~NewDate, import[import$DATE<19130102,], ty='l', xlab = "Year", ylab = "Maximum Temperature (F)", las =1)
+```
+
+As you can see, there is still unfortunately a lot of missing temperature data. But we will make use of the data that is available to us. 
+
+```{r}
+unique(import$STATION_NAME)
+```
+
+
+```{r}
+Ewa <- subset(import, STATION_NAME=="EWA PLANTATION 741 HI US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+
+# Let's use our data to help us to answer some climate-related questions:  
+
+## What are the maximum temperature trends over the years? 
+```{r}
+#plot(TMAX~NewDate, Ewa, ty='p')
+Ewa.lm <- lm(TMAX~NewDate, data=Ewa)
+#summary(Ewa.lm)
+plot(TMAX~NewDate, Ewa, ty='p', xlab = "Year", ylab = "Temperature (Fahrenheit)", las = 1, main = "Mean Maximum Temperatures Over Time", pch = '.')
+abline(coef(Ewa.lm), col='red')
+#summary(Ewa.lm)
+```
+
+As shown, the maximum temperature annually has had a slight upward trend from 1905 when the records began until 2006. The slope is about 3.1e-05 (a very tiny slope). This means that, according to the trend, maximum temperatures will increase about .0031 degrees per century. This increase in maximum temperature is very statistically signficant, with a p-value of 2.2e-16 (a p-value of 0.05 or less would be statistically significant). This means that we can reject the null hypothesis that there is no relationship between change in temperature and time. However, we can see that there is a lot of missing data beginning at roughly 1980. While I tried to look into why there were no available measurements for about a 20 year span, no plausible explanations were offered online. 
+
+But since there's a lot of missing data beginning at about 1980, let's focus on the trend from 1905 up until that point to see if the missing data has an effect on the trend slope. 
+
+### Here is the graph of maximum temperatures from 1905 up to 1978: 
+```{r}
+#plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='l', xlab="Year", ylab="Maxmimum Temperature (Fahrenheit)")
+```
+
+
+```{r}
+# Linear Model
+EwaMax.lm <- lm(TMAX~NewDate, data=Ewa[Ewa$DATE< 19780101,])
+#summary(EwaMax.lm)
+plot(TMAX~NewDate, Ewa[Ewa$DATE< 19780101,], ty='p', xlab="Year", ylab="Temperature (Fahrenheit)", las =1, main = "Mean Maximum Temperatures Over Time", pch = 20)
+abline(coef(EwaMax.lm), col='red')
+```
+
+The trend of maxmimum temperatures has a steeper slope of 7e-05 when excluding all of the missing data, indicating a .007 degree increase per century. This increase is also statistically significant, with a p-value less than .001. 
+
+### We see that there is an increasing trend for maximum temperatures. Would we be able to say the same for minimum temperatures?  
+
+```{r}
+# Linear Model
+EwaMin.lm <- lm(TMIN~NewDate, data=Ewa[Ewa$DATE< 19780101,])
+#summary(EwaMin.lm)
+plot(TMIN~NewDate, Ewa[Ewa$DATE< 19780101,], ty='p', xlab="Year", ylab="Temperature (Fahrenheit)", las = 1, main = "Mean Minimum Temperatures Over Time", pch = 20)
+abline(coef(EwaMin.lm), col='red')
+```
+
+
+As you can see, minimum temperatures also have an upward trend, with a slope of about 6e-05. This translates into a .006 degree increase each century. This increase in minimum temperatures is also statistically significant, with a p-value again less than .001. 
+
+```{r}
+# Get months
+Ewa$Month = months(Ewa$NewDate) # Creates problems.
+Ewa$Month = format(as.Date(Ewa$NewDate), format = "%m")
+Ewa$Year = format(Ewa$NewDate, format="%Y")
+```
+
+```{r creatingmonthlymeans}
+MonthlyMean = aggregate(TMAX ~ Month + Year, Ewa, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+#Change mean to sd and you'll get standard deviation for each month/year.
+
+#MonthlySD = aggregate(TMAX ~ Month + Year, Ewa, sd)
+
+#MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+#MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+#MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+#head(MonthlySD)
+```
+
+
+```{r plottingMonthyMeans}
+#plot(MonthlyMean$TMAX, ty='l')
+#```
+
+#below is the standard deviation. 
+
+
+#```{r plottingMonthySD}
+#plot(MonthlySD$TMAX, ty='l')
+
+#plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+#SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+#summary(SD.lm)
+
+#abline(coef(SD.lm), col="red")
+
+```
+
+## Are there any trends in specifically January maximum temperatures year to year? 
+
+Let's now look at the trend of temperatures in January specifically throughout the years. 
+
+```{r January}
+#plot(MonthlyMean$TMAX[MonthlyMean$Month=="01"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",], ty='p', las = 1, pch = 20, ylab = "Temperature (F)", xlab = "Year", main = "Maximum Temperatures in Janurary Over Time") 
+January.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="01",])
+#summary(January.lm)
+
+abline(coef(January.lm), col="red")
+
+```
+
+Now, the change is `r coef(January.lm)[2]` degress/year or `r round(coef(January.lm)[2]*100, 3)` degress/100 years with a p-value of `r round(summary(January.lm)$coefficients[2,4],4)`. 
+
+## Are there any trends in November maximum temperatures year to year?
+
+Let's try the same thing with November. 
+
+```{r November}
+#plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='p', pch = 20, las = 1, xlab = "Year", ylab= "Maxmimum Temperature (F)", main = "Maximum Temperatures in November Over Time") 
+November.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
+#summary(November.lm)
+
+abline(coef(November.lm), col="red")
+
+```
+
+
+
+Now, the change is `r coef(November.lm)[2]` degress/year or `r round(coef(November.lm)[2]*100, 3)` degress/100 years with a p-value of `r round(summary(November.lm)$coefficients[2,4],4)`. 
+
+## What about for minimum temperatures? 
+
+```{r}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, Ewa, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+#head(MonthlyMeanTMIN)
+```
+
+Here's a graphic showing the trend of minimum temperatures in November over the years: 
+
+```{r}
+#plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="11"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",], ty='p', pch = 20, xlab = "Year", ylab = "Temperature (F)", main = "Minimum Temperatures in November Over Time", las = 1) 
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="11",])
+#summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+
+3. In this case, we get a slope, `r coef(Dec.lm)[2]` degress/year and a probability of `r round(summary(Dec.lm)$coefficients[2,4],7)` and an r-sqaured of `r round(summary(Dec.lm)$r.squared, 3)`. As we might expect, the a small amount of the variance is explained by the "Month". Many things can affect temperature, including the time of the year. 
+
+### Are there trends in minimum temperature throughout the years in July?
+Let's look at the trends of minimum temperature throughout the years for the month of July, a summer month. 
+
+```{r}
+#plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+#plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="07"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",], ty='p', xlab = "Year", ylab = "Temperature (F)", main = "Minimum Temperatures in July Over Time", las = 1, pch = 20) 
+July.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",])
+#summary(July.lm)
+
+abline(coef(July.lm), col="red")
+
+```
+
+The minimum temperatures in the month of July are increasing as well, with a slope of .025. This means that at the current trend, temperatures are increasing at a rate of .025 degrees fahrenheit per year, or 2.5 degrees fahrenheit per century. The understood goal is to keep climate change within 2 degrees celcius or 3.6 degrees fahrenheit above preindustrial levels, and while we can by no means hastily generalize the trends of Ewa Station to the entire globe, this is still a concerning rate. 
+
+# Precipitation 
+
+Here we will try to analyze trends in rainfall at Ewa Plantation throughout the years. 
+
+```{r}
+Ewa$PRCP[Ewa$PRCP==-9999] <- NA
+PRCP_mean = mean(Ewa$PRCP, na.rm=T)
+
+#plot(PRCP~NewDate, data=Ewa)
+#abline(h=PRCP_mean, col="green")
+
+```
+```{r}
+MonthlyMeanPRCP = aggregate(PRCP ~ Month + Year, Ewa, mean)
+
+MonthlyMeanPRCP$YEAR = as.numeric(MonthlyMeanPRCP$Year)
+#head(MonthlyMeanPRCP)
+```
+
+Let's try looking at trends in precipitation during a specific month. Let's take a look at the month of May. 
+
+```{r}
+#plot(MonthlyMeanPRCP$PRCP, ty='l')
+
+#plot(MonthlyMeanPRCP$PRCP[MonthlyMeanPRCP$Month=="05"], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)")
+
+#MonthlyMean$TMAX[MonthlyMean$TMAX==0]<-NA 
+plot(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",], ty='p', pch=20, xlab="Year", ylab="Precipitation (Inch)", main = "Precipitation is May Over Time", las = 1)
+
+MayPRCP.lm <- lm(PRCP~YEAR, data=MonthlyMeanPRCP[MonthlyMeanPRCP$Month=="05",])
+#summary(MayPRCP.lm)
+abline(coef(MayPRCP.lm), col="blue")
+
+temp = MonthlyMeanPRCP[-c(29, 17),]
+temp.lm <- lm(PRCP~YEAR,data=temp[temp$Month=="05",])
+abline(coef(temp.lm), col="darkgreen")
+#summary(temp.lm)
+```
+
+In the above figure, the blue line represents the trend when taking into account the large outlier values in the early 1900s. A quick look into the tropical storm history of Hawaii reveals that the unusal spike could be caused by the enormous amount of rainfall caused by a hurricane. While the blue line represents a statistically significant (p=.04) downward trend, the green line represents the trend when excluding the two outlier values. While it is still a downward trend, it is no longer statistically significant (p=0.7), meaning that we cannot reject the null hypothesis that there is no relationship between precipitation amounts in May and time. 
+
+```{r}
+#MonthlyMeanPRCP = aggregate(PRCP ~ Month + Year, Ewa, mean)
+
+#MonthlyMeanPRCP$YEAR = as.numeric(MonthlyMeanPRCP$Year)
+#head(MonthlyMeanPRCP)
+#plot(MonthlyMeanPRCP$PRCP, ty='l')
+```
+
+
+## Discussion
+
+While the data at the Ewa Plantation station is incomplete, it does undoubtedly point to a trend that we would expect to come with climate change. Trends for both maximum temperatures and minimum temperatures throughout the years are all increasing--increasing relatively slowly sometimes, but still at a rate fast enough to create significant impacts in the long run. Many of these increasing trends are also statistically significant, meaning that we can reject the null hypothesis that there is no relationship between the passing time and the temperatures. Also, both months in the summer as well as in the winter see this upward climbing trend.
+
+There are also trends in precipitiation. Though most of the trends in precipitation were not statistically significant, the precipitation in the month of May was statistically significant, and it showed a downward trend of .000656 inches per year, or .0656 inches per century. 
+
+This dataset unfortunately does not include data from the most recent years, so it could be missing trends in temperature caused by increases in carbon dioxide levels since 2006. If the station had included readings from 2015 and onward, we could possibly see the effects of carbon dioxide in the atmosphere reaching over 400 parts per million for the first time in recorded history. 
+
+## What could happen as a result of climate change in Hawaii? 
+
+As an island chain in the Pacific Ocean teeming with biodiversity and culture, Hawaii is very susceptible to the effects of rising greenhouse gas levels and subsequent climate change. One way that changing climate could affect Hawaii is through changes in extreme weather incidents. A study conducted by Knutson et al. (2010) acknowledges the uncertainties associated with predicting trends in extreme weather events. However, the study also says that based on robust theory and high-resolution modeling, studies consistently predict a decrease in frequency of tropical cyclones by 6–34%, but an increase in tropical storm intensities by 2–11% (Knutson, 2010). The increased intensity of winds and flooding could easily pose risks to both inhabitants and biodiversity. 
+
+Much of the native flora and fauna that contribute to Hawaiian culture will be put in jeopardy by climate change. Already, several native species are teetering on the edge of extinction. A study by Benning et al. (2002) looked at different habitats of native Hawaiian birds to observe and anticipate the effects of climate change. The study concluded that habitats such as those on the island of Kauai “offers the least hope for maintaining endemic honeycreepers in the face of malaria and climate change” (Benning et al., 2002). The rising temperatures will translate into the prevalence of Plasmodium in mosquitoes, which then translates to increased disease. The rising temperatures will also force forests to move up in elevation to reach cooler temperatures, resulting in the reduction of forest habitat for several animal species as well. The rare native silversword plant located at high elevations like on Haleakala thrives in cooler temperatures with plentiful precipitation, therefore if climate trends point towards warmer temperatures and less precipitation, this could be disastrous for the silversword.
+
+The rising sea levels could also put coastal-dwelling biota at risk. The Black-footed Albatross and Laysan Albatross are threatened bird species living on sandy beaches on the coasts of islands. When climate change causes stronger storm surges, these surges pose large threats to the albatross’ nests (Arata et al., 2009). 
+
+But rising sea levels and storm surges do not only affect other animals’ habitats—they also will undoubtedly affect humans as well. Economically, a study by Toy (2008) estimated that the demand for hotel rooms in Waikiki, Hawaii’s hospitality center and economic hub, would decrease by 2.9 million occupied nights if beaches were to be eroded by climate change. This would result in at least a $503.8 million loss in revenue in room revenue, but this does not even take into account other costs that potential guests would have spent if they stayed in that room (Toy, 2008).  
+
+Higher water levels caused both by general rising waters and storm surges could also affect infrastructure and agriculture on the islands, which will be disastrous for Hawaii both in terms of necessity and because of the large costs it will incur. Moreover, since rising sea levels will negatively impact Hawaii’s tourism, which provides much of its revenue, it will have less means to fix these problems (Leong and Marra et al., 2014).
+
+Hawaii is equally defined by its water as it is by its land. Marine life will also be heavily affected by climate change. A study by Harvell et al. (2002) describes the disastrous effects on disease that climate warming could have on both terrestrial and marine biodiversity. The study discusses how warmer temperatures could increase “pathogen development and survival rates, disease transmission, and host susceptibility” (Harvell et al., 2002). The study looks at the warming caused by El Niño events to indicate possible impacts on biodiversity by warming, and they found that El Niño warming caused a spike in diseases for both terrestrial and marine life.  
+
+A study by Hoegh-Guldberg in 1999 took a closer look into these rising ocean temperatures and their effects on coral. While the study did say that coral has the capacity to adapt to warmer conditions, it also says that the adaption process is not fast enough to keep up with the rapid rate of warming that could happen as a result of “unrestrained warming” (Hoegh-Guldberg, 1999). 
+
+Finally, climate change poses a very concerning threat to Hawaii’s watershed and groundwater sources. Much of Hawaii’s watershed relies on forests—but as mentioned earlier, forests may be threatened by the changing climate. According to a study conducted by the Department of Land and Natural Resources in Hawaii in 2011, scientists predict that climate change will decrease our usable supply of water. The rising sea levels threaten to taint fresh water with brackish water, and this could lead to water shortages and rationing in future generations (DLNR, 2011).
+
+# Conclusions 
+
+While the data analyzed in this blog is only from one station with limited data and should by no means be understood as "proof" that global warming is occurring at alarming rates, it does point out some concerning trends in climatic data that, if left unchecked, could certainly lead us to disastrous outcomes. Specifically in Hawaii, the effects of climate change would lead to serious economic, cultural, natural, health, and other consequences. If there is even a chance that we can do something to avoid these terrible consequences, shouldn't we take this chance?  
+
+

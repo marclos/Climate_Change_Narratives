@@ -1,0 +1,259 @@
+---
+title: "The Impacts of Temperature Changes in Denver, Colorado"
+author: "Thea Piccone"
+date: "3/28/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Denver, the "mile high city", is lauded as one of the greatest cities to live in in the US, but could the city be devitalized as the impacts of climate change increasinghly grow more severe?  
+## To figure it out, I examined data from The National Oceanic and Atmospheric Administration (NOAA).  
+
+## The Prosperity of Denver
+
+Denver, the capital of Colorado, is the highest major city in the U.S. with an altitude of 5,250 feet above sea level; an altitude that lends itself to Denver's nickname, the mile-high city. Last year, a U.S. News and World report named this unique city as one of the best places to live in the US. The rich and diverse culture, a strong economy, and an arid and sunny climate that lends itself to enjoying the multitude of possible outdoor activities combine to create an  appealing city, especially to millennials. Denver has significantly developed as a prosperous metropolis since its inception as a mining hub during the gold rush of the mid 1800’s.  Today, a diverse group of a mostly young and active work force has replaced the miners who originally founded the city; although there is no gold rush, a surging economy is still a fundamental attribute of the city. A combination of a lucrative footing in the tech industry, growth in the hospitality sector and an abundance of highly profitable natural resources have resulted in a strong economy. The strength of Denver's economy is reflected in its low unemployment rate of 3.2% that is 1.7% lower than the national average, a high average annual salary of $54,450 compared to the national average of $48,320, and a thriving job market in industries such as biotech, health care, finance and telecommunications. For Denver's citizens, recreation and economic prosperity combine in both the new and succesful marijuana industry and the long-lasting ski and snowboard industry. 
+
+Characterized by a typically sunny and dry climate, Denver is located within the semi-arid, continental zone at the foot of the Rocky mountains. Denver's proximity to the Rocky mountains is an integral component of the city's identity as it provides Denver with water, recreation, aesthetic beauty, and is constantly interacting with Denver's climate. Denver has four distinct seasons that are all subject to sudden weather changes due to Denver’s geographical location in the inland High Plains and at the edge of the Rockies. Although the weather may be characterized by such abrupt change, Denver enjoys roughly 300 days of sunshine throughout the year. Both the summer and the winter seasons in Denver are distinct seasons with average temperatures of 31 degrees Fahrenheit in the winter and of 71 degrees Fahrenheit in the summer. Such a climate helps to foster locals’ fervent love for the outdoors, and surrounded by forests, lakes, moutains, and a plethora of ski resorts the opportunities to act on such an admiration can feel endless. Thus, with a strong economy, a rich history, an agreeable climate, and beautiful natural landscape, it becomes clear as to why Denver was ranked as one of the best places to live in the US. However, as temperatures continue to rise due to climate change the vitality of this young and lively city will be severely threatened. 
+
+## Reviewing the results of the NOAA climate data 
+
+According to the following analysis of climate data from the National Centers for Environmental Information (NOAA) the average maximum temperatures for the months of March and July in Denver have been steadily increasing since 1948. In other words, these two months have been steadily warming for the past seven decades. This data was collected by NOAA in their collection of surface temperatures in Stapelton, a site located in Northeast Denver. Using a data analysis software (RStudio) I was able to graph the average maximum temperatures by month since 1948. Through this analysis I was able to identify the months that contained significat wamring trends (March and July). This data additionally reflects the average rise of temperature globally reported by the Intergovernmental Panel on Climate Change (IPCC). 
+
+The following graphs therefore model the linear relationship between time (in years) and average maximum temperature (in degrees fahrenheit) for the months of March and July:
+
+```{r importingCSV, include=FALSE}
+# Importing Scripts
+
+file = "/home/CAMPUS/tgpv2015/github/Climate Change Narratives/Data/denver1-TP.csv"
+
+import = read.csv(file)
+```
+```{r checking, include=FALSE}
+#plot(TMAX~DATE, import)
+```
+```{r missings, include=FALSE}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+```{r, include=FALSE}
+#plot(TMAX~DATE, import[import$DATE<19501231,], ty='l')
+```
+```{r, include=FALSE}
+#plot(TMAX~DATE, import[import$DATE<19500102,], ty='l')
+```
+```{r, include=FALSE}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+```{r, include=FALSE}
+#plot(TMAX~NewDate, import[import$DATE<19500102,], ty='l')
+```
+```{r, include=FALSE}
+unique(import$STATION_NAME)
+```
+```{r, include=FALSE}
+LosAngeles <- subset(import, STATION_NAME=="DENVER STAPLETON CO US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+```{r, include=FALSE}
+#plot(TMAX~NewDate, LosAngeles, ty='l')
+```
+```{r, include=FALSE}
+# Linear Model
+LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
+summary(LosAngeles.lm)
+plot(TMAX~NewDate, LosAngeles, ty='l')
+abline(coef(LosAngeles.lm), col='red')
+```
+```{r, include=FALSE}
+# Get months
+LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
+LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
+LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
+```
+```{r creatingmonthlymeans, include=FALSE}
+MonthlyMean = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
+
+MonthlyMean$YEAR = as.numeric(MonthlyMean$Year)
+MonthlyMean$MONTH = as.numeric(MonthlyMean$Month)
+
+
+# Frank -- change mean to sd and you'll get standard deviation for each month/year.
+
+MonthlySD = aggregate(TMAX ~ Month + Year, LosAngeles, sd)
+
+MonthlySD$YEAR = as.numeric(MonthlySD$Year)
+MonthlySD$MONTH = as.numeric(MonthlySD$Month)
+MonthlySD$NewDate = MonthlySD$YEAR + (MonthlySD$MONTH - 1)/12
+
+head(MonthlySD)
+```
+```{r plottingMonthyMeans, include=FALSE}
+plot(MonthlyMean$TMAX, ty='l')
+
+```
+```{r plottingMonthySD, include=FALSE}
+plot(MonthlySD$TMAX, ty='l')
+
+plot(TMAX~ NewDate, data=MonthlySD, ty='l')
+SD.lm <- lm(TMAX~NewDate, data=MonthlySD)
+summary(SD.lm)
+
+abline(coef(SD.lm), col="red")
+
+```
+`
+`
+
+## Average Maximum Temperatures in March
+```{r Mar, echo=FALSE, results='hide'}
+#plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='p', pch=20)
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='p', pch=20, las=1, ylab="Maximum Temperature (F)", xlab="Year") 
+Mar.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",])
+summary(Mar.lm)
+
+abline(coef(Mar.lm), col="purple")
+```
+
+For some reason data wasn't significant for the months of April, May, and June. This demonstrates the variability of the impacts of climate change given the time of year and seasonality. In other words, temperature changes may vary dramatically given the particular month. 
+
+## Average Maximum Temperatures in July 
+```{r Jul, echo=FALSE, results='hide'}
+#plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='p', pch=20)
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='p', pch=20, las=1, ylab="Maximum Temperature (F)", xlab="Year") 
+Jul.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
+summary(Jul.lm)
+
+abline(coef(Jul.lm), col="purple")
+```
+
+## Are these trends significant?
+
+Scientists often rely on statistics to determine if a process is due to random variation or as part of some underlining non-random pattern. In a somewhat confusing way, statistical tests are used to evaluate if the pattern is due to random variation. This is called the "null hypothesis". If the null hypothesis is rejected, then the data suggest that the patterns in non-random. 
+
+We expect these non-random patterns to be the exception, i.e. rare. Thus, most scientists use a probability of 0.05 or 1 in 20 as the threshold to reject the null hypothesis. 
+
+In the case of the data presented in the graphs above, we can reject the null hypothesis, which stipulates that the variation with time is random. Stated another way, that temperature does not change with time. Since we reject these hypotheses, we can claim that evidence suggest that there is a temperature trend with time for March and July in Denver. It's a crazy way of describing data, but this is a way for scientists to reduce the changes of "seeing" a pattern when one doesn't not exist. 
+
+## What Warming Means for Denver?
+
+These warming trends produce many consequential changes that we will see in Denver when paired with global climate data and research on climate change. The rise in temperature for the months of March and July are projected to reflect some of the devastating results that accompany such temperature increase. Denver’s crucial connection to the natural resources of the Rocky mountains will be especially threatened as temperatures shift. The most threatened component of this relationship is Denver’s water supply. Denver receives most of its water from rivers and streams fed by snowmelt from the Rocky mountains.  As the spring season grows longer and warmer, as is reflected in the NOAA data, the effective and crucial transferring of water from the relatively wet winter season to the typically dry summers is hindered. These warmer spring temperatures are therefore increasing early snowmelt from the Rocky Mountains and we have already seen over a 20% decline in spring snow cover throughout the Rockies since 1980. This early loss of snowpack results in initial flooding and erosion followed by extended periods of drought in the Summer. The effects of these summer droughts will become more severe as July continues to expereince an increase in temperature. These periods of drought result in issues of water scarcity that will lead to unavoidable and costly consequences for the city of Denver and its residents. 
+
+The loss of snowpack will further impair Denver’s economy as Colorado’s largest economic asset is severely threatened by rising temperatures. Although Denver, being a city, does not contain any ski or snowboard mountains, it is surrounded by mountains filled with these snow sport activities. Additionally, the city of Denver owns and operates one of these mountain resorts. As mentioned earlier, Denver tends to attract both residents and tourists that are very enthusiastic about outdoor activities, and given Denver’s proximity to a multitude of mountain ranges this enthusiasm especially pertains to snow sport activities such as skiing and snowboarding. As the spring season grows longer and warmer, an estimate of roughly 30 days will be cut from the snow season. The Denver Post reported that ski resorts have lost up to 2 million dollars in revenue due to scarcer annual snowfall. Even an annual decrease in only 1 percent in the amount of tourists visiting Colorado in order to ski or snowboard would result in an expected loss of over $375 million and over 4,500 jobs lost in the span of under 10 years. This hit to the state’s economy will undoubtedly hinder Denver’s economy as many of Colorado's tourists inevitably pass through the capital. Additionally, the dwindiling ski season will likely hinder the morale of Denver’s citizens as well.
+
+In presenting climate data, it is crucial that we are able to identify and present significant trends. In recongizing these data trends we are able to move forward in understanding the different consequenses that shifts in the climate present. Only after such data analysis and intepretation, can we take the preventive measures to protect citizens' livelihood and basic human rights. In Denver, it is imperative to understand that such trends will undeniably affect the economy and landscape of Denver and the well-being of its citizens.  
+`
+`
+`
+
+
+References: 
+
+Bentz, Barbara J., Jacques Racgniare, Christopher J. Fettig, E. Matthew Hansen, Jane L. Hayes, Jeffrey A. Hicke, Rick G. Kelsey, Jose F. NegrÃ³n, and Steven J. Seybold. "Climate Change and Bark Beetles of the Western United States and Canada: Direct and Indirect Effects." BioScience 60.8 (2010): 602-13. Web.
+
+Hauer, F. Richard, Jill S. Baron, Donald H. Campbell, Kurt D. Fausch, Steve W. Hostetler, George H. Leavesley, Peter R. Leavitt, Diane M. Mcknight, and Jack A. Stanford. "Assessment Of Climate Change And Freshwater Ecosystems Of The Rocky Mountains, Usa And Canada." Hydrological Processes 11.8 (1997): 903-24. Web.
+
+Hearsum, Katie. "Living & Working in Denver, CO." U.S. News & World Report. Best Places to Live, 2016. Web. 31 Mar. 2017. <http://realestate.usnews.com/places/colorado/denver>.
+
+Mote, Philip W., Alan F. Hamlet, Martyn P. Clark, and Dennis P. Lettenmaier. "Declining Mountain Snowpack In Western North America*." Bulletin of the American Meteorological Society 86.1 (2005): 39-49. Web.
+
+Pepin, N., and M. Losleben. "Climate Change in the Colorado Rocky Mountains: Free Air Versus Surface Temperature Trends." International Journal of Climatology 22.3 (2002): 311-29. Web.
+
+Ray, Andrea, Joseph Barsugli, Kristen Averyt, Klaus Wolter, Martin Hoerling, Nolan Doesken, Brad Udall, and Robert Webb. "Climate Change in Colorado: A Synthesis to Support Water Resources Management and Adaptation." WWA Reports. Intermountain West Climate Summary, Sept. 2008. Web. 13 Feb. 2017. 
+
+Williamson, Sean, Matthias Ruth, Kim Ross, and Daraius Irani. Economic Impacts of Climate Change on Colorado. Rep. N.p.: Center for Integrative Environmental Research U of Maryland, 2008. Print.
+
+```{r, include=FALSE}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="03"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",], ty='l') 
+Mar.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="03",])
+summary(Mar.lm)
+
+abline(coef(Mar.lm), col="red")
+
+```
+
+
+
+```{r, include=FALSE}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
+
+
+```{r, include=FALSE}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="03"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="03",], ty='l') 
+Mar.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="03",])
+summary(Mar.lm)
+
+abline(coef(Mar.lm), col="red")
+
+```
+
+
+```{r, include=FALSE}
+PRCP_mean = mean(LosAngeles$PRCP, na.rm=T)
+
+plot(PRCP~NewDate, data=LosAngeles)
+abline(h=PRCP_mean, col="blue")
+
+```
+
+
+```{r, include=FALSE}
+LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
+YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year) 
+YearlyMean = mean(YearlySum$PRCP)
+```
+
+
+```{r, include=FALSE}
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+
+n <- 5
+k <- rep(1/n, n)
+k
+
+y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+```
+
+
+```{r, include=FALSE}
+summary(YearlySum.lm)
+```
+
+
+```{r, include=FALSE}
+YearlySum2 = subset(YearlySum, select=c(PRCP))
+YearlyMean = mean(YearlySum2$PRCP)
+
+#filter(YearlySum2)
+
+
+
+#Doesn't work...
+# ma <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
+# ma(YearlySum$PRCP)  
+
+
+yearlyts =ts(YearlySum2) 
+str(yearlyts)
+
+
+
+
+```

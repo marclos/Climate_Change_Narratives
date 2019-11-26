@@ -1,0 +1,254 @@
+---
+title: "The Underside of Global Warming: Ojai Valley Cooling"
+author: "Olivia Whitener"
+date: "2/6/2017"
+output: html_document
+---
+
+For the past few decades, the scientific community has been locked in a fierce debate over the issue of climate change. Those concerned about the future of the environment, known as “alarmists,” warn that increased carbon dioxide emissions and the resulting global temperature increase of about 1.7 degrees Fahrenheit since 1880 (NASA) will have disastrous effects on agriculture, ecosystems, water resources, and human health. With increased temperatures come the risks of heat waves, drought, early snow melt, and extreme weather events (EPA). Although “skeptics” may acknowledge increased temperatures, they deny that there is anything out of the ordinary that should cause humans to change behavior. 
+
+The Golden State of California, already known for its sunny skies and breezy coasts, has been warming for the past century. Southern California specifically has experienced a dramatic temperature increase of about 3 degrees Fahrenheit in the past century.  If this is the case, then why have the maximum temperatures (TMax) of more than half the year in Ojai, California decreased since 1920?
+
+Ojai is a small town of about 7500 people situated in Ventura County, just northwest of Los Angeles and east of Santa Barbara. According to National Oceanic and Atmospheric Association climate data, the maximum temperatures in Ojai have decreased for seven out of twelve months of the year. Out of these seven months, five have p-values less than 0.05. Therefore this data is statistically significant, which means that it rejects the null hypothesis that modern climate change is due to natural causes. Four of the statistically significant months have decreasing temperatures.
+
+```{r April}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="04"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="04",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="04",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+
+```{r July}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="07"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="07",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+
+
+```{r August}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="08"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="08",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+
+```
+
+
+```{r November}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="11"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",], ty='l') 
+May.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="11",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+
+```{r December}
+plot(MonthlyMean$TMAX[MonthlyMean$Month=="12"], ty='l')
+plot(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",], ty='l') 
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyMean[MonthlyMean$Month=="12",])
+summary(Dec.lm)
+
+abline(coef(Dec.lm), col="red")
+
+```
+
+```{r}
+MonthlyMeanTMAX = aggregate(TMAX ~ Month + Year, LosAngeles, mean)
+
+MonthlyMeanTMAX$YEAR = as.numeric(MonthlyMeanTMAX$Year)
+head(MonthlyMeanTMAX)
+```
+
+Interestingly, while Ojai is experiencing a cooling trend in TMax for a majority of months of the year, there is an opposite phenomenon occurring with minimum temperatures (TMin). For 11 out of 12 months, Ojai's minimum temperatures were increasing. 8 out of these 11 months were statistically significant, with p-values less than 0.05. The one month, December, with decreasing TMin was not statistically significant. 
+
+## TMIN
+
+```{r}
+MonthlyMeanTMIN = aggregate(TMIN ~ Month + Year, LosAngeles, mean)
+
+MonthlyMeanTMIN$YEAR = as.numeric(MonthlyMeanTMIN$Year)
+head(MonthlyMeanTMIN)
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="01"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",], ty='l') 
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="01",])
+summary(Jan.lm)
+
+abline(coef(Jan.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="03"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="03",], ty='l') 
+March.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="03",])
+summary(March.lm)
+
+abline(coef(March.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="05"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",], ty='l') 
+May.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="05",])
+summary(May.lm)
+
+abline(coef(May.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="06"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",], ty='l') 
+June.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="06",])
+summary(June.lm)
+
+abline(coef(June.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="07"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",], ty='l') 
+July.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="07",])
+summary(July.lm)
+
+abline(coef(July.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="08"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="08",], ty='l') 
+August.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="08",])
+summary(August.lm)
+
+abline(coef(August.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="09"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",], ty='l') 
+Sept.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="09",])
+summary(Sept.lm)
+
+abline(coef(Sept.lm), col="red")
+
+```
+
+
+```{r}
+plot(MonthlyMeanTMIN$TMIN, ty='l')
+
+plot(MonthlyMeanTMIN$TMIN[MonthlyMeanTMIN$Month=="10"], ty='l')
+
+plot(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",], ty='l') 
+Oct.lm <- lm(TMIN~YEAR, data=MonthlyMeanTMIN[MonthlyMeanTMIN$Month=="10",])
+summary(Oct.lm)
+
+abline(coef(Oct.lm), col="red")
+
+```
+
+What can explain these contrary trends? It is a phenomenon termed "coastal cooling" that occurs along the entire state of California. When inland temperatures increase due to increased concentration of greenhouse gases, coast to inland pressure and temperature gradients are affected. This causes increased sea breeze frequency, intensity, and/or duration. Therefore, the inland temperature increase from greenhouse gases leads to a reverse reaction of cooling summer maximum temperatures in coastal regions. 
+
+Professor Robert Bornstein of San Jose State University, who is at the forefront of research for coastal cooling in California, has conducted research that reflects the temperature changes Ojai is experiencing. Observations done at both regional and global scales have already found that since the mid-1970s, the rate of asymmetric warming has accelerated. Asymmetric warming occurs when TMin increases at a faster rate than TMax, such as what Ojai's temperature data reveals. Bornstein's data collection for the South Coast Air Basin area and San Francisco Bay Area show that both TMin and TMax have increased for inland sites, while coastal sites in those regions have simultaneously had rising TMins and falling TMaxes. This discrepancy leads to what appears to be an unchanging average temperature. However, relying solely on the average temperature trendline obscures the descreasing temperatures caused by coastal cooling. This neglects the disruption of the seasonal cycle and potentially harmful impacts. Bornstein's study concluded that 1970-2005, the overall trend in degrees Celsius per decade for the South Coast Air Basin was: 
+TMin +0.16 for inland areas, +0.28 for coastal areas
+TMax +0.32 for inland areas, -0.30 for coastal areas
+
+INSERT GRAPHS/PICTURES FROM BORNSTEIN'S PRESENTATION
+
+So what does this all mean? Amidst the warnings of global warming’s destructive impacts on both humans and the environment, any news of cooling should sound like a blessing. The phenomenon of coastal cooling does mean less energy needed for home and building cooling and lower rates of human heat stress. 
+
+However, for a town like Ojai rich in organic agriculture, this cooling trend could take a big toll. INFO ABOUT AGRICULTURE - seasons, cool days
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r importingCSV}
+# Importing Scripts
+
+file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Olivia/Ojai Temperatures - EA30.csv"
+
+import = read.csv(file)
+```
+
+```{r missings}
+import$TMAX[import$TMAX==-9999] = NA
+import$TMIN[import$TMIN==-9999] = NA
+```
+
+```{r}
+strDates <- as.character(import$DATE)
+head(strDates)
+import$NewDate <- as.Date(strDates, "%Y%m%d")
+```
+
+```{r}
+unique(import$STATION_NAME)
+```
+
+
+```{r}
+LosAngeles <- subset(import, STATION_NAME=="OJAI CA US", select=c(STATION, STATION_NAME, DATE, NewDate, TMIN, TMAX, PRCP))
+```
+
+
+```{r}
+# Linear Model
+LosAngeles.lm <- lm(TMAX~NewDate, data=LosAngeles)
+summary(LosAngeles.lm)
+plot(TMAX~NewDate, LosAngeles, ty='l')
+abline(coef(LosAngeles.lm), col='red')
+```
+
+```{r}
+# Get months
+LosAngeles$Month = months(LosAngeles$NewDate) # Creates problems.
+LosAngeles$Month = format(as.Date(LosAngeles$NewDate), format = "%m")
+LosAngeles$Year = format(LosAngeles$NewDate, format="%Y")
+```
