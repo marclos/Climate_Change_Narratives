@@ -14,7 +14,7 @@
 
 \subsection{Selected History of Meteorology}
 
-The Korean's are first to develop the first way of recording climate data---they invited the first standardized range gauges, and even more impressively, a coordinated network of rain gauges and records to assist in rice planting with goals to improve food security.
+The Korean's are first to develop develop weather records by measuring rainfall that would could be used to evaluate climate---they invited the first standardized range gauges, and even more impressively, a coordinated network of rain gauges and records to assist in rice planting with goals to improve food security.
 
 In 1607, Galileo Galilei constructed a thermoscope, but it wasn't until 1654, that Ferdinando II de Medici established the first weather observing network, consisting of meteorological stations in Florence, Cutigliano, Vallombrosa, Bologna, Parma, Milan, Innsbruck, Osnabrück, Paris and Warsaw. The collected data were sent to Florence at regular time intervals. In 1714, Gabriel Fahrenheit created a reliable scale for measuring temperature with a mercury-type thermometer. In 1742, Anders Celsius, a Swedish astronomer, proposed the ``centigrade" temperature scale, the predecessor of the current Celsius scale.
 
@@ -73,17 +73,19 @@ Once you get the data, we'll need to evaluate what we have and format it for our
 
 The CHCND documentation helps us to understand the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
 
+\section{Advanced User Access -- Terrestrial Temperature}  
+
 \subsection{Historical Climatology Network-Daily (GHCN‐D) data}
 
 Alternatively, one can use the FTP site to access the data in a different format (e.g. dyl). The site's url is \url{ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/gsn/}. 
 
 In addition, the CHCND documentation, as noted above, is very helpful in understanding the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
 
-\subsection{Advanced Users: \texttt{rnoaa} library tools}
+\subsection{\texttt{rnoaa} library tools}
 
 There is a relatively new tool to access NOAA data using an R package, called \texttt{rnoaa}. To use the tool, several dependent packages need to be installed and loaded, including \texttt{rNOAA}. Next users need to get an API code, which can be easily done by following the instructions described by this link: \url{https://www.ncdc.noaa.gov/cdo-web/token}.
 
-Using the \texttt{rnoaa} package is relatively strait foreward, although I have been getting timeout errors that I can't solve. 
+Using the \texttt{rnoaa} package is relatively strait foreward, although I have been getting timeout errors that I can't solve. I will be working to fix this in 2020. 
 
 Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.html}.
 
@@ -93,15 +95,17 @@ library(plyr)
 library(rnoaa)
 @
 
-<<echo=FALSE>>=
+<<noaakey, echo=FALSE>>=
 options(noaakey = "qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb")
 @
 
 \subsubsection{List of Cities}
 
 rNOAA has a simple function to list the cities:
-<<>>=
-ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
+
+Commented out -- takes forever and errors out!
+<<listoflocations>>=
+#ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
 @
 
 The function queries the NOAA website and retrieves city names and the dates of the climate records. Importantly, the records include the station ID, which can be used to college the data for that city. 
@@ -113,8 +117,8 @@ NOTE2: It would be nice to make a map of how concentrated the stations spatially
 \subsubsection{Getting Data}
 
 %Using the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
-<<>>=
-ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00084289')
+<<ncdc_stations>>=
+#ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00084289')
 @
 
 \subsection{Evaluating Records}
