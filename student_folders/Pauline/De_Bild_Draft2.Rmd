@@ -1,0 +1,109 @@
+---
+title: "De_Bilt_Draft_2"
+author: "Pauline Bekkers"
+date: "18/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+read.csv("/home/CAMPUS/pmba2017/Pauline_DeBilt_Data.csv")
+climate_data<-(read.csv("/home/CAMPUS/pmba2017/Pauline_DeBilt_Data.csv"))
+```
+
+```{r}
+str(climate_data)
+```
+
+```{r}
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+
+```{r}
+plot(TMAX~NewDate, climate_data, ty='l', main="Max Temperatures between 1901 and 2019 in De Bilt, Netherlands",xlab="Year", ylab="Maximum Temperature (°)")
+bestfit<-lm(TMAX~NewDate, climate_data[1:43414,])
+abline(bestfit, col="blue")
+```
+
+```{r}
+lm(TMAX~NewDate, data=climate_data)
+```
+
+```{r}
+summary(lm(TMAX~NewDate, data=climate_data))
+```
+
+```{r}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+```
+
+```{r}
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+```
+
+```{r}
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
+```
+
+```{r}
+plot(MonthlyTMAXMean$TMAX, ty="l")
+plot(TMAX~Year, data=MonthlyTMAXMean, ty="l")
+```
+```{r}
+plot(TMAX~Year, data=MonthlyTMAXMean, ty="l")
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+     ty="l", xlim=c(1910,2020))
+
+
+```
+
+```{r}
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+     ty="l", xlim=c(1910,2020))
+bestfitJan<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(bestfitJan)
+abline(bestfitJan, col="blue")
+
+str(MonthlyTMAXMean)
+
+```
+
+```{r}
+MonthlyTMINMean<-aggregate(TMIN ~ Month + Year, climate_data, mean)
+plot(TMIN~NewDate, climate_data, ty='l', main="Min Temperatures between 1901 and 2019 in De Bilt, Netherlands",xlab="Year", ylab="Minimum Temperature (°)")
+bestfitmin<-lm(TMIN~NewDate, climate_data[1:43414,])
+abline(bestfitmin, col="blue")
+
+```
+```{r}
+YearMin<-(MonthlyTMINMean$Year)
+MonthlyTMINMean$Year=as.numeric(MonthlyTMINMean$Year)
+
+```
+
+
+
+```{r}
+par(mfrow=c(1,2))
+plot(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],
+     ty="l", xlim=c(1910,2020))
+BestfitminJan<-lm(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+summary(BestfitminJan)
+abline(BestfitminJan, col="blue")
+plot(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",],
+     ty="l", xlim=c(1910,2020))
+BestfitminAug<-lm(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+summary(BestfitminAug)
+abline(BestfitminAug, col="blue")
+
+```
+
+
