@@ -9,22 +9,50 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Open the file
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r read file}
+climate_data <- read.csv("/home/CAMPUS/erta2018/Climate_Change_Narratives/student_folders/Tomz/Tomz_Blog_v0_files/1957996_modified.csv")
+summary(climate_data)
+head(climate_data)
+str(climate_data)
+names(climate_data)
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+## Re-format Dates
+
+```{r dates reformatting}
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+head(climate_data)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+## Maximum Temperature over Time
+
+```{r data, echo=FALSE}
+plot(TMAX ~ NewDate, data = climate_data, ty = "l", xlab = "Date", ylab = "Degrees Celcius",
+     main = "Maximum Daily Temperature, Zurich, Switzerland")
+TMAX.lm <- lm(TMAX ~ NewDate, data = climate_data)
+summary(TMAX.lm)
+abline(coef(TMAX.lm), col = "red")
+#legend(1910, -10, col = c(1), coef(TMAX.lm))
+```
+The p-value is very small, so we reject the null hypothesis. So, it is unlikely that this trend occured only by chance. From the regression, it's evident that the temperature is changing over time. It is decreasing with a slope of -1.416x10^-5 degrees C per year.
+
+
+## Monthly Means
+
+```{r monthly means}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+```
