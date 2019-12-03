@@ -35,9 +35,9 @@ Now follow these steps to upload the data into the Rstudio server:
 %  \item Next click on the correct folder for your class, it should correspond to the term in which you are enrolled in the EA 30 class. For example: SP17 if you're enrolled in EA 30 spring semester of 2017.
   \item Use the upload button to select a file from your computer to upload into the rstudio server
   \begin{figure}[h]
-  \includegraphics[scale=0.25]{"../graphics/Upload_button"}
+  \includegraphics[scale=0.25]{"../Admin/graphics/Upload_button"}
   \end{figure}
-  \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (SOP 84). It should have the new name you gave it above (yourname\_region\_data)
+  \item In the popup window select \textbf{Browse} and navigate to the climate data file you downloaded from the CDO website (Step 1---Obtaining Climate Records). It should have the new name you gave it above (yourname\_region\_data)
   \item Click \textbf{Open} and then click \textbf{OK}. 
   
   \end{enumerate}
@@ -87,7 +87,7 @@ So we made R read our file, however cool this might be, it is still not useful t
 
 This time we will use the following R command\\
 \begin{verbatim}
-climate_data <- read.csv(''the/file/path'')
+climate_data <- read.csv(``the/file/path'')
 \end{verbatim}
 
 \textbf{But be sure to use your actual data path!}
@@ -99,7 +99,7 @@ In R usually ``no news is good news" after you hit enter on a command. In other 
 
 \section{Confirming the Proper Reading of the CSV file}
 <<echo=FALSE, message=FALSE, results='hide'>>=
-climate_data<- read.csv("../Data/test_data/Singapore_ClimateData.csv")
+climate_data<- read.csv("../Data/MLH/test_data/Singapore_ClimateData.csv")
 @
 
 So we see that the data file is actually an object in R now. But what does it actually look like and what's in it? 
@@ -188,7 +188,7 @@ climate_data$TMAX[climate_data$TMAX==-9999] = NA
 climate_data$TMIN[climate_data$TMIN==-9999] = NA
 @
 
-Okay, now we'll check again, but let's plot a just a few years, let's say five years (356 days * 5 years = 1825) or 1825 observations. Please use this to check the data only! 
+Okay, now we'll check again, but let's plot a just a few years, let's say five years (356 days * 5 years = 1825) or 1825 observations. I am using this to check my dataframe -- based on the number of observations that I have, but your data set will vary and you may find this selection of rows to be unhelpful.\footnote{IMPORTANT: when we plot with a type (ty) as a line, we define that as the letter 'l' not the number '1'!}
 
 <<>>=
 plot(TMAX~DATE, climate_data[1:1835,], ty='l')
@@ -301,11 +301,11 @@ plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
 %plot(TMAX~NewDate, LosAngeles, ty='l')
 
 
-<<echo = T, results = 'hide' >>=
+<<echo = F, results = 'hide' >>=
 #maunaloa$average
 @
 
-to dump the average CO$_2$ concentrations readings onto your screen as a vector. You should see some ~627 observations, depending on how recent the data have been uploaded. So, the dollar symbol is used to drill into the data frame vectors.  And when you look at the \texttt{str()} function again, you will see these dollar signs again.
+%to dump the average CO$_2$ concentrations readings onto your screen as a vector. You should see some ~627 observations, depending on how recent the data have been uploaded. So, the dollar symbol is used to drill into the data frame vectors.  And when you look at the \texttt{str()} function again, you will see these dollar signs again.
 
 \section{Preparing Records for Analysis}
 
@@ -326,7 +326,7 @@ Now you will begin creating your blog by getting the commands you created before
   \item Fix the date formats.
   \item Create a figure of Tmax versus time (\texttt{plot()}).
   \item Overlay the best fit line (\texttt{abline()}, \texttt{coef()}, and \texttt{lm()}).
-  \item Go to "Evaluating Monthly Trends using CHCN-Daily" to learn about how to analyze data.
+  \item Go to "Step 3---Evaluating Monthly Trends using CHCN-Daily" to learn about how to analyze data.
   
 \end{enumerate}
 
