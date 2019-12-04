@@ -1,0 +1,121 @@
+---
+title: "Temperature Data - The Unknown City: "
+author: '17276'
+date: "12/3/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+TEMP <- read.csv("/home/CAMPUS/aemb2018/Climate_Change_Narratives/student_folders/Massari/1960066.csv")
+head(TEMP)
+str(TEMP)
+names(TEMP)
+```
+```{r date}
+plot(TMAX ~ DATE, TEMP)
+min(TEMP$TMAX, na.rm=T)
+plot(TMAX ~ DATE, TEMP[15000:20000,], ty='l', xlim = c(15000,20000))
+date.c = as.character(TEMP$DATE)
+TEMP$NewDate <- as.Date(date.c, "%Y-%m-%d")
+```
+
+```{r maxmonthavg}
+change = lm(TMAX ~ NewDate, data=TEMP)
+summary(change)
+TEMP$Month = format(as.Date(TEMP$NewDate), format = "%m")
+TEMP$Year = format(TEMP$NewDate, format="%Y")
+
+MonthTMAX.mean = aggregate(TMAX ~ Month + Year, TEMP, mean)
+MonthTMAX.mean$YEAR = as.numeric(MonthTMAX.mean$Year)
+MonthTMAX.mean$MONTH = as.numeric(MonthTMAX.mean$Month)
+str(MonthTMAX.mean)
+plot(MonthTMAX.mean$TMAX, ty = "l")
+
+May.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="05",])
+summary(May.lm)
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+abline(coef(May.lm), col="blue2")
+```
+
+``` {r maxtemp}
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+TMAXresult <- NA
+
+for (i in 1:12){
+#plot(MonthTMAX.mean£TMAX[MonthTMAX.mean£Month==i], ty='l')
+plot(TMAX~YEAR,
+data=MonthTMAX.mean[MonthTMAX.mean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMAXresult <- rbind(TMAXresult,
+cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}
+```
+``` {r minmonthavg}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, TEMP, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+TMINresult <- NA
+
+for (i in 1:12){
+#plot(MonthTMAX.mean£TMAX[MonthTMAX.mean£Month==i], ty='l')
+plot(TMIN~YEAR,
+data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm.min <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm.min)
+abline(coef(Month.lm.min), col="red")
+TMINresult <- rbind(TMINresult,
+cbind(Months[i], round(coef(Month.lm.min)[2], 4),
+round(summary(Month.lm.min)$coefficients[2,4],4),
+round(summary(Month.lm.min)$r.squared, 3)))
+}
+```
+``` {r min}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+```
+
+``` {r idk}
+
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+
+```
+
+
+
