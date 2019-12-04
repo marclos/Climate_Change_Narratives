@@ -82,17 +82,6 @@ plot(MonthlyTMAXMean$TMAX, ty='l')
 
 ```
 
-``` {r January}
-
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
-ty='l', xlim=c(1950, 2020))
-January.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
-summary(January.lm)
-
-abline(coef(January.lm), col="red")
-```
-
-
 
 ``` {r TMIN}
 
@@ -109,11 +98,132 @@ plot(MonthlyTMINMean$TMIN, ty='l')
 ```
 
 
+``` {r all_months}
+
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+# Create a panel so I can see all the figures at once.
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i], ty='l')
+plot(TMAX~YEAR,
+data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMAXresult <- rbind(TMAXresult,
+cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMINMean£Month==i], ty='l')
+plot(TMIN~YEAR,
+data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMINresult <- rbind(TMINresult,
+cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}
 
 
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
 
+## Makes a table
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
 
+## Shows which months are significant!
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
 
+```
+
+``` {r MAXsignificant_months}
+
+## January
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+ty='l', xlim=c(1950, 2020))
+January.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(January.lm)
+
+abline(coef(January.lm), col="red")
+
+## July
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",],
+ty='l', xlim=c(1950, 2020))
+July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+summary(July.lm)
+
+abline(coef(July.lm), col="red")
+
+##August
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
+ty='l', xlim=c(1950, 2020))
+August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+summary(August.lm)
+
+abline(coef(August.lm), col="red")
+```
+
+``` {r MINsignificant_months}
+
+## January
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],
+ty='l', xlim=c(1950, 2020))
+January.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+summary(January.lm)
+
+abline(coef(January.lm), col="red")
+
+## July
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",],
+ty='l', xlim=c(1950, 2020))
+July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
+summary(July.lm)
+
+abline(coef(July.lm), col="red")
+
+##August
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",],
+ty='l', xlim=c(1950, 2020))
+August.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+summary(August.lm)
+
+abline(coef(August.lm), col="red")
+```
 
 
 
