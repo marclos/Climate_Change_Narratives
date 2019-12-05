@@ -59,13 +59,14 @@ MonthlyTDIFMean$MONTH = as.numeric(MonthlyTDIFMean$Month)
 str(MonthlyTDIFMean)
 plot(MonthlyTDIFMean$TDIF, ty='l')
 ```
-This seems to work...
+This seems to work and now makes both monthly TMAX mean and sd...
 
-```{r makingmonthlySD}
-MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
-MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
-MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
-summary(MonthlyTMAXSD)
+```{r makingmonthlyMEANSD}
+MonthlyTMAX = aggregate(TMAX ~ Month + Year, climate_data, function(x) c(mean=mean(x), sd=sd(x) ) )
+str(MonthlyTMAX)
+MonthlyTMAX$YEAR = as.numeric(MonthlyTMAX$Year)
+MonthlyTMAX$MONTH = as.numeric(MonthlyTMAX$Month)
+summary(MonthlyTMAX)
 ```
 
 This seems fine.
