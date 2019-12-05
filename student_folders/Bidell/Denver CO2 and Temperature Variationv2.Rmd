@@ -12,7 +12,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ``` {r read process}
 #filechoose()
 climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
-climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
 climate_data <- read.csv(climatedata)
 str(climate_data)
 names(climate_data)
@@ -58,6 +57,12 @@ MonthlyTDIFMean$YEAR = as.numeric(MonthlyTDIFMean$Year)
 MonthlyTDIFMean$MONTH = as.numeric(MonthlyTDIFMean$Month)
 str(MonthlyTDIFMean)
 plot(MonthlyTDIFMean$TDIF, ty='l')
+```
+```{r makingmonthlySD}
+MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
+MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
+MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
+summary(MonthlyTMAXSD)
 ```
 
 ```{r selectingsinglemonthmay}
