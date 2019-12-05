@@ -9,6 +9,89 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+``` {r read process}
+#filechoose()
+climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
+climate_data <- read.csv(climatedata)
+str(climate_data)
+names(climate_data)
+```
+``` {r head}
+head(climate_data)
+```
+
+``` {r datasorting}
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+climate_data$TMAX
+plot(TMAX ~ NewDate, climate_data, ty='l')
+```
+
+```{r fixingdates}
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+
+```
+
+```{r newvariabletdif}
+climate_data$TDIF=climate_data$TMAX-climate_data$TMIN
+plot(TDIF ~ NewDate, climate_data, ty='l')
+```
+
+## Random stuff
+
+
+## Analyses Climate Data
+
+``` {r regressionmodel}
+lm(TDIF ~ NewDate, data=climate_data)
+summary(lm(TDIF ~ NewDate, data=climate_data))
+
+```
+
+```{r makingmonthlyaverage}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTDIFMean = aggregate(TDIF ~ Month + Year, climate_data, mean)
+MonthlyTDIFMean$YEAR = as.numeric(MonthlyTDIFMean$Year)
+MonthlyTDIFMean$MONTH = as.numeric(MonthlyTDIFMean$Month)
+str(MonthlyTDIFMean)
+plot(MonthlyTDIFMean$TDIF, ty='l')
+```
+
+```{r selectingsinglemonthmay}
+plot(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+```
+
+## Import New Data
+```{r co2dataimport}
+#file.choose()
+co2_data=climate_data="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
+co2_data <- read.csv(co2_data)
+str(co2_data)
+names(co2_data)
+```
+```{r datasortco2}
+strDates <- as.character(co2_data$Date)
+co2_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+co2_data$Value
+plot(Value ~ NewDate, co2_data, ty='l')
+```
+## Testing the Null Hypothesis 
+```{r mergingdata}
+temp = merge(climate_data, co2_data, by.all="NewDate")
+temp$TDIF=temp$TMAX-temp$TMIN
+```
+
+
+```{r plottdif~value}
+plot(TDIF ~ Value, data=temp)
+```
+
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
