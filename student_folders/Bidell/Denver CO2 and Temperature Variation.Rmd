@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ``` {r read process}
 #filechoose()
 climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
+climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
 climate_data <- read.csv(climatedata)
 str(climate_data)
 names(climate_data)
