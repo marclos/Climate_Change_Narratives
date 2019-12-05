@@ -58,6 +58,12 @@ MonthlyTDIFMean$MONTH = as.numeric(MonthlyTDIFMean$Month)
 str(MonthlyTDIFMean)
 plot(MonthlyTDIFMean$TDIF, ty='l')
 ```
+```{r makingmonthlySD}
+MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
+MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
+MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
+summary(MonthlyTMAXSD)
+```
 
 ```{r selectingsinglemonthmay}
 plot(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="05",],
