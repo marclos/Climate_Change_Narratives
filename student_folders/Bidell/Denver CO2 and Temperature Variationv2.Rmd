@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ``` {r read process}
 #filechoose()
 climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
+#climatedata="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
 climate_data <- read.csv(climatedata)
 str(climate_data)
 names(climate_data)
@@ -58,12 +59,16 @@ MonthlyTDIFMean$MONTH = as.numeric(MonthlyTDIFMean$Month)
 str(MonthlyTDIFMean)
 plot(MonthlyTDIFMean$TDIF, ty='l')
 ```
+This seems to work...
+
 ```{r makingmonthlySD}
 MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, climate_data, sd)
 MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
 MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
 summary(MonthlyTMAXSD)
 ```
+
+This seems fine.
 
 ```{r selectingsinglemonthmay}
 plot(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="05",],
@@ -76,7 +81,13 @@ abline(coef(May.lm), col="red")
 ## Import New Data
 ```{r co2dataimport}
 #file.choose()
-co2_data=climate_data="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
+#co2_data=climatedata = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
+
+# Path above is wrong, I fixed it...
+co2_data="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
+
+# marc's path Comment out!
+# co2_data = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 co2_data <- read.csv(co2_data)
 str(co2_data)
 names(co2_data)
@@ -87,10 +98,19 @@ co2_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 co2_data$Value
 plot(Value ~ NewDate, co2_data, ty='l')
 ```
+
+
 ## Testing the Null Hypothesis 
 ```{r mergingdata}
-temp = merge(climate_data, co2_data, by.all="NewDate")
-temp$TDIF=temp$TMAX-temp$TMIN
+# this is not working
+#temp = merge(climate_data, co2_data, by.all="NewDate"); str(temp)
+str(climate_data)
+str(co2_data)
+temp = merge(climate_data, co2_data, by="NewDate"); str(temp)
+
+#make file smaller
+temp = subset(temp, select=c("NewDate", "DATE", "Year", "Month", "TMAX", "TMIN", "Value"))
+temp$TDIF=temp$TMAX-temp$TMIN; str(temp)
 ```
 
 
@@ -99,15 +119,27 @@ plot(TDIF ~ Value, data=temp)
 ```
 
 ## Testing SD
-```{r monthfortemp}
-temp$Month = format(as.Date(temp$NewDate), format = "%m")
-temp$Year = format(temp$NewDate, format="%Y")
 
-MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, temp, mean)
+temp is already averaged by month, can't generate a SD from 1 value, mean works because we can take a mean of one value...
+
+```{r monthfortemp}
+#temp$Month = format(as.Date(temp$NewDate), format = "%m")
+#temp$Year = format(temp$NewDate, format="%Y")
+
+str(temp)
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, temp, length)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 plot(MonthlyTMAXMean$TMAX, ty='l')
+
+head(temp)
+MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, data=temp, function(x) c(mean=mean(x), sd=sd(x)))
+MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
+MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
+str(MonthlyTMAXSD)
+plot(MonthlyTMAXSD$TMAX, ty='l')
+
 ```
 ## R Markdown
 
