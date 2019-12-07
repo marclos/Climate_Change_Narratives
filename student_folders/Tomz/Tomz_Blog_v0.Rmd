@@ -34,20 +34,22 @@ head(climate_data)
 
 ## Maximum Temperature over Time
 
-```{r data, echo=FALSE}
+```{r max daily temps, echo=FALSE}
 plot(TMAX ~ NewDate, data = climate_data, ty = "l", xlab = "Date", ylab = "Degrees Celcius",
      main = "Maximum Daily Temperature, Zurich, Switzerland")
+
 TMAX.lm <- lm(TMAX ~ NewDate, data = climate_data)
 summary(TMAX.lm)
+
 abline(coef(TMAX.lm), col = "red")
-#legend(1910, -10, col = c(1), coef(TMAX.lm))
+legend(1910, 0, col = c(1), coef(TMAX.lm))
 ```
 The p-value is very small, so we reject the null hypothesis. So, it is unlikely that this trend occured only by chance. From the regression, it's evident that the temperature is changing over time. It is decreasing with a slope of -1.416x10^-5 degrees C per year.
 
 
 ## Monthly Means
 
-```{r monthly means}
+```{r max: monthly means}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format = "%Y")
 
@@ -55,4 +57,126 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+summary(TMAX.lm)
+
+plot(MonthlyTMAXMean$TMAX, ty = 'l', ylab = "Degrees Celcius", main = "Maximum Mean Montly Temperature, Zurich, Switzerland")
+abline(coef(TMAX.lm), col = "blue")
+legend(900, 5, coef(TMAX.lm))
+```
+
+```{r max: month of may}
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == "05",], 
+     ty = 'l', xlim = c(1900, 2020), ylab = "Degrees Celcius", xlab = "Date", 
+     main = "May: Maximum Daily Temperature, Zurich, Switzerland")
+
+May.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == "05",])
+summary(May.lm)
+
+abline(coef(May.lm), col = "green4")
+legend(1980, 23, col = c(1), coef(May.lm))
+```
+
+```{r max: all months}
+# Create vector of months
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September",
+           "October", "November", "December")
+
+# Create panel to see all figures at once
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,],
+       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,])
+  summary(Month.lm)
+  
+  abline(coef(Month.lm), col = "purple")
+  
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+                                        round(summary(Month.lm)$coefficients[2, 4], 4),
+                                        round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+## Minimum Temperatures over Time
+
+```{r min: daily temps}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+#Fix format of month and year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+# Create plot of monthly average of daily min temps
+plot(MonthlyTMINMean$TMIN, ty = 'l', ylab = "Degrees Celcius", main = "Monthly Minimum Daily Temperature, Zurich, Switzerland")
+TMIN.lm <- lm(TMIN ~ NewDate, data = climate_data)
+abline(coef(TMIN.lm), col = "red")
+legend(900, -5, coef(TMIN.lm))
+```
+
+## Minimum Monthly Temperatures
+
+```{r min: monthly means}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+summary(TMAX.lm)
+
+plot(MonthlyTMAXMean$TMAX, ty = 'l', ylab = "Degrees Celcius", main = "Maximum Mean Montly Temperature, Zurich, Switzerland")
+abline(coef(TMAX.lm), col = "blue")
+legend(900, 5, coef(TMAX.lm))
+```
+
+## * THIS BLOCK IS WHERE I AM GETTING STUCK WITH NEEDING FINITE YLIM VALUES *
+
+```{r min: all months}
+# Create vector of months
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September",
+           "October", "November", "December")
+
+# Create panel to see all figures at once
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,],
+       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,])
+  summary(Month.lm)
+  
+  abline(coef(Month.lm), col = "purple")
+  
+  TMINresult <- rbind(TMIXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+                                        round(summary(Month.lm)$coefficients[2, 4], 4),
+                                        round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+```{r min: all months}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13), 1],
+                      TMINSlope = TMINresult[c(2:13), 2],
+                      TMIN_P = as.numeric(TMINresult[c(2:13), 3]),
+                      TMINRsq = TMINresult[c(2:13), 4],
+                      TMAXSlope = TMAXresult[c(2:13), 2],
+                      TMAX_P = as.numeric(TMAXresult[c(2:13), 3]),
+                      TMAXRsq = TMAXresult[c(2:13), 4])
+
 ```
