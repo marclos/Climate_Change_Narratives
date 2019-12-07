@@ -12,7 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Open the file
 
 ```{r read file}
-climate_data <- read.csv("/home/CAMPUS/erta2018/Climate_Change_Narratives/student_folders/Tomz/Tomz_Blog_v0_files/1957996_modified.csv")
+climate_data.csv ="/home/CAMPUS/erta2018/Climate_Change_Narratives/student_folders/Tomz/Tomz_Blog_v0_files/1957996_modified.csv"
+# climate_data.csv ="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Tomz/Tomz_Blog_v0_files/1957996_modified.csv"
+climate_data <- read.csv(climate_data.csv)
 summary(climate_data)
 head(climate_data)
 str(climate_data)
@@ -147,7 +149,11 @@ legend(900, 5, coef(TMAX.lm))
 
 ## * THIS BLOCK IS WHERE I AM GETTING STUCK WITH NEEDING FINITE YLIM VALUES *
 
+
+
 ```{r min: all months}
+# Checking ot make sure dataframe exists and variable names make sense...
+str(MonthlyTMINMean)
 # Create vector of months
 Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September",
            "October", "November", "December")
@@ -156,16 +162,24 @@ Months = c("January", "February", "March", "April", "May", "June", "July", "Augu
 par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
 TMINresult <- NA
 for (i in 1:12){
-  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,],
-       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
-  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,])
-  summary(Month.lm)
+#  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,],
+#       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
   
+# Line 165 is created a subset with zero rows...MONTH doesn't exists in dataframe.
+
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == i,],
+       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
+  
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == i,])
+  #fixed month in line 173
+  summary(Month.lm)
   abline(coef(Month.lm), col = "purple")
   
-  TMINresult <- rbind(TMIXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
                                         round(summary(Month.lm)$coefficients[2, 4], 4),
                                         round(summary(Month.lm)$r.squared, 3)))
+  
+  # typo in rbind...TMIX -> TMIN
 }
 ```
 
