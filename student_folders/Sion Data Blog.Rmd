@@ -1,0 +1,109 @@
+---
+title: "Sion SZ TMAX Data"
+author: 'Alice Shinn'
+date: "12/3/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data organization
+
+```{r data org, echo=FALSE}
+climate_data <- read.csv("/home/CAMPUS/asac2018/Climate_Change_Narratives/student_folders/Shinn/Shinn_Sion_Data_REAL.csv")
+head(climate_data)
+str(climate_data)
+names(climate_data)
+
+
+```
+``` {r max, echo=FALSE}
+max(climate_data$TMAX, na.rm=T)
+climate_data$TMAX[climate_data$TMAX==-9999] = NA
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+plot(TMAX~NewDate, climate_data, ty='l', main="Temperature Maximum in Sion, SZ between 1955-2019")
+lm(TMAX~NewDate, data=climate_data)
+summary(lm(TMAX~NewDate, data=climate_data))
+        
+```
+
+```{r max monthly means}
+climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month+Year, climate_data, mean)
+MonthlyTMAXMean$YEAR= as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty="l")
+
+```
+
+``` {r plot for April}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month==4,],ty='l')
+April.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month==4,])
+summary(April.lm)
+abline(coef(April.lm), col="blue")
+```
+
+```{r MAX plot for all months}
+Months= c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+par(mfrow=c(4,3), mar=c(5,4,3,2)+0.1)
+TMAXresult <- NA
+for (i in 1:12){
+  plot(TMAX~YEAR,
+       data=MonthlyTMAXMean[MonthlyTMAXMean$Month==i,],
+       ty='l', las=1, xlim=c(1955,2019), main=Months[i])
+  Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month==i,])
+  summary(Month.lm)
+  abline(coef(Month.lm), col="green")
+  
+  TMAXresult <- rbind(TMAXresult,
+                      cbind(Months[i], round(coef(Month.lm)[2], 4), 
+                            round(summary(Month.lm)$coefficients[2,4],4),
+                            round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+``` {r min, echo=FALSE}
+min(climate_data$TMIN, na.rm=T)
+climate_data$TMIN[climate_data$TMIN==-9999] = NA
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+plot(TMIN~NewDate, climate_data, ty='l', main="Temperature Minimum in Sion, SZ between 1955-2019")
+lm(TMIN~NewDate, data=climate_data)
+summary(lm(TMIN~NewDate, data=climate_data))
+        
+```
+```{r min monthly means}
+climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+MonthlyTMINMean = aggregate(TMIN ~ Month+Year, climate_data, mean)
+MonthlyTMINMean$YEAR= as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month = as.numeric(MonthlyTMINMean$Month)
+str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty="l")
+
+```
+
+```{r MIN plot for all months}
+Months= c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+par(mfrow=c(4,3), mar=c(5,4,3,2)+0.1)
+TMINresult <- NA
+for (i in 1:12){
+  plot(TMIN~YEAR,
+       data=MonthlyTMINMean[MonthlyTMINMean$Month==i,],
+       ty='l', las=1, xlim=c(1955,2019), main=Months[i])
+  Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month==i,])
+  summary(Month.lm)
+  abline(coef(Month.lm), col="red")
+  
+  TMAXresult <- rbind(TMINresult,
+                      cbind(Months[i], round(coef(Month.lm)[2], 4), 
+                            round(summary(Month.lm)$coefficients[2,4],4),
+                            round(summary(Month.lm)$r.squared, 3)))
+}
+```
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
