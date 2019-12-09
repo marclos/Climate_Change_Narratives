@@ -1,0 +1,249 @@
+---
+title: "Blog"
+author: "Emily Tomz"
+date: "12/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Open the file
+
+```{r read file}
+climate_data.csv <- "/home/CAMPUS/erta2018/Climate_Change_Narratives/student_folders/Tomz/Tomz_Blog_v0_files/1957996_modified.csv"
+# climate_data.csv ="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Tomz/Tomz_Blog_v0_files/1957996_modified.csv"
+climate_data <- read.csv(climate_data.csv)
+summary(climate_data)
+head(climate_data)
+str(climate_data)
+names(climate_data)
+```
+
+
+
+## Re-format Dates
+
+```{r dates reformatting}
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+head(climate_data)
+```
+
+
+
+
+## Maximum Temperature over Time
+
+```{r max daily temps, echo=FALSE}
+plot(TMAX ~ NewDate, data = climate_data, ty = "l", xlab = "Date", ylab = "Degrees Celcius",
+     main = "Maximum Daily Temperature, Zurich, Switzerland")
+
+TMAX.lm <- lm(TMAX ~ NewDate, data = climate_data)
+summary(TMAX.lm)
+
+abline(coef(TMAX.lm), col = "red")
+legend(1910, 0, col = c(1), coef(TMAX.lm))
+```
+The p-value is very small, so we reject the null hypothesis. So, it is unlikely that this trend occured only by chance. From the regression, it's evident that the temperature is changing over time. It is decreasing with a slope of -1.416x10^-5 degrees C per year.
+
+
+## Monthly Means
+
+```{r max: monthly means}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+summary(TMAX.lm)
+
+plot(MonthlyTMAXMean$TMAX, ty = 'l', ylab = "Degrees Celcius", main = "Maximum Mean Montly Temperature, Zurich, Switzerland")
+abline(coef(TMAX.lm), col = "blue")
+legend(900, 5, coef(TMAX.lm))
+```
+
+```{r max: month of may}
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == "05",], 
+     ty = 'l', xlim = c(1900, 2020), ylab = "Degrees Celcius", xlab = "Date", 
+     main = "May: Maximum Daily Temperature, Zurich, Switzerland")
+
+May.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == "05",])
+summary(May.lm)
+
+abline(coef(May.lm), col = "green4")
+legend(1980, 23, col = c(1), coef(May.lm))
+```
+
+```{r max: all months}
+# Create vector of months
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September",
+           "October", "November", "December")
+
+# Create panel to see all figures at once
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1) 
+TMAXresult <- NA
+for (i in 1:12){
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,],
+       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,])
+  summary(Month.lm)
+  
+  abline(coef(Month.lm), col = "purple")
+  
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+                                        round(summary(Month.lm)$coefficients[2, 4], 4),
+                                        round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+## Minimum Temperatures over Time
+
+```{r min: daily temps}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+#Fix format of month and year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+# Create plot of monthly average of daily min temps
+plot(MonthlyTMINMean$TMIN, ty = 'l', ylab = "Degrees Celcius", main = "Monthly Minimum Daily Temperature, Zurich, Switzerland")
+TMIN.lm <- lm(TMIN ~ NewDate, data = climate_data)
+abline(coef(TMIN.lm), col = "red")
+legend(900, -5, coef(TMIN.lm))
+```
+
+## Minimum Monthly Temperatures
+
+```{r min: monthly means}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+summary(TMAX.lm)
+
+plot(MonthlyTMAXMean$TMAX, ty = 'l', ylab = "Degrees Celcius", main = "Maximum Mean Montly Temperature, Zurich, Switzerland")
+abline(coef(TMAX.lm), col = "blue")
+legend(900, 5, coef(TMAX.lm))
+```
+
+
+```{r min: all months}
+# Checking ot make sure dataframe exists and variable names make sense...
+str(MonthlyTMINMean)
+# Create vector of months
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September",
+           "October", "November", "December")
+
+# Create panel to see all figures at once
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+#  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,],
+#       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
+  
+# Line 165 is created a subset with zero rows...MONTH doesn't exists in dataframe.
+
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == i,],
+       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
+  
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == i,])
+  summary(Month.lm)
+  abline(coef(Month.lm), col = "purple")
+  
+  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+                                        round(summary(Month.lm)$coefficients[2, 4], 4),
+                                        round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+## QUESTION: How do I make this into a real Latex table? It's not interpreting... might need to import something?
+
+```{r min: xtable}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13), 1],
+                      TMINSlope = TMINresult[c(2:13), 2],
+                      TMIN_P = as.numeric(TMINresult[c(2:13), 3]),
+                      TMINRsq = TMINresult[c(2:13), 4],
+                      TMAXSlope = TMAXresult[c(2:13), 2],
+                      TMAX_P = as.numeric(TMAXresult[c(2:13), 3]),
+                      TMAXRsq = TMAXresult[c(2:13), 4])
+
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= 0.05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+
+Results$TMINslope = paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope = paste(Results$TMAXSlope, Results$starTMAX)
+
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+
+print(xtable(Results[, c(1, 10, 4, 11, 7)]))
+```
+
+
+## Precipitation: Departure from Mean
+
+```{r missing data}
+climate_data$PRCP[climate_data$PRCP == -9999] <- NA
+
+Missing <- aggregate(is.na(climate_data$PRCP),
+                     list(climate_data$Month, climate_data$Year), sum)
+Missing$Data = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2) / 12
+plot(x ~ Data, data = Missing, main = "Missing Data")
+```
+
+```{r precip data}
+# No missing data, so don't need to aggregate at all!
+TotalPPT <- aggregate(climate_data$PRCP, list(climate_data$Month, climate_data$Year), sum, na.rm = T)
+
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+
+library(dplyr)
+
+PPT <- merge(TotalPPT, NonMissing, all.y = TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2) / 12
+head(PPT)
+
+PRCP_mean = mean(PPT$ppt)
+
+plot(ppt ~ Date, data = PPT, main = "Precipitation Over Time")
+ppt.lm <- lm(ppt ~ Date, data = PPT)
+abline(h = PRCP_mean, col = "blue")
+legend(173, 265, coef(ppt.lm))
+
+# The spread of the data doesn't look too awful!
+```
+
+
+```{r linear regression}
+par(mfrow = c(2, 2))
+plot(lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == 1,]))
+```
