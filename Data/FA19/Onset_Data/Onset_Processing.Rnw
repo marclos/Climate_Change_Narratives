@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\begin{document}
+
+<<>>=
+filepath106 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/20724106.csv"
+
+filepath107 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/20724107.csv"
+
+filepath109 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/20724109.csv"
+
+filepath110 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/20724110.csv"
+
+filepath543 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/1098543.csv"
+
+filepath544 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/1098544.csv"
+
+
+onset106 = read.csv(filepath106, skip = 1); str(onset106)
+onset106.h = read.csv(filepath106, skip =1, nrows = 1); onset106.h
+
+onset107 = read.csv(filepath107, skip = 1); str(onset107)
+onset107.h = read.csv(filepath107, skip =1, nrows = 1); onset107.h
+
+onset109 = read.csv(filepath109, skip = 2); str(onset109)
+onset109.h = read.csv(filepath109, skip =1, nrows = 1); onset109.h
+
+onset110 = read.csv(filepath110, skip = 2); str(onset110)
+onset110.h = read.csv(filepath110, skip =1, nrows = 1); onset110.h
+
+merge(onset106, onset107)
+@
+
+
+\end{document}

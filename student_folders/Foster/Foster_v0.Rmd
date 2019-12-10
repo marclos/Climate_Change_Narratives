@@ -9,29 +9,58 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r climate data}
-filepath="/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/Miranda_Glacier_Data.csv"
-climate_data <- read.csv(filepath)
-
-
-
 #read.csv("/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/Miranda_Glacier_Data.csv")
+climate_data <- read.csv("/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/Miranda_Glacier_Data.csv")
+#plot(PRCP~DATE, climateviedata)
+min(climate_data$PRCP)
+min(climate_data$PRCP, na.rm=T)
+#plot(TMAX~DATE, climate_data[15000:15900,], ty='l')
+#plot(SNOW~DATE, climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+plot(SNOW~NewDate, climate_data[15000:16000,], ty='l')
+plot(TMAX~NewDate, climate_data[15000:16000,], ty='l')
+
+lm(TMAX~NewDate, data=climate_data)
+
+##Call:
+##lm(formula = TMAX ~ NewDate, data = climate_data)
+
+##Residuals:
+##  Min     1Q Median     3Q    Max 
+##-46.03  -7.82  -0.98   8.48 475.25 
+
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 9.629e+00  6.792e-02  141.78   <2e-16 ***
+## NewDate     8.114e-05  5.887e-06   13.79   <2e-16 ***
+
+summary(lm(TMAX~NewDate, data=climate_data))
+
+
+manyglacier = subset(climate_data, subset = NAME == "MANY GLACIER, MT US")
+lubec = subset(climate_data, subset = NAME == "LUBEC, MT US")
+eastglacier = subset(climate_data, subset = NAME == "	EAST GLACIER, MT US")
+stmary1 = subset(climate_data, subset = NAME == "ST. MARY 1 SSW, MT US")
+stmary2 = subset(climate_data, subset = NAME == "ST. MARY MONTANA, MT US")
+stmary3 = subset(climate_data, subset = NAME == "ST. MARY, MT US")
+summit = subset(climate_data, subset = NAME == "SUMMIT, MT US")
+plot(TMAX~NewDate, manyglacier, ty = 'l')
+plot(TMAX~NewDate, lubec, ty='l')
+
+plot(TMAX~NewDate, stmary1, ty='l')
+plot(TMAX~NewDate, stmary2, ty='l')
+plot(TMAX~NewDate, stmary3, ty='l')
+plot(TMAX~NewDate, summit, ty='l')
+
+plot(TMIN~NewDate, stmary1, ty='p')
+points(TMIN~NewDate, stmary2, col="blue")
+lines(TMIN~NewDate, stmary3, col="red")
+lines(TMIN~NewDate, summit, col ="green")
+```
 
 
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
