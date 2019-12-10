@@ -11,24 +11,66 @@ filepath109 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/
 
 filepath110 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/20724110.csv"
 
-filepath543 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/1098543.csv"
+filepath543 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/10998543.csv"
 
-filepath544 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/1098544.csv"
-
+filepath544 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/10998544.csv"
 
 onset106 = read.csv(filepath106, skip = 1); str(onset106)
-onset106.h = read.csv(filepath106, skip =1, nrows = 1); onset106.h
+names(onset106) = c("Obs", "DateTime", "Temp")
+onset106$Location = "Walker Beach"; onset106 <- onset106[,c(1,8, 2,3)]; head(onset106)
 
 onset107 = read.csv(filepath107, skip = 1); str(onset107)
-onset107.h = read.csv(filepath107, skip =1, nrows = 1); onset107.h
+names(onset107) = c("Obs", "DateTime", "Temp")
+onset107$Location = "Tranquada Lot"; onset107 <- onset107[,c(1,8, 2,3)]; head(onset107)
 
-onset109 = read.csv(filepath109, skip = 2); str(onset109)
-onset109.h = read.csv(filepath109, skip =1, nrows = 1); onset109.h
+onset109 = read.csv(filepath109, skip = 1); str(onset109)
+names(onset109) = c("Obs", "DateTime", "Temp")
+onset109$Location = "Kravis Sun"; onset109 <- onset109[,c(1,5,2,3)]; head(onset109)
 
-onset110 = read.csv(filepath110, skip = 2); str(onset110)
-onset110.h = read.csv(filepath110, skip =1, nrows = 1); onset110.h
+onset110 = read.csv(filepath110, skip = 1); str(onset110)
+names(onset110) = c("Obs", "DateTime", "Temp")
+onset110$Location = "SCC Parking Lot"; onset110 <- onset110[,c(1,8, 2,3)]; head(onset110)
 
-merge(onset106, onset107)
+onset543 = read.csv(filepath543, skip = 1); str(onset543)
+names(onset543) = c("Obs", "DateTime", "Temp")
+onset543$Location = "Sontag Shade"; onset543 <- onset543[,c(1,8,2,3)]; head(onset543)
+
+onset544 = read.csv(filepath544, skip = 1); str(onset544)
+names(onset544) = c("Obs", "DateTime", "Temp")
+onset544$Location = "Sontag Sun"; onset544 <- onset544[,c(1,9, 2,3)]; head(onset544)
+
+
+onset = rbind(onset106, onset107, onset109, onset110, onset543, onset544)
+
+onset$Location=as.factor(onset$Location)
+str.date = as.character(onset$DateTime)
+as.Date(str.date, format="%m%d%y", "h:m:s")
+library("lubridate")
+mdy_hms(str.date)
+onset$DateTime=DateTime = mdy_hms(onset$DateTime)
+
+# Remove Data after Retrival
+onset2 = subset(onset, subset=Location == levels(onset$Location)[6] & DateTime < as.POSIXct("2019-11-30 09:45:00", tz="UTC"))
+onset2 = rbind(onset2, subset(onset, subset=Location == levels(onset$Location)[5] & DateTime < as.POSIXct("2019-12-09 10:30:00", tz="UTC")))
+onset2 = rbind(onset2, subset(onset, subset=Location == levels(onset$Location)[4] & DateTime < as.POSIXct("2019-12-06 9:30:00", tz="UTC")))
+onset2 = rbind(onset2, subset(onset, subset=Location == levels(onset$Location)[3] & DateTime < as.POSIXct("2019-12-07 14:15:00", tz="UTC")))
+onset2 = rbind(onset2, subset(onset, subset=Location == levels(onset$Location)[2] & DateTime < as.POSIXct("2019-12-06 11:30:00", tz="UTC")))
+onset2 = rbind(onset2, subset(onset, subset=Location == levels(onset$Location)[1] & DateTime < as.POSIXct("2019-12-06 7:00:00", tz="UTC")))
+
+
+plot(Temp ~ DateTime, data=onset2, ty='n', las=1, ylim=c(30,110))
+levels(onset$Location)
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[6]), col="red")
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[5]), col="blue")
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[4]), col="green")
+
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[3]), col="brown")
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[2]), col="orange")
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[1]), col="darkgreen")
+
+legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=35, legend=levels(onset$Location), lty=1, lwd=2, col=c("red", "blue", "green", "brown", "orange", "darkgreen"), ncol=3, cex=.9, bty="n")
+
+
 @
 
 
