@@ -73,7 +73,11 @@ Although the sensors didn't start until we put them in the field, they did not s
 
 <<>>=
 # Remove Data after Retrival
+
+# Walker Beach
 onset2 = subset(onset, subset=Location == levels(onset$Location)[6] & DateTime < as.POSIXct("2019-11-30 09:45:00", tz="UTC"))
+onset2 = subset(onset, subset=Location == levels(onset$Location)[6] & DateTime < as.POSIXct("2019-12-04 12:30:00", tz="UTC"))
+
 onset2 = rbind(onset2, subset(onset, subset=Location == levels(onset$Location)[5] & DateTime < as.POSIXct("2019-12-09 10:30:00", tz="UTC")))
 
 # Sontag 2
@@ -95,17 +99,18 @@ First, we'll put everything in one graph (Figure~\ref{fig.alldata}).
 
 \begin{figure}
 <<echo=FALSE, results='hide'>>=
+col.plot = cbind(levels(onset$Location),c("darkgreen", "orange", "brown", "black", "blue", "red")); col.plot
 plot(Temp ~ DateTime, data=onset2, ty='n', las=1, ylim=c(30,110))
 levels(onset$Location)
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[6]), col="red")
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[5]), col="blue")
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[4]), col="green")
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[6]), col=col.plot[6,2])
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[5]), col=col.plot[5,2])
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[4]), col=col.plot[4,2])
 
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[3]), col="brown")
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[2]), col="orange")
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[1]), col="darkgreen")
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[3]), col=col.plot[3,2])
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[2]), col=col.plot[2,2])
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[1]), col=col.plot[1,2])
 
-legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=35, legend=levels(onset$Location), lty=1, lwd=2, col=c("red", "blue", "green", "brown", "orange", "darkgreen"), ncol=3, cex=.9, bty="n")
+legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=35, legend=levels(onset$Location), lty=1, lwd=2, col=col.plot[,2], ncol=3, cex=.9, bty="n")
 
 @
 \caption{All time series in one graphic. Not easy to see what's going on.}
@@ -114,26 +119,28 @@ legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=35, legend=levels(onset$Location)
 
 \subsection{Paired Plots -- Sun versus Shade}
 
-First, we'll put everything in one graph (Figure~\ref{fig.alldatat}).
+First, we'll put everything in one graph (Figure~\ref{fig.paired}).
 
 \begin{figure}
-<<echo=FALSE>>=
+<<echo=TRUE>>=
 par(mfrow=c(2,1))
 plot(Temp ~ DateTime, data=onset2, ty='n', las=1, ylim=c(30,110))
-levels(onset$Location)
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[6]), col="red")
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[5]), col="blue")
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[4]), col="green")
 
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[3]), col="brown")
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[2]), col="orange")
-lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[1]), col="darkgreen")
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[4]), col=col.plot[4,2])
 
-legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=35, legend=levels(onset$Location), lty=1, lwd=2, col=c("red", "blue", "green", "brown", "orange", "darkgreen"), ncol=3, cex=.9, bty="n")
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[3]), col=col.plot[3,2])
 
+legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=43, legend=levels(onset$Location)[c(3,4)], lty=1, lwd=2, col=col.plot[c(4,3),2], ncol=3, cex=.9, bty="n")
+
+plot(Temp ~ DateTime, data=onset2, ty='n', las=1, ylim=c(30,110))
+
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[6]), col=col.plot[6,2])
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[2]), col=col.plot[2,2])
+
+legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=43, legend=levels(onset$Location)[c(6,2)], lty=1, lwd=2, col=col.plot[c(6,2),2], ncol=2, cex=.9, bty="n")
 @
-\caption{All time series in one graphic. Not easy to see what's going on.}
-\label{fig.alldata}
+\caption{Just just two values seems to allow us with some capacity to distinquish the differences with more confidence.}
+\label{fig.paired}
 \end{figure}
 
 

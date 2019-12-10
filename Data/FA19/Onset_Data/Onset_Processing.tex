@@ -272,7 +272,11 @@ Although the sensors didn't start until we put them in the field, they did not s
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# Remove Data after Retrival}
+
+\hlcom{# Walker Beach}
 \hlstd{onset2} \hlkwb{=} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{6}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-11-30 09:45:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{))}
+\hlstd{onset2} \hlkwb{=} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{6}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-04 12:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{))}
+
 \hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{5}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-09 10:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
 
 \hlcom{# Sontag 2}
@@ -292,23 +296,51 @@ Although the sensors didn't start until we put them in the field, they did not s
 
 \subsection{Interogating the Results}
 
-First, we'll put everything in one graph (Figure~\ref{fig.alldatat}).
+First, we'll put everything in one graph (Figure~\ref{fig.alldata}).
 
 \begin{figure}
-\caption{All time series in one graphic. Not easy to see what's going on.}
-\label{fig.alldatat}
-
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## [1] "Kravis"          "SCC Parking Lot" "Sontag 1"        "Sontag 2"       
-## [5] "Tranquada Lot"   "Walker Beach"
-\end{verbatim}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 
 \end{knitrout}
+\caption{All time series in one graphic. Not easy to see what's going on.}
+\label{fig.alldata}
 \end{figure}
+
+\subsection{Paired Plots -- Sun versus Shade}
+
+First, we'll put everything in one graph (Figure~\ref{fig.paired}).
+
+\begin{figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{))}
+\hlkwd{plot}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=onset2,} \hlkwc{ty}\hlstd{=}\hlstr{'n'}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{30}\hlstd{,}\hlnum{110}\hlstd{))}
+
+\hlkwd{lines}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=}\hlkwd{subset}\hlstd{(onset2,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{4}\hlstd{]),} \hlkwc{col}\hlstd{=col.plot[}\hlnum{4}\hlstd{,}\hlnum{2}\hlstd{])}
+
+\hlkwd{lines}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=}\hlkwd{subset}\hlstd{(onset2,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{3}\hlstd{]),} \hlkwc{col}\hlstd{=col.plot[}\hlnum{3}\hlstd{,}\hlnum{2}\hlstd{])}
+
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-11-18"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{),} \hlkwc{y}\hlstd{=}\hlnum{43}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{)],} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=col.plot[}\hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,}\hlnum{3}\hlstd{),}\hlnum{2}\hlstd{],} \hlkwc{ncol}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.9}\hlstd{,} \hlkwc{bty}\hlstd{=}\hlstr{"n"}\hlstd{)}
+
+\hlkwd{plot}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=onset2,} \hlkwc{ty}\hlstd{=}\hlstr{'n'}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{30}\hlstd{,}\hlnum{110}\hlstd{))}
+
+\hlkwd{lines}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=}\hlkwd{subset}\hlstd{(onset2,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{6}\hlstd{]),} \hlkwc{col}\hlstd{=col.plot[}\hlnum{6}\hlstd{,}\hlnum{2}\hlstd{])}
+\hlkwd{lines}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=}\hlkwd{subset}\hlstd{(onset2,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{2}\hlstd{]),} \hlkwc{col}\hlstd{=col.plot[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{])}
+
+\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-11-18"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{),} \hlkwc{y}\hlstd{=}\hlnum{43}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlkwd{c}\hlstd{(}\hlnum{6}\hlstd{,}\hlnum{2}\hlstd{)],} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=col.plot[}\hlkwd{c}\hlstd{(}\hlnum{6}\hlstd{,}\hlnum{2}\hlstd{),}\hlnum{2}\hlstd{],} \hlkwc{ncol}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.9}\hlstd{,} \hlkwc{bty}\hlstd{=}\hlstr{"n"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+
+\end{knitrout}
+\caption{Just just two values seems to allow us with some capacity to distinquish the differences with more confidence.}
+\label{fig.paired}
+\end{figure}
+
+
 
 
 
