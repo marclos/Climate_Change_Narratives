@@ -1,0 +1,102 @@
+---
+title: "Hot, Dry, and in Flames: What Forces are Behind California’s Wildfires?"
+author: "Kate McWilliams"
+date: "12/2/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, results="hide", include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('plyr')
+library('rnoaa')
+
+# Climate Data
+
+#file.choose()
+read.csv("/home/CAMPUS/kmto2015/Climate_Change_Narratives/student_folders/McWilliams/NOAA Climate Data.csv")
+climate_data <- read.csv("/home/CAMPUS/kmto2015/Climate_Change_Narratives/student_folders/McWilliams/NOAA Climate Data.csv")
+
+str(climate_data)
+climate_data$TMAX[climate_data$TMAX==-9999] = NA 
+climate_data$TMIN[climate_data$TMIN==-9999] = NA
+
+min(climate_data$TMAX, na.rm = T)
+
+# Date Formatting
+strDates <-as.character(climate_data$DATE)
+
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+head(climate_data)
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+# MINIMUM TEMP ANALYSIS
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+
+str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+```
+##Intro
+
+#Heat, Dought, Wildfires: How does this domino-effect work?
+
+#Anthropogenic Factors
+
+##Obtaining Climate Data on Southern California (Methodology)
+
+![Caption](Paul_Duginski_LATimes.png)
+
+
+
+```{r, echo=FALSE}
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1950, 2020)) 
+May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",]) 
+abline(coef(May.lm), col="red")
+
+```
+
+
+```{r, include=FALSE}
+summary(May.lm)
+```
+
+
+##Results
+
+##Discussion 
+
+##Conclusion
+
+
+##Sources
+
+Abatzoglou J, Williams A. (2016). Impact of anthropogenic climate change on wildfire across western US forests. Proceedings of the National Academy of Sciences. 113 (42): 11770-11775.
+
+
+Assembly Bill 1054. (2019). Chapter 79. California Legislature. Retrieved at: http://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=201920200AB1054
+
+
+Daily Summaries Station Details. 2019. NOAA National Centers for Environmental Information: State of the Climate. [cited 2019 Mar 11]. Available from: https://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:USW00024157/detail
+
+
+Davies I, Haugo R, Robertson J, Levin P. 2018. The unequal vulnerability of communities of color to wildfire. Proceedings of the National Academy of Sciences. 1-15.
+
+
+Jin, Y., Randerson, J., Faivre, N., Capps, S., Hall, A., & Goulden, M. (2014). Contrasting controls on wildland fires in southern california during periods with and without santa ana winds: Controls on southern california fires. Journal of Geophysical Research: Biogeosciences, 119(3), 432-450. doi:10.1002/2013JG002541
+
+
+LaDochy, S., Medina, R., & Patzert, W. (2007). Recent california climate variability: Spatial and temporal patterns in temperature trends. Climate Research, 33(2), 159-169.
+
+
+Serna, J., Lin II, R., Peltz, J. F. (2019). How do wildfires start and spread? Los Angeles Times. 
+
+
+Westerling, A., Bryant, B., Preisler, H., Holmes, T., Hidalgo, H., & Shrestha, S. (2011). Climate change and growth scenarios for california wildfire. Climatic Change, 109, 445-463.
+
+
