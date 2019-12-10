@@ -63,6 +63,10 @@ climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 ```
 
 ```{R str}
@@ -73,16 +77,15 @@ plot(MonthlyTMAXMean$TMAX, ty='l')
 ## Selecting for one month (May)
 
 ```{R Plot}
-#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],+ ty='l', xlim=c(1950, 2020))
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 
 summary(May.lm)
-#abline(coef(May.lm), col="purple")
+abline(coef(May.lm), col="purple")
 ```
 
 ## Testing all the months
 ```{R par}
-
 # First I create a vector of months
 Months = c("January", "February", "March", "April", "May", "June",
 "July", "August", "September", "October", "November", "December")
@@ -105,7 +108,45 @@ round(summary(Month.lm)$coefficients[2,4],4),
 round(summary(Month.lm)$r.squared, 3)))
 }
 
+
 ```
+
+
+```{r line103}
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+plot(TMIN~YEAR,
+data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm)
+
+abline(coef(Month.lm), col="purple")
+
+TMINresult <- rbind(TMINresult,
+cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+## Analyzing minimum daily temperatures
+```{R TMIN}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+```
+
+
+
+
+
+
+
 
 
 
