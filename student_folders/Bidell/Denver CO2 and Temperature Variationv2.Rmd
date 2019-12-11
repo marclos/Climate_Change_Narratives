@@ -8,6 +8,9 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+```{r markcanyouseethis?}
+#Did it commit?
+```
 
 ``` {r read process}
 #filechoose()
@@ -19,6 +22,7 @@ names(climate_data)
 ```
 ``` {r head}
 head(climate_data)
+head(temp)
 ```
 
 ``` {r datasorting}
@@ -133,14 +137,18 @@ MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 plot(MonthlyTMAXMean$TMAX, ty='l')
+str(MonthlyTMAXMean)
+head(MonthlyTMAXMean)
 
 head(temp)
 MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, data=temp, function(x) c(mean=mean(x), sd=sd(x)))
 MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
 MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
 str(MonthlyTMAXSD)
+```
+```{r pleaseplot}
 plot(MonthlyTMAXSD$TMAX, ty='l')
-
+```
 ```
 ## R Markdown
 
