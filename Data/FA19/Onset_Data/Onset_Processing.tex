@@ -82,160 +82,37 @@ The headers are a mess, so I had to skip the first line before reading the CSV f
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{onset106} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath106,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlkwd{str}\hlstd{(onset106)}
-\end{alltt}
-\begin{verbatim}
-## 'data.frame':	1881 obs. of  7 variables:
-##  $ X.                                                                          : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Date.Time..GMT.08.00                                                        : Factor w/ 1881 levels "11/20/19 01:00:00 AM",..: 89 91 93 95 1 3 5 7 9 11 ...
-##  $ Temp...F..LGR.S.N..20724106..SEN.S.N..20724106..LBL..Gandalf..Walker.Beach..: num  59.7 59.9 59.9 60 59.9 ...
-##  $ Coupler.Attached..LGR.S.N..20724106..SEN.S.N..20724106.                     : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Host.Connected..LGR.S.N..20724106..SEN.S.N..20724106.                       : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Stopped..LGR.S.N..20724106..SEN.S.N..20724106.                              : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ End.Of.File..LGR.S.N..20724106..SEN.S.N..20724106.                          : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-\end{verbatim}
-\begin{alltt}
+\hlstd{onset106} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath106,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlcom{#str(onset106)}
 \hlkwd{names}\hlstd{(onset106)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Obs"}\hlstd{,} \hlstr{"DateTime"}\hlstd{,} \hlstr{"Temp"}\hlstd{)}
-\hlstd{onset106}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Walker Beach"}\hlstd{; onset106}\hlopt{$}\hlstd{Exposure} \hlkwb{=} \hlstr{"Shade"}\hlstd{; onset106} \hlkwb{<-} \hlstd{onset106[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlkwd{head}\hlstd{(onset106)}
-\end{alltt}
-\begin{verbatim}
-##   Obs     Location Exposure             DateTime   Temp
-## 1   1 Walker Beach    Shade 11/20/19 12:00:00 AM 59.680
-## 2   2 Walker Beach    Shade 11/20/19 12:15:00 AM 59.851
-## 3   3 Walker Beach    Shade 11/20/19 12:30:00 AM 59.851
-## 4   4 Walker Beach    Shade 11/20/19 12:45:00 AM 60.024
-## 5   5 Walker Beach    Shade 11/20/19 01:00:00 AM 59.851
-## 6   6 Walker Beach    Shade 11/20/19 01:15:00 AM 59.680
-\end{verbatim}
-\begin{alltt}
-\hlstd{onset107} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath107,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlkwd{str}\hlstd{(onset107)}
-\end{alltt}
-\begin{verbatim}
-## 'data.frame':	1881 obs. of  7 variables:
-##  $ X.                                                                            : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Date.Time..GMT.08.00                                                          : Factor w/ 1881 levels "11/20/19 01:00:00 AM",..: 89 91 93 95 1 3 5 7 9 11 ...
-##  $ Temp...F..LGR.S.N..20724107..SEN.S.N..20724107..LBL..Gertrude..Tranquada.Lot..: num  58.6 59 59.2 59.3 59.2 ...
-##  $ Coupler.Attached..LGR.S.N..20724107..SEN.S.N..20724107.                       : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Host.Connected..LGR.S.N..20724107..SEN.S.N..20724107.                         : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Stopped..LGR.S.N..20724107..SEN.S.N..20724107.                                : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ End.Of.File..LGR.S.N..20724107..SEN.S.N..20724107.                            : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-\end{verbatim}
-\begin{alltt}
+\hlstd{onset106}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Walker Beach"}\hlstd{; onset106}\hlopt{$}\hlstd{Exposure} \hlkwb{=} \hlstr{"Shade"}\hlstd{;}
+\hlstd{onset106} \hlkwb{<-} \hlstd{onset106[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlcom{#head(onset106)}
+
+\hlstd{onset107} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath107,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlcom{#str(onset107)}
 \hlkwd{names}\hlstd{(onset107)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Obs"}\hlstd{,} \hlstr{"DateTime"}\hlstd{,} \hlstr{"Temp"}\hlstd{)}
-\hlstd{onset107}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Tranquada Lot"}\hlstd{; onset107}\hlopt{$}\hlstd{Exposure} \hlkwb{=} \hlstr{"Sun"}\hlstd{; onset107} \hlkwb{<-} \hlstd{onset107[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlkwd{head}\hlstd{(onset107)}
-\end{alltt}
-\begin{verbatim}
-##   Obs      Location Exposure             DateTime   Temp
-## 1   1 Tranquada Lot      Sun 11/20/19 12:00:00 AM 58.647
-## 2   2 Tranquada Lot      Sun 11/20/19 12:15:00 AM 58.993
-## 3   3 Tranquada Lot      Sun 11/20/19 12:30:00 AM 59.164
-## 4   4 Tranquada Lot      Sun 11/20/19 12:45:00 AM 59.337
-## 5   5 Tranquada Lot      Sun 11/20/19 01:00:00 AM 59.164
-## 6   6 Tranquada Lot      Sun 11/20/19 01:15:00 AM 59.164
-\end{verbatim}
-\begin{alltt}
-\hlstd{onset109} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath109,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlkwd{str}\hlstd{(onset109)}
-\end{alltt}
-\begin{verbatim}
-## 'data.frame':	848 obs. of  4 variables:
-##  $ X.                                                             : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Date.Time..GMT.08.00                                           : Factor w/ 848 levels "11/19/19 01:00:00 AM",..: 45 47 1 3 5 7 9 11 13 15 ...
-##  $ Temp...F..LGR.S.N..20724109..SEN.S.N..20724109..LBL..KravisSun.: num  58.6 57.8 56.9 55.9 55.4 ...
-##  $ End.Of.File..LGR.S.N..20724109..SEN.S.N..20724109.             : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-\end{verbatim}
-\begin{alltt}
+\hlstd{onset107}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Tranquada Lot"}\hlstd{; onset107}\hlopt{$}\hlstd{Exposure} \hlkwb{=} \hlstr{"Sun"}\hlstd{;}
+\hlstd{onset107} \hlkwb{<-} \hlstd{onset107[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlcom{#head(onset107)}
+
+\hlstd{onset109} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath109,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlcom{#str(onset109)}
 \hlkwd{names}\hlstd{(onset109)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Obs"}\hlstd{,} \hlstr{"DateTime"}\hlstd{,} \hlstr{"Temp"}\hlstd{)}
-\hlstd{onset109}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Kravis"}\hlstd{; onset109}\hlopt{$}\hlstd{Exposure}\hlkwb{=}\hlstr{"Sun"}\hlstd{; onset109} \hlkwb{<-} \hlstd{onset109[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{6}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlkwd{head}\hlstd{(onset109)}
-\end{alltt}
-\begin{verbatim}
-##   Obs Location Exposure             DateTime   Temp
-## 1   1   Kravis      Sun 11/19/19 12:00:00 AM 58.647
-## 2   2   Kravis      Sun 11/19/19 12:30:00 AM 57.785
-## 3   3   Kravis      Sun 11/19/19 01:00:00 AM 56.923
-## 4   4   Kravis      Sun 11/19/19 01:30:00 AM 55.884
-## 5   5   Kravis      Sun 11/19/19 02:00:00 AM 55.364
-## 6   6   Kravis      Sun 11/19/19 02:30:00 AM 54.669
-\end{verbatim}
-\begin{alltt}
-\hlstd{onset110} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath110,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlkwd{str}\hlstd{(onset110)}
-\end{alltt}
-\begin{verbatim}
-## 'data.frame':	1864 obs. of  7 variables:
-##  $ X.                                                                          : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Date.Time..GMT.08.00                                                        : Factor w/ 1864 levels "11/20/19 01:00:00 AM",..: 89 91 93 95 1 3 5 7 9 11 ...
-##  $ Temp...F..LGR.S.N..20724110..SEN.S.N..20724110..LBL..Gwen..SCC.Parking.Lot..: num  59.9 59.9 59.9 59.9 59.9 ...
-##  $ Host.Connected..LGR.S.N..20724110..SEN.S.N..20724110.                       : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Coupler.Attached..LGR.S.N..20724110..SEN.S.N..20724110.                     : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Stopped..LGR.S.N..20724110..SEN.S.N..20724110.                              : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ End.Of.File..LGR.S.N..20724110..SEN.S.N..20724110.                          : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-\end{verbatim}
-\begin{alltt}
+\hlstd{onset109}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Kravis"}\hlstd{; onset109}\hlopt{$}\hlstd{Exposure}\hlkwb{=}\hlstr{"Sun"}\hlstd{;}
+\hlstd{onset109} \hlkwb{<-} \hlstd{onset109[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{6}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlcom{#head(onset109)}
+
+\hlstd{onset110} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath110,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlcom{#str(onset110)}
 \hlkwd{names}\hlstd{(onset110)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Obs"}\hlstd{,} \hlstr{"DateTime"}\hlstd{,} \hlstr{"Temp"}\hlstd{)}
-\hlstd{onset110}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"SCC Parking Lot"}\hlstd{; onset110}\hlopt{$}\hlstd{Exposure} \hlkwb{=} \hlstr{"Shade"}\hlstd{; onset110} \hlkwb{<-} \hlstd{onset110[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlkwd{head}\hlstd{(onset110)}
-\end{alltt}
-\begin{verbatim}
-##   Obs        Location Exposure             DateTime   Temp
-## 1   1 SCC Parking Lot    Shade 11/20/19 12:00:00 AM 59.851
-## 2   2 SCC Parking Lot    Shade 11/20/19 12:15:00 AM 59.851
-## 3   3 SCC Parking Lot    Shade 11/20/19 12:30:00 AM 59.851
-## 4   4 SCC Parking Lot    Shade 11/20/19 12:45:00 AM 59.851
-## 5   5 SCC Parking Lot    Shade 11/20/19 01:00:00 AM 59.851
-## 6   6 SCC Parking Lot    Shade 11/20/19 01:15:00 AM 59.680
-\end{verbatim}
-\begin{alltt}
-\hlstd{onset543} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath543,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlkwd{str}\hlstd{(onset543)}
-\end{alltt}
-\begin{verbatim}
-## 'data.frame':	981 obs. of  7 variables:
-##  $ X.                                                                : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Date.Time..GMT.08.00                                              : Factor w/ 981 levels "11/19/19 01:00:00 AM",..: 45 47 1 3 5 7 9 11 13 15 ...
-##  $ Temp...F..LGR.S.N..10998543..SEN.S.N..10998543..LBL..Sontag.Shade.: num  64.1 63.3 62.1 60.9 60.2 ...
-##  $ Coupler.Attached..LGR.S.N..10998543..SEN.S.N..10998543.           : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Host.Connected..LGR.S.N..10998543..SEN.S.N..10998543.             : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Stopped..LGR.S.N..10998543..SEN.S.N..10998543.                    : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ End.Of.File..LGR.S.N..10998543..SEN.S.N..10998543.                : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-\end{verbatim}
-\begin{alltt}
+\hlstd{onset110}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"SCC Parking Lot"}\hlstd{; onset110}\hlopt{$}\hlstd{Exposure} \hlkwb{=} \hlstr{"Shade"}\hlstd{;}
+\hlstd{onset110} \hlkwb{<-} \hlstd{onset110[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlcom{#head(onset110)}
+
+\hlstd{onset543} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath543,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlcom{#str(onset543)}
 \hlkwd{names}\hlstd{(onset543)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Obs"}\hlstd{,} \hlstr{"DateTime"}\hlstd{,} \hlstr{"Temp"}\hlstd{)}
-\hlstd{onset543}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Sontag 1"}\hlstd{; onset543}\hlopt{$}\hlstd{Exposure} \hlkwb{=} \hlstr{"Sun"}\hlstd{; onset543} \hlkwb{<-} \hlstd{onset543[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,}\hlnum{9}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlkwd{head}\hlstd{(onset543)}
-\end{alltt}
-\begin{verbatim}
-##   Obs Location Exposure             DateTime   Temp
-## 1   1 Sontag 1      Sun 11/19/19 12:00:00 AM 64.139
-## 2   2 Sontag 1      Sun 11/19/19 12:30:00 AM 63.282
-## 3   3 Sontag 1      Sun 11/19/19 01:00:00 AM 62.083
-## 4   4 Sontag 1      Sun 11/19/19 01:30:00 AM 60.883
-## 5   5 Sontag 1      Sun 11/19/19 02:00:00 AM 60.195
-## 6   6 Sontag 1      Sun 11/19/19 02:30:00 AM 60.195
-\end{verbatim}
-\begin{alltt}
-\hlstd{onset544} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath544,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlkwd{str}\hlstd{(onset544)}
-\end{alltt}
-\begin{verbatim}
-## 'data.frame':	983 obs. of  8 variables:
-##  $ X.                                                              : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Date.Time..GMT.08.00                                            : Factor w/ 983 levels "11/19/19 01:00:00 AM",..: 45 47 1 3 5 7 9 11 13 15 ...
-##  $ Temp...F..LGR.S.N..10998544..SEN.S.N..10998544..LBL..Sontag.Sun.: num  64.1 62.9 61.7 61.6 60.5 ...
-##  $ Coupler.Attached..LGR.S.N..10998544..SEN.S.N..10998544.         : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Host.Connected..LGR.S.N..10998544..SEN.S.N..10998544.           : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Coupler.Detached..LGR.S.N..10998544..SEN.S.N..10998544.         : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Stopped..LGR.S.N..10998544..SEN.S.N..10998544.                  : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-##  $ End.Of.File..LGR.S.N..10998544..SEN.S.N..10998544.              : Factor w/ 2 levels "","Logged": 1 1 1 1 1 1 1 1 1 1 ...
-\end{verbatim}
-\begin{alltt}
+\hlstd{onset543}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Sontag 1"}\hlstd{; onset543}\hlopt{$}\hlstd{Exposure} \hlkwb{=} \hlstr{"Sun"}\hlstd{;}
+\hlstd{onset543} \hlkwb{<-} \hlstd{onset543[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,}\hlnum{9}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlcom{#head(onset543)}
+
+\hlstd{onset544} \hlkwb{=} \hlkwd{read.csv}\hlstd{(filepath544,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{);} \hlcom{#str(onset544)}
 \hlkwd{names}\hlstd{(onset544)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Obs"}\hlstd{,} \hlstr{"DateTime"}\hlstd{,} \hlstr{"Temp"}\hlstd{)}
-\hlstd{onset544}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Sontag 2"}\hlstd{; onset544}\hlopt{$}\hlstd{Exposure}\hlkwb{=}\hlstr{"Shade"}\hlstd{; onset544} \hlkwb{<-} \hlstd{onset544[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{9}\hlstd{,}\hlnum{10}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlkwd{head}\hlstd{(onset544)}
-\end{alltt}
-\begin{verbatim}
-##   Obs Location Exposure             DateTime   Temp
-## 1   1 Sontag 2    Shade 11/19/19 12:00:00 AM 64.139
-## 2   2 Sontag 2    Shade 11/19/19 12:30:00 AM 62.940
-## 3   3 Sontag 2    Shade 11/19/19 01:00:00 AM 61.741
-## 4   4 Sontag 2    Shade 11/19/19 01:30:00 AM 61.569
-## 5   5 Sontag 2    Shade 11/19/19 02:00:00 AM 60.539
-## 6   6 Sontag 2    Shade 11/19/19 02:30:00 AM 60.539
-\end{verbatim}
-\begin{alltt}
+\hlstd{onset544}\hlopt{$}\hlstd{Location} \hlkwb{=} \hlstr{"Sontag 2"}\hlstd{; onset544}\hlopt{$}\hlstd{Exposure}\hlkwb{=}\hlstr{"Shade"}\hlstd{;}
+\hlstd{onset544} \hlkwb{<-} \hlstd{onset544[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{9}\hlstd{,}\hlnum{10}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)];} \hlcom{#head(onset544)}
+
+
 \hlstd{onset} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset106, onset107, onset109, onset110, onset543, onset544)}
 \end{alltt}
 \end{kframe}
@@ -274,20 +151,36 @@ Although the sensors didn't start until we put them in the field, they did not s
 \hlcom{# Remove Data after Retrival}
 
 \hlcom{# Walker Beach}
-\hlstd{onset2} \hlkwb{=} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{6}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-11-30 09:45:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{))}
-\hlstd{onset2} \hlkwb{=} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{6}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-04 12:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{))}
+\hlstd{onset2} \hlkwb{=} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==}
+      \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{6}\hlstd{]} \hlopt{&}
+      \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-11-30 09:45:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{))}
+\hlstd{onset2} \hlkwb{=} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==}
+      \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{6}\hlstd{]} \hlopt{&}
+      \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-04 12:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{))}
 
-\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{5}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-09 10:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
+\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==}
+      \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{5}\hlstd{]} \hlopt{&}
+      \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-09 10:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
 
 \hlcom{# Sontag 2}
-\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{4}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-06 12:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
+\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==}
+      \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{4}\hlstd{]} \hlopt{&}
+      \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-06 12:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
 
 \hlcom{# Sontag 1}
-\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{3}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-06 12:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
+\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==}
+      \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{3}\hlstd{]} \hlopt{&}
+      \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-06 12:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
+
 \hlcom{# SCC Parking Lot}
-\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{2}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-07 14:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
+\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==}
+      \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{2}\hlstd{]} \hlopt{&}
+      \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-07 14:30:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
+
 \hlcom{# Kravis Sun}
-\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{1}\hlstd{]} \hlopt{&} \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-06 14:00:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
+\hlstd{onset2} \hlkwb{=} \hlkwd{rbind}\hlstd{(onset2,} \hlkwd{subset}\hlstd{(onset,} \hlkwc{subset}\hlstd{=Location} \hlopt{==}
+      \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{1}\hlstd{]} \hlopt{&}
+      \hlstd{DateTime} \hlopt{<} \hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-12-06 14:00:00"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{)))}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -310,35 +203,42 @@ First, we'll put everything in one graph (Figure~\ref{fig.alldata}).
 
 \subsection{Paired Plots -- Sun versus Shade}
 
-First, we'll put everything in one graph (Figure~\ref{fig.paired}).
+First, we'll put everything in one graph (Figure~\ref{fig.paired}). Here we can see the spikes associated with the sunshine, which is not representative of ``weather'' records. 
 
 \begin{figure}
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{))}
-\hlkwd{plot}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=onset2,} \hlkwc{ty}\hlstd{=}\hlstr{'n'}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{30}\hlstd{,}\hlnum{110}\hlstd{))}
-
-\hlkwd{lines}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=}\hlkwd{subset}\hlstd{(onset2,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{4}\hlstd{]),} \hlkwc{col}\hlstd{=col.plot[}\hlnum{4}\hlstd{,}\hlnum{2}\hlstd{])}
-
-\hlkwd{lines}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=}\hlkwd{subset}\hlstd{(onset2,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{3}\hlstd{]),} \hlkwc{col}\hlstd{=col.plot[}\hlnum{3}\hlstd{,}\hlnum{2}\hlstd{])}
-
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-11-18"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{),} \hlkwc{y}\hlstd{=}\hlnum{43}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{)],} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=col.plot[}\hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,}\hlnum{3}\hlstd{),}\hlnum{2}\hlstd{],} \hlkwc{ncol}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.9}\hlstd{,} \hlkwc{bty}\hlstd{=}\hlstr{"n"}\hlstd{)}
-
-\hlkwd{plot}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=onset2,} \hlkwc{ty}\hlstd{=}\hlstr{'n'}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{30}\hlstd{,}\hlnum{110}\hlstd{))}
-
-\hlkwd{lines}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=}\hlkwd{subset}\hlstd{(onset2,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{6}\hlstd{]),} \hlkwc{col}\hlstd{=col.plot[}\hlnum{6}\hlstd{,}\hlnum{2}\hlstd{])}
-\hlkwd{lines}\hlstd{(Temp} \hlopt{~} \hlstd{DateTime,} \hlkwc{data}\hlstd{=}\hlkwd{subset}\hlstd{(onset2,} \hlkwc{subset}\hlstd{=Location} \hlopt{==} \hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlnum{2}\hlstd{]),} \hlkwc{col}\hlstd{=col.plot[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{])}
-
-\hlkwd{legend}\hlstd{(}\hlkwc{x}\hlstd{=}\hlkwd{as.POSIXct}\hlstd{(}\hlstr{"2019-11-18"}\hlstd{,} \hlkwc{tz}\hlstd{=}\hlstr{"UTC"}\hlstd{),} \hlkwc{y}\hlstd{=}\hlnum{43}\hlstd{,} \hlkwc{legend}\hlstd{=}\hlkwd{levels}\hlstd{(onset}\hlopt{$}\hlstd{Location)[}\hlkwd{c}\hlstd{(}\hlnum{6}\hlstd{,}\hlnum{2}\hlstd{)],} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{col}\hlstd{=col.plot[}\hlkwd{c}\hlstd{(}\hlnum{6}\hlstd{,}\hlnum{2}\hlstd{),}\hlnum{2}\hlstd{],} \hlkwc{ncol}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.9}\hlstd{,} \hlkwc{bty}\hlstd{=}\hlstr{"n"}\hlstd{)}
-\end{alltt}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
 
 \end{knitrout}
 \caption{Just just two values seems to allow us with some capacity to distinquish the differences with more confidence.}
 \label{fig.paired}
 \end{figure}
+
+\section{TMAX-TMIN and TAVE}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+##         Date Location     TAVE    TMAX   TMIN
+## 1 2019-11-19   Kravis 64.90554  95.207 53.449
+## 2 2019-11-20   Kravis 52.93400  59.508 48.517
+## 3 2019-11-21   Kravis 55.29337  85.374 46.548
+## 4 2019-11-22   Kravis 58.33877 105.577 45.466
+## 5 2019-11-23   Kravis 58.37640 110.264 44.742
+## 6 2019-11-24   Kravis 57.38912 112.467 42.548
+##         Date        Location     TAVE   TMAX   TMIN
+## 1 2019-11-20 SCC Parking Lot 52.21220 59.851 46.369
+## 2 2019-11-21 SCC Parking Lot 54.93791 70.480 48.160
+## 3 2019-11-22 SCC Parking Lot 58.05701 89.384 47.088
+## 4 2019-11-23 SCC Parking Lot 59.43398 90.680 47.446
+## 5 2019-11-24 SCC Parking Lot 59.32753 93.493 46.188
+## 6 2019-11-25 SCC Parking Lot 57.50675 88.833 46.188
+\end{verbatim}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
+
+\end{knitrout}
 
 
 
