@@ -8,21 +8,21 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-```{r markcanyouseethis?}
+```{r markcanyouseethis}
 #Did it commit?
 ```
 
 ``` {r read process}
 #filechoose()
 climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
-climatedata="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
+#climatedata="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
 climate_data <- read.csv(climatedata)
 str(climate_data)
 names(climate_data)
 ```
 ``` {r head}
 head(climate_data)
-head(temp)
+#head(temp)
 ```
 
 ``` {r datasorting}
@@ -32,9 +32,9 @@ climate_data$TMAX
 plot(TMAX ~ NewDate, climate_data, ty='l')
 ```
 
-```{r fixingdates}
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+```{r fixingdatesagain}
+#strDates <- as.character(climate_data$DATE)
+#climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 
 ```
 
@@ -63,10 +63,11 @@ MonthlyTDIFMean$MONTH = as.numeric(MonthlyTDIFMean$Month)
 str(MonthlyTDIFMean)
 plot(MonthlyTDIFMean$TDIF, ty='l')
 ```
-This seems to work and now makes both monthly TMAX mean and sd...
+This seems to work and now makes both monthly TMAX mean and sd... Fixed the dataset to be sure it was accessible to the subsequent calls with a do.call() function that I really don't understand -- but it works!
 
 ```{r makingmonthlyMEANSD}
 MonthlyTMAX = aggregate(TMAX ~ Month + Year, climate_data, function(x) c(mean=mean(x), sd=sd(x) ) )
+MonthlyTMAX <- do.call(data.frame,aggregate(TMAX ~ Month + Year, climate_data, function(x) c(mean=mean(x), sd=sd(x) ) ))
 str(MonthlyTMAX)
 MonthlyTMAX$YEAR = as.numeric(MonthlyTMAX$Year)
 MonthlyTMAX$MONTH = as.numeric(MonthlyTMAX$Month)
@@ -92,7 +93,7 @@ abline(coef(May.lm), col="red")
 co2_data="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 
 # marc's path Comment out!
-# co2_data = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
+#co2_data = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 co2_data <- read.csv(co2_data)
 str(co2_data)
 names(co2_data)
@@ -141,13 +142,13 @@ str(MonthlyTMAXMean)
 head(MonthlyTMAXMean)
 
 head(temp)
-MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, data=temp, function(x) c(mean=mean(x), sd=sd(x)))
-MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
-MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
-str(MonthlyTMAXSD)
+#MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, data=temp, function(x) c(mean=mean(x), sd=sd(x)))
+#MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
+#MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
+str(MonthlyTMAX)
 ```
 ```{r pleaseplot}
-plot(MonthlyTMAXSD$TMAX, ty='l')
+plot(TMAX.sd ~ YEAR, MonthlyTMAX[MonthlyTMAX$Month=="05",], ty='l')
 ```
 ```
 ## R Markdown
