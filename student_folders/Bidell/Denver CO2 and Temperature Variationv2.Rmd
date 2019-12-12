@@ -39,7 +39,7 @@ plot(TMAX ~ NewDate, climate_data, ty='l')
 ```
 
 ```{r newvariabletdif}
-climate_data$TDIF=climate_data$TMAX-climate_data$TMIN
+climate_data$TDIF=(climate_data$TMAX+climate_data$TMIN)/2
 plot(TDIF ~ NewDate, climate_data, ty='l')
 ```
 
@@ -84,9 +84,7 @@ summary(May.lm)
 abline(coef(May.lm), col="red")
 ```
 
-``` {r tmaxmonthofjune}
-plot(MonthlyTMAX, month== [6])
-```
+
 
 ## Import New Data
 ```{r co2dataimport}
@@ -154,20 +152,16 @@ str(MonthlyTMAX)
 ```{r pleaseplot}
 plot(TMAX.sd ~ YEAR, MonthlyTMAX[MonthlyTMAX$Month=="06",], ty='l')
 ```
-```{r tmaxmonthofjune}
-plot(MonthlyTMAX ~ YEAR, MonthlyTMAX[MonthlyTMAX$Month=="06",], climate_data, ty='l')
-```
+
+
+
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r test}
 
-plot(TDIF~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",],
-ty='l', xlim=c(1950, 2020))
-```
 
 ## Including Plots
 
