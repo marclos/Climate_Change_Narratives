@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ``` {r read process}
 #filechoose()
 climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
-#climatedata="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
+climatedata="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
 climate_data <- read.csv(climatedata)
 str(climate_data)
 names(climate_data)
@@ -95,7 +95,7 @@ abline(coef(May.lm), col="red")
 co2_data="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 
 # marc's path Comment out!
-#co2_data = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
+co2_data = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 co2_data <- read.csv(co2_data)
 str(co2_data)
 names(co2_data)
