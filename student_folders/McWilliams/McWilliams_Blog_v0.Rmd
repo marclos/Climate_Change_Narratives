@@ -47,7 +47,7 @@ plot(MonthlyTMINMean$TMIN, ty='l')
 # Intro
 
 Introduction
-        Wildfires are important for the diversity and resiliency of California's ecosystems (Von Schaumburg, 2014). However, in recent decades, California has seen fires of unprecedented severity and frequency, garnering national attention (Abatzoglou and Williams, 2016). Between 1972 and 2018, the annual burned land-area in California increased by a magnitude of five times (Williams et al., 2019). The worst 10 wildfires in the State's history have occurred since 1991 (Serna et al., 2019). The costs of fighting these fires, in addition to the property damage and health effects caused by fires, is becoming increasingly difficult to cover (Delfino et al., 2009). California's climate, vegetation, and urban landscapes are highly diverse, meaning that the influences on fire activity are complex and vary spatially (Williams et al., 2019).This makes mitigation and anticipation more challenging. Jin et al. argue that a more in-depth understanding of how meteorology and fire is needed to improve predictions of how fire will change in the future and to anticipate management needs (Jin et al. 2014). 
+        Wildfires are important for the diversity and resiliency of California's ecosystems (Von Schaumburg, 2014). However, in recent decades, California has seen fires of unprecedented severity and frequency, garnering national attention (Abatzoglou and Williams, 2016). Between 1972 and 2018, the annual burned land-area in California increased by a magnitude of five times (Williams et al., 2019). The worst 10 wildfires in the State's history have occurred since 1991 (Serna et al., 2019). The costs of fighting these fires, in addition to the property damage and health effects caused by fires, is becoming increasingly difficult to cover (Delfino et al., 2009). California's climate, vegetation, and urban landscapes are highly diverse, meaning that the influences on fire activity are complex and vary spatially (LaDochy et al., 2007).This makes mitigation and anticipation more challenging. Jin et al. argue that a more in-depth understanding of how meteorology and fire is needed to improve predictions of how fire will change in the future and to anticipate management needs (Jin et al. 2014). 
 California’s worst fires occur in the Fall in coastal shrublands, when strong winds from offshore sweep downhill from a high-pressure area [Figures 1 & 2] (Jin et al., 2014). The Southern region is a microcosm for this effect with the San Antonio coastal range situated between the continental interior high desert of Southern Utah and the valley of San Bernardino County. These “downslope” winds are termed Santa Ana winds (Serna et al., 2019). 
         This paper seeks to explore how large-scale anthropogenic impacts on the climate may influence fire events in Southern California, by analyzing temperature and precipitation data. “A thorough and nuanced understanding of how, when, and where anthropogenic climate change has or has not affected wildfire in California over the past several decades is critical to guide sustainable societal decisions ranging from where to develop housing to how limited resources can be optimized for landscape management” (Jin et al., 2014).
         
@@ -70,7 +70,7 @@ If this trend is part of a regional climate pattern, what evidence shows that th
 
 ## Fires in the Anthropocene Era 
 
-Greenhouse gas emissions by humans and subsequent climate changes directly impact fire activity in North America, particularly in the forests of the Sierra Nevada and North Coast (Williams et al., 2019). These long-term trends in climate have great impacts on factors such as location, frequency, extent, and severity of wildfires(Westerling, 2011). Changes in climate are linked with 55% of observed increases in fuel aridity from 1979 to 2015 across western US forests (Abatzoglou and Williams, 2016).
+Greenhouse gas emissions by humans and subsequent climate changes directly impact fire activity in North America, particularly in the forests of the Sierra Nevada and North Coast (Williams et al., 2019). These long-term trends in climate have great impacts on factors such as location, frequency, extent, and severity of wildfires (Westerling, 2011). Changes in climate are linked with 55% of observed increases in fuel aridity from 1979 to 2015 across western US forests (Abatzoglou and Williams, 2016).
 Other compounding factors include the human-facilitated invasion of non-native plant species. A growing expanse of Southern California’s shrublands are being permanently replaced by invasive grasses, which do not have the same fire resistant qualities as native flora (Von Schaumburg 2014, Serna et al., 2019). In addition, State and local fire-fighting strategy tends to prioritize suppression of all fires, despite the fact that most Californian’s have a sophisticated understanding of the ecological benefits of fire, especially those living in fire-prone areas (jin et al., 2014, McCaffery and Olsen, 2012). 
 An undergrad thesis by D.M. Von Schaumburg points out that an increase in fire frequency in valleys and foothills parallels population growth and development in Southern California, likely due to the aforementioned factors. My case study seeks to answer the question, what role do trends in temperature and precipitation have in increased wildfires in Southern California?
         
@@ -88,8 +88,6 @@ abline(coef(May.lm), col="red")
 
 
 ```{r, echo=FALSE, fig.cap="\\label{fig:figs}Average October Precipitation 1950-1980"}
-summary(climate_data$PRCP)
-
 MonthlyPRCP = aggregate(PRCP ~ Month + Year, climate_data, mean)
 MonthlyPRCP$YEAR = as.numeric(MonthlyPRCP$Year)
 MonthlyPRCP$MONTH = as.numeric(MonthlyPRCP$Month)
@@ -104,20 +102,17 @@ abline(coef(Oct.lm), col="red")
 
 The temperature data shows a drastically increasing average temperature for the month of October in Claremont over the past 70 years. This heat is most likely due to Santa Ana winds 
 
-The precipitation data shows a decrease in average rainfall for the month of October in Claremont from 1950 to 1980. There was no data from this weather station after 1980, however, the extended drought from  in the trend continued to decrease .
+The precipitation data shows a decrease in average rainfall for the month of October in Claremont from 1950 to 1980. There was no data from this weather station after 1980, however, the recent extended drought that began in 2012 and lasted for several years, demonstrates a continued trend in decreasing precipitation (Diffenbaugh et al., 2015).
 
 # Discussion 
  
+The results of this case study analysis make an apt case for the role of anthropogenic climate change, as well as the associated changes in temperature and precipitation, for an increase in wildfire frequency and severity. This claim does not attempt to brush aside other anthropogenic contributions to wildfire such as electrical grids, miscellaneous ignition sources, and decades of not allowing wildfires to burn brush. Rather, this study aims to emphasize the impacts of larger-scale anthropogenic climate changes on a select region. It is clear that climate change, causing warmer atmospheric temperatures and aridity, are exacerbating the existing risks associated with fall Santa Ana winds in Southern California.
+The implications of this are serious for humans and the natural environment. For example, wildfires alter the character of the ecosystems that support them, making burned areas even more susceptible to wildfires in the future, especially with the added stressors of drought as well (Westerling 2011, Serna et al., 2019).
+The other cyclical issue that we have run into is concerning the costs of human health implications, property damage, and firefighting/fireproofing. The worse these impacts are, the greater our resolve is to prevent wildfires altogether, although this is not ecologically responsible. Citing the increased risk to communities and properties by catastrophic fires, California's legislature passed Assembly Bill 1054 in 2019, which included provisions to boost safety measures, provide damage compensation to homeowners, create a wildfire fund to prevemptively raise money for damages, and reduce the likelihood of utility liability getting passed on to rate-payers (AB 1054). The bill acknowledges the nature of anthropogenic climate change and its contribution to wildfires, but does not outline any plans for ecological resilience.
 
-Compounding factors include: drought, decades of not allowing wildfires to burn brush.
-*  In addition, wildfires alter the character of the ecosystems that support them (Westerling 2011).
-* “Wildlands are getting burned too often, and then are stressed by drought, causing lasting changes to California’s ecology that make the state even more at risk for wildfires.” (times)
-* Who is it affecting? Wildlife and… rich people?
+# Conclusion and Call to Action
 
-
-
-# Conclusion
-
+The situation of increasing wildfire danger in Southern California is just a small-scale case study of what is occuring across the state and world as a result of anthropogenic climate change. The results of this analysis on trends in Claremont, California support the theory that increasing temperatures and decreased precipitation are exacerbating fire-prone conditions. These trends are only expected to become more extreme as the effects of greenhouse gases contribute to further climate changes. Moreover, wildfires will also become more frequent and dangerous. It is important that strategies to respond to, and prepare for, wildfires are ecologically informed and are beneficial in the long-term. In the age of the anthropocene, when heat and drought become the new normal, our best chance at self-preseration is to understand the processes that affect mankind and the built and natural environment.
 
 # Sources
 
