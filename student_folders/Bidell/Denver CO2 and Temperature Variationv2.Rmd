@@ -5,40 +5,39 @@ date: "12/3/2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-```{r markcanyouseethis}
-#Did it commit?
-```
 
-``` {r read process}
+``` {r read process, echo=FALSE}
 #filechoose()
 climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
-climatedata="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
+#climatedata="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
 climate_data <- read.csv(climatedata)
 str(climate_data)
 names(climate_data)
 ```
-``` {r head}
+``` {r head, echo=FALSE}
 head(climate_data)
 #head(temp)
 ```
 
-``` {r datasorting}
+``` {r datasorting, echo=FALSE}
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$TMAX
 plot(TMAX ~ NewDate, climate_data, ty='l')
+plot(TMIN ~ NewDate, climate_data, ty='l')
+abline(col="blue")
 ```
 
-```{r fixingdatesagain}
+```{r fixingdatesagain, echo=FALSE}
 #strDates <- as.character(climate_data$DATE)
 #climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 
 ```
 
-```{r newvariabletdif}
+```{r newvariabletdif, echo=FALSE}
 climate_data$TDIF=(climate_data$TMAX+climate_data$TMIN)/2
 plot(TDIF ~ NewDate, climate_data, ty='l')
 ```
@@ -48,24 +47,23 @@ plot(TDIF ~ NewDate, climate_data, ty='l')
 
 ## Analyses Climate Data
 
-``` {r regressionmodel}
+``` {r regressionmodel, echo=FALSE}
 lm(TDIF ~ NewDate, data=climate_data)
 summary(lm(TDIF ~ NewDate, data=climate_data))
 
 ```
 
-```{r makingmonthlyaverage}
+```{r makingmonthlyaverage, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTDIFMean = aggregate(TDIF ~ Month + Year, climate_data, mean)
 MonthlyTDIFMean$YEAR = as.numeric(MonthlyTDIFMean$Year)
 MonthlyTDIFMean$MONTH = as.numeric(MonthlyTDIFMean$Month)
 str(MonthlyTDIFMean)
-plot(MonthlyTDIFMean$TDIF, ty='l')
 ```
 This seems to work and now makes both monthly TMAX mean and sd... Fixed the dataset to be sure it was accessible to the subsequent calls with a do.call() function that I really don't understand -- but it works!
 
-```{r makingmonthlyMEANSD}
+```{r makingmonthlyMEANSD, echo=FALSE}
 MonthlyTMAX = aggregate(TMAX ~ Month + Year, climate_data, function(x) c(mean=mean(x), sd=sd(x) ) )
 MonthlyTMAX <- do.call(data.frame,aggregate(TMAX ~ Month + Year, climate_data, function(x) c(mean=mean(x), sd=sd(x) ) ))
 str(MonthlyTMAX)
@@ -76,7 +74,7 @@ summary(MonthlyTMAX)
 
 This seems fine.
 
-```{r selectingsinglemonthmay}
+```{r selectingsinglemonthmay, echo=FALSE}
 plot(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="06",],
 ty='l', xlim=c(1950, 2020))
 May.lm <- lm(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="06",])
@@ -87,7 +85,7 @@ abline(coef(May.lm), col="red")
 
 
 ## Import New Data
-```{r co2dataimport}
+```{r co2dataimport, echo=FALSE}
 #file.choose()
 #co2_data=climatedata = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 
@@ -95,12 +93,12 @@ abline(coef(May.lm), col="red")
 co2_data="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 
 # marc's path Comment out!
-co2_data = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
+#co2_data = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 co2_data <- read.csv(co2_data)
 str(co2_data)
 names(co2_data)
 ```
-```{r datasortco2}
+```{r datasortco2, echo=FALSE}
 strDates <- as.character(co2_data$Date)
 co2_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 co2_data$Value
@@ -109,7 +107,7 @@ plot(Value ~ NewDate, co2_data, ty='l')
 
 
 ## Testing the Null Hypothesis 
-```{r mergingdata}
+```{r mergingdata, echo=FALSE}
 # this is not working
 #temp = merge(climate_data, co2_data, by.all="NewDate"); str(temp)
 str(climate_data)
@@ -122,15 +120,11 @@ temp$TDIF=temp$TMAX-temp$TMIN; str(temp)
 ```
 
 
-```{r plottdif~value}
-plot(TDIF ~ Value, data=temp)
-```
-
 ## Testing SD
 
 temp is already averaged by month, can't generate a SD from 1 value, mean works because we can take a mean of one value...
 
-```{r monthfortemp}
+```{r monthfortemp, echo=FALSE}
 #temp$Month = format(as.Date(temp$NewDate), format = "%m")
 #temp$Year = format(temp$NewDate, format="%Y")
 
@@ -149,10 +143,20 @@ head(temp)
 #MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
 str(MonthlyTMAX)
 ```
-```{r pleaseplot}
+```{r pleaseplot, echo=FALSE}
 plot(TMAX.sd ~ YEAR, MonthlyTMAX[MonthlyTMAX$Month=="06",], ty='l')
 ```
-
+``` {r TMINSDPlOT, echo=FALSE}
+MonthlyTMINSD = aggregate(TMIN ~ Month + Year, data=temp, function(x) c(mean=mean(x), sd=sd(x)))
+MonthlyTMINSD$YEAR = as.numeric(MonthlyTMINSD$Year)
+MonthlyTMINSD$MONTH = as.numeric(MonthlyTMINSD$Month)
+str(temp)
+temp = subset(temp, select=c("NewDate", "DATE", "Year", "Month", "TMAX", "TMIN", "Value"))
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, temp, length)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+str(MonthlyTMINMean)
+```
 
 
 ## R Markdown
@@ -168,7 +172,15 @@ When you click the **Knit** button a document will be generated that includes bo
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
+plot(TMAX ~ as.numeric (Year), data=temp[temp$Month=="06",], ty="l")
+TMAX.lm = lm(TMAX ~ as.numeric (Year), data=temp[temp$Month=="06",])
+summary(TMAX.lm)
+abline(coef(TMAX.lm), col="red")
+
+plot(TMIN ~ as.numeric (Year), data=temp[temp$Month=="06",], ty="l")
+TMIN.lm = lm(TMIN ~ as.numeric (Year), data=temp[temp$Month=="06",])
+summary(TMIN.lm)
+abline(coef(TMIN.lm), col="red")
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
