@@ -1,26 +1,34 @@
 ---
-title: "Temperature Data - The Unknown City: "
+title: "Temperature Data - The Unknown Station: Blagovescensk"
 author: '17276'
 date: "12/3/2019"
 output: html_document
 ---
+## Introduction
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 TEMP <- read.csv("/home/CAMPUS/aemb2018/Climate_Change_Narratives/student_folders/Massari/1960066.csv")
 head(TEMP)
 str(TEMP)
-names(TEMP)
 ```
-```{r date}
+
+## Background on the Weather Station
+
+Although the weather station Blagovescensk (ID:GHCND:RSM00031510), is listed as 50.25, 127.5
+
+```{r date, eval=FALSE}
 plot(TMAX ~ DATE, TEMP)
 min(TEMP$TMAX, na.rm=T)
 plot(TMAX ~ DATE, TEMP[15000:20000,], ty='l', xlim = c(15000,20000))
-date.c = as.character(TEMP$DATE)
-TEMP$NewDate <- as.Date(date.c, "%Y-%m-%d")
 ```
 
-```{r maxmonthavg}
+## Analysis of Maximum Temperature
+
+``` {r TMAX}
+date.c = as.character(TEMP$DATE)
+TEMP$NewDate <- as.Date(date.c, "%Y-%m-%d")
 change = lm(TMAX ~ NewDate, data=TEMP)
 summary(change)
 TEMP$Month = format(as.Date(TEMP$NewDate), format = "%m")
@@ -32,14 +40,6 @@ MonthTMAX.mean$MONTH = as.numeric(MonthTMAX.mean$Month)
 str(MonthTMAX.mean)
 plot(MonthTMAX.mean$TMAX, ty = "l")
 
-May.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="05",])
-summary(May.lm)
-plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="05",],
-ty='l', xlim=c(1950, 2020))
-abline(coef(May.lm), col="blue2")
-```
-
-``` {r maxtemp}
 Months = c("January", "February", "March", "April", "May", "June",
 "July", "August", "September", "October", "November", "December")
 
@@ -61,7 +61,18 @@ round(summary(Month.lm)$coefficients[2,4],4),
 round(summary(Month.lm)$r.squared, 3)))
 }
 ```
-``` {r minmonthavg}
+
+```{r May}
+May.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="05",])
+summary(May.lm)
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+abline(coef(May.lm), col="blue2")
+```
+
+## Analysis of Minimum Temperature
+
+``` {r TMIN}
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, TEMP, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 # Fixing the Format of Month and Year as numeric
@@ -88,7 +99,37 @@ round(summary(Month.lm.min)$coefficients[2,4],4),
 round(summary(Month.lm.min)$r.squared, 3)))
 }
 ```
-``` {r min}
+
+## Analysis of Average Temperature
+
+``` {r TAVG}
+MonthlyTAVGMean = aggregate(TAVG ~ Month + Year, TEMP, mean)
+MonthlyTAVGMean$YEAR = as.numeric(MonthlyTAVGMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTAVGMean$YEAR = as.numeric(MonthlyTAVGMean$Year)
+MonthlyTAVGMean$MONTH = as.numeric(MonthlyTAVGMean$Month)
+head(MonthlyTAVGMean)
+plot(MonthlyTAVGMean$TAVG, ty='l')
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+TAVGresult <- NA
+
+for (i in 1:12){
+plot(TAVG~YEAR,
+data=MonthlyTAVGMean[MonthlyTAVGMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm.avg <- lm(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$MONTH==i,])
+summary(Month.lm.avg)
+abline(coef(Month.lm.avg), col="red")
+TAVGresult <- rbind(TAVGresult,
+cbind(Months[i], round(coef(Month.lm.avg)[2], 4),
+round(summary(Month.lm.avg)$coefficients[2,4],4),
+round(summary(Month.lm.avg)$r.squared, 3)))
+}
+```
+
+``` {r table}
 library(xtable)
 Results <- data.frame(Month = TMINresult[c(2:13),1],
 TMINSlope = TMINresult[c(2:13),2],
@@ -96,12 +137,11 @@ TMIN_P = as.numeric(TMINresult[c(2:13),3]),
 TMINRsq = TMINresult[c(2:13),4],
 TMAXSlope = TMAXresult[c(2:13),2],
 TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
-TMAXRsq = TMAXresult[c(2:13),4])
+TMAXRsq = TMAXresult[c(2:13),4],
+TAVGSlope = TAVGresult[c(2:13),2],
+TAVG_P = as.numeric(TAVGresult[c(2:13),3]),
+TAVGRsq = TAVGresult[c(2:13),4])
 Results$starTMIN = "NS"
-```
-
-``` {r idk}
-
 Results$starTMIN[Results$TMIN_P <= .05] = "*"
 Results$starTMIN[Results$TMIN_P < 0.01] = "**"
 Results$starTMIN[Results$TMIN_P < 0.001] = "***"
@@ -109,13 +149,35 @@ Results$starTMAX = "NS"
 Results$starTMAX[Results$TMAX_P < 0.05] = "*"
 Results$starTMAX[Results$TMAX_P < 0.01] = "**"
 Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$starTAVG = "NS"
+Results$starTAVG[Results$TAVG_P < 0.05] = "*"
+Results$starTAVG[Results$TAVG_P < 0.01] = "**"
+Results$starTAVG[Results$TAVG_P < 0.001] = "***"
 Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
 Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
-colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
-"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
-print(xtable(Results[,c(1, 10, 4, 11, 7)]))
-
+Results$TAVGslope=paste(Results$TAVGSlope, Results$starTAVG)
+colnames(Results) <- c("Month", "TMINSlope", "3", "R^2", "5", "6", "R^2", "8", "9", "R^2", "11", "12", "Slope TMIN", "Slope TMAX", "Slope TAVG")
 ```
 
+``` {r graphic, results='asis'}
+print(xtable(Results[,c(1, 10, 4, 11, 7)], rownames=FALSE), type = "html")
+head(Results)
+#find model repdiction for this part of the world
+# strong warming signal
+# google scholar search for extreme events to see what time frame is more important to look at
+```
 
-
+```{r coefficients}
+Jan = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="01",]))[2] #January
+Feb = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="02",]))[2] #February
+Mar = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="03",]))[2] #March
+Apr = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="04",]))[2] #April
+May = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="05",]))[2] #May
+Jun = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="06",]))[2] #June
+Jul = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="07",]))[2] #July
+Aug = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="08",]))[2] #August
+Sep = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="09",]))[2] #September
+Oct = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="10",]))[2] #October
+Nov = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="11",]))[2] #November
+Dec = coef(lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="12",]))[2] #December
+```

@@ -15,8 +15,8 @@ library('rnoaa')
 # Climate Data
 
 #file.choose()
-read.csv("/home/CAMPUS/kmto2015/Climate_Change_Narratives/student_folders/McWilliams/NOAA Climate Data.csv")
-climate_data <- read.csv("/home/CAMPUS/kmto2015/Climate_Change_Narratives/student_folders/McWilliams/NOAA Climate Data.csv")
+#climate_data <- read.csv("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/McWilliams/NOAA Climate Data.csv")
+#climate_data <- read.csv("/home/CAMPUS/kmto2015/Climate_Change_Narratives/student_folders/McWilliams/NOAA Climate Data.csv")
 
 str(climate_data)
 climate_data$TMAX[climate_data$TMAX==-9999] = NA 
@@ -42,13 +42,13 @@ MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 str(MonthlyTMINMean)
 plot(MonthlyTMINMean$TMIN, ty='l')
 ```
-##Intro
+# Intro
 
-#Heat, Dought, Wildfires: How does this domino-effect work?
+# Heat, Dought, Wildfires: How does this domino-effect work?
 
-#Anthropogenic Factors
+# Anthropogenic Factors
 
-##Obtaining Climate Data on Southern California (Methodology)
+## Obtaining Climate Data on Southern California (Methodology)
 
 ![Caption](Paul_Duginski_LATimes.png)
 
@@ -67,14 +67,14 @@ summary(May.lm)
 ```
 
 
-##Results
+## Results
 
-##Discussion 
+## Discussion 
 
-##Conclusion
+## Conclusion
 
 
-##Sources
+## Sources
 
 Abatzoglou J, Williams A. (2016). Impact of anthropogenic climate change on wildfire across western US forests. Proceedings of the National Academy of Sciences. 113 (42): 11770-11775.
 
