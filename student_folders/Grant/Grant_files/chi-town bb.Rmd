@@ -9,22 +9,97 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+The data I will be evaluating comes from a climate station at Chicago’s Midway airport located on the south side of Chicago, Illinois. This weather station has been recording various forms of climate data since Februrary 29th, 1928, all the ay to December 11th, 2019. It has a 96% data ccoverage and an elevation of 189 feet.
+
+Information on Chicago: location, type of climate historically, communities and spcies, there....
+
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
+
+## Reading Data
 ```{r cars}
-summary(cars)
+#summary(cars)
+#file.choose("/home/CAMPUS/agad2017/Climate_Change_Narratives/student_folders/Grant/aminahgrant_chicagomidway_data.csv")
+shytown <- read.csv("/home/CAMPUS/agad2017/Climate_Change_Narratives/student_folders/Grant/aminahgrant_chicagomidway_data.csv")
+
+
+head(shytown)
+
+str(shytown)
+
+names(shytown)
+
+
+
 ```
 
-## Including Plots
+## Processing Data and Dates
+
+```{r processingdates}
+
+plot(TMAX~DATE, shytown)
+strDates <- as.character(shytown$DATE)
+
+min(shytown$TMAX)
+min(shytown$TMAX, na.rm=T)
+
+shytown$NewDate <- as.Date(strDates, "%m/%d/%Y")
+```
+## Reassigning NA's
+
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+
+
+```{r hello, echo=FALSE}
+strDates <- as.character(shytown$DATE)
+shytown$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+plot(TMAX~DATE, shytown[1:10950,], ty='l')
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r regressionish}
+lm(TMAX ~ NewDate, data=shytown)
+summary(lm(TMAX ~ NewDate, data=shytown))
+
+shytown$Month = format(as.Date(shytown$NewDate), format = "%m")
+shytown$Year = format(shytown$NewDate, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, shytown, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+
+plot(MonthlyTMAXMean$TMAX, ty='l')
+
+
+```
+```{r pressure, echo=FALSE}
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+
+```
+
+```{r testingallmonths}
+# First I create a vector of months
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+
+  
+
+
+```
