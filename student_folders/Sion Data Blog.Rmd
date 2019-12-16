@@ -1,8 +1,10 @@
 ---
-title: "Sion SZ TMAX Data"
-author: 'Alice Shinn'
+title: "Sion SZ Temperature Data - Water Storage, Tourism, Albedo, Alps as controller of weather patterns in different countries"
+author: "Alice Shinn"
 date: "12/3/2019"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +32,9 @@ summary(lm(TMAX~NewDate, data=climate_data))
         
 ```
 
-```{r max monthly means}
+##TMAX and TMIN monthly means 
+
+```{r max monthly means, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
 climate_data$Year = format(climate_data$NewDate, format = "%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month+Year, climate_data, mean)
@@ -41,14 +45,14 @@ plot(MonthlyTMAXMean$TMAX, ty="l")
 
 ```
 
-``` {r plot for April}
+``` {r plot for April, echo=FALSE}
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month==4,],ty='l')
 April.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month==4,])
 summary(April.lm)
 abline(coef(April.lm), col="blue")
 ```
 
-```{r MAX plot for all months}
+```{r MAX plot for all months, echo=FALSE}
 Months= c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 par(mfrow=c(4,3), mar=c(5,4,3,2)+0.1)
 TMAXresult <- NA
@@ -58,7 +62,7 @@ for (i in 1:12){
        ty='l', las=1, xlim=c(1955,2019), main=Months[i])
   Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month==i,])
   summary(Month.lm)
-  abline(coef(Month.lm), col="green")
+  abline(coef(Month.lm), col="darkgreen")
   
   TMAXresult <- rbind(TMAXresult,
                       cbind(Months[i], round(coef(Month.lm)[2], 4), 
@@ -77,7 +81,7 @@ lm(TMIN~NewDate, data=climate_data)
 summary(lm(TMIN~NewDate, data=climate_data))
         
 ```
-```{r min monthly means}
+```{r min monthly means, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
 climate_data$Year = format(climate_data$NewDate, format = "%Y")
 MonthlyTMINMean = aggregate(TMIN ~ Month+Year, climate_data, mean)
@@ -88,7 +92,7 @@ plot(MonthlyTMINMean$TMIN, ty="l")
 
 ```
 
-```{r MIN plot for all months}
+```{r MIN plot for all months, echo=FALSE}
 Months= c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 par(mfrow=c(4,3), mar=c(5,4,3,2)+0.1)
 TMINresult <- NA
@@ -100,10 +104,105 @@ for (i in 1:12){
   summary(Month.lm)
   abline(coef(Month.lm), col="red")
   
-  TMAXresult <- rbind(TMINresult,
+  TMINresult <- rbind(TMINresult,
                       cbind(Months[i], round(coef(Month.lm)[2], 4), 
                             round(summary(Month.lm)$coefficients[2,4],4),
                             round(summary(Month.lm)$r.squared, 3)))
 }
 ```
+
+``` {r min_and_max_tables, echo=FALSE, results='asis'}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+```
+``` {r table_print, echo=FALSE, results='asis'}
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
+## PRCP totals based on each month and year 
+```{r prcp monthly totals, echo=FALSE}
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP),
+list(climate_data$Month, climate_data$Year), sum)
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+#plot(PRCP ~ Date, data=PRCP)
+
+TotalPRCP <- aggregate(climate_data$PRCP,
+list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+names(TotalPRCP) = c("Group.1", "Group.2", "PRCP")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+library(dplyr)
+
+PRCP <- merge(TotalPRCP, NonMissing, all.y=TRUE)
+PRCP$Date <- as.numeric(PRCP$Group.1) + as.numeric(PRCP$Group.2)/12
+head(PRCP)
+plot(PRCP ~ Date, data=PRCP)
+names(PRCP)=c("Month", "Year", "PRCP", "x", "Numeric.date")  
+PRCP_mean = mean(PRCP$PRCP)
+#plot(PRCP~Year, data=PRCP)
+#abline(h=PRCP_mean, col="blue")
+#need to add year to the date plot, push and leave note ** 
+```
+```{r PRCP.Sept.December, echo=FALSE}
+plot(PRCP~Numeric.date, data=PRCP[PRCP$Month=="09",],
+ty='l', xlim=c(171.8,177), xlab="Year", ylab="Sum of yearly precipitation (in)", main=
+  "Total September precipitation 1955-2015")
+Sept.lm <- lm(PRCP~Numeric.date, data=PRCP[PRCP$Month=="09",])
+summary(Sept.lm)
+
+plot(PRCP~Numeric.date, data=PRCP[PRCP$Month=="10",],
+ty='l', xlim=c(172.9,177.9), xlab="Year", ylab="Sum of yearly precipitation (in)", main=
+  "Total October precipitation 1955-2015")
+Oct.lm <- lm(PRCP~Numeric.date, data=PRCP[PRCP$Month=="10",])
+summary(Oct.lm)
+
+plot(PRCP~Numeric.date, data=PRCP[PRCP$Month=="11",],
+ty='l', xlim=c(173.9,178.8), xlab="Year", ylab="Sum of yearly precipitation (in)", main=
+  "Total November precipitation 1955-2015")
+Nov.lm <- lm(PRCP~Numeric.date, data=PRCP[PRCP$Month=="11",])
+summary(Nov.lm)
+
+plot(PRCP~Numeric.date, data=PRCP[PRCP$Month=="12",],
+ty='l', xlim=c(174.9,179.9), xlab="Year", ylab="Sum of yearly precipitation (in)", main=
+  "Total December precipitation 1955-2015")
+Dec.lm <- lm(PRCP~Numeric.date, data=PRCP[PRCP$Month=="12",])
+summary(Dec.lm)
+
+```
+
+``` {r prcp yearly sum plot}
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+YearlySum = aggregate(PRCP ~ Year, climate_data, sum)
+YearlySum$Year = as.numeric(YearlySum$Year)
+YearlyMean = mean(YearlySum$PRCP)
+plot(PRCP~Year, data=YearlySum, las=1, ty="p")
+YearlySum.lm = lm(PRCP~Year, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+n <- 5
+k <- rep(1/n, n)
+k
+y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+lines(YearlySum$Year, y_lag, col="red")
+summary(YearlySum.lm)
+
+```
+
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -4,12 +4,15 @@ author: "Kai Bidell"
 date: "12/3/2019"
 output: html_document
 ---
+## Introduction
+  This study sought to discover if Denver’s weather is becoming more variable. I hypothesized that Climate Change would result in increasing variations in maximum and minimum temperature. In other words, the maximum temperatures would be getting significantly hotter and the minimum temperatures would be getting colder. 
+	This lead me to adopt two null hypotheses; first that maximum temperatures are not increasing. Second that minimum temperatures are not decreasing. I reject my first null hypothesis but am unable to reject my second null hypothesis. Interestingly, I found that the variability in temperature was remarkably consistent over time and within the context of increasing CO2 levels. The temperature varied consistently in terms of diversion from the mean, but the mean from which it was diverting was increasing. In other words, while the level of variability measured by Standard Deviation seemed relatively fixed, the range in which the temperature was varying trended upward. My blog post discusses these findings and hypothesizes why I am observing this trend. In addition, I situate my results within the context of the most recent research in this area, discuss some issues with my methodology and suggest areas for further study. Finally, I conclude by discussing what this upward trend in temperatures likely means for Denver and on a larger scale Colorado.
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-``` {r read process}
+``` {r readprocess, echo=FALSE, results='hide'}
 #filechoose()
 climatedata="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
 #climatedata="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_Denver_Data.csv"
@@ -17,70 +20,71 @@ climate_data <- read.csv(climatedata)
 str(climate_data)
 names(climate_data)
 ```
-``` {r head}
+``` {r head, echo=FALSE, results='hide'}
 head(climate_data)
+#head(temp)
 ```
 
-``` {r datasorting}
+``` {r datasorting, echo=FALSE, results = 'hide'}
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$TMAX
-plot(TMAX ~ NewDate, climate_data, ty='l')
+#plot(TMAX ~ NewDate, climate_data, ty='l')
+#plot(TMIN ~ NewDate, climate_data, ty='l')
+#abline(col="blue")
 ```
 
-```{r fixingdates}
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+```{r fixingdatesagain, echo=FALSE, results='hide'}
+#strDates <- as.character(climate_data$DATE)
+#climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 
 ```
 
-```{r newvariabletdif}
-climate_data$TDIF=climate_data$TMAX-climate_data$TMIN
-plot(TDIF ~ NewDate, climate_data, ty='l')
+## Methods
+In order to test my hypotheses I took data from the Stapleton Airport on the edge of Denver CO and Stapleton CO. The data set included minimum (TMIN) and maximum (TMAX) temperatures for the weather station from 1950 to present. I used these values to create an average with the formula (TMIN+TMAX)/2 = Daily Average Temperature. I then created averages for each month, and year. All graphs depict monthly average values unless otherwise stated in the axis. I also include CO2 data from CU Boulder’s Niwot Ridge Research Station. 
+
+## Results
+
+What is immediately apparent is that CO2 is increasing in Colorado as is demonstrated in Figure 1:
+
+FIGURE 1
+
+
+```{r newvariabletdif, echo=FALSE, results='hide'}
+climate_data$TDIF=(climate_data$TMAX+climate_data$TMIN)/2
+#plot(TDIF ~ NewDate, climate_data, ty='l', xlab="Year", ylab="Average Temperature (by day)")
 ```
 
-## Random stuff
 
 
-## Analyses Climate Data
-
-``` {r regressionmodel}
+``` {r regressionmodel, echo=FALSE, results='hide'}
 lm(TDIF ~ NewDate, data=climate_data)
 summary(lm(TDIF ~ NewDate, data=climate_data))
 
 ```
 
-```{r makingmonthlyaverage}
+```{r makingmonthlyaverage, echo=FALSE, results='hide'}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTDIFMean = aggregate(TDIF ~ Month + Year, climate_data, mean)
 MonthlyTDIFMean$YEAR = as.numeric(MonthlyTDIFMean$Year)
 MonthlyTDIFMean$MONTH = as.numeric(MonthlyTDIFMean$Month)
 str(MonthlyTDIFMean)
-plot(MonthlyTDIFMean$TDIF, ty='l')
 ```
-This seems to work and now makes both monthly TMAX mean and sd...
 
-```{r makingmonthlyMEANSD}
+
+```{r makingmonthlyMEANSD, echo=FALSE, results='hide'}
 MonthlyTMAX = aggregate(TMAX ~ Month + Year, climate_data, function(x) c(mean=mean(x), sd=sd(x) ) )
+MonthlyTMAX <- do.call(data.frame,aggregate(TMAX ~ Month + Year, climate_data, function(x) c(mean=mean(x), sd=sd(x) ) ))
 str(MonthlyTMAX)
 MonthlyTMAX$YEAR = as.numeric(MonthlyTMAX$Year)
 MonthlyTMAX$MONTH = as.numeric(MonthlyTMAX$Month)
 summary(MonthlyTMAX)
 ```
 
-This seems fine.
 
-```{r selectingsinglemonthmay}
-plot(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="05",],
-ty='l', xlim=c(1950, 2020))
-May.lm <- lm(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="05",])
-summary(May.lm)
-abline(coef(May.lm), col="red")
-```
 
-## Import New Data
-```{r co2dataimport}
+```{r co2dataimport, echo=FALSE, results='hide'}
 #file.choose()
 #co2_data=climatedata = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 
@@ -88,21 +92,22 @@ abline(coef(May.lm), col="red")
 co2_data="/home/CAMPUS/kbba2017/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 
 # marc's path Comment out!
-# co2_data = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
+#co2_data = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Bidell/Denver_CO2_and_Temperature_Variation_files/Bidell_CO2_Data.csv"
 co2_data <- read.csv(co2_data)
 str(co2_data)
 names(co2_data)
 ```
-```{r datasortco2}
+```{r datasortco2, echo=FALSE, results='hide'}
 strDates <- as.character(co2_data$Date)
 co2_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 co2_data$Value
-plot(Value ~ NewDate, co2_data, ty='l')
+plot(Value ~ NewDate, co2_data, ty='l', xlab="Year", ylab="CO2 PPM")
 ```
 
+## Is Increasing CO2 Leading to Increasing Temprature Variability?
+But is this increasing C02 leading to increased variability in the observed temperatures in Denver? This point is a bit trickier. I ran a regression analysis to determine if there was any significant correlation between SD in observed temperature and CO2 level. There was not. In fact, as you can see in figures 1 and 2, as CO2 has risen, SD in temperature has remained more or less the same. 
 
-## Testing the Null Hypothesis 
-```{r mergingdata}
+```{r mergingdata, echo=FALSE, results='hide'}
 # this is not working
 #temp = merge(climate_data, co2_data, by.all="NewDate"); str(temp)
 str(climate_data)
@@ -115,49 +120,98 @@ temp$TDIF=temp$TMAX-temp$TMIN; str(temp)
 ```
 
 
-```{r plottdif~value}
-plot(TDIF ~ Value, data=temp)
-```
+FIGURE 2
 
-## Testing SD
-
-temp is already averaged by month, can't generate a SD from 1 value, mean works because we can take a mean of one value...
-
-```{r monthfortemp}
+```{r monthfortemp, echo=FALSE, results='hide'}
 #temp$Month = format(as.Date(temp$NewDate), format = "%m")
 #temp$Year = format(temp$NewDate, format="%Y")
 
-str(temp)
+#str(temp)
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, temp, length)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
-str(MonthlyTMAXMean)
-plot(MonthlyTMAXMean$TMAX, ty='l')
+#str(MonthlyTMAXMean)
+#plot(MonthlyTMAXMean$TMAX, ty='l')
+#str(MonthlyTMAXMean)
+#head(MonthlyTMAXMean)
 
-head(temp)
-MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, data=temp, function(x) c(mean=mean(x), sd=sd(x)))
-MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
-MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
-str(MonthlyTMAXSD)
-plot(MonthlyTMAXSD$TMAX, ty='l')
-
+#head(temp)
+#MonthlyTMAXSD = aggregate(TMAX ~ Month + Year, data=temp, function(x) c(mean=mean(x), sd=sd(x)))
+#MonthlyTMAXSD$YEAR = as.numeric(MonthlyTMAXSD$Year)
+#MonthlyTMAXSD$MONTH = as.numeric(MonthlyTMAXSD$Month)
+#str(MonthlyTMAX)
 ```
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r pleaseplot, echo=FALSE}
+plot(TMAX.sd ~ YEAR, MonthlyTMAX[MonthlyTMAX$Month=="06",], ty='l', xlab="Number of Years", ylab="SD of Temprature")
 ```
 
-## Including Plots
+``` {r TMINSDPlOT, echo=FALSE, results='hide'}
+MonthlyTMINSD = aggregate(TMIN ~ Month + Year, data=temp, function(x) c(mean=mean(x), sd=sd(x)))
+MonthlyTMINSD$YEAR = as.numeric(MonthlyTMINSD$Year)
+MonthlyTMINSD$MONTH = as.numeric(MonthlyTMINSD$Month)
+str(temp)
+temp = subset(temp, select=c("NewDate", "DATE", "Year", "Month", "TMAX", "TMIN", "Value"))
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, temp, length)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+str(MonthlyTMINMean)
+```
+Since there was no evident increase in SD of temperatures over time and my regression did not return a significant result, I fail to reject the null hypothesis that temperature variation is not changing as a result of CO2. 
 
-You can also embed plots, for example:
+But I did find a few things that bear mentioning. While temperature variation is consistent, the trend in temperatures is increasing with a slope of about .07 degrees per a year. As is demonstrated in figures 3 and 4 below:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+FIGURE 3
+
+
+```{r pressure, echo=FALSE, results='hide'}
+plot(TMAX ~ as.numeric (Year), data=temp[temp$Month=="06",], ty="l", xlab="Year", ylab="Average Maximum Temprature")
+TMAX.lm = lm(TMAX ~ as.numeric (Year), data=temp[temp$Month=="06",])
+summary(TMAX.lm)
+abline(coef(TMAX.lm), col="red")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+FIGURE 4
+
+```{r test2, echo=FALSE, results='hide'}
+plot(TMIN ~ as.numeric (Year), data=temp[temp$Month=="06",], ty="l", xlab="Year", ylab="Average Minimum Temprature")
+TMIN.lm = lm(TMIN ~ as.numeric (Year), data=temp[temp$Month=="06",])
+summary(TMIN.lm)
+abline(coef(TMIN.lm), col="red")
+```
+
+
+## Discussion 
+
+While my results did not confirm my assumption that increasing CO2 would cause increased temperature variation in Denver, they did confirm the assumptions of recent models of how anthropogenic climate change will affect Denver. In fact, my results are exactly in line with a 2016 report from CU Boulder which predicts temperature rises in Colorado. Perhaps the most impactful prediction that this report and others generated by the EPA predict is an increase in Spring temperatures (EPA, 2017). Indeed, my results confirm this prediction as you can see in figure 5 which depicts the average temperature for the month of June going back to 1950. 
+
+Figure 5:
+
+```{r selectingsinglemonthmay, echo=FALSE, results='hide'}
+plot(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="06",],
+ty='l', xlim=c(1950, 2020), xlab="Year", ylab="Average Spring Temprature")
+May.lm <- lm(TDIF~YEAR, data=MonthlyTDIFMean[MonthlyTDIFMean$Month=="06",])
+#summary(May.lm)
+abline(coef(May.lm), col="red")
+```
+
+This increase in Spring temperatures is the most impactful effect of climate change on Colorado. It serves to melt the snowpack more quickly, leading to water shortages later in the year, decreasing the growing season for crops, and not to mention diminishing both the length and quality of the skiing season in Colorado. In fact, with the idea that “a picture paints a thousand words” CU Boulder has made a poster that illustrates the major effects of rising temperatures on the ecology of Colorado, depicted here in figure 6:
+
+Figure 6:
+``` {r insertpic}
+#![alt text here](studentfolders/Bidell/Screen Shot 2019-12-12 at 1.45.16 PM.png)
+```
+
+As you can see from the photo from CU Boulder, less quality skiing will be the least of Colorado’s problems as invasive species, like the Pine Beatle lead to more dead trees, increased wildfires, loss of biodiversity and a loss of natural beauty in general. All of which is the result of rising tempratures which this post confirms are taking place.
+
+## Conclusion
+
+In conclusion temperatures are rising in Colorado. This trend will continue and the consequences will be severe. At this point, the science is undeniable. To simply look around at the snow on the ground in Winter and determine that this is evidence counter to the projections of climate change is foolish. If we wait long enough, the lucky few who dodge the wildfires, find water and generally survive may have the grim satisfaction of saying “I told you so” when winter comes without any snow. But a more satisfying outcome will be to look at the snow on the ground and say, “we did it.” With this in mind, the only path forward is to strictly observe our carbon budgets and move towards a world and an economy based on sustainability.
+
+Citations:
+
+Environmental Protection Agency. (2017, October 9). What Climate Change Means for Colorado. Retrieved from https://19january2017snapshot.epa.gov/sites/production/files/2016-09/documents/climate-change-co.pdf.
+
+Impacts in Colorado. (2017, February 15). Retrieved from https://www.colorado.edu/ecenter/energyclimate-justice/general-energy-climate-info/climate-change/impacts-colorado.
+
