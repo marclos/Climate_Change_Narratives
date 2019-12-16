@@ -1,0 +1,47 @@
+---
+title: "Blog De Bilt Draft"
+author: "Pauline Bekkers"
+date: "18/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Climate Trends
+
+```{r}
+read.csv("/home/CAMPUS/pmba2017/Pauline_DeBilt_Data.csv")
+```
+```{r}
+climate_data<-read.csv("/home/CAMPUS/pmba2017/Pauline_DeBilt_Data.csv")
+```
+
+
+```{r}
+min(climate_data$TMAX, na.rm=T)
+```
+
+
+
+```{r}
+strDates <- as.character(climate_data$DATE)
+climate_data$Year <- as.Date(strDates, "%Y-%m-%d")
+```
+
+```{r}
+climate_data$Year
+```
+
+```{r}
+plot(TMAX~Year, climate_data[1:43414,], ty='l')
+bestfit<-lm(TMAX~Year, climate_data[1:43414,])
+abline(bestfit, col="blue")
+plot(TMAX~Year, climate_data, ty='l', main="Max Temperatures between 1901 and 2019 in De Bilt, Netherlands",xlab="Year", ylab="Maximum Temperature (°)")
+c<-coef(lm(TMAX~Year,climate_data))
+abline(c, col="red")
+```
+
+```{r}
+
