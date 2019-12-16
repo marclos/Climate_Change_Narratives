@@ -1,7 +1,7 @@
 ---
 title: "Hot, Dry, and in Flames: What Forces are Behind California’s Wildfires?"
 author: "Kate McWilliams"
-date: "12/2/2019"
+date: "12/16/2019"
 output:
   pdf_document: default
   html_document: default
@@ -77,7 +77,7 @@ An undergrad thesis by D.M. Von Schaumburg points out that an increase in fire f
 # Obtaining Climate Data on Southern California (Methodology)
 
 ## A California Case Study
-The City of Claremont is located at the foot of the San Antonio mountains in Southern California. The Meditterranean climate is characterized by mildly cool, rainy winters and hot, dry summers. Autumn brings Santa Ana winds over the San Antonio mountains and across an expanse that includes Claremont. I chose to examine temperature and precipitation data from Claremont as an indicator of temperature for the land area below Baldy. My goal was to see if increasing temperatures in Claremont, due to Santa Ana winds, were correlated with increased fires around the region. I accessed the database on National Oceanic and Atmospheric Administration (NSSL [date unknown]) to collect temperature and precipitation data in Claremont. I chose the month of October because Autumn is the most high-risk time of year for fires after a long deficit of rain during the summer months. 
+The City of Claremont is located at the foot of the San Antonio mountains in Southern California. The Mediterranean climate is characterized by mildly cool, rainy winters and hot, dry summers. Autumn brings Santa Ana winds over the San Antonio mountains and across an expanse that includes Claremont. I chose to examine temperature and precipitation data from Claremont as an indicator of temperature for the land area below Baldy. My goal was to see if increasing temperatures in Claremont, due to Santa Ana winds, were correlated with increased fires around the region. I accessed the database on National Oceanic and Atmospheric Administration (NSSL [date unknown]) to collect temperature and precipitation data in Claremont. I chose the month of October because Autumn is the most high-risk time of year for fires after a long deficit of rain during the summer months. 
 
 
 ```{r, echo=FALSE, fig.cap="\\label{fig:figs}Minimum Temperature Average for October 1950-2019"}
@@ -88,7 +88,7 @@ abline(coef(May.lm), col="red")
 
 
 ```{r, echo=FALSE, fig.cap="\\label{fig:figs}Average October Precipitation 1950-1980"}
-MonthlyPRCP = aggregate(PRCP ~ Month + Year, climate_data, mean)
+MonthlyPRCP = aggregate(PRCP ~ Month + Year, climate_data, sum)
 MonthlyPRCP$YEAR = as.numeric(MonthlyPRCP$Year)
 MonthlyPRCP$MONTH = as.numeric(MonthlyPRCP$Month)
 
