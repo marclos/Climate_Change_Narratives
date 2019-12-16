@@ -28,11 +28,10 @@ These ambiguities about the location and national identification of this particu
 
 ```{r date, include=FALSE}
 # aihui station?? https://www.nws.noaa.gov/dm-cgi-bin/nsd_lookup.pl?station=50468
-# https://www.weather-forecast.com/locations/Blagoveshchensk/forecasts/latest 
 # https://www.weather-forecast.com/locations/Blagoveshchensk/forecasts/latest
 # https://www.weather-forecast.com/weather-stations/Aihui
 # https://www.nws.noaa.gov/dm-cgi-bin/nsd_lookup.pl?station=50468
-
+# short term regression; lines
 min(TEMP$TMAX, na.rm=T)
 min(TEMP$TAVG, na.rm=T)
 min(TEMP$TMIN, na.rm=T)
