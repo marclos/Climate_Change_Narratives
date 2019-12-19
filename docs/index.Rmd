@@ -22,26 +22,33 @@ library(tufte)
 knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 ```
-# Some issues if climate records reliability
+# Introdution
 
-Taking the temperature of the Earth, 
-... [Massari (2019)](Massari0.html)
+## Weather Records and Climate Trends
 
-... [Hsu (2019)](Hsu0.html)
-
-Chicago... [Grant (2019)](Grant0.html)
-
-## Perceptions and Records
-
-[Whitman_Sandmeyer (2019)](Whitman_Sandmeyer0.html)
-
-```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='2015 Flood in Fenton, Missouri. Human developments in the flood plain are a recipe for disaster. But do the hazards of these activities increase in frequency or intensity with climate change? This is a question that "attribution science" tries to answer.'}
-knitr::include_graphics('S2019/Fenton_MI_2015Flood.jpg')
+```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='The ecological communities on mountains can vary with elevation, but these communinities are extremely vulnerable to climange change. As temperatures increase, populations .'}
+knitr::include_graphics('F2019/climatezones_mountains.jpg')
 ```
+
+Establishing and maintaining consistently designed weather stations requires institutional capacity. In many cases, the weather stations are a symbol of and component of modernity. 
+
+However, as Bruno Latour has noted the process to modernize is both uneven and inconsistent. And as we look to use weather stations, which had been estalished answer specific local questions, e.g. when will there be enough water to plant rice or warm enough to sow corn. But as we try to evaluate how the ``average weather" or climate might be changing we learn about how complex it is to use these weather stations. 
+
+```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='This weather station was established in 1881 as part of the construcion of the trans-Siberia railroad . The meteorological station was built by the passenger terminal at the Amazar Station'}
+knitr::include_graphics('F2019/RussianWeatherStation.png')
+```
+For example, starting in 1881 a station in China has been recording daily temperatures, but it is not clear 1) where the station is, 2) who has been in charge of it, 3) what technology there were using to make their measurements [Massari (2019)](Massari0.html).
+
+Meanwhile weather stations in remote locations, such as Glacier National Park have been moved so often, that developing a long-term trend might seem impossible [Foster (2019)](Foster0.html).
+
+# Climate Change in High Elevation Locations
+
+
+
 
 ## Glaciers 
 
-[Foster (2019)](Foster0.html)
+
 
 
 # Impacts of Ecosytems...
@@ -59,7 +66,13 @@ Denver changes... [Bidell (2019)](Bidell0.html)
 Venezuala... [Chaichang Azterbaum (2019)](Chaichang_Azterbaum.html)
 
 
+# Urban Environments
 
+## 
+
+San Francisco [Hsu (2019)](Hsu0.html)
+
+Chicago... [Grant (2019)](Grant0.html)
 
 ## Impacts and Coastal Zone Impacts
 
@@ -70,6 +83,13 @@ Venezuala... [Chaichang Azterbaum (2019)](Chaichang_Azterbaum.html)
 ## SST
 
 [Weed (2019)](Weed0.html)
+
+
+
+## Perceptions and Records
+
+[Whitman_Sandmeyer (2019)](Whitman_Sandmeyer1.html)
+
 
 # Climate Justice...
 
