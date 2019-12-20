@@ -1,9 +1,23 @@
 ---
-title: "Temperature Data - The Unknown Station: Blagovescensk"
+title: 'Temperature Data - The Unknown Station: Blagovescensk'
 author: '17276'
 date: "12/3/2019"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
+
+Once you have stated your thesis, acknowledge contradictory
+opinions and explain why you disagree with them. Use facts, statistics, evidence, quotations, and theoretical explanations for criticizing
+your opponents’ views and cite your sources. 
+
+A scientific expresses your point of view while a great one manages
+to persuade others to join your camp. To persuade people, you need
+a sound argument based on facts, evidence, and analogies, not vitriol
+and diatribe.
+
+In this case, your
+arguments should demonstrate a practical policy outcome or action
 
 ## Introduction
 
@@ -26,17 +40,8 @@ It is also the station with the earliest recorded data in China by sixty-one yea
 
 These ambiguities about the location and national identification of this particular weather station may be concerning for some people. However, this data has been cleared by the National Oceanic and Atmospheric Administration. According to NOAA, the findings are sound, at 97% overall coverage.
 
-```{r date, include=FALSE}
-# aihui station?? https://www.nws.noaa.gov/dm-cgi-bin/nsd_lookup.pl?station=50468
-# https://www.weather-forecast.com/locations/Blagoveshchensk/forecasts/latest
-# https://www.weather-forecast.com/weather-stations/Aihui
-# https://www.nws.noaa.gov/dm-cgi-bin/nsd_lookup.pl?station=50468
-# short term regression; lines
-min(TEMP$TMAX, na.rm=T)
-min(TEMP$TAVG, na.rm=T)
-min(TEMP$TMIN, na.rm=T)
-plot(TAVG ~ DATE, TEMP, ty='l')
-```
+# Downloading the Data
+
 
 # Examining Outliers
 
@@ -63,7 +68,6 @@ change = lm(TMAX ~ NewDate, data=TEMP)
 summary(change)
 TEMP$Month = format(as.Date(TEMP$NewDate), format = "%m")
 TEMP$Year = format(TEMP$NewDate, format="%Y")
-
 MonthTMAX.mean = aggregate(TMAX ~ Month + Year, TEMP, mean)
 MonthTMAX.mean$YEAR = as.numeric(MonthTMAX.mean$Year)
 MonthTMAX.mean$MONTH = as.numeric(MonthTMAX.mean$Month)
