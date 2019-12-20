@@ -37,13 +37,15 @@ We will analyze the temperature data of oldest weather station in China listed i
 
 The Blagovescensk weather station (NOAA ID:GHCND:RSM00031510), is listed at N 50.25 E 127.5 at 130 m elevation in what appears to be a park in the Zhongyang Commercial district in Aihui, Heihe, Heilongjiang, China. It is near the bank of the Amur River just feet away from the Russian border in the northeastern part of China. On the NOAA website, the station is identified as a Chinese station, while the data in the spreadsheet appears to list Russia as the country of origin. 
 
+![Station Location](station location.jpg)
+
 There is next to no information on the station outside of the NOAA website. Since the Russian city of Blagoveshchensk is right across the river from this station, it may be possible that the station was misnamed or Blagovescensk is an alternative Romanized spelling for the city. By searching '"Blagovescensk" weather', one can go to the images section and find a link to a Russian weather site. According to weather-forcast.com, the Blagoveshchensk Weather Forecast has two stations immediately nearby the Russian city, both are in China. However, only one is listed on the NOAA site (Blagovescensk), and on the Russian weather site the link to the Blagovescensk station has an error message (the web page has been moved). The closest location is the Aihui (爱辉镇) station, which appears to be only a kilometer away from the Blagovescensk station and is not on the NOAA listing. 
+
+![Blagovescensk Station](station.jpg)
 
 It is also the station with the earliest recorded data in China by sixty-one years. Since 1881, the Blagovescensk station has been recording temperature averages, later also recording minimums in 1890 and then maximums in 1914. There were 21 Russian weather stations that began recording data on January 1, 1881 (only one previous to this, in 1874), so it is possible that the Blagovescensk station on Chinese soil was somehow connected to these other Russian stations.
 
 These ambiguities about the location and national identification of this particular weather station may be concerning for some people. However, this data has been cleared by the National Oceanic and Atmospheric Administration. According to NOAA, the findings are sound, at 97% overall coverage.
-
-![Station Location](station location.jpg)
 
 # Downloading the Data
 ```{r setup, include=FALSE}
@@ -224,10 +226,10 @@ Statistical Values Table
 |**April**   |0.0363    |       0.0000|0.065     |       0.0000|0.034     |   0.0000|###
 |**May**     |0.0356    |       0.0000|0.0527    |       0.0000|0.044     |   0.0000|###
 |June        |0.0242    |       0.0000|0.0412    |       0.0001|0.0379    |   0.0000|##
-|*July*      |0.0035    |     *0.4620*|0.0176    |     *0.0816*|0.0208    |   0.0013|
-|*August*    |0.0102    |       0.0194|0.0071    |     *0.3857*|0.021     |   0.0000|#
+|***July***  |0.0035    | ***0.4620***|0.0176    | ***0.0816***|0.0208    |   0.0013|
+|*August*    |0.0102    |       0.0194|0.0071    | ***0.3857***|0.021     |   0.0000|#
 |September   |0.0105    |       0.0235|0.026     |       0.0024|0.0127    |   0.0213|
-|*October*   |0.0251    |       0.0000|0.0091    |     *0.3488*|0.0253    |   0.0003|#
+|*October*   |0.0251    |       0.0000|0.0091    | ***0.3488***|0.0253    |   0.0003|#
 |November    |0.0284    |       0.0028|0.0481    |       0.0014|0.0319    |   0.0067|
 |December    |0.0277    |       0.0081|0.048     |       0.0018|0.0406    |   0.0015|
 
