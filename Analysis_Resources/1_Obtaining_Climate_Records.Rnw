@@ -131,7 +131,32 @@ TBD
 
 \section{Sea Surface Temperature Data}
 
-TBD
+In contrast to terrestrial data, sea surface temperature (SST) is quite difficult to obtain and process. There are numerous tools to access the data, but they often require knowledge of complex software tools that are not easy to set up or programming experience with python or others.
+
+\url{https://climexp.knmi.nl/select.cgi?id=someone@somewhere&field=ersstv5}
+
+There are, however, a few tools build for R users that seem to accomplish all that we need. 
+
+\url{https://rda.ucar.edu/index.html?hash=data_user&action=register}
+
+\url{https://rda.ucar.edu/datasets/ds277.9/}
+
+<<>>=
+
+library(chron)
+library(RColorBrewer)
+library(lattice)
+#library(ncdf)
+#library(ncdf4)
+
+#"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/ersst.v5.185401.nc")
+
+# Attempts to instlal have been met with frustration...
+# R CMD INSTALL ncdf4_1.9.tar.gz?
+  
+# sudo apt install netcdf-*
+#  R CMD INSTALL --configure-args="--with-nc-config=/home/github/Climate_Change_Narratives/nc-config" ncdf4
+@
 
 \section{Satellite Data}
 

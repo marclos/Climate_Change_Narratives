@@ -1,0 +1,173 @@
+---
+title: "Dont matter"
+author: '66354'
+date: "12/16/2019"
+output: html_document
+---
+
+```{r lexclim, echo=FALSE}
+lexclim = read.csv("/home/CAMPUS/lmwa2017/R/EA30/Project 3 - Climate Data/Lucy_WhitSand_LexingtonKY_data.csv")
+strDates <- as.character(lexclim$DATE)
+lexclim$NewDate <- as.Date(strDates, "%Y-%m-%d")
+lexclim$Month = format(as.Date(lexclim$NewDate), format = "%m")
+lexclim$Year = format(lexclim$NewDate, format="%Y")
+climate_data <- subset(lexclim, subset=Year>1887)
+
+#Max
+tempplot <- plot(TMAX~NewDate, climate_data, ty='l', main=" Recorded Maximum Temperature in Lexington, KY", xlab="Year", ylab="Maximum Temp (F)")
+linebf <- lm(TMAX~NewDate, data=climate_data)
+abline(linebf, col="red")
+summary(linebf)
+
+#Min
+tempplot <- plot(TMIN~NewDate, climate_data, ty='l', main="Recorded Minimum Temperature in Lexington, KY", xlab="Year", ylab="Minimum Temp (F)")
+linebfmin <- lm(TMIN~NewDate, data=climate_data)
+abline(linebfmin, col="red")
+summary(linebfmin)
+
+#Precipitation
+precpplot <- plot(PRCP~NewDate, climate_data, ty='l', main="Recorded Precipitation in Lexington, KY (1888-2019)", xlab="Year", ylab="Precipitation (in)")
+linebfprec <- lm(PRCP~NewDate, data=climate_data)
+abline(linebfprec, col="red")
+summary(linebfprec)
+
+#Snow
+snowplot <- plot(SNOW~NewDate, climate_data, ty='l', main="Recorded Snow in Lexington, KY (1888-2019)", xlab="Year", ylab="Snow (in)")
+linebfsn <- lm(SNOW~NewDate, data=climate_data)
+abline(linebfsn, col="red")
+summary(linebfsn)
+```
+
+```{r Precip, echo=FALSE}
+#Monthly Max
+MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, climate_data, mean)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+#Jan
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="01",], ty='l')
+Jan.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="01",])
+abline(coef(Jan.lm), col="red")
+summary(Jan.lm)
+#Feb
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="02",], ty='l')
+Feb.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="02",])
+abline(coef(Feb.lm), col="red")
+summary(Feb.lm)
+#March
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="03",], ty='l')
+March.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="03",])
+abline(coef(March.lm), col="red")
+summary(March.lm)
+#April
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="04",], ty='l')
+April.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="04",])
+abline(coef(April.lm), col="red")
+summary(April.lm)
+#May
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="05",], ty='l')
+May.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="05",])
+abline(coef(May.lm), col="red")
+summary(May.lm)
+#June
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="06",], ty='l')
+June.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="06",])
+abline(coef(June.lm), col="red")
+summary(June.lm)
+#July
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="07",], ty='l')
+July.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="07",])
+abline(coef(July.lm), col="red")
+summary(July.lm)
+#Aug
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",], ty='l')
+Aug.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",])
+abline(coef(Aug.lm), col="red")
+summary(Aug.lm)
+#Sept
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="09",], ty='l')
+Sept.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="09",])
+abline(coef(Sept.lm), col="red")
+summary(Sept.lm)
+#Oct
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="10",], ty='l')
+Oct.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="10",])
+abline(coef(Oct.lm), col="red")
+summary(Oct.lm)
+#Nov
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="11",], ty='l')
+Nov.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="11",])
+abline(coef(Nov.lm), col="red")
+summary(Nov.lm)
+#Dec
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="12",], ty='l')
+Dec.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="12",])
+abline(coef(Dec.lm), col="red")
+summary(Dec.lm)
+```
+
+```{r Min, echo=FALSE}
+#Monthly Min
+MonthlySNOWMean = aggregate(SNOW ~ Month + Year, climate_data, mean)
+MonthlySNOWMean$YEAR = as.numeric(MonthlySNOWMean$Year)
+MonthlySNOWMean$MONTH = as.numeric(MonthlySNOWMean$Month)
+#Jan
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="01",], ty='l')
+Jan.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="01",])
+abline(coef(Jan.lm), col="red")
+summary(Jan.lm)
+#Feb
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="02",], ty='l')
+Feb.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="02",])
+abline(coef(Feb.lm), col="red")
+summary(Feb.lm)
+#March
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="03",], ty='l')
+March.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="03",])
+abline(coef(March.lm), col="red")
+summary(March.lm)
+#April
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="04",], ty='l')
+April.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="04",])
+abline(coef(April.lm), col="red")
+summary(April.lm)
+#May
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="05",], ty='l')
+May.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="05",])
+abline(coef(May.lm), col="red")
+summary(May.lm)
+#June
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="06",], ty='l')
+June.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="06",])
+abline(coef(June.lm), col="red")
+summary(June.lm)
+#July
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="07",], ty='l')
+July.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="07",])
+abline(coef(July.lm), col="red")
+summary(July.lm)
+#Aug
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="08",], ty='l')
+Aug.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="08",])
+abline(coef(Aug.lm), col="red")
+summary(Aug.lm)
+#Sept
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="09",], ty='l')
+Sept.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="09",])
+abline(coef(Sept.lm), col="red")
+summary(Sept.lm)
+#Oct
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="10",], ty='l')
+Oct.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="10",])
+abline(coef(Oct.lm), col="red")
+summary(Oct.lm)
+#Nov
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="11",], ty='l')
+Nov.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="11",])
+abline(coef(Nov.lm), col="red")
+summary(Nov.lm)
+#Dec
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="12",], ty='l')
+Dec.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="12",])
+abline(coef(Dec.lm), col="red")
+summary(Dec.lm)
+```

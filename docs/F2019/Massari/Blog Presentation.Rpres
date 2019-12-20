@@ -1,0 +1,298 @@
+The Blagovescensk Weather Station
+========================================================
+author: Aurora Massari
+date: December 16, 2019
+autosize: true
+
+bla-go-ve'-she-nsk
+
+Temperature Trend at Blagovescensk
+========================================================
+![Station Location](station location.jpg)
+***
+- All regression line slopes are positive for minimum, maximum, and average temperatures
+- This indicates a **warming trend** with time
+
+- TMIN (since 1890)
+  + warming trend statistically significant (temperature increase related to time) for ALL months
+
+- TAVG (since 1881)
+  + trend significant for all months except July
+
+- TMAX (since 1914)
+  + significant for all months except July, August, and October
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+TEMP <- read.csv("/home/CAMPUS/aemb2018/Climate_Change_Narratives/student_folders/Massari/1960066.csv")
+head(TEMP)
+str(TEMP)
+```
+
+Finding the Outliers
+========================================================
+left: 60%
+```{r, echo=FALSE}
+par(mfrow=c(1,1))
+plot(TMAX ~ TAVG, data = TEMP, xlab = "Average Temperature", ylab = "Maximum Temperature", main = "Maximum by Average Temperature", col = "tomato2")
+abline(0,1)
+plot(TMIN ~ TAVG, data = TEMP, xlab = "Average Temperature", ylab = "Minimum Temperature", main = "Minimum by Average Temperature", col = "skyblue2")
+abline(0,1)
+```
+***
+Outliers occur when TMAX is under TAVG or TMIN is over TAVG. This is potentially due to human recording error or equipment malfunction
+
+* Either way, there are only about 30 unexplained observations out of almost 50,000 recorded temperatures.
+* These will be lost in the monthly averages and likely have no affect on the results since the dataset is so large
+-
+
+```{r, include=FALSE}
+#TMAX
+date.c = as.character(TEMP$DATE)
+TEMP$NewDate <- as.Date(date.c, "%Y-%m-%d")
+change = lm(TMAX ~ NewDate, data=TEMP)
+summary(change)
+TEMP$Month = format(as.Date(TEMP$NewDate), format = "%m")
+TEMP$Year = format(TEMP$NewDate, format="%Y")
+
+MonthTMAX.mean = aggregate(TMAX ~ Month + Year, TEMP, mean)
+MonthTMAX.mean$YEAR = as.numeric(MonthTMAX.mean$Year)
+MonthTMAX.mean$MONTH = as.numeric(MonthTMAX.mean$Month)
+str(MonthTMAX.mean)
+plot(MonthTMAX.mean$TMAX, ty = "l")
+
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+TMAXresult <- NA
+
+for (i in 1:12){
+#plot(MonthTMAX.mean£TMAX[MonthTMAX.mean£Month==i], ty='l')
+plot(TMAX~YEAR,
+data=MonthTMAX.mean[MonthTMAX.mean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMAXresult <- rbind(TMAXresult,
+cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}
+
+#TMIN
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, TEMP, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+TMINresult <- NA
+
+for (i in 1:12){
+#plot(MonthTMAX.mean£TMAX[MonthTMAX.mean£Month==i], ty='l')
+plot(TMIN~YEAR,
+data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm.min <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm.min)
+abline(coef(Month.lm.min), col="red")
+TMINresult <- rbind(TMINresult,
+cbind(Months[i], round(coef(Month.lm.min)[2], 4),
+round(summary(Month.lm.min)$coefficients[2,4],4),
+round(summary(Month.lm.min)$r.squared, 3)))
+}
+
+#TAVG
+MonthlyTAVGMean = aggregate(TAVG ~ Month + Year, TEMP, mean)
+MonthlyTAVGMean$YEAR = as.numeric(MonthlyTAVGMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTAVGMean$YEAR = as.numeric(MonthlyTAVGMean$Year)
+MonthlyTAVGMean$MONTH = as.numeric(MonthlyTAVGMean$Month)
+head(MonthlyTAVGMean)
+plot(MonthlyTAVGMean$TAVG, ty='l')
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+TAVGresult <- NA
+
+for (i in 1:12){
+plot(TAVG~YEAR,
+data=MonthlyTAVGMean[MonthlyTAVGMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm.avg <- lm(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$MONTH==i,])
+summary(Month.lm.avg)
+abline(coef(Month.lm.avg), col="red")
+TAVGresult <- rbind(TAVGresult,
+cbind(Months[i], round(coef(Month.lm.avg)[2], 4),
+round(summary(Month.lm.avg)$coefficients[2,4],4),
+round(summary(Month.lm.avg)$r.squared, 3)))
+}
+
+#Crating the Table
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4],
+TAVGSlope = TAVGresult[c(2:13),2],
+TAVG_P = as.numeric(TAVGresult[c(2:13),3]),
+TAVGRsq = TAVGresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$starTAVG = "NS"
+Results$starTAVG[Results$TAVG_P < 0.05] = "*"
+Results$starTAVG[Results$TAVG_P < 0.01] = "**"
+Results$starTAVG[Results$TAVG_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+Results$TAVGslope=paste(Results$TAVGSlope, Results$starTAVG)
+colnames(Results) <- c("Month", "TMINSlope", "TMIN_P", "TMINR^2", "TMAXSlope", "TMAX_P", "TMAXR^2", "TAVGSlope", "TAVG_P", "TAVGR^2", "starTMIN", "starTMAX", "starTAVG", "Slope TMIN", "Slope TMAX", "Slope TAVG")
+library(knitr)
+kable(Results[,c(1, 8, 9, 5, 6, 2, 3)], rownames=FALSE, type = "html")
+
+par(mfrow=c(1,1))
+```
+
+
+Statistical Values Table
+========================================================
+|Month     |TAVGSlope | TAVG_P      |TMAXSlope | TMAX_P      |TMINSlope |   TMIN_P|
+|:---------|:---------|------------:|:---------|------------:|:---------|--------:|
+|January   |0.0456    |       0.0001|**0.0791**|       0.0000|0.0639    |   0.0000|
+|February  |0.0327    |       0.0034|0.0706    |       0.0000|0.0396    |   0.0022|
+|March     |**0.0522**|       0.0000|0.0768    |       0.0000|**0.0667**|   0.0000|
+|April     |0.0363    |       0.0000|0.065     |       0.0000|0.034     |   0.0000|
+|May       |0.0356    |       0.0000|0.0527    |       0.0000|0.044     |   0.0000|
+|June      |0.0242    |       0.0000|0.0412    |       0.0001|0.0379    |   0.0000|
+|July      |0.0035    | ***0.4620***|0.0176    | ***0.0816***|0.0208    |   0.0013|
+|August    |0.0102    |       0.0194|0.0071    | ***0.3857***|0.021     |   0.0000|
+|September |0.0105    |       0.0235|0.026     |       0.0024|0.0127    |   0.0213|
+|October   |0.0251    |       0.0000|0.0091    | ***0.3488***|0.0253    |   0.0003|
+|November  |0.0284    |       0.0028|0.0481    |       0.0014|0.0319    |   0.0067|
+|December  |0.0277    |       0.0081|0.048     |       0.0018|0.0406    |   0.0015|
+
+
+Plotting the Most Significant Values (2 of 9 statistically significant months)
+========================================================
+
+```{r Significant, echo=FALSE}
+Mar.lm <- lm(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="03",])
+plot(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="03",],
+ty='l', ylab = "Average Temperature", main = "March Average Temperatures")
+abline(coef(Mar.lm), col="green2")
+
+Mar.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",],
+ty='l', ylab = "Minimum Temperature", main = "March Minimum Temperatures")
+abline(coef(Mar.lm), col="blue2")
+
+Jan.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="01",])
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="01",],
+ty='l', ylab = "Maximum Temperature", main = "January Maximum Temperature")
+abline(coef(Jan.lm), col="red2")
+```
+
+Plotting the Insignificant Values (3 of 3 insignificant months for TMAX)
+========================================================
+```{r Insignificant, echo=FALSE}
+Jul.lmAVG <- lm(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="07",])
+Jul.lmMAX <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="07",])
+plot(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="07",], ty='l', ylim = c(62, 87), ylab = "Average Temperature", main = "July Average and Maximum Temperatures", col = "olivedrab4")
+abline(coef(Jul.lmAVG), col="green2")
+lines(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="07",], ty='l', col = "salmon3")
+abline(coef(Jul.lmMAX), col="red2")
+
+Aug.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="08",])
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="08",],
+ty='l', ylab = "Maximum Temperature", main = "August Maximum Temperature")
+abline(coef(Aug.lm), col="red2")
+
+Oct.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="10",])
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="10",],
+ty='l', ylab = "Maximum Temperature", main = "October Maximum Temperature")
+abline(coef(Oct.lm), col="red2")
+```
+
+Connection to the Literature
+========================================================
+
+- From 1954-2010 the surface air temperature index has increased in the region of 80°E–130°E, 45°N–65°N *(Zhu 2012)*
+  + Blagovescensk is within that range, located at N 50.25 E 127.5 and at 130 m elevation
+  
+- Post-1988 development in China saw a rise in urban heat islands contributing to the warming trend *(Li 2009)*
+  + Heilongjiang Highway and River Bridge encourages development in this area
+  
+- Shorter cool seasons makes the northeastern region of China suitable for agriculture *(Yang 2007)*
+- In all of China, temperature maximums in autumn and winter have the strongest warming signals while summer has the weakest *(Zhai 1999)*
+  + Our findings support this research
+
+Station Background: Ambiguity
+========================================================
+right:55%
+![Blagovescensk Station](station.jpg)
+***
+- Zhongyang Commercial district in Aihui, Heihe, Heilongjiang, China (next to a KFC)
+- On the bank of Amur River near to the Russian border (neighboring city of Blagoveshchensk)
+- NOAA identifies it as a Chinese station, but in the data it is listed as Russian and Berkeley Earth identifies it as Russian
+  + Possibly NOAA site adopted a different romanization of Blagovescensk
+- Only Chinese station collecting data since 1881, the next Chinese weather station on the NOAA record started in 1942. However, in 1881 twenty-one weather stations in Russia began operating
+- Averages recorded first (1881), followed by minimums (1890), and then maximums (1914) with 97% overall coverageaccording to NOAA
+
+Station Background: Fallacies
+========================================================
+left:70%
+- *Ad Populum* and *Conspiracy Theories*: political distrust of NOAA, China, or Russia as official governmental institutions
+  + for some, discrediting these actors can discredit the data and therefore its findings
+
+- *False Dichotomy*: not all the months are statistically significant, so how can we be sure this warming trend is related to human action? Either it is all caused by climate change or it is not, and since it cannot be completely attributed, it must not be true.
+
+- *Cherry Picking*: the maximum temperatures during the summer are not significantly increasing, so climate change must not be occurring
+
+* Does historical ambiguity translate to untrustworthy data? Is this a red herring or a legitimate cause for concern?
+-
+
+ ***
+ 
+![Weather-forecast.com](weather-forecast.png)
+
+Social Impact
+========================================================
+- With further industrialization, heat islands will continue to impact the heating and drying trend (Li 2009)
+- A shorter cold season means areas in the northeastern region of China are expected to become more suitable for agriculture, which has further environmental implicaitons (Yang 2007)
+- Possibly ports will be available to trade at a higher volume, transferring economic (and human) activity northward
+- Previously undisturbed wetlands in and around Xing’an Mountain will be vulnerable, a predicted 30% decrease in the wetland ecosystem (Liu 2011)
+
+***
+
+![Xing'an Mountains](Xingan.jpg)
+
+References
+========================================================
+1. Li Q.2009. Assessment of surface air warming in northeast China, with emphasis on the impacts of urbanization. Theor & Appl. Climato. 99: 469-478.
+2. Liu. 2011. Predicting the wetland distributions under climate warming
+in the Great Xing’an Mountains, northeastern China. Ecol Res. 26: 605–613
+3. Staff. 2019. Blagoveshchensk Weather Forecast. Metero365: https://www.weather-forecast.com/locations/Blagoveshchensk/forecasts/latest 
+4. Staff. 2015. Temperature Monitoring Station: BLAGOVESHCHENSK. Berkeley Earth: http://berkeleyearth.lbl.gov/stations/169111
+5. Yang X. 2007. Adaptation of agriculture to warming in Northeast China. Climatic Chan. 84: 45-58.
+6. Zhai P. 1999. Changes of Climate Extremes in China. Climatic Chan. 42: 203-218. 
+7. Zhu C. 2012. Recent weakening of northern East Asian summer monsoon: A possible response to global warming. Geophy. Res. Lett. 39 (9): 1-6.
+
+
+
+
