@@ -1,0 +1,175 @@
+---
+title: "Whitman_Sandmeyer_Draft1"
+author: '66354'
+date: "12/2/2019"
+output: html_document
+---
+
+## Plots
+
+```{r lexclim, echo=FALSE}
+lexclim = read.csv("/home/CAMPUS/lmwa2017/R/EA30/Project 3 - Climate Data/Lucy_WhitSand_LexingtonKY_data.csv")
+strDates <- as.character(lexclim$DATE)
+lexclim$NewDate <- as.Date(strDates, "%Y-%m-%d")
+lexclim$Month = format(as.Date(lexclim$NewDate), format = "%m")
+lexclim$Year = format(lexclim$NewDate, format="%Y")
+climate_data <- subset(lexclim, subset=Year>1887)
+
+#Max
+tempplot <- plot(TMAX~NewDate, climate_data, ty='l', main=" Recorded Maximum Temperature in Lexington, KY", xlab="Year", ylab="Maximum Temp (F)")
+linebf <- lm(TMAX~NewDate, data=climate_data)
+abline(linebf, col="red")
+summary(linebf)
+
+#Min
+tempplot <- plot(TMIN~NewDate, climate_data, ty='l', main="Recorded Minimum Temperature in Lexington, KY", xlab="Year", ylab="Minimum Temp (F)")
+linebfmin <- lm(TMIN~NewDate, data=climate_data)
+abline(linebfmin, col="red")
+summary(linebfmin)
+
+#Precipitation
+precpplot <- plot(PRCP~NewDate, climate_data, ty='l', main="Recorded Precipitation in Lexington, KY (1888-2019)", xlab="Year", ylab="Precipitation (in)")
+linebfprec <- lm(PRCP~NewDate, data=climate_data)
+abline(linebfprec, col="red")
+summary(linebfprec)
+
+#Snow
+snowplot <- plot(SNOW~NewDate, climate_data, ty='l', main="Recorded Snow in Lexington, KY (1888-2019)", xlab="Year", ylab="Snow (in)")
+linebfsn <- lm(SNOW~NewDate, data=climate_data)
+abline(linebfsn, col="red")
+summary(linebfsn)
+```
+
+```{r Max, echo=FALSE}
+#Monthly Max
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+#Jan
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l')
+Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+abline(coef(Jan.lm), col="red")
+summary(Jan.lm)
+#Feb
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",], ty='l')
+Feb.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+abline(coef(Feb.lm), col="red")
+summary(Feb.lm)
+#March
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",], ty='l')
+March.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",])
+abline(coef(March.lm), col="red")
+summary(March.lm)
+#April
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",], ty='l')
+April.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+abline(coef(April.lm), col="red")
+summary(April.lm)
+#May
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l')
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+abline(coef(May.lm), col="red")
+summary(May.lm)
+#June
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",], ty='l')
+June.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+abline(coef(June.lm), col="red")
+summary(June.lm)
+#July
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",], ty='l')
+July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+abline(coef(July.lm), col="red")
+summary(July.lm)
+#Aug
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], ty='l')
+Aug.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+abline(coef(Aug.lm), col="red")
+summary(Aug.lm)
+#Sept
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",], ty='l')
+Sept.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+abline(coef(Sept.lm), col="red")
+summary(Sept.lm)
+#Oct
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",], ty='l')
+Oct.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+abline(coef(Oct.lm), col="red")
+summary(Oct.lm)
+#Nov
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",], ty='l')
+Nov.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",])
+abline(coef(Nov.lm), col="red")
+summary(Nov.lm)
+#Dec
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",], ty='l')
+Dec.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+abline(coef(Dec.lm), col="red")
+summary(Dec.lm)
+```
+
+```{r Min, echo=FALSE}
+#Monthly Min
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+#Jan
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty='l')
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+abline(coef(Jan.lm), col="red")
+summary(Jan.lm)
+#Feb
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",], ty='l')
+Feb.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+abline(coef(Feb.lm), col="red")
+summary(Feb.lm)
+#March
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",], ty='l')
+March.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
+abline(coef(March.lm), col="red")
+summary(March.lm)
+#April
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",], ty='l')
+April.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
+abline(coef(April.lm), col="red")
+summary(April.lm)
+#May
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l')
+May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+abline(coef(May.lm), col="red")
+summary(May.lm)
+#June
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty='l')
+June.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
+abline(coef(June.lm), col="red")
+summary(June.lm)
+#July
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l')
+July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
+abline(coef(July.lm), col="red")
+summary(July.lm)
+#Aug
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty='l')
+Aug.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+abline(coef(Aug.lm), col="red")
+summary(Aug.lm)
+#Sept
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="09",], ty='l')
+Sept.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
+abline(coef(Sept.lm), col="red")
+summary(Sept.lm)
+#Oct
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty='l')
+Oct.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+abline(coef(Oct.lm), col="red")
+summary(Oct.lm)
+#Nov
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",], ty='l')
+Nov.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
+abline(coef(Nov.lm), col="red")
+summary(Nov.lm)
+#Dec
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l')
+Dec.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+abline(coef(Dec.lm), col="red")
+summary(Dec.lm)
+```

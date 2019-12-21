@@ -1,0 +1,137 @@
+---
+title: "California Wildfire"
+author: "Kate McWilliams"
+date: "12/2/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('plyr')
+library('rnoaa')
+```
+
+## R Markdown
+
+```{r Climate Data}
+#file.choose()
+read.csv("/home/CAMPUS/kmto2015/Climate_Change_Narratives/student_folders/McWilliams/NOAA Climate Data.csv")
+climate_data <- read.csv("/home/CAMPUS/kmto2015/Climate_Change_Narratives/student_folders/McWilliams/NOAA Climate Data.csv")
+
+str(climate_data)
+climate_data$TMAX[climate_data$TMAX==-9999] = NA 
+climate_data$TMIN[climate_data$TMIN==-9999] = NA
+
+
+
+```
+```{r stats}
+min(climate_data$TMAX, na.rm = T)
+```
+## Including Plots
+
+```{r climate, echo=FALSE}
+plot(TMAX~DATE, climate_data)
+```
+```{r Date Formatting}
+strDates <-as.character(climate_data$DATE)
+
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+head(climate_data)
+```
+
+
+```{r}
+plot(TMAX~NewDate, climate_data,ty='l')
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+lm(TMAX~NewDate, data=climate_data)
+
+summary(lm(TMAX ~ NewDate, data=climate_data))
+
+```
+
+```{r}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m") 
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+```{r}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",], ty='l', xlim=c(1950, 2020)) 
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",]) 
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+```
+
+
+```{r MINIMUM TEMP ANALYSIS}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+
+str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+```
+
+```{r}
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty='l', xlim=c(1950, 2020)) 
+May.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",]) 
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+```
+```{r}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+```
+
+```{r}
+library(xtable) 
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+
+summary(Month.lm)
+
+abline(coef(Month.lm), col="red")
+
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3)))
+}
+
+Results <- data.frame(Month = TMINresult[c(2:13),1], TMINSlope = TMINresult[c(2:13),2], TMIN_P = as.numeric(TMINresult[c(2:13),3]), TMINRsq = TMINresult[c(2:13),4], TMAXSlope = TMAXresult[c(2:13),2], TMAX_P = as.numeric(TMAXresult[c(2:13),3]), TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS" 
+Results$starTMIN[Results$TMIN_P <= .05] = "*" 
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***" 
+Results$starTMAX = "NS" 
+Results$starTMAX[Results$TMAX_P < 0.05] = "*" 
+Results$starTMAX[Results$TMAX_P < 0.01] = "**" 
+Results$starTMAX[Results$TMAX_P < 0.001] = "***" 
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX) 
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", "R^2", "8", "9", "Slope TMIN", "Slope TMAX") 
+```
+
+```{r}
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
