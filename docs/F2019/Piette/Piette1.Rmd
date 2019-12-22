@@ -1,0 +1,215 @@
+---
+title: "Draft Blog"
+author: '53437'
+date: "12/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+#read.csv("/home/CAMPUS/epac2018/Climate_Change_Narratives/student_folders/Piette/Piette_v0_files/climate_data.csv")
+filepath = "/home/CAMPUS/epac2018/Climate_Change_Narratives/student_folders/Piette/climate_data.csv"
+filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Piette.csv"
+
+climate_data <- read.csv(filepath)
+head(climate_data)
+str(climate_data)
+```
+
+## Dates
+```{R strdates}
+strDates<-as.character(climate_data$DATE)
+climate_data$NewDate<-as.Date(strDates, "%Y/%m/%d")
+str(climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+```
+
+## Plot
+
+```{r plot}
+
+
+
+plot(TMAX~NewDate, climate_data)
+plot(TMIN~NewDate, climate_data)
+```
+
+## Test Null hypotheses
+
+```{R Summary}
+summary(lm(TMAX~NewDate, data=climate_data))
+summary(lm(TMIN~NewDate, data=climate_data))
+```
+
+## Creating Monthly Means
+
+```{R asDate}
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+```
+
+```{R Aggregate}
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+```
+
+```{R str}
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+## Selecting for one month (May)
+
+```{R Plot}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+
+summary(May.lm)
+abline(coef(May.lm), col="purple")
+```
+
+## Testing all the months
+```{R par}
+# First I create a vector of months
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+
+# Create a panel so I can see all the figures at once.
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+plot(TMAX~YEAR,
+data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+summary(Month.lm)
+
+abline(coef(Month.lm), col="purple")
+
+TMAXresult <- rbind(TMAXresult,
+cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}
+
+
+```
+
+
+```{r line103}
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+plot(TMIN~YEAR,
+data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm)
+
+abline(coef(Month.lm), col="purple")
+
+TMINresult <- rbind(TMINresult,
+cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+## Analyzing minimum daily temperatures
+```{R TMIN}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+```
+
+## Make a table for comparison
+``` {R table}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+```
+
+```{R table part 2}
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6","R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
+
+## Remove and plot missing precipitation values
+```{R Missing}
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP),
+            list(climate_data$Month, climate_data$Year), sum)
+# The aggregate command is used to create a simplified dataset. In this case
+# we are creating a sum of PRCP based on each month and year.
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+plot(x ~ Date, data=Missing)
+```
+
+##Decide what level of aggredation. Aggreate to get by moth and year to get monthy totals
+```{R aggreate}
+TotalPPT <- aggregate(climate_data$PRCP, list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+#Check to see what you created
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+library(dplyr)
+PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
+head(PPT)
+PRCP_mean = mean(PPT$ppt)
+plot(ppt~Date, data=PPT)
+abline(h=PRCP_mean, col="blue")
+```
+
+## Model Diagnostics
+```{R diagnostics}
+par(mfrow=c(1,1))
+plot(lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==1,]))
+```
+
+
+
+
+
+
+
+
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

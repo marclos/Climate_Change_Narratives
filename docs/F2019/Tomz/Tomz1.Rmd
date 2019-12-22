@@ -1,0 +1,364 @@
+---
+title: "Climate and Its Effect on the Skiing and Hiking Industry in Zürich, Switzerland"
+author: "Emily Tomz"
+date: "12/20/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The dataset used for this blog post comes from the National Oceanic and Atmospheric Administration's collection of climate stations in Switzerland. This particular station is located in Zürich, Switzerland, with the proper station name of 'ZUERICH FLUNTERN, SZ'. It lies at an elevation of 555m, with 100% data coverage ranging from January 1, 1901 until September 9, 2019.
+
+The dataset includes precipitation, snow, maximum temperature, minimum temperature, and average temperature data. This blog consideres all aspects of the dataset, as well as its implications regarding the skiing and hiking industries in Switzerland. 
+
+A city located in northern Switzerland, Zürich is a unique masterpiece of the world. Situated next to a gorgeous lake with magificent Swiss Alps in view, Zürich is home to a substantial number of environmental lovers, groups, and institutions. And, with its proixmity to the mountains, it is also a key location for skiing and hiking, two of the largest industries in the country.
+
+According to the Swiss Tourism Federation, in 2018 tourism accounted for 44.7 billion Swiss Francs (45.48 billion US dollars) in revenue, making it one of the largest export industries in Switzerland at 4.4% of the country's export revenue.
+
+One of the most prominent activities in the country, and in Zürich in particular, is skiing. After a dip in Skier-days in Switzerland, it is again on the first in 2018, benefiting the economy. In winter, exist 551 total offers of winter hiking, snowshoe walking, cross-country skiing, and sledging. Switzerland offers 154 ski schools across the country, the success of which depends on the number of visitors to the slopes.
+
+Hiking is another common activity, with 294 local routes across the country in addition to the 224 routes for mountain biking. In Zürich in particular, there are almost 3,000 km of walks. According to the federation, hiking is the most popular leisure and sporting activity in Switzerland for people of all ages, with its popularity rising over the last decade. Considering the economy, hiking expendatures account for approximately 2.8 billion Swiss Francs in revenue each year, due to travel, meals, equipment, overnight accomodation, and other modes of spending.
+
+However, hiking and skiing both rely on specific climates for them to be appropriate activities. Skiing requires snow, and hiking requires (for most people) decent weather. Thus, it is crucial to consider climate trends in Zürich in order to predict what may happen to the city's and country's skiing and hiking industries in the future as climate change becomes an increasingly serious issue.
+
+
+```{r read file, echo = FALSE}
+climate_data.csv <- "/home/CAMPUS/erta2018/Climate_Change_Narratives/student_folders/Tomz/Tomz_Blog_v0_files/1957996_modified.csv"
+climate_data.csv <- "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Tomz.csv"
+climate_data <- read.csv(climate_data.csv)
+```
+
+```{r dates reformatting, echo = FALSE}
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+#head(climate_data)
+```
+
+
+## Maximum Temperature over Time
+First, we consider maximum temperature over time. Data has shown that with climate change, temperature is increasing on average worldwide, especially after the start of the Industrial Revolution in the mid 1700s. Plotting maximum daily temperature over time, we see if this trend appears in Zürich, Switzerland.
+
+```{r max daily temps, echo=FALSE}
+plot(TMAX ~ NewDate, data = climate_data, ty = "l", xlab = "Date", ylab = "Degrees Celcius",
+     main = "Maximum Daily Temperature, Zurich, Switzerland", col = "black")
+
+TMAX.lm <- lm(TMAX ~ NewDate, data = climate_data)
+summary(TMAX.lm)
+
+abline(coef(TMAX.lm), col = "red")
+#legend(1910, 0, col = c(1), coef(TMAX.lm))
+```
+
+The plot of the maixmum daily temperature at the Zürich climate station over the last century appears all over the place, but the red trend line appears relatively stagnant. The constant upper and lower spikes that are visible throughout the graph highlight the variation in temperature that occurs day by day throughout the course of each year, decade, and the century as a whole.
+
+Statistically, the slope of the trend line of maximum daily temperature over time is represented as such:
+
+y = 13.90 - 1.416 * 10^(-5)
+
+With a p-value of 0.0000456, the slope of the trend line is statistically significant, allowing us to reject the null hypothesis that there is no association between time and maximum daily temperature. Thus, it is unlikely that the negative slope occured only by chance. Thus, it's evident that temperature is decreasing over time. Specifically, it is decreasing at a rate of -0.00001416 degrees C per year. Over the course of century this is a decrease of about 0.001416 decrees C.
+
+While this trend does not agree with the studies that have shown that temperature is rising on average across the world, it is still relevant to consider. 
+
+## Maximum Monthly Means
+In order to visually simplify the dataset, below is a plot of maximum monthly average temperature over time. The plot is less dense, but it still represents the same image as the plot of maximum monthly daily temperature over time, with the same trend line depicted in red.
+
+```{r max: monthly means, echo = FALSE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+#str(MonthlyTMAXMean)
+#summary(TMAX.lm)
+
+plot(MonthlyTMAXMean$TMAX, ty = 'l', ylab = "Degrees Celcius", main = "Maximum Mean Montly Temperature, Zurich, Switzerland")
+abline(coef(TMAX.lm), col = "red")
+#legend(900, 5, coef(TMAX.lm))
+```
+
+## Maximum Temperature over Time: By Month
+As shown in the daily and monthly temperature graphs, there is a lot of data and a lot of variation within that data. Temperatures vary greatly over the 365 (+1) days in every year, creating the striking spikes in the temperature plots. Some months are warmer, some months are colder, and differences between monthly and daily temperatures can range greatly. Thus, it is crucial to consider temperature trends not only by day and month over the course of the last century, but to actually split the data up by month.
+
+A particular application of the importance of splitting up the data by month arises when considering the skiing and hiking industries in Switzerland. Known for its grandeur and strikingly beautiful Swis alps alongside lakes and hillsides, Zürich is a place of adventure and outdoor excursion. 
+
+Ski season typically occurs within the months of December - March, while hiking season typically occurs within the months of May - September. Thus, let's look at the monthly trends in maximum temperature.
+
+```{r max: all months, echo = FALSE}
+# Create vector of months
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September",
+           "October", "November", "December")
+
+# Create panel to see all figures at once
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1) 
+TMAXresult <- NA
+for (i in 1:12){
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,],
+       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,])
+  summary(Month.lm)
+  
+  abline(coef(Month.lm), col = "green3")
+  
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+                                        round(summary(Month.lm)$coefficients[2, 4], 4),
+                                        round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+Although the maximum temperature over the last century exhibits a slightly negative slope, it's visible that the temperature slopes vary depending on the month. The months which exhibit increasing temperature trends over time are October, November, December, and January, with April, May, June, July, August, and September exhibiing decreasing temperature trends over time. The other months appear to have relatively static slopes.
+
+Interestingly, the months for which temperature is increasing are those which are best for skiing, while the months for which temperature is decreasing are those which are best for hiking. This is problematic because as temperatures rise during ski season, snow availability becomes more limited, thereby reducing revenue produced from ski season in Switzerland. On the other side, as hiking season becomes colder, revenue produced from hiking and other summer-time outdoor excursions will likely also decrease. This may prompt serious problems for the country whose economic success depends greatly on the revenue that comes from the availability of their yearly outdoor activities.
+
+
+```{r max: month of may, echo = FALSE}
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == "05",], 
+     ty = 'l', xlim = c(1900, 2020), ylab = "Degrees Celcius", xlab = "Date", 
+     main = "May: Maximum Daily Temperature, Zurich, Switzerland")
+
+May.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == "05",])
+summary(May.lm)
+
+abline(coef(May.lm), col = "green4")
+#legend(1980, 23, col = c(1), coef(May.lm))
+```
+
+Considering the month of May in particular, we see a statistically significant (p-value = 0.00145) slope of -0.018489 degrees celcius per year. Over the course of a century this translates to a decrease of 1.85 degrees Celcius. Although this appears to be minimal, it may have grand effects on the ecosystems of Zürich, including its physical features such as alps and lakes.
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+## Minimum Daily Temperatures over Time
+Studies have shown that as the worldwide average temparature increasing, ski season length will degrease. Interestingly, however, this data shows a slight decrease in maximum temperature over time. Maximum temperature does not dictate the entire story, though, so it is important to also take a look at the trend of minimum temperature over time. 
+
+```{r min: daily temps, echo = FALSE}
+plot(TMIN ~ NewDate, data = climate_data, ty = "l", xlab = "Date", ylab = "Degrees Celcius",
+     main = "Minimum Daily Temperature, Zurich, Switzerland", col = "black")
+
+TMIN.lm <- lm(TMIN ~ NewDate, data = climate_data)
+summary(TMIN.lm)
+
+abline(coef(TMIN.lm), col = "red")
+#legend(1910, 0, col = c(1), coef(TMAX.lm))
+```
+
+From the plot of daily minimum daily temperature over time, it's once again nearly impossible to spot a positive or negative unless we carefully eye the summary statistics of the blue trend line. This is a falacy of temperature data, because unless people consider graphics and statistics at the same time, it is difficult to convince people that the scientific data is valid. Mere graphs are hard to read and do not seem reliable, and mere statistics are difficult to interpret and are difficult to trust if one has not taken a statistics course in which they learn what statistical testing means. 
+
+According to the summary statistics of the blue trend line, with a statistically significant p-value of 2 * 10^(-16), we reject the null hypothesis and claim that the positive slope of 0.00004431 could not have occured only by chance. Minimum daily temperature increases over time. 
+
+## Minimum Monthly Means
+Reducing the data into a tighter plot of minimum average monthly temperature over time once again creates a more concise graph of the minimum temperature trend over time.
+
+```{r min: monthly means, echo = FALSE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+
+# Fix format of month and year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+
+#str(MonthlyTMINMean)
+summary(MonthlyTMINMean)
+#summary(MonthlyTMINMean$TMIN)
+
+plot(MonthlyTMINMean$TMIN, ty = 'l', ylab = "Degrees Celcius", main = "Minimum Mean Montly Temperature, Zurich, Switzerland")
+TMIN.lm <- lm(TMIN ~ NewDate, data = climate_data)
+summary(TMIN.lm)
+abline(coef(TMIN.lm), col = "blue")
+#legend(900, 5, coef(TMIN.lm))
+```
+
+The finding that the trend line is significant, and therefore that minimum temperature increases over time, is even more interesting when paired with the finding that maximum temperature decreases over time. In Zürich, although the maximum and minimum temperatures are't both rising, as climate data has shown to be the average case across the planet, the gap between the maximum and minimum temperatures is decreasing. The winter is warmer and the summer is colder, creating minimal season extremes. 
+
+
+## Minimum Temperature over Time: By Month
+Once again, due to month-by-month variation, it is useful to view the trends of each month individually as opposed to on a graph where they are all clumped together. 
+
+```{r min: all months, echo = FALSE}
+# Checking ot make sure dataframe exists and variable names make sense...
+#str(MonthlyTMINMean)
+# Create vector of months
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September",
+           "October", "November", "December")
+
+# Create panel to see all figures at once
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+
+for (i in 1:12){
+  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,],
+       ty = 'l', las = 1, xlim = c(1940, 2020), main = Months[i])
+
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,])
+  abline(coef(Month.lm), col = "purple")
+  summary(Month.lm)
+  coef(Month.lm)
+
+  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+                                        round(summary(Month.lm)$coefficients[2, 4], 4),
+                                        round(summary(Month.lm)$r.squared, 3)))
+}
+
+```
+
+It's visible from these plots that every single month has a very obvious positive slope, signifying that minimum temperature has increased during every month over the course of the last century. This has negative implications for ski season especially, for which it's now clear that both maximum and minimum temperatures are increasing. This reduces the ability of snow to form consistently throughout the prime skiing months, which, if it hasn't already, will greatly hurt the ski industry in Zürich. 
+
+One of the months with the most extreme positive slope is January, a month in the middle of the prime skiing season. Below is a graph that takes a closer look at the temperature trend of January.
+
+```{r min: month of january, echo = FALSE}
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == "01",], 
+     ty = 'l', xlim = c(1900, 2020), ylim = c(-20, 10), ylab = "Degrees Celcius", xlab = "Date", 
+     main = "January: Minimum Daily Temperature, Zurich, Switzerland")
+
+Feb.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == "01",])
+summary(Feb.lm)
+
+abline(coef(Feb.lm), col = "purple")
+
+#legend(1980, 23, col = c(1), coef(Feb.lm))
+```
+
+With a slope of 0.018792 and a significant p-value of 0.001963, we are once again able to reject the null hypothesis and conclude that the increase in minimum temperature over time for January does not occur by chance. It is in fact affected by time. Looking at the slope in more detail, 0.018792 degrees Celcius is a relatively large average increase in temperature per year. This corresponds to an increase in 1.8792 degrees celcius over the course of a century, which is exactly in line with the global average temperature increase trends. Studies have attributed this 1.8 degree increase in temperature to a reduction in snow among other changes within ecosystems.
+
+
+## Table of Significant Temperatures 
+The following table depicts monthly maximum and miniumum temperatures, as well as their significance level. The significance levels range from most to least significant based on the symbols of " * * * ", " * * ", " * ", and "NS". 
+
+```{r min: xtable, echo = FALSE}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13), 1],
+                      TMINSlope = TMINresult[c(2:13), 2],
+                      TMIN_P = as.numeric(TMINresult[c(2:13), 3]),
+                      TMINRsq = TMINresult[c(2:13), 4],
+                      TMAXSlope = TMAXresult[c(2:13), 2],
+                      TMAX_P = as.numeric(TMAXresult[c(2:13), 3]),
+                      TMAXRsq = TMAXresult[c(2:13), 4])
+
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= 0.05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+
+Results$TMINslope = paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope = paste(Results$TMAXSlope, Results$starTMAX)
+
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+
+print(xtable(Results[, c(1, 10, 4, 11, 7)]))
+#xtable(Results)
+```
+
+Interestingly, all of the TMIN slopes are statistically significant, while only three of the TMAX slopes are, and more minimally so. Among the TMIN slopes, the most significant occur in March, April, June, July, August, October, and November. There is no obvious reason why this is the case, although one possibility is that it may have been more variable to collect data during December, January, and February when there may have been more extreme weather events. The three months that have both significant TMIN and significant TMAX slopes are May, June, and September, although they do not necessarily have the lowest R^2 value, which represents the amount of variability in the data.
+
+
+## Precipitation: Departure from Mean
+Precipitation is another signficiant piece of data that demands attention, especially when considering snowfall in Zürich, Switzerland. 
+
+```{r missing data, echo = FALSE}
+climate_data$PRCP[climate_data$PRCP == -9999] <- NA
+
+Missing <- aggregate(is.na(climate_data$PRCP),
+                     list(climate_data$Month, climate_data$Year), sum)
+Missing$Data = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2) / 12
+#plot(x ~ Data, data = Missing, main = "Missing Data")
+```
+
+```{r precip data, echo = FALSE}
+TotalPPT <- aggregate(climate_data$PRCP, list(climate_data$Month, climate_data$Year), sum, na.rm = T)
+
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+
+library(dplyr)
+
+PPT <- merge(TotalPPT, NonMissing, all.y = TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2) / 12
+#head(PPT)
+
+PRCP_mean = mean(PPT$ppt)
+
+plot(ppt ~ Date, data = PPT, main = "Precipitation Over Time")
+ppt.lm <- lm(ppt ~ Date, data = PPT)
+summary(ppt.lm)
+abline(h = PRCP_mean, col = "blue")
+#legend(173, 265, coef(ppt.lm))
+``` 
+
+The spread of the precipitation data is relatively even above and below the trend line, so while it is spread out, it doesn't necessarily reveal much about any trend in precipitation over time. However, the statistics of the trend line reveal something different. With a p-value of 0.000512, the slope is statistically significant. That is, the data shows that the non-zero slope of 1.0528 does not simply occur by chance. In fact, we can now claim that precipitation is increasing over time. Although it may be a slow increase, it is there, and it is affected by time.
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## ECONOMY
+
+## Open Files
+The dataset on the GDP of the Switzerland economy was obtained from WorldBank.org. It includes simple data of the country's GDP in January, April and October every year since 1980. 
+
+```{r read economy, echo = FALSE}
+econ_data.csv <- "/home/CAMPUS/erta2018/Climate_Change_Narratives/student_folders/Tomz/Tomz_Blog_v0_files/API_CHE_DS2_en_csv_v2_617400.csv"
+
+econ_data.csv = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Tomz_econ.csv"
+econ_data <- read.csv(econ_data.csv)
+
+gdp_data.csv <- "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Tomz_gdp.csv"
+gdp_data <- read.csv(gdp_data.csv)
+```
+
+```{r column reformat, echo = FALSE}
+colnames(gdp_data)[2] <- "GDP"
+strDate <- as.character(gdp_data$DATE)
+gdp_data$NewDate <- as.Date(strDate)
+```
+
+## Plot GDP over time
+
+Plotting GDP over time will allow us to see if there is any trend in GDP that mirrors or opposes the trends found in climate.
+
+```{r plot gdp tmax, echo = FALSE}
+plot(GDP ~ NewDate, data = gdp_data, ty = "l", xlab = "Date", ylab = "Millions of Chained 2010 National Currency", ylim = c(0, 180000), main = "Switzerland GDP", col = "black")
+GDP.lm <- lm(GDP ~ NewDate, data = gdp_data)
+summary(GDP.lm)
+abline(coef(GDP.lm), col = "red")
+```
+
+The plot of GDP over time in Switzerland shows a largly statistically significant slope of 6.145. This striking increase in GDP over the years opposes the expected trend given the rise in temperature. It would be expected that as temperature rises and ski season and its subsequent revenue decrease, the economy would fall with it.
+
+Thus, it could be that the Switzerland economy does not depend enough on the ski industry to be hurt significantly by it as temperature rises. However, it could also be that the economy has simply not been affected yet. In the future it could. It is still a possibility, so it is something that residents, tourists, and policy-makers need to keep in mind. This relevance of this is depicted once again through a graph on snowfall over the last century.
+
+
+## Snow
+
+The plot below depicts the change in snowfall over the course of the last century. Again, while the graph doesn't seem to show much on the surface, the summary of the linear regression actually provides a negative slope that is statistically significant. That is, snow amount depends on time, and it is decreasing with time. Thus, the reduced ski season is a relevant issue that demands consideration in Zürich and other cities in Switzerland.
+
+```{r snow, echo = FALSE}
+snwd.lm <- lm(SNWD ~ NewDate, data = climate_data[climate_data$SNWD != "0.0",])
+summary(snwd.lm)
+plot(SNWD ~ NewDate, data = climate_data)
+abline(coef(snwd.lm), col = "blue")
+```
+
+
+## Possible Solution
+Although it is easy to get caught up in the problems displayed by this data, such as the fact that minimum temperature is rising during all months, it is necessary to look forward and consider how to improve the situation. While countries, including Switzerland, are conducting significant research on climate change and are implementing policy changes regarding carbon emissions, atmospheric aerosols, climate mitigation, and adapatation, it is also crucial to look at how the internal industries of the country are being affected. 
+
+As temperature increases, it would be in the best interest of the country to simply go along with the possibility that their revenue from the ski season will decrease. Thus, it may be useful to open more hiking trails and embrace the influx of summer tourism and non-cold outdoor excursions that will become more available in the future.
+
+## Sources
+
+https://www.stv-fst.ch/sites/default/files/2019-07/STiZ_2018_EN_Web.pdf
+
+https://www.stv-fst.ch/sites/default/files/2019-07/STiZ_2018_EN_Web.pdf

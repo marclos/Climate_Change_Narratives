@@ -1,6 +1,6 @@
 ---
-title: "Extreme Weather and Climate Change?"
-subtitle: "Does climate change influence extreme events?"
+title: "Climate Records, Alpine Environments, and Coastal Impacts"
+subtitle: "Uneven Knowledge and Impacts"
 author: "EA30 Students, Pomona College"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
@@ -22,80 +22,78 @@ library(tufte)
 knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 ```
-# What is Attribution Science?
+# Introdution
 
-Attribution Science is a subset of climate science that attempts to evaluate the effect of climate change on weather patterns, in particular extreme weather events.  Determining the climate change signature on these extreme events relies a wide range of observations and data sources, such as weather instruments, records, and modeling, as well as, historic climate events and proxy data of weather.  
+## Weather Records and Climate Trends
 
-For example, rivers can flood on an annual basis. However, the size of these floods will vary with rainfall. If climate change influences rainfall patterns, then we might expect to see flooding change. [Wong (2019)](S2019/Wong/Wong2.html) describes how complicated this is in East Asia because the weather system there is one of the most complext in the world.
-
-```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='2015 Flood in Fenton, Missouri. Human developments in the flood plain are a recipe for disaster. But do the hazards of these activities increase in frequency or intensity with climate change? This is a question that "attribution science" tries to answer.'}
-knitr::include_graphics('S2019/Fenton_MI_2015Flood.jpg')
+```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='The ecological communities on mountains can vary with elevation, but these communinities are extremely vulnerable to climange change. As temperatures increase, populations .'}
+knitr::include_graphics('F2019/climatezones_mountains.jpg')
 ```
 
+Establishing and maintaining consistently designed weather stations requires institutional capacity. In many cases, the weather stations are a symbol of and component of modernity. 
 
-Unfortunately, climate science has become so politicized reports of extreme events, which can even lead to misunderstandings of these climate events. For example, [Vance (2019)](S2019/Vance/Vance3.html) documents how social media has been used to make claims about extreme events that obscure important long-term trends. In particular, in the (US) South, climate change skepticism runs, as well as, the use of coal for electrical generation. However, this region may be may be hardest hit by the effects of climate change unless we curb CO<sub>2</sub> global emissions. 
+However, as Bruno Latour has noted the process to modernize is both uneven and inconsistent [@latour2012we; @pachauri2015ipcc]. And as we look to use weather stations, which had been estalished answer specific local questions, e.g. when will there be enough water to plant rice or warm enough to sow corn. But as we try to evaluate how the ``average weather" or climate might be changing we learn about how complex it is to use these weather stations. 
 
-## Operationalizing Questions in Attribution Science
+```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='This weather station was established in 1881 as part of the construcion of the trans-Siberia railroad . The meteorological station was built by the passenger terminal at the Amazar Station'}
+knitr::include_graphics('F2019/RussianWeatherStation.png')
+```
+For example, starting in 1881 a station in China has been recording daily temperatures, but it is not clear 1) where the station is, 2) who has been in charge of it, 3) what technology there were using to make their measurements [Massari (2019)](F2019/Massari/Massari0.html).
 
-Asking how climate change influenced a certain extreme event is one of the first stages of attribution science. For example, after extensive flooding in Colorado in 2013, researchers formulated a testable hypothesis to evaluate the role of climate change on the flooding, but the results were contested. 
+Meanwhile weather stations in remote locations, such as Glacier National Park have been moved so often, that developing a long-term trend might seem impossible [Foster (2019)](F2019/Foster/Foster0.html).
 
-[Lai (2019)](S2019/Lai/Lai5.html) used the 2013 Colorado flood as a case study to discuss how weather records, weather modeling, and scientific research to understand the causes of the flood and why different scientists arrived at differing conclusions.
+# Climate Change in High Elevation Locations
 
-## Climate Change and the Built Environment
+## Alpine Environments
 
-### Heat Waves and Blizzards in Urban Environments
+Zurich, a city in northern Switzerland, is a unique masterpiece of the world. Situated next to a gorgeous lake with magnificent swiss alps in view, Zurich is home to a substantial number of environmental lovers, groups, and institutions. 
 
-Clark (2019) explored extreme events in Washington D.C. and their relationship to climate change. 
+Using climate data from the National Ocean and Atmospheric Administration (NOAA), [Tomz (2019)](F2019/Tomz/Tomz1.html) documents how daily and monthly climate and precipitation trends over the past century and found [waiting for text from Emily]. Meanwhile, [Shinn (2019)](F2019/Shinn/Shinn2.html) found that Sion (Switzerland) appears be suffering only from increasing summer temperatures, with insignificant precipitation and snowdepth change. 
 
-Similarly, [Randle (2019)](S2019/Randle/Randle.html)
-evaluated the impact of extreme cold in Chicago it's relationship the to the polar vortex. 
+[Saravia (2019)](F2019/Saravia/Saravia0.html) was interested in the alpine impacts, expecially with respect to the skiing season and found a dramatic deline in snow cover late spring. 
 
-Heat waves has important implications on urban environments. For example, Southern California will probably experience a dramatic increase in heat waves with climate change, which will have a wide range if social and ecological implications [(Bullock Floyd 2019)](S2019/Bullock_Floyd/Bullock_Floyd3.html)
+Denver changes is known to have highly variable weather. Thus, [Bidell (2019)](F2019/Bidell/Bidell1.html) evaluated if there has been an increase in variability. Granted that the question is rather complicated, the results suggest more analysis is necessary to make a conclusive statement. 
 
-Public health included more than extreme events -- [Yi (2019)](S2019/Yi/Yi3.html) demonstrates that the urban heat island effect is a complex process. And in the context of Chicago and climate change, the concerns and strategies to reduce the impact of urban heat islands will require several tiers of policy changes.
+# Urban Environments
 
-### Attributions and Bias
+## Getting and Processing Data
 
-Unfortunately, the regions that are selected for study are based on researcher interests, thus some events have been well studied and others virtually ignored [@huggel2016reconciling]. Scientists don't work in a vacuum and we often try to make connections to issues that we care about, but hopefully, we can address issues that many people care about. 
+As it turns out obtaining and processing the data from NOAA is far from trivial. To make the process more transparent, [Hsu (2019)](F2019/Hsu0.html) documented the steps taken to determine if trends exist in San Francisco. In this example, we can see the messy process of learning to analyze these data.
 
-## Fires in the West
+## Impacts and Coastal Zone Impacts
 
-### The Pacific Northwest
+Nevertheless, as [Hsu (2019)](F2019/Hsu0.html) has demonstrated, the impacts of climate change in San Francisco might be ``felt'' as in terms of sea level rise and not as temperature per se. 
 
-The impact of cliamte change in the Pacific Northwest and in the state of Washington has become increasingly poignant -- in part because of the issues of fire and smoke. [Generous (2019)](S2019/Generous/Generous5.html) evaluated fires in the Spokane region while [Meyer 2019](S2019/Meyer/Meyer3.html) summarized what scientists know about climate change and fires in the Seattle-Tacoma region. 
+## SST
 
-### Wildfire Risks and WUIs in California
-
-In Southern California, the climate is not simply warming or cooling. Thanks to ongoing changes in climate, the rainy season has begun a pendulum effect, swinging from storms and flooding to drought conditions almost yearly in a phenomenon known as 'climate whiplash.' The environmental impacts of this phenomenon are severe, including increased numbers of fires, floods, and droughts plaguing the region. Evidence for climate whiplash, as well as its effects and implications [(Anderson 2019)](S2019/Anderson/Anderson4.html).
-
-
-### Public Safety and Health
-
-[Kaufman (2019)](S2019/Kaufman/Kaufman2.html) acknowledges her commitment to the health and well being of New Yorks. In particular, she evaluates the role of climate change and the destructive nature of Hurricane Sandy (20XX). 
+[Weed (2019)](F2019/Weed/Weed0.html)
 
 
 
+## Perceptions and Records
 
-## Drought and Economic Impacts Nexus in the Southwest
+In the climate change debate, as in many conflicts, we find that our beliefs, ideals and political affliations play a distinct role in our perceptions. This blog explores how ``belief'' for or against climate change filters public perception in different regions. For example, [Whitman_Sandmeyer (2019)](F2019/Whitman_Sandmeyer/Whitman_Sandmeyer1.html) found that the signal for climate change in Kentucky to be challening to determine. This, of course, ``maps'' onto the region in particularly interesting ways in terms of politics and climate impacts.  
 
-[Namachivayam (2019)](S2019/Namachivayam/Namachivayam2.html) examines the trend of rising temperatures in Albuquerque and their potential impact on drought in New Mexico.  
+On the westcoast, the State of California has experienced record setting fires, but the relative role of climate on these is subject to debate. [Mc Williams (2019)](F2019/McWilliams/McWilliams0.html) describes how complicated it is to determine the potential role of climate change on the size and severity of fires. 
 
+## Global Anarchy and Fair Reciprocity
 
-### Tourism and Jobs
-
-[Budd (2019)](S2019/Budd/Budd2.html) describes the subtle plant phenology associated with climate change. In this case, the forests of New Hampshire may experience changes in how their fall season reaspond to a warming globe and possible economic impacts on the region. 
-
+The concept of climate justice has taken on a wide range of ethical frameworks which have been applied to diverse set of political and social scales. Within the nation-state governance anarchy, scholars have attempted to create moral imperatives to address climate impacts on countries that have not contributed to or enjoyed the economic rewards of greenhouse gases emissions. Using the 'fair reciprocity'  [Bekkers (2019)](F2019/Bekkers/Bekkers2.html) argues that the Netherlands should provide assistance to the Marshall Islands as the islands face potentially devastating impacts of sea level rise. 
 
 
-[Bullock Floyd (2019)](S2019/Bullock_Floyd/Bullock_Floyd2.html)
+## Incomplete Blogs
 
-[Kuhn (2019)](S2019/Kuhn/Kuhn.html)
+- Seattle [Piette (2019)](F2019/Piette/Piette1.html)
+- Chicago [Grant (2019)](F2019/Grant/Grant0.html)
+- Venezuela [Chaichang Azterbaum (2019)](F2019/Chaichang_Azterbaum/Chaichang_Azterbaum.html)
+# Conclusion
 
 
 # Previous EA30 Projects
 
-[Climate Change and Fires -- Is this a red herring or the alarm alarmists have been warning about?](F2018/index_2018F.html)
+[Attribution Science (Spring 2019)](S2019/index_2019S.html)
 
-[Why Climate Change Will Affect You Personally?](F2017/index_2017F.html)
+[Climate Change and Fires -- Is this a red herring or the alarm alarmists have been warning about? (Fall 2918)](F2018/index_2018F.html)
 
-[Climate Change and Logical Fallacies](S2017/index_2017S.html)
+[Why Climate Change Will Affect You Personally? (Fall 2017)](F2017/index_2017F.html)
+
+[Climate Change and Logical Fallacies Spring 2016)](S2017/index_2017S.html)

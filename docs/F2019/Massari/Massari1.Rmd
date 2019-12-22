@@ -1,0 +1,352 @@
+---
+title: 'Temperature Data - The Unknown Station: Blagovescensk'
+author: 'Aurora Massari'
+date: "12/20/2019"
+output:
+  html_document: default
+---
+
+Once you have stated your thesis, acknowledge contradictory
+opinions and explain why you disagree with them. Use facts, statistics, evidence, quotations, and theoretical explanations for criticizing
+your opponents’ views and cite your sources. 
+
+A scientific expresses your point of view while a great one manages
+to persuade others to join your camp. To persuade people, you need
+a sound argument based on facts, evidence, and analogies, not vitriol
+and diatribe.
+
+In this case, your
+arguments should demonstrate a practical policy outcome or action
+
+## Introduction
+
+We will analyze the temperature data of oldest weather station in China listed in the National Oceanic and Atmospheric Administration database to determine if there is an observed *warming trend*. We regressed temperature data by year (to see if there was a temperature trend over time). The slopes of all of our regression lines are positive (for average, minimum, and maximum temperatures), indicating a warming trend over time.
+
+For only four out of 36 slopes are not statistically significant overall (with a p-value over 0.05), meaning those positive slopes (representing an increase in temperature over time) may be due to random chance. However, all minimum temperature slopes are statistically significant, and all but one slope (in July) for average temperature are significant as well. With maximum temperatures, three slopes were not significant (July, August, and October).
+
+Maximum temperature is not the most ideal model to use because throughout the day, since temperature spikes may not representative of the whole day. This may also obscure averages. Minimum temperatures, especially in this relatively cold climate, are more representative of that day’s temperature since they are found between similar readings (there are no spikes).
+
+
+## Obtaining the Data
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+filepath = "/home/CAMPUS/aemb2018/Climate_Change_Narratives/student_folders/Massari/1960066.csv"
+filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Massari.csv"
+TEMP <- read.csv(filepath)
+head(TEMP)
+str(TEMP)
+```
+
+The National Oceanic and Atmospheric Administration (NOAA) offers temperature data from weather stations all over the world. All of the temperature readings (and other weather-related data) is publicly available on the NOAA site. I chose to analyze the oldest Chinese weather station, Blagovescensk, which has been in operation since 1881. 
+
+## Background on the Weather Station
+
+The Blagovescensk weather station (NOAA ID:GHCND:RSM00031510), is listed at N 50.25 E 127.5 at 130 m elevation in what appears to be a park in the Zhongyang Commercial district in Aihui, Heihe, Heilongjiang, China. It is near the bank of the Amur River just feet away from the Russian border in the northeastern part of China. On the NOAA website, the station is identified as a Chinese station, while the data in the spreadsheet appears to list Russia as the country of origin.
+
+![Station Location](station location.jpg)
+
+There is next to no information on the station outside of the NOAA website, which also does not have details on the station’s history. Since the Russian city of Blagoveshchensk is right across the river from this station, it may be possible that the station was called Blagovescensk in the romanization of the city. By searching ‘“Blagovescensk” weather’, one can go to the images section and find a link to a Russian weather site. According to weather-forcast.com (a Russian weather site translated to English), the Blagoveshchensk Weather Forecast has two stations immediately near the Russian city, and both are in China. However, only one is listed on the NOAA site (Blagovescensk), and on the Russian weather site the link to the Blagovescensk station has an error message (the web page has been moved). The closest location is the Aihui (爱辉镇) station, which appears to be only a kilometer away from the Blagovescensk station and is not listed on the NOAA database.
+
+![Blagovescensk Station](station.jpg)
+
+Since 1881, the Blagovescensk station has been recording temperature averages, later also recording minimums in 1890 and then maximums in 1914. The next weather station began recording data in 1942, sixty one years after Blagovescensk. However, there were 21 Russian weather stations that began recording data on the same day, January 1, 1881 (only one previous to this, in 1874), so it is possible that the Blagovescensk station on Chinese soil was somehow connected to these other Russian stations.
+
+These ambiguities about the location and national identification of this particular weather station may be concerning for some people. However, this data has been cleared by the National Oceanic and Atmospheric Administration. According to NOAA, the findings are sound, at 97% overall coverage.
+
+# Examining Outliers
+
+To find if there are errors in the reported temperatures, we will do a simple comparison model. Temperature minimum values should be below the average and temperature maximums should be above. Outliers occur when TMAX (maximum temperature) is under TAVG (average temperature) or TMIN (minimum temperature) is over TAVG. This is potentially due to human recording error or equipment malfunction.
+
+``` {r outliers, echo = FALSE}
+par(mfrow=c(1,2))
+plot(TMAX ~ TAVG, data = TEMP, xlab = "Average Temperature", ylab = "Maximum Temperature", main = "Maximum by Average Temperature", col = "tomato2", las = 1)
+abline(0,1)
+plot(TMIN ~ TAVG, data = TEMP, xlab = "Average Temperature", ylab = "Minimum Temperature", main = "Minimum by Average Temperature", col = "skyblue2", las = 1)
+abline(0,1)
+```
+
+As you can see from the plots above, out of almost 50 thousand recorded temperatures, there are a few unexpected errors outside of the “probability cloud” that contains the expected values (where the maximum is above the average and the minimum is below). These 30 some mistakes are possibly due to one month when the instrument was off/not calibrated, or someone switching the TMAX. Either way, there are only about 30 unexplained observations out of almost 50,000 recorded temperatures. These will be lost in the monthly averages and likely have no effect on the results since the dataset is so large.
+
+## Analysis of Maximum Temperature
+
+It is unclear if maximum temperature is a singular peak, so it may not be representative of the temperature over an entire day. According to NOAA, this station has collected temperature maximums since January 1, 1914 at 99% coverage. Below, we will take a monthly average of temperature maximums since 1914 and plot the values. We will repeat this process for the temperature averages and minimums.
+
+``` {r TMAX, include = FALSE}
+date.c = as.character(TEMP$DATE)
+TEMP$NewDate <- as.Date(date.c, "%Y-%m-%d")
+change = lm(TMAX ~ NewDate, data=TEMP)
+summary(change)
+TEMP$Month = format(as.Date(TEMP$NewDate), format = "%m")
+TEMP$Year = format(TEMP$NewDate, format="%Y")
+MonthTMAX.mean = aggregate(TMAX ~ Month + Year, TEMP, mean)
+MonthTMAX.mean$YEAR = as.numeric(MonthTMAX.mean$Year)
+MonthTMAX.mean$MONTH = as.numeric(MonthTMAX.mean$Month)
+str(MonthTMAX.mean)
+plot(MonthTMAX.mean$TMAX, ty = "l", las = 1)
+```
+  
+This graph is a little difficult to read. Although we have simplified the dataset through monthly averages, plotting them all on the same graph is not as telling as looking into each month individually. Below are the monthly temperature maximum trends.
+
+``` {r MAX, , include=FALSE} 
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+TMAXresult <- NA
+
+for (i in 1:12){
+#plot(MonthTMAX.mean£TMAX[MonthTMAX.mean£Month==i], ty='l')
+plot(TMAX~YEAR,
+data=MonthTMAX.mean[MonthTMAX.mean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMAXresult <- rbind(TMAXresult,
+cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}
+```
+![**Maximum Temperature Trend by Month from 1914-2019**](TMAX.png)
+
+## Analysis of Minimum Temperature
+
+Although it may be the case the minimum temperatures spike at a low point and are also not representative of daily temperatures, lower temperatures generally are representative of a more gradual decline and increase before and after the observed minimum. From NOAA, this station's minimum temperatures have been recorded since January 1, 1890 with 89% coverage.
+
+``` {r TMIN, include = FALSE}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, TEMP, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l', las = 1)
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+TMINresult <- NA
+
+for (i in 1:12){
+#plot(MonthTMAX.mean£TMAX[MonthTMAX.mean£Month==i], ty='l')
+plot(TMIN~YEAR,
+data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm.min <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm.min)
+abline(coef(Month.lm.min), col="blue")
+TMINresult <- rbind(TMINresult,
+cbind(Months[i], round(coef(Month.lm.min)[2], 4),
+round(summary(Month.lm.min)$coefficients[2,4],4),
+round(summary(Month.lm.min)$r.squared, 3)))
+}
+```
+![**Minimum Temperature Trend by Month from 1890-2019**](TMIN.png)
+
+## Analysis of Average Temperature
+
+Our station has been recording average temperatures since January 1, 1881 with 97% coverage according to NOAA. This is quite odd considering most weather stations start by recording temperature minimums and maximums before computing averages. 
+
+``` {r TAVG, include = FALSE}
+MonthlyTAVGMean = aggregate(TAVG ~ Month + Year, TEMP, mean)
+MonthlyTAVGMean$YEAR = as.numeric(MonthlyTAVGMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTAVGMean$YEAR = as.numeric(MonthlyTAVGMean$Year)
+MonthlyTAVGMean$MONTH = as.numeric(MonthlyTAVGMean$Month)
+head(MonthlyTAVGMean)
+plot(MonthlyTAVGMean$TAVG, ty='l', las = 1)
+
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+
+TAVGresult <- NA
+
+for (i in 1:12){
+plot(TAVG~YEAR,
+data=MonthlyTAVGMean[MonthlyTAVGMean$MONTH==i,],
+ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm.avg <- lm(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$MONTH==i,])
+summary(Month.lm.avg)
+abline(coef(Month.lm.avg), col="green")
+TAVGresult <- rbind(TAVGresult,
+cbind(Months[i], round(coef(Month.lm.avg)[2], 4),
+round(summary(Month.lm.avg)$coefficients[2,4],4),
+round(summary(Month.lm.avg)$r.squared, 3)))
+}
+```
+![**Average Temperature Trend by Month from 1881-2019**](TAVG.png)
+
+``` {r table, include=FALSE}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4],
+TAVGSlope = TAVGresult[c(2:13),2],
+TAVG_P = as.numeric(TAVGresult[c(2:13),3]),
+TAVGRsq = TAVGresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$starTAVG = "NS"
+Results$starTAVG[Results$TAVG_P < 0.05] = "*"
+Results$starTAVG[Results$TAVG_P < 0.01] = "**"
+Results$starTAVG[Results$TAVG_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+Results$TAVGslope=paste(Results$TAVGSlope, Results$starTAVG)
+colnames(Results) <- c("Month", "TMINSlope", "TMIN_P", "TMINRsq", "TMAXSlope", "TMAX_P", "TMAXRsq", "TAVGSlope", "TAVG_P", "TAVGRsq", "starTMIN", "starTMAX", "starTAVG", "Slope TMIN", "Slope TMAX", "Slope TAVG")
+```
+
+``` {r graphic, include=FALSE}
+library(knitr)
+kable(Results[,c(1, 8, 9, 5, 6, 2, 3)], rownames=FALSE, type = "html")# find model repdiction for this part of the world
+# strong warming signal
+# google scholar search for extreme events to see what time frame is more important to look at
+```
+
+Statistical Values Table
+========================================================
+|Month       |TAVGSlope | TAVG_P      |TMAXSlope | TMAX_P      |TMINSlope |   TMIN_P|
+|:-----------|:---------|:------------|:---------|:------------|:---------|:--------|
+|January     |0.0456    |       0.0001|**0.0791**|       0.0000|0.0639    |   0.0000|##
+|February    |0.0327    |       0.0034|0.0706    |       0.0000|0.0396    |   0.0022|#
+|**March**   |**0.0522**|       0.0000|0.0768    |       0.0000|**0.0667**|   0.0000|###
+|**April**   |0.0363    |       0.0000|0.065     |       0.0000|0.034     |   0.0000|###
+|**May**     |0.0356    |       0.0000|0.0527    |       0.0000|0.044     |   0.0000|###
+|June        |0.0242    |       0.0000|0.0412    |       0.0001|0.0379    |   0.0000|##
+|***July***  |0.0035    | ***0.4620***|0.0176    | ***0.0816***|0.0208    |   0.0013|
+|***August***|0.0102    |       0.0194|0.0071    | ***0.3857***|0.021     |   0.0000|#
+|September   |0.0105    |       0.0235|0.026     |       0.0024|0.0127    |   0.0213|
+|***October***|0.0251    |       0.0000|0.0091    | ***0.3488***|0.0253    |   0.0003|#
+|November    |0.0284    |       0.0028|0.0481    |       0.0014|0.0319    |   0.0067|
+|December    |0.0277    |       0.0081|0.048     |       0.0018|0.0406    |   0.0015|
+
+The bolded months have slope p values below 0.0000 for all three temperature readings. Those are the values we will graph (March: TAVG 0.0522, TMAX 0.0768, TMIN 0.0667; April: TAVG 0.0363, TMAX 0.065, TMIN 0.034; May: TAVG 0.0356, TMAX 0.0527, TMIN 0.044). The bolded values in the table are the highest slopes (March TAVG: 0.0522, January TMAX: 0.0791, March TMIN: 0.0667). The italicized months have at least one insignificant temperature reading. Although the italicized p values are not significant (July TAVG 0.4620, July TMAX 0.0816, August TMAX 0.3857, October TMIN 0.3488), all other p values in the table convey a significant relationship between temperature increase and time.
+
+## Looking at the Three Most Significant Months
+
+Three months had P-values lower than 0.0000: March, April, and May. We will plot these months below.
+
+```{r March, include=FALSE}
+par(mfrow=c(1,3))
+Mar.AVG <- lm(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="03",])
+plot(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="03",],
+ty='l', las = 1, ylab = "Average Temperature", main = "March Average Temperatures")
+abline(coef(Mar.AVG), col="green2")
+
+Mar.MIN <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="03",],
+ty='l', las = 1, ylab = "Minimum Temperature", main = "March Minimum Temperatures")
+abline(coef(Mar.MIN), col="blue2")
+
+Mar.MAX <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="03",])
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="03",],
+ty='l', las = 1, ylab = "Maximum Temperature", main = "March Maximum Temperature")
+abline(coef(Mar.MAX), col="red2")
+```
+![Temperature Plots for March](March.png)
+
+```{r April, include=FALSE}
+par(mfrow=c(1,3))
+Apr.AVG <- lm(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="04",])
+plot(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="04",],
+     ty='l', las = 1, ylab = "Average Temperature", main = "April Average Temperatures")
+abline(coef(Apr.AVG), col="green2")
+
+Apr.MIN <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",],
+     ty='l', las = 1, ylab = "Minimum Temperature", main = "April Minimum Temperatures")
+abline(coef(Apr.MIN), col="blue2")
+
+Apr.MAX <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="04",])
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="04",],
+     ty='l', las = 1, ylab = "Maximum Temperature", main = "April Maximum Temperature")
+abline(coef(Apr.MAX), col="red2")
+```
+![Temperature Plots for April](April.png)
+
+```{r May, include=FALSE}
+par(mfrow=c(1,3))
+May.AVG <- lm(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="05",])
+plot(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="05",],
+ty='l', las = 1, ylab = "Average Temperature", main = "May Average Temperatures")
+abline(coef(May.AVG), col="green2")
+
+May.MIN <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",],
+ty='l', las = 1, ylab = "Minimum Temperature", main = "May Minimum Temperatures")
+abline(coef(May.MIN), col="blue2")
+
+May.MAX <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="05",])
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="05",],
+ty='l', las = 1, ylab = "Maximum Temperature", main = "May Maximum Temperature")
+abline(coef(May.MAX), col="red2")
+```
+![Temperature Plots for May](May.png)
+
+There is a highly significant warming trend related to time for these spring months.
+
+## Looking at the Only Three Insignificant Months
+
+Due to the previously mentioned temperature spikes that may skew representation of temperature data for any given day, it is unsurprising that the majority of the insignificant observations are of maximum temperatures.
+
+```{r July, include=FALSE}
+par(mfrow=c(1,2))
+Jul.AVG <- lm(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="07",])
+plot(TAVG~YEAR, data=MonthlyTAVGMean[MonthlyTAVGMean$Month=="07",], ty='l', las = 1, ylab = "Average Temperature", main = "July Average Temperatures")
+abline(coef(Jul.AVG), col="green2")
+
+Jul.MAX <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="07",])
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="07",], ty='l', las = 1, ylab = "Maximum Temperature", main = "July Maximum Temperatures")
+abline(coef(Jul.MAX), col="red2")
+```
+![Average and Maximum Temperature Plots for July](July.png)
+
+There appear to be some extremely low maximum temperatures for the month of July. This may be the error we saw when examining the outliers. Because it occurred at during one month, it may be the case that these low values skewed the statistical analysis.
+
+``` {r, AugOct, include=FALSE}
+par(mfrow=c(1,2))
+Aug.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="08",])
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="08",],
+ty='l', las = 1, ylab = "Maximum Temperatures", main = "August Maximum Temperature")
+abline(coef(Aug.lm), col="red2")
+
+Oct.lm <- lm(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="10",])
+plot(TMAX~YEAR, data=MonthTMAX.mean[MonthTMAX.mean$Month=="10",],
+ty='l', las = 1, ylab = "Maximum Temperatures", main = "October Maximum Temperature")
+abline(coef(Oct.lm), col="red2", las = 1)
+```
+![Maximum Temperature Plots for August and October](AugOct.png)
+
+Although the slopes for both August and October are still positive, there is no significant warming trend that can be attributed to time.
+
+# What Other Studies Found
+
+There are several studies corroborrating a warming trend in northeastern China. The surface air temperature index has increased within the range of our station (80°E–130°E, 45°N–65°N) between 1954 adn 2010 (Zhu 2012). Such surface temperature increases may be contributed by heat urban heat islands with mass development. Further industrialization will continue to impact the heating and drying trend (Li 2009). Nearby our weather station, the Heilongjiang Highway and River Bridge encourages development in this area. Overall, there appeared to be not so much a heating trend as a "less cooling" trend. In short, there are shorter cool seasons, with autumn and winter having the strongest warming signals while summer has the weakest (Zhai 1999). These findings match our analysis of the insignificant observations in July and August. Also, our lowest p-values and highest slopes were in the winter and spring. Shorter cool seasons also makes the northeastern region of China more suitable for agriculture where it was not before (Yang 2007). There are several environmental implications of this, namely a weakening of the natural wetland ecosystem in the region. Previously undisturbed wetlands in and around Xing’an Mountain will be vulnerable, a predicted 30% decrease in the wetland ecosystem (Liu 2011). Although increased urbanization (and the warming that comes with it) may open new commercial opportunities in the agrigultural or shipping industries for northeastern China, the southern regions are experiencing increasingly dry and warm climates (Zhai 1999). 
+
+![Xing'an Mountains](Xingan.jpg)
+
+# Conclusions
+It is true that our analysis discovered a strong warming trend with time. This does not explicitly link such a trend with increased greenhouse gasses in the atmosphere, although we assume this is the primary contributor, since over time humans have been pumping more and more greenhouse gasses into the atmosphere and disrupting Earth's natural balance (Bennett 2019). 
+
+# Literature Cited
+
+Bennett J. 2019. A Global Warming Primer: Answering Your Questions About the Science, the Consequences, and the Solutions. Available from: https://www.globalwarmingprimer.com/primer/
+Li Q.2009. Assessment of surface air warming in northeast China, with emphasis on the impacts of urbanization. Theor & Appl. Climato. 99: 469-478.  
+Liu H. 2011. Predicting the wetland distributions under climate warming
+in the Great Xing’an Mountains, northeastern China. Ecol Res. 26: 605–613  
+Staff. 2019. Blagoveshchensk Weather Forecast. Metero365: https://www.weather-forecast.com/locations/Blagoveshchensk/forecasts/latest  
+Staff. 2015. Temperature Monitoring Station: BLAGOVESHCHENSK. Berkeley Earth: http://berkeleyearth.lbl.gov/stations/169111  
+Yang X. 2007. Adaptation of agriculture to warming in Northeast China. Climatic Chan. 84: 45-58.  
+Zhai P. 1999. Changes of Climate Extremes in China. Climatic Chan. 42: 203-218.  
+Zhu C. 2012. Recent weakening of northern East Asian summer monsoon: A possible response to global warming. Geophy. Res. Lett. 39 (9): 1-6.

@@ -1,0 +1,86 @@
+---
+title: "Whitman_Sandmeyer_D2"
+author: '66354'
+date: "12/16/2019"
+output: html_document
+---
+
+## Plots
+
+```{r lexclim, echo=FALSE}
+lexclim = read.csv("/home/CAMPUS/lmwa2017/R/EA30/Project 3 - Climate Data/Lucy_WhitSand_LexingtonKY_data.csv")
+strDates <- as.character(lexclim$DATE)
+lexclim$NewDate <- as.Date(strDates, "%Y-%m-%d")
+lexclim$Month = format(as.Date(lexclim$NewDate), format = "%m")
+lexclim$Year = format(lexclim$NewDate, format="%Y")
+climate_data <- subset(lexclim, subset=Year>1887)
+
+par(mfrow=c(2, 2))
+#Max Total
+tempplot <- plot(TMAX~NewDate, climate_data, ty='l', main="A", xlab="Year", ylab="Maximum Temp (F)")
+linebf <- lm(TMAX~NewDate, data=climate_data)
+abline(linebf, col="red")
+
+#Min Total
+tempplot <- plot(TMIN~NewDate, climate_data, ty='l', main="B", xlab="Year", ylab="Minimum Temp (F)")
+linebfmin <- lm(TMIN~NewDate, data=climate_data)
+abline(linebfmin, col="red")
+
+#Precipitation Total
+precpplot <- plot(PRCP~NewDate, climate_data, ty='l', main="C", xlab="Year", ylab="Precipitation (in)")
+linebfprec <- lm(PRCP~NewDate, data=climate_data)
+abline(linebfprec, col="red")
+
+#Snow Total
+snowplot <- plot(SNOW~NewDate, climate_data, ty='l', main="D", xlab="Year", ylab="Snow (in)")
+linebfsn <- lm(SNOW~NewDate, data=climate_data)
+abline(linebfsn, col="red")
+```
+
+**Figure 1** Climate trends by year (1888-2019) **A.** Total maximum temperature (ºF), p<0.001 **B.** Total minimum temperature (ºF), p>0.05 **C.** Total precipitation (in), p<0.001 **D.** Total snow (in) p<0.001
+
+
+```{r May, echo=FALSE}
+#Monthly Max
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+#Monthly Min
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+
+#Monthly Prcp
+MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, climate_data, mean)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+
+#Monthly Min
+MonthlySNOWMean = aggregate(SNOW ~ Month + Year, climate_data, mean)
+MonthlySNOWMean$YEAR = as.numeric(MonthlySNOWMean$Year)
+MonthlySNOWMean$MONTH = as.numeric(MonthlySNOWMean$Month)
+
+par(mfrow=c(2, 2))
+#Max May
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', main="A", xlab="Year", ylab="Maximum Temp (F)")
+MaxMay.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+abline(coef(MaxMay.lm), col="red")
+
+#Min May
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l', main="B", xlab="Year", ylab="Minimum Temp (F)")
+MinMay.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+abline(coef(MinMay.lm), col="red")
+
+#Precipitation May
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="05",], ty='l', main="C", xlab="Year", ylab="Precipitation (in)")
+PMay.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="05",])
+abline(coef(PMay.lm), col="red")
+
+#Snow May
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="05",], ty='l', main="D", xlab="Year", ylab="Snow (in)")
+SnowMay.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="05",])
+abline(coef(SnowMay.lm), col="red")
+```
+
+**Figure 2** Climate trends by year for the month of May (1888-2019) **A.** Total maximum temperature in (ºF), p<0.05 **B.** Total minimum temperature (ºF), p>0.05 **C.** Total precipitation (in), p<0.001 **D.** Total snow (in) p<0.005
