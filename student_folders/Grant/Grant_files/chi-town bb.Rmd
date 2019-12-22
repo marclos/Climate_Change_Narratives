@@ -86,7 +86,7 @@ plot(MonthlyTMAXMean$TMAX, ty='l')
 ```{r pressure, echo=FALSE}
 #plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
-ty='l', xlim=c(1950, 2020))
+ty='l', xlim=c(1928, 2020))
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 summary(May.lm)
 abline(coef(May.lm), col="red")
@@ -100,6 +100,6 @@ Months = c("January", "February", "March", "April", "May", "June",
 "July", "August", "September", "October", "November", "December")
 
   
-
+plot(TMAX~DATE, shytown[1:10950,], ty='l')
 
 ```
