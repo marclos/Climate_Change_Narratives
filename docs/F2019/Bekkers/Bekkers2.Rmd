@@ -53,7 +53,7 @@ For the temperature trends, I used the hottest and the coldest month as a base t
 
 ```{r,results='hide'}
 filepath1 = "/home/CAMPUS/pmba2017/Pauline_DeBilt_Data.csv"
-filepath1 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/F2019/Bekkers/Pauline_DeBilt_Data.csv"
+filepath1 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Bekkers.csv"
 climate_data<-(read.csv(filepath1))
 ```
 
@@ -69,7 +69,7 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
 ```{r, results='hide'}
 
-filepath2 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/F2019/Bekkers/1966721.csv"
+filepath2 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Bekkers2.csv"
 climate_data2<-(read.csv(filepath2))
 ```
 
