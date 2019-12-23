@@ -11,11 +11,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
-```{r cars}
+```{r cars, echo=FALSE, results='hide'}
 #summary(cars)
 #file.choose("/home/CAMPUS/agad2017/Climate_Change_Narratives/student_folders/Grant/aminahgrant_chicagomidway_data.csv")
 filepath = "/home/CAMPUS/agad2017/Climate_Change_Narratives/student_folders/Grant/aminahgrant_chicagomidway_data.csv"
-filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Grant.csv"
+#filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Grant.csv"
 shytown <- read.csv(filepath)
 ```
 
