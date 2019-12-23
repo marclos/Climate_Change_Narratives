@@ -12,7 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r climate data}
+```{r climate data, echo=FALSE}
+
+
 #read.csv("/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/Miranda_Glacier_Data.csv")
 climate_data <- read.csv("/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/Miranda_Glacier_Data.csv")
 #plot(PRCP~DATE, climateviedata)
@@ -38,7 +40,7 @@ lm(TMAX~Years, data=climate_data)
 ##             Estimate Std. Error t value Pr(>|t|)    
 ## (Intercept) 9.629e+00  6.792e-02  141.78   <2e-16 ***
 ## NewDate     8.114e-05  5.887e-06   13.79   <2e-16 ***
-
+abline(lm(TMAX~Years, data=climate_data))
 summary(lm(TMAX~Years, data=climate_data))
 
 
@@ -49,29 +51,233 @@ stmary1 = subset(climate_data, subset = NAME == "ST. MARY 1 SSW, MT US")
 stmary2 = subset(climate_data, subset = NAME == "ST. MARY MONTANA, MT US")
 stmary3 = subset(climate_data, subset = NAME == "ST. MARY, MT US")
 summit = subset(climate_data, subset = NAME == "SUMMIT, MT US")
-plot(TMAX~Years, manyglacier, ty = 'l')
-abline()
-plot(TMAX~Years, lubec, ty='l')
+
+plot(TMAX~Years, summit[1:271,], ty='l', col="blue", main= "SUMMIT DAILY MAX TEMPERATURE", xlab = "1903", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=summit[1:271,])
+abline(lm(TMAX~Years, data=summit[1:271,]))
+
+plot(TMAX~Years, lubec, ty='l', col="green", main= "LUBEC DAILY MAX TEMPERATURE", xlab = "1907-1910", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=summit)
+abline(lm(TMAX~Years, data=summit))
+
+plot(TMAX~Years, summit[272:15850,], ty='l', col="blue", main= "SUMMIT DAILY MAX TEMPERATURE", xlab = "1935-1979", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=summit[272:15850,])
+abline(lm(TMAX~Years, data=summit[272:15850,]))
+##Coefficients:
+##(Intercept)        Years  
+## 8.187e+00   -4.248e-05 
+
+plot(TMAX~Years, manyglacier, ty = 'l', col="pink", main= "MANY GLACIER DAILY MAX TEMPERATURE", xlab = "1967-2019", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=manyglacier)
+##Call:
+##lm(formula = TMAX ~ Years, data = manyglacier)
+
+##Coefficients:
+##(Intercept)        Years  
+## 8.0433690    0.0001648  
+abline(lm(TMAX~Years, data=manyglacier))
+
 
 plot(TMAX~Years, stmary1, ty='l')
+lm(TMAX~Years, data=stmary1)
+abline(lm(TMAX~Years, data=stmary1))
+
 plot(TMAX~Years, stmary2, ty='l')
+lm(TMAX~Years, data=stmary2)
+abline(lm(TMAX~Years, data=stmary2))
+
 plot(TMAX~Years, stmary3, ty='l')
-plot(TMAX~Years, summit, ty='l')
+
 
 plot(TMIN~Years, stmary1, ty='p')
 points(TMIN~Years, stmary2, col="blue")
 lines(TMIN~Years, stmary3, col="red")
-lines(TMIN~Years, summit, col ="green")
-```
-
-```{r glacier recession data}
-
-
-
-
-
 
 ```
+
+```{r snow data}
+#plot(SNOW~Years, manyglacier, ty='l', col="pink", main= "MANY GLACIER DAILY SNOW FALL", xlab = "1967-2019", ylab= "SNOW FALL (CM)")
+#plot(SNWD~Years, manyglacier, ty='l', col= "red", main= "MANY GLACIER SNOW DEPTH", xlab = "1967-2019", ylab = "SNOW DEPTH (CM)")
+
+climate_data$Month=format(as.Date(climate_data$Years), format= "%m")
+climate_data$Year = format(climate_data$Years, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX~Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+{
+par(mfrow=c(3,4), mar=c(3, 5, 5, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH== i,],ty="l", las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}}
+
+par(mfrow=c(1,1))
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+{
+par(mfrow=c(3,4), mar=c(3, 5, 5, 2) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH== i,],ty="l", las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+
+manyglacier$Month=format(as.Date(manyglacier$Years), format= "%m")
+manyglacier$Year = format(manyglacier$Years, format="%Y")
+manyglacierMTMAXM = aggregate(TMAX~Month + Year, manyglacier, mean)
+manyglacierMTMAXM$YEAR = as.numeric(manyglacierMTMAXM$Year)
+manyglacierMTMAXM$MONTH = as.numeric(manyglacierMTMAXM$Month)
+plot(manyglacierMTMAXM$TMAX, ty = 'l')
+
+```
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Mon Dec 23 06:35:49 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllll}
+  \hline
+ & Month & Slope TMIN & R\verb|^|2 & Slope TMAX & R\verb|^|2.1 \\ 
+  \hline
+1 & January & 0.0633 *** & 0.124 & 0.0567 *** & 0.144 \\ 
+  2 & February & 0.0367 * & 0.057 & 0.0185 NS & 0.02 \\ 
+  3 & March & 0.0587 *** & 0.22 & 0.0441 *** & 0.136 \\ 
+  4 & April & 0.0424 *** & 0.289 & 0.0387 * & 0.066 \\ 
+  5 & May & 0.0425 *** & 0.522 & 0.0186 NS & 0.021 \\ 
+  6 & June & 0.0387 *** & 0.431 & 0.0278 ** & 0.105 \\ 
+  7 & July & 0.0475 *** & 0.42 & 0.0198 * & 0.062 \\ 
+  8 & August & 0.0594 *** & 0.65 & 0.0282 ** & 0.077 \\ 
+  9 & September & 0.046 *** & 0.428 & 0.0327 * & 0.066 \\ 
+  10 & October & 0.0299 *** & 0.156 & 0.0031 NS & 0.001 \\ 
+  11 & November & 0.0452 *** & 0.138 & 0.0268 NS & 0.044 \\ 
+  12 & December & 0.0239 NS & 0.031 & 0.0118 NS & 0.013 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+```{r}
+
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP),
+list(climate_data$Month, climate_data$Year), sum)
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+plot(x ~ Date, data=Missing)
+
+TotalPPT <- aggregate(climate_data$PRCP,
+list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+# Check to see what you created.
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+library(dplyr)
+
+PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
+head(PPT)
+
+PRCP_mean = mean(PPT$ppt)
+plot(ppt~Date, data=PPT)
+abline(h=PRCP_mean, col="blue")
+
+YearlySum = aggregate(PRCP ~ Year, climate_data, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year)
+YearlyMean = mean(YearlySum$PRCP)
+
+#MonthlySum = aggregate(PRCP ~ Month + Year, climate_data, mean)
+#MonthlySum$YEAR=as.numeric(MonthlySum$Year)
+#MonthlySum$MONTH = as.numeric(MonthlySum$Month)
+#str(MonthlySum)
+
+
+#Months = c("January", "February", "March", "April", "May", "June",
+#"July", "August", "September", "October", "November", "December")
+# Create a panel so I can see all the figures at once.
+#par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+#PRCPresult <- NA
+#for (i in 1:12){
+#plot(MonthlySum$PRCP[MonthlySum==i], ty='l')
+#plot(PRCP~YEAR,
+#data=MonthlySum[MonthlySum$MONTH==i,],ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+#Month.lm <- lm(PRCP~YEAR, data=MonthlySum[MonthlySum$MONTH==i,])
+#summary(Month.lm)
+#abline(coef(Month.lm), col="red")
+#PRCPresult <- rbind(PRCPresult,
+#cbind(Months[i], round(coef(Month.lm)[2], 4),
+#round(summary(Month.lm)$coefficients[2,4],4),
+#round(summary(Month.lm)$r.squared, 3)))
+#}
+plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+abline(h=YearlyMean, col="blue")
+YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+n <- 5
+k <- rep(1/n, n)
+k
+y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+lines(YearlySum$YEAR, y_lag, col="red")
+summary(YearlySum.lm)
+
+par(mfrow=c(2,2))
+plot(lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==1,]))
+
+
+```
+
+
+
+
+
+
+```
+
 
 ```
 
