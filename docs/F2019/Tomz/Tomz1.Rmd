@@ -45,7 +45,7 @@ plot(TMAX ~ NewDate, data = climate_data, ty = "l", xlab = "Date", ylab = "Degre
      main = "Maximum Daily Temperature, Zurich, Switzerland", col = "black")
 
 TMAX.lm <- lm(TMAX ~ NewDate, data = climate_data)
-summary(TMAX.lm)
+#summary(TMAX.lm)
 
 abline(coef(TMAX.lm), col = "red")
 #legend(1910, 0, col = c(1), coef(TMAX.lm))
@@ -121,7 +121,7 @@ plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == "05",],
      main = "May: Maximum Daily Temperature, Zurich, Switzerland")
 
 May.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == "05",])
-summary(May.lm)
+#summary(May.lm)
 
 abline(coef(May.lm), col = "green4")
 #legend(1980, 23, col = c(1), coef(May.lm))
@@ -141,7 +141,7 @@ plot(TMIN ~ NewDate, data = climate_data, ty = "l", xlab = "Date", ylab = "Degre
      main = "Minimum Daily Temperature, Zurich, Switzerland", col = "black")
 
 TMIN.lm <- lm(TMIN ~ NewDate, data = climate_data)
-summary(TMIN.lm)
+#summary(TMIN.lm)
 
 abline(coef(TMIN.lm), col = "red")
 #legend(1910, 0, col = c(1), coef(TMAX.lm))
@@ -165,12 +165,12 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 
 #str(MonthlyTMINMean)
-summary(MonthlyTMINMean)
+#summary(MonthlyTMINMean)
 #summary(MonthlyTMINMean$TMIN)
 
 plot(MonthlyTMINMean$TMIN, ty = 'l', ylab = "Degrees Celcius", main = "Minimum Mean Montly Temperature, Zurich, Switzerland")
 TMIN.lm <- lm(TMIN ~ NewDate, data = climate_data)
-summary(TMIN.lm)
+#summary(TMIN.lm)
 abline(coef(TMIN.lm), col = "blue")
 #legend(900, 5, coef(TMIN.lm))
 ```
@@ -198,7 +198,7 @@ for (i in 1:12){
 
   Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,])
   abline(coef(Month.lm), col = "purple")
-  summary(Month.lm)
+  #summary(Month.lm)
   coef(Month.lm)
 
   TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
@@ -218,7 +218,7 @@ plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == "01",],
      main = "January: Minimum Daily Temperature, Zurich, Switzerland")
 
 Feb.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month == "01",])
-summary(Feb.lm)
+#summary(Feb.lm)
 
 abline(coef(Feb.lm), col = "purple")
 
@@ -231,7 +231,7 @@ With a slope of 0.018792 and a significant p-value of 0.001963, we are once agai
 ## Table of Significant Temperatures 
 The following table depicts monthly maximum and miniumum temperatures, as well as their significance level. The significance levels range from most to least significant based on the symbols of " * * * ", " * * ", " * ", and "NS". 
 
-```{r min: xtable, echo = FALSE}
+```{r min_xtable, echo = FALSE, result='asis'}
 library(xtable)
 Results <- data.frame(Month = TMINresult[c(2:13), 1],
                       TMINSlope = TMINresult[c(2:13), 2],
@@ -255,8 +255,12 @@ Results$TMINslope = paste(Results$TMINSlope, Results$starTMIN)
 Results$TMAXslope = paste(Results$TMAXSlope, Results$starTMAX)
 
 colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+```
 
-print(xtable(Results[, c(1, 10, 4, 11, 7)]))
+```{r kibble, echo=FALSE}
+library(knitr)
+kable(Results[, c(1, 10, 4, 11, 7)], rownames=FALSE, type = "html")
+#print(xtable(Results[, c(1, 10, 4, 11, 7)]), )
 #xtable(Results)
 ```
 
@@ -275,7 +279,7 @@ Missing$Data = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2) / 12
 #plot(x ~ Data, data = Missing, main = "Missing Data")
 ```
 
-```{r precip data, echo = FALSE}
+```{r precip_data, echo = FALSE, warning=FALSE, message=FALSE}
 TotalPPT <- aggregate(climate_data$PRCP, list(climate_data$Month, climate_data$Year), sum, na.rm = T)
 
 names(TotalPPT) = c("Group.1", "Group.2", "ppt")
@@ -291,7 +295,7 @@ PRCP_mean = mean(PPT$ppt)
 
 plot(ppt ~ Date, data = PPT, main = "Precipitation Over Time")
 ppt.lm <- lm(ppt ~ Date, data = PPT)
-summary(ppt.lm)
+#summary(ppt.lm)
 abline(h = PRCP_mean, col = "blue")
 #legend(173, 265, coef(ppt.lm))
 ``` 
@@ -331,7 +335,7 @@ Plotting GDP over time will allow us to see if there is any trend in GDP that mi
 ```{r plot gdp tmax, echo = FALSE}
 plot(GDP ~ NewDate, data = gdp_data, ty = "l", xlab = "Date", ylab = "Millions of Chained 2010 National Currency", ylim = c(0, 180000), main = "Switzerland GDP", col = "black")
 GDP.lm <- lm(GDP ~ NewDate, data = gdp_data)
-summary(GDP.lm)
+#summary(GDP.lm)
 abline(coef(GDP.lm), col = "red")
 ```
 
@@ -346,7 +350,7 @@ The plot below depicts the change in snowfall over the course of the last centur
 
 ```{r snow, echo = FALSE}
 snwd.lm <- lm(SNWD ~ NewDate, data = climate_data[climate_data$SNWD != "0.0",])
-summary(snwd.lm)
+#summary(snwd.lm)
 plot(SNWD ~ NewDate, data = climate_data)
 abline(coef(snwd.lm), col = "blue")
 ```
