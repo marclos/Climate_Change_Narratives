@@ -1,0 +1,289 @@
+---
+title: "The Rising Tides and Temperatures of San Francisco"
+author: "Allie Hsu"
+date: "12/20/2019"
+output:
+<<<<<<< HEAD
+  word_document: default
+  pdf_document: default
+=======
+>>>>>>> 626a66017eed2360476a11b04e59a80b1b7b94cc
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Temperature Changes in San Francisco
+
+San Francisco is a city very near my own, San Jose California. While it is surrounded on three sides by water, either from the ocean or the bay, it has always been a location that has been fixed in my mind as permanent and immoveable. It is one of the oldest cities in California with a multifaceted past of progress, domination, wealth and power. However, climate data and research on the literature surrounding San Francisco climate projections have shown that the city is not at all immune, but rather a location of particular vulnerability. Rising sea levels occur because of two main factors related to climate change - the expansion of seawater and the melting of ice over land (NOAA 2009). While is is not the local temperature that causes global sea level rise, on a larger scale once can see that both of these these are the consequences of change to the larger climate system, and show that San Francisco is in no way immune to climate change. 
+
+The east side of San Francisco features the Embarcadero Seawall. Its coast was filled with abandoned ships and built up with rock and concrete, changing the landscape from tidal mudflats to allow development along the coast that would be safe from the tides (Rogers, 2018). Built between 1878 and 1915, this manmade coast makes up over three miles of the San Francisco waterfront and houses historic piers, wharves, and a large number of San Francisco's most valuable attractions. Beyond this, the seawall stabilizes filled lands upon which critical city infrastructure rests, and protects bay front neighborhoods from coastal flooding. However this sea wall faces structural threats due to age, sea level rises, and earthquakes. If this area of the coast had never been infilled and developed, perhaps they would not be facing the threats of flooding and extreme infrastructural damage that are becoming an issue today. Because it was, however, the city stands to lose both cultural and revenue losses because of the valuable fixtures of San Francisco that find themselves along the Embarcadero and the entire eastern coast. The water level of the bay has already risen 8 inches since 1900, and floods roadways during high tides in storms (Rogers 2018). I'd like to examine the potential extent of these losses and their impact on the city due to sea levels rising.
+
+
+## Methods for Understanding San Francisco Climate Trends
+
+I decided to use climate data on the maximum and minimum temperatures noted by a station in Downtown San Francisco daily in order to reflect a rising concern for environmental consequences in the area. This climate data this freely available and can be downloaded from NOAA (National Oceanic and Atmospheric Administration). I thought this station would give rich insight into San Francisco's manifestation and visible signs of climate change. This is because temperature changes since 1921 cannot be attributed to the city becoming a heat island, as it has been developed for over a century - therefore it can be reasonably assumed that significant trends in the temperature data reflects a changing climate.
+
+Using RStudio software, I will filter out outliers and represent the data in plots for monthly averages of daily maximum and minimum temperatures between 1920 and 2020. I will then break them down further into individual months over time. I will be using these to test the null hypothesis that the slope of the best fit line of these plots is zero - in other words, that there is no overall temperature rise in the minimum and maximum temperature data from the Downtown San Francisco station between 1920 and today. 
+
+## Results - Analysis of Climate Data
+
+First we will look at a plot of all our daily TMAX data from 1920-2020:
+
+<<<<<<< HEAD
+```{r preparing_data, echo=FALSE}
+#file.choose()
+#read.csv("/home/CAMPUS/achb2017/Climate_Change_Narratives/student_folders/Hsu/AllieHsu_SanFrancisco_Data.csv")
+climate_data <- read.csv("/home/CAMPUS/achb2017/Climate_Change_Narratives/student_folders/Hsu/OLD/Hsu_files/AllieHsu_SanFrancisco_Data.csv")
+=======
+```{r preparing_data, echo=FALSE, results='hide'}
+#file.choose()
+#read.csv("/home/CAMPUS/achb2017/Climate_Change_Narratives/student_folders/Hsu/AllieHsu_SanFrancisco_Data.csv")
+
+filepath = "/home/CAMPUS/achb2017/Climate_Change_Narratives/student_folders/Hsu/AllieHsu_SanFrancisco_Data.csv"
+filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Hsu.csv"
+climate_data <- read.csv(filepath)
+>>>>>>> 626a66017eed2360476a11b04e59a80b1b7b94cc
+
+head(climate_data)
+str(climate_data)
+names(climate_data)
+
+## plot(TMAX~DATE, climate_data)
+
+#min(climate_data$TMAX)  
+
+#min(climate_data$TMAX, na.rm = T)
+
+climate_data$TMAX[climate_data$TMAX==-9999] = NA
+climate_data$TMIN[climate_data$TMIN==-9999] = NA ## eliminating placeholders which will skew our averages
+```
+
+<<<<<<< HEAD
+=======
+```{r firstplot}
+plot(TMAX~DATE, climate_data[1:1835,], ty='l')
+>>>>>>> 626a66017eed2360476a11b04e59a80b1b7b94cc
+```
+
+```{r newdate, echo=FALSE}
+
+str(climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y") ##reformatting dates - NewDate
+
+## plot of daily TMAX data with correct and consisten date formatting
+plot(TMAX~NewDate, climate_data, ty='l', main = "TMAX Over Time") 
+
+
+```
+Fig. 1.1
+
+This shows us a plot of daily TMAX temperatures from 1920-2020. 
+
+
+```{r regression_model, echo=FALSE}
+
+lm(TMAX ~ NewDate, data=climate_data)
+
+
+```
+
+``` {r summary, echo=FALSE}
+
+summary(lm(TMAX ~ NewDate, data=climate_data))
+
+
+```
+
+Looking at this summary we see a slightly positive temperature slope (5.835e-05) which is highly significant. (The p-value is 2e-16, which is much less than 0.05). We see lots of variability that is not date driven. 
+Therefore we reject the null hypothesis that there is a slope of 0! While we have determined that the overall trend of TMAX is significantly positive, it could be more revealing of certain trends to break these graphics down into smaller sets of data. Because this represents so much data compressed into one small graphic, its difficult to derive any meaning from this plot aside from a large general upward trend over time.
+
+Below, the data will be broken down into monthly means of daily temperatures, first for the TMAX, then for TMIN: 
+
+``` {r monthly_means, echo=FALSE}
+
+## disaggregate into month and year variables
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+
+plot(MonthlyTMAXMean$TMAX, ty='l', main = "Monthly Means of Daily Temperatures")
+
+```
+Fig. 1.2
+
+
+``` {r TMIN, echo=FALSE}
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+plot(MonthlyTMINMean$TMIN, ty='l')
+
+
+```
+Fig. 1.3
+These allow for a little visual clarity, and one can more clearly begin to see an upwards slope. 
+
+Next, we will look at the monthly averages of individual months over time, as seasonal changes may be more drastic and show more significance from month to month:
+
+```{r table, echo=FALSE}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+## Makes a table
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+
+## Shows which months are significant!
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+
+```
+
+The figures below show the months January, July, and August. They are strongly significant in the upward trend of both their minimum and maximum temperature. February, October, and December also show significant changes in their maximum temperature:
+
+First we start with the significant months for monthly average TMAX:
+``` {r MAXsignificant_months_Jan, echo=FALSE}
+
+## January
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+ty='l', xlim=c(1950, 2020),main = "January")
+January.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(January.lm)
+
+abline(coef(January.lm), col="red")
+
+```
+Fig. 2.0 January - Slope: 0.0448
+
+``` {r MAXsignificant_months_July, echo=FALSE}
+## July
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",], ty='l', xlim=c(1950, 2020), main = "July")
+July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+summary(July.lm)
+
+abline(coef(July.lm), col="red")
+```
+Fig. 2.1 July - Slope:0.0264
+
+
+``` {r MAXsignificant_months_Aug, echo=FALSE}
+##August
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], ty='l', xlim=c(1950, 2020), main = "August")
+August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+summary(August.lm)
+
+abline(coef(August.lm), col="red")
+```
+Fig. 2.2 August - Slope:0.0264
+
+Other significant months: 
+
+February - Slope: 0.0229
+October - Slope: 0.0208
+December - Slope: 0.0222
+
+Below are the significant months for monthly average TMIN:
+``` {r MINsignificant_months_Jan, echo=FALSE}
+
+## January
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],
+ty='l', xlim=c(1950, 2020))
+January.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+summary(January.lm)
+
+abline(coef(January.lm), col="red")
+```
+Fig. 3.0 January - Slope: 0.0301
+``` {r MINsignificant_months_Jul, echo=FALSE}
+## July
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",],
+ty='l', xlim=c(1950, 2020))
+July.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
+summary(July.lm)
+
+abline(coef(July.lm), col="red")
+```
+Fig. 3.1 July - Slope: 0.0165
+``` {r MINsignificant_months_Aug, echo=FALSE}
+##August
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",],
+ty='l', xlim=c(1950, 2020))
+August.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+summary(August.lm)
+
+abline(coef(August.lm), col="red")
+```
+Fig. 3.1 August - Slope: 0.0268
+
+From here we graph the monthly averages of each of the significant months across time, both for maximum temperature and minimum temperature. Each one of these months show a positive trend both in their minimum and maximum temperatures.
+
+## Implications and Conclusion
+
+The trends in the data from NOAA showed a significant rise in minimum and maximum temperatures during months of January, August, and July. This is consistent with literature I've found with predicted impacts on the area. Berkeley News listed several effects that San Francisco residents may be experiencing, such as:
+
+- an increase in average annual maximum temperature of 1.7°F since 1950
+- less frequent coastal fog
+- An 8 inch sea level rise in the Bay in the last 100 years;
+
+All of these consequences reflect an overall rise in temperatures as shown above, as do projections that by 2100 we will see 5.6 to 8.8 degrees of warming in California depending on greenhouse gas reduction. 
+
+My focus, however, is on the 100 year old Seawall and its fragility in the face of rising water levels in the bay and and risk of earthquakes. News coverage has already begun to cover stories of flooding along the roadways on the eastern coast, and numerous renderings show important cultural and economical fixtures in the community underwater. According to the San Francisco Climate & Health Profile (2014) sea levels are projected to rise 7-15 inches by 2050, and 26-46 inches by 2100. This poses a threat to many waterfront attractions, housing, large corporate centers, and more. If sea levels continue to rise - cultural centers which bring tourism and therefore revenue to the city will be lost. These include the Ferry Building, the Giants’ ballpark, the Exploratorium, Fisherman’s Wharf, and even the San Francisco airport. Serving nearly 56 million passengers a year and employing approximately 43,000 people, the loss of SFO would have severe economic consequences both inside and outside the Bay Area. (Aria, 2019) The Port of San Francisco conducted a Vulnerability Study in 2016: that found that $1.6 billion in assets are at risk from earthquake damage, and that the seawall supports $2.1 billion of economic activity annually" (Aragon, 2016). While this is not a direct consequence of rising sealevels, it shows the vulnerability of the seawall and how easily a natural disaster such as an earthquake could create extreme vulnerability and generate huge losses for the city of San Francisco and its residents. Furthermore, this study "...revealed that most of the seawall is built over Young Bay Mud, a weak, saturated, and highly compressible marine clay that tends to amplify earthquake shaking and is susceptible to earthquake induced lateral spreading and settlement. Additionally, the fill used to create the land behind the seawall is susceptible to liquefaction." (Aragon 2016) This means that not only is the seawall extremely vulnerable to rising sea levels in its current condition, but that an earthquake could compound numerous types of damage to produce dire consequences.
+
+Because it is too late to reverse all of the development that has taken place and existed for years due the this seawall, the only feasible plan underway is a fortification of the seawall to be better able to withstand sea level and earthquake threats. The cost of this undertaking was estimated to be anywhere between 2 and 5 billion dollar project, involving raising and reinforcing around 3 miles of seawall. These extreme measures show the extent to which the government must go to accomodate and overcome spatial insecurities generated by climate change - investing huge amounts of money in temporary solutions to compensate for a global trend of warming. This research revealed that San Francisco is not only not immune to climate change, but particularly vulnerable.
+
+
+## References 
+
+Aragon, Greg. “San Francisco Begins Fortification Process of 100-Year-Old Seawall.” Engineering NewsRecord RSS, Engineering News-Record, 16 May 2016, www.enr.com/blogs/12-california-views/post/39403-san-francisco-begins-fortification-process-of-100-year-old-seawall.
+
+Bendix, Aria. “Disturbing before-and-after Images Show How Parts of San Francisco Could Be Underwater by 2100.” Business Insider, Business Insider, 6 Feb. 2019, www.businessinsider.com/san-francisco-landmarks-could-be-underwater-by-2100-2019-2#many-san-francisco-tech-companies-are-located-in-waterfront-areas-that-are-particularly-vulnerable-to-sea-level-rise-1.
+
+Kgo. “King Tides Cause Flooding along San Francisco Embarcadero during Strong Storm.” ABC7 San Francisco, 10 Jan. 2017, abc7news.com/weather/king-tides-cause-flooding-along-san-francisco-embarcadero/1695830/.
+
+Rogers, Paul. “The $5 Billion Plan to Save San Francisco from Flooding in a Major Earthquake.” The Mercury News, The Mercury News, 22 Oct. 2018, www.mercurynews.com/2018/10/18/seawall/.
+
+Sanders, Robert. “UC Berkeley Leads New Assessment of Bay Area Climate Impacts.” Berkeley News, 29 Aug. 2018, news.berkeley.edu/2018/08/27/uc-berkeley-leads-new-assessment-of-bay-area-climate-impacts/.
+
+Sanders, Robert. “UC Berkeley Leads New Assessment of Bay Area Climate Impacts.” Berkeley News, 29 Aug. 2018, news.berkeley.edu/2018/08/27/uc-berkeley-leads-new-assessment-of-bay-area-climate-impacts/.
+
+US Department of Commerce, and National Oceanic and Atmospheric Administration. “How Is Sea Level Rise Related to Climate Change?” NOAA's National Ocean Service, 3 June 2009, oceanservice.noaa.gov/facts/sealevelclimate.html.
+
+Wolff, Matt, and Cynthia Comerford. “San Francisco Climate & Health Profile.” San Francisco Department of Public Health, 2014.
+
+
