@@ -1,32 +1,311 @@
 ---
-title: "Climate Trends Affecting Glacier National Park: 1903-2019 "
+title: 'Climate Trends Affecting Glacier National Park: 1903-2019 '
 author: '86408'
 date: "12/2/2019"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
+![Lake MacDonald, Glacier National Park](/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/pictures/DSC06873.png.png)
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Glacier National Park
+
+*1910*  Glacier National Park was signed into law by William Taft. 
+Known as the 'last pristine wilderness', GNP features 2 mountain ranges, more than 130 lakes, and 25 glaciers.
+
+# The Threat of Climate Change
+
+Rising global temperatures threaten to eliminate GNP's famous glaciers.
+Only 25 of the original 150 glaciers present in GNP in 1900 still exist today. 
+Studies have found that the mean annual temperature in Glacier has risen by 1.8 degrees celsius, which is 1.8 times the global average.
+Beyond the glaciers, rising temperatures bring increased forest destruction by pests and fire, as well as flooding and erosion by glacial meltwater.
+
+![Named Glaciers of Glacier National Park](/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/pictures/Picture1.png)
+
+# Disappearing Glaciers
+
+A recent survey by USGS produced this map reflecting the remaining "active" glaciers found in GNP. A glacier is considered "active" if it covers an area greater than 25 acres. 
+
+# Blog Objectives
+
+This study focuses on data collected from six different weather stations around Glacier National Park from 1903 to 2019 and investigated for precipitation and temperature trends that reflect global warming assmptions. 
+The blog will answer the following questions: 
+## What are the limitations of incomplete data sets, recorded at multiple stations?
+## What is the value of the geologic carbon cycle when it comes to global warming and cooling cycles?
+
+```{r climate data, echo=FALSE}
+#read.csv("/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/Miranda_Glacier_Data.csv")
+climate_data <- read.csv("/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/Miranda_Glacier_Data.csv")
+#plot(PRCP~DATE, climateviedata)
+min(climate_data$PRCP)
+min(climate_data$PRCP, na.rm=T)
+#plot(TMAX~DATE, climate_data[15000:15900,], ty='l')
+#plot(SNOW~DATE, climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$Years <- as.Date(strDates, "%Y-%m-%d")
+#plot(SNOW~Years, climate_data[15000:16000,], ty='l')
+plot(TMAX~Years, climate_data[15000:16000,], ty='l', main= "Fig. 1: DAILY TEMPERATURE MAXIMUM IN GNP", xlab = "1992-1995", ylab= "TEMPERATURE")
+
+lm(TMAX~Years, data=climate_data)
+
+##Call:
+##lm(formula = TMAX ~ NewDate, data = climate_data)
+
+##Residuals:
+##  Min     1Q Median     3Q    Max 
+##-46.03  -7.82  -0.98   8.48 475.25 
+
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 9.629e+00  6.792e-02  141.78   <2e-16 ***
+## NewDate     8.114e-05  5.887e-06   13.79   <2e-16 ***
+abline(lm(TMAX~Years, data=climate_data), col = "red")
+summary(lm(TMAX~Years, data=climate_data))
+
+
+manyglacier = subset(climate_data, subset = NAME == "MANY GLACIER, MT US")
+lubec = subset(climate_data, subset = NAME == "LUBEC, MT US")
+eastglacier = subset(climate_data, subset = NAME == "	EAST GLACIER, MT US")
+stmary1 = subset(climate_data, subset = NAME == "ST. MARY 1 SSW, MT US")
+stmary2 = subset(climate_data, subset = NAME == "ST. MARY MONTANA, MT US")
+stmary3 = subset(climate_data, subset = NAME == "ST. MARY, MT US")
+summit = subset(climate_data, subset = NAME == "SUMMIT, MT US")
+
+plot(TMIN~Years, stmary1, ty='p')
+points(TMIN~Years, stmary2, col="blue")
+lines(TMIN~Years, stmary3, col="red")
+```
+Figure 1 is the first attempt to plot daily temperature maximum data from all stations, 1903-2020. Unfortunately, the data set is too large to view a cohesive trend with all points. A three year period has been selected for the first analysis. A trendline with a positive slope indicates a slight temperature increase in Glacier National Park during the 1990's. 
+```{r individual stations, echo=FALSE}
+plot(TMAX~Years, summit[1:271,], ty='l', col="blue", main= "Fig. 3: SUMMIT DAILY MAX TEMP", xlab = "1903", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=summit[1:271,])
+abline(lm(TMAX~Years, data=summit[1:271,]), col='red')
+#oefficients:
+#(Intercept)        Years  
+ # 2.180e+03    8.915e-02  
+
+plot(TMAX~Years, lubec, ty='l', col="green", main= "Fig. 4: LUBEC DAILY MAX TEMP", xlab = "1907-1910", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=lubec)
+abline(lm(TMAX~Years, data=lubec), col='red')
+#Coefficients:
+#(Intercept)        Years  
+# -1.593e+02   -7.526e-03  
+
+plot(TMAX~Years, summit[272:15850,], ty='l', col="blue", main= "Fig. 5: SUMMIT DAILY MAX TEMP", xlab = "1935-1979", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=summit[272:15850,])
+abline(lm(TMAX~Years, data=summit[272:15850,]), col='red')
+##Coefficients:
+##(Intercept)        Years  
+## 8.187e+00   -4.248e-05 
+
+plot(TMAX~Years, manyglacier, ty = 'l', col="pink", main= "Fig. 6: MANY GLACIER DAILY MAX TEMP", xlab = "1967-2019", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=manyglacier)
+##Call:
+##lm(formula = TMAX ~ Years, data = manyglacier)
+
+##Coefficients:
+##(Intercept)        Years  
+## 8.0433690    0.0001648  
+abline(lm(TMAX~Years, data=manyglacier), col = "red")
+
+
+plot(TMAX~Years, stmary1, ty='l', col = "purple", main= "Fig.7: ST. MARY No. 3 DAILY MAX TEMP", xlab = "2004-2019", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=stmary1)
+abline(lm(TMAX~Years, data=stmary1), col="red")
+#Coefficients:
+#(Intercept)        Years  
+#  7.2689241    0.0001598 
+plot(TMAX~Years, stmary2, ty='l', col="purple", main= "Fig. 8: ST. MARY NO.2 DAILY MAX TEMP", xlab = "1989-2019", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=stmary2)
+abline(lm(TMAX~Years, data=stmary2), col="red")
+#Coefficients:
+#(Intercept)        Years  
+# 15.7684662   -0.0003081  
+plot(TMAX~Years, stmary3, ty='l', col="purple", main= "Fig. 9: ST. MARY NO. 3 DAILY MAX TEMP", xlab = "1980-2015", ylab= "TEMPERATURE")
+lm(TMAX~Years, data=stmary3)
+#Coefficients:
+#(Intercept)        Years  
+# 12.7621664   -0.0000981  
+abline(lm(TMAX~Years, data=stmary3), col = "red")
+```
+### FIGURES 3-9
+The maximum daily temperatures recorded at each station ranged in quality and consitency throughout the 20th century. Data from individual stations would be missing large gaps of data from the timeline, and to account for this, data is plotted in frequency chunks. For example, Figure 3 reflects a single year worth of data from Summit station, followed by a longer span in figure 5.
+In order to establish some semblance of unity within this data set, data from each station was mapped with a trendline. Interestingly, more than half of the trend lines have a negative slope suggestive of temperature decrease over time. 
+
+```{r monthly trends, echo = FALSE}
+#plot(SNOW~Years, manyglacier, ty='l', col="pink", main= "MANY GLACIER DAILY SNOW FALL", xlab = "1967-2019", ylab= "SNOW FALL (CM)")
+#plot(SNWD~Years, manyglacier, ty='l', col= "red", main= "MANY GLACIER SNOW DEPTH", xlab = "1967-2019", ylab = "SNOW DEPTH (CM)")
+
+climate_data$Month=format(as.Date(climate_data$Years), format= "%m")
+climate_data$Year = format(climate_data$Years, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX~Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l', col="green", main = "Fig. 10: MEAN MONTHLY MAX TEMP", xlab="Month Index", ylab="TEMPERATURE")
+
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020), main="Fig. 11: MEAN MAX TEMP IN MAY", xlab="YEAR", ylab="MEAN MAX TEMPERATURE")
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+{
+par(mfrow=c(3,4), mar=c(3, 4, 4, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH== i,],ty="l", las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}}
+# Estimate Std. Error t value Pr(>|t|)
+#(Intercept) -22.78532   27.49546  -0.829    0.410
+#YEAR          0.01864    0.01392   1.340    0.184
+
+#Residual standard error: 3.415 on 83 degrees of freedom
+#Multiple R-squared:  0.02117,	Adjusted R-squared:  0.009374 
+#F-statistic: 1.795 on 1 and 83 DF,  p-value: 0.184
+
+```
+```{r Monthly TMin, echo=FALSE}
+par(mfrow=c(1,1))
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l', col="orange", main="Fig. 12: MEAN MONTHLY MIN TEMPERATURE", xlab=" Month Index", ylab="MEAN MINIMUM TEMPERATURE")
+
+Months = c("January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December")
+{
+par(mfrow=c(3,4), mar=c(3, 5, 5, 2) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH== i,],ty="l", las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4),
+round(summary(Month.lm)$coefficients[2,4],4),
+round(summary(Month.lm)$r.squared, 3)))
+}}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+
+#manyglacier$Month=format(as.Date(manyglacier$Years), format= "%m")
+#manyglacier$Year = format(manyglacier$Years, format="%Y")
+#manyglacierMTMAXM = aggregate(TMAX~Month + Year, manyglacier, mean)
+#manyglacierMTMAXM$YEAR = as.numeric(manyglacierMTMAXM$Year)
+#manyglacierMTMAXM$MONTH = as.numeric(manyglacierMTMAXM$Month)
+#plot(manyglacierMTMAXM$TMAX, ty = 'l')
 ```
 
-## R Markdown
+## Average Temperature Maximums and Minimums
+Plotting average monthly temperature maxiumums and minimums provides interetsing results. Overall, both maximumm and miniumum temperatures in Glacier National Park have increase with time. However,minimum temperature rise outpaces maximum temperature rise, suggesting that the seasons in GNP are becoming more mild. 
+The threat to glacial survival is that a mild climate inhibits the crucial snow accumulation that contributes to glacial mass during the winter. As a result, glaciers are melting away during warmer months with the chance to rebuild during the colder months. 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r precipitation data, echo=FALSE}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+#climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+#Missing <- aggregate(is.na(climate_data$PRCP),
+#list(climate_data$Month, climate_data$Year), sum)
+#Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+#plot(x ~ Date, data=Missing)
 
-```{r climate data}
-read.csv("/home/CAMPUS/mjfa2017/github/Climate_Change_Narratives/student_folders/Foster/Miranda_Glacier_Data.csv")
+#TotalPPT <- aggregate(climate_data$PRCP,
+#list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+# Check to see what you created.
+#names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+#NonMissing <- Missing[Missing$x < 5, c(1:3)]
+#library(dplyr)
+
+#PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+#PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
+#head(PPT)
+
+#PRCP_mean = mean(PPT$ppt)
+#plot(ppt~Date, data=PPT)
+#abline(h=PRCP_mean, col="blue")
+
+#YearlySum = aggregate(PRCP ~ Year, climate_data, sum)
+#YearlySum$YEAR = as.numeric(YearlySum$Year)
+#YearlyMean = mean(YearlySum$PRCP)
+
+#MonthlySum = aggregate(PRCP ~ Month + Year, climate_data, mean)
+#MonthlySum$YEAR=as.numeric(MonthlySum$Year)
+#MonthlySum$MONTH = as.numeric(MonthlySum$Month)
+#str(MonthlySum)
+
+
+#Months = c("January", "February", "March", "April", "May", "June",
+#"July", "August", "September", "October", "November", "December")
+# Create a panel so I can see all the figures at once.
+#par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+#PRCPresult <- NA
+#for (i in 1:12){
+#plot(MonthlySum$PRCP[MonthlySum==i], ty='l')
+#plot(PRCP~YEAR,
+#data=MonthlySum[MonthlySum$MONTH==i,],ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+#Month.lm <- lm(PRCP~YEAR, data=MonthlySum[MonthlySum$MONTH==i,])
+#summary(Month.lm)
+#abline(coef(Month.lm), col="red")
+#PRCPresult <- rbind(PRCPresult,
+#cbind(Months[i], round(coef(Month.lm)[2], 4),
+#round(summary(Month.lm)$coefficients[2,4],4),
+#round(summary(Month.lm)$r.squared, 3)))
+#}
+#plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+#abline(h=YearlyMean, col="blue")
+#YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+#abline(coef(YearlySum.lm), col="green")
+#n <- 5
+#k <- rep(1/n, n)
+#k
+#y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+#lines(YearlySum$YEAR, y_lag, col="red")
+#summary(YearlySum.lm)
+
+par(mfrow=c(2,2))
+plot(lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==1,]))
+
+par(mfrow=c(2,2))
+plot(lm(TMAX ~ YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==1,]))
 
 
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## The Geologic Carbon Cycle
+  Temperature trend uncertainty has swayed scientific opinion between global warming or cooling within the last sixty years. On a much larger scale, global climate controversy is also fed by discussions about the impact of the Geologic Carbon cycle in our rapidly warming globe. 
+  Atmospheric levels of carbon dioxide and oxygen, and the size changes of carbon repositories are all influenced by tectonics, climate, the phosphorous cycle and the silicate-carbonate geochemical cycle. 
+	Primarily, the levels of atmospheric oxygen and carbon dioxide over millions of years are influenced by the transformation of silicate rocks to carbonate rocks via weathering and sedimentation, followed by their retransformation by metamorphism and magmatism back to silicate rocks. With the weathering of silicate minerals, carbon dioxide is taken from the atmosphere and then precipitated as CaCo3 sediments, also known as limestones. These carbonates are eventually broken down and cycled through the mantle in a process called “degassing” which returns the carbon dioxide to the rock record and the atmosphere during events of volcanism.
+Organic processes of the long term carbon cycle involve the burial of organic matter in sediments and demonstrate the importance of phosphorous. During photosynthesis, carbon is fixed with the nutrient phosphorous and transformed to carbon soils and organic acids. As organic material compounds, it is compressed into sedimentary rock, such as limestone—made of shells, corals and feces. Serving as another reservoir, carbon is released as organic matter thermally breaks down (degassing) or the rock is exposed to weathering. the breakdown and formation of carbonates that carbon moves between the atmosphere and carbon reservoirs.  
+Organic matter burial can only occur when net photosynthesis surpasses respiration. As phosphorus is a limiting nutrient in photosynthesis and carbon fixation, organic matter burial and the growth of this carbon reservoir is dependent on phosphorous availability. 
+	Phosphorous becomes available as phosphate is weathered—which points to the next limiting factor, temperature and climate. Temperature is both an indicator of atmospheric levels of CO2 as well as an influencing factor. Warmer temperatures with high levels of CO2 affect the rate of weathering and the uptake of that CO2 from the atmosphere by plants fixation with phosphorous, while colder temperatures inhibit weathering and photosynthesis. Over millions of years, the former may shift to lower levels of atmospheric CO2, counter to how it began, with increased atmospheric CO2 uptake and organic matter burial. 
+  It is known that the globe is emerging from an ice age. 

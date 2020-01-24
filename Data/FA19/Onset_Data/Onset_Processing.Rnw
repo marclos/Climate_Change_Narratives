@@ -1,0 +1,213 @@
+\documentclass{article}
+
+\begin{document}
+
+
+\section{Data Processing}
+
+\subsection{Create path temperature sensor csv files}
+
+<<>>=
+filepath106 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/20724106.csv"
+
+filepath107 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/20724107.csv"
+
+filepath109 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/20724109.csv"
+
+filepath110 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/20724110.csv"
+
+filepath543 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/10998543.csv"
+
+filepath544 = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/Onset_Data/10998544.csv"
+@
+
+\subsection{Read csv files into R and clean files}
+
+The headers are a mess, so I had to skip the first line before reading the CSV file. After that, I renamed the first few columns and then assigned the location from the header, manually. Total pain!
+
+<<>>=
+onset106 = read.csv(filepath106, skip = 1); #str(onset106)
+names(onset106) = c("Obs", "DateTime", "Temp")
+onset106$Location = "Walker Beach"; onset106$Exposure = "Shade"; 
+onset106 <- onset106[,c(1,8, 9, 2,3)]; #head(onset106)
+
+onset107 = read.csv(filepath107, skip = 1); #str(onset107)
+names(onset107) = c("Obs", "DateTime", "Temp")
+onset107$Location = "Tranquada Lot"; onset107$Exposure = "Sun"; 
+onset107 <- onset107[,c(1,8, 9, 2,3)]; #head(onset107)
+
+onset109 = read.csv(filepath109, skip = 1); #str(onset109)
+names(onset109) = c("Obs", "DateTime", "Temp")
+onset109$Location = "Kravis"; onset109$Exposure="Sun"; 
+onset109 <- onset109[,c(1,5,6, 2,3)]; #head(onset109)
+
+onset110 = read.csv(filepath110, skip = 1); #str(onset110)
+names(onset110) = c("Obs", "DateTime", "Temp")
+onset110$Location = "SCC Parking Lot"; onset110$Exposure = "Shade"; 
+onset110 <- onset110[,c(1,8, 9, 2,3)]; #head(onset110)
+
+onset543 = read.csv(filepath543, skip = 1); #str(onset543)
+names(onset543) = c("Obs", "DateTime", "Temp")
+onset543$Location = "Sontag 1"; onset543$Exposure = "Sun"; 
+onset543 <- onset543[,c(1,8,9,2,3)]; #head(onset543)
+
+onset544 = read.csv(filepath544, skip = 1); #str(onset544)
+names(onset544) = c("Obs", "DateTime", "Temp")
+onset544$Location = "Sontag 2"; onset544$Exposure="Shade"; 
+onset544 <- onset544[,c(1,9,10, 2,3)]; #head(onset544)
+
+
+onset = rbind(onset106, onset107, onset109, onset110, onset543, onset544)
+@
+
+\subsection{Fix Date-Time format}
+
+I shouldn't be surprised, but the date/time format is not read correctly in R. So, after a bit of experimenting, I am using a package call \texttt{lubridate} that makes is a tiny bit easier.
+
+<<>>=
+onset$Location=as.factor(onset$Location)
+#str.date = as.character(onset$DateTime)
+#as.Date(str.date, format="%m%d%y", "h:m:s")
+library("lubridate")
+#mdy_hms(str.date)
+onset$DateTime=DateTime = mdy_hms(onset$DateTime)
+@
+
+\subsection{Remove Data after Sensors were collected}
+
+Although the sensors didn't start until we put them in the field, they did not stop until I downloaded the data. So, I manually removed the data based on a guess of when the temps did something odd for each site. 
+
+<<>>=
+# Remove Data after Retrival
+
+# Walker Beach
+onset2 = subset(onset, subset=Location == 
+      levels(onset$Location)[6] & 
+      DateTime < as.POSIXct("2019-11-30 09:45:00", tz="UTC"))
+onset2 = subset(onset, subset=Location == 
+      levels(onset$Location)[6] & 
+      DateTime < as.POSIXct("2019-12-04 12:30:00", tz="UTC"))
+
+onset2 = rbind(onset2, subset(onset, subset=Location == 
+      levels(onset$Location)[5] & 
+      DateTime < as.POSIXct("2019-12-09 10:30:00", tz="UTC")))
+
+# Sontag 2
+onset2 = rbind(onset2, subset(onset, subset=Location == 
+      levels(onset$Location)[4] & 
+      DateTime < as.POSIXct("2019-12-06 12:30:00", tz="UTC")))
+
+# Sontag 1
+onset2 = rbind(onset2, subset(onset, subset=Location == 
+      levels(onset$Location)[3] & 
+      DateTime < as.POSIXct("2019-12-06 12:30:00", tz="UTC")))
+
+# SCC Parking Lot
+onset2 = rbind(onset2, subset(onset, subset=Location == 
+      levels(onset$Location)[2] &
+      DateTime < as.POSIXct("2019-12-07 14:30:00", tz="UTC")))
+
+# Kravis Sun
+onset2 = rbind(onset2, subset(onset, subset=Location == 
+      levels(onset$Location)[1] & 
+      DateTime < as.POSIXct("2019-12-06 14:00:00", tz="UTC")))
+@
+
+\section{Results}
+
+\subsection{Interogating the Results}
+
+First, we'll put everything in one graph (Figure~\ref{fig.alldata}).
+
+\begin{figure}
+<<echo=FALSE, results='hide'>>=
+col.plot = cbind(levels(onset$Location),
+    c("darkgreen", "orange", "brown", "black", "blue", "red")); col.plot
+plot(Temp ~ DateTime, data=onset2, ty='n', las=1, ylim=c(30,110))
+
+levels(onset$Location)
+lines(Temp ~ DateTime, data=subset(onset2, 
+    subset=Location == levels(onset$Location)[6]), col=col.plot[6,2])
+lines(Temp ~ DateTime, data=subset(onset2, 
+    subset=Location == levels(onset$Location)[5]), col=col.plot[5,2])
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[4]), col=col.plot[4,2])
+
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[3]), col=col.plot[3,2])
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[2]), col=col.plot[2,2])
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[1]), col=col.plot[1,2])
+
+legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=35, legend=levels(onset$Location), lty=1, lwd=2, col=col.plot[,2], ncol=3, cex=.9, bty="n")
+
+@
+\caption{All time series in one graphic. Not easy to see what's going on.}
+\label{fig.alldata}
+\end{figure}
+
+\subsection{Paired Plots -- Sun versus Shade}
+
+First, we'll put everything in one graph (Figure~\ref{fig.paired}). Here we can see the spikes associated with the sunshine, which is not representative of ``weather'' records. 
+
+\begin{figure}
+<<echo=FALSE>>=
+par(mfrow=c(2,1))
+plot(Temp ~ DateTime, data=onset2, ty='n', las=1, ylim=c(30,110))
+
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[4]), col=col.plot[4,2])
+
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[3]), col=col.plot[3,2])
+
+legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=43, legend=levels(onset$Location)[c(3,4)], lty=1, lwd=2, col=col.plot[c(4,3),2], ncol=3, cex=.9, bty="n")
+
+plot(Temp ~ DateTime, data=onset2, ty='n', las=1, ylim=c(30,110))
+
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[6]), col=col.plot[6,2])
+lines(Temp ~ DateTime, data=subset(onset2, subset=Location == levels(onset$Location)[2]), col=col.plot[2,2])
+
+legend(x=as.POSIXct("2019-11-18", tz="UTC"), y=43, legend=levels(onset$Location)[c(6,2)], lty=1, lwd=2, col=col.plot[c(6,2),2], ncol=2, cex=.9, bty="n")
+@
+\caption{Just just two values seems to allow us with some capacity to distinquish the differences with more confidence.}
+\label{fig.paired}
+\end{figure}
+
+\section{TMAX-TMIN and TAVE}
+
+<<echo=F>>=
+# as.Date(onset2$DateTime)
+# do.call is a new function for me, I am not sure what it is doing, 
+# but it works in creating a data.frame.
+onset.daily <- do.call(data.frame,
+  aggregate(Temp ~ as.Date(DateTime) + Location, data = onset2, 
+  FUN = function(x) c(TAVE = mean(x), TMAX = max(x), TMIN = min(x))))
+
+names(onset.daily) = c("Date", "Location", "TAVE", "TMAX", "TMIN")
+head(onset.daily)
+
+onset.daily$TMINMAXAVE = (onset.daily$TMAX + onset.daily$TMIN)/2
+
+par(mfrow=c(2,1))
+plot(TMINMAXAVE ~ TAVE, data=onset.daily, xlab="Calculated Mean from 30 min interval data", main="All Sites", ylab="Mean of TMIN, TMAX")
+abline(0,1)
+text(65,62, "1:1 Line")
+
+## shade only
+onset.daily <- do.call(data.frame,
+  aggregate(Temp ~ as.Date(DateTime) + Location, data = onset2[onset2$Exposure=="Shade",], 
+  FUN = function(x) c(TAVE = mean(x), TMAX = max(x), TMIN = min(x))))
+
+names(onset.daily) = c("Date", "Location", "TAVE", "TMAX", "TMIN")
+head(onset.daily)
+
+     
+onset.daily$TMINMAXAVE = (onset.daily$TMAX + onset.daily$TMIN)/2
+
+plot(TMINMAXAVE ~ TAVE, data=onset.daily, main="Shade Sites Only", xlab="Calculated Mean from 30 min interval data", ylab="Mean of TMIN, TMAX")
+abline(0,1)
+text(65,62, "1:1 Line")
+
+@
+
+
+
+
+
+\end{document}

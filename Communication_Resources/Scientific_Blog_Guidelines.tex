@@ -51,6 +51,7 @@
 \usepackage{alltt}
 
 \usepackage{amsmath}
+\usepackage{hyperref}
 %\usepackage{natbib}
 %\bibfont{\small} % Doesn't see to work...
 
@@ -138,20 +139,30 @@ The are several characteristics of a blog. The list below is a good summary -- p
 
 \subsection{Selecting a Region}
 
-long climate records...for the region, 
+To engage and test a hypothesis and captilizing on our experience with R, we can use wheather data to determine if there are real trends. To do this, it's easiest to select a single location (and single weather station). Of course, if we add more sites, we can make a more robust analysis, but for our purposes, a single site allows us to also problematize the conclusions one might make with a limited data set. 
 
-\subsection{Obtaining Climate Records}
+\subsection{Obtaining Weather Records}
+
+I have provided a \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Analysis_Resources/1_Obtaining_Climate_Records.pdf}{guide to obtain weather records from NOAA}, although currently the guide has only been written for terrestrial weather data, future iterations will include sea surface temperatures, sea ice, glaciers, etc. 
 
 \subsection{Using and Evaluating NOAA Records}
 
+NOAA records are surprisingly inconsisent and in some cases, need significant processing before we can analyze the data. Use \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Analysis_Resources/2_Using_NOAA_Climate_Records.pdf}{my second guide} to help you process these data. It's important that you understand what you are doing, so be sure to read the text.
+
 \subsection{Evaluating Monthly Trends and Hypothesis Testing Logic}
 
+Analyzing the data relies on using R to test the signficance of a best fit line using regression and then to plot the data. In general, the \href{https://github.com/marclos/Climate_Change_Narratives/blob/master/Analysis_Resources/3_Evaluating_Monthly_Trends_CHCNDaily.pdf}{thrid guide I created} does a pretty good job in helping you analyze temperature and rainfall. Beyone this, please come to my office hours for help!
+
 \subsection{Reporting the Results}
+
+There are two step to reporting the results -- one is submitting the results to sakai with \href{https://github.com/marclos/Climate_Change_Narratives/blob/master/Admin/Deliverables/Exporting_Files.pdf}{a short guide on how to do that}. The second, less trivial, is the development of the blog and I'll have more to say on this below.
 
 
 \section{Navigating Scientific Literature}
 
 \subsection{Scholarly Databases and Peer Reviewed Literture}
+
+One of the most important aspects of science and our blogs, is that they demonstrate a conversation with various scientfic narratives. In general, if we have time, we try to engage with that literature in a thoughtful and systematic way, which usually begins with a literature survey and a written literature review. 
 
 \subsection{Writing a Literature Review}
 
@@ -159,6 +170,11 @@ long climate records...for the region,
 
 \section{Linkages in the Social Justice}
 
+Although conceptually, social justice is an admirable goal. However, developing a sophisticated analysis of social justice implication and how to mitigate them demands a great deal of attention and thoughtfulness. 
+
+For example, when we talk about climate justice, we can disaggregate the term to address a range of institutional frameworks (nation-state, indigeneous, etc), stakeholders (race, class, gender, age), and philosophical categories. 
+
+Thus, we need to be explicit in defining what we mean and how we use the concept of social justice.
 
 \section{Writing a Blog}
 
@@ -170,11 +186,11 @@ For example: Based on recent fires in Idaho, the objective of this blog is to de
 
 After you describe your objectives and approach, I suggest you describe the data sources and data characteristics that you can use to answer the question(s) and test your hypotheses.
 
-It's tricky to decide how much information to cover in these sections, that might be 'termed' as methods. We need enough for others to follow, but space is precious and our readers time is far from infinite. Thus, I suggest you side on a minimalize approach. 
+It's tricky to decide how much information to cover in these sections, that might be 'termed' as methods. We need enough for others to follow, but space is precious and our readers time is far from infinite. Thus, I suggest you side on a minimal approach. 
 
-For example: To test my predictions, I obtained NOAA curated temperature and precipation records from Boise (Station: ID033204) from 1885 to 2017. This station has been moved three times during the recoreded period, but have passed through the strict NOAA QA/QC process. Although there were several months of missing precipation data. Thus, to avoid the bias of missing data for monthly totals, if any day's precipation was missing, the entire month was coded as missing. 
+For example: To test my predictions, I obtained NOAA curated temperature and precipation records from Boise (Station: ID033204) from 1885 to 2017. This station has been moved three times during the recoreded period, but have passed through the strict NOAA QA/QC process to ensure the record is unbiased as possible. Although there were several months of missing precipation data, the data record was robust enough avoid statitical violations. %Thus, to avoid the bias of missing data for monthly totals, if any day's precipation was missing, the entire month was coded as missing. 
 
-Data processing, graphics, and analyses used the R programming environment (CRAN 2017). 
+Data processing, graphics, and analyses used the R programming environment (CRAN 2019). 
 
 Reporting statistics is one of the hardest things to do in a scientific blog. We want to 'invite readers' and not turn them off with terse, complext terminalogy. And nothing can do this faster than having to report the results of statistical tests. There are several approaches:
 
@@ -185,13 +201,15 @@ Reporting statistics is one of the hardest things to do in a scientific blog. We
 
 \end{description}
 
+I sugggest the middle ground!
+
 \subsection{Repeatability and Rstudio/Github}
 
-
+The beauty of using the Rstudio/Github platforms is that we can be explict and transparent about the data processing and analysis. I suggest you highlight this aspect in your blogs, while at the same time not overwhelming the reader with code. See if you can give 'just enough' for the reader to have confidence that you have analyzed the data correctly. 
 
 \subsection{On headers}
 
-When we begin a scientific blog, it's convenient to start with general headers that look like lab reports, "Introdcution", "Materials and Methods", "Results", "Discussion", and "Conclusion". But I am not convinced that the general public reader will find these very compelling. In fact, I am not sure that the separation between the methods and the results is all at that useful in an online context. 
+When we begin a scientific blog, it's convenient to start with general headers that look like lab reports, "Introduction", "Materials and Methods", "Results", "Discussion", and "Conclusion". But I am not convinced that the general public reader will find these very compelling. In fact, I am not sure that the separation between the methods and the results is all at that useful in an online context. 
 
 Thus, I suggest you start with these as headers and as you develop your blog, create more compelling headers. 
 
@@ -201,7 +219,6 @@ For the next section, you'll want to discuss your own results. When you begin re
 
 For example, Forest fires have increased each year (Figure 3). 
 This is much better than Figure 3 shows how forest fires have increased each year. 
-
 
 
 
@@ -229,9 +246,9 @@ To build a foolproof argument, you will need to achieve a balance between conten
 %\subsection{Strengthen your argument with analogies}
 
 
-%\subsection{Provide possible solutions}
+\subsection{Provide possible solutions}
 
-
+It's easy to demonstrate concepts like market failure or inequality as outcomes of the system. But we need to do more. In this case, your arguments should demonstrate a practical policy outcome or action that can be used to improve the situation. 
 
 
 %\begin{enumerate*}
@@ -278,7 +295,7 @@ To build a foolproof argument, you will need to achieve a balance between conten
 
 \subsection{Passive Voice and Passive Constructions}
 
-Limit the passive voice.
+Limit the passive voice. I suggest less than 1 sentance per paragraph. If possible, the only time you use passive voice is when 
 
 \subsection{Dates are rarely possessive}
 
@@ -290,10 +307,10 @@ Don't make the subject as the figure, but the results of the figure.
 
 \subsection{Words and Phrases to Avoid}
 
-In order to
-
-impact
-
+\begin{itemize}
+  \item In order to
+  \item impact
+\end{itemize}
 
 
 \subsection{Pronouns and Contractions}
