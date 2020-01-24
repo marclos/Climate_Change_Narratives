@@ -1,0 +1,41 @@
+---
+title: "Lead Report"
+author: '20231'
+date: "1/23/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read the Data
+```{r readcsv}
+import<-read.csv("/home/CAMPUS/pmba2017/Lead_Report/FinalDataLead.csv")
+str(import)
+```
+
+## Exploratory Analysis
+```{r exploratory}
+hist(import$Pb208, xlim=c(0,6000), ylim=c(0,50), ylab="Frequency of Soil Samples", xlab="Parts Per Billion of Lead", main="Lead Levels found in Soil Samples")
+```
+
+
+
+```{r anova}
+pb.aov<-aov(Pb208 ~ PARK, data=import)
+summary(pb.aov)
+```
+
+Since the P value is 0.0503, which is greater than 0.05, so our findings are not statistically significant. Therefore, we do not reject the null hypothesis.
+
+```{r assumptions}
+par(mfrow=c(2,2))
+plot(pb.aov)
+```
+```{r}
+levels(import$PARK)=c("Blais","Chap","Jaeg","Puer","Lark","Mars","Memo","Rosa","Walk","Wheel")
+levels(import$PARK)
+boxplot(Pb208 ~ PARK, data=import, cex.axis=0.50, xlab="Park in Claremont", ylab="Lead Levels Parts Per Billion", main= "Lead Levels found in Parks in Claremont")
+
+```
