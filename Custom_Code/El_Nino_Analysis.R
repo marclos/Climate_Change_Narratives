@@ -26,14 +26,23 @@ SO_smooth <- data.frame(
   method = "smooth()"
 )
 
+nino_smooth <- data.frame(
+  x = Nino$Date[complete.cases(Nino)],
+  y = as.vector(smooth(Nino$Index[complete.cases(Nino)])),
+  method = "smooth()"
+)
+
+
 pos <- mutate(SO_smooth, SOIp = ifelse(y >= .5, .5, NA))
 neg <- mutate(SO_smooth, SOIp = ifelse(y <= -.5, -.5, NA))
 
+pos1 <- mutate(nino_smooth, Ip = ifelse(y >= .5, .5, NA))
+neg1 <- mutate(nino_smooth, Ip = ifelse(y <= -.5, -.5, NA))
+
 par(mfrow=c(2,1), las=1, mar=c(2,4,1,0)+.1)
 plot(SOI~Date, SO, pch=19, cex=.3, col="grey", xaxt="n")
-
 axis(1, at=seq(1860, 2020, by =10))
-lines(y~x, smoothData, col="black")
+lines(y~x, SO_smooth, col="black")
 abline(h=0)
 
 with(pos, 
@@ -41,7 +50,21 @@ with(pos,
 with(pos, polygon(x, SOIp, col="black", lwd=.1))
 with(neg, 
      segments(x, SOIp, x, y, col= 'red'))
-    
+mtext("A", 2, 3, at=3, cex=2)
+
+plot(Index~Date, Nino, pch=19, cex=.3, col="grey", xaxt="n", xlim=c(1866,2020))
+axis(1, at=seq(1860, 2020, by =10))
+lines(y~x, nino_smooth, col="black")
+abline(h=0)
+
+with(pos1, 
+     segments(x, Ip, x, y, col= 'red'))
+with(pos1, polygon(x, Ip, col="black", lwd=.1))
+with(neg1, 
+     segments(x, Ip, x, y, col= 'blue'))
+with(neg1, polygon(x, Ip, col="black", lwd=.1))
+mtext("B", 2, 3, at=3, cex=2)
+
 ### Bar Graph Approach
 SO$col = ifelse(SO$SOI <= -1, 2, ifelse(SO$SOI >= 1, 3, 1))
 SO.mat = matrix(c(SO$Date, SO$SOI), ncol=2)
