@@ -41,7 +41,7 @@ import$Date = as.Date(temp2, "%Y-%m-%d")
 
 # plot(Sea.Surface.Temperature ~ Date, data= import)
 
-names(import) = c("Identification", "Latitude", "Longitude", "Time.of.Observation",    "Air.Temperature", "Wet.Bulb", "Dew.Point", "SST", "Date")
+names(import) = c("Identification", "Latitude", "Longitude", "Time.of.Observation", "Air.Temperature", "Wet.Bulb", "Dew.Point", "SST", "Date")
 #library(lubridate)
 
 SST.month = aggregate(SST ~ Date, import, mean)
