@@ -181,8 +181,10 @@ read.table(Y1944)[75,67], read.table(Y1954)[75,67], read.table(Y1964)[75,67],
 read.table(Y1974)[75,67], read.table(Y1984)[75,67], read.table(Y1994)[75,67],
 read.table(Y2004)[75,67], read.table(Y2014)[75,67])
 
-plot(temp/100)
-
+temp.df = data.frame(Temp = as.vector(temp)/100); temp.df
+temp.df$Year = seq(1854, 2014, 10)
+plot(Temp~ Year, temp.df)
+abline(coef(lm(Temp~Year, data=temp.df)), col="red")
 #automating this process!
 
 directory = "/pub/data/cmb/ersst/v5/ascii"
