@@ -1,70 +1,32 @@
 ---
-title: "Chi-Town bb"
-author: '26090'
-date: "12/3/2019"
+title: "Chicago is Slowly Warming"
+author: 'Aminah Grant'
+date: EA 30: Environmnetal Science 12/3/2019"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
-The data I will be evaluating comes from a climate station at Chicago’s Midway airport located on the south side of Chicago, Illinois. This weather station has been recording various forms of climate data since Februrary 29th, 1928, all the ay to December 11th, 2019. It has a 96% data ccoverage and an elevation of 189 feet.
-
-Information on Chicago: location, type of climate historically, communities and spcies, there....
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-
-## Reading Data
 ```{r cars}
 #summary(cars)
 #file.choose("/home/CAMPUS/agad2017/Climate_Change_Narratives/student_folders/Grant/aminahgrant_chicagomidway_data.csv")
 shytown <- read.csv("/home/CAMPUS/agad2017/Climate_Change_Narratives/student_folders/Grant/aminahgrant_chicagomidway_data.csv")
-
-
-head(shytown)
-
-str(shytown)
-
-names(shytown)
-
-
-
 ```
-
-## Processing Data and Dates
 
 ```{r processingdates}
 
-plot(TMAX~DATE, shytown)
+
 strDates <- as.character(shytown$DATE)
 
-min(shytown$TMAX)
-min(shytown$TMAX, na.rm=T)
 
 shytown$NewDate <- as.Date(strDates, "%m/%d/%Y")
-```
-## Reassigning NA's
 
-
-You can also embed plots, for example:
-
-
-
-
-```{r hello, echo=FALSE}
 strDates <- as.character(shytown$DATE)
 shytown$NewDate <- as.Date(strDates, "%Y-%m-%d")
-
-plot(TMAX~DATE, shytown[1:10950,], ty='l')
-
 ```
-
 
 ```{r regressionish}
 lm(TMAX ~ NewDate, data=shytown)
@@ -77,29 +39,119 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, shytown, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
-str(MonthlyTMAXMean)
-
-plot(MonthlyTMAXMean$TMAX, ty='l')
-
 
 ```
+
+##Introduction
+
+Chicago is the third largest city in the United States. It is located in northeastern Illinois, in the Great Lakes region, and is part of the Midwestern United States. Chicago's climate is  continental with cold winters, and warm summers (Angel,2013).
+Four factors control the continental climate of Chicago: the sun, weather systems, urban areas, and Lake Michigan. The sun is the primary energy source for virtually all weather phenomena because it determines air temperatures and seasonal variations. The suns light hits Chicago at a rate three to four times greater in early summer than in early winter which causes the warm summers and cold winters. Secondly, Weather systems are a major factor affecting the city’s climate. The city has constant and often daily fluxuations in weather conditions caused by the varying air masses in the area and  storm systems taht flow through the region. Thrid, the urban climate in the Chicago metropolitan area is a slightly less significant factor, but it does play a role. The high amount of urban structures that make up the city from skyscrappers, to simple parking lots and roads make Chicago's climate different from surronding areas. One notable feature of it's urban climate is the "urban heat island effect" where urban areas cause changes in humidity, cloudiness, and wind speeds and directions resulting in warmer temperatures among other phenomena. Finally, Lake Michigan which laps at the city's shores, influences the climate of Chicago as well as most of northeastern Illinois. The large thermal mass of the lake tends to act as a moderators of local temperatures, causing cooler summers and warmer winters. Lake breezes also help mitigate heat in the summer (Angel, 2013). 
+
+In this blog, I would like to explore two patterns. First, the "second summer" effect in Chicago's climate. During the month of October or November, there is usually a period of 3-4 days where there are  higher temperatures, very distinct from the usual cold temperatures that characterize the shift from fall weather to the onset of Chicago's brutually cold winters.These temperatures are not necessarily summer-like but they are warmer than expected, usually in the 50-60 degree fahrenheit range, maybe even pushing 70 degrees. Many locals joke on various social media platforms and call this effect "Second Summer." It is our last glimpse of substantial sunlight and moderately "warm" weather until late March - early April. I want to know if the weather station at Midway has captured any data showing sudden but brief spikes in temperature during October and/or November. From my recollection, the "second summer" effect is not necessarily constant. Sometimes there is no second summer, sometimes it last a whole week and sometimes it is very brief, maybe one day. Given the fact that Chicago's climate is characterized by heavy fluxuations in weather, it would be interesting to see if the "second summer" effect is a noticeable trend that goes back a long time or if it is a more recent phenomena that can be linked to some climate shift. 
+
+Secondly, I would like to see if there are any general trends of increased temperatures in Chicago. There has been much climate research done claiming Chicago's temperatures are set to rise drastically within the next century. One notable study many Chicagoans know was done by the Chicago Climate Action Plan in 2008 which claimed Chicago's weather would soon resemble temperatures seen in Southern states. “A Chicago summer late in this century could feel like that of Mobile, Alabama, today. By the end of the century, the number of extremely hot days (over 100°F) could increase from the current two days per year to as many as 31 days per year” (CMAP,2013). This study was widely published in local newspapers. This information along with general warnings about global warming seen across the country,may lead many to expect a drastic increase in local temperatures. However, we do not necessarily see this increase in temperature on a steady and continous trend. Usually there are sudden and sporiadic instances of heat waves. I know that global warming does not mean a sudden increase in temerpatures. Climate change often happens in less subtle and often suprising ways. 
+
+The null hypothesis predicts that there is no observed relationship between an increased TMAX temperature and the months of October through December in Chicago. A rejection of the null hypothesis supports the alternative hypothesis that there is a relationship between the maximum temperature and the months of October through December, in comparison to other months.
+
+
+## Methods in Collecting Data
+
+The data I will be evaluating comes from a climate station at Chicago’s Midway airport located on the south side of Chicago, Illinois. This weather station has been recording various forms of climate data since Februrary 29th, 1928, all the ay to December 11th, 2019. It has a 96% data ccoverage and an elevation of 189 feet. I requested this information for free from the National Oceanic and Atmospheric Administartions's (NOAA) archives of climate data from various weather stations across the world. This data was uploaded onto RStudio software and I used this platform to evaluate and graph the data.
+
+
+## Results 
+
+To try and track the "second summer" trend and trends of increased temperatures, I decided to do a comparison in the daily maximum temperatures for the months of October - December from the year 1928 to 2019. I hoped to see that October or November had a spike TMAX. I did not seee this phenomena.
+
+However, I did find something else. First, that the maximum temperatures for November-December since 1950 have been slightly increasing.  However, the maximum temerature for October decreased over time.
+
 ```{r pressure, echo=FALSE}
-#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
-ty='l', xlim=c(1950, 2020))
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
-summary(May.lm)
-abline(coef(May.lm), col="red")
 
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],
+ty='l', xlim=c(1928, 2020))
+October.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+summary(October.lm)
+abline(coef(October.lm), col="red")
+
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="11"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",],
+ty='l', xlim=c(1928, 2020))
+November.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",])
+summary(November.lm)
+abline(coef(November.lm), col="red")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
+ty='l', xlim=c(1928, 2020))
+December.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+summary(December.lm)
+abline(coef(December.lm), col="red")
 
 ```
+
+Secondly, the minimum temperatures for October through December have also seen a increase in temperature, but at a higher rate than the maximum temperatures. This demonstrated by the more slopped red trend lines.
 
 ```{r testingallmonths}
-# First I create a vector of months
-Months = c("January", "February", "March", "April", "May", "June",
-"July", "August", "September", "October", "November", "December")
 
-  
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, shytown, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="10"], ty='l')
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",],
+ty='l', xlim=c(1928, 2019))
+October.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+summary(October.lm)
+abline(coef(October.lm), col="red")
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",],
+ty='l', xlim=c(1928, 2020))
+November.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
+summary(November.lm)
+abline(coef(November.lm), col="red")
+
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",],
+ty='l', xlim=c(1928, 2020))
+December.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+summary(December.lm)
+abline(coef(December.lm), col="red")
+
 
 
 ```
+
+
+## Discussion
+
+These patterns are very similar to trends found in research by the Midwestern Regional Climate Center, at the University of Illinois at Urbana-Champaign and the National Oceanic and Atmospheric Administration’s National Centers for Environmental Information (Zotti, 2019). They did a study comparing the daytime high and nightime low temperatures between Chicago and the United States at large from 1928 to 2014. They found that the high temperatures have been rising in Chicago and across the nation,however the high temperatures across the U.S. were found to be rising faster than Chicago.
+
+```{r image}
+! [NOAA](https://cdn.vox-cdn.com/thumbor/EIhr_8aY7GcD4Cg-jbTbF2qtVzY=/0x0:1400x732/920x0/filters:focal(0x0:1400x732):format(webp):no_upscale()/cdn.vox-cdn.com/uploads/chorus_asset/file/19208492/Daytime_highs.jpg)
+```
+
+While Chicago did show an upward trend, it still had some instances of colder than normal years that made its trend line fall below the rest of the country.
+I think this research is pretty consistent with the result that I found. While maximum temperatures did rise across the months of November and December, the trend lines on those graphs were pretty slow and steady meaning they did not show as dramatic a change as the minimum temperatures which I will discuss shortly.  I think that October's decrease in daily maximum temperature might also fall into the category of the colder weather the study talks about. This trend is most likely happening because October is a transitional month meaning the seasons change from fall to winter leading to a drop in the maximum temperatures.
+
+```{r pressure, echo=FALSE}
+! [NOAA](https://cdn.vox-cdn.com/thumbor/GbEKDHIWm_xOH_lRwz1LxneXb0c=/0x0:1400x767/920x0/filters:focal(0x0:1400x767):format(webp):no_upscale()/cdn.vox-cdn.com/uploads/chorus_asset/file/19208485/but_overnight_lows.jpg)
+```
+
+My results for the minimum temperatures across the months of October through December showed a much more pronounced and steeper upward trend line. This pattern also matches the research found daily low temperatures in Chicago have been rising much faster than the national trend, beginning in the 1980s. The Mindwestern study found that since 1986, Chicago lows temerpatures were found to be above normal most years, often outpacing the country as a whole.
+
+I think the results from my research and the study done by Midwestern Regional Climate Center is interesting because minimum temperatures tend to happen at night while maximum temperatures happen in the day. By this logic, one could conclude that Chicago nights are warming up much faster than its days. This  could end up being a major concern, for future winters and it could chage ideas about what climate change looks like. Global warming and climate change are often used to mean the same thing, leading many to expect an immediate and obvious increase in temperatures. In my data and Midwestern Regional Climate Center's graphs, we still see that Chicago is still affected by the same haphazard temperature fluxuations that characterize the area, creating our four seasons. However, the trend lines tell a different, and more subtle story. So far, Chicago has dodged  global warming trends like heatwaves for the most part, however, if Chicago is afflicted by more heatwaves in the future, this trend of hot summer days followed by hot summer nights bodes ill. If  we cannot rely on the temperature to drop at night, future heatwaves could become deadly as we get less relief from lower night time temperatures. This could especially impact homeless people who do not have easy access to sustained shelter, let alone a place with air conditioning. 
+
+
+## Conclusion
+
+I was not able to find any obvious trends that would demonstarte the "second summer" effect, however, I was able to unveil how global warming trends are slowly starting to catch up to Chicago, and how they might affect the city in the next couple of decades. We saw trends of increased maximum and minimum temperatures in the city from my data and the data from Midwestern Regional Climate Center, illustarting this effect. For future research, I would like to look at temperature trends recorded by other weather stations in the area to if I could find the second summer effect. Given the incrreased temperature trend, I conclude that there must be some record of brief spikes in temperature during the October and/or November monhs. I also think it would be interesting to compare maximum and minimum temperature trends from other cities in the Northern hemisphere to see if these increased temperature trends are happening in other places.
+
+## Citations
+
+Angel, Jim. 2013."Climate of Chicago - Description and Normals." https://www.isws.illinois.edu/statecli/general/chicago-climate-narrative.htm
+
+Chicago Metropolitan Agency for Planning. 2013."Appendix A: Primary Impacts of Climate Change in the Chicago Region." https://www.cmap.illinois.gov/documents/10180/14193/Appendix+A+-+Primary+Impacts+of+Climate+Change+in+the+Chicago+Region.pdf/2a85b021-f3bd-4b98-81d1-f64890adc5a7
+
+Zotti, Ed. 2019. "Climate change in Chicago isn’t playing out exactly as it has been nationwide — not yet." https://chicago.suntimes.com/crossroads/2019/9/20/20870524/climate-change-chicago-global-warming-trends-ed-zotti-city-crossroads
+
+
+

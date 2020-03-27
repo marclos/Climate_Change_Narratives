@@ -1,0 +1,56 @@
+---
+title: "Conservative Environmentalism in Fishing Communities in Maine"
+author: '20231'
+date: "12/3/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r read csv, echo=FALSE, results='hide'}
+
+# I used file.choose() to fine the file name and path of the csv. You will need to change this to your path because it's different. 
+file.csv = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/student_folders/Weed/ClimateDataOceanTemp.csv"
+
+# This is where Emma's file path will go... below!
+#file.csv = ""
+
+import = read.csv(file.csv)
+# head(import) # check to see if the import worked.
+# str(import)
+# names(import)
+
+```
+
+## Fix Dates
+
+You can also embed plots, for example:
+
+```{r newdates, echo=FALSE, results='hide'}
+temp = as.character(import$Time.of.Observation); temp
+temp2 = substr(temp, 1, 10)
+
+import$Date = as.Date(temp2, "%Y-%m-%d")
+
+# plot(Sea.Surface.Temperature ~ Date, data= import)
+
+names(import) = c("Identification", "Latitude", "Longitude", "Time.of.Observation", "Air.Temperature", "Wet.Bulb", "Dew.Point", "SST", "Date")
+#library(lubridate)
+
+SST.month = aggregate(SST ~ Date, import, mean)
+```
+
+```{r plot3yrs}
+plot(SST ~ Date, SST.month)
+abline(coef(lm(SST~Date, SST.month)))
+summary(lm(SST~Date, SST.month))
+
+```
