@@ -1,0 +1,636 @@
+---
+title: 'Project 2: Disturbance Regime of the Mojave River'
+author: "Aurora Massari"
+date: "3/25/2020"
+output: html_document
+---
+## Abstract
+... Researchers propose 
+
+- determine how variation in discharge can be a source of disturbance in streams and evaluate the potential role in lotic communites
+- determine potential ecological implications 
+
+*Succession will occur more drastically with taxa who are more adapted to the Mojave Desert climate.
+- "soil characteristic negatively affect the growth and survuval of L. tridentata... it does not occur in dry lake areas that experience periodic flooding [and] is very sensitive to poor root aeration"
+
+## Introduction
+From the Vanyume and Chemehuevi Native American tribes to the colonizer Spanish explorers and settler American trappers, the Mojave River has been an essential element in the Mojave Desert (Lines 1996). 
+
+From an ecological standpoint, species along the Mojave River change quiet abruptly from the western part of the Mojave Basin (nearer to the headwaters), yet species change gradually from Mojave Desert to the slightly warmer Sonoran Desert (Rundel 1996). 
+In the Pleistocene, the merged drainage systems of the Mojave River and Amargosa River connected several lakes across Death Valley. Now, only the playa Soda Lake is the primary drainage basin for the Mojave River (Rundel 1996).
+- vascular plants: 230 winter annuals of which 80 are endemic; none of 17 summer annuals are endemic to MDR
+        - Joshua Tree (Yucca brevifolia): disappears at higher elevations
+        - Pinyon pines and junipers replace Joshua Tree as ominant in community during fairly cold winters.
+- vertibrates: most vertibrates are shared with the western Sonoran Desert
+        - Los species diversity and low endemism
+        - Mojave Desert endemic = Mojave fringe-toed lizard (uma scoparia) in sand dunes
+        - some rodents and reptiles have distinctive Mojave Desert subspecies (shovel-nosed snake, sidewinder, Panamint rattlesnake, desert night snake), but most are not distinct
+        - no species of resident birds is endemic to Mojave
+
+In this report, we will analyze the data from three gaging stations at different points along the Mojave River. 
+
+### Site Description
+- drainage area (CHECK), urbanization, channelization (CHECK?), and impoundments (CHECK)
+- maps of watersheds/streams (KIND OF CHECK)
+- biological and ecological context of watershed and stream (yeet)
+
+The Mojave River runs northeastward through the Mojave River Basin from Deep Creek and West Fork Mojave River to Afton Canyon. The Mojave River drainage basin rests at the foot of the San Gabriel, Granite, Newberry, Bristol, and Providence Mountains on the southern boundary. On the northern side of the basin exist the Shadow, Calico, and Soda Mountains as well as Old Dad Mountain in the middle of the tailwater section near Kelso Wash. Our three sites of interest along the Mojave River in terms of peak discharge are: a little downstream from the headwaters near Victorville (10261500), between the upper and lower main-stem in the middle near Barstow (10262500), and downstream near Afton (10263000). 
+
+![The light blue dots indicate the station location and the dark blue arrows indicate the direction of flow *The Mojave River from Google Earth edited by Aurora Massari*](/home/CAMPUS/aemb2018/Aurora_Massari_Files/Mojave.Earth.jpg)
+
+Data from the Victorville site has a record from April of 1932 to February of 2019 (with 89 observations). Barstow station data spans from February 1932 to February 2019 (with 89 observations and one "NA" from 1942). Lastly, the Afton station has data ranging between March of 1930 to February of 2019 (with 69 observations). The average channel width (in feet) is 23, 19, and 5.6, respectively. The drainage area is distributed between these stations in four main sections: headwaters (13%), upper main stem (11%), middle main stem (49%), and lower main stem (27%) that carry surface runoff to Afton Canyon, which was at most 1,600 square miles in 1996. During heavy storms, it splits into channels flowing into East Cronese Lake and Soda Lake from Afton Canyon.  
+In recent decades, Lake Arrowhead and Lake Gregory at the headwaters of the Mojave River are primarily used for recreation, leading to slightly regulated summer streamflows. Also in the headwaters, Silverwood Lake has served as a temporary holding reservoir for water from the California Aqueduct since 1971 and the Mojave River Forks Reservoir is primarily used for flood control. Impounding is very infrequent and minimal. In the Mojave River Forks Reservoir, when water is impounded it is only for a few hours during extreme flooding. (Lines 1996). The allogenic drainage pattern of the Mojave River indicates its intermittent flow reaches the Mojave Desert before petering out (Rundel 1996).
+
+The winter of 1937-1938 was a time of extreme flooding in the Mojave River Basin, with highly atypical headwater snowfall and rainfall in the San Bernadino and San Gabriel Mountains (Troxel 1942).
+
+In 1971, the US Army Corps of Engineers constructed the Mojave River Dam, which was recently reclassified from low to high urgency risk characterization. If an extreme flooding event were to result in dam failure, floodwaters could reach up to 140 miles downstream (Vera 2019). 
+
+## Methods
+
+For all three stations at different points in the river, we completed the Flood Frequency Annalysis of the entire record using R Code provided by USGS. The data is imported from the package RWater, which contains data from all available USGS stations. We created plots to map different flood frequencies at 1.001, 1.01, 1.1, 1.5, 2, 5, 10, 15, 20, 30, 50, and 100 year return periods. On this plot we included the line of best fit as well as 95% confidence interval lines. The R code for the Victorville station is included below. Identical syntax was used for both the Barstow and Afton stations.
+
+``` {r methodsV}
+knitr::opts_chunk$set(echo = FALSE)
+### Using R to Analyze Flood Frequencies
+## We will use two packages (libraries), ‘dataRetrieval’ and ‘xts’. To do this, navigage to the Packages tab in the lower right window of Rstudio and click on Install. Type in the names of packages to download.
+### STEP 1
+### Removing previously used scripts from RWater
+### Removing all previously generated datasets and plots
+cat("\014")
+rm(list = ls())
+## null device
+## 1
+### STEP 2
+### Loading two specific packages into RWater -- not sure what Rwater is...
+library(dataRetrieval)
+library(xts)
+## Loading required package: zoo
+## Attaching package: ’zoo’
+## The following objects are masked from ’package:base’:
+## as.Date, as.Date.numeric
+## Selecting and Obtaining Gaging Station Data
+## Finding the Station ID
+## I recommend finding a station that has a long record, certianly more than 40 years if you can. Using the USGS site, find the station ID and enter below as mysite. The package
+### STEP 3
+### Get the Peak Annual Discharge
+mysiteV<-'10261500' # You want to change this code to match your USGS site code.
+annualpeakV<-readNWISpeak(mysiteV)
+annualpeak_titleV <- "Mojave River at Victorville"
+### Flood Frequency Analysis
+## Flood Frequency for Entire Record
+## First, we’ll analyze the data for the entire record – but you should make sure to do the second part below, where we split the data in half to see if the flood frequencies are consistent.
+### Locate the column of your data set that has the peak discharges
+### Click the 'annualpeak' from your 'Environment' (upper right)
+### You can see that peak discharges are stored in the 6th column (peak_va)
+QV <- annualpeakV$peak_va
+# Generate plotting positions
+nV = length(QV)
+rV = nV + 1 - rank(QV) # highest Q has rank r = 1
+TV = (nV + 1)/rV
+# Set up x axis tick positions and labels
+TtickV = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,
+          13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,
+          80,90,100)
+xtlabV = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,
+          NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,
+          NA,NA,100)
+yV = -log(-log(1 - 1/TV))
+ytickV = -log(-log(1 - 1/TtickV))
+xminV = min(min(yV),min(ytickV))
+xmaxV = max(ytickV)
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtickV = -(sqrt(6)/pi)*(0.5772 + log(log(TtickV/(TtickV-1))))
+QTtickV = mean(QV) + KTtickV*sd(QV)
+nQV = length(QV)
+seV = (sd(QV)*sqrt((1+1.14*KTtickV + 1.1*KTtickV^2)))/sqrt(nQV)
+LBV = QTtickV - qt(0.975, nQV - 1)*seV
+UBV = QTtickV + qt(0.975, nQV - 1)*seV
+maxV = max(UBV)
+QmaxV = max(QTtickV)
+```
+
+``` {r methodsB, include=FALSE}
+mysiteB<-'10262500' # You want to change this code to match your USGS site code.
+annualpeakB<-readNWISpeak(mysiteB)
+annualpeak_titleB <- "Mojave River at Barstow"
+### Flood Frequency Analysis
+## Flood Frequency for Entire Record
+## First, we’ll analyze the data for the entire record – but you should make sure to do the second part below, where we split the data in half to see if the flood frequencies are consistent.
+### Locate the column of your data set that has the peak discharges
+### Click the 'annualpeak' from your 'Environment' (upper right)
+### You can see that peak discharges are stored in the 6th column (peak_va)
+QB <- annualpeakB$peak_va
+# Generate plotting positions
+nB = length(QB)
+rB = nB + 1 - rank(QB) # highest Q has rank r = 1
+TB = (nB + 1)/rB
+# Set up x axis tick positions and labels
+TtickB = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,
+           13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,
+           80,90,100)
+xtlabB = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,
+           NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,
+           NA,NA,100)
+yB = -log(-log(1 - 1/TB))
+ytickB = -log(-log(1 - 1/TtickB))
+xminB = min(min(yB),min(ytickB))
+xmaxB = max(ytickB)
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtickB = -(sqrt(6)/pi)*(0.5772 + log(log(TtickB/(TtickB-1))))
+QTtickB = mean(QB, na.rm=TRUE) + KTtickB*sd(QB, na.rm=TRUE)
+nQB = length(QB)
+seB = (sd(QB)*sqrt((1+1.14*KTtickB + 1.1*KTtickB^2)))/sqrt(nQB)
+LBB = QTtickB - qt(0.975, nQB - 1)*seB
+UBB = QTtickB + qt(0.975, nQB - 1)*seB
+maxB = max(UBB)
+QmaxB = max(QTtickB)
+```
+
+``` {r methodsA, include=FALSE}
+mysiteA<-'10263000' # You want to change this code to match your USGS site code.
+annualpeakA<-readNWISpeak(mysiteA)
+annualpeak_titleA <- "Mojave River at Afton"
+### Flood Frequency Analysis
+## Flood Frequency for Entire Record
+## First, we’ll analyze the data for the entire record – but you should make sure to do the second part below, where we split the data in half to see if the flood frequencies are consistent.
+### Locate the column of your data set that has the peak discharges
+### Click the 'annualpeak' from your 'Environment' (upper right)
+### You can see that peak discharges are stored in the 6th column (peak_va)
+QA <- annualpeakA$peak_va
+# Generate plotting positions
+nA = length(QA)
+rA = nA + 1 - rank(QA) # highest Q has rank r = 1
+TA = (nA + 1)/rA
+# Set up x axis tick positions and labels
+TtickA = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,
+           13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,
+           80,90,100)
+xtlabA = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,
+           NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,
+           NA,NA,100)
+yA = -log(-log(1 - 1/TA))
+ytickA = -log(-log(1 - 1/TtickA))
+xminA = min(min(yA),min(ytickA))
+xmaxA = max(ytickA)
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtickA = -(sqrt(6)/pi)*(0.5772 + log(log(TtickA/(TtickA-1))))
+QTtickA = mean(QA) + KTtickA*sd(QA)
+nQA = length(QA)
+seA = (sd(QA)*sqrt((1+1.14*KTtickA + 1.1*KTtickA^2)))/sqrt(nQA)
+LBA = QTtickA - qt(0.975, nQA - 1)*seA
+UBA = QTtickA + qt(0.975, nQA - 1)*seA
+maxA = max(UBA)
+QmaxA = max(QTtickA)
+```
+
+
+Next, we wanted to look more closely at two defined time periods. In the Mojave River Basin, the particularly wet winters of 1983 and 1993 experienced enough parcipitation to spill over from Soda Lake into Silver Lake (Lines 1996). With this in mind, we decided to separate the data into two twenty-year periods (1980-1999 and 2000-2019, respectively) and plot them with the same graphical conditions as in the first flood frequency analysis.
+
+## Results
+
+``` {r resultsV1}
+# Plot peak flow series with Gumbel axis
+plot(yV, QV,
+     ylab = expression( "Annual Peak Flow (cfs)" ) ,
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, QmaxV),
+     xlim = c(xminV, xmaxV),
+     pch = 21, bg = "red",
+     main = annualpeak_titleV,
+)
+par(cex = 0.65)
+lines(ytickB, QTtickB, col = "black", lty=1, lwd=2)
+lines(ytickB, LBB, col = "blue", lty = 1, lwd=1.5)
+lines(ytickB, UBB, col = "red", lty = 1, lwd=1.5)
+# Draw grid lines
+abline(v = ytickB, lty = 3, col="light gray")
+abline(h = seq(500, floor(QmaxB), 500), lty = 3,col="light gray")
+## Merced River at XXX
+## Return Period, T (year)
+## Annual Peak Flow (cfs)
+```
+
+In the graph above, there appear to be three distinct groups. The majority of disturbance events at the Victorville site are less than five or six year floods, all under an annual peak flow of about 10000 cubic feet per second (cfs). The more severe floods are between 10000 and about 25000 cfs, with return periods between about six and twenty years. The final three observations are all above 30000 cfs, with approximate return periods of 25, 30, and 45 years.
+
+``` {r resultsV2}
+# Are Flood Frequencies Stationary?
+## Testing if the data are consistent over time
+## Look at the data and evaluate how to split the data in half – then we can see if the estimate for flood frequency has changed. Remember, in California, the water year actually starts on the 1st of October each year. In the example, I have below, I have define the dates, name of the station and dates for the graphic labels in this section too.
+### STEP 4
+### Split the downloaded data into two 20 year periods
+### Water year in CA, begins Oct 1 each year.
+period1V<-subset(annualpeakV,
+                peak_dt>="1980-10-01"
+                &peak_dt<="1999-09-30")
+period1_titleV = "Mojave River at Victorville (1980-1999)"
+period2V<-subset(annualpeakV,
+                peak_dt>="1999-10-01"
+                &peak_dt<="2019-09-30")
+period2_titleV = "Mojave River at Victorville (2000-2019)"
+ymaxV = round(max(annualpeakV$peak_va, na.rm=T)*1.1, -3)
+### STEP 5
+### Flood Frequency Analysis for Two Periods
+### Perform Flood Freqency Analysis
+### Locate the column of your data set that has the peak discharges
+### Click the 'period1' from your 'Environment' (upper right)
+### You can see that peak discharges are stored in the 6th column (peak_va)
+QV <- period1V$peak_va
+#Generate plotting positions
+nV = length(QV)
+rV = nV + 1 - rank(QV) # highest Q has rank r = 1
+TV = (nV + 1)/rV
+# Set up x axis tick positions and labels
+TtickV = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,
+          13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,
+          80,90,100)
+xtlabV = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,
+          NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,
+          NA,NA,100)
+yV = -log(-log(1 - 1/TV))
+ytickV = -log(-log(1 - 1/TtickV))
+xminV = min(min(yV),min(ytickV))
+xmaxV = max(ytickV)
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtickV = -(sqrt(6)/pi)*(0.5772 + log(log(TtickV/(TtickV-1))))
+QTtickV = mean(QV) + KTtickV*sd(QV)
+nQV = length(QV)
+seV = (sd(QV)*sqrt((1+1.14*KTtickV + 1.1*KTtickV^2)))/sqrt(nQV)
+LBV = QTtickV - qt(0.975, nQV - 1)*seV
+UBV = QTtickV + qt(0.975, nQV - 1)*seV
+maxV = max(UBV)
+QmaxV = max(QTtickV)
+### Split the plot window in two columns
+par(mfrow=c(1,2))
+# Plot peak flow series with Gumbel axis
+plot(yV, QV,
+     ylab = expression("Annual Peak Flow (cfs)"),
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, ymaxV),
+     xlim = c(xminV, xmaxV),
+     pch = 21, bg = "red",
+     main = period1_titleV,
+     cex.main = .75
+)
+par(cex = 0.65)
+axis(1, at = ytickV, labels = as.character(xtlabV))
+# Add fitted line and confidence limits
+lines(ytickV, QTtickV, col = "black", lty=1, lwd=2)
+lines(ytickV, LBV, col = "blue", lty = 1, lwd=1.5)
+lines(ytickV, UBV, col = "red", lty = 1, lwd=1.5)
+# Draw grid lines
+abline(v = ytickV, lty = 3, col="light gray")
+abline(h = seq(500, floor(QmaxV), 500), lty = 3,col="light gray")
+par(cex = 1)
+### Perform Flood Freqency Analysis for the second time period
+QV = period2V$peak_va
+#Generate plotting positions
+nV = length(QV)
+rV = nV + 1 - rank(QV) # highest Q has rank r = 1
+TV = (nV + 1)/rV
+# Set up x axis tick positions and labels
+#Ttick = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,80,90,100)
+#xtlab = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,NA,NA,100)
+yV = -log(-log(1 - 1/TV))
+ytickV = -log(-log(1 - 1/TtickV))
+xminV = min(min(yV),min(ytickV))
+xmaxV = max(ytickV)
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtickV = -(sqrt(6)/pi)*(0.5772 + log(log(TtickV/(TtickV-1))))
+QTtickV = mean(QV) + KTtickV*sd(QV)
+nQV = length(QV)
+seV = (sd(QV)*sqrt((1+1.14*KTtickV + 1.1*KTtickV^2)))/sqrt(nQV)
+LBV = QTtickV - qt(0.975, nQV - 1)*seV
+UBV = QTtickV + qt(0.975, nQV - 1)*seV
+maxV = max(UBV)
+QmaxV = max(QTtickV)
+# Plot peak flow series with Gumbel axis
+plot(yV, QV,
+     ylab = expression( "Annual Peak Flow (cfs)" ) ,
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, ymaxV),
+     xlim = c(xminV, xmaxV),
+     pch = 21, bg = "red",
+     main = period2_titleV,      
+     cex.main = .75
+)
+par(cex = 0.65)
+axis(1, at = ytickV, labels = as.character(xtlabV))
+# Add fitted line and confidence limits
+lines(ytickV, QTtickV, col = "black", lty=1, lwd=2)
+lines(ytickV, LBV, col = "blue", lty = 1, lwd=1.5)
+lines(ytickV, UBV, col = "red", lty = 1, lwd=1.5)
+# Draw grid lines
+abline(v = ytickV, lty = 3, col="light gray")
+abline(h = seq(500, floor(QmaxV), 500), lty = 3,col="light gray")
+par(cex = 1)
+```
+
+When we see the record split into two distinct categories, we see the slope of the line of best fit for the 1980-1999 period observably steeper than the 2000-2019 period. Again, the majority of data points are below 10000 cfs at less than a five or six year frequency.
+
+``` {r resultsB1}
+par(cex = 1)
+# Plot peak flow series with Gumbel axis
+plot(yB, QB,
+     ylab = expression( "Annual Peak Flow (cfs)" ) ,
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, QmaxB),
+     xlim = c(xminB, xmaxB),
+     pch = 21, bg = "red",
+     main = annualpeak_titleB
+)
+par(cex = 0.65)
+axis(1, at = ytickB, labels = as.character(xtlabB))
+# Add fitted line and confidence limits
+lines(ytickB, QTtickB, col = "black", lty=1, lwd=2)
+lines(ytickB, LBB, col = "blue", lty = 1, lwd=1.5)
+lines(ytickB, UBB, col = "red", lty = 1, lwd=1.5)
+# Draw grid lines
+abline(v = ytickB, lty = 3, col="light gray")
+abline(h = seq(500, floor(QmaxB), 500), lty = 3,col="light gray")
+```
+
+About halfway downstream, the Barstow station has very different restults. The majority of observations are well below 2500 cfs and a four year return preiod, while only two observations reach around the 10000 cfs and 20000 cfs mark at about five and ten year returns, respectively.
+
+``` {r resultsB2}
+# Are Flood Frequencies Stationary?
+## Testing if the data are consistent over time
+## Look at the data and evaluate how to split the data in half – then we can see if the estimate for flood frequency has changed. Remember, in California, the water year actually starts on the 1st of October each year. In the example, I have below, I have define the dates, name of the station and dates for the graphic labels in this section too.
+### STEP 4
+### Split the downloaded data into two 20 year periods
+### Water year in CA, begins Oct 1 each year.
+period1B<-subset(annualpeakB,
+                 peak_dt>="1980-10-01"
+                 &peak_dt<="1999-09-30")
+period1_titleB = "Mojave River at Barstow (1980-1999)"
+period2B<-subset(annualpeakB,
+                 peak_dt>="1999-10-01"
+                 &peak_dt<="2019-09-30")
+period2_titleB = "Mojave River at Barstow (2000-2019)"
+ymaxB = round(max(annualpeakB$peak_va, na.rm=T)*1.1, -3)
+### STEP 5
+### Flood Frequency Analysis for Two Periods
+### Perform Flood Freqency Analysis
+### Locate the column of your data set that has the peak discharges
+### Click the 'period1' from your 'Environment' (upper right)
+### You can see that peak discharges are stored in the 6th column (peak_va)
+QB <- period1B$peak_va
+#Generate plotting positions
+nB = length(QB)
+rB = nB + 1 - rank(QB) # highest Q has rank r = 1
+TB = (nB + 1)/rB
+# Set up x axis tick positions and labels
+TtickB = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,
+           13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,
+           80,90,100)
+xtlabB = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,
+           NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,
+           NA,NA,100)
+yB = -log(-log(1 - 1/TB))
+ytickB = -log(-log(1 - 1/TtickB))
+xminB = min(min(yB),min(ytickB))
+xmaxB = max(ytickB)
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtickB = -(sqrt(6)/pi)*(0.5772 + log(log(TtickB/(TtickB-1))))
+QTtickB = mean(QB) + KTtickB*sd(QB)
+nQB = length(QB)
+seB = (sd(QB)*sqrt((1+1.14*KTtickB + 1.1*KTtickB^2)))/sqrt(nQB)
+LBB = QTtickB - qt(0.975, nQB - 1)*seB
+UBB = QTtickB + qt(0.975, nQB - 1)*seB
+maxB = max(UBB)
+QmaxB = max(QTtickB)
+### Split the plot window in two columns
+par(mfrow=c(1,2))
+# Plot peak flow series with Gumbel axis
+plot(yB, QB,
+     ylab = expression("Annual Peak Flow (cfs)"),
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, ymaxB),
+     xlim = c(xminB, xmaxB),
+     pch = 21, bg = "red",
+     main = period1_titleB,
+     cex.main = .75
+
+)
+par(cex = 0.65)
+axis(1, at = ytickB, labels = as.character(xtlabB))
+# Add fitted line and confidence limits
+lines(ytickB, QTtickB, col = "black", lty=1, lwd=2)
+lines(ytickB, LBB, col = "blue", lty = 1, lwd=1.5)
+lines(ytickB, UBB, col = "red", lty = 1, lwd=1.5)
+# Draw grid lines
+abline(v = ytickB, lty = 3, col="light gray")
+abline(h = seq(500, floor(QmaxB), 500), lty = 3,col="light gray")
+par(cex = 1)
+### Perform Flood Freqency Analysis for the second time period
+QB = period2B$peak_va
+#Generate plotting positions
+nB = length(QB)
+rB = nB + 1 - rank(QB) # highest Q has rank r = 1
+TB = (nB + 1)/rB
+# Set up x axis tick positions and labels
+#Ttick = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,80,90,100)
+#xtlab = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,NA,NA,100)
+yB = -log(-log(1 - 1/TB))
+ytickB = -log(-log(1 - 1/TtickB))
+xminB = min(min(yB),min(ytickB))
+xmaxB = max(ytickB)
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtickB = -(sqrt(6)/pi)*(0.5772 + log(log(TtickB/(TtickB-1))))
+QTtickB = mean(QB) + KTtickB*sd(QB)
+nQB = length(QB)
+seB = (sd(QB)*sqrt((1+1.14*KTtickB + 1.1*KTtickB^2)))/sqrt(nQB)
+LBB = QTtickB - qt(0.975, nQB - 1)*seB
+UBB = QTtickB + qt(0.975, nQB - 1)*seB
+maxB = max(UBB)
+QmaxB = max(QTtickB)
+# Plot peak flow series with Gumbel axis
+plot(yB, QB,
+     ylab = expression( "Annual Peak Flow (cfs)" ) ,
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, ymaxB),
+     xlim = c(xminB, xmaxB),
+     pch = 21, bg = "red",
+     main = period2_titleB,      
+     cex.main = .75
+)
+par(cex = 0.65)
+axis(1, at = ytickB, labels = as.character(xtlabB))
+# Add fitted line and confidence limits
+lines(ytickB, QTtickB, col = "black", lty=1, lwd=2)
+lines(ytickB, LBB, col = "blue", lty = 1, lwd=1.5)
+lines(ytickB, UBB, col = "red", lty = 1, lwd=1.5)
+# Draw grid lines
+abline(v = ytickB, lty = 3, col="light gray")
+abline(h = seq(500, floor(QmaxB), 500), lty = 3,col="light gray")
+```
+
+Upon separating the data into two recent twenty year periods, we see there are a few more observations in the 1980-1999 period that surpass 10000 cfs than in the 2000-2019 period. Still, in both cases most floods are well below 2500 cfs with a less than four year return period.
+
+``` {r resultsA1}
+par(cex = 1)
+# Plot peak flow series with Gumbel axis
+plot(yA, QA,
+     ylab = expression( "Annual Peak Flow (cfs)" ) ,
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, QmaxA),
+     xlim = c(xminA, xmaxA),
+     pch = 21, bg = "red",
+     main = annualpeak_titleA
+)
+par(cex = 0.65)
+axis(1, at = ytickA, labels = as.character(xtlabA))
+# Add fitted line and confidence limits
+lines(ytickA, QTtickA, col = "black", lty=1, lwd=2)
+lines(ytickA, LBA, col = "blue", lty = 1, lwd=1.5)
+lines(ytickA, UBA, col = "red", lty = 1, lwd=1.5)
+# Draw grid lines
+abline(v = ytickA, lty = 3, col="light gray")
+abline(h = seq(500, floor(QmaxA), 500), lty = 3,col="light gray")
+## Merced River at XXX
+## Return Period, T (year)
+## Annual Peak Flow (cfs)
+par(cex = 1)
+```
+
+Here, the vast majority of floods had a peak discharge around 2000 and below with six year return periods and under. Only two floods surpasses the 4000 cfs mark, staying below 5000 and ranging from seven to ten year return periods.
+
+``` {r resultsA2}
+# Are Flood Frequencies Stationary?
+## Testing if the data are consistent over time
+## Look at the data and evaluate how to split the data in half – then we can see if the estimate for flood frequency has changed. Remember, in California, the water year actually starts on the 1st of October each year. In the example, I have below, I have define the dates, name of the station and dates for the graphic labels in this section too.
+### STEP 4
+### Split the downloaded data into two 20 year periods
+### Water year in CA, begins Oct 1 each year.
+period1A<-subset(annualpeakA,
+                 peak_dt>="1980-10-01"
+                 &peak_dt<="1999-09-30")
+period1_titleA = "Mojave River at Afton (1980-1999)"
+period2A<-subset(annualpeakA,
+                 peak_dt>="1999-10-01"
+                 &peak_dt<="2019-09-30")
+period2_titleA = "Mojave River at Afton (2000-2019)"
+ymaxA = round(max(annualpeakA$peak_va, na.rm=T)*1.1, -3)
+### STEP 5
+### Flood Frequency Analysis for Two Periods
+### Perform Flood Freqency Analysis
+### Locate the column of your data set that has the peak discharges
+### Click the 'period1' from your 'Environment' (upper right)
+### You can see that peak discharges are stored in the 6th column (peak_va)
+QA <- period1A$peak_va
+#Generate plotting positions
+nA = length(QA)
+rA = nA + 1 - rank(QA) # highest Q has rank r = 1
+TA = (nA + 1)/rA
+# Set up x axis tick positions and labels
+TtickA = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,
+           13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,
+           80,90,100)
+xtlabA = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,
+           NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,
+           NA,NA,100)
+yA = -log(-log(1 - 1/TA))
+ytickA = -log(-log(1 - 1/TtickA))
+xminA = min(min(yA),min(ytickA))
+xmaxA = max(ytickA)
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtickA = -(sqrt(6)/pi)*(0.5772 + log(log(TtickA/(TtickA-1))))
+QTtickA = mean(QA) + KTtickA*sd(QA)
+nQA = length(QA)
+seA = (sd(QA)*sqrt((1+1.14*KTtickA + 1.1*KTtickA^2)))/sqrt(nQA)
+LBA = QTtickA - qt(0.975, nQA - 1)*seA
+UBA = QTtickA + qt(0.975, nQA - 1)*seA
+maxA = max(UBA)
+QmaxA = max(QTtickA)
+### Split the plot window in two columns
+par(mfrow=c(1,2))
+# Plot peak flow series with Gumbel axis
+plot(yA, QA,
+     ylab = expression("Annual Peak Flow (cfs)"),
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, ymaxA),
+     xlim = c(xminA, xmaxA),
+     pch = 21, bg = "red",
+     main = period1_titleA,
+     cex.main = .75
+
+)
+par(cex = 0.65)
+axis(1, at = ytickA, labels = as.character(xtlabA))
+# Add fitted line and confidence limits
+lines(ytickA, QTtickA, col = "black", lty=1, lwd=2)
+lines(ytickA, LBA, col = "blue", lty = 1, lwd=1.5)
+lines(ytickA, UBA, col = "red", lty = 1, lwd=1.5)
+# Draw grid lines
+abline(v = ytickA, lty = 3, col="light gray")
+abline(h = seq(500, floor(QmaxA), 500), lty = 3,col="light gray")
+par(cex = 1)
+### Perform Flood Freqency Analysis for the second time period
+QA = period2A$peak_va
+#Generate plotting positions
+nA = length(QA)
+rA = nA + 1 - rank(QA) # highest Q has rank r = 1
+TA = (nA + 1)/rA
+# Set up x axis tick positions and labels
+#Ttick = c(1.001,1.01,1.1,1.5,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,60,70,80,90,100)
+#xtlab = c(1.001,1.01,1.1,1.5,2,NA,NA,5,NA,NA,NA,NA,10,NA,NA,NA,NA,15,NA,NA,NA,NA,20,NA,30,NA,NA,NA,50,NA,NA,NA,NA,100)
+yA = -log(-log(1 - 1/TA))
+ytickA = -log(-log(1 - 1/TtickA))
+xminA = min(min(yA),min(ytickA))
+xmaxA = max(ytickA)
+# Fit a line by method of moments, along with 95% confidence intervals
+KTtickA = -(sqrt(6)/pi)*(0.5772 + log(log(TtickA/(TtickA-1))))
+QTtickA = mean(QA) + KTtickA*sd(QA)
+nQA = length(QA)
+seA = (sd(QA)*sqrt((1+1.14*KTtickA + 1.1*KTtickA^2)))/sqrt(nQA)
+LBA = QTtickA - qt(0.975, nQA - 1)*seA
+UBA = QTtickA + qt(0.975, nQA - 1)*seA
+maxA = max(UBA)
+QmaxA = max(QTtickA)
+# Plot peak flow series with Gumbel axis
+plot(yA, QA,
+     ylab = expression( "Annual Peak Flow (cfs)" ) ,
+     xaxt = "n", xlab = "Return Period, T (year)",
+     ylim = c(0, ymaxA),
+     xlim = c(xminA, xmaxA),
+     pch = 21, bg = "red",
+     main = period2_titleA,      
+     cex.main = .75
+)
+par(cex = 0.65)
+axis(1, at = ytickA, labels = as.character(xtlabA))
+# Add fitted line and confidence limits
+lines(ytickA, QTtickA, col = "black", lty=1, lwd=2)
+lines(ytickA, LBA, col = "blue", lty = 1, lwd=1.5)
+lines(ytickA, UBA, col = "red", lty = 1, lwd=1.5)
+# Draw grid lines
+abline(v = ytickA, lty = 3, col="light gray")
+abline(h = seq(500, floor(QmaxA), 500), lty = 3,col="light gray")
+```
+
+Interestingly, there is an outlier in both 1980-1999 and 2000-2019 periods, in both cases a twenty year flood above 10000 cfs. In both there are two observations around 5000 cfs between seven and ten year returns as well as most observations being well below 2500 and under five year returns, as observed in the previous analysis. However, the 2000-2019 ananlysis includes two floods with a slightly higher peak discharge and a slightly steeper slope of the best fit line than the 1980-1999 observations.
+
+## Conclusion/Discussion
+- conjecture
+- references to justify opinion and interpretation of results
+- characterize the flood regime and ecological impact
+
+As the Mojave River ventures into the Mojave Desert, downstream from the San Bernadino Mountains, its flood regime in cubic feet per second decreases. 
+
+Flow from the Mojave River originates from rainfall in the northeast San Bernadino Mountains. When the river reaches the northern edge of the plateau, desert conditions dominate. In this region of the river, conditions are such that runoff is minimal except in heavy storms (Troxell 1942). 
+These results align with the literature. The Mojave River exhubits an allogenic drainage system, meaning it flows into a deserts and evaporates inside (Rundel 1996).
+Additionally, precipitation in the Mojave Desert is strongly correlated with elevation, where higher elevations indicate hihger percipitation rates (Rundel 1996).
+The basin-and-range topography of the Mojave Desert indicates the cool air to sinks downslope at night, contrasting with high daytime temperatures in direct sunlight (Rundel 1996).
+
+## Literature Cited
+
+        Lang, D. 1980. Aquifer Recharge from the 1969 and 1978 Floods in the Mojave River Basin, California. US Geological Survey.
+
+Lines, G. 1996. Ground-Water and Surface-Water Relations along the Mojave River, Southern California. US Geological Survey.
+
+        Rundel, P. W., Gibson A. C. 1996. Ecological communities and processes in a Mojave Desert ecosystem. Cambridge University Press.
+
+Troxell, H. 1942. Floods of March 1938 in Southern California. US Department of the Interior.
+
+Vera, L., O'Dell, D. (Contact). 2019. Army Corps reclassifies Mojave River Dam risk characterization. US Army Corps of Engineers Los Angeles District Website. Available from: https://www.spl.usace.army.mil/Media/News-Releases/Article/2006597/army-corps-reclassifies-mojave-river-dam-risk-characterization/ 
+
+        2003. Mojave River Transition Zone Recharge Project: Phase I Report Transition Zone Hydrology. URS Corporation and Mojave Water Agency. Available from: https://listserver.energy.ca.gov/sitingcases/victorville2/documents/applicant/2007-07-24_responses_data-set_1/requests_51-110/Soil%20&%20Water/Attachment%20DR%2076-1%20Transition%20Zone%20%20Phase%20I/TZ%20PhI%20-%20Report%20Text.pdf
