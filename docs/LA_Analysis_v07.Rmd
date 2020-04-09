@@ -1,0 +1,579 @@
+---
+title: "Los Angeles County Covid-19 Analysis"
+author: "Marc Los Huertos"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output: bookdown::html_document2
+# output: github_document
+---
+   
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, options(scipen=999))
+```
+
+# Introduction
+
+As I have watched the Covid-19 pandemic, I decided that I was going to process the data on my own and see of I could confirm trends articulated by state and federal agencies. From what I can tell, each region has it's own timeline and trajectory based municipal responses and state mandates. Thus, I took some time to drill into the LA context. 
+
+## Disclaimer
+
+This is not peer reviewed work and well outside my typical professional work -- but these mussings are mostly to help me understand what's going on, but if others find this useful, please analyze the data for yourself to confirm my results. If you found something amiss with my analyses, please let me know and I'll fix it ASAP. 
+
+# Data Source
+
+I have been using the [data hosted on github](https://github.com/CSSEGISandData/COVID-19), entitled Novel Corona-virus (COVID-19) Cases and provided by Johns Hopkins University, Center for Systems Science and Engineering.
+
+# Work flow
+
+First, I create a list of daily reports and combined them into a single csv. Unfortunately, the folks curating the data have been terribly inconsistent in the with their data records as columns are added and inconsistently named. Unfortunately, reading the data into R took 5 hours because there were at least three different file structures, but should have taken 5 minutes. 
+
+```{r, echo=FALSE, results='hide', message=FALSE}
+# download and read csvs
+#I am using project connect to the gibhub site and pull into my own project. I can't push, but that's fine. 
+
+# create list of csv
+library(readr)
+library(dplyr)
+
+path = "~/github/COVID-19/csse_covid_19_data/csse_covid_19_daily_reports/" 
+
+filepath <- list.files(path = path, pattern = "*.csv", full.names = T);
+files <- list.files(path = path, pattern = "*.csv", full.names = F);
+files = substring(files, 1, 10)
+files = data.frame(files, filepath)
+Daily = data.frame(NA)
+for(i in 1:c(nrow(files)-0)){
+   tmp = paste(files[i,2])
+   tmp2 <- read.csv(tmp)
+   tmp2$Date = paste(files[i,1])
+   tmp2[] <- lapply(tmp2, as.character)
+
+Daily = dplyr::bind_rows(Daily, tmp2)
+}
+  
+
+```
+
+# Subset Southern California
+
+I have only selected for Los Angeles so far, but the data is a mess because Los Angeles disappears for a week, so I had to make a decision about what to do about missing data -- at a key time! For two weeks the values seem to be missing. I will need to work on figuring out why. 
+
+The numbers creep up slowly in February -- as we can see when we limit the y-axis values. 
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.cap ="Early Records of Confirmed Cases of Covid-19 in LA County"}
+#str(Daily)
+#subset(Daily, FIPS==c(6037))
+LA = subset(Daily, subset=(Admin2 == "Los Angeles" | Province.State == "Los Angeles, CA"))
+LA$Confirmed=as.numeric(LA$Confirmed)
+LA$Date= as.Date(as.character(LA$Date), format='%m-%d-%Y')
+plot(Confirmed~Date, data=LA, las=1, ylim=c(0,18), ty='b')
+```
+
+And suddenly, we are missing data at the key period of time in the second week of March. I would hesitate to interpolate the missing data because as we'll see in the next section, how the slope is calculated has extreme effects on the double rate. 
+
+```{r, echo=FALSE, fig.cap='Confirmed Cases in Los Angeles County (Source JHU-CSSE)'}
+
+plot(Confirmed~Date, data=LA, las=1, pch=20)
+```
+
+## Using LA County Public Health Data 
+
+I found press releases by the County to have some of the missing data:
+
+- 3/09/2020  = 16 cases (github reported 14)
+- 3/10/2020  = 17 cases, but missing LB and Pasadena
+- 3/11/2020  = 27 cases
+- 3/12/2020  = 32 cases
+- 3/13/2020  = 40 cases
+- 3/14/2020  = 53 cases
+- 3/15/2020  = 69 cases
+- 3/16/2020  = 94 cases
+- 3/17/2020  = 144 cases
+- 3/18/2020  = 190 cases
+- 3/19/2020  = 231 cases
+- 3/20/2020  = 292 cases
+- 3/21/2020  = 351 cases
+- 3/22/2020  = 409 cases (corrected as 407 on the 23rd, same as github)
+- 3/23/2020  = 536 cases (90 hospitalized) same as github
+
+```{r countydata, echo=FALSE}
+county = data.frame(Date = as.Date(c("2020-03-10", "2020-03-11", "2020-03-12", "2020-03-13", "2020-03-14", "2020-03-15", "2020-03-16", "2020-03-17", "2020-03-18", "2020-03-19", "2020-03-20", "2020-03-21")), Confirmed = c( 17, 27, 32, 40, 53, 69, 94, 144, 190, 231, 292, 351))
+
+LA = bind_rows(LA, county)
+```
+
+   
+Missing or incorrect data on Github site from the weekend of the 28/29 based on the County Health Department Webpage (noon on each day).
+```{r}
+LA$Confirmed[LA$Date=="2020-03-28"] = 1829
+LA$Confirmed[LA$Date=="2020-03-29"] = 2136
+LA$Confirmed[LA$Date=="2020-04-04"] = 5277
+
+```
+
+```{r, echo=FALSE, fig.cap='Confirmed Cases in Los Angeles County (Source JHU-CSSE and LA County Public Health)'}
+par(mfrow=c(1,2))
+
+plot(Confirmed~Date, data=LA, las=1, pch=20, col="red", 
+     xlim=c(as.Date("2020-03-01"), as.Date("2020-03-20")),
+     ylim=c(0,300))
+points(Deaths~Date, data=LA[LA$Deaths>0,], pch=20, col="black")
+points(Recovered~Date, data=LA[LA$Recovered>0,], pch=20, col="green")
+legend(as.Date("2020-02-05"), 5500, legend=c("Confirmed Cases", "Recovered", "Deaths"), pch=20, col=c("red", "green", "black"))
+
+plot(Confirmed~Date, data=LA, las=1, pch=20, col="red")
+points(Deaths~Date, data=LA[LA$Deaths>0,], pch=20, col="black")
+points(Recovered~Date, data=LA[LA$Recovered>0,], pch=20, col="green")
+legend(as.Date("2020-02-05"), 6500, legend=c("Confirmed Cases", "Recovered", "Deaths"), pch=20, col=c("red", "green", "black"))
+```
+
+Note: the State is still not reporting "Recovered" in a way that is captured by these dataset. I am going to figure out how to obtain these numbers at some point.
+
+# Determine Doubling Rate
+
+Doubling rate is an estimate of how many days (in this case) we have seen the confirmed cases double. 
+
+The analysis is based on the slope of the natural log of the confirmed cases and the slope. 
+
+But the slope depends on how the early part of the record is included, which is then also sensitive to the missing data -- which is why I manually entered the data from the County's advisories. 
+
+In this case, I used both the complete data and the data that skips the first 32 observations. Notice how much better the second line (dark red) fits the more recent records compared to the purple line that includes all the data. 
+
+One could argue that there was too much uncertainty even in the first week of March to include in the model, however, I think it's useful to include because it's sets a better stage in how policy makers must respond in spite of uncertainty. 
+
+```{r, echo=FALSE, results='hide'}
+LA$lnConfirmed = log(LA$Confirmed)
+LA.lm.bad = lm(lnConfirmed~Date, data=LA)
+LA.lm.bad.sum = summary(LA.lm.bad)
+LA.lm.bad.sum$r.squared 
+LA.lm = lm(lnConfirmed~Date, data=LA[-c(1:32),])
+LA.lm.sum = summary(LA.lm)
+# names(LA.lm.sum)
+dr.bad = as.vector(round(log(2)/LA.lm.bad$coef[2],1)); dr.bad
+dr = as.vector(round(log(2)/LA.lm$coef[2],1)); dr
+
+# Confidence Intervals
+conf_int <- predict(LA.lm,LA, interval="confidence")
+LA = cbind(LA, conf_int); head(LA)
+```
+As it turns out the first 31 days there is only one confirmed infection -- so, it's better to start when we have an actual change, and on day 32, there were 7 infections. 
+
+Using the r^2^ to evaluate the models, we find the model that uses all the data has a r^2^ of `r round(LA.lm.bad.sum$r.squared, 3)`, while the regression that excludes the early part of the dataset has an r^2^ of `r round(LA.lm.sum$r.squared, 3)`. The closer to one is the better and these results reinforce my decision to exclude the early part of the dataset. 
+
+If we include the entire data set, the doubling rate is `r dr.bad`. Meanwhile, the doubling rate for the data that excludes the early part of the record is `r dr`, which is probably more consistent with the pattern of this epidemic. 
+
+```{r, echo=FALSE, fig.cap ='Confirm Cases in Los Angeles County and Estimated Doubling Rates'}
+
+plot(lnConfirmed ~ Date, data=LA, las=1, ylab="ln(Confirmed)")
+abline(coef(LA.lm), col='darkred', lwd=1.4)
+abline(coef(LA.lm.bad), col='purple')
+text(as.Date("2020-02-16"), 1.8,paste("Doubling Rate =", dr.bad), col='purple')
+text(as.Date("2020-03-05"), 5.1, paste("Doubling Rate =", dr), col='darkred')
+
+
+```
+
+# Policy Lag Times
+
+Seems to me that we are about two weeks behind in making decisions to protect public health. The Governor's order to stay home was made on the March 19th, thus we should see the same trend in growth until the effects of the order slow the spread of the virus, which should be about the 3rd of April, when we should see a decline of the doubling rate. 
+
+```{r echo=FALSE, results='hide', fig.cap='Predicted Number of Covid-19 Cases in Los Angeles', warning=FALSE, message=FALSE}
+
+plot(lnConfirmed ~ Date, data=LA, las=1, xlim=c(as.Date('2020-02-01'), as.Date('2020-04-27')), pch=20,
+ylim=c(0,13), ylab="ln(Confirmed)")
+lines(LA$Date, LA$fit, col='darkred', lwd=1.4)
+lines(LA$Date, LA$upr, col='darkorange', lwd=1, lty=2)
+lines(LA$Date, LA$lwr, col='darkorange', lwd=1, lty=2)
+
+library(tidyverse)
+library(lubridate)
+#new_dates <- tibble(Date=ymd(c('2020-04-03', '2020-04-09', '2020-04-12', '2020-04-15', '2020-04-18','2020-04-21', '2020-04-24', '2020-04-27')))
+
+temp = as.Date(c(Sys.Date()+seq(0, 21, 3)))
+
+new_dates=tibble(Date= ymd('2020-04-03', temp))
+  
+pred_vals <- predict(LA.lm, new_dates, interval="predict")
+prediction =cbind(new_dates, pred_vals); prediction
+
+lines(prediction$Date, prediction$fit, col='red', lwd=1.4)
+lines(prediction$Date, prediction$upr, col='red', lwd=1, lty=2)
+lines(prediction$Date, prediction$lwr, col='red', lwd=1, lty=2)
+
+legend(as.Date('2020-02-01'), 6, legend=c("Best Fit Line", "Confidence Intervals", "Prediction", "Prediction Intervals"), lwd=1.4, col=c("darkred", "darkorange", "red", "red"), lty=c(1,2,1,2), cex=.6, bty="n") 
+
+
+abline(h=prediction[1, 2], col="darkgreen")
+abline(h=prediction[3, 2], col="blue")
+abline(h=prediction[5, 2], col="purple")
+
+new_dates2 = as.Date(new_dates$Date, origin = "1970-01-01"); new_dates2
+new_dates3 = format(new_dates2,"%m/%d"); new_dates3
+
+#text(as.Date('2020-03-01'), prediction[1, 2], paste("Confirmed =", round(exp(prediction[1, 2]),-1)), col='darkgreen', pos=1) 
+
+text(as.Date('2020-03-01'), prediction[3, 2], paste("Predicted for (", new_dates3[3],") =", round(exp(prediction[3, 2]),-1)), col='blue', pos=1)
+
+text(as.Date('2020-03-01'), prediction[5, 2], paste("Predicted for (", new_dates3[4],") =", round(exp(prediction[5, 2]),-1)), col='purple', pos=1) 
+
+rect(as.Date('2020-03-19'),5, as.Date('2020-04-03'), prediction[1, 2], border=T)
+
+```
+
+Based on the doubling rates, I had predicted the following number of confirmed cases: 
+
+ - March 25th 6170
+ - March 26th 6620
+ - March 27th 6810
+ - March 28th 7230
+ - March 29th 7190
+ - March 30th 7040
+ - March 31st 6890
+ - April 3rd 6180
+ 
+Thank fully, on the 3rd of April we only had 5277, much lower than I had predicted -- thank goodness, and seems to suggest that social distancing is working. 
+
+Now, just two more weeks and the county may be largely free of the disease and another month the country should be able to get back to some normalcy. But testing is going to have to increase dramatically. 
+ 
+*Weekend values are not updated on github site for LA County. Thus, I have used LA County health updates to fill in on weekends. 
+
+#d Changes in Doubling Rate
+
+How quickly the doubling rate would decrease based on municipal and state recommendations and orders as anyone's guess. And of course, it depends on how 'shelter-in-place' compliance. I suspect it will be uneven. 
+
+At some point, I might want to create windows (perhaps, weekly) to see how doubling rates change as the pandemic develops. What I want to do is create a logistic growth curve with a "carrying capacity", and I figured out some code to do that further down in my text.
+
+But first, I'd like to evaluate the issue of hospital bed availability based on our doubling rates. 
+
+# Hospital Bed Shortages
+
+```{r beds, echo=FALSE}
+totalbeds=2.1/1000*10.6e6
+beds= totalbeds*.50 # occupancy rate
+beds=beds*2 # with navy, convention center
+```
+
+We have about 2.1 beds per 1,000 people in the state of California. With approximately 10.6 million residents in LA County, there should be approximately `r (totalbeds)` beds in the county. However, they are not sitting around empty. In normal times there is a 50% occupancy rate. There is no reason to believe this is a normal time, and to guess if that rate is higher or lower is anyone's guess. Nevertheless, for the sake exploring the implications, let's estimate the number of empty beds in LA County based on these assumptions and `r (beds)` beds exists in LA County. However, the city has been working hard to ``create'' additional beds -- converting convention centers, US Navy Hospital Ship, etc. I wouldn't be surprised if we had doubled the number of beds to handle the sitution, thus, `r (beds)`. Let's see how this lands on our growth rates.
+
+```{r, echo=FALSE, results='hide'}
+BedsByConfirmed = beds/.2; BedsByConfirmed
+beddate = (log(BedsByConfirmed)-coef(LA.lm)[1])/coef(LA.lm)[2]; beddate
+as.numeric(as.Date('1970-01-01')) # where is the origin
+
+Bdate = as.Date(beddate, origin = "1970-01-01"); Bdate
+Bdate2 = format(Bdate,"%m/%d"); Bdate2
+```
+
+Based on some WHO estimates, let's assume about 20% of the confirmed cases need hospital beds, then LA County will run out of beds on `r Bdate2`. However, what this model is missing is the category of 'recovered'. It's safe to say that after 20 days of being hospitalized patients will either be in recovery (and can go home) or have died. At this point, I haven't included this in the model, thus this prediction is a worst case scenario. 
+
+According to the LA Times, there are roughly 200 ICU beds in the county. I think about 5% of these who get sick need access to ICU. I suspect this is going to be an even more serious issue, but I haven't had time to model this yet. 
+
+```{r bedshortage, echo=FALSE, cap.fig='Predicted Date the Available Hospital Beds will be Exceeded'}
+# Projected values
+options(scipen=5)
+
+plot(Confirmed ~ Date, data=LA, las=1, yaxt='none', ylab="Confirmed (in thousands)", pch=20,
+xlim=c(as.Date('2020-03-01'), as.Date('2020-04-24')), ylim=c(0, exp(max(prediction$upr[prediction$Date<=as.Date('2020-04-22')]))*2))
+
+axis(2, at=seq(0,1000000,200000), labels = c("0", "200", "400", "600", "800", "1,000"), las=2)
+#axis(2, seq(0,1.5,.5),las=1, cex.axis=1)
+points(prediction$Date, exp(prediction$fit), pch=20, col='red')
+# Error Bars
+
+arrows(x0=prediction$Date, y0=exp(prediction$fit), y1=exp(prediction$upr), code=2, col="red", lwd=.5, angle = 90, length=.03)
+arrows(x0=prediction$Date, y0=exp(prediction$fit), y1=exp(prediction$lwr), code=2, col="red", lwd=.5, angle = 90, length=.03)
+
+arrows(x0= as.Date(Bdate), y0 = 600000, y1= BedsByConfirmed, length = 0.15, angle = 20, code = 2, col = 'darkgoldenrod', lwd = 1)
+text(as.Date(Bdate), 600000, paste("County Bed Capacity Exceeded", Bdate2), pos=2, col='darkgoldenrod')
+
+```
+
+This model is highly simplified and by modeling doubling rate as a constant, it does not account for the impacts of social distancing, which we see evidence of in the doubling rate plots. So, next I'll address the non-linear growth component of Covid-19. 
+
+# Testing for an Nonlinear Growth Rate
+
+In theory the US travel and shelter-at-home restrictions should reduce the rate so spread. I wonder when we'll start to see that signal?  In other words, we do the values fall outside the expected range -- i.e. when is there evidence that the exponential growth rate flattening?  
+
+```{r testingnewvalues, echo=FALSE, results='hide'}
+LA.test = LA[-c(1:32),]; LA.test
+LA.test = LA.test[LA.test$Date<="2020-04-01",];
+
+nrow(LA.test)
+
+LA.lm2 = lm(lnConfirmed~Date, data=LA.test)
+
+test = data.frame(Date = max(LA.test$Date), Confirmed=LA$Confirmed[LA$Date=="2020-04-01"]); test
+
+tested <- predict(LA.lm2, test, interval="confidence");
+
+result = cbind(test, logConfirmed = log(test$Confirmed), lwr = tested[,2], upr = tested[,3]); result
+#LA = cbind(LA, conf_int); head(LA)
+
+```
+
+With this simple analysis, I obtained the following results: 
+
+```{r, echo=FALSE}
+print(result)
+```
+
+
+Based on this, the first confident indication that the curve was flattening was on the 1st of April -- but you can see the trend visually before that!
+
+# Fitting a Simple Epidemic Model Using Maximum Likelihood
+
+A more sophisticated approach use the advantages of maximum likelihood estimation, which include 
+
+- consistent approach to statistical inference; 
+- minimum variance unbiased estimation; and
+- asymptotic normality of MLEs. 
+
+Likelihood is also an essential component of Bayesian estimation, which allows for many more options in the analysis process. 
+
+For this section, I have effectively modified code used by James Jones (http://web.stanford.edu/class/earthsys214/notes/fit.html) after a week of trying numerous deadends. 
+
+The approach is based on the SIR epidemiology model, which is a compartment model that categorizes subjects into "susceptable", "infectious" and "recovered". It's probably the simplist model, which for me is a good place to start! 
+
+The SIR is defined by ordinary differential equations (ODE). In R, we can capitalize on the deSolve package to define and solve these equations. 
+
+The function for this in R is defined below: 
+
+```{r}
+### SIR Approach
+require(deSolve)
+sir <- function(t,x,parms){
+  S <- x[1]
+  I <- x[2]
+  R <- x[3]
+  with(as.list(parms),
+       {
+         dS <- -beta*S*I
+         dI <- beta*S*I - nu*I
+         dR <- nu*I
+         res <- c(dS,dI,dR)
+         list(res)
+       })
+}
+```
+Jones addes some handy code to track the total number of infections over the course of each model run. Nice!
+
+Next, Jones define functions to to calculate the maximum likelihood estimators (MLEs) using Bolker's R package, bbmle. I still need to do some homework to figure out what's going on here, but for now, I got it working!
+
+## Notes on likelihood Model
+
+For this model, the assumption is being used that the measured values of confirmed cases have errors that are normally distributed. Jonese recommneds a process-error model might use a Poisson or negative binomial, but I can't get these to work yet.
+
+Optimization routine require some constraints -- some common sense boundaries are useful here, e.g. negative transmission rate are non-negative. Confirmed cases must have been infected first -- thus, total confirmed > total infected. 
+
+Now, here's a section that I don't understand at all! 
+
+According to Jones, although SIR model are not really probabilities, they are typically less than one and greater than zero -- this have ranges like probabilities. Thus, we can constrain the rates between 0 and 1. Apparently, we can use a logit-transformation (using the quantile function for the logistic distribution, qlogis()) to ensure that the rates are between 0 and 1. 
+
+Thus, Jones' code passes "the optimization function logit-transformed values which the function then back-transforms using plogis()." Thankfully, his code is available to do this, because I would never be able to figure out what that means from scratch. Furthermore, he notes that log-transformed population size and number of initial infections are also passed through a function back-transforms them. God knows what this means -- but it does pretty well in terms of modeling the data!
+
+```{r, message=FALSE, results='hide'}
+### Covid19 application
+require(bbmle)
+
+# likelihood function
+sirLL <- function(lbeta, lnu, logN, logI0) {
+  parms <- c(beta=plogis(lbeta), nu=plogis(lnu))
+  x0 <- c(S=exp(logN), I=exp(logI0), R=0)
+  out <- ode(y=x0, t, sir, parms)
+  SD <- sqrt(sum( (C-out[,4])^2)/length(t) )
+  -sum(dnorm(C, mean=out[,4], sd=SD, log=TRUE))
+}
+
+C = sort(LA$Confirmed)[32:length(LA$Confirmed)]
+t = 1:length(C); days=max(t); days
+
+# minimize negative-log-likelihood
+covid.fit <- mle2(sirLL, 
+            start=list(lbeta=qlogis(1e-5), 
+                       lnu=qlogis(.2), 
+                       logN=log(1e6), logI0=log(1) ),  
+            method="Nelder-Mead",
+            control=list(maxit=1E5,trace=0),
+            trace=FALSE)
+
+```
+
+
+```{r, echo=FALSE, results='hide'}
+summary(covid.fit)
+theta <- as.numeric(c(plogis(coef(covid.fit)[1:2]),
+                      exp(coef(covid.fit)[3:4]))); theta
+parms <- c(beta=theta[1], nu = theta[2])
+times <- seq(0,100,0.1)
+
+x0 <- c(theta[3],theta[4],0)
+stateMatrix1 <- ode(y=x0, times, sir, parms)
+colnames(stateMatrix1) <- c("time","S","I","R")
+plot(stateMatrix1[,"time"], stateMatrix1[,"R"], type="l", lwd=2, 
+     xaxs="i", xlab="Days", ylab="Confirmed Cases", las=1)
+points(t, C, pch=16, col="red", cex=.5)
+
+covid.fit@vcov
+
+# adding trace to see progress...
+#fit2 <- mle2(sirLL, start=as.list(coef(fit)), fixed=list(logN=coef(fit)[3],  logI0=coef(fit)[4]), method="Nelder-Mead",control=list(maxit=1E5,trace=2),trace=TRUE)
+```
+
+Based on this model, we should have be able to limit the oubreak to about 14,000 known cases. We'll see...
+
+## When do we make a policy decision?
+
+Let's say we might want to say that after 5000 cases, we should have known that social distancing was key--- what date should we have made a decision?
+
+What I did is take Jone's code and then subset the data after the first indiciation that there cases in LA -- starting from went the cases went from 1 to 7 as Day 1. Then I looked at model predictions for day 7, 10, 11, 12, 14. 
+
+```{r, echo=FALSE, results='hide'}
+# Seven Days
+C = sort(LA$Confirmed)[32:38]
+t = 1:length(C); days=max(t); days
+covid.fit <- mle2(sirLL, 
+            start=list(lbeta=qlogis(1e-5), 
+                       lnu=qlogis(.2), 
+                       logN=log(1e6), logI0=log(1) ),  
+            method="Nelder-Mead",
+            control=list(maxit=1E5,trace=0),
+            trace=FALSE)
+theta <- as.numeric(c(plogis(coef(covid.fit)[1:2]),
+                      exp(coef(covid.fit)[3:4]))); theta
+parms <- c(beta=theta[1], nu = theta[2])
+x0 <- c(theta[3],theta[4],0)
+stateMatrix.7 <- ode(y=x0, times, sir, parms)
+colnames(stateMatrix.7) <- c("time","S","I","R")
+
+## 10 days
+C = sort(LA$Confirmed)[32:41]
+t = 1:length(C); days=max(t); days
+covid.fit <- mle2(sirLL, 
+            start=list(lbeta=qlogis(1e-5), 
+                       lnu=qlogis(.2), 
+                       logN=log(1e6), logI0=log(1) ),  
+            method="Nelder-Mead",
+            control=list(maxit=1E5,trace=0),
+            trace=FALSE)
+theta <- as.numeric(c(plogis(coef(covid.fit)[1:2]),
+                      exp(coef(covid.fit)[3:4]))); theta
+parms <- c(beta=theta[1], nu = theta[2])
+x0 <- c(theta[3],theta[4],0)
+stateMatrix.10 <- ode(y=x0, times, sir, parms)
+colnames(stateMatrix.10) <- c("time","S","I","R")
+
+## 11 days
+C = sort(LA$Confirmed)[32:42]
+t = 1:length(C); days=max(t); days
+covid.fit <- mle2(sirLL, 
+            start=list(lbeta=qlogis(1e-5), 
+                       lnu=qlogis(.2), 
+                       logN=log(1e6), logI0=log(1) ),  
+            method="Nelder-Mead",
+            control=list(maxit=1E5,trace=0),
+            trace=FALSE)
+theta <- as.numeric(c(plogis(coef(covid.fit)[1:2]),
+                      exp(coef(covid.fit)[3:4]))); theta
+parms <- c(beta=theta[1], nu = theta[2])
+x0 <- c(theta[3],theta[4],0)
+stateMatrix.11 <- ode(y=x0, times, sir, parms)
+colnames(stateMatrix.11) <- c("time","S","I","R")
+
+## 12 days
+C = sort(LA$Confirmed)[32:43]
+t = 1:length(C); days=max(t); days
+covid.fit <- mle2(sirLL, 
+            start=list(lbeta=qlogis(1e-5), 
+                       lnu=qlogis(.2), 
+                       logN=log(1e6), logI0=log(1) ),  
+            method="Nelder-Mead",
+            control=list(maxit=1E5,trace=0),
+            trace=FALSE)
+theta <- as.numeric(c(plogis(coef(covid.fit)[1:2]),
+                      exp(coef(covid.fit)[3:4]))); theta
+parms <- c(beta=theta[1], nu = theta[2])
+x0 <- c(theta[3],theta[4],0)
+stateMatrix.12 <- ode(y=x0, times, sir, parms)
+colnames(stateMatrix.12) <- c("time","S","I","R")
+
+## 14 days
+C = sort(LA$Confirmed)[32:45]
+t = 1:length(C); days=max(t); days
+covid.fit <- mle2(sirLL, 
+            start=list(lbeta=qlogis(1e-5), 
+                       lnu=qlogis(.2), 
+                       logN=log(1e6), logI0=log(1) ),  
+            method="Nelder-Mead",
+            control=list(maxit=1E5,trace=0),
+            trace=FALSE)
+theta <- as.numeric(c(plogis(coef(covid.fit)[1:2]),
+                      exp(coef(covid.fit)[3:4]))); theta
+parms <- c(beta=theta[1], nu = theta[2])
+x0 <- c(theta[3],theta[4],0)
+stateMatrix.14 <- ode(y=x0, times, sir, parms)
+colnames(stateMatrix.14) <- c("time","S","I","R")
+
+
+C = sort(LA$Confirmed)[32:length(LA$Confirmed)]
+t = 1:length(C); days=max(t); days
+plot(stateMatrix1[,"time"], stateMatrix1[,"R"], type="l", lwd=2, 
+     xaxs="i", xlab="Days", ylab="Confirmed Cases", las=1, ylim=c(0, 4000), xlim=c(0,70))
+lines(stateMatrix.7[,"time"], stateMatrix.7[,"R"], lwd=2, col="darkgreen")
+lines(stateMatrix.10[,"time"], stateMatrix.10[,"R"], lwd=2, col="blue")
+lines(stateMatrix.11[,"time"], stateMatrix.11[,"R"], lwd=2, col="purple")
+lines(stateMatrix.12[,"time"], stateMatrix.12[,"R"], lwd=2, col="orange")
+lines(stateMatrix.14[,"time"], stateMatrix.14[,"R"], lwd=2, col="darkred")
+points(t, C, pch=16, col="red", cex=.75)
+
+dayorder = 15
+arrows(x0= dayorder, y0 = 1000, y1= C[dayorder], length = 0.15, angle = 20, code = 2, col = 'darkgoldenrod', lwd = 1)
+text(dayorder, 1000, paste("County 'Safe-at-Home Order' Day =", dayorder), pos=4, col='darkgoldenrod')
+
+legend(x=2, y=4000, legend=c("Full Time Series Modelled", "Day 7 (March 11th)", "Day 10 (March 14th)", "Day 11 (March 15th)", "Day 12 (March 16th)", "Day 14 (March 18th)", "Observed Cases"), col=c("black", "darkgreen", "blue", "purple", "orange", "darkred", "red"), lty=c(1,1,1,1,1,1,0), pch=c(NA, NA, NA, NA, NA, NA, 20), cex=.85, bty='n')
+```
+
+The first indication that we were going to have a significant increase in cases came on Day 11, March 14th. However, the slope of the curve was far from alarming and suggested decisions didn't have to be made yet. However, by Day 12 circumstances were changing quickly and at Day 14, we see a good fit for the early part of the pandemic in the county. 
+
+Even though I haven't figured out how to put confidence intervals on these yet, these data suggest that major restrictions should have been promogulated by Day 13, March 17th, but LA was already recommending 'social distancing' by the 11th of March -- well before there was a clear indication signficant impact in the region. However, the 'safe-at-home' order could have come 2 or 3 days earlier given this simple model prediction. To be clear, there is a time lag in all policy decisions. For example, during the Cold War there was a lot of effort to ensure that the president could launch a missle attack within a few minutes of an attack. That required dedicated infrastruture and policy to support a rapid response time. Public health officials do not enjoy that level of decisions support, so a 2 or 3 day lag is probably pretty reasonable for Covid-19. 
+
+However, I am curious about what CDC models were saying at the time. I suspect they are much more sophisticated and these might have sent out warnings much sooner. To be continued. 
+
+
+# Poisson versus Gaussian -- Not Working.
+
+We can think of the outcomes as a process-error framework. Rather than using a normal model for the number of deaths as measured with error, we model the deaths directly as a Poisson random variable.
+
+## A different approach poisson but doesn't work...
+```{r eval=FALSE}
+sirLL2 <- function(lbeta, lnu, logN, logI0) {
+  parms <- c(beta=plogis(lbeta), nu=plogis(lnu))
+  x0 <- c(S=exp(logN), I=exp(logI0), R=0)
+  out <- ode(y=x0, t, sir, parms)
+  -sum(dpois(C, lambda=out[,4], log=TRUE))
+}
+
+fit.pois <- mle2(sirLL2, 
+                 start=list(lbeta=qlogis(1e-5), 
+                            lnu=qlogis(.2), 
+                            logN=log(1e6), logI0=log(1) ),  
+                 method="Nelder-Mead",
+                 control=list(maxit=1E5,trace=2),
+                 trace=TRUE)
+
+summary(fit.pois)
+
+theta2 <- as.numeric(c(plogis(coef(fit.pois)[1:2]),
+                       exp(coef(fit.pois)[3:4])) )
+
+parms <- c(beta=theta2[1], nu = theta2[2])
+times <- seq(0,30,0.1)
+x0 <- c(theta2[3],theta2[4],0)
+stateMatrix2 <- ode(y=x0, times, sir, parms)
+colnames(stateMatrix2) <- c("time","S","I","R")
+plot(stateMatrix2[,"time"], stateMatrix2[,"R"], type="l", lwd=2, 
+     xaxs="i", xlab="Time", ylab="Cumulative Deaths")
+lines(stateMatrix1[,"time"], stateMatrix1[,"R"], col=grey(0.85), lwd=2)
+points(weeks, cumbombay, pch=16, col="red")
+legend("topleft", c("Poisson", "Gaussian"), lwd=2, col=c("black",grey(0.85)))
+
+```
+
