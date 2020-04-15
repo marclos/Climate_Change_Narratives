@@ -70,11 +70,14 @@ LA = subset(Daily, subset=(Admin2 == "Los Angeles" | Province.State == "Los Ange
 Orange = subset(Daily, subset=(Admin2 == "Orange" & Province_State == "California" | Province.State == "Orange, CA"))
 SB = subset(Daily, subset=(Admin2 == "San Bernardino" & Province_State == "California" | Province.State == "San Bernardino, CA"))
 Riverside = subset(Daily, subset=(Admin2 == "Riverside" & Province_State == "California" | Province.State == "Riverside, CA"))
+SD = subset(Daily, subset=(Admin2 == "San Diego" & Province_State == "California" | Province.State == "San Diego, CA"))
+
 
 LA$Date= as.Date(as.character(LA$Date), format='%m-%d-%Y')
 SB$Date= as.Date(as.character(SB$Date), format='%m-%d-%Y')
 Riverside$Date= as.Date(as.character(Riverside$Date), format='%m-%d-%Y')
 Orange$Date= as.Date(as.character(Orange$Date), format='%m-%d-%Y')
+SD$Date= as.Date(as.character(SD$Date), format='%m-%d-%Y')
 
 plot(Confirmed~Date, data=LA, las=1, ylim=c(0,18), ty='b')
 
@@ -88,6 +91,10 @@ plot(Confirmed~Date, data=LA, las=1, pch=20)
 points(Orange$Date, Orange$Confirmed, col="orange", cex=.7)
 points(Riverside$Date, Riverside$Confirmed, col="blue", cex=.7)
 points(SB$Date, SB$Confirmed, col="brown", cex=.7)
+points(SD$Date, SD$Confirmed, col="purple", cex=.7)
+
+legend(as.Date("2020-02-15"), 6000, legend=c("LA County", "Riverside", "Orange", "San Bernardino", "San Diego"), pch=20, 
+  col=c("black", "blue", "orange", "brown", "purple"))
 ```
 
 ## Using LA County Public Health Data 
@@ -118,7 +125,7 @@ LA = bind_rows(LA, county)
 ```
 
    
-Missing or incorrect data on Github site from the weekend of the 28/29 based on the County Health Department Webpage (noon on each day).
+Missing or incorrect data on Github site from the weekend of the March 28/29, April 4, April 11/12 based on the County Health Department Webpage (noon on each day).
 ```{r}
 LA$Confirmed[LA$Date=="2020-03-28"] = 1829
 LA$Confirmed[LA$Date=="2020-03-29"] = 2136
@@ -301,19 +308,21 @@ How quickly the doubling rate would decrease based on municipal and state recomm
 
 # LA Dates
 LA1.dates = seq(as.Date("2020-03-03"), as.Date("2020-03-28"), 1)
-LA2.dates = seq(as.Date("2020-03-27"), as.Date("2020-04-04"), 1); LA2.dates
-LA3.dates = seq(as.Date("2020-04-04"), max(LA$Date)+1, 1); LA3.dates
+LA2.dates = seq(as.Date("2020-03-27"), as.Date("2020-04-10"), 1); LA2.dates
+LA3.dates = seq(as.Date("2020-04-09"), max(LA$Date)+1, 1); LA3.dates
 
 LA1 = subset(LA, subset=(Date >= min(LA1.dates) - 1 & Date <= max(LA1.dates)-1)); nrow(LA1); LA1$Date
 LA2 = subset(LA, subset=(Date >= min(LA2.dates) - 1 & Date <= max(LA2.dates)-1)); LA2$Date
 LA3 = subset(LA, subset=Date >= min(LA3.dates)+1); LA3$Date
 
 # Adding Orange County
-Orange1.dates = seq(as.Date("2020-03-19"), as.Date("2020-03-29"), 1)
-Orange2.dates = seq(as.Date("2020-03-27"), max(Orange$Date)+1, 1)
+Orange1.dates = seq(as.Date("2020-03-21"), as.Date("2020-03-30"), 1)
+Orange2.dates = seq(as.Date("2020-03-29"), as.Date("2020-04-10"), 1) 
+Orange3.dates = seq(as.Date("2020-04-09"), max(Orange$Date)+1, 1)
 
 Orange1 = subset(Orange, subset=(Date>=min(Orange1.dates) - 1 &  Date<=max(Orange1.dates)-1)); nrow(Orange1); Orange1$Date
-Orange2 = subset(Orange, subset=Date>=min(Orange2.dates)+1); Orange2$Date
+Orange2 = subset(Orange, subset=(Date>=min(Orange2.dates) - 1 &  Date<=max(Orange2.dates)-1)); nrow(Orange2); Orange2$Date
+Orange3 = subset(Orange, subset=Date>=min(Orange3.dates)+1); Orange3$Date
 
 LA1.lm = lm(lnConfirmed~Date, data=LA1)
 LA2.lm = lm(lnConfirmed~Date, data=LA2)
@@ -322,7 +331,8 @@ LA3.dr = as.vector(round(log(2)/LA3.lm$coef[2],1)); LA3.dr
 
 Orange1.lm = lm(lnConfirmed~Date, data=Orange1)
 Orange2.lm = lm(lnConfirmed~Date, data=Orange2)
-Orange2.dr = as.vector(round(log(2)/Orange2.lm$coef[2],1)); Orange2.dr
+Orange3.lm = lm(lnConfirmed~Date, data=Orange3)
+Orange3.dr = as.vector(round(log(2)/Orange3.lm$coef[2],1)); Orange3.dr
 
 LA1.pred <- data.frame(Date = as.Date(LA1.dates), predict(LA1.lm, tibble(Date = ymd(LA1.dates)), interval="predict"))
 LA2.pred <- data.frame(Date = as.Date(LA2.dates), predict(LA2.lm, tibble(Date = ymd(LA2.dates)), interval="predict"))
@@ -331,6 +341,7 @@ LA3.pred <- data.frame(Date = as.Date(LA3.dates), predict(LA3.lm, tibble(Date = 
 
 Orange1.pred <- data.frame(Date = as.Date(Orange1.dates), predict(Orange1.lm, tibble(Date = ymd(Orange1.dates)), interval="predict")); str(Orange1.pred)
 Orange2.pred <- data.frame(Date = as.Date(Orange2.dates), predict(Orange2.lm, tibble(Date = ymd(Orange2.dates)), interval="predict")); str(Orange2.pred)
+Orange3.pred <- data.frame(Date = as.Date(Orange3.dates), predict(Orange3.lm, tibble(Date = ymd(Orange3.dates)), interval="predict")); str(Orange3.pred)
 ```
 
 
@@ -345,9 +356,10 @@ lines(LA3.pred$Date, LA3.pred$fit, col='darkblue', lwd=1.4)
 
 lines(Orange1.pred$Date, Orange1.pred$fit, col='orange', lwd=1.4)
 lines(Orange2.pred$Date, Orange2.pred$fit, col='darkorange', lwd=1.4)
+lines(Orange3.pred$Date, Orange3.pred$fit, col='darkorange4', lwd=1.4)
 
-text(as.Date("2020-03-23"), 8.7,paste("Current LA Doubling Rate =", LA3.dr), col='darkblue')
-text(as.Date("2020-04-01"), 4.0, paste("Current Orange Doubling Rate =", Orange2.dr), col='darkorange')
+text(as.Date("2020-03-26"), 8.9,paste("Current LA Doubling Rate =", LA3.dr), col='darkblue')
+text(as.Date("2020-04-04"), 4.4, paste("Current Orange Doubling Rate =", Orange3.dr), col='darkorange4')
 
 ```
 
@@ -460,6 +472,11 @@ sirLL <- function(lbeta, lnu, logN, logI0) {
   -sum(dnorm(C, mean=out[,3], sd=SD, log=TRUE))
 }
 
+```
+
+## Define Data Sets and Run Models
+
+```{r runmodels}
 # Unfortunately, the model is models mortality
 record = length(LA$Confirmed)-0
 C = LA$Confirmed[1:record]
@@ -475,8 +492,35 @@ covid.fit <- mle2(sirLL,
             control=list(maxit=1E5,trace=0),
             trace=FALSE)
 
-```
+record = length(Orange$Confirmed)-0
+C = Orange$Confirmed[1:record]
+D = Orange$Deaths[51:record]
+t = 1:length(C); days=max(t); days
 
+# minimize negative-log-likelihood
+covid.fit.orange <- mle2(sirLL, 
+            start=list(lbeta=qlogis(1e-5), 
+                       lnu=qlogis(.2), 
+                       logN=log(1e8), logI0=log(1) ),  
+            method="Nelder-Mead",
+            control=list(maxit=1E5,trace=0),
+            trace=FALSE)
+
+record = length(SD$Confirmed)-0
+C = SD$Confirmed[1:record]
+D = SD$Deaths[51:record]
+t = 1:length(C); days=max(t); days
+
+# minimize negative-log-likelihood
+covid.fit.SD <- mle2(sirLL, 
+            start=list(lbeta=qlogis(1e-5), 
+                       lnu=qlogis(.2), 
+                       logN=log(1e8), logI0=log(1) ),  
+            method="Nelder-Mead",
+            control=list(maxit=1E5,trace=0),
+            trace=FALSE)
+
+```
 
 ```{r, echo=FALSE, results='hide'}
 tmp=summary(covid.fit);tmp@coef[,2]
@@ -507,12 +551,95 @@ plot(stateMatrix1[,"time"], stateMatrix1[,"I"], type="l", lwd=2,
      xaxs="i", xlab="Days", ylab="Confirmed Cases", las=1, ylim=c(0,max(stateMatrix1.upr[,"I"])))
 lines(stateMatrix1.upr[,"time"], stateMatrix1.upr[,"I"], col='grey')
 lines(stateMatrix1.lwr[,"time"], stateMatrix1.lwr[,"I"], col='grey')
-points(t, C, pch=16, col="red", cex=.5)
+
 
 covid.fit@vcov
 
+LApeak = round(x0[1], -2)
+
 # adding trace to see progress...
 #fit2 <- mle2(sirLL, start=as.list(coef(fit)), fixed=list(logN=coef(fit)[3],  logI0=coef(fit)[4]), method="Nelder-Mead",control=list(maxit=1E5,trace=2),trace=TRUE)
+
+## Adding Orange County
+record = length(Orange$Confirmed)-0
+C = Orange$Confirmed[1:record]
+D = Orange$Deaths[51:record]
+t = 1:length(C); days=max(t); days
+tmp=summary(covid.fit.orange);tmp@coef[,2]
+theta <- as.numeric(c(
+  plogis(coef(covid.fit.orange)[1:2]),
+  exp(coef(covid.fit.orange)[3:4]))); theta
+theta.upr <- as.numeric(c(
+  plogis(coef(covid.fit.orange)[1:2] + 1.96* tmp@coef[1:2,2]),
+  exp(coef(covid.fit.orange)[3:4]+ 1.96*tmp@coef[3:4,2]))); theta.upr
+theta.lwr <- as.numeric(c(
+  plogis(coef(covid.fit.orange)[1:2] - 1.96*tmp@coef[1:2,2]),
+  exp(coef(covid.fit.orange)[3:4]- 1.96*tmp@coef[3:4,2]))); theta.lwr
+parms <- c(beta=theta[1], nu = theta[2])
+parms.upr <- c(beta=theta.upr[1], nu = theta.upr[2])
+parms.lwr <- c(beta=theta.lwr[1], nu = theta.lwr[2])
+times <- seq(0,100,0.1)
+
+x0 <- c(theta[3],theta[4],0)
+x0.upr <- c(theta.upr[3],theta.upr[4],0)
+x0.lwr <- c(theta.lwr[3],theta.lwr[4],0)
+stateMatrix1 <- ode(y=x0, times, sir, parms)
+stateMatrix1.upr <- ode(y=x0.upr, times, sir, parms.upr)
+stateMatrix1.lwr <- ode(y=x0.lwr, times, sir, parms.lwr)
+colnames(stateMatrix1) <- c("time","S","I","R")
+colnames(stateMatrix1.upr) <- c("time","S","I","R")
+colnames(stateMatrix1.lwr) <- c("time","S","I","R")
+lines(stateMatrix1[,"time"], stateMatrix1[,"I"], col="darkorange4")
+lines(stateMatrix1.upr[,"time"], stateMatrix1.upr[,"I"], col='grey')
+lines(stateMatrix1.lwr[,"time"], stateMatrix1.lwr[,"I"], col='grey')
+points(t, C, pch=16, col="darkorange4", cex=.5)
+
+Orangepeak = round(x0[1], -2)
+
+## Adding SD County
+record = length(SD$Confirmed)-0
+C = SD$Confirmed[1:record]
+D = SD$Deaths[51:record]
+t = 1:length(C); days=max(t); days
+tmp=summary(covid.fit.SD);tmp@coef[,2]
+theta <- as.numeric(c(
+  plogis(coef(covid.fit.SD)[1:2]),
+  exp(coef(covid.fit.SD)[3:4]))); theta
+theta.upr <- as.numeric(c(
+  plogis(coef(covid.fit.SD)[1:2] + 1.96* tmp@coef[1:2,2]),
+  exp(coef(covid.fit.SD)[3:4]+ 1.96*tmp@coef[3:4,2]))); theta.upr
+theta.lwr <- as.numeric(c(
+  plogis(coef(covid.fit.SD)[1:2] - 1.96*tmp@coef[1:2,2]),
+  exp(coef(covid.fit.SD)[3:4]- 1.96*tmp@coef[3:4,2]))); theta.lwr
+parms <- c(beta=theta[1], nu = theta[2])
+parms.upr <- c(beta=theta.upr[1], nu = theta.upr[2])
+parms.lwr <- c(beta=theta.lwr[1], nu = theta.lwr[2])
+times <- seq(0,100,0.1)
+
+x0 <- c(theta[3],theta[4],0)
+x0.upr <- c(theta.upr[3],theta.upr[4],0)
+x0.lwr <- c(theta.lwr[3],theta.lwr[4],0)
+stateMatrix1 <- ode(y=x0, times, sir, parms)
+stateMatrix1.upr <- ode(y=x0.upr, times, sir, parms.upr)
+stateMatrix1.lwr <- ode(y=x0.lwr, times, sir, parms.lwr)
+colnames(stateMatrix1) <- c("time","S","I","R")
+colnames(stateMatrix1.upr) <- c("time","S","I","R")
+colnames(stateMatrix1.lwr) <- c("time","S","I","R")
+lines(stateMatrix1[,"time"], stateMatrix1[,"I"], col="darkorange4")
+lines(stateMatrix1.upr[,"time"], stateMatrix1.upr[,"I"], col='grey')
+lines(stateMatrix1.lwr[,"time"], stateMatrix1.lwr[,"I"], col='grey')
+points(t, C, pch=16, col="purple", cex=.5)
+
+SDpeak = round(x0[1], -2)
+text(10, SDpeak, "San Diego")
+text(70, LApeak, "Los Angeles")
+text(40, Orangepeak, "Orange")
+
+record = length(LA$Confirmed)-0
+C = LA$Confirmed[1:record]
+D = LA$Deaths[51:record]
+t = 1:length(C); days=max(t); days
+points(t, C, pch=16, col="red", cex=.5)
 ```
 
 Based on this model, confirmed cases (N) is super sensitive to the number of records:
@@ -526,8 +653,10 @@ Based on this model, confirmed cases (N) is super sensitive to the number of rec
 - April 10: 10,400
 - April 11: 10,500
 - April 12, 10,600
+- April 13, 10,600
+- April 14, 10,900
 
-Today, the estimated peak for covid-19 in LA will be `r round(x0[1], -2)` as modeled on `r Sys.Date()`. This seems like a pretty reliable prediction method.
+Today, the estimated peak for covid-19 in LA will be `r LApeak` and `r Orangepeak` for Los Angeles and Orange County, respectively, as modeled on `r Sys.Date()`. This seems like a pretty reliable prediction method.
 
 And with this model, we 20% need to be hospitalized, the county should have adequate resources to meeting the demand -- as a direct result of the social distancing policies. 
 
@@ -627,6 +756,34 @@ colnames(stateMatrix.10.0) <- c("time","S","I","R")
 #########  Figure  #################
 C = LA$Confirmed[1:length(LA$Confirmed)]
 t = 1:length(C); days=max(t); days
+covid.fit <- mle2(sirLL, 
+            start=list(lbeta=qlogis(1e-5), 
+                       lnu=qlogis(.2), 
+                       logN=log(1e6), logI0=log(1) ),  
+            method="Nelder-Mead",
+            control=list(maxit=1E5,trace=0),
+            trace=FALSE)
+theta <- as.numeric(c(plogis(coef(covid.fit)[1:2]),
+exp(coef(covid.fit)[3:4]))); theta
+parms <- c(beta=theta[1], nu = theta[2])
+x0 <- c(theta[3],theta[4],0)
+stateMatrix1 <- ode(y=x0, times, sir, parms)
+colnames(stateMatrix1) <- c("time","S","I","R")
+
+theta <- as.numeric(c(
+  plogis(coef(covid.fit)[1:2]),
+  exp(coef(covid.fit)[3:4]))); theta
+theta.upr <- as.numeric(c(
+  plogis(coef(covid.fit)[1:2] + 1.96* tmp@coef[1:2,2]),
+  exp(coef(covid.fit)[3:4]+ 1.96*tmp@coef[3:4,2]))); theta.upr
+theta.lwr <- as.numeric(c(
+  plogis(coef(covid.fit)[1:2] - 1.96*tmp@coef[1:2,2]),
+  exp(coef(covid.fit)[3:4]- 1.96*tmp@coef[3:4,2]))); theta.lwr
+parms <- c(beta=theta[1], nu = theta[2])
+parms.upr <- c(beta=theta.upr[1], nu = theta.upr[2])
+parms.lwr <- c(beta=theta.lwr[1], nu = theta.lwr[2])
+
+times <- seq(0,100,0.1)
 plot(stateMatrix1[,"time"], stateMatrix1[,"I"], type="l", lwd=2, 
      xaxs="i", xlab="Days", ylab="Confirmed Cases", las=1, ylim=c(0, 1000), xlim=c(0,70))
 lines(stateMatrix.0[,"time"], stateMatrix.0[,"I"], lwd=2, col="darkgreen")
@@ -651,6 +808,11 @@ The first indication that we were going to have a significant increase in cases 
 Lesson: Models that have been used to model an epidemic can easily be applied for decision making once confirmed cases begin some growth, but the time frame must be constrained to avoid including the time before detections were found, otherwise the results are quite inaccurate and might lead to strong pushback on the modeling approaches and failure to take the epidemic seriously. Day 11, March 14th. However, the slope of the curve was far from alarming and suggested decisions didn't have to be made yet. 
 
 Based on this simple models, the 'safe-at-home' order could have come by day 5 of the increase. To be clear, there is a time lag in all policy decisions. For example, during the Cold War there was a lot of effort to ensure that the president could launch a missle attack within a few minutes of an attack. That required dedicated infrastruture and policy to support a rapid response time. Public health officials do not enjoy that level of decisions support, so a 2 or 3 day lag is probably pretty reasonable for Covid-19, so what might have happened had the order come on Day 8?
+
+## How to use data to predict outcomes?
+
+Not sure how to do this, working on it...
+
 
 ```{r}
 C = LA$Confirmed[dayzero:sum(dayzero,5)]
