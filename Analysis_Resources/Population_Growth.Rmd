@@ -1,0 +1,21 @@
+---
+title: "Population"
+author: "Marc Los Huertos"
+date: "7/11/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+population.csv <- "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/MLH/absolute-increase-global-population.csv"
+population = read.csv(population.csv)
+```
+
+```{r}
+names(population)
+str(population)
+population$Year[population$Period=="BCE"]=-population$Year
+
+plot(Net_Change ~ Year, data=population, ty='l', las=1, ylab="Population Change (log)")
+```
+
