@@ -2,28 +2,43 @@
 
 
 \title{Random Numbers for Student Submissions}
-\author{Marc Los Huertos}
+\author{Marc Los Huertos \& Charlotte Chang}
 
 \begin{document}
 
 \maketitle
 <<echo=FALSE>>=
 library(xtable)
-filename = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/EA30F17_Roster.csv"
+filename = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/Random_IDs/EA30F20_Roster.csv"
 import = read.csv(filename)
 enrollment = nrow(import)
-set.seed(444)
-rnumbers = matrix(sample(10000:99999, 5* enrollment), nrow=enrollment, ncol=5, byrow=T)
-enrolled <- cbind(import, rnumbers)
 @
 
-\section*{Random Numbers}
+\section*{Generating Random Numbers}
 
-Please use one of the random numbers assigned to you for each assignment. You can use the assign numbers in any order and for any assignment you like. 
+We have generated five digit random numbers for everyone. Using the function \texttt{sample()}, we created a vector of values that are then coerced into a matrix with 5 columns and the number of rows equal to the number of students enrolled in the course. 
+
+Before calling the \texttt{sample()} function, we set the ``seed''. As it turns out R does generates psuedo-random numbers. Using the computer clock, R selects pre-defined random numbers in a table based on time when the line is run by R. By setting the seed, we geneate the same set of random numbers each time the function is called. This is useful because I don't want to create new numbers everytime I run the code -- then we would all be confused about who has what number!
+
+<<echo=T>>=
+set.seed(444) 
+rnumbers = matrix(sample(10000:99999, 5* enrollment), 
+          nrow=enrollment, ncol=5, byrow=T)
+@
+
+Then, we combined the random numbers with our roster, so each of you have been assigned 5 of these random numbers. 
 
 <<echo=F, results='asis'>>=
-print(xtable(enrolled[,c(1, 4:8)]))
+enrolled <- cbind(import, rnumbers)
+print(xtable(enrolled[,c(3, 2, 5:9)], caption='Random Numbers for EA30, Fall 2020', label='tbl:numbers'), scalebox=1.0, caption.placement = "top")
 @
 
+\section*{How to use your random numbers}
+
+For selected assignments, please avoid putting your name on the submission and include ONE of the random numbers (Table~\ref{tbl:numbers}). It doesn't matter which one, but I have noticed that if you use a simple one, I might be able to match the number with the person. So, I recommend changing which number you use at various times.
+
+\section*{Some Probability Questions}
+
 Question: What are the chances that two or more people might have the same random number?  Answering this is something taught in a probability course, which provides a foundation for all statistics.
+
 \end{document}

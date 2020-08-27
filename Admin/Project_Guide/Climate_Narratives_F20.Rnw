@@ -1,0 +1,514 @@
+\documentclass{article}
+%\documentclass{tufte-handout}
+\usepackage{hyperref}
+
+\newenvironment{itemize*}%
+  {\begin{itemize}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{itemize}}
+	
+\newenvironment{enumerate*}%
+  {\begin{enumerate}%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\parskip}{0pt}}%
+  {\end{enumerate}}
+
+\title{How are climate data used by activists?}
+\author{Marc Los Huertos}
+%\date{} 
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+
+\subsection{Climate and the IPCC}
+
+According the the Inter-Governmental Panel on Climate Change or IPCC, the last three decades at the Earth's surface have seen the most amount of successive warming than any decades since 1850. All in all, the averaged data for ocean surface and land temperatures combined points to a rise of 0.85 [0.65 to 1.06] degrees Celsisus  from 1880 to 2012 \footnote{IPCC,  2014: Climate  Change  2014:  Synthesis  Report
+. Contribution  of  Working  Groups  I,  II  and  III  to  the  Fifth  Assessment  Report  of  the Intergovernmental Panel on Climate Change [Core Writing Team, R.K. Pachauri and L.A. Meyer (eds.)]. IPCC, Geneva, Switzerland, 151 pp.} -- but this global average is not evenly distributed accross the globe. 
+%find rate of change and insert citation
+
+This change and causes of this change are perhaps some of the most contested environmental issues in the 50 year history of the environmental movement. So much so, that as EA students, we need to understand what the scientific conclusions are and how these conclusions were made, while understanding the potential implications.
+
+\subsubsection{What is the IPCC?}
+
+The Intergovernmental Panel on Climate Change (IPCC) is a scientific and intergovernmental body under the auspices of the United Nations, set up at the request of member governments and dedicated to the task of providing the world with an objective, scientific view of climate change and its political and economic impacts.
+
+The IPCC was created in 1988. Initially it was set up by the World Meteorological Organization (WMO) and the United Nations Environment Program (UNEP) to prepare -based on available scientific information-  assessments on all aspects of climate change and its impacts, with the intent of formulating realistic response strategies. 
+
+\subsubsection{IPCC's Role}
+
+The role of the IPCC is to assess on a comprehensive, objective, open and transparent basis the scientific, technical and socio-economic information relevant to understanding the scientific basis and risk of human-induced climate change, its potential impacts and options for adaptation and mitigation.
+
+As an intergovernmental body, membership of the IPCC is open to all member countries of the United Nations (UN) and WMO. Currently 195 countries are Members of the IPCC.
+
+The IPCC has published five comprehensive assessment reports reviewing the latest climate science (Table \ref{tab:IPCC}), as well as a number of special reports on particular topics. These reports are prepared by teams of relevant researchers selected by the Bureau from government nominations. Drafts of these reports are made available for comment in open review processes to which anyone may contribute.
+
+\begin{table}
+\caption{Major IPCC Reports}\label{tab:IPCC}
+\centering
+\begin{tabular}{lc}\hline
+Assessment Report             & Published \\ \hline\hline
+First Assessment Report (FAR) & 1990    \\
+Supplementary Report          & 1992   \\
+Second Asessment Report (SAR) & 1995    \\
+Third Assessment Report (TAR) & 2001    \\
+Fourth Assessment Report (AR4)& 2007   \\
+Fifth Assessment Report (AR5) & 2014  \\
+Sixth Assessment Report (AR6) & 2022*  \\ \hline
+\end{tabular}
+\end{table}
+
+Each assessment report is in three volumes, corresponding to Working Groups I, II, and III. Unqualified, ``the IPCC report'' is often used to mean the Working Group I report, which covers the basic science of climate change.
+
+\subsection{Global and Regional Average Temperature Changes}
+
+In speaking about the topic of climate change it is easy to cite a global temperature average. However, this is part of what makes climate change such a contentious issue. An average temperture increase for the globe is actually somewhat abstract and, perhaps, beyond what humans can reliably perceive. In this sense, perhaps we should evaluate how temperature (and/or rainfall) might be changing at regional scales. \\ Are there strategies to help us appreciate the impact of climate change on weather patterns at the regional level? 
+
+Thus, for this project, we'll try to understand \textbf{how temperature changes ``map'' onto a community that we care about}. To do this we will obtain and analyze tempterature data to determine if weather changes have compelling impacts on local communities.
+
+In other words, we are seeking to answer the question: do weather changes matter?
+
+\subsection{Goals of this Document}
+
+This document is meant to be a resource and guide to you as you undertake the task of answering the question: Do weather Changes Matter? This document contains:
+
+\begin{enumerate*}
+  \item Descriptions of the overarching goals and approaches for each assignement in the project;
+  \item Guidelines and resources for completing each assignment; and
+  \item Grading rubrics and descriptions of how we will evaluate the project process and products.
+\end{enumerate*}
+
+\section{Project Description}
+
+\subsection{Driving Question(s)}
+
+The driving questions for this project can be stated as follows: 
+
+\begin{itemize*}
+  \item Is my region's climate changing?
+  \item How is climate change affecting my community?
+  
+\end{itemize*}
+
+However, as we move along in the course and in this project you may find it worthwhile to try phrasing the questions in a number of ways -- this might help you find ways to make the question more provactive and interesting, For example, instead of asking ``how is the climate in my region changing?" you could ask ``how does the changing climate in my region affect cloud coverage in my area and what ecological impact does that have on nearby forests/wildlife?"
+
+You can modify these questions to develop the project that you might find compelling.
+
+In addition, we may develop ``sub-questions'' whose answers might inform the main question or questions. For example, 
+
+\begin{itemize*}
+  \item Are there biases in weather data? Can these biases be corrected? If so, how?
+  \item How can we evaluate trends? What are the most appropriate statistical tools to test for trends?
+  \item What is the best way to display visual data?  Are there best practices to guide a public product to make it more compelling or interactive?
+\end{itemize*}
+
+\subsection{Public Products}
+
+Science is a social project. From the questions we ask, to the results and their presentation, science is usually embedded in a culture of norms (such as research journals, reports, documentaries, etc.). To frame our science within these norms of communication, each of us will publish a series of blogs utilizing our findings to answer the question, ``do weather changes matter?''
+
+In addition, each student will write and submit an OpEd piece to a regional newspaper that frames regional climate issues into a newsworthy item.
+
+Finally, we will hold a Q \&A session with public school teachers to help them implement NGSS standards on weather and climate.
+
+\section{Directed Practice}
+
+\subsection{Learning Goals}
+
+For this project, you will use weather data to answer the question ``do weather changes matter.'' How you answer the question is largely up to you, however, to be successful students will demonstrate compentency in some specific skills and knowledge. 
+
+\paragraph{Skills}
+
+\begin{itemize*}
+  \item Ability to download and process weather data;
+  \item evaluate temporal trends in weather data;
+  \item research the environmental impacts on human or non-human communities; and
+  \item communicate conclusions to the public with special attention to guide how data misinterpretations should be considered.
+\end{itemize*}
+
+\paragraph{Knowledge}
+\begin{itemize*}
+  \item Understand how data climate data is currated;
+  \item Analyze climate impacts from around the world.
+\end{itemize*}
+
+Throughout this project, your team and instructor will develop the strategies and skills to address this question and help you make some conclusions and present the results to the public.
+
+\subsection{Resources}
+
+Students will have the following tools available:
+
+\begin{itemize*}
+  \item Servers where stored weather data can be downloaded;
+  \item R Studio Server with some scripts \& libraries to help develop analyses;
+  \item Github to store project codes and as a platform to make the product public;
+  \item Lectures, reports, and presentations on climate change science, the social and ecological implications of climate change, and the polcies and politics of climate change;
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Admin/RandomNumbers.pdf}{Random numbers for student submissions}; and
+  \item Shiny app templates that might be used as a container for interactive content.\footnote{Currently under-development -- We will likely skip this application since I not confident in using this particular tool.}
+\end{itemize*}
+
+\subsubsection{Software Guides}
+
+Much of the environmental data collected has become electronic. Using software requires certain skills, which requires students to appreciate that different types of software exist. 
+
+In particular, I am constantly thinking critically about what software I advise students to use and learn. For my ``developmental thinking'' on this issue, I suggest you read the following draft white paper: \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Admin/Liberation_via_Open_Source_Software.pdf}{Open Source and Liberation}. 
+
+Since climate data rely on large time series datasets, we need to rely on software to access to and process these data, we need use tools to access, pre-process, and analyze these data. Below are resources that we have developed to assist you in this class (Table \ref{tab:softwareguides}).
+
+\begin{table}[h]
+\caption{Software guides developed for EA30/31. These SOPs have been developed by students and faculty over the years and are loaded on the github.com/SOPs repository.}\label{tab:softwareguides}
+\centering
+\begin{tabular}{ll}\hline
+SOP \#    & Description                                 \\\hline\hline
+06        & \href{https://github.com/marclos/Climate_Change_Narratives/blob/master/Analysis_SOPs/SOP06_Rstudio_Server_Github.pdf}{An Introduction to Rstudio and Github} \\
+06b       & Introduction to Markdown--Html  \\
+06c       & Introduction to Markdown--Word  \\
+06d       & Visual Display of Data using R  \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Data Processing and Analysis Tools}
+
+Much of the environmental data collected has become electronic. Thus, to access to and process these data, we need use tools to access, pre-process, and analyze these data using computer software. 
+
+Below are resources that we have developed to assist you in this class (Table \ref{tab:tools}).
+
+\begin{table}[h]
+
+\caption{Resources to obtain, pre-process, and analyze NOAA climate data.}\label{tab:tools}
+\centering
+\begin{tabular}{ll}\hline
+SOP \#    & Description                                 \\\hline\hline
+84        & \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Analysis_SOPs/SOP84_Obtaining_Climate_Records.pdf}{Obtaining Climate Records}\\
+85        & \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Analysis_SOPs/SOP85_Using_NOAA_Climate_Records.pdf}{Using NOAA climate Records}\\
+86        & \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Analysis_SOPs/SOP86_Evaluating_Monthly_Trends_CHCNDaily.pdf}{Evaluating Monthly Trends using CHCN-Daily}\\
+90        & \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Analysis_SOPs/SOP90_Analyzing_Trends.pdf}{Analyzing Climate Trends} \\ \hline
+\end{tabular}
+\end{table}
+
+These SOPs can be found in the Rproject/Github Respistory --Climate Change Narratives and in the 'Analysis\_SOPs' directory.
+
+The analysis of trend data can range from simple to complex. For a brief introduction, read an introduction on the \href{https://climatedataguide.ucar.edu/climate-data-tools-and-analysis/trend-analysis}{Trend Analysis} on the Climate Data Guide website.
+
+\subsubsection{Readings and Other Climate Change Resources}
+
+I have put these readings in the syllabus schedule, since these readings are more background material. 
+
+\subsubsection{Contested Science and Critical Thinking}
+
+
+\begin{itemize*}
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/Logical_Fallacies.pdf}{``The Rhetorical Tools of Logical Fallacies''}
+  
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/Critical_Thinking.pdf}{``Critical Thinking in EA''}
+\end{itemize*}
+
+\subsubsection{Communication Resources}
+
+We will learn and practice our skills to communicate using written and oral media. 
+
+Scientific writing is a skill that takes years to develop. Although there are many types of readings, scientific writing does have some unique characteristics that will seem a bit awkward. However, you might be surprised about how much you already know about technical writing. We have selected key resources that we think will help you further develop and improve your writing skills.
+
+Below is my list of key areas to be cognizant to improve our capacity to communicate science:
+
+\begin{description}
+  \item[Clarity, Forthrightness, and Economical]
+  \item[Accuracy and Precision] Accuracy and precision occurs at several scales in writing, word choice, sentence level, paragraph, and essay level. 
+  \item[Critical Thinking]
+  \item[Cited Evidence]
+\end{description}
+
+However, specific genres require specific adjustments in our writing style. Please use the following to help in your writing process:
+
+\begin{itemize*}
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/Writing_About_Climate.pdf}{``Scientific Writing and Climate Narratives''}
+
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/Op-Ed_Guidelines.pdf}{``Op-Ed Guidelines''}
+  
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/Scientific_Blog_Guidelines.pdf}{``Scientific Blog Guidelines''}
+  
+  
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/Visualing_Data.pdf}{``Visual Presentation of Data using R''}
+  
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/Citing_Sources.pdf}{``Citing References in EA30''}
+  
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/Peer_Review-Dos_and_Donts.pdf}{``Peer review writing -- Dos and Don'ts''}
+\end{itemize*}
+
+Oral presentations will also be part of this project and course. Students will use Rpres for their presentations and here is a short tutorial for this tool:
+
+\begin{itemize*}
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/TBD.pdf}{``Using Rpres to Develop Oral Presentations''}
+  
+  \item \href{https://github.com/marclos/Climate_Change_Narratives/raw/master/Communication_Resources/TBD.pdf}{``Guide for Oral Presentations''}
+\end{itemize*}
+
+\section{Project Milestones}
+
+To complete the project in a timely fashion, we will be adhering to a rather strick schedule (Table \ref{tab:milestones}).
+
+\begin{table}[h]
+
+\caption{Project Deliverables, milestones and point distribution.}\label{tab:milestones}
+\begin{tabular}{lcll}\hline
+Deliverable                 & Launch    & Due Date  & Points \\\hline\hline
+Op-Ed \#1                   & Aug 25    & Sept 12    & 10 \\
+%Climate Science Review      & Sept 4    & Sept 19   & 5 \\
+Climate Science Review Presentation& Sep 1   & Sept 19   & 20 \\
+Climate Science -- Peer Review  & Sep  & Sep 26 & 5 \\
+Draft Regional Analysis     & Sep 1   & Sep 19   & 20 \\
+Regional Climate Literature Review    & Sept 1   & Sep 19   & 20 \\
+%Regional Climate Literature Review -- Peer Review & Oct 1   & Oct 3 & 10 \\
+Blog DRAFT                  & Sep 1   & Sep 26    & 50 \\
+Blog -- Peer Review         & Sep 1    & Oct 3    & 10\\
+Blog FINAL                  & Sep 1    & Oct 10   & 50 \\
+%Op Ed \#2 Draft             & Oct 9     & Oct 13    & 10 \\
+Op Ed \#2 Submission        & Sep 1    & Oct 10    & 5 \\ \hline
+\end{tabular}
+\end{table}
+
+\section{Op Ed \#1: Why Care about Climate?}
+
+\input{Op-Ed_F20-1}
+
+\section{Developing Specialized Knowledge}
+
+To develop expertise, we will rely on teams of students to develop and evaluate various aspect of climate data. Each of us form an essential component for the effort. Organized as teams and expert groups, we will disassemble the project into chunks that each of us will contribute in specific and effective ways. This expertise will be used to develop our Q \& A sessions, as well as, to help us develop and write our op-ed and blogs. The experts should include areas of contravery and how scientists and non-scientists wressle over the data.
+
+\subsection{Topics of Expertise}
+
+We will will create expert groups on to present the following topics:
+
+\begin{enumerate*}
+  \item Radiative Gases -- What are they and what do they do?
+  
+List the major compounds categorized as radiative gases and describe how various processes determine their role as GHGs. Provide detail on how different wavelengths of light interact with the gases. Finally, a discussion of water is key, since it is one of the main sources of controversy. 
+  
+  \item GHG Emission Trends and Sources -- Carbon Dioxide (CO$_2$), Nitrous Oxide (N$_2$O), and Methane (CH$_4$).
+
+Describe how carbon dioxide and other GHGs are emitted and remain in the atmosphere. Distinguish between natural and anthropogenic sources and why that distinction might be important. Desribe various type of sources and how these might be linked to certain types of economic development and activities. In addition, describe the role of vegetation and other forms of carbon sequestration. Describe the sources of uncertainty and the common arguments that are used to discount the role of greenhouse gases (e.g. carbon dioxide is natural and can't be a pollutant, humans exhale carbon dioxide, carbon has been higher in the past, etc). 
+
+  \item Role of Water and Other Feedbacks
+  
+Climate change feedback is important in the understanding of global warming because feedback processes may amplify or diminish the effect of each climate forcing, and so play an important part in determining the climate sensitivity and future climate state. Feedback in general is the process in which changing one quantity changes a second quantity, and the change in the second quantity in turn changes the first. Positive feedback amplifies the change in the first quantity while negative feedback reduces it. Be sure to include the following feedbacks: Clouds, gas release (Methane is a big one), ice-albedo, carbon, and water vapor. Describe the uncertainties and how some of these have become politicized.
+
+  \item Terrestrial Surface Temperature Records
+  
+The instrumental temperature record provides the temperature of Earth's climate system from the historical network of in situ measurements of surface air temperatures and ocean surface temperatures. Data are collected at thousands of meteorological stations, buoys and ships around the globe. The longest-running temperature record is the Central England temperature data series, that starts in 1659. The longest-running quasi-global record starts in 1850. 
+  
+  \item Ocean Temperatures and Sea Level
+
+In recent decades more extensive sampling of ocean temperatures at various depths have begun allowing estimates of ocean heat content but these do not form part of the global surface temperature datasets. Describe how ocean temperatures have been measured over time and how these have lead to a range of interpretations of the results. Discuss how the thermal expansion of water may influence sea leval rise. Discuss how sea temperature change may affect different parts of the world differently. Describe the methods to distinguish sea level rise and coastal elevation changes, including how satellites work to collect these data. Describe the areas of uncertainty and how various groups frame these uncertainties.
+
+  \item Satellite-based Temperature Measures
+  
+Satellites can be used to measure outgoing radiation. However, each atmospheric layer has different properties and is impacted by GHGs in differing ways. Describe how the satelite data has been used, how these instruments have changed and why there are several different methods to evalaute satellite data. Because satellite data has result results, describe how these methods have been used to support or limit our confidence in climate change. Describe sources of uncertainty and how various groups have used the uncertainties to make arguments for and against anthropogenic climate change.
+  
+  \item Weather Extremes Trends Explained
+  
+Weather and climate extremes such as hurricanes, tornadoes, heavy downpours, heat waves, and droughts affect all sectors of the economy and the environment, impacting people where they live and work. As usual some claim that more extreme weather has been caused climate change, while others claim that there has been a reduction in extreme events. Please describe why the analyses have not developed into a clear conclusion. 
+  
+\end{enumerate*}
+
+\subsection{Expert Teams}
+
+Although most of the work will be individual, we will also work in pair for the presentation. Using \href{https://docs.google.com/spreadsheets/d/1VkY8-js4QNeYz6gHXNzKOwVvB2EUkp7Y2BwjRrsfxOk/edit?usp=sharing}{this Google Sheet}, sign up for a topic and as the slots are filled, I will update this document. 
+
+The following students have been assigned to the teams below:
+
+<<echo=F, results = 'asis', fig.cap='test'>>=
+library(xtable)
+team = c("1", "2", "3", "4", "5", "6", "7")
+studentA = c("1", "2", "3", "4", "5", "6", "7")
+studentB = c("8", "9", "10", "11", "12", "13", "14")
+studentC = c("15", "16", "17", "18", "19", "20", "21") 
+presentDate =c("09/19/20", "09/19/20", "09/19/20", "9/19/20", "09/19/20", "09/19/20", "09/19/20")
+project1teams <- data.frame(Topic = team, Team_Members = paste(studentA, ", ", studentB, ", ", studentC), Presentation_Date=presentDate)
+print(xtable(project1teams), include.rownames=FALSE)
+@
+
+\subsection{Climate Science Review Presentation}
+
+\input{Climate_Science_Presentation_F20}
+
+%\subsection{Climate Science Review}
+
+%\input{Climate_Science_Review_F20}
+
+\subsection{Peer Review of Climate Science Review}
+
+\input{Climate_Science_Review_Peer_Review_F20}
+
+\section{Regional Climate Analysis}
+
+Each of us will select a region of interest. Perhaps, somewhere that you have spent a compelling time in or that you wish to know more about. Please select a region that has not been done by previous classes. 
+
+\subsection{Analysis of Regional Data}
+
+\input{Regional_Data_Analysis_F20}
+
+\subsection{Regional Climate Impacts -- Literature Review}
+
+\input{Regional_Impact_Literature_Review_F20}
+
+\section{Communicating Science}
+
+\subsection{Analyzing Prior Communication Edeavors}
+
+\subsubsection{Climate Change Blogs and Websites}
+
+\href{https://marclos.github.io/Climate_Change_Narratives/}{EA 30 Blogs}
+
+Here are some good examples of climate blogs:
+
+\begin{itemize*}
+  \item \href{http://www.accuweather.com/en/weather-blogs/climatechange}{Accuweather}
+  \item \href{http://blogs.nature.com/climatefeedback/}{Nature Magazine}
+  \item \href{https://thinkprogress.org/tagged/climate}{Think Progress}
+  \item \href{http://climateofourfuture.org/}{Climate Four Future}
+\end{itemize*}
+
+Useful sites: 
+
+\begin{itemize*}
+  \item \href{http://www.climatecentral.org/news/the-heat-is-on}{Climate Central}
+  \item 
+\end{itemize*}
+
+\subsubsection{Climate Blogs/Websites Evaluation}
+
+%\input{Admin/Deliverables/Evaluating_Climate_Blogs_F17}
+
+\subsection{Writing a Scientific Blog}
+
+\input{Writing_a_Scientific_Blog_F20}
+
+\subsection{Peer Review Blogs}
+
+\input{Blog_Peer_Review_F20}
+
+\subsection{Publishing Revised Blog}
+
+\input{Blog_Publication_F20}
+
+\subsection{Op-Ed 2}
+
+\input{Op-Ed_F20-2}
+
+\clearpage
+\newpage
+\section{Peer Evaluation Forms}
+
+\subsection{Literature Review--Peer Evaluation}
+
+\bigskip
+Evaluator: \rule{7cm}{0.4pt}
+
+\bigskip
+
+\noindent Author: \rule{7cm}{0.4pt}
+
+\begin{enumerate}
+ \setlength\itemsep{4em}
+  \item Describe two items you learned.
+  \item Describe one concept or fact you would like to learn in more detail.
+\end{enumerate}
+
+
+\begin{table}[ht!]
+\caption{Please circle the best response, where one is inadequate and five is outstanding---i.e. should be teaching the topic!}
+\begin{tabular}{|p{4in}|ccccc|}\hline
+How clear was the presentation?     & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Did the analysis seem valid?        & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Was information complete enough?            & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+To what extent could you use this example in climate discussions?            & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+\end{tabular}
+\end{table}
+
+\clearpage
+\newpage
+\subsection{Previous Year's Blog Evaluation}
+
+\bigskip
+Evaluator: \rule{7cm}{0.4pt}
+
+\bigskip
+
+\noindent Author: \rule{7cm}{0.4pt}
+
+\begin{enumerate}
+ \setlength\itemsep{4em}
+  \item Describe two items you learned.
+  \item Describe one concept or fact you would like to learn in more detail.
+\end{enumerate}
+
+
+\begin{table}[ht!]
+\caption{Please circle the best response, where one is inadequate and five is outstanding---i.e. should be teaching the topic!}
+\begin{tabular}{|p{4in}|ccccc|}\hline
+How clear was the presentation?     & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Did the analysis seem valid?        & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Was information complete enough?            & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+To what extent could you use this example in climate discussions?            & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+\end{tabular}
+\end{table}
+
+\clearpage
+\newpage
+\subsection{DRAFT Blog -- Peer Evaluation}
+
+\bigskip
+Evaluator: \rule{7cm}{0.4pt}
+
+\bigskip
+
+\noindent Presenter: \rule{7cm}{0.4pt}
+
+\begin{enumerate}
+ \setlength\itemsep{4em}
+  \item Describe two items you learned.
+  \item Describe one concept or fact you would like to learn in more detail.
+\end{enumerate}
+
+
+\begin{table}[ht!]
+\caption{Please circle the best response, where one is inadequate and five is outstanding---i.e. should be teaching the topic!}
+\begin{tabular}{|p{4in}|ccccc|}\hline
+How clear was the presentation?     & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Did the analysis seem valid?        & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+Was information complete enough?            & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+To what extent could you use this example in climate discussions?            & 1 & 2 & 3 & 4 & 5 \\ \hline
+Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
+&&&&& \\ \hline
+\end{tabular}
+\end{table}
+
+
+
+\end{document}

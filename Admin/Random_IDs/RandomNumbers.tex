@@ -1,6 +1,6 @@
 \documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -52,46 +52,71 @@
 
 
 \title{Random Numbers for Student Submissions}
-\author{Marc Los Huertos}
+\author{Marc Los Huertos \& Charlotte Chang}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \maketitle
 
 
-\section*{Random Numbers}
+\section*{Generating Random Numbers}
 
-Please use one of the random numbers assigned to you for each assignment. You can use the assign numbers in any order and for any assignment you like. 
+We have generated five digit random numbers for everyone. Using the function \texttt{sample()}, we created a vector of values that are then coerced into a matrix with 5 columns and the number of rows equal to the number of students enrolled in the course. 
 
-% latex table generated in R 3.5.2 by xtable 1.8-4 package
-% Wed Sep 11 14:05:09 2019
+Before calling the \texttt{sample()} function, we set the ``seed''. As it turns out R does generates psuedo-random numbers. Using the computer clock, R selects pre-defined random numbers in a table based on time when the line is run by R. By setting the seed, we geneate the same set of random numbers each time the function is called. This is useful because I don't want to create new numbers everytime I run the code -- then we would all be confused about who has what number!
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{444}\hlstd{)}
+\hlstd{rnumbers} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{sample}\hlstd{(}\hlnum{10000}\hlopt{:}\hlnum{99999}\hlstd{,} \hlnum{5}\hlopt{*} \hlstd{enrollment),}
+          \hlkwc{nrow}\hlstd{=enrollment,} \hlkwc{ncol}\hlstd{=}\hlnum{5}\hlstd{,} \hlkwc{byrow}\hlstd{=T)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Then, we combined the random numbers with our roster, so each of you have been assigned 5 of these random numbers. 
+
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Wed Aug 26 22:24:38 2020
 \begin{table}[ht]
 \centering
-\begin{tabular}{rlrrrrr}
+\caption{Random Numbers for EA30, Fall 2020} 
+\label{tbl:numbers}
+\scalebox{1}{
+\begin{tabular}{rllrrrrr}
   \hline
- & First & 1 & 2 & 3 & 4 & 5 \\ 
+ & First & Last & 1 & 2 & 3 & 4 & 5 \\ 
   \hline
-1 & Pauline & 25124 & 26659 & 45070 & 42893 & 14398 \\ 
-  2 & Miranda & 61909 & 60346 & 15041 & 86408 & 35477 \\ 
-  3 & Aminah & 37384 & 38979 & 26090 & 30518 & 25175 \\ 
-  4 & Kate & 90359 & 91789 & 90905 & 57948 & 34070 \\ 
-  5 & Santi & 22644 & 64226 & 42554 & 35846 & 41438 \\ 
-  6 & Emily T & 28636 & 83339 & 22991 & 76771 & 82901 \\ 
-  7 & Lucy & 57975 & 66354 & 36257 & 57808 & 28379 \\ 
-  8 & Jonathan & 52294 & 11790 & 48726 & 93267 & 44160 \\ 
-  9 & Kai & 26869 & 16772 & 40252 & 46156 & 61296 \\ 
-  10 & Alexandra & 98159 & 87098 & 20158 & 24972 & 39605 \\ 
-  11 & Aurora & 17276 & 77793 & 88994 & 40169 & 86021 \\ 
-  12 & Alice & 69317 & 58319 & 22397 & 57409 & 50000 \\ 
-  13 & Emma & 20231 & 24631 & 53296 & 74131 & 39550 \\ 
-  14 & Dawn & 43761 & 26783 & 73329 & 25799 & 74279 \\ 
-  15 & Mike & 83631 & 26791 & 21218 & 21465 & 34088 \\ 
-  16 & Howard & 12601 & 95523 & 64499 & 29156 & 96887 \\ 
-  17 & Emily P & 53437 & 25191 & 13265 & 94338 & 31353 \\ 
+1 & Nikodem & Bisaga & 87666 & 33952 & 47801 & 79207 & 28554 \\ 
+  2 & Anna & Burns & 96640 & 24942 & 68525 & 68925 & 27531 \\ 
+  3 & Emma & Duggleby & 94361 & 23574 & 84998 & 63102 & 51050 \\ 
+  4 & Isabel & Evans & 40809 & 38211 & 80470 & 17400 & 31569 \\ 
+  5 & Jacob & Greene & 97517 & 53220 & 19033 & 39146 & 86197 \\ 
+  6 & Owen & Hoffsten & 56149 & 22237 & 83891 & 11895 & 49719 \\ 
+  7 & Claire & LeBlanc & 21072 & 87336 & 54360 & 40258 & 71214 \\ 
+  8 & Christina & Marsh & 19890 & 41571 & 37499 & 33528 & 52355 \\ 
+  9 & Olivia & McGrath & 88963 & 92675 & 99102 & 47528 & 69615 \\ 
+  10 & Sarah & Meilinger & 96643 & 72042 & 82173 & 41086 & 28402 \\ 
+  11 & Tramy & Nguyen & 40740 & 11786 & 99315 & 62792 & 84947 \\ 
+  12 & Vivianna & Plancarte & 87609 & 36621 & 45393 & 30799 & 70696 \\ 
+  13 & Lila & Rubin & 32008 & 89012 & 14844 & 60318 & 42626 \\ 
+  14 & Katy & Swiere & 13344 & 54998 & 63009 & 63285 & 16638 \\ 
+  15 & Eleanor & Tahbaz & 60081 & 64750 & 96416 & 64231 & 50597 \\ 
+  16 & Melia & Waring & 96481 & 65057 & 96129 & 33563 & 17048 \\ 
+  17 & Bryan & Williams & 74858 & 12717 & 86090 & 33087 & 88600 \\ 
    \hline
 \end{tabular}
+}
 \end{table}
 
 
+\section*{How to use your random numbers}
+
+For selected assignments, please avoid putting your name on the submission and include ONE of the random numbers (Table~\ref{tbl:numbers}). It doesn't matter which one, but I have noticed that if you use a simple one, I might be able to match the number with the person. So, I recommend changing which number you use at various times.
+
+\section*{Some Probability Questions}
+
 Question: What are the chances that two or more people might have the same random number?  Answering this is something taught in a probability course, which provides a foundation for all statistics.
+
 \end{document}
