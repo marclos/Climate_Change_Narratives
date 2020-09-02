@@ -1,0 +1,30 @@
+---
+title: "Temperatures in Southeast Texas"
+author: "Katy Swiere"
+date: "9/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I don't know what this does up there ^
+
+```{}
+read.csv("/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_Data.csv")
+
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+
+Words words words. I think my plot should be appearing in the knit file, I'm not sure why it isn't. 
+
+```
+plot(TMAX~DATE, climate_data, main = "Temperature in Orange County, Texas")
+bestfit <- lm(TMAX~NewDate, climate_data)
+coef(bestfit)
+abline(coef(bestfit), col = "red")
+```
+
+
