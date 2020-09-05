@@ -21,9 +21,9 @@ climate_data = read.csv("/home/CAMPUS/ocma2018/olivia_chicagomidway_data.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 plot(TMAX~NewDate, climate_data, ty='l')
-TMAX.lm = lm(TMAX ~ DATE, climate_data)
-coef(TMAX.lm)
-abline(coef(TMAX.lm))
+#TMAX.lm = lm(TMAX ~ DATE, climate_data)
+#coef(TMAX.lm)
+#abline(coef(TMAX.lm))
 ```
 
 ## Including Plots
