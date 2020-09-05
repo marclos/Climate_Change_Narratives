@@ -1,6 +1,6 @@
 \documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -85,23 +85,24 @@
 
 This document provides EA students with the methods to analyze climate data based on monthly averages and evaluate if these data are reliable compared to the CHCN-Monthly and investigate sources of uncertainty. 
 
+\section{Creating a Best Fit Line for Daily TMAX data}
+
 \subsection{To Begin}
 
 You should have R code that generates a plot of daily TMAX data for a site with a best fit line overlaid. If not, please go back to ``Using NOAA Clamate Records.''
-
 
 \subsection{Generalized Steps}
 
 In this SOP you will\ldots
 
 \begin{enumerate}
+  \item plot the temperature vs. date and overlay a bestfit line
   \item create new variables for date and month;
   \item create a new dataframe with monthly averages;
   \item model and estimate average trend for each month;
   \item evaluate the validity of the models; and
   \item interpret the trend data
 \end{enumerate}
-
 
 \subsection{Regression and Climate Change}
 
@@ -126,11 +127,11 @@ Okay, let's see if we can do this for our Bangkok data. Let's test if there is a
 TMAX \sim \alpha + \beta * time + \epsilon
 \end{equation}
 
-Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in SOP85. 
-
-Because these data are in a time series, they are serially correlated, meaning that the June sample will be more like the July sample than the August sample. In addition, the June 2010 sample will be similar to the June 2009 sample. These correlation violate the assumption of independence, but for now, we will ignore this violation and just create a linear model in bliss. 
+Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in "2 Using NOAA Climate Records". 
 
 For the response variable, we will use the daily maximum temeratures, TMAX. Remember there are some missing data, it will be interesting to note how R deals with that.
+
+\subsection{Creating a plot and linear model}
 
 First, let's create a plot of data using \texttt{plot()}, whose format is \texttt{plot(x, y)} or \texttt{plot(y $\sim$ x)}. We will use the later for now, e.g. plot(TMAX $\sim$ NewDate, data=climate\_data) (Figure \ref{fig:test12}).
 
@@ -163,8 +164,36 @@ We use the \texttt{lm()} function that arrange the results in-line with a regres
 \end{kframe}
 \end{knitrout}
 
+\noindent Notice that we had define the data source as we created the linearm model. In addition, the format is nearly identical to the \texttt{plot()} function. That's convenient!
+
 From this model, we learn that the change in $TMAX$ is 
 \ensuremath{2.7\times 10^{-5}}~\degree~C~year$^{-1}$. Figure~\ref{fig:TMAX_trend} shows a trend of increasing maximum temperatures.
+
+We know tha the slope and intercept can used to define a line -- so, next we can add a line to the plot. First, let's see how we can create a linear model object using \texttt{lm() }and extract the coefficients from linear model, usinig \texttt{coef()}.
+
+I am going to name the linear model with an ``.lm'' suffix to keep track of the type of object created. Then name an object ``slopeintercept'' to be clear where those two values lie. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{TMAX.lm} \hlkwb{=} \hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{= climate_data)}
+\hlstd{slopeintercept} \hlkwb{=} \hlkwd{coef}\hlstd{(TMAX.lm)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\noindent Now, we can plot the the data with the best fit line. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{= climate_data,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlkwd{abline}\hlstd{(slopeintercept,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\noindent Notice that I added some arguments in the function to improve the graphics. However, I added others in Figure~\ref{fig:TMAX_trend}, like x- and y-axis labels, that I am not showing to keep coding easier. I encourage you to look up these other arguments by searching online. 
 
 % Additional LaTeX code to add caption to figure
 \begin{figure}
@@ -172,17 +201,19 @@ From this model, we learn that the change in $TMAX$ is
 \label{fig:TMAX_trend}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 
 \end{knitrout}
 \end{figure}
+
+\subsection{Interpreting the Results}
 
 Now determine test the null hypotheses and use the \texttt{summary()} function to display many of the important regression results.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{summary}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{=climate_data))}
+\hlstd{(TMAX.lm.sum} \hlkwb{=} \hlkwd{summary}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{NewDate,} \hlkwc{data}\hlstd{=climate_data)))}
 \end{alltt}
 \begin{verbatim}
 ## 
@@ -212,13 +243,19 @@ Now determine test the null hypotheses and use the \texttt{summary()} function t
 \end{kframe}
 \end{knitrout}
 
-Based on the results, we reject the null hypotheses, i.e. the events that this might occur by chance is small: 2x10$^{-16}$ for the slope is zero and p $<$ 2x10$^{-16}$ for the y-intercept is zero. 
 
-In addition, we have some information on the residuals and r$^2$ estimates, which are important to interpret the model. 
 
-For now, we can appreciate the the temperature is changing, i.e. increasing, with a slope of 2.7x10$^{-5}$ \degree C per year. 
+Based on the results, we reject the null hypotheses, i.e. the events that this might occur by chance is small:  $<$ 2x10$^{-16}$ for the slope is zero and p $<$ 2x10$^{-16}$ for the y-intercept is zero.
 
-\subsubsection{Monthly Means of Daily Maximum Temperatures}
+Because these data are in a time series, they are serially correlated, meaning that the June sample will be more like the July sample than the August sample. In addition, the June 2010 sample will be similar to the June 2009 sample. These correlations violate the assumption of independence, but for now, we will ignore this violation and just create a linear model in bliss.
+
+In addition, we have some information on the residuals and r$^2$ estimates, which are important to interpret the model -- basically how much of the variation is explained by x (date). In our case, we obtain 0.72\%, which is pretty low, generally, we shouldn't get excited about a regression unless we approach 30-40\%! At some point, we will sort out why the r$^2$ is so low, but for now, keep moving. 
+
+For now, we can appreciate the the temperature is changing, i.e. increasing, with a slope of \ensuremath{2.7015606\times 10^{-5}}\degree C per year or if we multiply by 100 to make it more ``relateable'', we obtain a change of 0.0027\degree C/100 years--still pretty low! It begs the question, how important is climate change in Bangkok?
+
+\section{Aggregating Data into Monthly Means}
+
+\subsection{Monthly Means of Daily Maximum Temperatures}
 
 One of the first things to note is how messy the data look and there are lots of sources of variation. For example, we expect months to respond differently to the climate change. To assess this, we will now analyze the data for monthly means of the maximum temperatures.
 
@@ -273,7 +310,7 @@ After creating the month and year as separate variables, we can use them to cacu
 \hlkwd{plot}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
 
 \end{knitrout}
 
@@ -314,7 +351,7 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(May.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
 
 \end{knitrout}
 
@@ -335,26 +372,30 @@ Below, I have create code to evaluate all of the months at once, but you may pre
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# First I create a vector of months}
-\hlstd{Months} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"January"}\hlstd{,} \hlstr{"February"}\hlstd{,} \hlstr{"March"}\hlstd{,} \hlstr{"April"}\hlstd{,} \hlstr{"May"}\hlstd{,} \hlstr{"June"}\hlstd{,}
-  \hlstr{"July"}\hlstd{,} \hlstr{"August"}\hlstd{,} \hlstr{"September"}\hlstd{,} \hlstr{"October"}\hlstd{,} \hlstr{"November"}\hlstd{,} \hlstr{"December"}\hlstd{)}
+\hlstd{Months} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"January"}\hlstd{,} \hlstr{"February"}\hlstd{,} \hlstr{"March"}\hlstd{,} \hlstr{"April"}\hlstd{,}
+    \hlstr{"May"}\hlstd{,} \hlstr{"June"}\hlstd{,} \hlstr{"July"}\hlstd{,} \hlstr{"August"}\hlstd{,} \hlstr{"September"}\hlstd{,} \hlstr{"October"}\hlstd{,}
+    \hlstr{"November"}\hlstd{,} \hlstr{"December"}\hlstd{)}
 
-\hlcom{# Create a panel so I can see all the figures at once.}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,}\hlnum{3}\hlstd{),} \hlkwc{mar}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{)} \hlopt{+} \hlnum{0.1}\hlstd{)}
+\hlcom{# Create a panel so I can see all the figures at}
+\hlcom{# once.}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{3}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{)} \hlopt{+} \hlnum{0.1}\hlstd{)}
 \hlstd{TMAXresult} \hlkwb{<-} \hlnum{NA}
-\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{12}\hlstd{)\{}
-\hlcom{#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month==i], ty='l')}
-\hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,}
-  \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlstd{i,],}
-  \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1940}\hlstd{,} \hlnum{2020}\hlstd{),} \hlkwc{main}\hlstd{=Months[i])}
-\hlstd{Month.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlstd{i,])}
-\hlkwd{summary}\hlstd{(Month.lm)}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{12}\hlstd{) \{}
+    \hlcom{# plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month==i],}
+    \hlcom{# ty='l')}
+    \hlkwd{plot}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH} \hlopt{==}
+        \hlstd{i, ],} \hlkwc{ty} \hlstd{=} \hlstr{"l"}\hlstd{,} \hlkwc{las} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1940}\hlstd{,} \hlnum{2020}\hlstd{),}
+        \hlkwc{main} \hlstd{= Months[i])}
+    \hlstd{Month.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH} \hlopt{==}
+        \hlstd{i, ])}
+    \hlkwd{summary}\hlstd{(Month.lm)}
 
-\hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(Month.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+    \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(Month.lm),} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{)}
 
-\hlstd{TMAXresult} \hlkwb{<-} \hlkwd{rbind}\hlstd{(TMAXresult,}
-    \hlkwd{cbind}\hlstd{(Months[i],} \hlkwd{round}\hlstd{(}\hlkwd{coef}\hlstd{(Month.lm)[}\hlnum{2}\hlstd{],} \hlnum{4}\hlstd{),}
-      \hlkwd{round}\hlstd{(}\hlkwd{summary}\hlstd{(Month.lm)}\hlopt{$}\hlstd{coefficients[}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{],}\hlnum{4}\hlstd{),}
-      \hlkwd{round}\hlstd{(}\hlkwd{summary}\hlstd{(Month.lm)}\hlopt{$}\hlstd{r.squared,} \hlnum{3}\hlstd{)))}
+    \hlstd{TMAXresult} \hlkwb{<-} \hlkwd{rbind}\hlstd{(TMAXresult,} \hlkwd{cbind}\hlstd{(Months[i],}
+        \hlkwd{round}\hlstd{(}\hlkwd{coef}\hlstd{(Month.lm)[}\hlnum{2}\hlstd{],} \hlnum{4}\hlstd{),} \hlkwd{round}\hlstd{(}\hlkwd{summary}\hlstd{(Month.lm)}\hlopt{$}\hlstd{coefficients[}\hlnum{2}\hlstd{,}
+            \hlnum{4}\hlstd{],} \hlnum{4}\hlstd{),} \hlkwd{round}\hlstd{(}\hlkwd{summary}\hlstd{(Month.lm)}\hlopt{$}\hlstd{r.squared,}
+            \hlnum{3}\hlstd{)))}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -379,7 +420,7 @@ Alternatively, it might be important to evaluate changes to the daily mininum te
 \caption{Minimum Daily Temperatures in Bangkok, Thailand.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
 
 \end{knitrout}
 \end{figure}
@@ -421,7 +462,7 @@ There appears to be a trend, but it's clouded with lots of variation.
 \hlkwd{plot}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
 
 \end{knitrout}
 
@@ -467,7 +508,7 @@ Temperatures, Bangkok, Thailand}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Tue Dec  3 02:33:32 2019
+% Sat Sep  5 13:28:15 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
@@ -531,7 +572,7 @@ NOTE: The missing values have not been converted to NAs!
 \hlkwd{plot}\hlstd{(x} \hlopt{~} \hlstd{Date,} \hlkwc{data}\hlstd{=Missing)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
 
 \end{knitrout}
 
@@ -592,7 +633,7 @@ First, we need a "mean" -- The IPCC uses 1961-1990 as a norm for temperature, I 
 \hlkwd{abline}\hlstd{(}\hlkwc{h}\hlstd{=PRCP_mean,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
 
 \end{knitrout}
 
@@ -601,7 +642,7 @@ Wow, these data look terrible -- the mean looks meaningless given the biased dat
 \begin{figure}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-16-1} 
 
 \end{knitrout}
 \end{figure}
@@ -709,7 +750,7 @@ Try not to get bogged down in the code at this point. But noting this function c
 \hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMIN} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMINMean[MonthlyTMINMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{1}\hlstd{,]))}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-17-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-1} 
 
 \end{knitrout}
 \end{figure}
