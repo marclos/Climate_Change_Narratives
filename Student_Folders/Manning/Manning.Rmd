@@ -19,10 +19,10 @@ When you click the **Knit** button a document will be generated that includes bo
   filepath= "/home/CAMPUS/cemc2018/Climate_Change_Narratives/Student_Folders/Manning/manning_mccall_data.csv"
   climate_data=read.csv(filepath)
   str(climate_data)
-  
   min(climate_data$TMAX)
   strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-
-abline(plot(TMAX~NewDate, climate_data, ty='l'))
+  climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+  abline(plot(TMAX~NewDate, climate_data, ty='l'))
+  plot(TMAX~NewDate, climate_data, ty='l')
+  
 ```
