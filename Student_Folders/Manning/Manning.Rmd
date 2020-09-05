@@ -1,5 +1,5 @@
 ---
-title: "Claire's Draft Blog"
+title: "Claire's Blog"
 author: "Claire Manning"
 date: "9/3/2020"
 output: html_document
@@ -15,16 +15,14 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars, echo=FALSE}
-summary(cars)
+```{r read data}
+  filepath= "/home/CAMPUS/cemc2018/Climate_Change_Narratives/Student_Folders/Manning/manning_mccall_data.csv"
+  climate_data=read.csv(filepath)
+  str(climate_data)
+  min(climate_data$TMAX)
+  strDates <- as.character(climate_data$DATE)
+  climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+  abline(plot(TMAX~NewDate, climate_data, ty='l'))
+  plot(TMAX~NewDate, climate_data, ty='l')
+  
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
