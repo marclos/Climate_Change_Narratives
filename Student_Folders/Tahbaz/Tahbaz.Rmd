@@ -17,8 +17,12 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r cars, echo=FALSE}
 summary(cars)
-```
-
+file.path = "/home/CAMPUS/erta2020/EleanorTahbaz_NY,NY region_data.csv"
+climate_data = read.csv("/home/CAMPUS/erta2020/EleanorTahbaz_NY,NY region_data.csv")
+str(climate_data)
+strDates <-as.character(climate_data$DATE)
+climate_data$NewDate <-as.Date(strDates, "%m/%d/%Y")
+plot(TMAX~DATE, climate_data)
 ## This is a plot
 
 You can also embed plots, for example:
