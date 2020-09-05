@@ -1,0 +1,6 @@
+file.choose()
+read.csv("/home/CAMPUS/erta2020/EleanorTahbaz_NY,NY region_data.csv")
+str(climate_data)
+climate_data <-read.csv("/home/CAMPUS/erta2020/EleanorTahbaz_NY,NY region_data.csv")
+head(climate_data)
+str(climate-data)
