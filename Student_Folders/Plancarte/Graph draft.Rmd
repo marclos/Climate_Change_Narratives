@@ -1,9 +1,9 @@
 ---
-title: "Marc's Awesome Super Spicy Blog"
-author: "Marc Los Huertos"
-date: "8/31/2020"
-output:
-  html_document: default
+title: "Plancarte"
+author: "Vivianna Plancarte"
+date: "9/1/2020"
+output: html_document
+
 ---
 
 ```{r setup, include=FALSE}
@@ -12,15 +12,32 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
+
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
+
+
+## Data_Sources
+
+
+
+```{r}
+file.path="/home/CAMPUS/vipa2017/Github/Climate_Change_Narratives/Student_Folders/Plancarte/Plancarte_SanDiego_data.csv"
+climate_data=read.csv(file.path)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+plot(TMAX~NewDate, climate_data,ty='l')
+bestfitline.lm=lm(TMAX~NewDate,data=climate_data)
+coef(bestfitline.lm)
+abline(coef(bestfitline.lm),col="red", lwd=3)
+```
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars, echo=FALSE}
+```{r cars}
 summary(cars)
 ```
 
-## This a plot
+## Including Plots
 
 You can also embed plots, for example:
 
