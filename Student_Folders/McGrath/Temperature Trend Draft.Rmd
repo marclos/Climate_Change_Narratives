@@ -1,0 +1,40 @@
+---
+title: "Temperature Trend Draft"
+author: "Olivia"
+date: "9/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+#file.choose()
+climate_data = read.csv("/home/CAMPUS/ocma2018/olivia_chicagomidway_data.csv") 
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+plot(TMAX~NewDate, climate_data, ty='l')
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+file.choose()
+read.csv("/home/CAMPUS/ocma2018/olivia_chicagomidway_data.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
+abline(coef(bestfitline))

@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-I don't know what this does up there ^
+
 
 ```{r, echo=FALSE}
 read.csv("/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_Data.csv")
@@ -37,9 +37,5 @@ coef(bestfit)
 abline(coef(bestfit), col = "red")
 ```
 
-Words words words. I think my plot should be appearing in the knit file, I'm not sure why it isn't. 
 
-```{r}
-plot(TMAX~NewDate, climate_data, ty = "l")
-```
 
