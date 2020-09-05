@@ -1,6 +1,6 @@
 \documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -111,7 +111,7 @@ Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 
 
 If you get this error, you need to reduce the number of stations selected or make the date range smaller. NOTE: it's not always obvious that you have selected more than one station. When you are looking at the cart, follow the "View Full Details" link and then "Show all Stations". I generally sort by earliest records and find a station that is still collecting data and has nearly 100\% data coverage. 
   
-  \item[Complete Order] Type in your email address and you will get a confirmation email relativley soon... the data may take up to a couple days to be delivered but are usually delivered within a couple hours.
+  \item[Complete Order] Type in your email address and you will get a confirmation email relativley soon\ldots the data may take up to a couple days to be delivered but are usually delivered within a couple hours.
 \end{description}
 
 
@@ -120,6 +120,8 @@ If you get this error, you need to reduce the number of stations selected or mak
 Once you get the data, we'll need to evaluate what we have and format it for our purposes. Often you'll find problems when you begin analyzing it, but it's good to understand the structure of the data before you run into problems. 
 
 The CHCND documentation helps us to understand the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
+
+
 
 \section{Advanced User Access -- Terrestrial Temperature}  
 
@@ -187,9 +189,141 @@ TBD
 
 TBD
 
-\section{Sea Surface Temperature Data}
+\section{Sea Surface Temperature Data -- SURP PROJECT WAITING TO HAPPEN}
 
-TBD
+In contrast to terrestrial data, sea surface temperature (SST) is quite difficult to obtain and process. There are numerous tools to access the data, but they often require knowledge of complex software tools that are not easy to set up or programming experience with python or others.
+
+\url{https://climexp.knmi.nl/select.cgi?id=someone@somewhere&field=ersstv5}
+
+There are, however, a few tools build for R users that seem to accomplish all that we need. 
+
+\url{https://rda.ucar.edu/index.html?hash=data_user&action=register}
+
+\url{https://rda.ucar.edu/datasets/ds277.9/}
+
+Alternatively, we can download flat ascII tables of gridded data:
+
+\url{https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(chron)}
+\hlkwd{library}\hlstd{(RColorBrewer)}
+\hlkwd{library}\hlstd{(lattice)}
+\hlcom{#library(ncdf)}
+\hlkwd{library}\hlstd{(ncdf4)}
+\hlcom{#library(greenbrown) # for gridded trend analysis}
+
+\hlstd{ersst.nc} \hlkwb{=} \hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/ersst.v5.185401.nc"}
+\hlstd{Y1854} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1854.asc"}
+\hlstd{Y1864} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1864.asc"}
+\hlstd{Y1874} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1874.asc"}
+\hlstd{Y1884} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1884.asc"}
+\hlstd{Y1894} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1894.asc"}
+\hlstd{Y1904} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1904.asc"}
+\hlstd{Y1914} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1914.asc"}
+\hlstd{Y1924} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1924.asc"}
+\hlstd{Y1934} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1934.asc"}
+\hlstd{Y1944} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1944.asc"}
+\hlstd{Y1954} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1954.asc"}
+\hlstd{Y1964} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1964.asc"}
+\hlstd{Y1974} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1974.asc"}
+\hlstd{Y1984} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1984.asc"}
+\hlstd{Y1994} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1994.asc"}
+\hlstd{Y2004} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.2004.asc"}
+\hlstd{Y2014} \hlkwb{=} \hlstr{"https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.2014.asc"}
+
+\hlstd{temp} \hlkwb{=} \hlkwd{rbind}\hlstd{(}\hlkwd{read.table}\hlstd{(Y1854)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1864)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1874)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],}
+\hlkwd{read.table}\hlstd{(Y1884)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1894)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1904)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],}
+\hlkwd{read.table}\hlstd{(Y1914)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1924)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1934)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],}
+\hlkwd{read.table}\hlstd{(Y1944)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1954)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1964)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],}
+\hlkwd{read.table}\hlstd{(Y1974)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1984)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y1994)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],}
+\hlkwd{read.table}\hlstd{(Y2004)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{],} \hlkwd{read.table}\hlstd{(Y2014)[}\hlnum{75}\hlstd{,}\hlnum{67}\hlstd{])}
+
+\hlstd{temp.df} \hlkwb{=} \hlkwd{data.frame}\hlstd{(}\hlkwc{Temp} \hlstd{=} \hlkwd{as.vector}\hlstd{(temp)}\hlopt{/}\hlnum{100}\hlstd{); temp.df}
+\hlstd{temp.df}\hlopt{$}\hlstd{Year} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlnum{1854}\hlstd{,} \hlnum{2014}\hlstd{,} \hlnum{10}\hlstd{)}
+\hlkwd{plot}\hlstd{(Temp}\hlopt{~} \hlstd{Year, temp.df)}
+\hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(}\hlkwd{lm}\hlstd{(Temp}\hlopt{~}\hlstd{Year,} \hlkwc{data}\hlstd{=temp.df)),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\hlcom{#automating this process!}
+
+\hlstd{directory} \hlkwb{=} \hlstr{"/pub/data/cmb/ersst/v5/ascii"}
+
+\hlstd{B195401} \hlkwb{=} \hlkwd{nc_open}\hlstd{(ersst.nc)}
+
+
+\hlcom{# str(B195401)}
+\hlcom{# print(B195401)}
+
+\hlstd{ncin} \hlkwb{=} \hlstd{B195401}
+
+\hlkwd{print}\hlstd{(ncin)}
+\hlstd{lon} \hlkwb{<-} \hlkwd{ncvar_get}\hlstd{(ncin,} \hlstr{"lon"}\hlstd{)}
+\hlstd{nlon} \hlkwb{<-} \hlkwd{dim}\hlstd{(lon)}
+\hlkwd{head}\hlstd{(lon)}
+
+\hlstd{lat} \hlkwb{<-} \hlkwd{ncvar_get}\hlstd{(ncin,} \hlstr{"lat"}\hlstd{,} \hlkwc{verbose} \hlstd{= F)}
+\hlstd{nlat} \hlkwb{<-} \hlkwd{dim}\hlstd{(lat)}
+\hlkwd{head}\hlstd{(lat)}
+
+\hlkwd{print}\hlstd{(}\hlkwd{c}\hlstd{(nlon, nlat))}
+
+\hlstd{t} \hlkwb{<-} \hlkwd{ncvar_get}\hlstd{(ncin,} \hlstr{"time"}\hlstd{)}
+\hlstd{tunits} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlstr{"time"}\hlstd{,} \hlstr{"units"}\hlstd{)}
+\hlstd{nt} \hlkwb{<-} \hlkwd{dim}\hlstd{(t); nt}
+
+\hlstd{lat.sel} \hlkwb{=} \hlnum{67}\hlstd{; lon.set} \hlkwb{=} \hlnum{75}
+
+\hlcom{#ncvar_get(ncin, sst) #object 'sst' not found}
+
+\hlcom{#ncvar_get(ncin, var$sst) object of type 'closure' is not subsettable}
+\hlcom{#ncvar_get(ncin, var) second argument to ncvar_get must be an object of type ncvar or ncdim (both parts of the ncdf object returned by nc_open()), the character-string name of a variable or dimension or NA to get the default variable from the file.  If the file is netcdf version 4 format and uses groups, then the fully qualified var name must be given, for example, model1/run5/Temperature}
+
+\hlkwd{ncvar_get}\hlstd{(ncin,} \hlstr{"sst"}\hlstd{)} \hlcom{#spits out the temperatures. but why the negative numbers!}
+
+\hlcom{# tmp.array <- ncvar_get(ncin, dname) # doesn't work...}
+
+\hlstd{tmp.array} \hlkwb{<-} \hlkwd{ncvar_get}\hlstd{(ncin,} \hlstr{"sst"}\hlstd{)}
+\hlkwd{dim}\hlstd{(tmp.array)}
+
+\hlstd{tmp.array[}\hlnum{75}\hlstd{,} \hlnum{67}\hlstd{]}
+
+\hlstd{tmp.array[}\hlnum{67}\hlstd{,]}
+
+\hlstd{dlname} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlstr{"sst"}\hlstd{,} \hlstr{"long_name"}\hlstd{)}
+\hlstd{dunits} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlstr{"sst"}\hlstd{,} \hlstr{"units"}\hlstd{)}
+\hlstd{fillvalue} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlstr{"sst"}\hlstd{,} \hlstr{"_FillValue"}\hlstd{)}
+\hlkwd{dim}\hlstd{(tmp.array)}
+
+\hlstd{title} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlnum{0}\hlstd{,} \hlstr{"title"}\hlstd{)}
+\hlstd{institution} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlnum{0}\hlstd{,} \hlstr{"institution"}\hlstd{)}
+\hlstd{datasource} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlnum{0}\hlstd{,} \hlstr{"source"}\hlstd{)}
+\hlstd{references} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlnum{0}\hlstd{,} \hlstr{"references"}\hlstd{)}
+\hlstd{history} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlnum{0}\hlstd{,} \hlstr{"history"}\hlstd{)}
+\hlstd{Conventions} \hlkwb{<-} \hlkwd{ncatt_get}\hlstd{(ncin,} \hlnum{0}\hlstd{,} \hlstr{"Conventions"}\hlstd{)}
+
+\hlcom{# split the time units string into fields}
+\hlstd{tustr} \hlkwb{<-} \hlkwd{strsplit}\hlstd{(tunits}\hlopt{$}\hlstd{value,} \hlstr{" "}\hlstd{)}
+\hlstd{tdstr} \hlkwb{<-} \hlkwd{strsplit}\hlstd{(}\hlkwd{unlist}\hlstd{(tustr)[}\hlnum{3}\hlstd{],} \hlstr{"-"}\hlstd{)}
+\hlstd{tmonth} \hlkwb{=} \hlkwd{as.integer}\hlstd{(}\hlkwd{unlist}\hlstd{(tdstr)[}\hlnum{2}\hlstd{])}
+\hlstd{tday} \hlkwb{=} \hlkwd{as.integer}\hlstd{(}\hlkwd{unlist}\hlstd{(tdstr)[}\hlnum{3}\hlstd{])}
+\hlstd{tyear} \hlkwb{=} \hlkwd{as.integer}\hlstd{(}\hlkwd{unlist}\hlstd{(tdstr)[}\hlnum{1}\hlstd{])}
+\hlkwd{chron}\hlstd{(t,} \hlkwc{origin} \hlstd{=} \hlkwd{c}\hlstd{(tmonth, tday, tyear))}
+
+\hlcom{# tmp.array[tmp.array == fillvalue$value] <- NA}
+
+\hlcom{# length(na.omit(as.vector(tmp.array[, , 1])))}
+
+\hlstd{m} \hlkwb{<-} \hlnum{1}
+\hlstd{tmp.slice} \hlkwb{<-} \hlstd{tmp.array[, , m]}
+
+\hlkwd{image}\hlstd{(lon, lat, tmp.array,} \hlkwc{col} \hlstd{=} \hlkwd{rev}\hlstd{(}\hlkwd{brewer.pal}\hlstd{(}\hlnum{10}\hlstd{,} \hlstr{"RdBu"}\hlstd{)))}
+
+\hlcom{# image(lon, lat, tmp.slice, col = rev(brewer.pal(10, "RdBu")))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 \section{Satellite Data}
 
