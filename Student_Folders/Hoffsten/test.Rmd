@@ -29,7 +29,11 @@ str(climate_data)
 ```{r ploting}
 plot(TMAX ~ NewDate, data= climate_data)
 
-lm(TMAX ~ NewDate, data= climate_data)
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+abline(slopeintercept, col="purple", lwd=3)
+
+
 
 
 ```
