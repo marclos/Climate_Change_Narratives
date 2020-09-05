@@ -15,12 +15,15 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
+```{readdata}
 #file.choose()
 climate_data = read.csv("/home/CAMPUS/ocma2018/olivia_chicagomidway_data.csv") 
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 plot(TMAX~NewDate, climate_data, ty='l')
+TMAX.lm = lm(TMAX ~ DATE, climate_data)
+coef(TMAX.lm)
+abline(coef(TMAX.lm))
 ```
 
 ## Including Plots
