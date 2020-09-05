@@ -1,7 +1,5 @@
 ---
-title: "Temperature Trend Draft"
-author: "Olivia"
-date: "9/2/2020"
+title: "Bryan R Markdown"
 output: html_document
 ---
 
@@ -9,20 +7,19 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Introduction
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r readdata}
-#file.choose()
-climate_data = read.csv("/home/CAMPUS/ocma2018/olivia_chicagomidway_data.csv") 
+filepath = "/home/CAMPUS/bawa2018/Climate_Change_Narratives/Data/FA20/Williams_SaltLakeCityUT_data.csv"
+climate_data = read.csv(filepath)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-plot(TMAX~NewDate, climate_data, ty='l')
-#TMAX.lm = lm(TMAX ~ DATE, climate_data)
+plot(TMAX~DATE, climate_data, pch = 16, cex = 1.3, col = "blue")
+#TMAX.lm = lm(TMAX ~ DATE, data = climate_data)
 #coef(TMAX.lm)
 #abline(coef(TMAX.lm))
 ```
-
