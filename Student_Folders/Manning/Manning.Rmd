@@ -17,9 +17,9 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r readdata}
 # path to Data/FA20/ using marc's username...
-filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/manning_mccall_data.csv"
+#filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/manning_mccall_data.csv"
 
-# filepath= "/home/CAMPUS/cemc2018/Climate_Change_Narratives/Student_Folders/Manning/manning_mccall_data.csv"
+filepath= "/home/CAMPUS/cemc2018/Climate_Change_Narratives/Student_Folders/Manning/manning_mccall_data.csv"
 
 climate_data=read.csv(filepath)
 
@@ -37,7 +37,6 @@ See guide #3 that I updated to make this stage better explained...hopefully!
 ```{r plotingdailydata}
 plot(TMAX~NewDate, climate_data, ty='l') # This works!
 
-#  abline(plot(TMAX~NewDate, climate_data, ty='l')) # This doesn't work!
 ```
 
 GREAT dataset!  I am excited to see how the results!
