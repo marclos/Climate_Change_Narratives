@@ -20,7 +20,7 @@ rm(list = ls())
 
 <<echo=FALSE>>=
 # Importing Scripts
-source("../Custom_Code/CSV_import-fun.R")
+source("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Custom_Code/CSV_import-fun.R")
 climate_data <- CSV_import("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/MLH/Thailand_GHCND:TH000048456.csv")
 @
 
@@ -41,23 +41,24 @@ climate_data <- CSV_import("/home/CAMPUS/mwl04747/github/Climate_Change_Narrativ
 
 This document provides EA students with the methods to analyze climate data based on monthly averages and evaluate if these data are reliable compared to the CHCN-Monthly and investigate sources of uncertainty. 
 
+\section{Creating a Best Fit Line for Daily TMAX data}
+
 \subsection{To Begin}
 
 You should have R code that generates a plot of daily TMAX data for a site with a best fit line overlaid. If not, please go back to ``Using NOAA Clamate Records.''
-
 
 \subsection{Generalized Steps}
 
 In this SOP you will\ldots
 
 \begin{enumerate}
+  \item plot the temperature vs. date and overlay a bestfit line
   \item create new variables for date and month;
   \item create a new dataframe with monthly averages;
   \item model and estimate average trend for each month;
   \item evaluate the validity of the models; and
   \item interpret the trend data
 \end{enumerate}
-
 
 \subsection{Regression and Climate Change}
 
@@ -82,11 +83,11 @@ Okay, let's see if we can do this for our Bangkok data. Let's test if there is a
 TMAX \sim \alpha + \beta * time + \epsilon
 \end{equation}
 
-Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in SOP85. 
-
-Because these data are in a time series, they are serially correlated, meaning that the June sample will be more like the July sample than the August sample. In addition, the June 2010 sample will be similar to the June 2009 sample. These correlation violate the assumption of independence, but for now, we will ignore this violation and just create a linear model in bliss. 
+Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in "2 Using NOAA Climate Records". 
 
 For the response variable, we will use the daily maximum temeratures, TMAX. Remember there are some missing data, it will be interesting to note how R deals with that.
+
+\subsection{Creating a plot and linear model}
 
 First, let's create a plot of data using \texttt{plot()}, whose format is \texttt{plot(x, y)} or \texttt{plot(y $\sim$ x)}. We will use the later for now, e.g. plot(TMAX $\sim$ NewDate, data=climate\_data) (Figure \ref{fig:test12}).
 
@@ -105,8 +106,28 @@ We use the \texttt{lm()} function that arrange the results in-line with a regres
 lm(TMAX ~ NewDate, data=climate_data)
 @
 
+\noindent Notice that we had define the data source as we created the linearm model. In addition, the format is nearly identical to the \texttt{plot()} function. That's convenient!
+
 From this model, we learn that the change in $TMAX$ is 
 \Sexpr{round(coef(lm(TMAX ~ NewDate, data=climate_data))[2], 6)}~\degree~C~year$^{-1}$. Figure~\ref{fig:TMAX_trend} shows a trend of increasing maximum temperatures.
+
+We know tha the slope and intercept can used to define a line -- so, next we can add a line to the plot. First, let's see how we can create a linear model object using \texttt{lm() }and extract the coefficients from linear model, usinig \texttt{coef()}.
+
+I am going to name the linear model with an ``.lm'' suffix to keep track of the type of object created. Then name an object ``slopeintercept'' to be clear where those two values lie. 
+
+<<>>=
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+@
+
+\noindent Now, we can plot the the data with the best fit line. 
+
+<<eval=FALSE>>=
+plot(TMAX ~ NewDate, data= climate_data, las=1)
+abline(slopeintercept, col="red", lwd=3)
+@
+
+\noindent Notice that I added some arguments in the function to improve the graphics. However, I added others in Figure~\ref{fig:TMAX_trend}, like x- and y-axis labels, that I am not showing to keep coding easier. I encourage you to look up these other arguments by searching online. 
 
 % Additional LaTeX code to add caption to figure
 \begin{figure}
@@ -114,25 +135,43 @@ From this model, we learn that the change in $TMAX$ is
 \label{fig:TMAX_trend}
 <<echo = F, fig = 'true' >>=
 par(las=1)
-plot(TMAX ~ NewDate, data=climate_data, type="l", ylab="degrees", xlab="Date", main="Maximum Daily Temperature, \n Bangkok, Thailand" )
+plot(TMAX ~ NewDate, data=climate_data, type="l", ylab="degrees", xlab="Date", main="Maximum Daily Temperature, \n Bangkok, Thailand", las=1 )
 
 abline(coef(lm(TMAX~NewDate, data=climate_data)), col="red", lwd=2)
 @
 \end{figure}
 
+\subsection{Interpreting the Results}
+
 Now determine test the null hypotheses and use the \texttt{summary()} function to display many of the important regression results.
 
 <<label='summarylm_TMAX'>>=
-summary(lm(TMAX ~ NewDate, data=climate_data))
+(TMAX.lm.sum = summary(lm(TMAX ~ NewDate, data=climate_data)))
 @
 
-Based on the results, we reject the null hypotheses, i.e. the events that this might occur by chance is small: 2x10$^{-16}$ for the slope is zero and p $<$ 2x10$^{-16}$ for the y-intercept is zero. 
+<<echo=FALSE>>=
+lmp <- function (modelobject) {
+    if (class(modelobject) != "lm") stop("Not an object of class 'lm' ")
+    f <- summary(modelobject)$fstatistic
+    p <- pf(f[1],f[2],f[3],lower.tail=F)
+    attributes(p) <- NULL
+    return(p)
+}
 
-In addition, we have some information on the residuals and r$^2$ estimates, which are important to interpret the model. 
+# lmp(TMAX.lm)
+@
 
-For now, we can appreciate the the temperature is changing, i.e. increasing, with a slope of 2.7x10$^{-5}$ \degree C per year. 
+Based on the results, we reject the null hypotheses, i.e. the events that this might occur by chance is small:  $<$ 2x10$^{-16}$ for the slope is zero and p $<$ 2x10$^{-16}$ for the y-intercept is zero.
 
-\subsubsection{Monthly Means of Daily Maximum Temperatures}
+Because these data are in a time series, they are serially correlated, meaning that the June sample will be more like the July sample than the August sample. In addition, the June 2010 sample will be similar to the June 2009 sample. These correlations violate the assumption of independence, but for now, we will ignore this violation and just create a linear model in bliss.
+
+In addition, we have some information on the residuals and r$^2$ estimates, which are important to interpret the model -- basically how much of the variation is explained by x (date). In our case, we obtain \Sexpr{round(TMAX.lm.sum$r.squared*100,2)}\%, which is pretty low, generally, we shouldn't get excited about a regression unless we approach 30-40\%! At some point, we will sort out why the r$^2$ is so low, but for now, keep moving. 
+
+For now, we can appreciate the the temperature is changing, i.e. increasing, with a slope of \Sexpr{coef(TMAX.lm)[2]}\degree C per year or if we multiply by 100 to make it more ``relateable'', we obtain a change of \Sexpr{round(coef(TMAX.lm)[2]*100,4)}\degree C/100 years--still pretty low! It begs the question, how important is climate change in Bangkok?
+
+\section{Aggregating Data into Monthly Means}
+
+\subsection{Monthly Means of Daily Maximum Temperatures}
 
 One of the first things to note is how messy the data look and there are lots of sources of variation. For example, we expect months to respond differently to the climate change. To assess this, we will now analyze the data for monthly means of the maximum temperatures.
 

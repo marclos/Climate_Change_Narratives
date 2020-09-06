@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2019.11.11)  3 DEC 2019 02:51
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2020.5.9)  5 SEP 2020 12:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -324,45 +324,45 @@ Package color Info: Redefining color shadecolor on input line 164.
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 166.
 
-Overfull \hbox (43.49661pt too wide) in paragraph at lines 183--183
+Overfull \hbox (69.74638pt too wide) in paragraph at lines 183--183
 []\OT1/cmtt/m/n/10 ##             STATION                      STATION_NAME    
- DATE     PRCP[] 
+ DATE     PRCP TAVG[] 
  []
 
 
-Overfull \hbox (43.49661pt too wide) in paragraph at lines 183--183
+Overfull \hbox (69.74638pt too wide) in paragraph at lines 183--183
 []\OT1/cmtt/m/n/10 ## 1 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 196
-20512     0.16[] 
+20512     0.16   81[] 
  []
 
 
-Overfull \hbox (43.49661pt too wide) in paragraph at lines 183--183
+Overfull \hbox (69.74638pt too wide) in paragraph at lines 183--183
 []\OT1/cmtt/m/n/10 ## 2 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 196
-20516     0.08[] 
+20516     0.08   79[] 
  []
 
 
-Overfull \hbox (43.49661pt too wide) in paragraph at lines 183--183
+Overfull \hbox (69.74638pt too wide) in paragraph at lines 183--183
 []\OT1/cmtt/m/n/10 ## 3 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 196
-20605 -9999.00[] 
+20605 -9999.00   84[] 
  []
 
 
-Overfull \hbox (43.49661pt too wide) in paragraph at lines 183--183
+Overfull \hbox (69.74638pt too wide) in paragraph at lines 183--183
 []\OT1/cmtt/m/n/10 ## 4 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 196
-21006     0.39[] 
+21006     0.39   83[] 
  []
 
 
-Overfull \hbox (43.49661pt too wide) in paragraph at lines 183--183
+Overfull \hbox (69.74638pt too wide) in paragraph at lines 183--183
 []\OT1/cmtt/m/n/10 ## 5 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 196
-21007     0.02[] 
+21007     0.02   84[] 
  []
 
 
-Overfull \hbox (43.49661pt too wide) in paragraph at lines 183--183
+Overfull \hbox (69.74638pt too wide) in paragraph at lines 183--183
 []\OT1/cmtt/m/n/10 ## 6 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 196
-21012     0.08[] 
+21012     0.08   78[] 
  []
 
 
@@ -390,6 +390,12 @@ Overfull \hbox (274.4946pt too wide) in paragraph at lines 209--209
  []
 
 Package color Info: Redefining color shadecolor on input line 216.
+
+Overfull \hbox (38.24666pt too wide) in paragraph at lines 223--223
+[]\OT1/cmtt/m/n/10 ## [1] "STATION"      "STATION_NAME" "DATE"         "PRCP"  
+       "TAVG"[] 
+ []
+
 Package color Info: Redefining color shadecolor on input line 247.
 <figure/unnamed-chunk-5-1.pdf, id=105, 505.89pt x 505.89pt>
 File: figure/unnamed-chunk-5-1.pdf Graphic file (type pdf)
@@ -439,69 +445,71 @@ Overfull \hbox (274.4946pt too wide) in paragraph at lines 335--335
  []
 
 [8 <./figure/unnamed-chunk-9-1.pdf>]
-Package color Info: Redefining color shadecolor on input line 351.
+Package color Info: Redefining color shadecolor on input line 356.
 
-Overfull \hbox (8.13893pt too wide) in paragraph at lines 363--364
+Overfull \hbox (8.13893pt too wide) in paragraph at lines 368--369
 []\OT1/cmr/m/n/10 Sometimes, the dates are for-mat-ted by month-day-year, where
 
  []
 
-Package color Info: Redefining color shadecolor on input line 367.
-Package color Info: Redefining color shadecolor on input line 380.
-Package color Info: Redefining color shadecolor on input line 393.
+Package color Info: Redefining color shadecolor on input line 372.
+Package color Info: Redefining color shadecolor on input line 385.
+Package color Info: Redefining color shadecolor on input line 398.
 [9]
-Package color Info: Redefining color shadecolor on input line 405.
-Package color Info: Redefining color shadecolor on input line 424.
+Package color Info: Redefining color shadecolor on input line 410.
+Package color Info: Redefining color shadecolor on input line 429.
 
-Overfull \hbox (57.99673pt too wide) in paragraph at lines 431--431
+Overfull \hbox (57.99673pt too wide) in paragraph at lines 436--436
 []\OT1/cmtt/m/n/10 ## [1] "19620512" "19620516" "19620605" "19621006" "19621007
 " "19621012"[] 
  []
 
 
-Overfull \hbox (89.49646pt too wide) in paragraph at lines 433--433
+Overfull \hbox (157.74586pt too wide) in paragraph at lines 438--438
 [][]\OT1/cmtt/m/n/10 climate_data[][]$[][]NewDate[] []<-[] []as.Date[][](strDat
-es,[] []"%Y%m%d"[][],[] []tryFormats[] []=[] []c[][]([][]"%Y-%m-%d"[][],[][] 
+es,[] []"%Y%m%d"[][],[] []tryFormats[] []=[] []c[][]([][]"%Y-%m-%d"[][],[] []"%
+Y/%m/%d"[][]),[][] 
  []
 
 
-Overfull \hbox (89.49646pt too wide) in paragraph at lines 437--437
+Overfull \hbox (157.74586pt too wide) in paragraph at lines 442--442
 [][]\OT1/cmtt/m/n/10 climate_data[][]$[][]NewDate[] []<-[] []as.Date[][](strDat
-es,[] []"%Y%m%d"[][],[] []tryFormats[] []=[] []c[][]([][]"%Y-%m-%d"[][],[][] 
+es,[] []"%Y%m%d"[][],[] []tryFormats[] []=[] []c[][]([][]"%Y-%m-%d"[][],[] []"%
+m/%d/%y"[][]),[][] 
  []
 
-Package color Info: Redefining color shadecolor on input line 450.
+Package color Info: Redefining color shadecolor on input line 455.
 [10] <figure/unnamed-chunk-17-1.pdf, id=148, 505.89pt x 505.89pt>
 File: figure/unnamed-chunk-17-1.pdf Graphic file (type pdf)
 
 <use figure/unnamed-chunk-17-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-17-1.pdf used on input line 455.
+Package pdftex.def Info: figure/unnamed-chunk-17-1.pdf used on input line 460.
 (pdftex.def)             Requested size: 345.0pt x 345.00414pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 455--456
+Overfull \hbox (15.0pt too wide) in paragraph at lines 460--461
 [][] 
  []
 
 [11 <./figure/unnamed-chunk-17-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 500.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 512.
  [12]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 500.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 512.
  (./2_Using_NOAA_Climate_Records.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 500.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 500.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 512.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 512.
 Package rerunfilecheck Info: File `2_Using_NOAA_Climate_Records.out' has not ch
 anged.
 (rerunfilecheck)             Checksum: 7462DE4E375502B5106E97DE22EDF0E7;1326.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 500.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 512.
  ) 
 Here is how much of TeX's memory you used:
- 5300 strings out of 494820
- 79096 string characters out of 3178048
+ 5301 strings out of 494820
+ 79112 string characters out of 3178050
  160651 words of memory out of 3000000
- 8407 multiletter control sequences out of 15000+200000
+ 8408 multiletter control sequences out of 15000+200000
  8063 words of font info for 29 fonts, out of 3000000 for 9000
  198 hyphenation exceptions out of 8191
- 29i,8n,28p,1032b,421s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,8n,28p,1032b,415s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
@@ -512,7 +520,7 @@ pe1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
 ic/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmtt10.pfb>
-Output written on 2_Using_NOAA_Climate_Records.pdf (12 pages, 516726 bytes).
+Output written on 2_Using_NOAA_Climate_Records.pdf (12 pages, 517647 bytes).
 PDF statistics:
  216 PDF objects out of 1000 (max. 8388607)
  183 compressed objects within 2 object streams
