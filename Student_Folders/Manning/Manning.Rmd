@@ -13,9 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This plot contains data collected from a weather station in McCall, Idaho. This data goes back to March, 1906. The data includes daily minimum and maximum temperatures at the station location on the given date.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r readdata}
+```{r readdata, echo=FALSE}
 # path to Data/FA20/ using marc's username...
 #filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/manning_mccall_data.csv"
 
@@ -28,15 +27,14 @@ min(climate_data$TMAX)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
-
 ```
 
 
-## Ploting Data
+## Plotting Data
 
-See guide #3 that I updated to make this stage better explained...hopefully!
+This is the data plotted in graphs. These graphs just show the changes in daily maximum temperature which varies alot from the hot summers to the cold winters.
 
-```{r plotingdailydata}
+```{r plotingdailydata, }
 plot(TMAX~NewDate, climate_data, ty='l') # This works!
 
 TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
@@ -47,5 +45,3 @@ abline(slopeintercept, col="red", lwd=3)
        
        (TMAX.lm.sum = summary(lm(TMAX ~ NewDate, data=climate_data)))
 ```
-
-GREAT dataset!  I am excited to see how the results!
