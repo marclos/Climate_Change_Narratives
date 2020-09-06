@@ -1,9 +1,7 @@
-file.choose(
-  
-)
-read.csv("/home/CAMPUS/smac2019/Climate_Change_Narratives/Sarah_Orlando_Data.csv")
+file.choose()
+read.csv("/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Sarah_Orlando_Data.csv")
 
-climate_data <- read.csv("/home/CAMPUS/smac2019/Climate_Change_Narratives/Sarah_Orlando_Data.csv")
+climate_data <- read.csv("/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Sarah_Orlando_Data.csv")
 head(climate_data)
 str(climate_data)
 names(climate_data)
