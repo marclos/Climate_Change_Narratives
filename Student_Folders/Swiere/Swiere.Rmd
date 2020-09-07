@@ -1,0 +1,31 @@
+---
+title: "Temperatures in Southeast Texas"
+author: "Katy Swiere"
+date: "9/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r, echo=TRUE}
+climate_data <- read.csv("/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_DataNEW.csv")
+
+
+strDates <- as.character(climate_data$DATE) #create object dates as characters
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y") #turn it into New Date
+
+#FINAL PLOT 
+plot(TMAX~NewDate, climate_data)
+bestfit <- lm(TMAX~NewDate, climate_data)
+abline(coef(bestfit), col = "red")
+plot(TMAX~NewDate, climate_data)
+```
+
+
+
+
+

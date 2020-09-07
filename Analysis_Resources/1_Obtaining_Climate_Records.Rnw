@@ -63,7 +63,7 @@ Error -- *Text order size is 3,948 Station Years, which exceeds our capacity of 
 
 If you get this error, you need to reduce the number of stations selected or make the date range smaller. NOTE: it's not always obvious that you have selected more than one station. When you are looking at the cart, follow the "View Full Details" link and then "Show all Stations". I generally sort by earliest records and find a station that is still collecting data and has nearly 100\% data coverage. 
   
-  \item[Complete Order] Type in your email address and you will get a confirmation email relativley soon... the data may take up to a couple days to be delivered but are usually delivered within a couple hours.
+  \item[Complete Order] Type in your email address and you will get a confirmation email relativley soon\ldots the data may take up to a couple days to be delivered but are usually delivered within a couple hours.
 \end{description}
 
 
@@ -72,6 +72,8 @@ If you get this error, you need to reduce the number of stations selected or mak
 Once you get the data, we'll need to evaluate what we have and format it for our purposes. Often you'll find problems when you begin analyzing it, but it's good to understand the structure of the data before you run into problems. 
 
 The CHCND documentation helps us to understand the data format, \url{https://www1.ncdc.noaa.gov/pub/data/cdo/documentation/GHCND_documentation.pdf}.
+
+
 
 \section{Advanced User Access -- Terrestrial Temperature}  
 
@@ -129,7 +131,7 @@ TBD
 
 TBD
 
-\section{Sea Surface Temperature Data}
+\section{Sea Surface Temperature Data -- SURP PROJECT WAITING TO HAPPEN}
 
 In contrast to terrestrial data, sea surface temperature (SST) is quite difficult to obtain and process. There are numerous tools to access the data, but they often require knowledge of complex software tools that are not easy to set up or programming experience with python or others.
 
@@ -146,14 +148,14 @@ Alternatively, we can download flat ascII tables of gridded data:
 \url{https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/}
 
 
-<<>>=
+<<echo=TRUE, eval=FALSE>>=
 
 library(chron)
 library(RColorBrewer)
 library(lattice)
-library(ncdf)
+#library(ncdf)
 library(ncdf4)
-library(greenbrown) # for gridded trend analysis
+#library(greenbrown) # for gridded trend analysis
 
 ersst.nc = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/ersst.v5.185401.nc"
 Y1854 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1854.asc"
@@ -192,8 +194,8 @@ directory = "/pub/data/cmb/ersst/v5/ascii"
 B195401 = nc_open(ersst.nc)
 
 
-str(B195401)
-print(B195401)
+# str(B195401)
+# print(B195401)
 
 ncin = B195401
 
