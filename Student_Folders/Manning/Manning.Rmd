@@ -11,15 +11,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This plot contains data collected from a weather station in McCall, Idaho. This data goes back to March, 1906. The data includes daily minimum and maximum temperatures at the station location on the given date.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r readdata}
 # path to Data/FA20/ using marc's username...
-filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/manning_mccall_data.csv"
+#filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/manning_mccall_data.csv"
 
-# filepath= "/home/CAMPUS/cemc2018/Climate_Change_Narratives/Student_Folders/Manning/manning_mccall_data.csv"
+filepath= "/home/CAMPUS/cemc2018/Climate_Change_Narratives/Student_Folders/Manning/manning_mccall_data.csv"
 
 climate_data=read.csv(filepath)
 
@@ -27,6 +27,8 @@ str(climate_data)
 min(climate_data$TMAX)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+
 ```
 
 
@@ -37,7 +39,13 @@ See guide #3 that I updated to make this stage better explained...hopefully!
 ```{r plotingdailydata}
 plot(TMAX~NewDate, climate_data, ty='l') # This works!
 
-#  abline(plot(TMAX~NewDate, climate_data, ty='l')) # This doesn't work!
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+
+plot(TMAX ~ NewDate, data= climate_data, las=1)
+abline(slopeintercept, col="red", lwd=3)
+       
+       (TMAX.lm.sum = summary(lm(TMAX ~ NewDate, data=climate_data)))
 ```
 
 GREAT dataset!  I am excited to see how the results!
