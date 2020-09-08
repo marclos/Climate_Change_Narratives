@@ -1,0 +1,47 @@
+---
+title: "Temperatures in Southeast Texas"
+author: "Katy Swiere"
+date: "9/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r, echo=TRUE}
+climate_data <- read.csv("/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_DataNEW.csv")
+
+
+strDates <- as.character(climate_data$DATE) #create object dates as characters
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y") #turn it into New Date
+
+#FINAL PLOT 
+plot(TMAX~NewDate, climate_data, ty = "l")
+bestfit <- lm(TMAX~NewDate, climate_data)
+abline(coef(bestfit), col = "red")
+```
+
+```{r echo = TRUE}
+#Part 3
+climate_data$Month <- format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year <- format(as.Date(climate_data$NewDate), format = "%Y")
+
+MonthlyTMAXMean = aggregate(TMAX~Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR <- as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH <- as.numeric(MonthlyTMAXMean$Month)
+
+plot(MonthlyTMAXMean$TMAX, ty = 'l')  #plot the data!!!! so exciting!!!
+
+###Section 3.2
+plot(TMAX~YEAR, MonthlyTMAXMean, ty = "l")
+plot(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 5,], ty = "l")
+May.lm <- lm(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 5,])
+abline(coef(May.lm), col = "blue")
+```
+
+
+
+

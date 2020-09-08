@@ -1,6 +1,6 @@
 \documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
 \def\maxwidth{ %
   \ifdim\Gin@nat@width>\linewidth
@@ -166,20 +166,20 @@ Type it into the console and hit enter! You should get something that looks like
 \hlkwd{head}\hlstd{(climate_data)}
 \end{alltt}
 \begin{verbatim}
-##             STATION                      STATION_NAME     DATE     PRCP
-## 1 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19620512     0.16
-## 2 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19620516     0.08
-## 3 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19620605 -9999.00
-## 4 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19621006     0.39
-## 5 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19621007     0.02
-## 6 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19621012     0.08
-##   TAVG  TMAX  TMIN
-## 1   81 -9999    75
-## 2   79    86    75
-## 3   84    93    77
-## 4   83    91 -9999
-## 5   84    91    79
-## 6   78    84 -9999
+##             STATION                      STATION_NAME     DATE     PRCP TAVG
+## 1 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19620512     0.16   81
+## 2 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19620516     0.08   79
+## 3 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19620605 -9999.00   84
+## 4 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19621006     0.39   83
+## 5 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19621007     0.02   84
+## 6 GHCND:SNM00048698 SINGAPORE CHANGI INTERNATIONAL SN 19621012     0.08   78
+##    TMAX  TMIN
+## 1 -9999    75
+## 2    86    75
+## 3    93    77
+## 4    91 -9999
+## 5    91    79
+## 6    84 -9999
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -218,8 +218,8 @@ In R it isn't uncommon to want to manipulate a specific column of data within yo
 \hlkwd{names}\hlstd{(climate_data)}
 \end{alltt}
 \begin{verbatim}
-## [1] "STATION"      "STATION_NAME" "DATE"         "PRCP"        
-## [5] "TAVG"         "TMAX"         "TMIN"
+## [1] "STATION"      "STATION_NAME" "DATE"         "PRCP"         "TAVG"        
+## [6] "TMAX"         "TMIN"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -336,12 +336,17 @@ As it turns out stations might have one of three types of date formats -- and ea
 \end{kframe}
 \end{knitrout}
 
-In this case, we find that Date is a factor, which means that we will not be able to determine a trend because R has not recognized the data as a continuous variable. 
+In this case, we find that Date is a factor, which means that we will not be able to determine a trend because R has not recognized the data as a continuous variable. Look carefully at the structure, i.e. str() of the data frame -- note the format that the date is in -- usually a factor, which is not helpful!  
+
+Factors in R are thought of as unique observations of character or numeric strings. But R does not understand the numeric and ordered nature of dates, e.g. 12 months, some months with 28, 29 (leap year), 30, and 31 days. When you think about it, dates are very strange. 
+
+So, we need to convert these to a date format that R understands. 
 
 
 \subsection{Determine and Convert Date Format}
 
 To create a new format, we have to complete a few steps. Unfortunately, date formats are one of the more obtuse aspects of R, but if you follow along, you should have success, even if you have no clue what you did. 
+
 First, we convert the date to a string of character values. Next, we'll convert the strings to a data format. But we need to determine which type of data format we have from the following three choices then we can make the conversion:
 
 \begin{description}
@@ -430,12 +435,12 @@ Doesn't seem to work, I had to brut force it... will work on this next summer!
 ## [1] "19620512" "19620516" "19620605" "19621006" "19621007" "19621012"
 \end{verbatim}
 \begin{alltt}
-\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,}
-    \hlstr{"%Y/%m/%d"}\hlstd{),} \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,} \hlstr{"%Y/%m/%d"}\hlstd{),}
+    \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 
 
-\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,}
-    \hlstr{"%m/%d/%y"}\hlstd{),} \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(strDates,} \hlstr{"%Y%m%d"}\hlstd{,} \hlkwc{tryFormats} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"%Y-%m-%d"}\hlstd{,} \hlstr{"%m/%d/%y"}\hlstd{),}
+    \hlkwc{optional} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -483,18 +488,25 @@ Knit to make sure it works.
 
 Now you will begin creating your blog by getting the commands you created before into an R block so that your data is available for the kniting process.
 
+Thus, far, we have already completed the following\ldots
+
 \begin{enumerate}
   \item Find the path for the csv file (\texttt{file.choose()}).
   \item Read the file into R (\texttt{read.csv(filepathfilename.csv})).
   \item Replace missing values with NA.
   \item Fix the date formats.
-  \item Create a figure of Tmax versus time (\texttt{plot()}).
-  \item Overlay the best fit line (\texttt{abline()}, \texttt{coef()}, and \texttt{lm()}).
-  \item Go to "Step 3---Evaluating Monthly Trends using CHCN-Daily" to learn about how to analyze data.
-  
 \end{enumerate}
 
+But now we need to paste this into the Blog Rmd (R markdown) file. After you put your code into the .Rmd file, make sure it knits. If not , please stage, commmit, and push to github and send a note to Marc or Char for help. 
 
+If you are successful on this step, the next set of action items are the following: 
 
+\begin{enumerate}
+  \item Create a figure of Tmax versus time (\texttt{plot()}).
+  \item Overlay the best fit line (\texttt{abline()}, \texttt{coef()}, and \texttt{lm()}).
+  \item Go to "Step 3: Evaluating Monthly Trends using CHCN-Daily" to learn about how to analyze data.
+\end{enumerate}
+
+Note, I have not outlined how to do this here, but it is outlined in the next guide. 
 
 \end{document}
