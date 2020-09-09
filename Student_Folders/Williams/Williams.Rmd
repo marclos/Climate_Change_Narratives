@@ -56,32 +56,35 @@ Months = c("January", "February", "March", "April",
 # Create a panel so I can see all the figures at
 # once.
 par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
-TMAXresult <- NA
+TMAXresult <-NA; TMINresult <- NA
+```
 
+```{r TMAX}
 for (i in 1:12) {
     # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
     # ty='l')
     plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
   Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
-  
   summary(Month.lm)
-  
   abline(coef(Month.lm), col = "red")
-  
   TMAXresult <- rbind(TMAXresult, cbind(Months[i],
   round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared,3)))
   }
+```
 
-plot(MonthlyTMINMean$TMIN, ty='l')
-
+```{r TMIN}
+#par(mfrow=c(4,3),mar=c(5,4,1,1))
+for (i in 1:12) {
 MonthMin_lm <- lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
-MonthMin_lm <- lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
-TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(MonthMin_lm)[2], 4), round(summary(MonthMin_lm)$coefficients[2,4], 4), round(summary(MonthMin_lm)$r.squared, 3)))
+TMINresult <- rbind(TMINresult, cbind(Months[i],round(coef(MonthMin_lm)[2], 4), round(summary(MonthMin_lm)$coefficients[2,4], 4), round(summary(MonthMin_lm)$r.squared, 3)))
 summary(MonthMin_lm)
-
-
-
-library(xtable)
+plot(MonthlyTMINMean$TMIN, ty='l', ylab='Monthly avg min temp', xlab='Years',main=Months[i]
+)
+abline(coef(MonthMin_lm),col='blue')
+}
+```
+```{r Results}
+library(htmlTable)
 Results <- data.frame(Month = TMINresult[c(2:13),1],
 TMINSlope = TMINresult[c(2:13),2],
 TMIN_P = as.numeric(TMINresult[c(2:13),3]),
@@ -101,6 +104,5 @@ Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
 Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
 colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
 "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
-print(xtable(Results[,c(1, 10, 4, 11, 7)]))
-
+htmlTable(Results[,c(1, 10, 4, 11, 7)])
 ```
