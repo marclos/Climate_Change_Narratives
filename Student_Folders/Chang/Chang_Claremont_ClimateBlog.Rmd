@@ -1,0 +1,77 @@
+---
+title: "Draft climate change exploration in Claremont, CA"
+author: "Charlotte Chang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+POMblue <- "#0057B7"
+```
+
+## Overview
+
+This blog will examine climate change through the perspective of temperature trends in the summertime and precipitation trends in the winter in Claremont, California.
+
+![View from Johnson's Pasture in Claremont, California](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi0.wp.com%2Ftrailtopeak.com%2Fwp-content%2Fuploads%2F2018%2F03%2FDSC02261.jpg)
+
+Variables examined will include:
+
+* Temperature (degrees Celsius)
+    + I will personally convert the temperatures to Fahrenheit which is a far worse system but oh well.
+* Precipitation (mm/day)
+
+```{r importing_data, echo=FALSE}
+### 1: Importing data
+claremontDF <- read.csv("~/Climate_Change_Narratives/Data/FA20/Chang_ClaremontCA_data.csv")
+str(claremontDF)
+
+### 1.1: Cleaning date-string objects
+claremontDF$DateStr <- as.Date( as.character(claremontDF$DATE), "%Y-%m-%d" ) # convert object to character and turn it into a new date
+```
+
+#### Temperature exploration 
+
+Below is a plot of all daily `TMAX` values over the full set of observations for Claremont, CA.
+
+```{r plotTMAXvstime,echo=F}
+### 2: Plotting Temp vs. Date
+  # From the end of Marc's Project Guide #2
+  # https://raw.githubusercontent.com/marclos/Climate_Change_Narratives/master/Admin/Project_Guide/Climate_Narratives_F20.pdf
+plot(TMAX~DateStr, claremontDF, type = "l", bty="C")
+OLS_lm <- lm(TMAX~DateStr, data=claremontDF)
+abline(coef(OLS_lm), col = POMblue)
+```
+
+Yikes! That plot looks pretty horrible. Let's take a look at monthly averages of daily `TMAX`.
+
+```{r creating_months, echo=FALSE}
+### 3: Project guide 3, creating months to aggregate data
+claremontDF$Month = format(as.Date(claremontDF$DateStr), format = "%m")
+claremontDF$Year = format(claremontDF$DateStr, format="%Y")
+
+### 3.1: Aggregating TMAX into monthly means
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, claremontDF, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+
+### 3.2: Visualize new monthly averages
+plot(TMAX~YEAR, data=MonthlyTMAXMean, ylab="Monthly averages of daily TMAX", type="p",col=POMblue,las=1)
+```
+
+#### September is hot!
+
+In the Southwest of the continental US, it appears that our summer and late-summer months have experienced warming. As such, I am going to drill down on the month of September. I've plotted September data below and have created a best-fit line (linear model/ordinary least squares model) for monthly September averages of daily `TMAX` against year to see if there is some type of discernible trend.
+
+```{r MonthlyAvg_Plot, echo=F}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",],type='p', xlim=c(1950, 2020),col=POMblue,pch=19)
+Month_lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+summary(Month_lm)
+```
+
+```{r precip, eval=F}
+Missing <- aggregate(is.na(claremontDF$PRCP),list(claremontDF$Month, claremontDF$Year), sum)
+```
+

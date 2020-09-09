@@ -1,0 +1,37 @@
+---
+title: "DraftBlog_9_5"
+author: "Lila Rubin"
+date: "9/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This is my intro!
+
+```{r climate_data}
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+summary(climate_data$TMAX)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+str(climate_data)
+plot(TMAX~NewDate, climate_data, ty='l')
+```
+
+## Plots
+
+You can also embed plots, for example:
+
+```{r climate, echo=FALSE}
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+# plot(TMAX~DATE, climate_data)
+# bestfitline.lm <- lm(TMAX~DATE, climate_data)
+# coef(bestfitline.lm)
+# abline(coef(bestfitline.lm), col="purple")
+```
+
+
