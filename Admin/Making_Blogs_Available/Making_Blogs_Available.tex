@@ -88,13 +88,17 @@ Please name your blog with your surname only, e.g. `LosHuertos.Rmd', then I can 
 
 %Delete all references to the path (folder structure) before the csv file name. Re-knit to make sure nothing has broken. 
 
-
-
 \section{Cleaning up Directory}
 
 \subsection{Creating Path to Data and Graphics Folder}
 
-As you get ready to publish the blog, please ensure you data is moved to the 'Data/FA20' folder. After you move the data, change the file path in your blog and make sure it still knits. 
+As you get ready to publish the blog, please ensure you data is moved to the 'Data/FA20' folder (Figure~\ref{fig:move}). After you move the data, change the file path in your blog and make sure it still knits. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{MoveFiles}
+\caption{Again, moving folders is pretty straightforward, if you can select then navigate to the gear icon.}
+\label{fig:move}
+\end{figure}
 
 In addition, if you have any images, create a graphics folder and put them in there. Be sure to change the link to the file in your Rmd file.
 
@@ -110,28 +114,24 @@ I suggest you clean up your directory, so you only have files that are useful to
 \caption{Creating the folder is easy, but relies on using the little gear icon in the files pane.}
 \end{figure}
 
-In the lower right window, natigate to the `Files' tab. Click on `New Folder' and name it `OLD'. Now select on the files using the little boxes on the left and navigate the the 'More' menu that has the little gear icon. Select `Move' and choose the `OLD' to move the files. Finally, knit to make sure nothhing has broken by accident during the move. 
-
-\begin{figure}
-\includegraphics[width=\textwidth]{MoveFiles}
-\caption{Again, moving folders is pretty straightforward, if you can select then navigate to the gear icon.}
-\end{figure}
+In the lower right window, natigate to the `Files' tab. Click on `New Folder' and name it `OLD'. Now select on the files using the little boxes on the left and navigate the the 'More' menu that has the little gear icon. Select `Move' and choose the `OLD' to move the files (Figure~\ref{fig:move}). Finally, knit to make sure nothhing has broken by accident during the move. 
 
 Later, you can delete these old files too, but there's no hurry -- you might need to dredge code up from an old file, so hanging on to them can serve you later. 
 
 \section{Exporting Files}
 
-Similar to the moving process, you will select the files you want to export by checking the boxes on the left of the files and then navigate to the `More' menu item with the gear icon. Then select export and R studio will prompt you to determine the location you want to download the file.
+Similar to the moving process, you will select the files you want to export by checking the boxes on the left of the files and then navigate to the `More' menu item with the gear icon. Then select export and R studio will prompt you to determine the location you want to download the file (Figure~\ref{fig:export}).
 
 \begin{figure}[h]
 \includegraphics[width=\textwidth]{ExportFiles}
 \caption{The export command creates a zip file that can downloaded to your local computer. Beware: Apple computers automatically unzip the files, which can't be uploaded to Rstudio. So, MAC users have to compress the files before uploading to Sakai.}
+\label{fig:export}
 \end{figure}
 
 Note: For PC users this is a zip file that can be uploaded directly to Sakai. However, for MAC users, you must compress the file so that it can be put into Sakai. 
 
 \subsection{Making Blogs Public}
 
-I will move your html files into the `docs' folder, where I will knit the files to create the html. These files will by synced and publicly visible in about 10-15 minutes after I upload them. 
+I will copy your html files (and cleaned-up directory) into the `docs' folder, where I will knit the files to create the html. These files will by synced and publicly visible in about 10-15 minutes after I upload them. 
 
 \end{document}

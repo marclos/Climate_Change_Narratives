@@ -21,3 +21,86 @@ TMAX.lm = lm(TMAX ~ NewDate, data = climate_data)
 coef(TMAX.lm)
 abline(coef(TMAX.lm),col ="orange", lwd = 3)
 ```
+
+```{r MonthlyPlot}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+```{r MayPlot}
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+```
+
+
+
+```{r plotMinDailyTemp}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+# First I create a vector of months
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+# Create a panel so I can see all the figures at
+# once.
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+
+for (i in 1:12) {
+    # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+    # ty='l')
+    plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+  
+  summary(Month.lm)
+  
+  abline(coef(Month.lm), col = "red")
+  
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+  round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared,3)))
+  }
+
+plot(MonthlyTMINMean$TMIN, ty='l')
+
+MonthMin_lm <- lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+MonthMin_lm <- lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(MonthMin_lm)[2], 4), round(summary(MonthMin_lm)$coefficients[2,4], 4), round(summary(MonthMin_lm)$r.squared, 3)))
+summary(MonthMin_lm)
+
+
+
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+
+```
