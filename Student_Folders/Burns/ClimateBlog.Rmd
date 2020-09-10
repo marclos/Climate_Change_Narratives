@@ -2,7 +2,9 @@
 title: "Burns Climate Blog"
 author: "Anna Madison Burns"
 date: "8/31/2020"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -10,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 LakeCo <- read.csv("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_LakeCoIL.csv")
 ```
 
-## Temperature Plot
+## Step 2 - Temperature Plot
 
 ```{r}
 strDates <- as.character(LakeCo$DATE)
@@ -35,3 +37,124 @@ coef(fit2)
 abline(coef(fit2), col = "green", lwd = 2)
 ```
 
+# Step 3 - Evaluating Monthly Trends
+
+```{r}
+lm(TMAX~Date, data=LakeCo)
+```
+
+```{r}
+lm(TMIN~Date, data=LakeCo)
+```
+
+```{r}
+LakeCo$Month = format(as.Date(LakeCo$Date), format = "%m")
+LakeCo$Year = format(as.Date(LakeCo$Date), format="%Y")
+```
+
+For Max: 
+
+```{r}
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, data = LakeCo, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+```
+
+```{r}
+str(MonthlyTMAXMean)
+```
+
+```{r}
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+For Min:
+
+```{r}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, data = LakeCo, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+```
+
+```{r}
+str(MonthlyTMINMean)
+```
+```{r}
+plot(MonthlyTMINMean$TMIN, ty = 'l')
+```
+
+# Monthly Plots
+
+## Daily Minimum Temperatures
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+
+for(i in 1:12) {
+  plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i]) #note changed from 1901
+  MonthMin.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+  summary(MonthMin.lm)
+  
+  abline(coef(MonthMin.lm), col = 'blue')
+  
+   TMINresult <- rbind(TMINresult, cbind(Months[i],
+round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2,
+4], 4), round(summary(MonthMin.lm)$r.squared,
+3)))
+}
+```
+
+## Daily Maximum Temperatures
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+
+for(i in 1:12) {
+  plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i])
+  MonthMax.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+  summary(MonthMax.lm)
+  
+  abline(coef(MonthMax.lm), col = 'red')
+  
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(MonthMax.lm)[2], 4), round(summary(MonthMax.lm)$coefficients[2,
+4], 4), round(summary(MonthMax.lm)$r.squared,
+3)))
+
+}
+```
+
+## Summary
+
+```{r}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print.xtable(Results[,c(1, 10, 4, 11, 7)])
+```
+
+
+# Precipitation
