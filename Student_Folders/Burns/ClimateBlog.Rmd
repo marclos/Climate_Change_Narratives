@@ -83,7 +83,9 @@ str(MonthlyTMINMean)
 plot(MonthlyTMINMean$TMIN, ty = 'l')
 ```
 
-# Monthly Plots
+# Monthly Plots 1901 to 2008
+
+Note that current results are from 1941 to 2008.  To readjust for the entire dataset, switch the date in the graph code.
 
 ## Daily Minimum Temperatures
 
@@ -94,7 +96,7 @@ par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
 TMINresult <- NA
 
 for(i in 1:12) {
-  plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i]) #note changed from 1901
+  plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1941,2008), main = Months[i]) #note changed from 1901
   MonthMin.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
   summary(MonthMin.lm)
   
@@ -116,7 +118,7 @@ par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
 TMAXresult <- NA
 
 for(i in 1:12) {
-  plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i])
+  plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1941,2008), main = Months[i])
   MonthMax.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
   summary(MonthMax.lm)
   
@@ -153,8 +155,9 @@ Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
 Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
 colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
 "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
-print.xtable(Results[,c(1, 10, 4, 11, 7)])
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
 ```
 
 
-# Precipitation
+
+
