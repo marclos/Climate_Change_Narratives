@@ -159,5 +159,111 @@ print(xtable(Results[,c(1, 10, 4, 11, 7)]))
 ```
 
 
+# Precipitation
+
+```{r}
+MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, data = LakeCo, mean)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+```
+
+```{r}
+str(MonthlyPRCPMean)
+```
+
+```{r}
+plot(MonthlyPRCPMean$PRCP, ty = 'l')
+```
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+PRCPresult <- NA
+
+for(i in 1:12) {
+  plot(PRCP~YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i])
+  MonthPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH == i, ])
+  summary(MonthPRCP.lm)
+  
+  abline(coef(MonthPRCP.lm), col = 'green')
+  
+  PRCPresult <- rbind(PRCPresult, cbind(Months[i],
+round(coef(MonthPRCP.lm)[2], 4), round(summary(MonthPRCP.lm)$coefficients[2,
+4], 4), round(summary(MonthPRCP.lm)$r.squared,
+3)))
+
+}
+```
+
+```{r}
+library(xtable)
+PRCPResults <- data.frame(Month = PRCPresult[c(2:13),1],
+PRCPSlope = PRCPresult[c(2:13),2],
+PRCP_P = as.numeric(PRCPresult[c(2:13),3]),
+PRCPRsq = PRCPresult[c(2:13),4])
+Results$starPRCP = "NS"
+Results$starPRCP[Results$PRCP_P <= .05] = "*"
+Results$starPRCP[Results$PRCP_P < 0.01] = "**"
+Results$starPRCP[Results$PRCP_P < 0.001] = "***"
+Results$PRCPslope=paste(Results$PRCPSlope, Results$starPRCP)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", "Slope PRCP" )
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
 
 
+# Snow
+
+```{r}
+MonthlySNOWMean = aggregate(SNOW ~ Month + Year, data = LakeCo, mean)
+MonthlySNOWMean$YEAR = as.numeric(MonthlySNOWMean$Year)
+MonthlySNOWMean$MONTH = as.numeric(MonthlySNOWMean$Month)
+```
+
+```{r}
+str(MonthlySNOWMean)
+```
+
+```{r}
+plot(MonthlySNOWMean$SNOW, ty = 'l')
+```
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+SNOWresult <- NA
+
+for(i in 1:12) {
+  plot(SNOW~YEAR, data = MonthlySNOWMean[MonthlySNOWMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i])
+  MonthSNOW.lm <- lm(SNOW~YEAR, data = MonthlySNOWMean[MonthlySNOWMean$MONTH == i, ])
+  summary(MonthSNOW.lm)
+  
+  abline(coef(MonthSNOW.lm), col = 'light blue')
+  
+  SNOWresult <- rbind(SNOWresult, cbind(Months[i],
+round(coef(MonthSNOW.lm)[2], 4), round(summary(MonthSNOW.lm)$coefficients[2,
+4], 4), round(summary(MonthSNOW.lm)$r.squared,
+3)))
+
+}
+```
+
+```{r}
+library(xtable)
+SNOWResults <- data.frame(Month = SNOWresult[c(2:13),1],
+SNOWSlope = SNOWresult[c(2:13),2],
+SNOW_P = as.numeric(SNOWresult[c(2:13),3]),
+SNOWRsq = SNOWresult[c(2:13),4])
+Results$starSNOW = "NS"
+Results$starSNOW[Results$SNOW_P <= .05] = "*"
+Results$starSNOW[Results$SNOW_P < 0.01] = "**"
+Results$starSNOW[Results$SNOW_P < 0.001] = "***"
+Results$SNOWslope=paste(Results$SNOWSlope, Results$starSNOW)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", "Slope SNOW" )
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
+
+The tables for snow and precipitation are coming out a bit funky... fix.
+
+Still not a lot of compelling information from these graphs... maybe the temperature of Lake Michigan helps to settle the temperatures in Antioch.  Look at trends for Lake Michigan temperatures!
