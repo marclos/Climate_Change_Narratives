@@ -162,6 +162,14 @@ print(xtable(Results[,c(1, 10, 4, 11, 7)]))
 # Precipitation
 
 ```{r}
+plot(PRCP~Date, data=LakeCo, main='Antioch, IL Precipitation Accumulation', sub='July 1, 1901 to June 30, 2008', ylab='Maximum Temperature (C)', ty='l')
+fit1 <- lm(PRCP~Date, data=LakeCo)
+summary(fit1)
+coef(fit1)
+abline(coef(fit1), col = "dark green", lwd = 2)
+```
+
+```{r}
 MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, data = LakeCo, mean)
 MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
 MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
@@ -213,6 +221,14 @@ print(xtable(Results[,c(1, 10, 4, 11, 7)]))
 
 
 # Snow
+
+```{r}
+plot(SNOW~Date, data=LakeCo, main='Antioch, IL Snow Accumulation', sub='July 1, 1901 to June 30, 2008', ylab='Maximum Temperature (C)', ty='l')
+fit1 <- lm(SNOW~Date, data=LakeCo)
+summary(fit1)
+coef(fit1)
+abline(coef(fit1), col = "blue", lwd = 2)
+```
 
 ```{r}
 MonthlySNOWMean = aggregate(SNOW ~ Month + Year, data = LakeCo, mean)
