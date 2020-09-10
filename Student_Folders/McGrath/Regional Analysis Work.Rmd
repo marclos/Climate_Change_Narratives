@@ -67,6 +67,9 @@ round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
 3)))
 }
 ```
+
+
+
 ## Minimum Temperature
 ```{r plottmin}
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
@@ -100,10 +103,23 @@ plot(MonthlyTMINMean$TMIN, ty='l')
 ```
 ## Precipitation:
 ```{r plotprecipitation}
-
-
-
-
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP),
+list(climate_data$Month, climate_data$Year), sum)
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+plot(x ~ Date, data=Missing)
+TotalPPT <- aggregate(climate_data$PRCP,
+list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+library(dplyr)
+PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
+head(PPT)
+PRCP_mean = mean(PPT$ppt)
+plot(ppt~Date, data=PPT)
+abline(h=PRCP_mean, col="pink")
+```
 
 
 
