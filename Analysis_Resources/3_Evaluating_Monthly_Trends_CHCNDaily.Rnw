@@ -223,6 +223,8 @@ Now, the change is \Sexpr{round(coef(May.lm)[2], 4)} degress C/year or \Sexpr{ro
 
 %https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R
 
+Note: if you are getting an error saying: error in plot.window(need finite 'ylim' values), you may need to check whether the months in your data set have a 0 infront of them or not. If not, try "5" instead of "05".
+
 \subsection{Testing all the Months}
 
 This section for advanced users and specific questions. Please do not proceed without consulting Marc.
