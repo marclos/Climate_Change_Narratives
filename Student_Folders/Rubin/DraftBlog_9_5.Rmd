@@ -1,25 +1,26 @@
 ---
-title: "DraftBlog_9_5"
+title: "Temperature Trends in Ann Arbor, MI"
 author: "Lila Rubin"
 date: "9/5/2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## Introduction
 
-This is my intro!
+This blog will discuss data collected regarding temperature and precipitation in Ann Arbor, Michigan from 1891 to the present day. After displaying and analyzing the data, we will discuss what conclusions may be drawn about the area's climate trends over time.
 
-```{r climate_data}
+```{r climate_data, echo=FALSE}
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
-summary(climate_data$TMAX)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
-str(climate_data)
 plot(TMAX~NewDate, climate_data, ty='l')
+bestfitline.lm <- lm(TMAX~NewDate, climate_data)
+coef(bestfitline.lm)
+abline(coef(bestfitline.lm), col="purple")
 ```
 
 ## Plots
