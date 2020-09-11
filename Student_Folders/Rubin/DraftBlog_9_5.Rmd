@@ -11,7 +11,13 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-This blog will discuss data collected regarding temperature and precipitation in Ann Arbor, Michigan from 1891 to the present day. After displaying and analyzing the data, we will discuss what conclusions may be drawn about the area's climate trends over time.
+This blog will examine data collected regarding temperature and precipitation in Ann Arbor, Michigan from 1891 to the present day. After displaying and analyzing the data, we will discuss what conclusions may be drawn from it regarding the area's climate trends over time.
+
+
+
+## Maximum Temperature Measurements over Time
+
+This graph shows the daily maximum temperatures observed in Ann Arbor from 1891 to the present. The red line indicates the line of best fit, which shows a gradual increase in maximum temperature over time.
 
 ```{r climate_data, echo=FALSE}
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
@@ -19,20 +25,7 @@ strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 plot(TMAX~NewDate, climate_data, ty='l')
 bestfitline.lm <- lm(TMAX~NewDate, climate_data)
-coef(bestfitline.lm)
-abline(coef(bestfitline.lm), col="purple")
-```
-
-## Plots
-
-You can also embed plots, for example:
-
-```{r climate, echo=FALSE}
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
-# plot(TMAX~DATE, climate_data)
-# bestfitline.lm <- lm(TMAX~DATE, climate_data)
-# coef(bestfitline.lm)
-# abline(coef(bestfitline.lm), col="purple")
+abline(coef(bestfitline.lm), col="red")
 ```
 
 
