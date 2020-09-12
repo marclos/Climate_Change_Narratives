@@ -9,25 +9,68 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+In this blog I will be exploring climate change in Southeast Texas, using data from the National Oceanic and Atmospheric Association (NOAA). 
 
-
-```{r, echo=TRUE}
+```{r part two, echo=TRUE}
 climate_data <- read.csv("/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_DataNEW.csv")
 
 
 strDates <- as.character(climate_data$DATE) #create object dates as characters
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y") #turn it into New Date
 
-#FINAL PLOT 
-plot(TMAX~NewDate, climate_data)
+plot(TMAX~NewDate, climate_data, main = "TMAX Orange Texas", ylab = "Degrees C", 
+     xlab = "Time", type = "l") #how can I get this to start at 1940?
+
 bestfit <- lm(TMAX~NewDate, climate_data)
-coef(bestfit)
 abline(coef(bestfit), col = "red")
 ```
 
-xlim=c(lower, upper)
-xlim=c(as.Date("1940/01/10", "2020/20/01")
-)
+To do this, I must first importa the data and get a general idea of what it looks like. 
+```{r part three, echo = TRUE}
+#Part 3
+climate_data$Month <- format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year <- format(as.Date(climate_data$NewDate), format = "%Y")
+
+MonthlyTMAXMean = aggregate(TMAX~Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR <- as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH <- as.numeric(MonthlyTMAXMean$Month)
+
+plot(MonthlyTMAXMean$TMAX, type = "l")  #plot the data!!!! so exciting!!!
+
+##Section 3.2
+plot(TMAX~YEAR, MonthlyTMAXMean, type = "l")
+plot(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 5,], type = "l", main = "Average May Max Temps")
+May.max.lm <- lm(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 5,])
+abline(coef(May.max.lm), col = "red")
+
+#what would the TMAX be for january?
+plot(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 1,], type = "l", main = "Average January Max Temps")
+Jan.max.lm <- lm(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 1,])
+abline(Jan.max.lm, col = "blue") #this one looks like the most visible trend so far
+
+##now many a TMIN graph
+plot(TMIN~NewDate, climate_data, main = "TMIN SETX", ylab = "Degrees C", xlab = "Time", type = "l")
+lm.min <- lm(TMIN~NewDate, climate_data)
+abline(lm.min, col = "red")
+
+MonthlyTMINMean <- aggregate(TMIN~Month + Year, climate_data, mean)
+MonthlyTMINMean$Month <- as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$Year <- as.numeric(MonthlyTMINMean$Year)
+
+plot(TMIN~Year, MonthlyTMINMean, type = "l")
+plot(TMIN~Year, MonthlyTMINMean[MonthlyTMINMean$Month == 5,], type = "l", main = "Average May Min Temps") #look at min temps in may
+May.min.lm <- lm(TMIN~Year, MonthlyTMINMean[MonthlyTMINMean$Month == 5,])
+abline(May.min.lm, col = "red") #the average minimum temperature in may has decreased
 
 
+#now TMIN for january
+plot(TMIN~Year, MonthlyTMINMean[MonthlyTMINMean$Month == 1,], type = "l", main = "Average Jan Min Temps") #look at min temps in jan
+Jan.min.lm <- lm(TMIN~Year, MonthlyTMINMean[MonthlyTMINMean$Month == 1,])
+abline(Jan.min.lm, col = "blue")
+```
+Once I've done that, I can begin creating different graphs for different measurements of temperature. For example, here I show graphs of maximum temperature over time. However, by themselves they don't appear to be very helpful. To narrow down, I chose the months of May and January to focus on temperature extremes. By looking at the average daily maximum and minimum temperature in May and January since 1940, we can see the trend of warming. 
+
+Now I'd like to add some photos.
+![Where is Orange, Texas?](https://www.bestplaces.net/images/city/Orange_TX.gif)
+![Orange during Hurricane Harvey, 2017](harveyorange.jpg) 
 
