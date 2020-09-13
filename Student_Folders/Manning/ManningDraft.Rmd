@@ -1,0 +1,35 @@
+---
+title: "Draft Blog"
+author: "Claire Manning"
+date: "9/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+This blog contains a r data collected from a weather station in McCall, Idaho. This data goes back to March, 1906. The data includes daily minimum and maximum temperatures at the station location on the given date.
+
+```{r readdata, echo=FALSE}
+#Reading Climate Data
+filepath= "/home/CAMPUS/cemc2018/Climate_Change_Narratives/Student_Folders/Manning/manning_mccall_data.csv"
+climate_data=read.csv(filepath)
+#Change dataframe to readable dates
+str(climate_data)
+min(climate_data$TMAX)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
