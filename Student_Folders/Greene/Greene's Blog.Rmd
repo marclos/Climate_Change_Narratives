@@ -1,30 +1,46 @@
 ---
-title: "Jacob's Blog"
+title: "How has Climate Change Impacted Washington D.C.? "
 author: "Jacob Greene"
-date: "8/31/2020"
-output: html_document
+date: "9/9/2020"
+output:
+  pdf_document: default
+  html_document: default
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+![View of Tidal Basin flooded in 2018](/home/CAMPUS/jagc2019/Tidal basin flooding.jpg)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+#### TMAX Has No Significant Change
 
-```{r cars, echo=FALSE}
-summary(cars)
+Even though the slope on the temperature maximum graph is actually decreasing (meaning DC has gotten cooler), this correlation only has a p- value of .7895 which means that it is not significant. Monthly analysis also reveal that no months have changes in temperature maximums.
+
+
+```{r, TMAX plot, echo=FALSE}
+climate_data <- read.csv("/home/CAMPUS/jagc2019/JacobGreene_WashingtonDC_Data.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+plot(TMAX~NewDate, climate_data,type='l', main= "Washington D.C. Daily Temperature Maximum vs Time", xlab= "Time", ylab= "Daily Temperature Maximum (C)")
+bestfitline.lm = lm(TMAX~NewDate, data = climate_data)
+coef(bestfitline.lm)
+abline(coef(bestfitline.lm), col="red", lwd=2)
+summary(bestfitline.lm)
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+#### TMIN Temperatures Have Increased
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+While there is not a significant temperature maximum change, there is a very significant p value of 1.23^-10 for daily temperature minimums since 1950. The positive slope on this graph indicates that in DC daily temperature minimums have gotten warmer.
+
+```{r TMIN plot, echo=FALSE}
+plot(TMIN~NewDate, climate_data,type='l', main= "Washington D.C. Daily Temperature Minimum vs Time", xlab= "Time ", ylab= "Daily Temperature Minimum (C)")
+TMINbestlinefit.lm=lm(TMIN~NewDate, data = climate_data)
+abline(coef(TMINbestlinefit.lm), col= "red",lwd=2)
+summary(TMINbestlinefit.lm)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -2,15 +2,26 @@
 title: "Burns Climate Blog"
 author: "Anna Madison Burns"
 date: "8/31/2020"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 LakeCo <- read.csv("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_LakeCoIL.csv")
+LakeM <- read.csv("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_LakeM.csv")
 ```
 
-## Temperature Plot
+Update as of 9/11:
+
+I am looking at temperature records from Antioch, IL (about a half hour from my home town of Libertyville, IL), which has a temperature record from 1901 to 2008 (with a gap in the 1930s).  So far I have analyzed: monthly minimum and maximum temperatures (both from 1901 to 2008 and from 1941 to 2008, to see how the data would look without the gap); monthly precipitation mean and total; and monthly snow mean and total.  I looked at total amounts of snow and precipitation per month to see what would happen when the influence of all the days with no snow and precipitation was removed.  Unfortunately, none of the information I have found has been very compelling; there has been minimal changesin temperature, precipitation, or snow over the last century (at least, nearly none of these changes are statistically significant).
+
+Some possibilities for moving forward include looking at the influence of the presence of Lake Michigan as a mediating factor on temperature (the Lake also has a great influence on precipitation, with "the Lake effect").  I have data from 1995 to the current day on Lake Michigan's average water temperatures (this is what I found through NOAA, but I have to believe that more localized and longer data exists).  I am also trying to find data on Lake Michigan ice covers.
+
+Another potentially "averaging" effect for the weather (particularly in winter) could be the extreme cold snaps that the Midwest region experiences.  For example, last year's "winter vortex" likely averaged out the temperatures of an otherwise warm January.
+
+# Temperature Plots
 
 ```{r}
 strDates <- as.character(LakeCo$DATE)
@@ -35,3 +46,365 @@ coef(fit2)
 abline(coef(fit2), col = "green", lwd = 2)
 ```
 
+# Evaluating Monthly Trends
+
+```{r}
+lm(TMAX~Date, data=LakeCo)
+```
+
+```{r}
+lm(TMIN~Date, data=LakeCo)
+```
+
+```{r}
+LakeCo$Month = format(as.Date(LakeCo$Date), format = "%m")
+LakeCo$Year = format(as.Date(LakeCo$Date), format="%Y")
+```
+
+## Monthly Mean Maximum Temperaturess
+
+```{r}
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, data = LakeCo, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+```
+
+```{r}
+str(MonthlyTMAXMean)
+```
+
+```{r}
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+## Monthly Mean Minimum Temperatures
+
+```{r}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, data = LakeCo, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+```
+
+```{r}
+str(MonthlyTMINMean)
+```
+```{r}
+plot(MonthlyTMINMean$TMIN, ty = 'l')
+```
+
+# Monthly Plots 1901 to 2008
+
+Note that current results are from 1941 to 2008.  To readjust for the entire dataset, switch the date in the graph code.
+
+## Daily Minimum Temperatures
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+TMINresult <- NA
+
+for(i in 1:12) {
+  plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1941,2008), main = Months[i]) #note changed from 1901
+  MonthMin.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+  summary(MonthMin.lm)
+  
+  abline(coef(MonthMin.lm), col = 'blue')
+  
+   TMINresult <- rbind(TMINresult, cbind(Months[i],
+round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2,
+4], 4), round(summary(MonthMin.lm)$r.squared,
+3)))
+}
+```
+
+```{r}
+print(TMINresult)
+```
+
+## Daily Maximum Temperatures
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+
+for(i in 1:12) {
+  plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1941,2008), main = Months[i])
+  MonthMax.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+  summary(MonthMax.lm)
+  
+  abline(coef(MonthMax.lm), col = 'red')
+  
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(MonthMax.lm)[2], 4), round(summary(MonthMax.lm)$coefficients[2,
+4], 4), round(summary(MonthMax.lm)$r.squared,
+3)))
+
+}
+```
+
+## Summary
+
+```{r}
+library(xtable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
+
+# Precipitation
+
+## Mean Precipitation
+
+```{r}
+plot(PRCP~Date, data=LakeCo, main='Antioch, IL Precipitation Accumulation', sub='July 1, 1901 to June 30, 2008', ylab='Maximum Temperature (C)', ty='l')
+fit1 <- lm(PRCP~Date, data=LakeCo)
+summary(fit1)
+coef(fit1)
+abline(coef(fit1), col = "dark green", lwd = 2)
+```
+
+```{r}
+MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, data = LakeCo, mean)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+```
+
+```{r}
+str(MonthlyPRCPMean)
+```
+
+```{r}
+plot(MonthlyPRCPMean$PRCP, ty = 'l')
+```
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+PRCPresult <- NA
+
+for(i in 1:12) {
+  plot(PRCP~YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i])
+  MonthPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPMean[MonthlyPRCPMean$MONTH == i, ])
+  summary(MonthPRCP.lm)
+  
+  abline(coef(MonthPRCP.lm), col = 'green')
+  
+  PRCPresult <- rbind(PRCPresult, cbind(Months[i],
+round(coef(MonthPRCP.lm)[2], 4), round(summary(MonthPRCP.lm)$coefficients[2,
+4], 4), round(summary(MonthPRCP.lm)$r.squared,
+3)))
+
+}
+```
+
+```{r}
+print(PRCPresult)
+```
+
+```{r}
+# Having trouble getting this to work, so this table is a bit off... refer to printed results instead
+library(xtable)
+PRCPResults <- data.frame(Month = PRCPresult[c(2:13),1],
+PRCPSlope = PRCPresult[c(2:13),2],
+PRCP_P = as.numeric(PRCPresult[c(2:13),3]),
+PRCPRsq = PRCPresult[c(2:13),4])
+Results$starPRCP = "NS"
+Results$starPRCP[Results$PRCP_P <= .05] = "*"
+Results$starPRCP[Results$PRCP_P < 0.01] = "**"
+Results$starPRCP[Results$PRCP_P < 0.001] = "***"
+Results$PRCPslope=paste(Results$PRCPSlope, Results$starPRCP)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", "Slope PRCP" )
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
+
+## Total Monthly Precipitation
+
+```{r}
+MonthlyPRCP = aggregate(PRCP ~ Month + Year, data = LakeCo, sum)
+MonthlyPRCP$YEAR = as.numeric(MonthlyPRCP$Year)
+MonthlyPRCP$MONTH = as.numeric(MonthlyPRCP$Month)
+```
+
+```{r}
+str(MonthlyPRCP)
+```
+
+```{r}
+plot(MonthlyPRCP$PRCP, ty = 'l')
+```
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+PRCP_Sresult <- NA
+
+for(i in 1:12) {
+  plot(PRCP~YEAR, data = MonthlyPRCP[MonthlyPRCP$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i])
+  MonthPRCP_S.lm <- lm(PRCP~YEAR, data = MonthlyPRCP[MonthlyPRCP$MONTH == i, ])
+  summary(MonthPRCP_S.lm)
+  
+  abline(coef(MonthPRCP_S.lm), col = 'blue')
+  
+  PRCP_Sresult <- rbind(PRCP_Sresult, cbind(Months[i],
+round(coef(MonthPRCP_S.lm)[2], 4), round(summary(MonthPRCP_S.lm)$coefficients[2,
+4], 4), round(summary(MonthPRCP_S.lm)$r.squared,
+3)))
+
+}
+```
+
+```{r}
+print(PRCP_Sresult)
+```
+
+
+# Snow
+
+```{r}
+plot(SNOW~Date, data=LakeCo, main='Antioch, IL Snow Accumulation', sub='July 1, 1901 to June 30, 2008', ylab='Maximum Temperature (C)', ty='l')
+fit1 <- lm(SNOW~Date, data=LakeCo)
+summary(fit1)
+coef(fit1)
+abline(coef(fit1), col = "blue", lwd = 2)
+```
+
+## Mean Monthly Snow
+
+```{r}
+MonthlySNOWMean = aggregate(SNOW ~ Month + Year, data = LakeCo, mean)
+MonthlySNOWMean$YEAR = as.numeric(MonthlySNOWMean$Year)
+MonthlySNOWMean$MONTH = as.numeric(MonthlySNOWMean$Month)
+```
+
+```{r}
+str(MonthlySNOWMean)
+```
+
+```{r}
+plot(MonthlySNOWMean$SNOW, ty = 'l')
+```
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+SNOWresult <- NA
+
+for(i in 1:12) {
+  plot(SNOW~YEAR, data = MonthlySNOWMean[MonthlySNOWMean$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i])
+  MonthSNOW.lm <- lm(SNOW~YEAR, data = MonthlySNOWMean[MonthlySNOWMean$MONTH == i, ])
+  summary(MonthSNOW.lm)
+  
+  abline(coef(MonthSNOW.lm), col = 'light blue')
+  
+  SNOWresult <- rbind(SNOWresult, cbind(Months[i],
+round(coef(MonthSNOW.lm)[2], 4), round(summary(MonthSNOW.lm)$coefficients[2,
+4], 4), round(summary(MonthSNOW.lm)$r.squared,
+3)))
+
+}
+```
+```{r}
+print(SNOWresult)
+```
+
+```{r}
+# Having trouble getting this to work for this format...
+library(xtable)
+SNOWResults <- data.frame(Month = SNOWresult[c(2:13),1],
+SNOWSlope = SNOWresult[c(2:13),2],
+SNOW_P = as.numeric(SNOWresult[c(2:13),3]),
+SNOWRsq = SNOWresult[c(2:13),4])
+Results$starSNOW = "NS"
+Results$starSNOW[Results$SNOW_P <= .05] = "*"
+Results$starSNOW[Results$SNOW_P < 0.01] = "**"
+Results$starSNOW[Results$SNOW_P < 0.001] = "***"
+Results$SNOWslope=paste(Results$SNOWSlope, Results$starSNOW)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", "Slope SNOW" )
+print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
+
+The tables for snow and precipitation are coming out a bit funky... fix.
+
+Possibly would be more helpful to do monthly TOTALS rather than monthly AVERAGES...
+
+Still not a lot of compelling information from these graphs... maybe the temperature of Lake Michigan helps to settle the temperatures in Antioch.  Look at trends for Lake Michigan temperatures!
+
+## Total Monthly Snow
+
+```{r}
+MonthlySNOW = aggregate(SNOW ~ Month + Year, data = LakeCo, sum)
+MonthlySNOW$YEAR = as.numeric(MonthlySNOW$Year)
+MonthlySNOW$MONTH = as.numeric(MonthlySNOW$Month)
+```
+
+```{r}
+str(MonthlySNOW)
+```
+
+```{r}
+plot(MonthlySNOW$SNOW, ty = 'l')
+```
+
+```{r}
+Months <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+par(mfrow = c(3,4), mar = c(5, 4, 3, 2) + 0.1)
+SNOW_Sresult <- NA
+
+for(i in 1:12) {
+  plot(SNOW~YEAR, data = MonthlySNOW[MonthlySNOW$MONTH == i, ], ty = 'l', las = 1, xlim = c(1901,2008), main = Months[i])
+  MonthSNOW_S.lm <- lm(SNOW~YEAR, data = MonthlySNOW[MonthlySNOW$MONTH == i, ])
+  summary(MonthSNOW_S.lm)
+  
+  abline(coef(MonthSNOW_S.lm), col = 'purple')
+  
+  SNOW_Sresult <- rbind(SNOW_Sresult, cbind(Months[i],
+round(coef(MonthSNOW_S.lm)[2], 4), round(summary(MonthSNOW_S.lm)$coefficients[2,
+4], 4), round(summary(MonthSNOW_S.lm)$r.squared,
+3)))
+
+}
+```
+
+```{r}
+summary(MonthSNOW_S.lm)
+```
+
+```{r}
+print(SNOW_Sresult)
+```
+
+# Lake Michigan Water Temperatures
+
+```{r}
+plot(Temp~Date, data=LakeM, main='Lake Michigan Average Temperatures', sub='January 1, 1995 to September 10, 2020', ylab='Temperature (C)', ty='l')
+fit_LakeM <- lm(Temp~Date, data=LakeM)
+summary(fit_LakeM)
+coef(fit_LakeM)
+abline(coef(fit_LakeM), col = "dark green", lwd = 2)
+```
+
+# Lake Michigan Ice Cover

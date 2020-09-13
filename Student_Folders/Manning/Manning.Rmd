@@ -1,51 +1,61 @@
 ---
-title: "Claire's Blog"
+title: "Draft Regional Analysis "
 author: "Claire Manning"
-date: "9/3/2020"
+date: "9/12/2020"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## Introduction
 
-This plot contains data collected from a weather station in McCall, Idaho. This data goes back to March, 1906. The data includes daily minimum and maximum temperatures at the station location on the given date.
+This blog contains a regional analysis of data collected from a weather station in McCall, Idaho. This data goes back to March, 1906. The data includes daily minimum and maximum temperatures at the station location on the given date.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r readdata}
+```{r readdata, echo=FALSE}
 # path to Data/FA20/ using marc's username...
 #filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/manning_mccall_data.csv"
-
 filepath= "/home/CAMPUS/cemc2018/Climate_Change_Narratives/Student_Folders/Manning/manning_mccall_data.csv"
-
 climate_data=read.csv(filepath)
-
+#Change dataframe to readable dates
 str(climate_data)
 min(climate_data$TMAX)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-
-
 ```
 
+## Plotting Data
 
-## Ploting Data
+This is the data plotted in graphs. These graphs just show the changes in daily maximum temperature which varies alot from the hot summers to the cold winters in Mccall. I changed the data from daily highs and lows to monthy means.
 
-See guide #3 that I updated to make this stage better explained...hopefully!
-
-```{r plotingdailydata}
-plot(TMAX~NewDate, climate_data, ty='l') # This works!
-
+```{r plotingdailydata, echo=FALSE}
+#Plot data
+plot(TMAX~NewDate, climate_data, ty='l') 
+lm(TMAX ~ NewDate, data=climate_data)
 TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
 slopeintercept = coef(TMAX.lm)
-
 plot(TMAX ~ NewDate, data= climate_data, las=1)
 abline(slopeintercept, col="red", lwd=3)
-       
-       (TMAX.lm.sum = summary(lm(TMAX ~ NewDate, data=climate_data)))
+(TMAX.lm.sum = summary(lm(TMAX ~ NewDate, data=climate_data)))
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+#Claculating Monthly Mean
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
 ```
 
-GREAT dataset!  I am excited to see how the results!
+The P-value for the month of may is .53 which means that the results of the analysis are not statistically significant.
+
+```{r plotingdailydata, echo=FALSE}
+```

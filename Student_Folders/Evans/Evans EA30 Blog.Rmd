@@ -1,0 +1,79 @@
+---
+title: "Evans EA30 Blog"
+author: "Isabel Evans"
+date: "8/31/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+ # file.choose()
+# read.csv("/home/CAMPUS/ikea2019/Climate_Change_Narratives/Student_Folders/Evans/IsabelEvans_OrangeCounty_data.csv")
+climate_data <- read.csv("/home/CAMPUS/ikea2019/Climate_Change_Narratives/Student_Folders/Evans/IsabelEvans_OrangeCounty_data.csv")
+# head(climate_data)
+# str(climate_data)
+# names(climate_data)
+# climate_data$TMAX
+# plot(TMAX~DATE, climate_data)
+# min(climate_data$TMAX)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+plot(TMAX~NewDate, climate_data, ty='l')
+bestfitline.lm=lm(TMAX~NewDate, climate_data)
+summary(bestfitline.lm)
+plot(TMAX~NewDate, climate_data)
+abline(coef(bestfitline.lm), col="chartreuse")
+
+
+# xlim = c(1921-1-1, 2020-9-2)
+#ylim = c(-10, 50)
+# plot(TMAX~DATE, climate_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

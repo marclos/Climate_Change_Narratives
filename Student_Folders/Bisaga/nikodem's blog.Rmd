@@ -9,22 +9,40 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Introduction
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-summary(cars)
+file.path= "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Bisaga/westchester temp records.csv"
+
+# this is niko's path
+# file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/westchester temp records.csv"
+climate_data = read.csv(file.path)
+str(climate_data)
+strDates <- as.character(climate_data$DATE)
+#climate_data$NewDate <- as.Date(strDates, "%m/%d/%y")
+climate_data$NewDate = NA
+
+climate_data$NewDate[1:19452] = format(as.Date(strDates[1:19452], "%m/%d/%y"), "19%y-%m-%d") #19453
+climate_data$NewDate[19453:26994] = format(as.Date(strDates[19453:26994], "%m/%d/%y"),"20%y-%m-%d") #26994
+
+climate_data$NewDate2 = as.Date(climate_data$NewDate, "%Y-%m-%d")
+
+str(climate_data)
 ```
 
-## Including Plots
+## Plot
 
-You can also embed plots, for example:
+```{r}
+plot(TMAX ~ NewDate2, data=climate_data, pch=20, cex=0.3)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
