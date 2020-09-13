@@ -5,9 +5,9 @@ date: "9/1/2020"
 output: html_document
 ---
 
-<body>I hope to be writing about
+![Salt Lake City](/home/CAMPUS/edab2019/Climate_Change_Narratives/Student_Folders/Duggleby/SLC.jpg)
 
-![Salt Lake City]("/home/CAMPUS/edab2019/Climate_Change_Narratives/Student_Folders/Duggleby/Pics/SLC.jpg")
+<h4>I hope to write about weather trends in Salt Lake City, Utah. I have not decided  what I would like to look into specifically, but perhaps something with snowmelt trends would be interesting, as that is where a large amount of the city's water comes from. I also might want to look at how changing climate trends affect animal behavior. </h4>
 
 ```{r setup, echo = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -31,5 +31,4 @@ bestfitline.lm = lm(snow~date)
 abline(coef(bestfitline.lm), col = "#7a7fff", lwd=2.5)
 ## plot 
 ```
-
-</body>
+![My Cat Hemingway](/home/CAMPUS/edab2019/Climate_Change_Narratives/Student_Folders/Duggleby/Hemingway.PNG)
