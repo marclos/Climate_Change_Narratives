@@ -9,11 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
-"![AltText](/home/Climate_Change_Nattatives/Student_Folders/Tahbaz/snow_day_in_nyc.jpg)"
-
-```
-
+![Snowy Day in New York](https://rstudio.pomona.edu/s/24fdc7302027593d32a05/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/snow_day_in_nyc.jpg)
 
 ## Introduction
 
@@ -32,12 +28,17 @@ Next, I will go into the seasonal temperatures we saw in 2019 in NYC and how the
 For example: There was not a single big snow storm that had snow stay on the ground for more than 24 hours which is uncommon for NYC, especially in January and February
 
 ## this is a plot showing the increase in temperature in and around NYC
+
 ```{r}
-file.path = "/home/CAMPUS/erta2020/EleanorTahbaz_NY,NY region_data.csv"
-climate_data = read.csv("/home/CAMPUS/erta2020/EleanorTahbaz_NY,NY region_data.csv")
+read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
+
+```
+
+```{r}
+climate_data <- read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
 str(climate_data)
-strDates <-as.character(climate_data$DATE)
-climate_data$NewDate <-as.Date(strDates, "%m/%d/%Y")
+strDates<-as.character(climate_data$DATE)
+climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 plot(TMAX~DATE, climate_data)
 ```
 
