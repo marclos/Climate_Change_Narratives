@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-This blog contains a r data collected from a weather station in McCall, Idaho. This data goes back to March, 1906. The data includes daily minimum and maximum temperatures at the station location on the given date.
+This blog contains a r data collected from a weather station in McCall, Idaho. This data goes back to March, 1906. The data includes daily minimum and maximum temperatures at the station location on the given date. I will be looking at this temperature data to analyse how the temperatures in Mccall have changed over the past 100 years. 
 
 ```{r readdata, echo=FALSE}
 #Reading Climate Data
@@ -24,12 +24,18 @@ strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 ```
 
-## Including Plots
+## Data
 
-You can also embed plots, for example:
+This is the data plotted in graphs. These graphs just show the changes in daily maximum temperature which varies alot from the hot summers to the cold winters in Mccall. I changed the data from daily highs and lows to monthy means.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r plotingdailydata, echo=FALSE}
+#Plot data
+plot(TMAX~NewDate, climate_data, ty='l') 
+lm(TMAX ~ NewDate, data=climate_data)
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+plot(TMAX ~ NewDate, data= climate_data, las=1)
+abline(slopeintercept, col="red", lwd=3)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+

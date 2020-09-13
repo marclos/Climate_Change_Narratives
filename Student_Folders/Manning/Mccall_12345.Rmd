@@ -57,5 +57,41 @@ abline(coef(May.lm), col="red")
 
 The P-value for the month of may is .53 which means that the results of the analysis are not statistically significant.
 
-```{r plotingdailydata, echo=FALSE}
+```{r plotingmin, echo=FALSE}
+#Analyzing minimum daily temperatures
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+# First I create a vector of months
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+# Create a panel so I can see all the figures at
+# once.
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12) {
+# plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+# ty='l')
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ], ty = "l", las = 1, xlim = c(1940, 2020),
+main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+#Monthly average
+plot(MonthlyTMINMean$TMIN, ty='l')
 ```
+```{r}
+
+```
+
