@@ -1,0 +1,75 @@
+---
+title: "Blog Template"
+name: "Bryan Williams"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+This blog will evaluate the effect of climate change on winters in the Salt Lake Valley, the effect on its ski resorts, and the implications for environmental justice efforts.
+
+![View from Alta Ski Resort in Salt Lake City, Utah](https://cdn.vox-cdn.com/thumbor/p-x8T_IqgSdQrOzaVw_eZ5_XDQ0=/0x0:2400x1600/920x613/filters:focal(1008x608:1392x992):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/66515430/merlin_2094703.7.jpg)
+
+Variables examined will include:
+
+* Temperature (degrees Celsius)
+* Precipitation (mm/day)
+
+```{r readdata}
+### 1: Importing data
+filepath = "/home/CAMPUS/bawa2018/Climate_Change_Narratives/Data/FA20/Williams_SaltLakeCityUT_data.csv"
+climate_data = read.csv(filepath)
+
+### 1.1: Cleaning date-string objects
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+
+#### Temperature exploration 
+
+Below is a plot of all daily `TMAX` values over the full set of observations for Salt Lake City, UT.
+
+```{r plotTMAXvstime,echo=F}
+### 2: Plotting Temp vs. Date
+plot(TMAX~NewDate, climate_data, pch = 16, cex=.2, col = "blue")
+TMAX.lm = lm(TMAX ~ NewDate, data = climate_data) 
+coef(TMAX.lm)
+abline(coef(TMAX.lm),col ="orange", lwd = 3)
+```
+Yikes! That plot looks pretty horrible. Let's take a look at monthly averages of daily `TMAX`.
+
+```{r creating_months, echo=FALSE}
+### 3: Project guide 3, creating months to aggregate data
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+### 3.1: Aggregating TMAX into monthly means
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+### 3.2: Visualize new monthly averages
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+#### January is cold (but getting less so)!
+
+In Utah, it appears that our winter months have experienced warming. As such, I am going to drill down on the month of January. I've plotted January data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMAX` against year to see if there is some type of discernible trend.
+
+```{r JanPlot}
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],ty='l', xlim=c(1950, 2020))
+Jan.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(Jan.lm)
+abline(coef(Jan.lm), col="red")
+
+```
+
+
+
+```
