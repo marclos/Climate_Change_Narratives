@@ -6,14 +6,18 @@ output:
   pdf_document: default
   html_document: default
 ---
-Here is a draft of what my blog may look like!
 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Even though the slope on the temperature maximum graph is actually decreasing (meaning DC has gotten cooler), this correlation only has a p- value of .7895 which means that it is not significant.
+![View of Tidal Basin flooded in 2018](/home/CAMPUS/jagc2019/Tidal basin flooding.jpg)
+
+
+#### TMAX Has No Significant Change
+
+Even though the slope on the temperature maximum graph is actually decreasing (meaning DC has gotten cooler), this correlation only has a p- value of .7895 which means that it is not significant. Monthly analysis also reveal that no months have changes in temperature maximums.
 
 
 ```{r, TMAX plot, echo=FALSE}
@@ -28,10 +32,7 @@ summary(bestfitline.lm)
 ```
 
 
-
-
-
-
+#### TMIN Temperatures Have Increased
 
 While there is not a significant temperature maximum change, there is a very significant p value of 1.23^-10 for daily temperature minimums since 1950. The positive slope on this graph indicates that in DC daily temperature minimums have gotten warmer.
 

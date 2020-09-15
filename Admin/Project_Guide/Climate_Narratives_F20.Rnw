@@ -265,16 +265,14 @@ To complete the project in a timely fashion, we will be adhering to a rather str
 \label{tab:milestones}
 \begin{tabular}{lcll}\hline
 Deliverable                 & Launch    & Due Date  & Points \\\hline\hline
-Op-Ed \#1                   & Aug 28    & Sep 12    & 10 \\
-Draft Regional Analysis     & Sep 1   & Sep 12   & 20 \\
-Draft Blog Template         & Sept 4    & Sept 19   & 5 \\
-Climate Science Expert Team Video & Sep 1   & Sep 12   & 20 \\
+Draft Blog Template         & Sept 4    & {\color{red}Sept 12}   & 5 \\
+Climate Science Expert Team Video & Sep 1 & Sep 12   & 20 \\
+Op-Ed \#1                   & Aug 28    & {\color{red}Sep 19}    & 10 \\
+Draft Regional Analysis     & Sep 1     & {\color{red}Sep 19}   & 20 \\
+Regional Climate Literature Review  & Sep 1   & {\color{red}Sep 19}   & 20\\
 Climate Science Expert Team Video -- Forum    & Sep 1  & Sep 19     & 15 \\
-
-Regional Climate Literature Review    & Sep 1   & Sep 19   & 20 \\
 %Regional Climate Literature Review -- Peer Review & Oct 1   & Oct 3 & 10 \\
-
-Blog Draft                  & Sep 1   & Sep 26    & 50 \\
+Blog Draft {\color{red}Text and Figures} & Sep 1   & Sep 26    & 50 \\
 Blog -- Peer Review         & Sep 1    & Oct 3    & 10\\
 Published Blog*              & Sep 1    & Oct 10   & 50 \\
 %Op Ed \#2 Draft            & Oct 9     & Oct 13    & 10 \\
@@ -288,9 +286,15 @@ Op Ed \#2 Submission        & Sep 1    & Oct 10    & 25 \\ \hline
 
 \section{Draft Blog Template}
 
-The assignment is pretty simple. Can you create an Rmd file, with your title and name as the author, some text of what you are going to be writing about, one image, and a simple plot. 
+The assignment is pretty simple. Can you create an Rmd file, with your title and name as the author, some text of what you are going to be writing about, one image, and a simple plot. {\color{red}Note: You may have already done this already, you don't have to do this again. Howver, we suggest you make make some changes to keep the blog moving forward -- for example, if you had daily data, create monthly means. If you had TMAX, check out TMIN. If you have TMIN, you might consider snow pack or precipitation.  
 
-Push the Rmd and html file into github and name the file with your last name. 
+Push the Rmd and html file into github and name the file with your surname. It would be super helpful to get the naming conventions sorted out.}
+
+\begin{center}
+X.Rmd and X.hmtl
+\end{center}
+
+\noindent where X is your surname. {\color{red} Once you push the template into R, you are done, no Sakai submission necessary.}
 
 \section{Developing Specialized Knowledge}
 
@@ -335,20 +339,20 @@ Weather and climate extremes such as hurricanes, tornadoes, heavy downpours, hea
 
 Although most of the work will be individual, we will also work in pair for the presentation. Using \href{https://docs.google.com/spreadsheets/d/1VkY8-js4QNeYz6gHXNzKOwVvB2EUkp7Y2BwjRrsfxOk/edit?usp=sharing}{this Google Sheet}, sign up for a topic and as the slots are filled, I will update this document. 
 
-The following students have been assigned to the teams below:
+{\color{red}The following students have been assigned to the teams below:
 
 <<echo=F, results = 'asis', fig.cap='test'>>=
 library(xtable)
 team = c("1", "2", "3", "4", "5", "6", "7")
-studentA = c("1", "2", "3", "4", "5", "6", "7")
-studentB = c("8", "9", "10", "11", "12", "13", "14")
-studentC = c("15", "16", "17", "18", "19", "20", "21") 
-presentDate =c("09/19/20", "09/19/20", "09/19/20", "9/19/20", "09/19/20", "09/19/20", "09/19/20")
+studentA = c("Marc", "Christina", "Viviana", "Jacob", "Olivia", "Anna", "Nikodem")
+studentB = c("--", "Lila", "Bryan", "Claire L", "Owen", "Melia", "Emma")
+studentC = c("--", "Sarah", "Nora", "Tramy", "Claire M", "Katy", "Isabel") 
+presentDate =c("09/12/20", "09/12/20", "09/12/20", "09/12/20", "09/12/20", "09/12/20", "09/12/20")
 project1teams <- data.frame(Topic = team, Team_Members = paste(studentA, ", ", studentB, ", ", studentC), Presentation_Date=presentDate)
 print(xtable(project1teams), include.rownames=FALSE)
 @
-
-\subsection{Climate Science Review Presentation}
+}
+\subsection{Climate Science Review {\color{red}Videos}}
 
 \input{Climate_Science_Presentation_F20}
 
@@ -362,7 +366,7 @@ print(xtable(project1teams), include.rownames=FALSE)
 
 \section{Regional Climate Analysis}
 
-Each of us will select a region of interest. Perhaps, somewhere that you have spent a compelling time in or that you wish to know more about. Please select a region that has not been done by previous classes. 
+Each of us will select a region of interest. Perhaps, somewhere that you have spent a compelling time in or that you wish to know more about. It is ideal if you select something that hasn't been done in previous years, but this isn't crtical. I prefer someplace that you have a connection if that fits your interests better. %Please select a region that has not been done by previous classes. 
 
 \subsection{Analysis of Regional Data}
 

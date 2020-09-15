@@ -1,0 +1,41 @@
+---
+title: "Owen's blog"
+author: "not marc"
+date: "8/31/2020"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+
+```{r readdata, echo=TRUE}
+filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/owenhoffsten_portlandme_data.csv" #path from marc's login...
+filepath = "/home/CAMPUS/omha2018/Climate_Change_Narratives/Data/FA20/owenhoffsten_portlandme_data.csv"
+
+climate_data = read.csv(filepath)
+str(climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+str(climate_data)
+```
+
+## Plotting Data
+
+```{r ploting}
+plot(TMAX ~ NewDate, data= climate_data)
+
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+abline(slopeintercept, col="purple", lwd=3)
+
+
+
+
+```
+
+

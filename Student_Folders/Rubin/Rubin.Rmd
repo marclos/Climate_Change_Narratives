@@ -1,0 +1,129 @@
+---
+title: "Temperature Trends in Ann Arbor, MI"
+author: "Lila Rubin"
+date: "9/5/2020"
+output: html_document
+---
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+This blog will examine data collected regarding temperature and precipitation in Ann Arbor, Michigan from 1891 to the present day. After displaying and analyzing the data, we will discuss what conclusions may be drawn from it regarding the area's climate trends over time.
+
+
+
+## Maximum Temperature Measurements over Time
+
+This graph shows the daily maximum temperatures observed in Ann Arbor from 1891 to the present. The red line indicates the line of best fit, which shows a gradual increase in maximum temperature over time.
+
+```{r climate_data, echo=FALSE, eval=FALSE}
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+plot(TMAX~NewDate, climate_data, ty='l', main="Daily Temperatures", ylab= "Max Temperature (C)", xlab="Year")
+bestfitline.lm <- lm(TMAX~NewDate, climate_data)
+abline(coef(bestfitline.lm), col="red")
+```
+## Monthly Maximum Temperatures over Time
+
+```{r monthly}
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+# January
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+ty='l', xlim=c(1900, 2020), main="January", ylab="Max Temperature (C)", xlab="Year")
+
+January.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+abline(coef(January.lm), col="red")
+
+# February
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",],
+ty='l', xlim=c(1900, 2020), main="February", ylab="Max Temperature (C)", xlab="Year")
+
+February.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+abline(coef(February.lm), col="red")
+
+# March
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",],
+ty='l', xlim=c(1900, 2020), main="March", ylab="Max Temperature (C)", xlab="Year")
+
+March.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",])
+abline(coef(March.lm), col="red")
+
+# April
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],
+ty='l', xlim=c(1900, 2020), main="April", ylab="Max Temperature (C)", xlab="Year")
+
+April.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+abline(coef(April.lm), col="red")
+
+# May
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1900, 2020), main="May", ylab="Max Temperature (C)", xlab="Year")
+
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+abline(coef(May.lm), col="red")
+
+# June
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",],
+ty='l', xlim=c(1900, 2020), main="June", ylab="Max Temperature (C)", xlab="Year")
+
+June.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+abline(coef(June.lm), col="red")
+
+# July
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",],
+ty='l', xlim=c(1900, 2020), main="July", ylab="Max Temperature (C)", xlab="Year")
+
+July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+abline(coef(July.lm), col="red")
+
+# August
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
+ty='l', xlim=c(1900, 2020), main="August", ylab="Max Temperature (C)", xlab="Year")
+
+August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+abline(coef(August.lm), col="red")
+
+# September
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",],
+ty='l', xlim=c(1900, 2020), main="September", ylab="Max Temperature (C)", xlab="Year")
+
+September.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+abline(coef(September.lm), col="red")
+
+# October
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],
+ty='l', xlim=c(1900, 2020), main="October", ylab="Max Temperature (C)", xlab="Year")
+
+October.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+abline(coef(October.lm), col="red")
+
+# November
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",],
+ty='l', xlim=c(1900, 2020), main="November", ylab="Max Temperature (C)", xlab="Year")
+
+November.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",])
+abline(coef(November.lm), col="red")
+
+# December
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
+ty='l', xlim=c(1900, 2020), main="December", ylab="Max Temperature (C)", xlab="Year")
+
+December.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+abline(coef(December.lm), col="red")
+```
+
+Look at monthly patterns
+
+
