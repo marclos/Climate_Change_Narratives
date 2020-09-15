@@ -1,6 +1,8 @@
 ---
 title: "Bryan R Markdown"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -106,7 +108,7 @@ colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
 "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
 htmlTable(Results[,c(1, 10, 4, 11, 7)])
 ```
-Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of May, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
+Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of July, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
 ```{r July TMAXPlot}
 month_i <- 7
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,],ty='l', xlim=c(1950, 2020), ylab="Maximum Average July Temperature")
@@ -114,7 +116,7 @@ July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,])
 summary(July.lm)
 abline(coef(July.lm), col="red")
 ```
-Based on my analysis, my data indicate that there is not a trend of increasing temperature in Salt Lake City for the month of January(slope = 0.0435, r2 = 0, p-value = 0.29).
+Based on my analysis, my data indicate that there is not a trend of increasing temperature in Salt Lake City for the month of January, failing to reject the null hypothesis (slope = 0.0435, r2 = 0, p-value = 0.29).
 ```{r Jan TMIN Plot}
 #plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",],ty='l', xlim=c(1950, 2020))
