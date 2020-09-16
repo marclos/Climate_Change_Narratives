@@ -29,32 +29,53 @@ For example: There was not a single big snow storm that had snow stay on the gro
 
 ## this is a plot showing the increase in temperature in and around NYC
 
-```{r}
-read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
+try to cut out the code that isn't doing anything you need... like the following... eval=FALSE makes it so the code isn't run. Alternatively, you might want the rblock to run, but NOT show the results, results='hide' I think is the argument to do that...
+```{r, eval=FALSE}
+# doesn't really do anything useful. read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
 
 ```
 
+I created a file path so I find you data -- can you look at the guide and see where and how the data should be saved?
+:-)
 ```{r}
-climate_data <- read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
+filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+
+# comment out my path in case I forget!
+filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+climate_data <- read.csv(filepath)
 str(climate_data)
 strDates<-as.character(climate_data$DATE)
 climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
-plot(TMAX~DATE, climate_data)
-abline(slopeintercept, col="red")
+
+# You made a new variable name -- NewDate, but the plot function is looking for the "DATE" variable -- not sure why!  :-)   I commented it out. 
+
+#plot(TMAX~DATE, climate_data)
+
+# abline line references to an object, "slopeintercept" but that hasn't been made yet... but is it below... might just be in the wrong place..?
+
+#abline(slopeintercept, col="red")
 ```
+
+This one works as expected!  But sure is messy, but not your fault, lots of variation in the data!! This is why I think the monthly data will be better to display. 
+
 
 
 ```{r}
 plot(TMAX~NewDate, data=climate_data)
-lm(TMAX~NewDate, data=climate_data)
-lm(formula = TMAX~NewDate, data=climate_data)
-TMAX.lm=lm(TMAX~NewDate, data=climate_data)
+lm(TMAX~NewDate, data=climate_data) # calls a linear model, but doesn't create an object. Not sure this is useful.
+lm(formula = TMAX~NewDate, data=climate_data) # ditto but the use of the word formula is interesting... 
+TMAX.lm=lm(TMAX~NewDate, data=climate_data) # here you make an object.
 slopeintercept=coef(TMAX.lm)
 plot(TMAX~NewDate, data=climate_data, las=1)
 abline(slopeintercept, col="red", lwd=3)
-(TMAX.lm.sum = summary(lm(TMAX~NewDate, data=climate_data)))
+(TMAX.lm.sum = summary(lm(TMAX~NewDate, data=climate_data))) # shows you have a significant result, but boy lots of variation and a VERY low slope!
 
 ```
+
+
+# Creating Monthly Means
+
+While I working on my drafts, I often use headers to keep track of where I am, or I can get lost!
 
 ```{r}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -65,6 +86,11 @@ MonthlyTMAXMean$Month = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 plot(MonthlyTMAXMean$TMAX)
 #plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="01"],ty='1')
+
+
+## when I look the str(), the structure of the data.frame MonthlyTMAXmean...I only see three variables and YEAR is not there. Remember R is case sensitve. I am thinking you missed a step...
+
+
 plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="01"],xlim=c(1974, 2020))
 January.lm <- lm(TMAX~Year, date=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 summary(January.lm)
@@ -89,13 +115,17 @@ plot(MonthlySNOWMean$SNOW)
 plot(SNOW~YEAR, data = MonthlySNOWMean[MonthlySNOWMean$Month=="02",], xlim=c(1975,2020))
 February.lm <-lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="02",])
 summary(February.lm)
-lm(formula = TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
-abline(coef(February.lm), col="red")
+# same issue as before, no "YEAR" in TMAX file...
+#lm(formula = TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+#abline(coef(February.lm), col="red")
 
 ```
 
 ```{r}
-MonthlyTMINMean = aggregate(TMIN~Month + Year, climate_data)
+MonthlyTMINMean = aggregate(TMIN~Month + Year, climate_data, mean) # I added "mean" -- needed the function. 
+
+# I think you are something below -- why are you subtracting the vlues -- I don't think that's what you were hoping to do... 
+
 MonthlyTMINMean$Year - as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
