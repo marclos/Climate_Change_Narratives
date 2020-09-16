@@ -40,6 +40,7 @@ str(climate_data)
 strDates<-as.character(climate_data$DATE)
 climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 plot(TMAX~DATE, climate_data)
+abline(slopeintercept, col="red")
 ```
 
 
@@ -51,10 +52,28 @@ TMAX.lm=lm(TMAX~NewDate, data=climate_data)
 slopeintercept=coef(TMAX.lm)
 plot(TMAX~NewDate, data=climate_data, las=1)
 abline(slopeintercept, col="red", lwd=3)
+(TMAX.lm.sum = summary(lm(TMAX~NewDate, data=climate_data)))
+
+```
+
+```{r}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%y")
+MonthlyTMAXMean = aggregate(TMAX~Month+Year, climate_data, mean)
+MonthlyTMAXMean$Year = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX)
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="01"],ty='1')
+plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="01"],xlim=c(1974, 2020))
+January.lm <- lm(TMAX~Year, date=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(January.lm)
+abline(coef(January.lm), col="red")
 ```
 
 ```{r}
 plot(SNOW~DATE, climate_data)
+abline(slopeintercept, col="red")
 lm(formula = SNOW~NewDate, data = climate_data)
 SNOW.lm = lm(SNOW~NewDate, data = climate_data)
 slopeintercept = coef(SNOW.lm)
@@ -70,6 +89,24 @@ plot(MonthlySNOWMean$SNOW)
 plot(SNOW~YEAR, data = MonthlySNOWMean[MonthlySNOWMean$Month=="02",], xlim=c(1975,2020))
 February.lm <-lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="02",])
 summary(February.lm)
+lm(formula = TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+abline(coef(February.lm), col="red")
+
+```
+
+```{r}
+MonthlyTMINMean = aggregate(TMIN~Month + Year, climate_data)
+MonthlyTMINMean$Year - as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novemeber", "December")
+par(mfrow=c(4,3), mar = c(5,4,3,2) + 0.1)
+TMINresult <- NA
+for(i in 1:12) 
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+summary(Month.lm)
+abeline(coef(Month.lm),col="red")
+TMINresult <- rbind(TMINresult, cbind(Months[i],round(coef(Month.lm)[2],4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared,3)))
 
 ```
 
