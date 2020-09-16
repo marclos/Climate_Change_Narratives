@@ -106,3 +106,38 @@ colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
 "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
 htmlTable(Results[,c(1, 10, 4, 11, 7)])
 ```
+Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of May, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
+```{r July TMAXPlot}
+month_i <- 7
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,],ty='l', xlim=c(1950, 2020), ylab="Maximum Average July Temperature")
+July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,])
+summary(July.lm)
+abline(coef(July.lm), col="red")
+```
+Based on my analysis, my data indicate that there is not a trend of increasing temperature in Salt Lake City for the month of January(slope = 0.0435, r2 = 0, p-value = 0.29).
+```{r Jan TMIN Plot}
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",],ty='l', xlim=c(1950, 2020))
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+summary(Jan.lm)
+abline(coef(Jan.lm), col="cyan")
+Janresult <- NULL
+Janresult <- rbind(Janresult, cbind(Months[i],
+  round(coef(Jan.lm)[2], 4), round(summary(Jan.lm)$coefficients[2, 4], 4), round(summary(Jan.lm)$r.squared,3)))
+Janresult
+```
+Based on my analysis, my data indicate that there is a trend of decreasing snowfall in Salt Lake City for the month of January, rejecting the null hypothesis (slope = -0.0488, r2 = 0.2271, p-value = 0.02).
+```{r Jan Snowfall}
+i <- 1
+MonthlySNOWMean = aggregate(SNOW ~ Month + Year, climate_data, mean)
+MonthlySNOWMean$Month <- as.numeric(MonthlySNOWMean$Month)
+MonthlySNOWMean$Year <- as.numeric(MonthlySNOWMean$Year)
+plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  SNOWMonth.lm <- lm(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ])
+  summary(SNOWMonth.lm)
+  abline(coef(SNOWMonth.lm), col = "cyan")
+  SNOWresult <- NULL
+  SNOWresult <- rbind(SNOWresult, cbind(Months[i],
+  round(coef(SNOWMonth.lm)[2], 4), round(summary(SNOWMonth.lm)$coefficients[2, 4], 4), round(summary(SNOWMonth.lm)$r.squared,3)))
+SNOWresult
+```
