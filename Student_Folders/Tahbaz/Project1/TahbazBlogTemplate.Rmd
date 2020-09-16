@@ -42,6 +42,37 @@ climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 plot(TMAX~DATE, climate_data)
 ```
 
+
+```{r}
+plot(TMAX~NewDate, data=climate_data)
+lm(TMAX~NewDate, data=climate_data)
+lm(formula = TMAX~NewDate, data=climate_data)
+TMAX.lm=lm(TMAX~NewDate, data=climate_data)
+slopeintercept=coef(TMAX.lm)
+plot(TMAX~NewDate, data=climate_data, las=1)
+abline(slopeintercept, col="red", lwd=3)
+```
+
+```{r}
+plot(SNOW~DATE, climate_data)
+lm(formula = SNOW~NewDate, data = climate_data)
+SNOW.lm = lm(SNOW~NewDate, data = climate_data)
+slopeintercept = coef(SNOW.lm)
+plot(SNOW~NewDate, data = climate_data, las=1)
+abline(slopeintercept, col="red", lwd = 3)
+climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
+climate_data$Year = format(climate_data$NewDate, format="%y")
+MonthlySNOWMean=aggregate(SNOW~Month + Year, climate_data, mean)
+MonthlySNOWMean$YEAR=as.numeric(MonthlySNOWMean$Year)
+MonthlySNOWMean$MONTH=as.numeric(MonthlySNOWMean$Month)
+str(MonthlySNOWMean)
+plot(MonthlySNOWMean$SNOW)
+plot(SNOW~YEAR, data = MonthlySNOWMean[MonthlySNOWMean$Month=="02",], xlim=c(1975,2020))
+February.lm <-lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="02",])
+summary(February.lm)
+
+```
+
 ## The Relationship Between Temperature Increases and Less Severe Winters
 
 
