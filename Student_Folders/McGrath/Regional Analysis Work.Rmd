@@ -79,7 +79,23 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
 plot(MonthlyTMINMean$TMIN, ty='l')
-#library(xtable)
+library(xtable)
+### 3.1: Specifying plotting window parameters
+par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1) 
+  TMINresult <- NULL 
+for (i in 1:12) { 
+Month_sub_DF <- MonthlyTMINMean[MonthlyTMINMean$MONTH==i, ] 
+MonthMin_lm <- lm(TMIN ~ YEAR, data=Month_sub_DF)
+TMINresult <- rbind(TMINresult, 
+                      cbind(Months[i], 
+                            round(coef(MonthMin_lm)[2], 3), # go in to the coef(MonthMin_lm) object and take the 2nd element and round the number to 4 digits
+                            round(summary(MonthMin_lm)$coefficients[2,4], 3), # What does this column correspond to? Try copying just round(summary(MonthMin_lm)$coefficients[2,4], 4) after running an example MonthMin_lm <- lm(...) command in the console and see what it spits out
+                            round(summary(MonthMin_lm)$r.squared, 2))) # create a column for the Rsquared value
+  plot(TMIN~YEAR,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
+  abline(coef(MonthMin_lm),col="pink") 
+}
+
+#these didn't work - but leaving them in in case I missed something
 #Results <- data.frame(Month = TMINresult[c(2:13),1],
 #TMINSlope = TMINresult[c(2:13),2],
 #TMIN_P = as.numeric(TMINresult[c(2:13),3]),
@@ -122,5 +138,9 @@ abline(h=PRCP_mean, col="pink")
 ```
 
 
+## Means by Month
+```{r index}
+tapply(MonthlyTMAXMean$TMAX,MonthlyTMAXMean$Month,function(x) {mean(x,na.rm=T)})
+tapply(MonthlyTMINMean$TMIN,MonthlyTMINMean$Month,function(x) {mean(x,na.rm=T)})
 
-
+```
