@@ -46,6 +46,7 @@ abline(slopeintercept, col="purple", lwd=3)
 # MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 # MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 # str(MonthlyTMAXMean)
+# TMAX DATA:
 # May p-value = 0.5129
 # January p-value = 0.1707
 # February p-value= 0.08754
@@ -95,7 +96,26 @@ abline(slopeintercept, col="purple", lwd=3)
 # $ TMIN : num  26.62 14.55 5.94 14.43 17.35 ...
 # $ YEAR : num  1940 1940 1941 1941 1941 ...
 # $ MONTH: num  11 12 1 2 3 4 5 6 7 8 ...
-# plot(MonthlyTMINMean$TMAX, ty='l')
+# plot(MonthlyTMINMean$TMIN, ty='l')
+#  plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],ty='l', xlim=c(1950, 2020))
+#
+# Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",]) 
+# summary(Jan.lm)
+# abline(coef(Jan.lm), col="red")
+# TMIN DATA:
+# Jan p-value = 0.00624, Jan slope = 0.07002
+# Feb p-value = 0.001132, Feb slope = 0.07632
+# March p-value = 0.01369, March slope = 0.04275
+# April p-value = 9.612e-05, April slope = 0.040357
+# May p-value = 4.052e-08, May slope = 0.05618
+# June p-value = 9.87e-11, June slope = 0.056413
+# July p-value = 1.356e-10, July slope = 0.06955
+# August p-value = 1.604e-09, slope = 0.07333
+# September p-value = 6.744e-10, slope = 0.07933
+# October p-value = 8.14e-05, slope = 0.05125
+# November p-value = 0.02097, slope = 0.02833
+# December p-value = 0.0001411, slope = 0.09217
+
 ```
 
 
