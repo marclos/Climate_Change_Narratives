@@ -37,5 +37,92 @@ abline(slopeintercept, col="purple", lwd=3)
 
 
 ```
+```{r}
+# climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+# climate_data$Year = format(climate_data$NewDate, format = "%Y")
+# MonthlyTMAXMean = aggregate(TMAX~Month + Year, climate_data, mean)
+# MonthlyTMAXMean$Year = as.numeric(MonthlyTMAXMean$Year)
+# MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+# MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+# MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+# str(MonthlyTMAXMean)
+# TMAX DATA:
+# May p-value = 0.5129
+# January p-value = 0.1707
+# February p-value= 0.08754
+# March p-value = 0.184 
+# April p-value =  0.2189
+# June p-value = 0.9903
+# July p-value =  0.6779
+# August p-value = 0.1165
+# September p-value = 0.04815
+# October p-value = 0.3878
+# November p-value = 0.3377
+# December p-value = 0.009046
+# MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+# MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+# head(MonthlyTMINMean)
+# Month Year      TMIN YEAR MONTH
+#    11 1940 26.625000 1940    11
+#   12 1940 14.548387 1940    12
+#    01 1941  5.935484 1941     1
+#    02 1941 14.428571 1941     2
+#    03 1941 17.354839 1941     3
+#    04 1941 34.100000 1941     4
+# MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+# str(MonthlyTMINMean$Month)
+# chr [1:958] "11" "12" "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" "01" "02" ...
+# str(MonthlyTMINMean)
+# 'data.frame':	958 obs. of  3 variables:
+# $ Month: chr  "11" "12" "01" "02" ...
+# $ Year : chr  "1940" "1940" "1941" "1941" ...
+# $ TMIN : num  26.62 14.55 5.94 14.43 17.35 ...
+# MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# str(MonthlyTMINMean)
+# 'data.frame':	958 obs. of  4 variables:
+# $ Month: chr  "11" "12" "01" "02" ...
+# $ Year : chr  "1940" "1940" "1941" "1941" ...
+# $ TMIN : num  26.62 14.55 5.94 14.43 17.35 ...
+# $ YEAR : num  1940 1940 1941 1941 1941 ...
+# MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINjMean$Month)
+# Error: object 'MonthlyTMINjMean' not found
+# MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+# str(MonthlyTMINMean)
+#'data.frame':	958 obs. of  5 variables:
+# $ Month: chr  "11" "12" "01" "02" ...
+# $ Year : chr  "1940" "1940" "1941" "1941" ...
+# $ TMIN : num  26.62 14.55 5.94 14.43 17.35 ...
+# $ YEAR : num  1940 1940 1941 1941 1941 ...
+# $ MONTH: num  11 12 1 2 3 4 5 6 7 8 ...
+# plot(MonthlyTMINMean$TMIN, ty='l')
+#  plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],ty='l', xlim=c(1950, 2020))
+#
+# Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",]) 
+# summary(Jan.lm)
+# abline(coef(Jan.lm), col="red")
+# TMIN DATA:
+# Jan p-value = 0.00624, Jan slope = 0.07002
+# Feb p-value = 0.001132, Feb slope = 0.07632
+# March p-value = 0.01369, March slope = 0.04275
+# April p-value = 9.612e-05, April slope = 0.040357
+# May p-value = 4.052e-08, May slope = 0.05618
+# June p-value = 9.87e-11, June slope = 0.056413
+# July p-value = 1.356e-10, July slope = 0.06955
+# August p-value = 1.604e-09, slope = 0.07333
+# September p-value = 6.744e-10, slope = 0.07933
+# October p-value = 8.14e-05, slope = 0.05125
+# November p-value = 0.02097, slope = 0.02833
+# December p-value = 0.0001411, slope = 0.09217
+
+```
+
+
+
+
+
+
+
 
 
