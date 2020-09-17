@@ -1,5 +1,5 @@
 ---
-title: "Temperature Trends in Ann Arbor, MI"
+title: "The Effects of Temperature Rise on Farming in Michigan"
 author: "Lila Rubin"
 date: "9/5/2020"
 output: html_document
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-This blog will examine data collected regarding temperature and precipitation in Ann Arbor, Michigan from 1891 to the present day. After displaying and analyzing the data, we will discuss what conclusions may be drawn from it regarding the area's climate trends over time.
+This blog will examine data collected regarding maximum and mininimum temperatures in Ann Arbor, Michigan from 1891 to the present day. After displaying and analyzing the data, we will discuss what effect our conclusiosn may have on farming in the surrounding area.
 
 
 ```{r climate_data, echo=FALSE, eval=FALSE}
@@ -25,7 +25,6 @@ abline(coef(bestfitline.lm), col="red")
 ## Monthly Maximum Temperatures over Time
 
 *Research effect of temperature on crops*
-*Graph precipitation levels*
 
 ```{r monthly}
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
@@ -122,3 +121,24 @@ December.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 abline(coef(December.lm), col="red")
 ```
 
+
+
+
+
+```{r min temps practice}
+
+# changing date formatting
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+# temp business
+MonthlyTMINMean = aggregate(climate_data$TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+
+# January
+plot(climate_data$TMIN~climate_data$Year, data = MonthlyTMINMean, xlim=c(1900, 2020), main="January", ylab="Min Temperature (C)", xlab="Year")
+```
