@@ -23,6 +23,7 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 ```{r}
 file.path="/home/CAMPUS/vipa2017/Github/Climate_Change_Narratives/Student_Folders/Plancarte/Plancarte_SanDiego_data.csv"
+file.path="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Plancarte/Plancarte_SanDiego_data.csv"
 climate_data=read.csv(file.path)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
@@ -63,15 +64,17 @@ abline(coef(May.lm),col="red")
 ```{r}
 MonthlyTMINMean=aggregate(TMIN~Month+Year,climate_data,mean)
 MonthlyTMINMean$Year  =as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$Year=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Year =as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month=as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
+str(MonthlyTMINMean)
 ```
 
 ```{r}
 Months=c("January", "February", "March","April","May","June","July","August","September","October","November","December")
 par(mfrow=c(4,3),mar=c(2,2,2,2)+0.1)
 TMAXresult<-NA
+# loop 
 for(i in 1:12){
   plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month==i,],ty="l",las=1,xlim=c(1940,2020), main=Months[i])
   Month.lm<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month==i,])
@@ -93,11 +96,15 @@ for(i in 1:12){
   TMINresult<-rbind(TMINresult,cbind(Months[i],round(coef(Month.lm)[2],4),round(summary(Month.lm)$coefficients[2,4],4),round(summary(Month.lm)$r.squared,3)))}
 ```
 
-##Monthly Average Minimum Temperatures
-```{r}
+## Monthly Average Minimum Temperatures
+
+```{r, results='asis'}
+
 plot(MonthlyTMINMean$TMIN,ty='l')
 library(xtable)
-Results<-data.frame(Month=TMINresult[c(2:13),1],TMINSlope=TMINresult[c(2:13),2],TMIN_P=as.numeric(TMINresult[c(2:13),3]),TMINRsq=TMINresult[c(2:13),4],TMAXSlope=TMAXresult[c(2:13),2],TMAX_P=as.numeric(TMAXresult[c(2:13),3]),TMAXRsq=TMAXresult[c(2:13),4])
+Results<-data.frame(Month=TMINresult[c(2:13),1],TMINSlope=TMINresult[c(2:13),2], TMIN_P=as.numeric(TMINresult[c(2:13),3]),
+                    TMINRsq=TMINresult[c(2:13),4],TMAXSlope=TMAXresult[c(2:13),2],TMAX_P=as.numeric(TMAXresult[c(2:13),3]),
+                    TMAXRsq=TMAXresult[c(2:13),4])
 Results$starTMIN="NS"
 Results$starTMIN[Results$TMIN_P<=.05]="*"
 Results$starTMIN[Results$TMIN_P<0.01]="**"             
@@ -106,12 +113,14 @@ Results$starTMAX="NS"
 Results$starTMAX[Results$TMAX_P<0.05]="*"
 Results$starTMAX[Results$TMAX_P<0.01]="**"
 Results$starTMAX[Results$TMAX_P<0.001]="***"
-Results$TMINSlope=paste(Results$TMINSlope,Results$starTMIN)
+Results$TMINslope=paste(Results$TMINSlope,Results$starTMIN)
 Results$TMAXslope=paste(Results$TMAXSlope,Results$starTMAX)
 colnames(Results)<-c("Month","2","3","R^2","5","6","R^2","8","9", "SlopeTMIN","SlopeTMAX")
-print(xtable(Results[,c(1,4,11,7)]))
+print(xtable(Results[,c(1,10, 4,11,7)]), type = "html")
 
 ```
+
+
 
 
 ```{r}
