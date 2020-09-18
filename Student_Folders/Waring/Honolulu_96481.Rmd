@@ -1,0 +1,125 @@
+---
+title: "Regional Analysis"
+author: "Melia Waring"
+date: "9/15/2020"
+output: html_document
+---
+
+```{r Importing Data, echo=FALSE}
+###Importing Data
+library(htmlTable) # tell R to load the package "htmlTable" into the current RMarkdown workspace (knitting the file generates the RMarkdown workspace) or console workspace if you run the code interactively in the console below. This is one of many packages developed by ordinary R users (useRs).
+
+climate_data <- read.csv("/home/CAMPUS/mmwa2019/GitHub/Climate_Change_Narratives/Data/FA20/Waring_Honolulu_data.csv")
+str(climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+NewDate <- climate_data$NewDate
+TMAX <- climate_data$TMAX
+```
+
+```{r 2.4 Creating Plot and Linear Model, echo=FALSE}
+###2.4 Creating Plot and Linear Model
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+plot(TMAX~NewDate, data=climate_data, las=1)
+abline(slopeintercept, col="red", lwd=3)
+```
+
+```{r 2.5 Interpreting the Results, echo=TRUE}
+(TMAX.lm.sum = summary(lm(TMAX ~ NewDate, data=climate_data)))
+```
+
+### Interpreting the Results:
+These results are stated for the graph that displays maximum daily temperature in Honolulu, Hawaii. We reject the null hypothesis because the events that this might occur by chance is small: p < 2e-16 for the slope and p < 2e-16 for the y intercept is 0. In addition, the r^2 value is 0.025. This means that 2.5% of the variation can be explained by the independent variable (the date). 
+
+```{r 3.1.1 Creating Monthly Means, echo=FALSE}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+
+
+```{r 3.2 Selecting for 1 month - May, echo=FALSE}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",]) 
+summary(May.lm)
+abline(coef(May.lm), col="red")
+```
+
+### Interpreting the Results:
+These results are stated for the graph above that displays maximum temperature in Honolulu, Hawaii for the month of May. The change is 0.151 degrees C/year with a probability of 0.000386. We reject the null hypothesis because the events that this might occur by chance is small. In addition, the r^2 value is 0.148. This means that 14.8% of the variation can be explained by the independent variable (the date).
+
+```{r 3.1.4 Analyzing Minimum Daily Temperatures}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean) 
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+
+     # Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year) 
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month) 
+head(MonthlyTMINMean)
+
+# First I create a vector of months
+Months = c("January", "February", "March", "April",
+    "May", "June", "July", "August", "September", "October",
+    "November", "December")
+
+# Creating a panel so I can see all the figures at once
+
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12) 
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+  summary(Month.lm)
+  abline(coef(Month.lm), col = "red")
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared, 3)))
+
+```
+
+### Interpreting the Results:
+These results above are stated for the graph that displays the maximum temperature for December in Honolulu, Hawaii. The change is 0.0103 degrees C/year with a probability of 0.0172. We reject the null hypothesis because the events that this might occur by chance is small. In addition, the r^2 value is 0.0706. This means that 7.06% of the variation can be explained by the independent variable (the date).
+
+```{r Minimum Daily Temperatures}
+plot(MonthlyTMINMean$TMIN, ty='l')
+```
+
+
+```{r Precipitation}
+
+# The aggregate command is used to create a simplified dataset. In this case, we are 
+# creating a sum of PCRP based on each month and year.
+
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP), list(climate_data$Month, climate_data$Year), sum)
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+plot(x ~ Date, data=Missing)
+MonthlyPRCPMean = aggregate( PRCP~ Month + Year, climate_data, sum)
+
+```
+
+
+```{r Precipitation Analysys, echo=TRUE}
+TotalPPT <- aggregate(climate_data$PRCP, list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+library(dplyr)
+PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
+head(PPT)
+PRCP_mean = mean(PPT$ppt)
+plot(ppt~Date, data=PPT)
+abline(h=PRCP_mean, col="blue")
+```
+
+```{r Precipitation Analysys Summary}
+MonthlyPRCPMean = aggregate( PRCP~ Month + Year, climate_data, sum)
+str(MonthlyPRCPMean)
+plot(MonthlyPRCPMean$PRCP, ty='l')
+```
