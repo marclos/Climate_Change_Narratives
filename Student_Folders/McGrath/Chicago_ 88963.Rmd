@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r readdata, echo=FALSE}
-
 #file.choose()
 filepath = "/home/CAMPUS/ocma2018/Climate_Change_Narratives/Data/FA20/olivia_chicagomidway_data.csv"
 climate_data = read.csv(filepath) 
@@ -71,11 +70,10 @@ round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
 ```
 
 
-## As seen below, the maximum temperatures in September, from 1940 to 2020, display a rising trend. Having lived in Chicago all my life, fall tends to begin early, with temperatures dropping around September and October. However, as the graph below shows, autumn has been getting warmer and warmer. 
+## As seen below, the maximum temperatures in November, from 1940 to 2020, display a rising trend. Having lived in Chicago all my life, fall tends to begin early, with temperatures dropping around November and October. However, as the graph below shows, autumn has been getting warmer and warmer. 
 
-```{r Sepdata}
-
-i <- 9
+```{r NOVMAX}
+i <- 11
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$Month <- as.numeric(MonthlyTMAXMean$Month)
 MonthlyTMAXMean$Year <- as.numeric(MonthlyTMAXMean$Year)
@@ -87,7 +85,6 @@ plot(TMAX ~ Year, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == i, ], ty = "l"
   TMAXresult <- rbind(TMAXresult, cbind(Months[i],
   round(coef(TMAXMonth.lm)[2], 4), round(summary(TMAXMonth.lm)$coefficients[2, 4], 4), round(summary(TMAXMonth.lm)$r.squared,3)))
 TMAXresult
-
 ```
 
 
@@ -109,9 +106,9 @@ Month_sub_DF <- MonthlyTMINMean[MonthlyTMINMean$MONTH==i, ]
 MonthMin_lm <- lm(TMIN ~ YEAR, data=Month_sub_DF)
 TMINresult <- rbind(TMINresult, 
                       cbind(Months[i], 
-                            round(coef(MonthMin_lm)[2], 3), # go in to the coef(MonthMin_lm) object and take the 2nd element and round the number to 4 digits
-                            round(summary(MonthMin_lm)$coefficients[2,4], 3), # What does this column correspond to? Try copying just round(summary(MonthMin_lm)$coefficients[2,4], 4) after running an example MonthMin_lm <- lm(...) command in the console and see what it spits out
-                            round(summary(MonthMin_lm)$r.squared, 2))) # create a column for the Rsquared value
+                            round(coef(MonthMin_lm)[2], 3),
+                            round(summary(MonthMin_lm)$coefficients[2,4], 3), 
+                            round(summary(MonthMin_lm)$r.squared, 2)))
   plot(TMIN~YEAR,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
   abline(coef(MonthMin_lm),col="pink") 
 }
@@ -138,8 +135,29 @@ TMINresult <- rbind(TMINresult,
 #"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
 #print(xtable(Results[,c(1, 10, 4, 11, 7)]))
 ```
-## Precipitation:
+
+
+## Similarly, a look at November's minimum temperatures from 1940 to 2020, these low temperature averages increase (shown by the positive slope of the line of best fit). 
+
+```{r NOVMIN}
+i <- 11
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$Month <- as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$Year <- as.numeric(MonthlyTMINMean$Year)
+plot(TMIN ~ Year, data = MonthlyTMINMean[MonthlyTMINMean$Month == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  TMINMonth.lm <- lm(TMIN ~ Year, data = MonthlyTMINMean[MonthlyTMINMean$Month == i, ])
+  summary(TMINMonth.lm)
+  abline(coef(TMINMonth.lm), col = "pink")
+ TMINresult <- NULL
+  TMINresult <- rbind(TMINresult, cbind(Months[i],
+  round(coef(TMINMonth.lm)[2], 4), round(summary(TMINMonth.lm)$coefficients[2, 4], 4), round(summary(TMINMonth.lm)$r.squared,3)))
+TMINresult
+```
+
+
+## Precipitation: 
 ```{r plotprecipitation}
+
 climate_data$PRCP[climate_data$PRCP==-9999] <- NA
 Missing <- aggregate(is.na(climate_data$PRCP),
 list(climate_data$Month, climate_data$Year), sum)
@@ -156,28 +174,28 @@ head(PPT)
 PRCP_mean = mean(PPT$ppt)
 plot(ppt~Date, data=PPT)
 abline(h=PRCP_mean, col="pink")
-#MonthlyPRCPMean = aggregate( PRCP~ Month + Year, climate_data, sum)
-#MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
-## Fixing the Format of Month and Year as numeric
-#MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
-#MonthlyPRCPNMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
-#head(MonthlyPRCPMean)
-#plot(MonthlyPRCPMean$PRCP, ty='l')
-#library(xtable)
-### 3.1: Specifying plotting window parameters
-#par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1) 
- # PRCPresult <- NULL 
- #for (i in 1:12) { 
-#Month_sub_DF <- MonthlyPRCPMean[MonthlyPRCPMean$MONTH==i, ] 
-#MonthPrcp_lm <- lm(PRCP ~ YEAR, data=Month_sub_DF)
-#PRCPresult <- rbind(PRCPresult, 
-                    #  cbind(Months[i], 
-                            #round(coef(MonthPrcp_lm)[2], 3), # go in to the coef(MonthMin_lm) object and take the 2nd element and round the number to 4 digits
-                           # round(summary(MonthPrcp_lm)$coefficients[2,4], 3), # What does this column correspond to? Try copying just round(summary(MonthMin_lm)$coefficients[2,4], 4) after running an example MonthMin_lm <- lm(...) command in the console and see what it spits out
-                           # round(summary(MonthPrcp_lm)$r.squared, 2))) # create a column for the Rsquared value
-  #plot(PRCP~YEAR,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
- # abline(coef(MonthMin_lm),col="pink") 
-# }
+MonthlyPRCPMean = aggregate( PRCP~ Month + Year, climate_data, sum)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+head(MonthlyPRCPMean)
+plot(MonthlyPRCPMean$PRCP, ty='l')
+library(xtable)
+# 3.1: Specifying plotting window parameters
+par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1) 
+  PRCPresult <- NULL 
+ for (i in 1:12) { 
+Month_sub_DF <- MonthlyPRCPMean[MonthlyPRCPMean$MONTH==i, ] 
+MonthPrcp_lm <- lm(PRCP ~ YEAR, data=Month_sub_DF)
+PRCPresult <- rbind(PRCPresult, 
+                     cbind(Months[i], 
+                            round(coef(MonthPrcp_lm)[2], 3), 
+                           round(summary(MonthPrcp_lm)$coefficients[2,4], 3), 
+                            round(summary(MonthPrcp_lm)$r.squared, 2))) 
+  plot(PRCP~YEAR,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
+  abline(coef(MonthMin_lm),col="pink") 
+ }
 ```
 
 
@@ -192,7 +210,7 @@ abline(h=PRCP_mean, col="pink")
 
 
 
-## Means by Month (not in graph form)
+## Means by Month (not in graph form, as a summary)
 ```{r index}
 tapply(MonthlyTMAXMean$TMAX,MonthlyTMAXMean$Month,function(x) {mean(x,na.rm=T)})
 tapply(MonthlyTMINMean$TMIN,MonthlyTMINMean$Month,function(x) {mean(x,na.rm=T)})
