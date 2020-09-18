@@ -523,14 +523,14 @@ Temperatures, Bangkok, Thailand}
     \hlkwc{TMAXSlope} \hlstd{= TMAXresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{2}\hlstd{],}
     \hlkwc{TMAX_P} \hlstd{=} \hlkwd{as.numeric}\hlstd{(TMAXresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{3}\hlstd{]),}
     \hlkwc{TMAXRsq} \hlstd{= TMAXresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{4}\hlstd{])}
-\hlstd{Results}\hlopt{$}\hlstd{starTMIN} \hlkwb{=} \hlstr{"NS"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMIN[Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<=} \hlnum{.05}\hlstd{]} \hlkwb{=} \hlstr{"*"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMIN[Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<} \hlnum{0.01}\hlstd{]} \hlkwb{=} \hlstr{"**"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMIN[Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<} \hlnum{0.001}\hlstd{]} \hlkwb{=} \hlstr{"***"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMAX} \hlkwb{=} \hlstr{"NS"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMAX[Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<} \hlnum{0.05}\hlstd{]} \hlkwb{=} \hlstr{"*"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMAX[Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<} \hlnum{0.01}\hlstd{]} \hlkwb{=} \hlstr{"**"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMAX[Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<} \hlnum{0.001}\hlstd{]} \hlkwb{=} \hlstr{"***"}
+\hlstd{Results}\hlopt{$}\hlstd{starTMAX} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(}
+  \hlstd{Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<=} \hlnum{.001}\hlstd{,} \hlstr{"***"}\hlstd{,}
+    \hlkwd{ifelse}\hlstd{(Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<=} \hlnum{.01}\hlstd{,} \hlstr{"**"}\hlstd{,}
+      \hlkwd{ifelse}\hlstd{(Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<=} \hlnum{.05}\hlstd{,} \hlstr{"*"}\hlstd{,} \hlstr{"NS"}\hlstd{)))}
+\hlstd{Results}\hlopt{$}\hlstd{starTMIN} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(}
+  \hlstd{Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<=} \hlnum{.001}\hlstd{,} \hlstr{"***"}\hlstd{,}
+    \hlkwd{ifelse}\hlstd{(Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<=} \hlnum{.01}\hlstd{,} \hlstr{"**"}\hlstd{,}
+      \hlkwd{ifelse}\hlstd{(Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<=} \hlnum{.05}\hlstd{,} \hlstr{"*"}\hlstd{,} \hlstr{"NS"}\hlstd{)))}
 \hlstd{Results}\hlopt{$}\hlstd{TMINslope}\hlkwb{=}\hlkwd{paste}\hlstd{(Results}\hlopt{$}\hlstd{TMINSlope, Results}\hlopt{$}\hlstd{starTMIN)}
 \hlstd{Results}\hlopt{$}\hlstd{TMAXslope}\hlkwb{=}\hlkwd{paste}\hlstd{(Results}\hlopt{$}\hlstd{TMAXSlope, Results}\hlopt{$}\hlstd{starTMAX)}
 \hlkwd{colnames}\hlstd{(Results)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Month"}\hlstd{,} \hlstr{"2"}\hlstd{,} \hlstr{"3"}\hlstd{,} \hlstr{"R^2"}\hlstd{,} \hlstr{"5"}\hlstd{,} \hlstr{"6"}\hlstd{,}
@@ -540,7 +540,7 @@ Temperatures, Bangkok, Thailand}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Wed Sep 16 17:31:06 2020
+% Fri Sep 18 15:37:53 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
