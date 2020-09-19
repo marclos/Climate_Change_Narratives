@@ -7,12 +7,13 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(readxl)
-Burns_DP_Alternate <- read_excel("Data/FA20/Burns_DP_Alternate.xlsx", 
+Burns_DP_Alternate <- read_excel("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_DesPlainesMax_Data.xlsx", 
     col_types = c("date", "numeric", "numeric"))
-LakeCo <- read.csv("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_LakeCoIL.csv")
+LakeCo <- read.csv("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_LakeCoIL_Data.csv")
 require(MASS)
 ```
 
+https://nwis.waterdata.usgs.gov/nwis/peak?site_no=05527800&agency_cd=USGS&format=rdb
 
 ```{r}
 plot(Burns_DP_Alternate)
@@ -21,8 +22,8 @@ plot(Burns_DP_Alternate)
 # Peak Flow
 
 ```{r}
-plot(sqrt(PeakFlow)~Date, data=Burns_DP_Alternate)
-PeakFlow.lm <- lm(sqrt(PeakFlow)~Date, data=Burns_DP_Alternate)
+plot(log(PeakFlow)~Date, data=Burns_DP_Alternate)
+PeakFlow.lm <- lm(log(PeakFlow)~Date, data=Burns_DP_Alternate)
 summary(PeakFlow.lm)
 coef(PeakFlow.lm)
 abline(coef(PeakFlow.lm), col = "blue", lwd=2)
@@ -77,6 +78,16 @@ LakeCo$Date <- as.Date(strDates, "%m/%d/%Y")
 ```
 
 ```{r}
+plot(PRCP~Date, data=LakeCo, ty='l')
+PRCP.lm <- lm(PRCP~Date, data=LakeCo)
+summary(PRCP.lm)
+coef(PRCP.lm)
+abline(coef(PRCP.lm), col = "purple", lwd = 2)
+```
+
+```{r}
+strDates <- as.character(LakeCo$DATE)
+LakeCo$Date <- as.Date(strDates, "%m/%d/%Y")
 LakeCo$Month = format(as.Date(LakeCo$Date), format = "%m")
 LakeCo$Year = format(as.Date(LakeCo$Date), format="%Y")
 ```
@@ -109,10 +120,13 @@ round(coef(MonthPRCP_S.lm)[2], 4), round(summary(MonthPRCP_S.lm)$coefficients[2,
 ```
 
 ```{r}
-summary(MonthPRCP_S.lm)
+library(xtable)
+PRCP_Table <- xtable(PRCP_Sresult)
+
+names(PRCP_Table) <- c('Month','Slope','P', 'R-Sq')
+
+print(PRCP_Table)
 ```
 
-```{r}
-print(PRCP_Sresult)
-```
+
 
