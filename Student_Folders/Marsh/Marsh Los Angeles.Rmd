@@ -40,7 +40,7 @@ abline(coef(bestfitline.lm), col="red")
 ```
 
 
-```{r TMAX monthly or yearly}
+```{r TMAX monthly Data}
 climate_data <- read.csv("/home/CAMPUS/cdma2019/ChristinaMarsh_LosAngeles_data.csv")
 head(climate_data)
 str(climate_data)
@@ -62,14 +62,34 @@ MonthlyTMAXMean$Month.num = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 plot(MonthlyTMAXMean$TMAX, ty='l')
 ```
-```{r August Data}
+```{r August TMAX Data}
+climate_data <- read.csv("/home/CAMPUS/cdma2019/ChristinaMarsh_LosAngeles_data.csv")
+head(climate_data)
+str(climate_data)
+names(climate_data)
+plot(TMAX~DATE, climate_data) 
+min(climate_data$TMAX)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
+lm(TMAX ~ NewDate, data=climate_data)
+plot(TMAX ~ NewDate, data= climate_data, las=1)
+bestfitline.lm <- lm(y~x)
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean) 
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
 plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], ty='l', xlim=c(1906, 2014))
 August.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
 summary(August.lm)
 abline(coef(August.lm), col="red")
 ```
 
-```{r August TMINData}
+```{r Monthly TMIN Data}
 climate_data <- read.csv("/home/CAMPUS/cdma2019/ChristinaMarsh_LosAngeles_data.csv")
 head(climate_data)
 str(climate_data)
@@ -90,3 +110,4 @@ MonthlyTMINMean$Month.num = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
 plot(MonthlyTMINMean$TMIN, ty='l') 
 ```
+
