@@ -1,0 +1,67 @@
+---
+title: "WashingtonDC_97517"
+author: '97517'
+date: "9/18/2020"
+output: html_document
+---
+
+
+Null hypothesis: There will be no significant differences in temperature minimums in Washington D.C.
+
+
+
+The first analysis, that looks at daily temperature minimums from 1948-2020, rejects the null hypothesis. The positive slope suggests that temperature minimums have been increasing and the p value of 1.23e-10 suggests that it is incredibly unlikely that this correlation is due to luck:
+
+
+
+```{r TMIN plot, echo=FALSE}
+climate_data <- read.csv("/home/CAMPUS/jagc2019/JacobGreene_WashingtonDC_Data.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+plot(TMIN~NewDate, climate_data,type='l', main= "Washington D.C. Daily Temperature Minimum vs Time", xlab= "Time ", ylab= "Daily Temperature Minimum (C)")
+TMINbestlinefit.lm=lm(TMIN~NewDate, data = climate_data)
+abline(coef(TMINbestlinefit.lm), col= "red",lwd=2)
+summary(TMINbestlinefit.lm)
+```
+
+
+The second analysis analyzing temperature minimums in the month of May, an important month for plant flowering, similarly rejects the null hypothesis. Similar to the first analysis, the slope in the month of May is also increasing poisitively and the p-value of .000477 is very significant:
+
+
+
+```{r May TMIN, echo=FALSE}
+climate_data$Month = format(as.Date(climate_data$NewDate),format="%m")
+climate_data$Year = format(as.Date(climate_data$NewDate),format= "%Y")
+MonthlyTMINMean = aggregate(TMIN~Month+Year,climate_data,mean)
+MonthlyTMINMean$YEAR= as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
+str(MonthlyTMINMean)
+#plot(MonthlyTMINMean$TMIN,type = "l")
+par(mfrow=c(1,1))
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l',main= "May Monthly Temperature Minimum Means vs Time" )
+MayTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+summary(MayTMIN.lm)
+abline(coef(MayTMIN.lm),col= "red")
+```
+
+
+Lastly, the analysis of the month of July, the hottest month of the year in DC, rejects the null hypothesis. The slope is positive suggesting an increase in temperature minimums and the p value is 3.94e-6 which is very significant. Months from April to September all, similar to May and July, showed increases in temperature minimums that were significant, however, these months were picked especially in this analysis because of their relevance towards human and plant health:
+
+
+
+```{r TMIN July, echo=FALSE}
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l',main= "July Monthly Temperature Minimum Means vs Time" )
+JulTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
+summary(JulTMIN.lm)
+abline(coef(JulTMIN.lm),col= "red")
+```
+
+
+####Uncertainty
+
+Even though these graphs provide a convincing argument that temperature minimums have been rising in DC, especially in the summers, there still remains uncertainty. For example, there may have been errors in equipment during the 70+ years this station has been operating. 
+However, an analysis very similar to the one done here that compares the weather records of this station to weather records of two other DC stations found that although there were some differences, for the large part, all three of the stations had a similar trend. For that reason and trust in the scientific standards run at this station, it is reasonable to believe this data.
+
+
+
+Note: Analysis on temperature maximums,temperature maximum means based on month, monthly precipitation totals, precipitation totals based on months was all performed, however, there were no meaninful signficant values drawn from these analyses. Therefore, they have not been included in this final analysis.
