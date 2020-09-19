@@ -9,8 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this blog I will be exploring climate change in Southeast Texas, using data from the National Oceanic and Atmospheric Association (NOAA). 
+In this blog I will be exploring climate change in Southeast Texas, using data from the National Oceanic and Atmospheric Association (NOAA). I'm using Orange, Texas data which is the place I grew up.
 
+![Where is Orange?](mapoforange.png)
 First I need to import my data. I do this, and then choose the variable TMAX, which is maximum daily temperature, to focus on. 
 
 ```{r part two, echo=TRUE}
@@ -50,7 +51,7 @@ abline(lm.min, col = "red")
 ```
 
 We haven't looked at precipitation, which, in my opinion, is the most interesting since floods are major weather events in the area and can cause high levels of damage!
-```{r prcp, echo = TRUE}
+```{r prcp setup, echo = TRUE}
 
 ###PRECIPITATION
 MonthlyPRCPSum = aggregate(PRCP~ Month + Year, climate_data, sum)
@@ -63,7 +64,7 @@ plot(PRCP~YEAR, MonthlyPRCPSum, pch = 2, col = "darkslategray3") #does the trian
 
 Now that I have all of my data (it very very rarely snows in Southeast Texas, so I won't be using that variable), I want to use for loops to look at all months at once for TMAX, TMIN, and PRCP. 
 
-```{r}
+```{r forloops, echo = T}
 #all tmax
 Months <- c("Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec")
 par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
@@ -102,7 +103,7 @@ for(i in 1:12) {
 ```
 Now that I've plotted them all, it will be helpful to see the actual numbers behind the graph to determine if any of the trends are statistically significant. 
 
-```{r}
+```{r results, echo = T}
 ##Results
 Results <- data.frame(Month = TMINresult[,1],
                       TMINSlope = TMINresult[,2],
@@ -138,14 +139,66 @@ htmlTable(Results)
 ```
 Amazing! Now we have a lovely table that lays out all of the analysis I just did. 
 
-Our monthly average minimum temperatures (TMIN) only have a statistically significant trend in the months of February, March, April, and August, with February and August being the strongest. We can only reject the null hypothesis in these 4 months. All of the effects are slight, and April's is actually negative (meaning there is a trend of lower temperatures in April). 
+Our monthly average minimum temperatures (TMIN) only have a statistically significant trend in the months of February, March, April, and August, with February and August being the strongest. We can only reject the null hypothesis in these 4 months. All of the effects are slight, and April's is actually negative (meaning there is a trend of lower minimum temperatures in April). 
 
-```{r}
+```{r tmin overall, echo = T}
 .0548+.0364+.019-.0375
 ```
-It seems though that overall the increases in minimum temperature slightly outweigh April's decrease. This makes sense, since our first graph showed a slight up trend. 
+It seems though that overall the increases in minimum temperature slightly outweigh April's decrease. This makes sense, since our first graph showed a slight up trend, though it was not statistically significant. I'm also not sure if this is the best/correct way to determine if the increases in 3 months outweigh the decreases of one month, but at least it's a start! 
 
-Our monthly average maximum temperatures only show one statistically significant trend, which is in July. We can reject the null hypothesis for July, but no other months. It shows that maximum temperatures in the month of July are actually decreasing slightly, which I found very interesting. 
+Here's a plot including TMINs for the statistically significant months:
 
-Precipitation was the most interesting and statistically revelant data. All of the trends are significant, meaning we can reject the null hypothesis for all months for the precipitation variable. They are also positive, meaning rainfall has increased over time in all months. The highest of these are especially from June to October, which makes perfect since as it coincides with North Atlantic Hurricane Season. I would like to find a dataset with tropical cylones to plot as a supplement for this data.
+```{r selected month tmin, echo = T}
+plot(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 4,], main = "Average Minimum Temperatures in Selected Months Over Time", type = "l", col = "pink", lty = 2, ylim = c(0,25))
+lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 2,], col = "blue", lty=2)
+lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 8,], col = "purple", lty=2)
+lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 3,], col = "green", lty=2)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 2,])), col = "blue", lwd = 2)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 4,])), col = "pink", lwd = 2)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 8,])), col = "purple", lwd = 2)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 3,])), col = "green", lwd = 2)
+legend("topleft", legend=c("Feb", "March", "April", "Aug"),
+       col=c("blue", "green", "pink", "purple"), lty=2, cex=0.4)
+
+```
+
+
+Our monthly average maximum temperatures only show one statistically significant trend, which is in July. We can reject the null hypothesis for July, but no other months. It shows that maximum temperatures in the month of July are actually decreasing slightly, which I found very interesting. Unfortunately, our significant data with TMIN and TMAX doesn't overlap on months, which means I can't make a cool graph with both TMIN and TMAX for a given month... but I'll do this later for all months anyway because it's fun...
+
+Our TMAX graph for July is messy and shows graphically what we knew from our chart, which is that the trend is small. This is a reminder that just because we designate something as "statistically significant" doesn't necessarily mean it is significant enough for other purposes (such as city planning or policymaking). The trend is there - that is all that our P value tells us; it does not tell us whether the trend is important or not for decision making.
+
+```{r tmax july, echo = T}
+plot(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7,], main = "Maximum Temperature Averages for July Over Time", type = "l")
+abline(coef(lm(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7,])), col = "red", lwd = 2)
+```
+
+
+Precipitation was the most interesting and statistically revelant data. All of the trends are significant, meaning we can reject the null hypothesis for all months for the precipitation variable. They are also positive, meaning rainfall has increased over time in all months. The highest of these are especially from June to October, which makes perfect sense as it coincides with North Atlantic Hurricane Season. I would like to find a dataset with tropical cylones to plot as a supplement for this data.
+
+```{r precipitation in focus, echo = TRUE}
+plot(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 8,], pch = 2, col = "darkslategray3", main = "August Precipitation Over Time")
+abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 8,])))
+```
+It looks like there's one outlier that may be skewing the data, what is it?
+```{r outlier, echo = T}
+max(MonthlyPRCPSum$PRCP, na.rm = T)
+MonthlyPRCPSum$Year[MonthlyPRCPSum$PRCP == 4422.4]
+```
+So it's from August 2017, which was when Hurricane Harvey hit. ![This is a photo of the flooding from Harvey in my hometown, Orange, TX.](harveyorange.jpg)
+
+What happens when we excluse this "100 year storm"?
+
+plot(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$YEAR != 2017,], pch = 2, col = "darkslategray3", main = "August Precipitation Over Time, excluding 2017") #this doesn't work yet but I'm going to figure it out eventually, just maybe not in time for this assignment submission! this also isn't just august.. i think I need to use an & symbol maybe?
+abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$YEAR != 2017])))
+
+Can we plot min and max graphs together? This is just for fun :) 
+```{r max and min yearly, echo = T}
+plot(TMAX~YEAR, MonthlyTMAXMean, type = "l", col = "red", xlim = c(1960,2020))
+lines(TMIN~YEAR, MonthlyTMINMean, col = "blue", xlim = c(1960,2020))
+abline(coef(lm(TMAX~YEAR, MonthlyTMAXMean),), col = "darkred", lwd = 5)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean),), col = "darkblue", lwd = 5)
+```
+
+In conclusion, the climate data for Southeast Texas does not by itself show a warming trend, but does show increased rainfall over time. This highlights the importance of what can happen when you cherry pick data, and also shows why "climate change" is a more accurate term than "global warming." The globe overall is warming, but that does not mean that every single place is getting hotter! These data could easily be used by deniers and perhaps partially explains the prevalence of them in the region... but we know better!
+
 
