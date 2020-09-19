@@ -71,7 +71,6 @@ abline(coef(August.lm), col="red")
 
 ```{r August TMINData}
 climate_data <- read.csv("/home/CAMPUS/cdma2019/ChristinaMarsh_LosAngeles_data.csv")
-
 head(climate_data)
 str(climate_data)
 names(climate_data)
