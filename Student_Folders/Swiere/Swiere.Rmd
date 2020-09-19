@@ -1,7 +1,7 @@
 ---
-title: "Temperatures in Southeast Texas"
+title: "Temperature and Precipitation Changes in Southeast Texas"
 author: "Katy Swiere"
-date: "9/1/2020"
+date: "9/19/20"
 output: html_document
 ---
 
@@ -11,6 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In this blog I will be exploring climate change in Southeast Texas, using data from the National Oceanic and Atmospheric Association (NOAA). 
 
+First I need to import my data. I do this, and then choose the variable TMAX, which is maximum daily temperature, to focus on. 
+
 ```{r part two, echo=TRUE}
 climate_data <- read.csv("/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_DataNEW.csv")
 
@@ -18,16 +20,17 @@ climate_data <- read.csv("/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Studen
 strDates <- as.character(climate_data$DATE) #create object dates as characters
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y") #turn it into New Date
 
-plot(TMAX~NewDate, climate_data, main = "TMAX Orange Texas", ylab = "Degrees C", 
-     xlab = "Time", type = "l") #how can I get this to start at 1940?
+plot(TMAX~NewDate, climate_data, main = "TMAX Orange Texas", ylab = "Degrees C", xlab = "Time", type = "l") 
 
 bestfit <- lm(TMAX~NewDate, climate_data)
 abline(coef(bestfit), col = "red")
 ```
 
-To do this, I must first importa the data and get a general idea of what it looks like. 
-```{r part three, echo = TRUE}
-#Part 3
+Now I can get a general idea of what it looks like. Then I can start formatting things in useful ways and plotting the data. I've skipped over plotting individual months, since I will do all months together using for loops later.
+
+In this next chunk, I'll code new variables into useful formats so that we can use them in our for loops.
+```{r tmax codes, echo = TRUE}
+#tmax
 climate_data$Month <- format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year <- format(as.Date(climate_data$NewDate), format = "%Y")
 
@@ -35,42 +38,114 @@ MonthlyTMAXMean = aggregate(TMAX~Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR <- as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH <- as.numeric(MonthlyTMAXMean$Month)
 
-plot(MonthlyTMAXMean$TMAX, type = "l")  #plot the data!!!! so exciting!!!
+##tmin
+MonthlyTMINMean <- aggregate(TMIN~Month + Year, climate_data, mean)
+MonthlyTMINMean$MONTH <- as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$YEAR <- as.numeric(MonthlyTMINMean$Year)
 
-##Section 3.2
-plot(TMAX~YEAR, MonthlyTMAXMean, type = "l")
-plot(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 5,], type = "l", main = "Average May Max Temps")
-May.max.lm <- lm(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 5,])
-abline(coef(May.max.lm), col = "red")
-
-#what would the TMAX be for january?
-plot(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 1,], type = "l", main = "Average January Max Temps")
-Jan.max.lm <- lm(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 1,])
-abline(Jan.max.lm, col = "blue") #this one looks like the most visible trend so far
-
-##now many a TMIN graph
+#i'll also plot tmin since we did tmax earlier 
 plot(TMIN~NewDate, climate_data, main = "TMIN SETX", ylab = "Degrees C", xlab = "Time", type = "l")
 lm.min <- lm(TMIN~NewDate, climate_data)
 abline(lm.min, col = "red")
-
-MonthlyTMINMean <- aggregate(TMIN~Month + Year, climate_data, mean)
-MonthlyTMINMean$Month <- as.numeric(MonthlyTMINMean$Month)
-MonthlyTMINMean$Year <- as.numeric(MonthlyTMINMean$Year)
-
-plot(TMIN~Year, MonthlyTMINMean, type = "l")
-plot(TMIN~Year, MonthlyTMINMean[MonthlyTMINMean$Month == 5,], type = "l", main = "Average May Min Temps") #look at min temps in may
-May.min.lm <- lm(TMIN~Year, MonthlyTMINMean[MonthlyTMINMean$Month == 5,])
-abline(May.min.lm, col = "red") #the average minimum temperature in may has decreased
-
-
-#now TMIN for january
-plot(TMIN~Year, MonthlyTMINMean[MonthlyTMINMean$Month == 1,], type = "l", main = "Average Jan Min Temps") #look at min temps in jan
-Jan.min.lm <- lm(TMIN~Year, MonthlyTMINMean[MonthlyTMINMean$Month == 1,])
-abline(Jan.min.lm, col = "blue")
 ```
-Once I've done that, I can begin creating different graphs for different measurements of temperature. For example, here I show graphs of maximum temperature over time. However, by themselves they don't appear to be very helpful. To narrow down, I chose the months of May and January to focus on temperature extremes. By looking at the average daily maximum and minimum temperature in May and January since 1940, we can see the trend of warming. 
 
-Now I'd like to add some photos.
-![Where is Orange, Texas?](https://www.bestplaces.net/images/city/Orange_TX.gif)
-![Orange during Hurricane Harvey, 2017](harveyorange.jpg) 
+We haven't looked at precipitation, which, in my opinion, is the most interesting since floods are major weather events in the area and can cause high levels of damage!
+```{r prcp, echo = TRUE}
+
+###PRECIPITATION
+MonthlyPRCPSum = aggregate(PRCP~ Month + Year, climate_data, sum)
+
+MonthlyPRCPSum$YEAR <- as.numeric(MonthlyPRCPSum$Year)
+MonthlyPRCPSum$MONTH <- as.numeric(MonthlyPRCPSum$Month)
+plot(PRCP~YEAR, MonthlyPRCPSum, pch = 2, col = "darkslategray3") #does the triangle kind of remind you of a raindrop? ;) 
+
+```
+
+Now that I have all of my data (it very very rarely snows in Southeast Texas, so I won't be using that variable), I want to use for loops to look at all months at once for TMAX, TMIN, and PRCP. 
+
+```{r}
+#all tmax
+Months <- c("Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec")
+par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
+TMAXresult <- NA
+for(i in 1:12) {
+  plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,], ty = "l", las = 1, xlim = c(1960,2020), main = Months[i])
+  Month.max.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,])
+  summary(Month.max.lm)
+  abline(coef(Month.max.lm), col = "red")
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.max.lm)[2],4), round(summary(Month.max.lm)$coefficients[2,4],4), round(summary(Month.max.lm)$r.squared,3)))
+}
+##plot all tmins at once
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+TMINresult <- NA
+par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
+for(i in 1:12) {
+  plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,], ty = "l", las = 1, xlim = c(1960,2020), main = Months[i])
+  Month.min.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,])
+  summary(Month.min.lm)
+  abline(coef(Month.min.lm), col = "red")
+  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.min.lm)[2],4), round(summary(Month.min.lm)$coefficients[2,4],4), round(summary(Month.min.lm)$r.squared,3)))
+}
+
+#all prcp at once
+par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
+PRCPresult <- NA
+for(i in 1:12) {
+  plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i,], ty = "l", las = 1, xlim = c(1960,2020), main = Months[i])
+  Month.PRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i,])
+  summary(Month.PRCP.lm)
+  abline(coef(Month.PRCP.lm), col = "red")
+  PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.PRCP.lm)[2],4), round(summary(Month.PRCP.lm)$coefficients[2,4],4), round(summary(Month.PRCP.lm)$r.squared,3)))
+}
+```
+Now that I've plotted them all, it will be helpful to see the actual numbers behind the graph to determine if any of the trends are statistically significant. 
+
+```{r}
+##Results
+Results <- data.frame(Month = TMINresult[,1],
+                      TMINSlope = TMINresult[,2],
+                      TMIN_P = as.numeric(TMINresult[,3]),
+                      TMINRsq = TMINresult[,4],
+                      TMAXSlope = TMAXresult[, 2],
+                      TMAX_P = as.numeric(TMAXresult[,3]),
+                      TMAXRsq = TMAXresult[,4],
+                      PRCPSlope = PRCPresult[,2],
+                      PRCP_P = as.numeric(PRCPresult[,3]),
+                      PRCPsq = PRCPresult[,4])
+
+Results$starTMIN <- ifelse(Results$TMIN_P <= .001, "***", 
+                           ifelse(Results$TMIN_P <= .01, "**",
+                            ifelse(Results$TMIN_P <= .05, "*", "NS")))
+Results$starTMAX <- ifelse(Results$TMAX_P <= .001, "***", 
+                                   ifelse(Results$TMAX_P <= .01, "**",
+                                          ifelse(Results$TMAX_P <= .05, "*", "NS")))
+Results$starPRCP <- ifelse(Results$PRCP_P <= .001, "***", 
+                           ifelse(Results$PRCP_P <= .01, "**",
+                                  ifelse(Results$PRCP_P <= .05, "*", "NS")))
+
+Results$TMINSlope = paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXSlope = paste(Results$TMAXSlope, Results$starTMAX)
+Results$PRCPSlope = paste(Results$PRCPSlope, Results$starPRCP)
+
+Results <- Results[c(2:13), c(1,2,4,5,7,8,10)]
+
+colnames(Results) = c("Month", "Slope TMIN", "R^2", "Slope TMAX", "R^2", "Slope PRCP", "R^2")
+library(htmlTable)
+htmlTable(Results)
+
+```
+Amazing! Now we have a lovely table that lays out all of the analysis I just did. 
+
+Our monthly average minimum temperatures (TMIN) only have a statistically significant trend in the months of February, March, April, and August, with February and August being the strongest. We can only reject the null hypothesis in these 4 months. All of the effects are slight, and April's is actually negative (meaning there is a trend of lower temperatures in April). 
+
+```{r}
+.0548+.0364+.019-.0375
+```
+It seems though that overall the increases in minimum temperature slightly outweigh April's decrease. This makes sense, since our first graph showed a slight up trend. 
+
+Our monthly average maximum temperatures only show one statistically significant trend, which is in July. We can reject the null hypothesis for July, but no other months. It shows that maximum temperatures in the month of July are actually decreasing slightly, which I found very interesting. 
+
+Precipitation was the most interesting and statistically revelant data. All of the trends are significant, meaning we can reject the null hypothesis for all months for the precipitation variable. They are also positive, meaning rainfall has increased over time in all months. The highest of these are especially from June to October, which makes perfect since as it coincides with North Atlantic Hurricane Season. I would like to find a dataset with tropical cylones to plot as a supplement for this data.
 
