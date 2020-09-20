@@ -1,0 +1,156 @@
+---
+title: "Global Climate Change, Oregon Wildfires, and Portland Air Quality"
+author: "Claire LeBlanc"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<br>
+
+### Background 
+
+<br>
+
+### Data Sources
+
+I obtained daily temperature and percipitation data from the NOAA website. The data was collected at the Portland Internation Airport starting in 1936 (precipitation started in 1938), and had good coverage (98%). One limitation is that the data is from only one location on the outskirts of Portland, so it may not fully encompass the trends that are occuring in the city. 
+
+I obtained daily air quality data from the EPA website, which compiled air quality measurments from a variety of sites around Portland. There were a few limitations with the data. First off, the data does not start until 1980, so longer trends cannot be investigated. Additionally, PM2.5 measurments do not start until 1999. Although PM 2.5 is the most common and dangerous pollutant from fires, I used the Overall AQI value, which also includes other pollutants. I think that using this value instead of the PM 2.5 value may be the reason I am not getting the results taht I expected. I may end up shrinking my data set and look at PM 2.5 data starting in 1999. 
+
+<br>
+
+### Temperature Analysis
+```{r temp setup, echo = FALSE}
+climate_data <-read.csv("/home/CAMPUS/cjld2018/Climate_Change_Narratives/Data/FA20/LeBlanc_temp_percp_data.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format = "%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+```
+
+```{r temp graphs, echo = FALSE, fig.show="hold", out.width="50%"}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",], ty='l', xlim=c(1940, 2019), main="Average Maximum Temperature in June", xlab = "Year", ylab= "Average Max Temperature (Celcius)", col="coral1")
+June.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+abline(coef(June.lm))
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",], ty='l', xlim=c(1940, 2019), main="Average Maximum Temperature in July", xlab = "Year", ylab= "Average Max Temperature (Celcius)", col="cornflowerblue")
+July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+abline(coef(July.lm))
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], ty='l', xlim=c(1940, 2019), main="Average Maximum Temperature in August", xlab = "Year", ylab= "Average Max Temperature (Celcius)", col="aquamarine4")
+August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+abline(coef(August.lm))
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",], ty='l', xlim=c(1940, 2019), main="Average Maximum Temperature in September", xlab = "Year", ylab= "Average Max Temperature (Celcius)", col="mediumpurple1")
+September.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+abline(coef(September.lm))
+```
+
+For all four months shown, the warming trend is significant. For each month, the null hypothesis is that the slope of the trend line is zero (temperature is not increasing or decreasing over time). Additionally, we used a 95% confidence interval so when there is less than 5% probability that we would get this data if there was no relationship between the variable (p < .05), we reject the null hypothesis. 
+
+For June, p = 0.03627 < 0.05 and Adjusted R-squared = 0.04132. Therefore, we reject the null hypothesis for June, concluding that there is a significant warming trend. We can also conclude from the R-squared value that our linear model only accounts for about 4% of the variation seen in the data.
+
+For July, p = 0.0223 < 0.05 and the Adjusted R-squared = 0.0512. Therefore, we also reject the null hypothesis for July, concluding that there is a significant warming trend. We can also conclude from the R-squared value that our linear model only accounts for about 5% of the variation seen in the data. 
+
+For August, p = 8.038 x 10^-6 < 0.05 and the Adjusted R-squared = 0.2096. Therefore, we also reject the null hypothesis for August, concluding that there is a significant warming trend. Additionally, in August, the linear model accounts for about 21% of the variation seen in the data, which is much more than the models accounted for in June and July. 
+
+For September, p = 0.03693 < 0.05 and Adjusted R-squared = 0.04095. Therefore, we can reject the null hypothesis for September, concluding that there is a significant warming trend. We can also conclude that like in June our linear model only accounts for about 4% of the variation in the data. 
+
+The coefficent of the linear model gives the predicted change in temperature per year based on that model. For June, July, and September, the slopes are very similar with 0.017, 0.019, and 0.017 respectively. For August, the slope was slighlty larger, equaling 0.037 degrees per year. 
+
+<br>
+
+### Precipitation Analysis
+
+```{r PCRP setup,include = FALSE}
+MonthlyPRCPMean = aggregate(PRCP ~ Month + Year, climate_data, sum)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+```
+
+```{r PCRP graphs, echo = FALSE, fig.show="hold", out.width="50%"}
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="06",], ty='l', xlim=c(1940, 2019), main="Total Percipitation in June", xlab = "Year", ylab= "Total Percipitation", col="coral1")
+June.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="06",])
+abline(coef(June.lm))
+
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="07",], ty='l', xlim=c(1940, 2019), main="Total Percipitation in July", xlab = "Year", ylab= "Total Percipitation", col="cornflowerblue")
+July.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="07",])
+abline(coef(July.lm))
+
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",], ty='l', xlim=c(1940, 2019), main="Total Percipitation in August", xlab = "Year", ylab= "Total Percipitation", col="aquamarine4")
+August.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="08",])
+abline(coef(August.lm)) 
+
+plot(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="09",], ty='l', xlim=c(1940, 2019), main="Total Percipitation in September", xlab = "Year", ylab= "Total Percipitation", col="mediumpurple1")
+September.lm <- lm(PRCP~YEAR, data=MonthlyPRCPMean[MonthlyPRCPMean$Month=="09",])
+abline(coef(September.lm))
+```
+
+For the precipitation data, a 95% confidence interval was also used and our null hypothesis was that total monthly precipitation was not increasing or decreasing over time. 
+
+In June, the data showed a significant increasing trend and we are able to reject the null hypothesis, with p = 0.02234 < 0.05. The Adjusted R-squared value = 0.0512. Therefore, about 5% of the variation in precipitation can be explained by the linear model. 
+
+In July, although the linear model showed a slight decreasing trend, the trend is insignificant and we failed to reject the null hypothesis (p = 0.9143 > 0.05). The Adjusted R-squared value = -0.0122, so the model explains none of the variation. 
+
+In August, the decreasing trend was also not found to be significant and we failed to reject the null hypothesis  (p = 0.2293 > 0.05). Additionally, Adjusted R-squared = 0.005668 so the model only accounts fro 0.5% of the variation in the data. 
+
+Once again, in September, the decreasing trend was not found to be significant and we failed to reject the null hypothesis (p = 0.719 > 0.05). Additionally, Adjusted R-squared = -0.01072, so the model accounts for none of the variation in the data. 
+
+The lack of significance in the precipitation models may be due to many factors. Precipitation is not as linearly connected with climate change as temperature. In some places, climate change can cause an increase in precipitation, and other places it can cause a decrease. Additionally, precipitation is also affected by a variety of other factors such as El Niño/La Niña cycles. This causes greater variation in the data, making it harder to find a statistically significant trend. 
+
+<br>
+
+### Air Quality Analysis
+```{r AQ setup, include = FALSE}
+setwd("/home/CAMPUS/cjld2018/Climate_Change_Narratives/Student_Folders/LeBlanc/aq_data")
+library(tidyverse) 
+column_types <- list(col_character(),col_double(),col_character(), col_character(),col_character(), col_character(), col_double(), col_double(), col_character(), col_character(), col_character()) 
+AQdf <- list.files(pattern = "*.csv") %>% 
+  map_df(~readr::read_csv(.,col_types=column_types)) 
+
+strDates <- as.character(AQdf$Date)
+AQdf$NewDate <- as.Date(strDates, "%m/%d/%Y")
+
+names(AQdf)[names(AQdf) == "Overall AQI Value"] <- "AQI_VALUE"
+
+AQdf$Month = format(as.Date(AQdf$NewDate), format = "%m")
+AQdf$Year = format(AQdf$NewDate, format = "%Y")
+
+MonthlyAQIMean = aggregate(AQI_VALUE ~ Month + Year, AQdf, mean)
+
+MonthlyAQIMean$YEAR = as.numeric(MonthlyAQIMean$Year)
+MonthlyAQIMean$MONTH = as.numeric(MonthlyAQIMean$Month)
+```
+
+```{r AQ graphs, echo = FALSE, fig.show="hold", out.width="50%"}
+plot(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="06",], ty='l', xlim=c(1980, 2019), ylim = c(0,500), main="Average Air Quality in June", xlab = "Year", ylab= "Average Air Quality Index (AQI) Value", col="coral1")
+June.lm <- lm(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="06",])
+abline(coef(June.lm))
+
+plot(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="07",], ty='l', xlim=c(1980, 2019), ylim = c(0,500), main="Average Air Quality in July", xlab = "Year", ylab= "Average Air Quality Index (AQI) Value", col="cornflowerblue")
+July.lm <- lm(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="07",])
+abline(coef(July.lm))
+
+plot(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="08",], ty='l', xlim=c(1980, 2019), ylim = c(0,500), main="Average Air Quality in August", xlab = "Year", ylab= "Average Air Quality Index (AQI) Value", col="aquamarine4")
+August.lm <- lm(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="08",])
+abline(coef(August.lm))
+
+plot(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="09",], ty='l', xlim=c(1980, 2019), ylim = c(0,500), main="Average Air Quality in September", xlab = "Year", ylab= "Average Air Quality Index (AQI) Value", col="mediumpurple1")
+September.lm <- lm(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="09",])
+abline(coef(September.lm))
+```
+
+This is probably not the final way I will analyze the air quality data. I am hoping to figure out some way to graph the number of days that the air quality is above a certain level, or I may start my analysis at 1999 and only look at PM 2.5 concentrations. Right now, all of the monthly air quality linear models show a significant downward trend. PM 2.5 is released from a variety of sources (not just fires) and in my literature review, I found that it has been improving elsewhere in the US, so this trend may be occurring in Portland as well and cancelling out the increased smoke from fires. Additionally, other pollutants besides PM 2.5 may be descreasing and masking the increase in PM 2.5. 
+
+
+### Conclusion
