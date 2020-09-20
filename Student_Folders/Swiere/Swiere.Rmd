@@ -130,9 +130,9 @@ Results$TMINSlope = paste(Results$TMINSlope, Results$starTMIN)
 Results$TMAXSlope = paste(Results$TMAXSlope, Results$starTMAX)
 Results$PRCPSlope = paste(Results$PRCPSlope, Results$starPRCP)
 
-Results <- Results[c(2:13), c(1,2,4,5,7,8,10)]
+Results <- Results[c(2:13), c(1,2,3,4,5,6,7,8,9,10)]
 
-colnames(Results) = c("Month", "Slope TMIN", "R^2", "Slope TMAX", "R^2", "Slope PRCP", "R^2")
+colnames(Results) = c("Month", "Slope TMIN", "P value", "R^2", "Slope TMAX", "P value", "R^2", "Slope PRCP", "P Value", "R^2")
 library(htmlTable)
 htmlTable(Results)
 
