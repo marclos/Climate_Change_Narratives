@@ -280,12 +280,13 @@ After creating the month and year as separate variables, we can use them to cacu
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{MonthlyTMAXMean} \hlkwb{=} \hlkwd{aggregate}\hlstd{(TMAX} \hlopt{~} \hlstd{Month} \hlopt{+} \hlstd{Year, climate_data, mean)}
-
-\hlstd{MonthlyTMAXMean}\hlopt{$}\hlstd{YEAR} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{Year)}
-\hlstd{MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{Month)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+Note: I always check to see what I have created to make sure I am getting what I expected!  
+
+For example, when we look at the structure of the MonthlyTMAXMean, I learn that the `Year' and `Month' format -- which are defined as character strings.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -293,45 +294,76 @@ After creating the month and year as separate variables, we can use them to cacu
 \hlkwd{str}\hlstd{(MonthlyTMAXMean)}
 \end{alltt}
 \begin{verbatim}
-## 'data.frame':	888 obs. of  5 variables:
+## 'data.frame':	888 obs. of  3 variables:
 ##  $ Month: chr  "01" "02" "03" "04" ...
 ##  $ Year : chr  "1943" "1943" "1943" "1943" ...
 ##  $ TMAX : num  32.2 33.2 34.9 33.5 33.8 ...
-##  $ YEAR : num  1943 1943 1943 1943 1943 ...
-##  $ MONTH: num  1 2 3 4 5 6 7 8 9 10 ...
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
+We need to change this to numeric formats so we can further process the data. 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{MonthlyTMAXMean}\hlopt{$}\hlstd{Year.num} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{Year)}
+\hlstd{MonthlyTMAXMean}\hlopt{$}\hlstd{Month.num} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{Month)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\noindent And checking the data\ldots
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{str}\hlstd{(MonthlyTMAXMean)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	888 obs. of  5 variables:
+##  $ Month    : chr  "01" "02" "03" "04" ...
+##  $ Year     : chr  "1943" "1943" "1943" "1943" ...
+##  $ TMAX     : num  32.2 33.2 34.9 33.5 33.8 ...
+##  $ Year.num : num  1943 1943 1943 1943 1943 ...
+##  $ Month.num: num  1 2 3 4 5 6 7 8 9 10 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\noindent It worked!
+
+Now, let's see what plot looks like. Should look pretty different than the daily data we had before. 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
 
 \end{knitrout}
 
-Reminder: When we define a plot type, (ty = ), we are defining it as a line which is abreviated as the letter 'l', not the number '1'. 
+Reminder: When we define a plot type, (ty = ), we are defining it as a line which is abreviated as the letter `l' and abrevation for `line', not the number '1'. Altenatively, you could make a ``point'' plot with ty = `p'.  
+
 \subsection{Selecting for 1 Month -- May}
 
 Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
 
+Note: I have limited the data limits to evaluate the a subset of the years from 1950--2020. Also, I can use the numbers because the Year.num is a numeric variable.
+
+In addition, I have selected the 5th month of the year, i.e. May!  Note that I am referencing the variable that is a character string, thus need to put ``05'' in quotes. 
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month=="05"], ty='l')}
-\hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,],}
+\hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{Year.num,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,],}
      \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1950}\hlstd{,} \hlnum{2020}\hlstd{))}
-\hlstd{May.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX}\hlopt{~}\hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,])}
+\hlstd{May.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX}\hlopt{~}\hlstd{Year.num,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstr{"05"}\hlstd{,])}
 \hlkwd{summary}\hlstd{(May.lm)}
 \end{alltt}
 \begin{verbatim}
 ## 
 ## Call:
-## lm(formula = TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == 
+## lm(formula = TMAX ~ Year.num, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == 
 ##     "05", ])
 ## 
 ## Residuals:
@@ -341,7 +373,7 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(>|t|)
 ## (Intercept) 17.238621  13.753642   1.253    0.214
-## YEAR         0.008756   0.006946   1.261    0.211
+## Year.num     0.008756   0.006946   1.261    0.211
 ## 
 ## Residual standard error: 1.302 on 73 degrees of freedom
 ## Multiple R-squared:  0.0213,	Adjusted R-squared:  0.007897 
@@ -351,7 +383,7 @@ Perhaps, we can get a better handle on this stuff if we analyze for just one mon
 \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(May.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
 
 \end{knitrout}
 
@@ -359,13 +391,15 @@ Now, the change is 0.0088 degress C/year or 0.876 degress C/100 years with a pro
 
 %https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R
 
+Note: if you are getting an error saying: error in plot.window(need finite `ylim' values), you may need to check your data format and see whether the months in your data set have a 0 infront of them or not. If not, try ``5" instead of ``05".
+
 \subsection{Testing all the Months}
 
 This section for advanced users and specific questions. Please do not proceed without consulting Marc.
 
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
 
-Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year. 
+Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year -- but if you do you the code below, try to figure out what each line is doing. 
 
 \begin{figure}
 \begin{knitrout}
@@ -381,15 +415,12 @@ Below, I have create code to evaluate all of the months at once, but you may pre
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{3}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{)} \hlopt{+} \hlnum{0.1}\hlstd{)}
 \hlstd{TMAXresult} \hlkwb{<-} \hlnum{NA}
 \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{12}\hlstd{) \{}
-    \hlcom{# plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month==i],}
-    \hlcom{# ty='l')}
-    \hlkwd{plot}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH} \hlopt{==}
+    \hlkwd{plot}\hlstd{(TMAX} \hlopt{~} \hlstd{Year.num,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month.num} \hlopt{==}
         \hlstd{i, ],} \hlkwc{ty} \hlstd{=} \hlstr{"l"}\hlstd{,} \hlkwc{las} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1940}\hlstd{,} \hlnum{2020}\hlstd{),}
         \hlkwc{main} \hlstd{= Months[i])}
-    \hlstd{Month.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{YEAR,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{MONTH} \hlopt{==}
+    \hlstd{Month.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{Year.num,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month.num} \hlopt{==}
         \hlstd{i, ])}
     \hlkwd{summary}\hlstd{(Month.lm)}
-
     \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(Month.lm),} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{)}
 
     \hlstd{TMAXresult} \hlkwb{<-} \hlkwd{rbind}\hlstd{(TMAXresult,} \hlkwd{cbind}\hlstd{(Months[i],}
@@ -420,7 +451,7 @@ Alternatively, it might be important to evaluate changes to the daily mininum te
 \caption{Minimum Daily Temperatures in Bangkok, Thailand.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-11-1} 
 
 \end{knitrout}
 \end{figure}
@@ -434,21 +465,19 @@ There appears to be a trend, but it's clouded with lots of variation.
 \begin{alltt}
 \hlstd{MonthlyTMINMean} \hlkwb{=} \hlkwd{aggregate}\hlstd{(TMIN} \hlopt{~} \hlstd{Month} \hlopt{+} \hlstd{Year, climate_data, mean)}
 
-\hlstd{MonthlyTMINMean}\hlopt{$}\hlstd{YEAR} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Year)}
-
 \hlcom{# Fixing the Format of Month and Year as numeric}
-\hlstd{MonthlyTMINMean}\hlopt{$}\hlstd{YEAR} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Year)}
-\hlstd{MonthlyTMINMean}\hlopt{$}\hlstd{MONTH} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Month)}
+\hlstd{MonthlyTMINMean}\hlopt{$}\hlstd{Year.num} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Year)}
+\hlstd{MonthlyTMINMean}\hlopt{$}\hlstd{Month.num} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Month)}
 \hlkwd{head}\hlstd{(MonthlyTMINMean)}
 \end{alltt}
 \begin{verbatim}
-##   Month Year     TMIN YEAR MONTH
-## 1    01 1943 18.54828 1943     1
-## 2    02 1943 20.73077 1943     2
-## 3    03 1943 23.39655 1943     3
-## 4    04 1943 23.79259 1943     4
-## 5    05 1943 24.87692 1943     5
-## 6    06 1943 24.76429 1943     6
+##   Month Year     TMIN Year.num Month.num
+## 1    01 1943 18.54828     1943         1
+## 2    02 1943 20.73077     1943         2
+## 3    03 1943 23.39655     1943         3
+## 4    04 1943 23.79259     1943         4
+## 5    05 1943 24.87692     1943         5
+## 6    06 1943 24.76429     1943         6
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -462,7 +491,7 @@ There appears to be a trend, but it's clouded with lots of variation.
 \hlkwd{plot}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
 
 \end{knitrout}
 
@@ -480,12 +509,13 @@ Temperatures, Bangkok, Thailand}
 
 \end{knitrout}
 \end{figure} 
+\clearpage
 
 \item The change in minimum temperatures seems to be even more compelling than the maximum temperatures. To compare, look at the Table \ref{tab:results} to appreciate estimated slopes and their associated null hypothesis probabilities. 
 
 \begin{kframe}
 \begin{alltt}
-\hlkwd{library}\hlstd{(xtable)}
+\hlcom{# Creating a dataframe to be used in a table.}
 \hlstd{Results} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Month} \hlstd{= TMINresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{1}\hlstd{],}
     \hlkwc{TMINSlope} \hlstd{= TMINresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{2}\hlstd{],}
     \hlkwc{TMIN_P} \hlstd{=} \hlkwd{as.numeric}\hlstd{(TMINresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{3}\hlstd{]),}
@@ -493,22 +523,24 @@ Temperatures, Bangkok, Thailand}
     \hlkwc{TMAXSlope} \hlstd{= TMAXresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{2}\hlstd{],}
     \hlkwc{TMAX_P} \hlstd{=} \hlkwd{as.numeric}\hlstd{(TMAXresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{3}\hlstd{]),}
     \hlkwc{TMAXRsq} \hlstd{= TMAXresult[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlopt{:}\hlnum{13}\hlstd{),}\hlnum{4}\hlstd{])}
-\hlstd{Results}\hlopt{$}\hlstd{starTMIN} \hlkwb{=} \hlstr{"NS"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMIN[Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<=} \hlnum{.05}\hlstd{]} \hlkwb{=} \hlstr{"*"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMIN[Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<} \hlnum{0.01}\hlstd{]} \hlkwb{=} \hlstr{"**"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMIN[Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<} \hlnum{0.001}\hlstd{]} \hlkwb{=} \hlstr{"***"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMAX} \hlkwb{=} \hlstr{"NS"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMAX[Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<} \hlnum{0.05}\hlstd{]} \hlkwb{=} \hlstr{"*"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMAX[Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<} \hlnum{0.01}\hlstd{]} \hlkwb{=} \hlstr{"**"}
-\hlstd{Results}\hlopt{$}\hlstd{starTMAX[Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<} \hlnum{0.001}\hlstd{]} \hlkwb{=} \hlstr{"***"}
+\hlstd{Results}\hlopt{$}\hlstd{starTMAX} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(}
+  \hlstd{Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<=} \hlnum{.001}\hlstd{,} \hlstr{"***"}\hlstd{,}
+    \hlkwd{ifelse}\hlstd{(Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<=} \hlnum{.01}\hlstd{,} \hlstr{"**"}\hlstd{,}
+      \hlkwd{ifelse}\hlstd{(Results}\hlopt{$}\hlstd{TMAX_P} \hlopt{<=} \hlnum{.05}\hlstd{,} \hlstr{"*"}\hlstd{,} \hlstr{"NS"}\hlstd{)))}
+\hlstd{Results}\hlopt{$}\hlstd{starTMIN} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(}
+  \hlstd{Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<=} \hlnum{.001}\hlstd{,} \hlstr{"***"}\hlstd{,}
+    \hlkwd{ifelse}\hlstd{(Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<=} \hlnum{.01}\hlstd{,} \hlstr{"**"}\hlstd{,}
+      \hlkwd{ifelse}\hlstd{(Results}\hlopt{$}\hlstd{TMIN_P} \hlopt{<=} \hlnum{.05}\hlstd{,} \hlstr{"*"}\hlstd{,} \hlstr{"NS"}\hlstd{)))}
 \hlstd{Results}\hlopt{$}\hlstd{TMINslope}\hlkwb{=}\hlkwd{paste}\hlstd{(Results}\hlopt{$}\hlstd{TMINSlope, Results}\hlopt{$}\hlstd{starTMIN)}
 \hlstd{Results}\hlopt{$}\hlstd{TMAXslope}\hlkwb{=}\hlkwd{paste}\hlstd{(Results}\hlopt{$}\hlstd{TMAXSlope, Results}\hlopt{$}\hlstd{starTMAX)}
 \hlkwd{colnames}\hlstd{(Results)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Month"}\hlstd{,} \hlstr{"2"}\hlstd{,} \hlstr{"3"}\hlstd{,} \hlstr{"R^2"}\hlstd{,} \hlstr{"5"}\hlstd{,} \hlstr{"6"}\hlstd{,}
                        \hlstr{"R^2"}\hlstd{,} \hlstr{"8"}\hlstd{,} \hlstr{"9"}\hlstd{,} \hlstr{"Slope TMIN"}\hlstd{,} \hlstr{"Slope TMAX"}\hlstd{)}
+
+\hlkwd{library}\hlstd{(xtable)}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Sat Sep  5 13:28:15 2020
+% Fri Sep 18 15:37:53 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
@@ -549,11 +581,13 @@ As we might expect, the a small amount of the variance is explained by the ``Mon
 
 \subsubsection{Precipitation: Departure from Mean}
 
-Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
+Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but have found some datasets have problems. 
 
 Precipitation is something that might increase or decrease due to climate change. So, to analyze this, we will evaluate how much precipitation has deveated from the mean, by plotting the rainfall and the mean in a time-series plot. 
 
-Second, we need to remove the missing values and evalaute which years have complete years. If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season? We'll need to be consistent -- assuming that missing data are not zeros, we'll define complete years as over 300 days of data. 
+Second, we need to remove the missing values and evaluate which years that are complete -- why do you think missing variables might be an issue analyzing precipiation? 
+
+If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season? We'll need to be consistent -- assuming that missing data are not zeros, we'll define complete years as over 300 days of data. 
 
 NOTE: The missing values have not been converted to NAs!
 \begin{knitrout}
@@ -572,7 +606,7 @@ NOTE: The missing values have not been converted to NAs!
 \hlkwd{plot}\hlstd{(x} \hlopt{~} \hlstd{Date,} \hlkwc{data}\hlstd{=Missing)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-14-1} 
 
 \end{knitrout}
 
@@ -616,7 +650,7 @@ There are loads of missing values in many months. Let's cut of the months that h
 \end{kframe}
 \end{knitrout}
 
-First, we need a "mean" -- The IPCC uses 1961-1990 as a norm for temperature, I don't know what is the standard for rainfall or Thailand, so we should look that up. For now, we'll use our filtered records to generate a mean.
+First, we need a ``mean" -- The IPCC uses 1961-1990 as a norm for temperature, I don't know what is the standard for rainfall or Thailand, so we should look that up. For now, we'll use our filtered records to generate a mean.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -633,7 +667,7 @@ First, we need a "mean" -- The IPCC uses 1961-1990 as a norm for temperature, I 
 \hlkwd{abline}\hlstd{(}\hlkwc{h}\hlstd{=PRCP_mean,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-15-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-17-1} 
 
 \end{knitrout}
 
@@ -642,7 +676,7 @@ Wow, these data look terrible -- the mean looks meaningless given the biased dat
 \begin{figure}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-16-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-18-1} 
 
 \end{knitrout}
 \end{figure}
@@ -749,9 +783,9 @@ Try not to get bogged down in the code at this point. But noting this function c
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
 \hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMIN} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMINMean[MonthlyTMINMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{1}\hlstd{,]))}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-1} 
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(predvars, data, env): object 'YEAR' not found}}\end{kframe}
 \end{knitrout}
 \end{figure}
 

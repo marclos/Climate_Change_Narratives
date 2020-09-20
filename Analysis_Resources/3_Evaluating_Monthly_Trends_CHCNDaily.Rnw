@@ -190,30 +190,48 @@ After creating the month and year as separate variables, we can use them to cacu
 
 <<label='MonthlyTMAXmean'>>=
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-
-MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 @
 
-<<label='MonthlyTMAXmeanCheck'>>=
+Note: I always check to see what I have created to make sure I am getting what I expected!  
+
+For example, when we look at the structure of the MonthlyTMAXMean, I learn that the `Year' and `Month' format -- which are defined as character strings.
+
+<<>>=
 str(MonthlyTMAXMean)
 @
 
+We need to change this to numeric formats so we can further process the data. 
 
+<<>>=
+MonthlyTMAXMean$Year.num = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num = as.numeric(MonthlyTMAXMean$Month)
+@
+
+\noindent And checking the data\ldots
+<<label='MonthlyTMAXmeanCheck'>>=
+str(MonthlyTMAXMean)
+@
+\noindent It worked!
+
+Now, let's see what plot looks like. Should look pretty different than the daily data we had before. 
 <<>>=
 plot(MonthlyTMAXMean$TMAX, ty='l')
 @
 
-Reminder: When we define a plot type, (ty = ), we are defining it as a line which is abreviated as the letter 'l', not the number '1'. 
+Reminder: When we define a plot type, (ty = ), we are defining it as a line which is abreviated as the letter `l' and abrevation for `line', not the number '1'. Altenatively, you could make a ``point'' plot with ty = `p'.  
+
 \subsection{Selecting for 1 Month -- May}
 
 Perhaps, we can get a better handle on this stuff if we analyze for just one month at a time -- certainly easier to visualize!
 
+Note: I have limited the data limits to evaluate the a subset of the years from 1950--2020. Also, I can use the numbers because the Year.num is a numeric variable.
+
+In addition, I have selected the 5th month of the year, i.e. May!  Note that I am referencing the variable that is a character string, thus need to put ``05'' in quotes. 
+
 <<>>=
-#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month=="05"], ty='l')
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
      ty='l', xlim=c(1950, 2020)) 
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+May.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 summary(May.lm)
 
 abline(coef(May.lm), col="red")
@@ -223,7 +241,7 @@ Now, the change is \Sexpr{round(coef(May.lm)[2], 4)} degress C/year or \Sexpr{ro
 
 %https://feliperego.github.io/blog/2015/10/23/Interpreting-Model-Output-In-R
 
-Note: if you are getting an error saying: error in plot.window(need finite 'ylim' values), you may need to check your data format and see whether the months in your data set have a 0 infront of them or not. If not, try "5" instead of "05".
+Note: if you are getting an error saying: error in plot.window(need finite `ylim' values), you may need to check your data format and see whether the months in your data set have a 0 infront of them or not. If not, try ``5" instead of ``05".
 
 \subsection{Testing all the Months}
 
@@ -231,7 +249,7 @@ This section for advanced users and specific questions. Please do not proceed wi
 
 I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
 
-Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year. 
+Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year -- but if you do you the code below, try to figure out what each line is doing. 
 
 \begin{figure}
 <<echo=TRUE, label='12MonthsTMAX', tidy=TRUE>>=
@@ -243,13 +261,11 @@ Months = c("January", "February", "March", "April", "May", "June",
 par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
 TMAXresult <- NA
 for (i in 1:12){
-#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month==i], ty='l')
-plot(TMAX~YEAR, 
-  data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,], 
+plot(TMAX~Year.num, 
+  data=MonthlyTMAXMean[MonthlyTMAXMean$Month.num==i,], 
   ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
-Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
+Month.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month.num==i,])
 summary(Month.lm)
-
 abline(coef(Month.lm), col="red")
 
 TMAXresult <- rbind(TMAXresult, 
@@ -290,11 +306,9 @@ There appears to be a trend, but it's clouded with lots of variation.
 <<label='CreateTMIN'>>=
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-
 # Fixing the Format of Month and Year as numeric
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$Year.num = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
 @
 
@@ -319,8 +333,8 @@ Months = c("January", "February", "March", "April", "May", "June", "July", "Augu
 par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
 TMINresult <- NA
 for (i in 1:12){
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
-Month.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month.num==i,], ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month.num==i,])
 
 summary(Month.lm)
 
@@ -330,11 +344,12 @@ TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), ro
 }
 @
 \end{figure} 
+\clearpage
 
 \item The change in minimum temperatures seems to be even more compelling than the maximum temperatures. To compare, look at the Table \ref{tab:results} to appreciate estimated slopes and their associated null hypothesis probabilities. 
 
-<<echo=T, results='asis'>>=
-library(xtable)
+<<echo=T, results='asis', split=FALSE>>=
+# Creating a dataframe to be used in a table.
 Results <- data.frame(Month = TMINresult[c(2:13),1], 
     TMINSlope = TMINresult[c(2:13),2], 
     TMIN_P = as.numeric(TMINresult[c(2:13),3]), 
@@ -342,18 +357,20 @@ Results <- data.frame(Month = TMINresult[c(2:13),1],
     TMAXSlope = TMAXresult[c(2:13),2], 
     TMAX_P = as.numeric(TMAXresult[c(2:13),3]), 
     TMAXRsq = TMAXresult[c(2:13),4])
-Results$starTMIN = "NS"
-Results$starTMIN[Results$TMIN_P <= .05] = "*"
-Results$starTMIN[Results$TMIN_P < 0.01] = "**"
-Results$starTMIN[Results$TMIN_P < 0.001] = "***"
-Results$starTMAX = "NS"
-Results$starTMAX[Results$TMAX_P < 0.05] = "*"
-Results$starTMAX[Results$TMAX_P < 0.01] = "**"
-Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$starTMAX <- ifelse(
+  Results$TMAX_P <= .001, "***",
+    ifelse(Results$TMAX_P <= .01, "**",
+      ifelse(Results$TMAX_P <= .05, "*", "NS")))
+Results$starTMIN <- ifelse(
+  Results$TMIN_P <= .001, "***",
+    ifelse(Results$TMIN_P <= .01, "**",
+      ifelse(Results$TMIN_P <= .05, "*", "NS")))
 Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
 Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
 colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6", 
                        "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+
+library(xtable)
 print(xtable(Results[,c(1, 10, 4, 11, 7)]))
 @
 
@@ -374,11 +391,13 @@ As we might expect, the a small amount of the variance is explained by the ``Mon
 
 \subsubsection{Precipitation: Departure from Mean}
 
-Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but haven't finished the analysis yet.
+Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but have found some datasets have problems. 
 
 Precipitation is something that might increase or decrease due to climate change. So, to analyze this, we will evaluate how much precipitation has deveated from the mean, by plotting the rainfall and the mean in a time-series plot. 
 
-Second, we need to remove the missing values and evalaute which years have complete years. If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season? We'll need to be consistent -- assuming that missing data are not zeros, we'll define complete years as over 300 days of data. 
+Second, we need to remove the missing values and evaluate which years that are complete -- why do you think missing variables might be an issue analyzing precipiation? 
+
+If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season? We'll need to be consistent -- assuming that missing data are not zeros, we'll define complete years as over 300 days of data. 
 
 NOTE: The missing values have not been converted to NAs!
 <<>>=
@@ -414,7 +433,7 @@ PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
 head(PPT)
 @
 
-First, we need a "mean" -- The IPCC uses 1961-1990 as a norm for temperature, I don't know what is the standard for rainfall or Thailand, so we should look that up. For now, we'll use our filtered records to generate a mean.
+First, we need a ``mean" -- The IPCC uses 1961-1990 as a norm for temperature, I don't know what is the standard for rainfall or Thailand, so we should look that up. For now, we'll use our filtered records to generate a mean.
 
 <<>>=
 PRCP_mean = mean(PPT$ppt)
@@ -430,12 +449,12 @@ Wow, these data look terrible -- the mean looks meaningless given the biased dat
 \begin{figure}
 <<echo=F>>=
 names(PPT) = c("Month", "Year", "ppt", "Missing", "Date")
-PPT$MONTH = as.numeric(PPT$Month)
+PPT$Month.num = as.numeric(PPT$Month)
 
 par(mfrow=c(4,3))
 for(i in 1:12){
-plot(ppt~Date, data=PPT[PPT$MONTH==i,], las=1)
-abline(coef(lm(ppt~Date, data=PPT[PPT$MONTH==i,])))
+plot(ppt~Date, data=PPT[PPT$Month.num==i,], las=1)
+abline(coef(lm(ppt~Date, data=PPT[PPT$Month.num==i,])))
 }
 @
 \end{figure}
