@@ -29,21 +29,54 @@ plot(pressure)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
+
+## Import Data
+
+NONE OF THIS RUNS... you don't have this in an R chunk.
+
 file.choose()
 "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv"
 read.csv("/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv")
-climate_data <- read.csv("/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv")
+
+```{r}
+file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv"
+file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv"
+climate_data <- read.csv(file.path)
 head(climate_data)
 str(climate_data)
 names(climate_data)
-plot(TMAX~DATE, climate_data)
+# plot(TMAX~DATE, climate_data)
 
-#climate_data$NewDate <- as.Date(strDates, "%m/%d/%y")
+```
+
+## Fix Dates
+
+# never created str dates... how come?
+
+```{r fixdates}
+strDates = as.character(climate_data$DATE)
 
 climate_data$NewDate = NA
-climate_data$NewDate[1:12418] = format(as.Date(strDates[1:12418], "%m/%d/%y"), "19%y-%m-%d") 
-climate_data$NewDate[12419:19949] = format(as.Date(strDates[12419:19949], "%m/%d/%y"),"20%y-%m-%d") 
+climate_data$NewDate[1:12417] =
 
+
+  format(as.Date(strDates[1:12417], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data$NewDate[12418:19949] = format(as.Date(strDates[12418:19949], "%m/%d/%y"),"20%y-%m-%d")
+climate_data$NewDate = as.Date(climate_data$NewDate)
+```
+
+## Check Data
+
+```{r}
+str(climate_data)
+climate_data$NewDate
+```
+
+```{r}
+plot(TMAX ~ NewDate, data=climate_data)
+
+climate_data$TMAX
+```
 
 
 
