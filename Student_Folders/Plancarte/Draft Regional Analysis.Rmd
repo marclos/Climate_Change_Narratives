@@ -1,0 +1,25 @@
+---
+title: "Draft Regional Analysis"
+author: "Vivianna Plancarte"
+date: "9/19/2020"
+output: html_document
+---
+
+
+
+```{r}
+par(mfrow=c(2,2), cex.main=0.65, cex.lab=0.65, cex.axis=0.5)
+plot(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="8",],
+ty="l", xlim=c(1939,2020), main="Minumum Temperatures in August in San Diego",
+xlab="Year", ylab="Minimum Temperatures (°)", col="grey")
+bestfitAugust<-lm(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="8",])
+abline(bestfitAugust, col="red")
+
+par(mfrow=c(2,2), cex.main=0.65, cex.lab=0.65, cex.axis=0.5)
+plot(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="9",],
+ty="l", xlim=c(1939,2020), main="Minumum Temperatures in September in San Diego",
+xlab="Year", ylab="Minimum Temperatures (°)", col="grey")
+bestfitSeptember<-lm(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="9",])
+abline(bestfitSeptember, col="red")
+
+lm(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="9",])
