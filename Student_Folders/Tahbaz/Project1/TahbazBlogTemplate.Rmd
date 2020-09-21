@@ -1,5 +1,5 @@
 ---
-title: "Temperature Changes in NYC and Less Severe Winters"
+title: "Seasonal Temp Changes"
 author: "Eleanor Tahbaz"
 date: "9/12/2020"
 output: html_document
@@ -26,40 +26,10 @@ str(climate_data)
 strDates<-as.character(climate_data$DATE)
 climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 
-# You made a new variable name -- NewDate, but the plot function is looking for the "DATE" variable -- not sure why!  :-)   I commented it out. 
-
-#plot(TMAX~DATE, climate_data)
-
-# abline line references to an object, "slopeintercept" but that hasn't been made yet... but is it below... might just be in the wrong place..?
-
-#abline(slopeintercept, col="red")
-```
-
-This one works as expected!  But sure is messy, but not your fault, lots of variation in the data!! This is why I think the monthly data will be better to display. 
-
-
-
-```{r}
-plot(TMAX~NewDate, data=climate_data)
-lm(TMAX~NewDate, data=climate_data) # calls a linear model, but doesn't create an object. Not sure this is useful.
-lm(formula = TMAX~NewDate, data=climate_data) # ditto but the use of the word formula is interesting... 
-TMAX.lm=lm(TMAX~NewDate, data=climate_data) # here you make an object.
-slopeintercept=coef(TMAX.lm)
-plot(TMAX~NewDate, data=climate_data, las=1)
-abline(slopeintercept, col="red", lwd=3)
-(TMAX.lm.sum = summary(lm(TMAX~NewDate, data=climate_data))) # shows you have a significant result, but boy lots of variation and a VERY low slope!
-
 ```
 
 
-
-## fixing the date
-```{r}
-climate_data
-```
-
-
-## finding January data for every year
+## Plots for January - TMIN
 ```{r}
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate[1:51684] = format(as.Date(strDates[1:51684], "%m/%d/%y"), "19%y-%m-%d") 
@@ -78,9 +48,27 @@ January.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01"
 summary(January.lm)
 abline(coef(January.lm), col="red")
 lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+#Marc, here I wanted to try what you did in class, but I am still not completely sure what it all means. for this graph, it looks like the data is okay, and that there isn't nanything that is greatly impapacting my best fit line. What do you think? 
+par(mfrow=c(2,2))
+plot(January.lm)
+par(mfrow=c(1,1))
+```
+## Plots for January - TMAX
+```{r}
+MonthlyTMAXMean<-aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num=as.numeric(MonthlyTMAXMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],ty='l', xlim=c(1973,2020))
+January.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(January.lm)
+abline(coef(January.lm), col="red")
+lm(formula = TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
 ```
 
-##finding July data for every year
+## Plots for July - TMAX
 ```{r}
 MonthlyTMAXMean<-aggregate(TMAX ~ Month + Year, climate_data, mean)
 str(MonthlyTMAXMean)
@@ -93,9 +81,13 @@ June.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
 summary(June.lm)
 abline(coef(June.lm), col="red")
 lm(formula = TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+#Marc, here I did the same thing, and I was wondering again, what you think of the data
+par(mfrow=c(2,2))
+plot(June.lm)
+par(mfrow=c(1,1))
 ```
 
-## find the average temp for each July
+## Plots for June
 ```{r}
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
@@ -106,15 +98,65 @@ July.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 summary(July.lm)
 abline(coef(July.lm), col="red")
 lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
-
+#and again here
 par(mfrow=c(2,2))
 plot(July.lm)
 par(mfrow=c(1,1))
 ```
+## Plots for April - TMIN
+```{r}
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",],ty='l', xlim=c(1973,2020))
+April.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
+summary(April.lm)
+abline(coef(April.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
+```
 
-## create a plot for the average temp in July
+## Plots for April - TMAX
+```{r}
+MonthlyTMAXMean<-aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num=as.numeric(MonthlyTMAXMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],ty='l', xlim=c(1973,2020))
+April.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+summary(April.lm)
+abline(coef(April.lm), col="red")
+lm(formula = TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+```
+## Plots for October - TMAX
+```{r}
+MonthlyTMAXMean<-aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num=as.numeric(MonthlyTMAXMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],ty='l', xlim=c(1973,2020))
+October.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+summary(October.lm)
+abline(coef(October.lm), col="red")
+lm(formula = TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+```
+## Plots for October - TMIN
+```{r}
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",],ty='l', xlim=c(1973,2020))
+October.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+summary(October.lm)
+abline(coef(October.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+```
 
-## Finding the minimum and maximum
 
 
 
