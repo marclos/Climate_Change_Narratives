@@ -3,8 +3,8 @@ title: "Los Angeles Analysis"
 author: "Christina Marsh"
 date: "9/18/2020"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -196,16 +196,16 @@ par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1)
 TMINresult <- NULL
 for (i in 1:12) { 
   Month_sub_DF <- MonthlyTMINMean[MonthlyTMINMean$MONTH==i, ]
-  MonthMin_lm <- lm(TMIN ~ YEAR, data=Month_sub_DF)
+  MonthMin_lm <- lm(TMIN ~ Year, data=Month_sub_DF)
   TMINresult <- rbind(TMINresult,
                    cbind(Months[i],
                           round(coef(MonthMin_lm)[2], 3),
                           round(summary(MonthMin_lm)$coefficients[2,4], 3),
                           round(summary(MonthMin_lm)$r.squared, 2)))
-  plot(TMIN~YEAR,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
+  plot(TMIN~Year,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
   abline(coef(MonthMin_lm),col=POMblue) }
 ```
-```{r}
+```{r results}
 Results <- data.frame(Month = TMINresult[c(2:13),1],
 TMINSlope = TMINresult[c(2:13),2],
 TMIN_P = as.numeric(TMINresult[c(2:13),3]),
