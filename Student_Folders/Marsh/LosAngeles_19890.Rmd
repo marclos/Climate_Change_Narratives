@@ -145,12 +145,13 @@ plot(MonthlyTMINMean$TMIN, ty='l')
 Months = c("January", "February", "March", "April","May", "June", "July", "August", "September", "October","November", "December")
 par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
 TMAXresult <- NA
-for (i in 1:12) 
+par(mar=c(1,1,3,2))
+for (i in 1:12) {
 plot(TMAX ~ Year.num, data = MonthlyTMAXMean[MonthlyTMAXMean$Month.num == i, ], ty = "l", las = 1, xlim = c(1906, 2014), main = Months[i], ylim = c(5, 35))
 Month.lm <- lm(TMAX ~ Year.num, data = MonthlyTMAXMean[MonthlyTMAXMean$Month.num == i, ])
 summary(Month.lm)
 abline(coef(Month.lm), col = "red")
-TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3)))
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3))) }
 ```
 
 ```{r TMIn Monthly}
@@ -162,12 +163,13 @@ plot(MonthlyTMINMean$TMIN, ty='l')
 Months = c("January", "February", "March", "April","May", "June", "July", "August", "September", "October","November", "December")
 par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
 TMINresult <- NA
-for (i in 1:12) 
+par(mar=c(1,1,3,2))
+for (i in 1:12) {
 plot(TMIN ~ Year.num, data = MonthlyTMINMean[MonthlyTMINMean$Month.num == i, ], ty = "l", las = 1, xlim = c(1906, 2014), main = Months[i]) 
 Month.lm <- lm(TMIN ~ Year.num, data = MonthlyTMINMean[MonthlyTMINMean$Month.num == i, ])
 summary(Month.lm)
 abline(coef(Month.lm), col = "red")
-TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4),round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3)))
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4),round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3))) }
 ```
 
 
@@ -189,4 +191,42 @@ PRCP_mean = mean(PPT$ppt)
 plot(ppt~Date, data=PPT)
 abline(h=PRCP_mean, col="blue")
 ```
+```{r TMIN_plots_and_outputs}
+par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1) 
+TMINresult <- NULL
+for (i in 1:12) { 
+  Month_sub_DF <- MonthlyTMINMean[MonthlyTMINMean$MONTH==i, ]
+  MonthMin_lm <- lm(TMIN ~ YEAR, data=Month_sub_DF)
+  TMINresult <- rbind(TMINresult,
+                   cbind(Months[i],
+                          round(coef(MonthMin_lm)[2], 3),
+                          round(summary(MonthMin_lm)$coefficients[2,4], 3),
+                          round(summary(MonthMin_lm)$r.squared, 2)))
+  plot(TMIN~YEAR,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
+  abline(coef(MonthMin_lm),col=POMblue) }
+```
+```{r}
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX") 
+library(xtable)
+print(xtable(Results[,c(1, 10, 4, 11, 7)])) 
+```
+hbgg
 
