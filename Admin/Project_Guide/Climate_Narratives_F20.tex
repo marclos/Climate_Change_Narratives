@@ -52,6 +52,9 @@
 %\documentclass{tufte-handout}
 \usepackage{hyperref}
 \usepackage{wasysym}
+\usepackage{soul}
+
+
 \newenvironment{itemize*}%
   {\begin{itemize}%
     \setlength{\itemsep}{0pt}%
@@ -66,7 +69,7 @@
 
 \title{How are climate data used by activists?}
 \author{Marc Los Huertos}
-%\date{}
+\date{}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -315,16 +318,14 @@ To complete the project in a timely fashion, we will be adhering to a rather str
 \label{tab:milestones}
 \begin{tabular}{lcll}\hline
 Deliverable                 & Launch    & Due Date  & Points \\\hline\hline
-Op-Ed \#1                   & Aug 28    & Sep 12    & 10 \\
-Draft Regional Analysis     & Sep 1   & Sep 12   & 20 \\
-Draft Blog Template         & Sept 4    & Sept 19   & 5 \\
-Climate Science Expert Team Video & Sep 1   & Sep 12   & 20 \\
+Draft Blog Template         & Sept 4    & {\color{red}Sept 12}   & 5 \\
+Climate Science Expert Team Video & Sep 1 & Sep 12   & 20 \\
+Op-Ed \#1                   & Aug 28    & {\color{red}Sep 19}    & 10 \\
+Draft Regional Analysis     & Sep 1     & {\color{red}Sep 19}   & 20 \\
+Regional Climate Literature Review  & Sep 1   & {\color{red}Sep 19}   & 20\\
 Climate Science Expert Team Video -- Forum    & Sep 1  & Sep 19     & 15 \\
-
-Regional Climate Literature Review    & Sep 1   & Sep 19   & 20 \\
 %Regional Climate Literature Review -- Peer Review & Oct 1   & Oct 3 & 10 \\
-
-Blog Draft                  & Sep 1   & Sep 26    & 50 \\
+Blog Draft {\color{red}Text and Figures} & Sep 1   & Sep 26    & 50 \\
 Blog -- Peer Review         & Sep 1    & Oct 3    & 10\\
 Published Blog*              & Sep 1    & Oct 10   & 50 \\
 %Op Ed \#2 Draft            & Oct 9     & Oct 13    & 10 \\
@@ -338,9 +339,15 @@ Op Ed \#2 Submission        & Sep 1    & Oct 10    & 25 \\ \hline
 
 \section{Draft Blog Template}
 
-The assignment is pretty simple. Can you create an Rmd file, with your title and name as the author, some text of what you are going to be writing about, one image, and a simple plot. 
+The assignment is pretty simple. Can you create an Rmd file, with your title and name as the author, some text of what you are going to be writing about, one image, and a simple plot. {\color{red}Note: You may have already done this already, you don't have to do this again. Howver, we suggest you make make some changes to keep the blog moving forward -- for example, if you had daily data, create monthly means. If you had TMAX, check out TMIN. If you have TMIN, you might consider snow pack or precipitation.  
 
-Push the Rmd and html file into github and name the file with your last name. 
+Push the Rmd and html file into github and name the file with your surname. It would be super helpful to get the naming conventions sorted out.}
+
+\begin{center}
+X.Rmd and X.hmtl
+\end{center}
+
+\noindent where X is your surname. {\color{red} Once you push the template into R, you are done, no Sakai submission necessary.}
 
 \section{Developing Specialized Knowledge}
 
@@ -385,29 +392,29 @@ Weather and climate extremes such as hurricanes, tornadoes, heavy downpours, hea
 
 Although most of the work will be individual, we will also work in pair for the presentation. Using \href{https://docs.google.com/spreadsheets/d/1VkY8-js4QNeYz6gHXNzKOwVvB2EUkp7Y2BwjRrsfxOk/edit?usp=sharing}{this Google Sheet}, sign up for a topic and as the slots are filled, I will update this document. 
 
-The following students have been assigned to the teams below:
+{\color{red}The following students have been assigned to the teams below:
 
 % latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Mon Aug 31 09:22:12 2020
+% Tue Sep 22 10:11:33 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{lll}
   \hline
 Topic & Team\_Members & Presentation\_Date \\ 
   \hline
-1 & 1 ,  8 ,  15 & 09/19/20 \\ 
-  2 & 2 ,  9 ,  16 & 09/19/20 \\ 
-  3 & 3 ,  10 ,  17 & 09/19/20 \\ 
-  4 & 4 ,  11 ,  18 & 9/19/20 \\ 
-  5 & 5 ,  12 ,  19 & 09/19/20 \\ 
-  6 & 6 ,  13 ,  20 & 09/19/20 \\ 
-  7 & 7 ,  14 ,  21 & 09/19/20 \\ 
+1 & Marc ,  -- ,  -- & 09/12/20 \\ 
+  2 & Christina ,  Lila ,  Sarah & 09/12/20 \\ 
+  3 & Viviana ,  Bryan ,  Nora & 09/12/20 \\ 
+  4 & Jacob ,  Claire L ,  Tramy & 09/12/20 \\ 
+  5 & Olivia ,  Owen ,  Claire M & 09/12/20 \\ 
+  6 & Anna ,  Melia ,  Katy & 09/12/20 \\ 
+  7 & Nikodem ,  Emma ,  Isabel & 09/12/20 \\ 
    \hline
 \end{tabular}
 \end{table}
 
-
-\subsection{Climate Science Review Presentation}
+}
+\subsection{Climate Science Review {\color{red}Videos}}
 
 \input{Climate_Science_Presentation_F20}
 
@@ -421,19 +428,19 @@ Topic & Team\_Members & Presentation\_Date \\
 
 \section{Regional Climate Analysis}
 
-Each of us will select a region of interest. Perhaps, somewhere that you have spent a compelling time in or that you wish to know more about. Please select a region that has not been done by previous classes. 
+Each of us will select a region of interest. Perhaps, somewhere that you have spent a compelling time in or that you wish to know more about. It is ideal if you select something that hasn't been done in previous years, but this isn't crtical. I prefer someplace that you have a connection if that fits your interests better. %Please select a region that has not been done by previous classes. 
 
 \subsection{Analysis of Regional Data}
 
 \input{Regional_Data_Analysis_F20}
 
-\subsection{Regional Climate Impacts -- Literature Review}
+\subsection{Regional Climate Literature Review}
 
-\input{Regional_Impact_Literature_Review_F20}
+\input{Regional_Climate_Literature_Review_F20}
 
 \section{Communicating Science}
 
-\subsection{Analyzing Prior Communication Edeavors}
+%\subsection{Analyzing Prior Communication Edeavors}
 
 %\subsubsection{Climate Change Blogs and Websites}
 
@@ -461,21 +468,21 @@ Each of us will select a region of interest. Perhaps, somewhere that you have sp
 
 \subsection{Writing a Scientific Blog}
 
-Coming soon! \smiley{}
+%Coming soon! \smiley{}
 
-%\input{Writing_a_Scientific_Blog_F20}
+\input{Writing_a_Scientific_Blog_F20}
 
-\subsection{Peer Review Blogs}
+\subsection{Blog Peer Review Process}
 
-Coming soon! \smiley{}
+%Coming soon! \smiley{}
 
-%\input{Blog_Peer_Review_F20}
+\input{Blog_Peer_Review_F20}
 
 \subsection{Publishing Revised Blog}
 
-Coming soon! \smiley{}
+%Coming soon! \smiley{}
 
-%\input{Blog_Publication_F20}
+\input{Blog_Publication_F20}
 
 \subsection{Op-Ed 2}
 

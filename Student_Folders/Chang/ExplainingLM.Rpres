@@ -1,0 +1,91 @@
+P-values and R-squared
+========================================================
+author: Charlotte Chang
+date: `r Sys.Date()`
+autosize: true
+
+Revisiting the linear model
+========================================================
+
+Linear model:
+- $y = \beta_0 + \beta_1 x + \epsilon$
+
+The equation for a straight line:
+- $y = b + mx$
+
+Example temperature data: Claremont, CA
+========================================================
+
+```{r, echo=F}
+years <- c(1950:2019)
+month_avgs <- function(year) { 80 + 0.14*(year - 1950) + rnorm(1,0,1.75) }
+sept_temps <- c()
+set.seed(7)
+for (year in years) {     
+  sept_temps <- append(sept_temps, month_avgs(year), after=length(sept_temps))
+}
+par(mar=c(5.1,5.1,1,1))
+
+plot(years, sept_temps, xlab="Year",
+     ylab="Monthly average of daily high\n September temperature (F)",
+     pch=19,col="#0057B7",las=1,type="l",bty="L")
+
+plot(years, sept_temps, xlab="Year",
+     ylab="Monthly average of daily high\n September temperature (F)",
+     pch=19,col="#0057B7",las=1,type="p",bty="L")
+```
+
+Adding a line of best-fit
+========================================================
+
+```{r, echo=FALSE}
+plot(years, sept_temps, xlab="Year",
+     ylab="Monthly average of daily high\n September temperature (F)",
+     pch=19,col="#0057B7",las=1,type="l",bty="L")
+abline(lm(sept_temps~years),lty=2,col="gray47")
+```
+
+Model summary: Claremont September temperatures ~ years
+========================================================
+
+```{r, echo=FALSE}
+summary(lm(sept_temps~years))
+```
+
+What do p-values mean?
+========================================================
+![Understanding p-values](pvaluedistro.png)
+
+Back to the model:
+========================================================
+The output $\texttt{Pr(>|t|)}:$
+
+$H_0: \beta_i = 0 ; \\
+H_{\text{alternative}}: \beta_i \neq 0$
+
+```{r, echo=FALSE}
+summary(lm(sept_temps~years))
+```
+
+Interpreting the model:
+========================================================
+
+```{r, echo=FALSE}
+summary(lm(sept_temps~years))
+```
+
+What is that R-squared thing?
+========================================================
+
+$R^2 = \frac{ \text{Variance explained by the model} }{ \text{Total variance of response variable}}$
+
+Versus "Adjusted R-squared":
+
+![Radj](R2vspars.gif)
+
+Looking at R-squared in the model:
+========================================================
+
+```{r, echo=FALSE}
+summary(lm(sept_temps~years))
+```

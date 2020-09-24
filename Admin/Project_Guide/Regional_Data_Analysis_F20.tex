@@ -2,15 +2,19 @@
 
 \subsubsection{Rationale}
 
-Learning to analyze data requires a range of skills that include collecting, analyzing, and interpreting data. For our purposes, this portion of the class is what might traditionally understood as ``doing science.'' We will learn how to test a hypothesis and what it means if we reject the null hypothesis. We will create figures that can be used to communicate our results and finally, we interpret the results. 
+Learning to analyze data requires a range of skills that include collecting, analyzing, and interpreting data. For our purposes, this portion of the class is what might traditionally understood as ``doing science.'' We will learn how to test a hypothesis and what it means if we reject the null hypothesis. We will create figures that can be used to communicate our results and finally, we interpret the results using the station data we already collected.
 
 Ultimately, this analysis will be used a template for our blogs and inform our second Opinion Editorials. 
 
 \subsubsection{Assignment}
 
-Using the resources supplied, it will be up to you to download, pre-process, and analyze a trend analysis using R -- where the slope, r$^2$, and probability are calculated\footnote{We will have to learn what these are to be able to explain our results! Be sure to ask lots of questions about the statistics so you appreciate this important topic that nearly every scientific field relies!} and explained. 
+This assignment provides an avenue to delve into the weather records that you have already obtained. Using the resources supplied, it will be up to you to download, pre-process, and analyze a trend analysis using R -- where the slope, r$^2$, and probability are calculated\footnote{We will have to learn what these are to be able to explain our results! Be sure to ask lots of questions about the statistics so you appreciate this important topic that nearly every scientific field relies!} and explained. 
 
-Using R studio, analyze a long-term climate record, create 3-4 figures that will be used to communicate these climate records, e.g. 100-year temperature \textbf{and} precipitation record for a specific region. Be sure to include language about the ``null'' hypothesis for your trend analysis.
+{\color{red}To support the development of our blogs, this assignment will help us learn as much as we can about our data and better appreciate the long-term trends might be. We suggest you analyze your data by looking at the monthly means and evaluating if the trends from one or two months are particularly strong. In addition, you might consider looking at TMIN, PRCP, or SNW as response variables.
+
+We suggest you save your blog as described below, so you don't have to start over, but can start removing commands that you don't need and explore the data without cluttering up your blog.} 
+
+Using R studio, analyze a long-term climate record, create 3-4 figures that will be used to communicate these climate records, e.g. 100-year temperature \textbf{and} precipitation record for a specific region. Be sure to include language about the ``null'' hypothesis for your trend analysis. 
 
 %\begin{enumerate*}
 %  \item Download and analyze data (i.e. make inferences) to create an public product; %I have uploaded all the climate data on a network drive, \url{//fargo/classes/EA30-LosHuertos}{//fargo/classes/EA30-LosHuertos}.\footnote{I haven't been able to get the directory working consistently, so stay tuned on this.}
@@ -23,22 +27,19 @@ Using R studio, analyze a long-term climate record, create 3-4 figures that will
 
 As specified by the milestones (Table \ref{tab:milestones}), submit the draft analysis and results using Rstudio. 
 
-The Rmd file (and the compiled html) should be saved the the 'student\_submissions' directory using the following naming convention:
+The Rmd file (and the compiled html) should be saved the the in your own directory using the following naming convention:
 
 \begin{center}
 \textbf{Region\_XXXXX.Rmd} and \textbf{Region\_XXXXX.html}
 \end{center}
 
+\medskip \noindent where XXXXX refer to one of your random numbers. NOTE: Be sure the file still compiles.
 
-\medskip \noindent where XXXXX refer to one of your random numbers.
-
-NOTE: Be sure the file still compiles. For example, you may need to change the path to the Data directory. 
-
-Since the regional analysis has been down within Rstudio, you will use the version control procedures to commit and push your analysis onto the Github repository. Thus, be sure to commit and push your files so I have access to the files. 
+Since the regional analysis has been down within Rstudio, you will use the version control procedures to commit and push your analysis onto the Github repository. Thus, be sure to commit and push your files so we have access to the files. {\color{red} Having access to your files gives us a sense of the code you used and if there are easy things that might be used to solve particular issues. Besides pushing the data, export the html file and submit to \texttt{Sakai} for grading.} 
 
 \subsubsection{Data Analysis Grading}
 
-The Data Analysis html files will be grading using the criteria in Table \ref{tab:datagrading}.
+The Data Analysis html files will be grading using the criteria in Table \ref{tab:datagrading}. {\color{red}NOTE: I removed the ``validated model'' criteria because I didn't introduce you to the topic until the week of the 20th. Nevertheless, it will be critical that you do this for your blog, but you might need help from us to do it.}
 
 \begin{table}[h]
 \caption{Summary of Data Analysis grading standards.}
@@ -48,7 +49,7 @@ Criteria            &   Standard    & Percent \\ \hline\hline
 Records  & Compelling, e.g. Over 60 years & 10\% \\
 Knowledge of Data & Limitations and Methods of Collection & 10\% \\
 Analysis & p-values and $R^2$ reported  & 20\% \\
-Analysis          & Validated Model     & 20\% \\
+{\color{red}\st{Analysis}}          & {\color{red}Validated Model}     & {\color{red}20\%} \\
 Interpretation    & Accurate, e.g. rejected null   & 10\% \\
 Graphics          & Publishable Quality & 20\% \\
 Accessible        & Pushed and named correctly & 10\% \\

@@ -1,0 +1,249 @@
+---
+title: "Regional Analysis"
+author: "Olivia"
+date: "9/8/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(htmlTable)
+library(tidyverse)
+significance_star <- function(input_vector) { # create a function to auto"magically" assign asterisk values corresponding to the significance level observed in the month-by-month TMAX or TMIN outputs; it takes input_vector as its only argument
+  out_star_vec <- dplyr::case_when( # create an output object (out_star_vec) using the case_when function from the dplyr package
+    input_vector <= 0.001 ~ "***", # assign 3 asterisks to lowest arbitrary threshold of significance
+    input_vector <= 0.01 & input_vector > 0.001 ~ "**",
+    input_vector <= 0.05 & input_vector > 0.01 ~ "*",
+    TRUE ~ "NS" # give the non-significant marker of NS for all other values greater than 0.05
+  )
+  return(out_star_vec) # ?return for more details
+}
+
+```
+
+
+
+```{r readdata, echo=FALSE}
+#file.choose()
+filepath = "/home/CAMPUS/ocma2018/Climate_Change_Narratives/Data/FA20/olivia_chicagomidway_data.csv"
+climate_data = read.csv(filepath) 
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+
+# Analysis for Chicago Midway
+#### Below is overall maximum temperatures in degrees celsius, measured by this airport station.
+
+```{r plotdailydata}
+plot(TMAX~NewDate, data=climate_data, ty='l', xlab='Year', ylab='Max Temp (C˚)')
+TMAX.lm = lm(TMAX ~ NewDate, data=climate_data) 
+slopeintercept = coef(TMAX.lm)
+abline(coef(TMAX.lm), col = 'pink') 
+lm(TMAX ~ NewDate, data=climate_data)
+lm(TMAX ~ NewDate, data=climate_data)
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+plot(TMAX ~ NewDate, data= climate_data, las=1, xlab="Year", ylab="Max Temp (C˚)")
+abline(slopeintercept, col="pink", lwd=3)
+(TMAX.lm.sum = summary(lm(TMAX ~ NewDate, data=climate_data)))
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+summary(TMAX.lm)
+```
+#### For this graph of daily temperatures across the years, the probability value is <2e-16. This tiny number is so close to zero, that we can reject the null hypothesis (the assumption that the slope is zero, or that there is not an upward trend) and safely assume that the coefficient of maximum temperature by year has a slope that is not zero. If the p value were closer to one, there would be a greater chance of variation from the model I have created. The multiple R-squared value is 0.0006071 and the adjusted value is 0.00604. They are close to each other, showing that the predictor variables I have input account for variation, however since the adjusted R-squared is farther from 1, not all the variation is accounted for in this particular model. 
+
+## Month by Month Analysis
+```{r plotmonthbymonth}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlab="Year", ylab="Max Temp (C˚)", xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="pink")
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA 
+for (i in 1:12) {
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ], ty = "l", las = 1, xlab="Year", ylab="Max Temp (C˚)", xlim = c(1940, 2020),
+main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "pink")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+```
+
+
+#### As seen below, the maximum temperatures in November, from 1940 to 2020, display a rising trend. Having lived in Chicago all my life, fall tends to begin early, with temperatures dropping around November and October. However, as the graph below shows, autumn has been getting warmer and warmer. The P value here is 0.188, which, while not allowing the rejection of the null hypothesis, is not altogether improbable. The adjusted R-squared value is also a lot smaller than the multiple R-squared, which means that the month-by-month analysis has a greater chance for variation that isn't accounted for.
+
+```{r NOVMAX}
+i <- 11
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$Month <- as.numeric(MonthlyTMAXMean$Month)
+MonthlyTMAXMean$Year <- as.numeric(MonthlyTMAXMean$Year)
+plot(TMAX ~ Year, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == i, ], ty = "l", las = 1, xlab="Year", ylab="Max Temp (C˚)", xlim = c(1940, 2020), main = Months[i])
+  TMAXMonth.lm <- lm(TMAX ~ Year, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == i, ])
+  summary(TMAXMonth.lm)
+  abline(coef(TMAXMonth.lm), col = "pink")
+ TMAXresult <- NULL
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+  round(coef(TMAXMonth.lm)[2], 4), round(summary(TMAXMonth.lm)$coefficients[2, 4], 4), round(summary(TMAXMonth.lm)$r.squared,3)))
+TMAXresult
+```
+
+
+## Minimum Temperature
+```{r plottmin}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l', xlab="Year", ylab="Min Temp (C˚)")
+library(xtable)
+### 3.1: Specifying plotting window parameters
+par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1) 
+  TMINresult <- NULL 
+for (i in 1:12) { 
+Month_sub_DF <- MonthlyTMINMean[MonthlyTMINMean$MONTH==i, ] 
+MonthMin_lm <- lm(TMIN ~ YEAR, data=Month_sub_DF)
+TMINresult <- rbind(TMINresult, 
+                      cbind(Months[i], 
+                            round(coef(MonthMin_lm)[2], 3),
+                            round(summary(MonthMin_lm)$coefficients[2,4], 3), 
+                            round(summary(MonthMin_lm)$r.squared, 2)))
+  plot(TMIN~YEAR,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
+  abline(coef(MonthMin_lm),col="pink") 
+}
+
+#these didn't work - but leaving them in in case I missed something
+#Results <- data.frame(Month = TMINresult[c(2:13),1],
+#TMINSlope = TMINresult[c(2:13),2],
+#TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+#TMINRsq = TMINresult[c(2:13),4],
+#TMAXSlope = TMAXresult[c(2:13),2],
+#TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+#TMAXRsq = TMAXresult[c(2:13),4])
+#Results$starTMIN = "NS"
+#Results$starTMIN[Results$TMIN_P <= .05] = "*"
+#Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+#Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+#Results$starTMAX = "NS"
+#Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+#Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+#Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+#Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+#Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+#colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+#"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+#print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
+
+
+#### Similarly, a look at November's minimum temperatures from 1940 to 2020, these low temperature averages increase (shown by the positive slope of the line of best fit). This graph has a P value of 0.00234 or 0.002, which is still relatively close to zero, allowing us to reject the null hypothesis. The multiple R-squared and adjusted R-squared are 0.09937 and 0.08925 respectively. As the adjusted value is close to 1, a lot of the possible variation is accounted for by this model for November data.
+
+```{r NOVMIN}
+i <- 11
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$Month <- as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$Year <- as.numeric(MonthlyTMINMean$Year)
+plot(TMIN ~ Year, data = MonthlyTMINMean[MonthlyTMINMean$Month == i, ], ty = "l", las = 1, xlab="Year", ylab="Min Temp (C˚)", xlim = c(1940, 2020), main = Months[i])
+  TMINMonth.lm <- lm(TMIN ~ Year, data = MonthlyTMINMean[MonthlyTMINMean$Month == i, ])
+  summary(TMINMonth.lm)
+  abline(coef(TMINMonth.lm), col = "pink")
+ TMINresult <- NULL
+  TMINresult <- rbind(TMINresult, cbind(Months[i],
+  round(coef(TMINMonth.lm)[2], 4), round(summary(TMINMonth.lm)$coefficients[2, 4], 4), round(summary(TMINMonth.lm)$r.squared,3)))
+TMINresult
+```
+
+
+## Precipitation: 
+#### I won't be analyzing precipitation in my blog, but the data is below.
+```{r plotprecipitation}
+
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP),
+list(climate_data$Month, climate_data$Year), sum)
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+plot(x ~ Date, data=Missing)
+TotalPPT <- aggregate(climate_data$PRCP,
+list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+library(dplyr)
+PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
+head(PPT)
+PRCP_mean = mean(PPT$ppt)
+plot(ppt~Date, data=PPT, xlab="Year", ylab="Precipitation")
+abline(h=PRCP_mean, col="pink")
+MonthlyPRCPMean = aggregate( PRCP~ Month + Year, climate_data, sum)
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyPRCPMean$YEAR = as.numeric(MonthlyPRCPMean$Year)
+MonthlyPRCPMean$MONTH = as.numeric(MonthlyPRCPMean$Month)
+head(MonthlyPRCPMean)
+plot(MonthlyPRCPMean$PRCP, ty='l')
+library(xtable)
+# 3.1: Specifying plotting window parameters
+par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1) 
+ PRCPresult <- NULL
+for (i in 1:12) {
+  Month_sub_DF <- MonthlyPRCPMean[MonthlyPRCPMean$MONTH==i, ] # changed DF name to be consistent with the monthly aggregated DF above
+  MonthPRCP_lm <- lm(PRCP ~ YEAR, data=Month_sub_DF)
+ PRCPresult <- rbind(PRCPresult,
+                      cbind(Months[i],
+                            round(coef(MonthPRCP_lm)[2], 3),  # slope                           
+round(summary(MonthPRCP_lm)$coefficients[2,4], 3), # adding on p-value                            
+round(summary(MonthPRCP_lm)$r.squared, 2)))  #R2 value
+}
+colnames(PRCPresult) <- c("Month","Slope","pval","R2") # give it more informative column header names
+PRCPresult[,3] <- significance_star(PRCPresult[,3]) # convert the p-values from numbers to a "*" representation - more "***" --> more significant
+htmlTable(PRCPresult,rnames=FALSE) # don't print out row names, which are meaningless here
+```
+
+
+## Snow Data 
+#### As you can see in the chart below, summer months stay consistantly devoid of snow, but if you look at the data for November and December, there is a negative slope. It is not snowing as much in the early winter. In addition, the trend for March and May is also downward. The snow is not lasting as long as it appraches spring in Chicago. As I work on my blog, I will think about how to analyze the data and explain the R squared and p values, as the data is not organized in the same way as Max Temp, Min Temp, or Precipitation.
+
+```{r plotsnow}
+MonthlySnowDF = aggregate(SNOW ~ Month + Year, climate_data, sum)
+MonthlySnowDF$YEAR = as.numeric(MonthlySnowDF$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlySnowDF$YEAR = as.numeric(MonthlySnowDF$Year)
+MonthlySnowDF$MONTH = as.numeric(MonthlySnowDF$Month)
+head(MonthlySnowDF)
+plot(MonthlySnowDF$SNOW, ty='l')
+par(mfrow = c(4, 3), mar = c(5, 4, 0, 0) + 0.1)
+SNOWresult <- NULL
+for (i in 1:12) {
+  Month_sub_DF <- MonthlySnowDF[MonthlySnowDF$MONTH==i, ] # changed DF name to be consistent with the monthly aggregated DF above
+  MonthSnow_lm <- lm(SNOW ~ YEAR, data=Month_sub_DF)
+  SNOWresult <- rbind(SNOWresult,
+                      cbind(Months[i],
+                            round(coef(MonthSnow_lm)[2], 3),  # slope                           
+round(summary(MonthSnow_lm)$coefficients[2,4], 3), # adding on p-value                            
+round(summary(MonthSnow_lm)$r.squared, 2)))  #R2 value
+}
+colnames(SNOWresult) <- c("Month","Slope","pval","R2") # give it more informative column header names
+SNOWresult[,3] <- significance_star(SNOWresult[,3]) # convert the p-values from numbers to a "*" representation - more "***" --> more significant
+htmlTable(SNOWresult,rnames=FALSE) # don't print out row names, which are meaningless here
+
+```
+
+
+

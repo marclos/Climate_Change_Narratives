@@ -5,18 +5,78 @@ date: "9/1/2020"
 output: html_document
 ---
 
-```{r setup, Echo=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+![Salt Lake City](/home/CAMPUS/edab2019/Climate_Change_Narratives/Student_Folders/Duggleby/SLC.jpg)
+
+<h4>I hope to write about weather trends in Salt Lake City, Utah. I have not decided  what I would like to look into specifically, but perhaps something with snowmelt trends would be interesting, as that is where a large amount of the city's water comes from. I also might want to look at how changing climate trends affect animal behavior. </h4>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 climate_data = read.csv("/home/CAMPUS/edab2019/Climate_Change_Narratives/Data/FA20/Duggleby_SaltLakeCity_data.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 date = climate_data$NewDate
 tmax=climate_data$TMAX
+snow=climate_data$SNOW
+precp=climate_data$PRCP
+
+#Month trend
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
 ```
 
 ```{r}
 plot(TMAX~date, data=climate_data, pch=",", main = "Date vs. Maximum Temperature in Salt Lake City", ylab = "Maximum Temperature", xlab = "Date")
-bestfitline.lm = lm(tmax~date)
-abline(coef(bestfitline.lm), col = "#7a7fff", lwd=2.5)
+bestfitline1.lm = lm(tmax~date)
+abline(coef(bestfitline1.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline1.lm)
 ## plot 
 ```
+
+```{r}
+plot(SNOW~date, data=climate_data, pch=",", main = "Date and Snow in Salt Lake City", ylab = "Snow Level", xlab = "Date")
+bestfitline2.lm = lm(snow~date)
+abline(coef(bestfitline2.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline2.lm)
+## plot 
+```
+
+```{r}
+plot(PRCP~date, data=climate_data, pch=",", main = "Date and Precipitation in Salt Lake City", ylab = "Precipitation Level", xlab = "Date")
+bestfitline3.lm = lm(precp~date)
+abline(coef(bestfitline3.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline3.lm)
+## plot 
+```
+
+```{r}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+abline(coef(May.lm), col="red")
+
+for (i in 1:12) {
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020),
+  main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==i, ])
+  summary(Month.lm)
+  abline(coef(Month.lm), col = "red")
+  TMAXresult <- rbind(tmax, cbind(Months[i],
+  round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared, 3)))
+}
+```
+
+![My Cat Hemingway](/home/CAMPUS/edab2019/Climate_Change_Narratives/Student_Folders/Duggleby/Hemingway.PNG)

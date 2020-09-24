@@ -1,0 +1,146 @@
+---
+title: "Regional Analysis"
+author: "Olivia"
+date: "9/8/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r readdata, echo=FALSE}
+
+#file.choose()
+filepath = "/home/CAMPUS/ocma2018/Climate_Change_Narratives/Data/FA20/olivia_chicagomidway_data.csv"
+climate_data = read.csv(filepath) 
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+
+## Analysis for Chicago Midway
+
+```{r plotdailydata}
+plot(TMAX~NewDate, data=climate_data, ty='l')
+TMAX.lm = lm(TMAX ~ NewDate, data=climate_data) 
+slopeintercept = coef(TMAX.lm)
+abline(coef(TMAX.lm), col = 'pink') 
+lm(TMAX ~ NewDate, data=climate_data)
+lm(TMAX ~ NewDate, data=climate_data)
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+plot(TMAX ~ NewDate, data= climate_data, las=1)
+abline(slopeintercept, col="pink", lwd=3)
+(TMAX.lm.sum = summary(lm(TMAX ~ NewDate, data=climate_data)))
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+```
+## Month by Month Analysis
+```{r plotmonthbymonth}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="pink")
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA 
+for (i in 1:12) {
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ], ty = "l", las = 1, xlim = c(1940, 2020),
+main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ])
+summary(Month.lm)
+abline(coef(Month.lm), col = "pink")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
+4], 4), round(summary(Month.lm)$r.squared,
+3)))
+}
+```
+
+
+
+## Minimum Temperature
+```{r plottmin}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+library(xtable)
+### 3.1: Specifying plotting window parameters
+par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1) 
+  TMINresult <- NULL 
+for (i in 1:12) { 
+Month_sub_DF <- MonthlyTMINMean[MonthlyTMINMean$MONTH==i, ] 
+MonthMin_lm <- lm(TMIN ~ YEAR, data=Month_sub_DF)
+TMINresult <- rbind(TMINresult, 
+                      cbind(Months[i], 
+                            round(coef(MonthMin_lm)[2], 3), # go in to the coef(MonthMin_lm) object and take the 2nd element and round the number to 4 digits
+                            round(summary(MonthMin_lm)$coefficients[2,4], 3), # What does this column correspond to? Try copying just round(summary(MonthMin_lm)$coefficients[2,4], 4) after running an example MonthMin_lm <- lm(...) command in the console and see what it spits out
+                            round(summary(MonthMin_lm)$r.squared, 2))) # create a column for the Rsquared value
+  plot(TMIN~YEAR,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
+  abline(coef(MonthMin_lm),col="pink") 
+}
+
+#these didn't work - but leaving them in in case I missed something
+#Results <- data.frame(Month = TMINresult[c(2:13),1],
+#TMINSlope = TMINresult[c(2:13),2],
+#TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+#TMINRsq = TMINresult[c(2:13),4],
+#TMAXSlope = TMAXresult[c(2:13),2],
+#TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+#TMAXRsq = TMAXresult[c(2:13),4])
+#Results$starTMIN = "NS"
+#Results$starTMIN[Results$TMIN_P <= .05] = "*"
+#Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+#Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+#Results$starTMAX = "NS"
+#Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+#Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+#Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+#Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+#Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+#colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+#"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+#print(xtable(Results[,c(1, 10, 4, 11, 7)]))
+```
+## Precipitation:
+```{r plotprecipitation}
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+Missing <- aggregate(is.na(climate_data$PRCP),
+list(climate_data$Month, climate_data$Year), sum)
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+plot(x ~ Date, data=Missing)
+TotalPPT <- aggregate(climate_data$PRCP,
+list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+library(dplyr)
+PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
+head(PPT)
+PRCP_mean = mean(PPT$ppt)
+plot(ppt~Date, data=PPT)
+abline(h=PRCP_mean, col="pink")
+```
+
+
+## Means by Month
+```{r index}
+tapply(MonthlyTMAXMean$TMAX,MonthlyTMAXMean$Month,function(x) {mean(x,na.rm=T)})
+tapply(MonthlyTMINMean$TMIN,MonthlyTMINMean$Month,function(x) {mean(x,na.rm=T)})
+
+```

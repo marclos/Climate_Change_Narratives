@@ -7,17 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
 ```{r readdata}
-# Data path from marc's username...
-filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Williams_SaltLakeCityUT_data.csv"
-
-# make sure to uncomment out when you get the file back!
 filepath = "/home/CAMPUS/bawa2018/Climate_Change_Narratives/Data/FA20/Williams_SaltLakeCityUT_data.csv"
 climate_data = read.csv(filepath)
 strDates <- as.character(climate_data$DATE)
@@ -25,17 +15,129 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 ```
 
 
-## plot daily data
-
-added a section for a new part of the process...I changed the predictor from DATE to NewDate -- we created the new date so that we could actually plot the data using the corrrectly formatted data! I made the symbol smaller to make it "cleaner" looking, what do you think?
-
 ```{r plotdailyTMAX}
-#plot(TMAX~DATE, climate_data, pch = 16, cex = 1.3, col = "blue")
 plot(TMAX~NewDate, climate_data, pch = 16, cex=.2, col = "blue")
+TMAX.lm = lm(TMAX ~ NewDate, data = climate_data) 
+coef(TMAX.lm)
+abline(coef(TMAX.lm),col ="orange", lwd = 3)
+```
+
+```{r MonthlyPlot}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+```
+
+```{r MayPlot}
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],ty='l', xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+
+```
 
 
-#TMAX.lm = lm(TMAX ~ DATE, data = climate_data) #this won't work because you have the wrong variable DATE instead of NewDate
 
-#coef(TMAX.lm)
-#abline(coef(TMAX.lm))
+```{r plotMinDailyTemp}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+# First I create a vector of months
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+# Create a panel so I can see all the figures at
+# once.
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <-NA; TMINresult <- NA
+```
+
+```{r TMAX}
+for (i in 1:12) {
+    # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+    # ty='l')
+    plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+  summary(Month.lm)
+  abline(coef(Month.lm), col = "red")
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+  round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared,3)))
+  }
+```
+
+```{r TMIN}
+#par(mfrow=c(4,3),mar=c(5,4,1,1))
+for (i in 1:12) {
+MonthMin_lm <- lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+TMINresult <- rbind(TMINresult, cbind(Months[i],round(coef(MonthMin_lm)[2], 4), round(summary(MonthMin_lm)$coefficients[2,4], 4), round(summary(MonthMin_lm)$r.squared, 3)))
+summary(MonthMin_lm)
+plot(MonthlyTMINMean$TMIN, ty='l', ylab='Monthly avg min temp', xlab='Years',main=Months[i]
+)
+abline(coef(MonthMin_lm),col='blue')
+}
+```
+```{r Results}
+library(htmlTable)
+Results <- data.frame(Month = TMINresult[c(2:13),1],
+TMINSlope = TMINresult[c(2:13),2],
+TMIN_P = as.numeric(TMINresult[c(2:13),3]),
+TMINRsq = TMINresult[c(2:13),4],
+TMAXSlope = TMAXresult[c(2:13),2],
+TMAX_P = as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq = TMAXresult[c(2:13),4])
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+"R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+htmlTable(Results[,c(1, 10, 4, 11, 7)])
+```
+Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of May, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
+```{r July TMAXPlot}
+month_i <- 7
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,],ty='l', xlim=c(1950, 2020), ylab="Maximum Average July Temperature")
+July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,])
+summary(July.lm)
+abline(coef(July.lm), col="red")
+```
+Based on my analysis, my data indicate that there is not a trend of increasing temperature in Salt Lake City for the month of January(slope = 0.0435, r2 = 0, p-value = 0.29).
+```{r Jan TMIN Plot}
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",],ty='l', xlim=c(1950, 2020))
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+summary(Jan.lm)
+abline(coef(Jan.lm), col="cyan")
+Janresult <- NULL
+Janresult <- rbind(Janresult, cbind(Months[i],
+  round(coef(Jan.lm)[2], 4), round(summary(Jan.lm)$coefficients[2, 4], 4), round(summary(Jan.lm)$r.squared,3)))
+Janresult
+```
+Based on my analysis, my data indicate that there is a trend of decreasing snowfall in Salt Lake City for the month of January, rejecting the null hypothesis (slope = -0.0488, r2 = 0.2271, p-value = 0.02).
+```{r Jan Snowfall}
+i <- 1
+MonthlySNOWMean = aggregate(SNOW ~ Month + Year, climate_data, mean)
+MonthlySNOWMean$Month <- as.numeric(MonthlySNOWMean$Month)
+MonthlySNOWMean$Year <- as.numeric(MonthlySNOWMean$Year)
+plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
+  SNOWMonth.lm <- lm(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ])
+  summary(SNOWMonth.lm)
+  abline(coef(SNOWMonth.lm), col = "cyan")
+  SNOWresult <- NULL
+  SNOWresult <- rbind(SNOWresult, cbind(Months[i],
+  round(coef(SNOWMonth.lm)[2], 4), round(summary(SNOWMonth.lm)$coefficients[2, 4], 4), round(summary(SNOWMonth.lm)$r.squared,3)))
+SNOWresult
 ```

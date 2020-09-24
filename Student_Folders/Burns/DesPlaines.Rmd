@@ -1,0 +1,111 @@
+---
+title: "DesPlaines"
+author: "Anna Madison Burns"
+date: "9/17/2020"
+output: html_document
+---
+
+# Note
+
+The way that this data was available on the website was very strange, and I had a hard time getting it to process on R.  I manually fixed it for the annual measurements, and was able to find valuable data from that.  Potential future project to come back and "fix" this data.
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+Burns_DP_Daily <- read.table("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_DP_Daily.txt", fill=TRUE)
+Burns_DP_Annual <- read.table("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_DP_Annual.txt")
+```
+
+```{r}
+require(tidyverse)
+```
+
+# To do
+
+- format Burns_DP_annual -> annual maximum flow rates, look at when in the year they occur and how high they are
+
+# Formatting Annual Data
+
+Source: https://nwis.waterdata.usgs.gov/nwis/peak?site_no=05527800&agency_cd=USGS&format=rdb
+
+Units:
+Peak stream flow - cubic feet per second
+Gage height - feet
+
+```{r}
+colnames(Burns_DP_Annual)
+```
+
+```{r}
+names(Burns_DP_Annual)[names(Burns_DP_Annual) == "V3"] <- "Date"
+names(Burns_DP_Annual)[names(Burns_DP_Annual) == "V5"] <- "MaxFlow"
+names(Burns_DP_Annual)[names(Burns_DP_Annual) == "V7"] <- "MaxGauge"
+```
+
+```{r}
+Burns_DP_Annual <- Burns_DP_Annual[c(-1,-2),]
+```
+
+```{r}
+Burns_DP_Annual$MaxFlow <- as.numeric(Burns_DP_Annual$MaxFlow)
+```
+
+# Formatting Daily Data
+
+Source: https://nwis.waterdata.usgs.gov/nwis/dv?cb_00045=on&cb_00060=on&cb_00065=on&format=rdb&site_no=05527800&referred_module=sw&period=&begin_date=1838-09-01&end_date=2020-09-16
+
+Units:
+Gauge height - feet (mean)
+Discharge - cubic feet per second (mean)
+Precipitation - total inches (sum)
+
+```{r}
+summary(Burns_DP_Daily)
+```
+
+```{r}
+colnames(Burns_DP_Daily)
+```
+```{r}
+Burns_DP_Daily <- Burns_DP_Daily[c(-1,-2,-5,-7,-9)]
+```
+```{r}
+colnames(Burns_DP_Daily)
+```
+```{r}
+names(Burns_DP_Daily)[names(Burns_DP_Daily) == "V3"] <- "Date"
+names(Burns_DP_Daily)[names(Burns_DP_Daily) == "V4"] <- "Gauge_Ht"
+names(Burns_DP_Daily)[names(Burns_DP_Daily) == "V6"] <- "Discharge"
+names(Burns_DP_Daily)[names(Burns_DP_Daily) == "V8"] <- "Precip"
+```
+```{r}
+#this didn't work for some reason
+strDates_DPD <- as.character(Burns_DP_Daily$Date)
+Burns_DP_Daily$date <- as.Date(strDates_DPD, "%m/%d/%Y")
+```
+```{r}
+Burns_DP_Daily <- Burns_DP_Daily[-c(1,2),] 
+```
+
+# Basic Analysis - Daily
+
+```{r}
+plot(Discharge~Date, data=Burns_DP_Daily, main='Des Plaines River Discharge (Russell, IL)', sub='July 7, 1968 to September 14, 2020', ylab='Gauge Height (feet)', ty='l')
+#Gauge.lm <- lm(Gauge_Ht~Date, data=Burns_DP_Daily)
+#summary(Gauge.lm)
+#coef(Gauge.lm)
+#abline(coef(Gauge.lm), col = "purple", lwd = 2)
+```
+
+# Basic Analysis - Monthly
+
+# Basic Analysis - Annual
+
+```{r}
+plot(MaxFlow~Date, data=Burns_DP_Annual)
+```
+
+```{r}
+ggplot(data=Burns_DP_Annual) + geom_smooth(mapping=aes(x = Date, y = MaxFlow))
+```
+

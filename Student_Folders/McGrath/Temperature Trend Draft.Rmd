@@ -1,19 +1,17 @@
 ---
-title: "Temperature Trend Draft"
+title: "Chicago Temperature Trend Analysis"
 author: "Olivia"
 date: "9/2/2020"
 output: html_document
 ---
+## Overview:
+This blog is intended to analyze weather trends in Chicago—gathered from a station at Midway Airport—and investigate how these trends work towards proving a greater pattern of warming.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r readdata, echo=FALSE}
 
@@ -27,7 +25,8 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 ```
 
 
-## Create graphic
+## Data From 1940 to 2020
+The pink line represents a line of best fit, with "TMAX" meaning max temperature, and "YEAR" meaning the year over which the data was gathered.
 
 
 
