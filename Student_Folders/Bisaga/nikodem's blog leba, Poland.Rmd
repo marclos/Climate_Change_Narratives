@@ -27,17 +27,23 @@ str(climate_data)
 ```{r fixdates}
 
 strDates = as.character(climate_data$DATE) 
-climate_data$NewDate[2:12418] = format(as.Date(strDates[2:12418], "%m/%d/%y"), "19%y-%m-%d") 
-climate_data$NewDate[12419:19950] = format(as.Date(strDates[12419:19950], "%m/%d/%y"),"20%y-%m-%d")
+climate_data$NewDate = NA
+climate_data$NewDate[1:12417] = format(as.Date(strDates[1:12417], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data$NewDate[12418:19949] = format(as.Date(strDates[12418:19949], "%m/%d/%y"),"20%y-%m-%d")
 
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
+str(climate_data)
 
-MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-str(MonthlyTMAXMean)
-MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
+```
 
-TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+```{r}
+#climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+#climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+#MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+#str(MonthlyTMAXMean)
+#MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
+
+#TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
 ```
 
 ## Check Data
