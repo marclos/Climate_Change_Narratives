@@ -121,32 +121,37 @@ AQdf <- list.files(pattern = "*.csv") %>%
 strDates <- as.character(AQdf$Date)
 AQdf$NewDate <- as.Date(strDates, "%m/%d/%Y")
 
-names(AQdf)[names(AQdf) == "Overall AQI Value"] <- "AQI_VALUE"
-
 AQdf$Month = format(as.Date(AQdf$NewDate), format = "%m")
 AQdf$Year = format(AQdf$NewDate, format = "%Y")
 
-MonthlyAQIMean = aggregate(AQI_VALUE ~ Month + Year, AQdf, mean)
+AQdf$PM25[AQdf$PM25=="."] = NA
+AQdf$PM25 = as.numeric(AQdf$PM25)
+PMdf <-subset(AQdf, !is.na(AQdf$PM25))
 
-MonthlyAQIMean$YEAR = as.numeric(MonthlyAQIMean$Year)
-MonthlyAQIMean$MONTH = as.numeric(MonthlyAQIMean$Month)
+MonthlyPMMean = aggregate(PM25 ~ Month + Year, AQdf, max)
+MonthlyPMMean$YEAR = as.numeric(MonthlyPMMean$Year)
+MonthlyPMMean$MONTH = as.numeric(MonthlyPMMean$Month)
 ```
 
 ```{r AQ graphs, echo = FALSE, fig.show="hold", out.width="50%"}
-plot(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="06",], ty='l', xlim=c(1980, 2019), ylim = c(0,500), main="Average Air Quality in June", xlab = "Year", ylab= "Average Air Quality Index (AQI) Value", col="coral1")
-June.lm <- lm(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="06",])
+#June
+plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="06",], ty='l', xlim=c(2000, 2019), main="Average Air Quality in June", xlab = "Year", ylab= "Average PM 2.5 Level", col="coral1")
+June.lm <- lm(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="06",])
 abline(coef(June.lm))
 
-plot(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="07",], ty='l', xlim=c(1980, 2019), ylim = c(0,500), main="Average Air Quality in July", xlab = "Year", ylab= "Average Air Quality Index (AQI) Value", col="cornflowerblue")
-July.lm <- lm(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="07",])
+#July
+plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="07",], ty='l', xlim=c(2000, 2019), main="Air Quality in July", xlab = "Year", ylab= "Average PM 2.5 Level", col="cornflowerblue")
+July.lm <- lm(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="07",])
 abline(coef(July.lm))
 
-plot(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="08",], ty='l', xlim=c(1980, 2019), ylim = c(0,500), main="Average Air Quality in August", xlab = "Year", ylab= "Average Air Quality Index (AQI) Value", col="aquamarine4")
-August.lm <- lm(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="08",])
+#August
+plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="08",], ty='l', xlim=c(2000, 2019), main="Air Quality in August", xlab = "Year", ylab= "Average PM 2.5 Level", col="aquamarine4")
+August.lm <- lm(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="08",])
 abline(coef(August.lm))
 
-plot(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="09",], ty='l', xlim=c(1980, 2019), ylim = c(0,500), main="Average Air Quality in September", xlab = "Year", ylab= "Average Air Quality Index (AQI) Value", col="mediumpurple1")
-September.lm <- lm(AQI_VALUE~YEAR, data=MonthlyAQIMean[MonthlyAQIMean$Month=="09",])
+#September
+plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="09",], ty='l', xlim=c(2000, 2019), main="Air Quality in September", xlab = "Year", ylab= "Average PM 2.5 Level", col="mediumpurple1")
+September.lm <- lm(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="09",])
 abline(coef(September.lm))
 ```
 
