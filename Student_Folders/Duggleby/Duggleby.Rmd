@@ -17,6 +17,7 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 date = climate_data$NewDate
 tmax=climate_data$TMAX
 snow=climate_data$SNOW
+precp=climate_data$PRCP
 
 #Month trend
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -40,14 +41,25 @@ Months = c("January", "February", "March", "April",
 
 ```{r}
 plot(TMAX~date, data=climate_data, pch=",", main = "Date vs. Maximum Temperature in Salt Lake City", ylab = "Maximum Temperature", xlab = "Date")
-bestfitline.lm = lm(tmax~date)
-abline(coef(bestfitline.lm), col = "#7a7fff", lwd=2.5)
+bestfitline1.lm = lm(tmax~date)
+abline(coef(bestfitline1.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline1.lm)
 ## plot 
 ```
+
 ```{r}
 plot(SNOW~date, data=climate_data, pch=",", main = "Date and Snow in Salt Lake City", ylab = "Snow Level", xlab = "Date")
-bestfitline.lm = lm(snow~date)
-abline(coef(bestfitline.lm), col = "#7a7fff", lwd=2.5)
+bestfitline2.lm = lm(snow~date)
+abline(coef(bestfitline2.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline2.lm)
+## plot 
+```
+
+```{r}
+plot(PRCP~date, data=climate_data, pch=",", main = "Date and Precipitation in Salt Lake City", ylab = "Precipitation Level", xlab = "Date")
+bestfitline3.lm = lm(precp~date)
+abline(coef(bestfitline3.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline3.lm)
 ## plot 
 ```
 
