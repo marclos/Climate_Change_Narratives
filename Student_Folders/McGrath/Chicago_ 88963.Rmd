@@ -56,7 +56,7 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 str(MonthlyTMAXMean)
 summary(TMAX.lm)
 ```
-#### For this graph of daily temperatures across the years, the probability value is <2e-16. This tiny number is so close to zero, that we can reject the null hypothesis (the assumption that the slope is zero, or that there is not an upward trend) and safely assume that the coefficient of maximum temperature by year has a slope that is not zero. If the p value were closer to one, there would be a greater chance of variation from the model I have created. The multiple R-squared value is 0.0006071 and the adjusted value is 0.00604. They are close to each other, showing that the predictor variables I have input account for variation, however since the adjusted R-squared is farther from 1, not all the variation is accounted for in this particular model. 
+####For this graph of daily temperatures across the years, the probability value is <2e-16. This tiny number is so close to zero, that we can reject the null hypothesis (the assumption that the slope is zero, or that there is not an upward trend) and safely assume that the coefficient of maximum temperature by year has a slope that is not zero. If the p value were closer to one, there would be a greater chance of variation from the model I have created.
 
 ## Month by Month Analysis
 ```{r plotmonthbymonth}
@@ -86,7 +86,7 @@ round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
 ```
 
 
-#### As seen below, the maximum temperatures in November, from 1940 to 2020, display a rising trend. Having lived in Chicago all my life, fall tends to begin early, with temperatures dropping around November and October. However, as the graph below shows, autumn has been getting warmer and warmer. The P value here is 0.188, which, while not allowing the rejection of the null hypothesis, is not altogether improbable. The adjusted R-squared value is also a lot smaller than the multiple R-squared, which means that the month-by-month analysis has a greater chance for variation that isn't accounted for.
+#### As seen below, the maximum temperatures in November, from 1940 to 2020, display a rising trend. Having lived in Chicago all my life, fall tends to begin early, with temperatures dropping around November and October. However, as the graph below shows, autumn has been getting warmer and warmer. The P value here is 0.188, which, while not allowing the rejection of the null hypothesis, is not altogether improbable. (need some clarification here)
 
 ```{r NOVMAX}
 i <- 11
@@ -153,7 +153,7 @@ TMINresult <- rbind(TMINresult,
 ```
 
 
-#### Similarly, a look at November's minimum temperatures from 1940 to 2020, these low temperature averages increase (shown by the positive slope of the line of best fit). This graph has a P value of 0.00234 or 0.002, which is still relatively close to zero, allowing us to reject the null hypothesis. The multiple R-squared and adjusted R-squared are 0.09937 and 0.08925 respectively. As the adjusted value is close to 1, a lot of the possible variation is accounted for by this model for November data.
+#### Similarly, a look at November's minimum temperatures from 1940 to 2020, these low temperature averages increase (shown by the positive slope of the line of best fit). This graph has a P value of 0.00234 or 0.002, which is still relatively close to zero, allowing us to reject the null hypothesis.
 
 ```{r NOVMIN}
 i <- 11
@@ -172,7 +172,6 @@ TMINresult
 
 
 ## Precipitation: 
-#### I won't be analyzing precipitation in my blog, but the data is below.
 ```{r plotprecipitation}
 
 climate_data$PRCP[climate_data$PRCP==-9999] <- NA
@@ -201,24 +200,23 @@ plot(MonthlyPRCPMean$PRCP, ty='l')
 library(xtable)
 # 3.1: Specifying plotting window parameters
 par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1) 
- PRCPresult <- NULL
-for (i in 1:12) {
-  Month_sub_DF <- MonthlyPRCPMean[MonthlyPRCPMean$MONTH==i, ] # changed DF name to be consistent with the monthly aggregated DF above
-  MonthPRCP_lm <- lm(PRCP ~ YEAR, data=Month_sub_DF)
- PRCPresult <- rbind(PRCPresult,
-                      cbind(Months[i],
-                            round(coef(MonthPRCP_lm)[2], 3),  # slope                           
-round(summary(MonthPRCP_lm)$coefficients[2,4], 3), # adding on p-value                            
-round(summary(MonthPRCP_lm)$r.squared, 2)))  #R2 value
-}
-colnames(PRCPresult) <- c("Month","Slope","pval","R2") # give it more informative column header names
-PRCPresult[,3] <- significance_star(PRCPresult[,3]) # convert the p-values from numbers to a "*" representation - more "***" --> more significant
-htmlTable(PRCPresult,rnames=FALSE) # don't print out row names, which are meaningless here
+  PRCPresult <- NULL 
+ for (i in 1:12) { 
+Month_sub_DF <- MonthlyPRCPMean[MonthlyPRCPMean$MONTH==i, ] 
+MonthPrcp_lm <- lm(PRCP ~ YEAR, data=Month_sub_DF)
+PRCPresult <- rbind(PRCPresult, 
+                     cbind(Months[i], 
+                            round(coef(MonthPrcp_lm)[2], 3), 
+                           round(summary(MonthPrcp_lm)$coefficients[2,4], 3), 
+                            round(summary(MonthPrcp_lm)$r.squared, 2))) 
+  plot(PRCP~YEAR,data=Month_sub_DF, type='l', ylab='Precipitation', xlab='Years',main=Months[i], bty="L", las=1) 
+  abline(coef(MonthMin_lm),col="pink") 
+ }
 ```
 
 
 ## Snow Data 
-#### As you can see in the chart below, summer months stay consistantly devoid of snow, but if you look at the data for November and December, there is a negative slope. It is not snowing as much in the early winter. In addition, the trend for March and May is also downward. The snow is not lasting as long as it appraches spring in Chicago. As I work on my blog, I will think about how to analyze the data and explain the R squared and p values, as the data is not organized in the same way as Max Temp, Min Temp, or Precipitation.
+#### As you can see in the chart below, summer months stay consistantly devoid of snow, but if you look at the data for November and December, there is a negative slope. It is not snowing as much in the early winter. In addition, the trend for March and May is also downward. The snow is lasting less long as it appraches spring in Chicago. The p value for 
 
 ```{r plotsnow}
 MonthlySnowDF = aggregate(SNOW ~ Month + Year, climate_data, sum)
