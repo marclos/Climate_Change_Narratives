@@ -23,6 +23,8 @@ This blog’s analysis draws on daily temperature maximum (TMAX) and daily tempe
 #### TMIN Increases 1948-2020
 
 ```{r TMIN plot, echo=FALSE}
+file.path = "/home/CAMPUS/jagc2019/JacobGreene_WashingtonDC_Data.csv"
+# file.path = 
 climate_data <- read.csv("/home/CAMPUS/jagc2019/JacobGreene_WashingtonDC_Data.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
