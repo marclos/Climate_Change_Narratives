@@ -9,10 +9,14 @@ output: html_document
 
 
 ## Introduction
-Over the last century, the average surface temperature of the Earth has increased by about 1.0o F (EPA). Each year, more Americans die as a result of heat than all other natural disasters combined. The climate of Los Angeles is a mild-to-hot and mostly dry climate for the year round. The climate is described as a Mediterranean climate, which is a type of dry subtropical climate. And the L.A. neighborhoods that have the least tree canopy are at greatest risk for heat-related hospitalizations and deaths. Climate change is primarily responsible for the warming trend, but it’s not the only force at work (Montanez). Unlike many other Californians, and Americans in general, Angelenos are also contending with an additional layer of heat intensification caused by what’s known as the “urban heat island effect.” It means that cities — with their asphalt streets, dark roofs, sparse vegetation and traffic congested roads — are almost always a few degrees warmer than the more rural areas that surround them (Netburn). I hypothesize that this means that the data will show an average temperature steadily rising from 1906 onward that surpasses the global average temperature rise of a similar time.  This blog will examine temperature and records for Los Angeles from 1906 to 2010 and discuss conclusions we can draw from said statistics as they relate to extreme heat's disproportionate effect on urban and low-income communities. 
+Over the last century, the average surface temperature of the Earth has increased by about 1.5-2.0 degrees Celsius (NASA). Each year, more Americans die as a result of heat than all other natural disasters combined. The climate of Los Angeles is a mild-to-hot and mostly dry climate for the year round. The climate is described as a Mediterranean climate, which is a type of dry subtropical climate. And the L.A. neighborhoods that have the least tree canopy are at greatest risk for heat-related hospitalizations and deaths. Climate change is primarily responsible for the warming trend, but it’s not the only force at work (Montanez). Unlike many other Californians, and Americans in general, Angelenos are also contending with an additional layer of heat intensification caused by what’s known as the “urban heat island effect.” It means that cities — with their asphalt streets, dark roofs, sparse vegetation and traffic congested roads — are almost always a few degrees warmer than the more rural areas that surround them (Netburn). I hypothesize that this means that the data will show an average temperature steadily rising from 1906 onward that surpasses the global average temperature rise of a similar time.  This blog will examine temperature and records for Los Angeles from 1906 to 2010 and discuss conclusions we can draw from said statistics as they relate to extreme heat's disproportionate effect on urban and low-income communities. 
 
 ## Methods
-For this blog, I accessed the database on National Oceanic and Atmospheric Administration to collect air temperature data in my region of study, Los Angeles. 
+For this blog, I accessed the database on National Oceanic and Atmospheric Administration (NOAA) to collect air temperature data in my region of study, Los Angeles. I collected data from a station in Downtown Los Angeles because it had the most expansive data of the 3 stations in Los Angeles area (NOAA). I chose to use the data from August because it showed the largest variability of months and was one of the hottest months on average. I graphed temperature average maximums and minimums across the 104 year period to show clear temperature increase from both the lowest and highest temperatures.
+
+
+To analyze the data, I read and interpreted the p and adjusted r2 values to ultimately test this null hypothesis: the air temperature of Los Angeles is increasing in correlation with time and dependent upon time. The significance of the p value and r2 value depends on how high the values are. In an effort to further the scope of my study, I accessed multiple peer review journals for the information about heat mitigation and impact studies
+
 
 ![Fig.2 Urban heat island temperatures in the greater Los Angeles area. Image via CalEPA 2015](http://a.scpr.org/i/d623e7d0115ec7bc73b6d5eb5ff03f60/111858-eight.jpg)
 
@@ -40,7 +44,7 @@ summary(August.lm)
 abline(coef(August.lm), col="red")
 ```
 
-```{r August TMIN DATA}
+```{r August TMIN DATA, results = FALSE}
 lm(TMIN ~ NewDate, data=climate_data)
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
@@ -67,6 +71,7 @@ Additionally, there are several weather stations throughout Los Angeles all of w
 ## Conclusion: A Call to Action
 This study points to an uneven distribution of negative effects of rising temperatures even across an area as small as one county. There seems to be shared understanding from the studies that elderly populations are at high risk for heat induced mortality and health issues. Additionally, there is a shared conclusion that with proper preparedness and mitigation efforts, Los Angeles can reduce the negative effects of heat on the population. 
 
-## References 
+## References  
+
 
 
