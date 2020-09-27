@@ -2,7 +2,9 @@
 title: "Precipitation and Peak Stream Flows of the Des Plaines River, Northern IL"
 author: "Anna Madison Burns"
 date: "9/26/2020"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -25,14 +27,16 @@ This paper examines streamflow volume of the Des Plaines River during peak flow 
 After obtaining the data from daily precipitation data (in cm) from NOAA's CDO database, the sum of the precipitation levels were aggregated for each month between 1901 and 2008, excluding the missing data between 1922 and 1941.  Then, the sum of the monthly precipitation was graphed over time for each of the twelve months, and a linear model was applied to each month's precipitation trend using a 5\% confidence level under the null hypothesis that there is no correlation between monthly precipitation sums and time.  The results of this linear regression are broken down by month in Table 1, and display low levels of correlation over time.  None of the months demonstrate a significant correlation between monthly precipitation sums and time, and the null hypothesis stands.
 
 Table 1. Antioch, IL Monthly Precipitation Trends (1901 to 2008)
-![](/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Student_Folders/Burns/Blog/PRCP.png) 
+![](PRCP.png) 
 
 
 Next, data regarding streamflow levels during peak flow events on the Des Plaines River were obtained from the U.S. Geological Survey's site at Russell, IL, located approximately ten miles from Antioch.  This data contains the streamflow (cubic feet per second) and discharge levels (feet) during the peak annual streamflow events for every year between 1960 and 2019.  The streamflow levels was plotted against time, and a linear regression model was applied to the data.  Once again, this linear regression operated at a 5\% confidence level, with the null hypothesis that streamflow during peak flow events had not changed over time.  A BoxCox graph revealed that the data would benefit from a logarithmic adjustment to correct for variation in the data, and this transformation was applied.  The best fit line and plotted data is included in Graph 1.
 
 ```{r, echo=FALSE}
 library(readxl)
-Burns_DP_Alternate <- read_excel("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_DesPlainesMax_Data.xlsx", 
+file.path = "/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_DesPlainesMax_Data.xlsx"
+file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Burns_DesPlainesMax_Data.xlsx"
+Burns_DP_Alternate <- read_excel(file.path, 
     col_types = c("date", "numeric", "numeric"))
 plot(log(PeakFlow)~Date, data=Burns_DP_Alternate, main="Des Plaines River Stream Flow during Peak Flow Events", sub="Russell, IL: 1960 to 2019", xlab = "Year", ylab="Stream Flow (cubic feet per second)")
 PeakFlow.lm <- lm(log(PeakFlow)~Date, data=Burns_DP_Alternate)
