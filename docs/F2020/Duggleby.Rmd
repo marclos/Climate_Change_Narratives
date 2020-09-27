@@ -2,9 +2,7 @@
 title: "Duggleby"
 author: "Emma Duggleby"
 date: "9/1/2020"
-output:
-  word_document: default
-  html_document: default
+output: html_document
 ---
 
 ![Salt Lake City](/home/CAMPUS/edab2019/Climate_Change_Narratives/Student_Folders/Duggleby/SLC.jpg)
@@ -14,8 +12,9 @@ output:
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 file.path = "/home/CAMPUS/edab2019/Climate_Change_Narratives/Data/FA20/Duggleby_SaltLakeCity_data.csv"
-# file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Duggleby_SaltLakeCity_data.csv"
+
 climate_data = read.csv(file.path)
+
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 date = climate_data$NewDate
