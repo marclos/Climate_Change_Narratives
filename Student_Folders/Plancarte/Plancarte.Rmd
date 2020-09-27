@@ -2,8 +2,9 @@
 title: "San Diego Regional Climate Analysis"
 author: "Vivianna Plancarte"
 date: "9/17/2020"
-output: html_document
-
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +17,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Data Sources
 file.path="/home/CAMPUS/vipa2017/Github/Climate_Change_Narratives/Student_Folders/Plancarte/Plancarte_SanDiego_data.csv"
-#file.path="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Plancarte/Plancarte_SanDiego_data.csv"
+file.path="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Plancarte/Plancarte_SanDiego_data.csv"
 climate_data=read.csv(file.path)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
