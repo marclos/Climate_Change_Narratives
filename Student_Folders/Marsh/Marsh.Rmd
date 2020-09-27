@@ -18,7 +18,7 @@ For this blog, I accessed the database on National Oceanic and Atmospheric Admin
 
 ## Reading Air Temperature Data
 
-```{r August TMAX Data}
+```{r August TMAX Data, results = FALSE}
 climate_data <- read.csv("/home/CAMPUS/cdma2019/ChristinaMarsh_LosAngeles_data.csv")
 head(climate_data)
 str(climate_data)
