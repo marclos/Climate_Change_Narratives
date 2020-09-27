@@ -1,30 +1,72 @@
 ---
-title: "Draft Climate Change exploration in Los Angeles, CA"
+title: "Effects of Rising Heat on Urban Communities in Los Angeles, CA"
 author: "Christina Marsh"
-date: "9/12/2020"
+date: "Saturday, September 26th"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This blog will examine temperature and precipitation records for Los Angeles from 1995 to 2000 and discuss conclusions we can draw from said statistics as they relate to extreme heat's disproportiante effect on urban and low income communities. 
 ![image caption](https://upload.wikimedia.org/wikipedia/commons/3/32/20190616154621%21Echo_Park_Lake_with_Downtown_Los_Angeles_Skyline.jpg) 
-```{r} 
+
+
+## Introduction
+Over the last century, the average surface temperature of the Earth has increased by about 1.0o F (EPA). Each year, more Americans die as a result of heat than all other natural disasters combined. The climate of Los Angeles is a mild-to-hot and mostly dry climate for the year round. The climate is described as a Mediterranean climate, which is a type of dry subtropical climate. And the L.A. neighborhoods that have the least tree canopy are at greatest risk for heat-related hospitalizations and deaths. Climate change is primarily responsible for the warming trend, but it’s not the only force at work (Montanez). Unlike many other Californians, and Americans in general, Angelenos are also contending with an additional layer of heat intensification caused by what’s known as the “urban heat island effect.” It means that cities — with their asphalt streets, dark roofs, sparse vegetation and traffic congested roads — are almost always a few degrees warmer than the more rural areas that surround them (Netburn). I hypothesize that this means that the data will show an average temperature steadily rising from 1906 onward that surpasses the global average temperature rise of a similar time.  This blog will examine temperature and records for Los Angeles from 1906 to 2010 and discuss conclusions we can draw from said statistics as they relate to extreme heat's disproportionate effect on urban and low-income communities. 
+
+## Methods
+For this blog, I accessed the database on National Oceanic and Atmospheric Administration to collect air temperature data in my region of study, Los Angeles. 
+
+![Fig.2 Urban heat island temperatures in the greater Los Angeles area. Image via CalEPA 2015](http://a.scpr.org/i/d623e7d0115ec7bc73b6d5eb5ff03f60/111858-eight.jpg)
+
+## Reading Air Temperature Data
+
+```{r August TMAX Data}
 climate_data <- read.csv("/home/CAMPUS/cdma2019/ChristinaMarsh_LosAngeles_data.csv")
 head(climate_data)
 str(climate_data)
 names(climate_data)
-plot(TMAX~DATE, climate_data) 
+min(climate_data$TMAX)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+lm(TMAX ~ NewDate, data=climate_data)
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean) 
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], ty='l', xlim=c(1906, 2014))
+August.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+summary(August.lm)
+abline(coef(August.lm), col="red")
 ```
-![image caption]("/home/CAMPUS/cdma2019/LA Station Location Pic.png")
+
+```{r August TMIN DATA}
+lm(TMIN ~ NewDate, data=climate_data)
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean) 
+str(MonthlyTMINMean)
+MonthlyTMINMean$Year.num = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num = as.numeric(MonthlyTMINMean$Month)
+str(MonthlyTMINMean)
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty='l', xlim=c(1906, 2014))
+August.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+summary(August.lm)
+abline(coef(August.lm), col="blue")
+```
+
+## Discussion
+
+This data can help strengthen existing arguments around the idea that local activists and politicians have raised around the need for better heat mitigation to help the Los Angeles Metropolitan area. Mayor Eric Garcetti The study Potential overall heat exposure reduction associated with implementation of heat mitigation strategies in Los Angele gives fascinating insight into heat mitigation that compares a variety of strategies. Additionally, flaws are thoroughly explored across different systems of mitigation. Particularly in analyzing the effects of increasing vegetative cooling the urban environment and its adverse consequences due to the associated potential increase in dew point temperatures. It does a great job analyzing the pros and cons to each but, does not account for monetary costs to implementation. It ignores a key factor of accessibility and general feasibility. A limiting factor to this study is it is a mere 15 pages that covers 4 different mitigation scenarios and 3 different subpopulations across 2 different historic events. The number of variables can muddle the clarity of results.
+
+The analysis does not fully account for other factors that effect temperature averages throughout the years. Factors
+
+Additionally, there are several weather stations throughout Los Angeles all of which when looked at together will create an even more precise picture of the temperature shifts present then what will come from looking at just one station alone.
 
 
+## Conclusion: A Call to Action
+This study points to an uneven distribution of negative effects of rising temperatures even across an area as small as one county. There seems to be shared understanding from the studies that elderly populations are at high risk for heat induced mortality and health issues. Additionally, there is a shared conclusion that with proper preparedness and mitigation efforts, Los Angeles can reduce the negative effects of heat on the population. 
 
-
-
+## References 
 
 
