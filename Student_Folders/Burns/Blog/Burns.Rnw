@@ -81,7 +81,8 @@ Next, data regarding streamflow levels during peak flow events on the Des Plaine
 
 <<echo=FALSE>>=
 library(readxl)
-Burns_DP_Alternate <- read_excel("/home/CAMPUS/amba2019/EA30/Climate_Change_Narratives/Data/FA20/Burns_DesPlainesMax_Data.xlsx", 
+file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Burns_DesPlainesMax_Data.xlsx"
+Burns_DP_Alternate <- read_excel(file.path, 
     col_types = c("date", "numeric", "numeric"))
 plot(log(PeakFlow)~Date, data=Burns_DP_Alternate, main="Des Plaines River Stream Flow during Peak Flow Events", sub="Russell, IL: 1960 to 2019", xlab = "Year", ylab="Stream Flow (cubic feet per second)")
 PeakFlow.lm <- lm(log(PeakFlow)~Date, data=Burns_DP_Alternate)
