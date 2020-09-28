@@ -167,14 +167,14 @@ Temperature data was downloaded from NOAA (National Oceanic and Atmospheric Admi
 
 ```{r results= 'hide'}
 par(mfrow=c(1,2), cex.main=0.9, cex.lab=0.8, cex.axis=0.8)
-plot(TMAX~NewDate, climate_data,ty='l',main="Annual Maximum Temperatures in San Diego", xlab="Year", ylab="Maximum Temperatures (°Celsius)")
+plot(TMAX~NewDate, climate_data,ty='l',col="grey",main="Annual Maximum Temperatures \nin San Diego", xlab="Year", ylab="Maximum Temperatures (°Celsius)")
 bestfitline.lm=lm(TMAX~NewDate,data=climate_data)
 coef(bestfitline.lm)
 abline(coef(bestfitline.lm),col="red", lwd=3)
 (TMAX.lm.sum=summary(lm(TMAX~NewDate,data=climate_data)))
 
 
-plot(TMIN~NewDate, climate_data,ty='l', main="Annual Minimum Temperatures in San Diego", xlab="Year", ylab="Maximum Temperatures (°Celsius)")
+plot(TMIN~NewDate, climate_data,ty='l', col="grey", main="Annual Minimum Temperatures \nin San Diego", xlab="Year", ylab="Maximum Temperatures (°Celsius)")
 bestfitline.lm=lm(TMIN~NewDate,data=climate_data)
 coef(bestfitline.lm)
 abline(coef(bestfitline.lm),col="red", lwd=3)
@@ -228,7 +228,7 @@ Wildfires can significantly impact public health and add hidden costs through it
 
 ## Next Steps
 
-Because of the various threats that climate change poses on the San Diego region, regional government officials have mobilized towards a more sustainable future. In 2018, the San Diego County Board of Supervisors adopted a Climate Action Plan (CAP). The CAP identifies strategies and measures to reduce the County’s contribution of greenhouse gas emissions to the atmosphere and achieve co-benefits including energy and water conservation, cleaner air, community health, biological resource conservation, cost savings, and job creation. Considering the additional climate data by the NOAA which highlight the gravity of meeting the CAO's climate goals, it would be wise to reconsider the strength of the current efforts being put forth to mitigate climate change. 
+Because of the various threats that climate change poses on the San Diego region, regional government officials have mobilized towards a more sustainable future. In 2018, the San Diego County Board of Supervisors adopted a Climate Action Plan (CAP). The CAP identifies strategies and measures to reduce the County’s contribution of greenhouse gas emissions to the atmosphere and achieve co-benefits including energy and water conservation, cleaner air, community health, biological resource conservation, cost savings, and job creation. Considering the additional climate data by the NOAA which highlight the gravity of meeting the CAP's climate goals, it would be wise to reconsider the strength of the current efforts being put forth to mitigate climate change. 
 
 
 ## References
