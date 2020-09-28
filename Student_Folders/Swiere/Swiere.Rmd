@@ -12,7 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 In this blog I will be exploring climate change in Southeast Texas, using data from the National Oceanic and Atmospheric Association (NOAA). 
 
 ```{r part two, echo=TRUE}
-climate_data <- read.csv("/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_DataNEW.csv")
+file.path = "/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_DataNEW.csv"
+# file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Swiere_OrangeTX_Data.csv"
+climate_data <- read.csv(file.path)
 
 
 strDates <- as.character(climate_data$DATE) #create object dates as characters
