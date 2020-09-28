@@ -1,18 +1,18 @@
 ---
-title: 'Rising Temperatures and their Activist Implications in Washington DC '
-author: '97517'
+title: "Rising Temperatures and their Activist Implications in Washington DC "
+author: "97517"
 date: "9/26/2020"
 output:
-  word_document: default
   pdf_document: default
   html_document: default
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-![View of Tidal Basin and Jefferson Memorial](WAshington DC Image Jefferson Memorial.jpg)
+![View Jefferson Memorial](WAshington DC Image Jefferson Memorial.jpg)
 
 Washington DC, the nation's capital, is situated geographically on the eastern fall line. Although it is often called a swamp for its hot, humid summers (and slow-moving politics), the city is actually in a humid subtropical climate, with pleasant springs and autumns and cold winters. However, since 1948 the climate of DC has changed, and it will likely continue to change in the future.
 
@@ -23,7 +23,8 @@ This blog’s analysis draws on daily temperature maximum (TMAX) and daily tempe
 #### TMIN Increases 1948-2020
 
 ```{r TMIN plot, echo=FALSE}
-file.path = "/home/CAMPUS/jagc2019/Climate_Change_Narratives/Data/FA20/JacobGreene_WashingtonDC_Data.csv"
+file.path = "/home/CAMPUS/jagc2019/JacobGreene_WashingtonDC_Data.csv"
+file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/JacobGreene_WashingtonDC_Data.csv"
 climate_data <- read.csv(file.path)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
@@ -40,9 +41,9 @@ climate_data$Year = format(as.Date(climate_data$NewDate),format= "%Y")
 MonthlyTMINMean = aggregate(TMIN~Month+Year,climate_data,mean)
 MonthlyTMINMean$YEAR= as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l',main= "July Monthly TMIN Means vs Time", xlab= "Time", ylab= "July TMINs (C)")
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l',main= "July Monthly TMIN Means vs Time", xlab= "Time", ylab= "July TMINs (C)" )
 JulTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
-abline(coef(JulTMIN.lm),col= "red",lwd=2 )
+abline(coef(JulTMIN.lm),col= "red")
 ```
 
 The graph above illustrates how July TMINs have significantly (p-value= 3.94e-06) increased from 1948 to 2020. According to the slope of .033, over a 100-year span, average TMINs in July would increase by 3.3 degrees Celsius. This trend follows similarly for all other summer months: months May to August had p values less than .0005, and Months September and April had p values less than .05. Furthermore, the average TMIN warming over 100 years between April and September was 3.1 degrees Celsius. A 2015 report by Katherine Hayhoe and Anne Stoner for the DC Department of Energy and Environment corroborates this summer TMIN increase(Hayhoe et al., 2015). From synthesizing several climate change projections and two other DC weather stations in addition to the National Arboretum data I used, the authors projected that by 2100, TMINs likely will increase between 4.4 and 5.5 degrees Celsius(Hayhoe et al., 2015).
