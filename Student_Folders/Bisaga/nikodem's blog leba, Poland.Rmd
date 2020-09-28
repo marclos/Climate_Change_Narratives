@@ -1,5 +1,5 @@
 ---
-title: "leba, PL blog"
+title: "Effects of Łeba, PL blog"
 author: "nikodem bisaga"
 date: "9/20/2020"
 output: html_document
@@ -22,7 +22,7 @@ str(climate_data)
 
 ## Fix Dates
 
-# never created str dates... how come?
+### never created str dates... how come?
 
 ```{r fixdates}
 
@@ -30,39 +30,192 @@ strDates = as.character(climate_data$DATE)
 climate_data$NewDate = NA
 climate_data$NewDate[1:12417] = format(as.Date(strDates[1:12417], "%m/%d/%y"), "19%y-%m-%d") 
 climate_data$NewDate[12418:19949] = format(as.Date(strDates[12418:19949], "%m/%d/%y"),"20%y-%m-%d")
+climate_data$NewDate2 = as.Date(climate_data$NewDate,"%Y-%m-%d")
 
-str(climate_data)
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(as.Date(climate_data$NewDate), format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
+
+TMAX.lm = lm(TMAX ~ NewDate2, data= climate_data)
+```
+
+### plotting tmin
+
+```{r}
+#tmin graphs
+
+MonthlyTMINMean <- aggregate(TMIN~Month + Year, climate_data, mean)
+MonthlyTMINMean$MONTH <- as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$YEAR <- as.numeric(MonthlyTMINMean$Year)
+
+plot(TMIN~NewDate, climate_data, main = "TMIN SETX", ylab = "Degrees C", xlab = "Time", type = "l")
+lm.min <- lm(TMIN~NewDate, climate_data)
+abline(lm.min, col = "red")
+
+
+```
+### tmax monthly individually written, not working
+
+```{r, eval=FALSE,echo=FALSE}
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in January in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitJan<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+abline(bestfitJan, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in February in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitFeb<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+abline(bestfitFeb, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in March in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitMar<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",])
+abline(bestfitMar, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in April in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitApr<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+abline(bestfitApr, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in May in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitMay<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+abline(bestfitMay, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in June in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitJun<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+abline(bestfitJun, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in July in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitJul<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+abline(bestfitJul, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in August in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitAug<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+abline(bestfitAug, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in September in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitSep<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+abline(bestfitSep, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in October in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitOct<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+abline(bestfitOct, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in November in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitNov<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",])
+abline(bestfitNov, col="red")
+
+plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],ty="l", xlim=c(1966,2020), main="Maximum Temperatures in December in Łeba, Poland", xlab="Year", ylab="Maximum Temperatures (°)", col="grey")
+bestfitDec<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+abline(bestfitDec, col="red")
+```
+
+### precipitation
+
+```{r}
+#precipitation
+
+MonthlyPRCPSum = aggregate(PRCP~ Month + Year, climate_data, sum)
+MonthlyPRCPSum$YEAR <- as.numeric(MonthlyPRCPSum$Year)
+MonthlyPRCPSum$MONTH <- as.numeric(MonthlyPRCPSum$Month)
+plot(PRCP~YEAR, MonthlyPRCPSum, pch = 2, col = "darkslategray3")
 
 ```
 
+### all tmax months
+
 ```{r}
-#climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-#climate_data$Year = format(climate_data$NewDate, format="%Y")
 
-#MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-#str(MonthlyTMAXMean)
-#MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+TMAXresult <-NA; TMINresult <- NA
 
-#TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+#plot all tmax at once
+
+MonthlyTMAXMean = aggregate(TMAX~Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR <- as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH <- as.numeric(MonthlyTMAXMean$Month)
+
+for (i in 1:12) {
+    plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1966, 2020), main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+  summary(Month.lm)
+  abline(coef(Month.lm), col = "red")
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+  round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared,3)))
+  }
+
 ```
 
-## Check Data
+### all tmin months
 
 ```{r}
-str(climate_data)
-climate_data$NewDate
+#plot all tmin at once
+
+MonthlyTMINMean <- aggregate(TMIN~Month + Year, climate_data, mean)
+MonthlyTMINMean$MONTH <- as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$YEAR <- as.numeric(MonthlyTMINMean$Year)
+
+for (i in 1:12) {
+    plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1966, 2020), main = Months[i])
+  Month.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+  summary(Month.lm)
+  abline(coef(Month.lm), col = "red")
+  TMINresult <- rbind(TMINresult, cbind(Months[i],
+  round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared,3)))
+  }
+
+
 ```
 
+### all precipitation
+
 ```{r}
-plot(TMAX ~ NewDate, data=climate_data)
+#all precipitation 
+PRCPresult=NA 
+for (i in 1:12) {
+    plot(PRCP ~ YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ], ty = "l", las = 1, xlim = c(1966, 2020), main = Months[i])
+  Month.PRCPlm <- lm(PRCP ~ YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ])
+  summary(Month.PRCPlm)
+  abline(coef(Month.PRCPlm), col = "red")
+  PRCPresult <- rbind(PRCPresult, cbind(Months[i],
+  round(coef(Month.PRCPlm)[2], 4), round(summary(Month.PRCPlm)$coefficients[2, 4], 4), round(summary(Month.PRCPlm)$r.squared,3)))
+  }
 
-climate_data$TMAX
+```
+
+### april precip graph
+
+```{r}
+PRCPresult=NA 
+for (i in 4) {
+    plot(PRCP ~ YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ], ty = "l", las = 1, xlim = c(1966, 2020), main = Months[i])
+  Month.PRCPlm <- lm(PRCP ~ YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i, ])
+  summary(Month.PRCPlm)
+  abline(coef(Month.PRCPlm), col = "red")
+  PRCPresult <- rbind(PRCPresult, cbind(Months[i],
+  round(coef(Month.PRCPlm)[2], 4), round(summary(Month.PRCPlm)$coefficients[2, 4], 4), round(summary(Month.PRCPlm)$r.squared,3)))
+}
+
+# summary(Month.PRCPlm)
+```
 
 
 
-TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
-slopeintercept = coef(TMAX.lm)
-abline(slopeintercept, col="red", lwd=3)
+
+### stats testing section
+
+```{r}
+  
+
+
+
+
+
+
+
+
 
 ```
 
