@@ -16,7 +16,6 @@ sampler(roster$ID);
 
 repeats <- c(1,2,3)
 while(sum(repeats)>0) {
-
   Review1=sampler(roster$ID); Review1
   Review2=sampler(roster$ID); Review2
   Review3=sampler(roster$ID); Review3
@@ -34,8 +33,6 @@ while(sum(repeats)>0) {
 
 set.seed(1533)
 rndnumbers = sample(1000:9999,length(roster$ID)*1);rndnumbers
-
-
 
 ThreeReviewer <- data.frame(Reviewer=roster$ID, 
       ReviewID.1=Review1, ReviewID.2=Review2, ReviewID.3=Review3, 
