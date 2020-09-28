@@ -5,7 +5,6 @@ filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orla
 
 #climate_data[20000,]
 
-
 climate_data_full <- read.csv(filepath)
 # subset the data
 
