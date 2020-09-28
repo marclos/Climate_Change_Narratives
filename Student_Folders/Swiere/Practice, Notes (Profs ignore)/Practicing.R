@@ -138,7 +138,15 @@ print(xtable(Results))
 
 
 
-
-
-
-
+plot(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 4,], main = "Average Minimum Temperatures in Selected Months Over Time", type = "l", col = "pink", lty = 2, ylim = c(0,25))
+lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 2,], col = "blue", lty=2)
+lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 8,], col = "purple", lty=2)
+lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 3,], col = "green", lty=2)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 2,])), col = "blue", lwd = 2)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 4,])), col = "pink", lwd = 2)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 8,])), col = "purple", lwd = 2)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 3,])), col = "green", lwd = 2)
+legend("topleft", legend=c("Feb", "March", "April", "August"),
+       col=c("blue", "green", "pink", "purple"), lty=2, cex=0.4)
+plot(PRCP~YEAR, MonthlyPRCPSum[,MonthlyPRCPSum$YEAR != 2017], pch = 2, col = "darkslategray3", main = "August Precipitation Over Time, excluding 2017") #this doesn't work yet but I'm going to figure it out eventually, just maybe not in time for this assignment submission!
+abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$YEAR != 2017])))
