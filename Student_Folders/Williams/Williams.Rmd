@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: "Climate Change is Disrupting the Salt Lake Valley"
 name: Bryan Williams
 date: "`r Sys.Date()`"
@@ -6,39 +7,17 @@ output:
   html_document: default
   word_document: default
   pdf_document: default
+=======
+title: "Bryan R Markdown"
+output: html_document
+>>>>>>> b240f4f9ee0b6b13a670429055413dfac4f394ed
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## The Harrowing Effects of Rising Temperatures in Salt Lake City
-
-
-Climate change is transforming the landscape of the Salt Lake Valley in Utah. Several peer-reviewed articles examine the impact that anthropogenic burning of fossil fuels has on local ecology, water resources, air quality, and snowpack. Climate change has created a trend of rising temperatures across the seasons in Utah, yielding several dire ecological, economic, and social implications.
-
-#### Scorching Salt Lake City
-A recent study by premiere climatologists in Zurich, Switzerland analyzed the level of impact climate change has exerted on the Northern Hemisphere (Bastin, 2019). The study projects that average temperatures in Salt Lake City summers are likely to increase by 10 degrees Fahrenheit in the next 30 years. Thus, Salt Lake Valley summers may begin to feel closer to Las Vegas’s current scorching heat, increasing an average of 90 degrees to 100 degrees Fahrenheit.
-
-#### Shrinking Winters and Ski Seasons
-  Climate change will likely impact snowpack as winters warm. Snowpack is a critical resource for Salt Lake City, serving as a water resource for millions and an economic powerhouse in facilitating revenues from ski resorts (Seidel, 1998). Daily observation of snowpack telemetry (SNOTEL) data from 1981 to 2007 indicate that the overall level of snowfall has decreased significantly in the Great Salt Lake Basin (Bedford, 2007). This decreases the opportunity for the wintertime recreation and increases the chances of late-summer water shortages that are particularly potent as the population of the valley is rapidly increasing. As winters continue to warm, this issue will continue to worsen. 
-
-#### The Environmental Injustice of Air Pollution
-  While revenues are ski resorts are important to the city's economy, there is a very pressing matter of environmental injustice: disparate air pollution damages Climate change is also correlated with increasing levels of air quality damages. Utah’s Wasatch Front has been notorious for trapping particulates, far exceeding the federal air quality standards set by the U.S. Environmental Protection Agency (EPA). The majority of communities that are exposed to this toxic air quality are Hispanic, Black, and Pacific Islander residents(Collins, 2019). This dire situation has led to a litany of health complications, including, but not limited to, asthma, cardiac diseases, and, “an average of 200 Utahns [sent] to the hospital with severe pneumoy be important to address the economic risk climate change poses to Salt Lake City's economic gainsnia each year” (Pirozzi, 2017).  EPA defined “orange” and “red” risk days are extremely dangerous, but even “green” days perpetuate higher risks of death among the elderly in the Salt Lake Valley (Di, 2017). While it ma, it is vital to ensure the safety of its most disadvantaged communities.
-
-## The Climate Data Behind These Issues
-  To supplement this literature on climate change damages for the Salt Lake City populace, I analyzed temperature trend data in the Salt Lake Valley from 1942 to 2020 using NOAA satellite data collected by the Salt Lake International Airport Weather Station. This weather station is very central in the Salt Lake Valley, providing a representative sample for Salt Lake City. It also has very complete daily data since the 1940s. I analyzed summer temperature data as well as winter temperature data and snowfall data. The results indicate a significant increase in summer temperatures, increase in winter temperatures, and decrease in overall snowfall, supporting literature that these weather anomalies in Utah are climate change caused. 
-
-
-![View from Salt Lake International Airport Weather Station in Salt Lake City, Utah](https://live.staticflickr.com/1831/29063639228_e257d24aff_b.jpg)
-
-
-#### January is cold (but getting less so)!
-
-In Utah, it appears that our winter months have experienced warming. As such, I am going to drill down on the month of January. I've plotted January data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMAX` against year to see if there is some type of discernible trend.  
-
-
-```{r readdata, include=FALSE}
+```{r readdata}
 filepath = "/home/CAMPUS/bawa2018/Climate_Change_Narratives/Data/FA20/Williams_SaltLakeCityUT_data.csv"
 climate_data = read.csv(filepath)
 strDates <- as.character(climate_data$DATE)
@@ -46,14 +25,14 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 ```
 
 
-```{r plotdailyTMAX, include=FALSE}
+```{r plotdailyTMAX}
 plot(TMAX~NewDate, climate_data, pch = 16, cex=.2, col = "blue")
 TMAX.lm = lm(TMAX ~ NewDate, data = climate_data) 
 coef(TMAX.lm)
 abline(coef(TMAX.lm),col ="orange", lwd = 3)
 ```
 
-```{r MonthlyPlot, include=FALSE}
+```{r MonthlyPlot}
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
@@ -62,7 +41,7 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 plot(MonthlyTMAXMean$TMAX, ty='l')
 ```
 
-```{r MayPlot, include=FALSE}
+```{r MayPlot}
 #plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],ty='l', xlim=c(1950, 2020))
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
@@ -73,7 +52,7 @@ abline(coef(May.lm), col="red")
 
 
 
-```{r plotMinDailyTemp, include=FALSE}
+```{r plotMinDailyTemp}
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 # Fixing the Format of Month and Year as numeric
@@ -90,7 +69,7 @@ par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
 TMAXresult <-NA; TMINresult <- NA
 ```
 
-```{r TMAX, include=FALSE}
+```{r TMAX}
 for (i in 1:12) {
     # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
     # ty='l')
@@ -103,7 +82,7 @@ for (i in 1:12) {
   }
 ```
 
-```{r TMIN, include=FALSE}
+```{r TMIN}
 #par(mfrow=c(4,3),mar=c(5,4,1,1))
 for (i in 1:12) {
 MonthMin_lm <- lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
@@ -111,10 +90,10 @@ TMINresult <- rbind(TMINresult, cbind(Months[i],round(coef(MonthMin_lm)[2], 4), 
 summary(MonthMin_lm)
 plot(MonthlyTMINMean$TMIN, ty='l', ylab='Monthly avg min temp', xlab='Years',main=Months[i]
 )
-abline(coef(MonthMin_lm),col='red')
+abline(coef(MonthMin_lm),col='blue')
 }
 ```
-```{r Results, include=FALSE}
+```{r Results}
 library(htmlTable)
 Results <- data.frame(Month = TMINresult[c(2:13),1],
 TMINSlope = TMINresult[c(2:13),2],
@@ -137,70 +116,38 @@ colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
 "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
 htmlTable(Results[,c(1, 10, 4, 11, 7)])
 ```
-  When the results of a statistical analysis provide a p-value of greater that 0.05, the null hypothesis (the hypothesis that there is no statistically significant correlation between the two measured variables) is rejected, meaning that the data is statistically significant. Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of January, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
-
-```{r July TMAXPlot, echo=FALSE}
+Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of May, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
+```{r July TMAXPlot}
 month_i <- 7
-i <- 7
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,],ty='l', main= Months[i], las = 1, xlim=c(1950, 2020), xlab= "Year", ylab="Maximum Average July Temperature (C)")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,],ty='l', xlim=c(1950, 2020), ylab="Maximum Average July Temperature")
 July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,])
+summary(July.lm)
 abline(coef(July.lm), col="red")
 ```
-
-
-#### January snowfall is decreasing
-It also appears that our winter months have experienced decreasing snowfall. I've plotted January data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMIN` against year to see if there is some type of discernible trend.  
-
-Based on my analysis, my data indicate that there is not a trend of increasing temperature in Salt Lake City for the month of January, failing to reject the null hypothesis (slope = 0.0435, r2 = 0, p-value = 0.29).
-
-```{r Jan TMIN Plot, echo=FALSE}
+Based on my analysis, my data indicate that there is not a trend of increasing temperature in Salt Lake City for the month of January(slope = 0.0435, r2 = 0, p-value = 0.29).
+```{r Jan TMIN Plot}
 #plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
-i <- 1
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",],ty='l', main = Months[i], las = 1, xlim=c(1950, 2020), ylab="Minimum Average January Temperature (C)", xlab= "Year")
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",],ty='l', xlim=c(1950, 2020))
 Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
-abline(coef(Jan.lm), col="blue")
+summary(Jan.lm)
+abline(coef(Jan.lm), col="cyan")
 Janresult <- NULL
 Janresult <- rbind(Janresult, cbind(Months[i],
   round(coef(Jan.lm)[2], 4), round(summary(Jan.lm)$coefficients[2, 4], 4), round(summary(Jan.lm)$r.squared,3)))
+Janresult
 ```
-
-
-#### July is hot (and getting hotter)!
-It also appears that our summer months have experienced warming. As such, I am going to drill down on the month of July I've plotted July data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMAX` against year to see if there is some type of discernible trend.  
-
 Based on my analysis, my data indicate that there is a trend of decreasing snowfall in Salt Lake City for the month of January, rejecting the null hypothesis (slope = -0.0488, r2 = 0.2271, p-value = 0.02).
-
-```{r Jan Snowfall, echo=FALSE}
+```{r Jan Snowfall}
 i <- 1
 MonthlySNOWMean = aggregate(SNOW ~ Month + Year, climate_data, mean)
 MonthlySNOWMean$Month <- as.numeric(MonthlySNOWMean$Month)
 MonthlySNOWMean$Year <- as.numeric(MonthlySNOWMean$Year)
-plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i], ylab="Average January Snowfall (Inches)")
+plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l", las = 1, xlim = c(1940, 2020), main = Months[i])
   SNOWMonth.lm <- lm(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ])
-  abline(coef(SNOWMonth.lm), col = "blue")
+  summary(SNOWMonth.lm)
+  abline(coef(SNOWMonth.lm), col = "cyan")
   SNOWresult <- NULL
   SNOWresult <- rbind(SNOWresult, cbind(Months[i],
   round(coef(SNOWMonth.lm)[2], 4), round(summary(SNOWMonth.lm)$coefficients[2, 4], 4), round(summary(SNOWMonth.lm)$r.squared,3)))
+SNOWresult
 ```
-
-## This Trend Needs to Change to Protect People
-
-  The most important takeaway is not data--it is the effect that this data has on people. As water resources are stretched, people in Salt Lake fear for their running water, their crops, and their income from winter recreation. Accompanying climate change, as further fossil fuels are burned, the increasing intensity of air pollution increases the rate of disease contraction and death from respiratory complications, particularly for the least advantaged. Our goal as a city should be to reverse these trends by phasing out unsustainable fossil fuel energy and mitigating the harms. 
-
-
-
-## Works Cited
-American Lung Association. “State of the Air 2019: Salt Lake City-Provo-Orem, UT.”2019, https://www.lung.org/our-initiatives/healthy-air/sota/city-rankings/msas/salt-lake-city-provo-orem-ut.html#ozone. 
-
-Bastin, Jean-Francois, Emily Clark, Thomas Elliott, Simon Hart, Johan van den Hoogen, Iris Hordijk, Haozhi Ma, et al. “Understanding Climate Change from a Global Analysis of City Analogues.” PLOS ONE 14, no. 7 (July 10, 2019): e0217592. https://doi.org/10.1371/journal.pone.0217592.
-
-Bedford Daniel and Andrea Douglass. “Changing Properties of Snowpack in the Great Salt Lake Basin, Western United States, from a 26-Year SNOTEL Record.” The Professional Geographer 60(3): 374–386, 2008. https://www.tandfonline.com/doi/abs/10.1080/00330120802013646
-
-Collins, Timothy W., and Sara E. Grineski. “Environmental Injustice and Religion: Outdoor Air Pollution Disparities in Metropolitan Salt Lake City, Utah.” Annals of the American Association of Geographers 109, no. 5 (September 3, 2019): 1597–1617. https://doi.org/10.1080/24694452.2018.1546568.
-
-Di, Qian, et al. “Association of Short-Term Exposure to Air Pollution With Mortality in Older Adults.” Jama, vol. 318, no. 24, 2017, p. 2446., doi:10.1001/jama.2017.17923. https://jamanetwork.com/journals/jama/article-abstract/2667069
-
-Pirozzi, Cheryl S., Barbara E. Jones, James A. VanDerslice, Yue Zhang, Robert Paine, and Nathan C. Dean. “Short-Term Air Pollution and Incident Pneumonia. A Case–Crossover Study.” Annals of the American Thoracic Society 15, no. 4 (December 28, 2017): 449–59. https://doi.org/10.1513/AnnalsATS.201706-495OC.
-
-Seidel, Klaus, Cornel Ehrler, and Jaroslav Martinec. “Effects of Climate Change on Water Resources and Runoff in an Alpine Basin.” Hydrological Processes 12, no. 10–11 (1998): 1659–69. https://doi.org/10.1002/(SICI)1099-1085(199808/09)12:10/11<1659::AID-HYP687>3.0.CO;2-4. 
-
