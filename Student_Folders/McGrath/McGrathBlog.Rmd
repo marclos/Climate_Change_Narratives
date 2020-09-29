@@ -3,8 +3,8 @@ title: "Chicago, An Urban Heat Island Getting Hotter"
 author: "Olivia McGrath - EA30"
 date: "September, 2020"
 output:
+  word_document: default
   html_document: default
-  pdf_document: default
 ---
 ``` {r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -45,7 +45,7 @@ You have probably heard of the terms “climate change” and “global warming�
 
 
 
-![Fig. 1 - NOAA CO2 Data](15_co2_left_061720.gif)
+%[Fig. 1 - NOAA CO2 Data](15_co2_left_061720.gif)
 
 
 
@@ -55,7 +55,7 @@ I have lived in Chicago for nearly my whole life, and I wanted to see if the tre
 
 
 
-![The City of Chicago](5be21aef2400004202993257.jpg) 
+%[The City of Chicago](5be21aef2400004202993257.jpg) 
 
 
 
@@ -63,6 +63,7 @@ I have lived in Chicago for nearly my whole life, and I wanted to see if the tre
 # Olivia, you'll want to use choose.file() to find your path and paste it below, then uncomment it so it over-writes mine...
 #file.choose()
 filepath = "/home/CAMPUS/ocma2018/Climate_Change_Narratives/Data/FA20/olivia_chicagomidway_data.csv"
+filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/olivia_chicagomidway_data.csv"
 climate_data = read.csv(filepath) 
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
@@ -221,14 +222,14 @@ While the rate at which Chicago is warming may not seem that great, it is alread
 4. Extreme weather events and health problems can have economic implications on the city, from property damaged by floods to healthcare costs. 
 
 
-![Fig. 2 - NASA Map showing the correlation between temperature variation and lack of vegetation](isatemps_gis_2001.png)
+%[Fig. 2 - NASA Map showing the correlation between temperature variation and lack of vegetation](isatemps_gis_2001.png)
 
 
 #### What Now?
 After analyzing my data and reading about climate trends across the globe, I believe it is essential for Chicago to prepare to future increases in temperature, and to work to minimize the heat island effect. There are a number of initiatives that can be taken, such as reduced traffic, the use of renewable energy sources, the construction of buildings with greater insulation and ventilation, and the creation of more green spaces—such as City Hall’s green roof (Fig. 3). 
 Implementation of green spaces can have a number of additional health, ecological, and social benefits, from stress relief to community building. (Patz et. al, 2014)
 
-![Fig. 3 Vegetation on the roof of Chicago City Hall](chichall7.jpg)
+%[Fig. 3 Vegetation on the roof of Chicago City Hall](chichall7.jpg)
 
 #### In Conclusion...
 Climate is inherently variable. While it is extremely difficult to predict the future, inactivity in the face of anthropogenic climate change could leave cities like Chicago experiencing consequences worsened by the heat island effect.
