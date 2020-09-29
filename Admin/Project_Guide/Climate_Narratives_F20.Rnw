@@ -2,6 +2,9 @@
 %\documentclass{tufte-handout}
 \usepackage{hyperref}
 \usepackage{wasysym}
+\usepackage{soul}
+
+
 \newenvironment{itemize*}%
   {\begin{itemize}%
     \setlength{\itemsep}{0pt}%
@@ -422,49 +425,17 @@ Each of us will select a region of interest. Perhaps, somewhere that you have sp
 
 \input{Blog_Publication_F20}
 
+\subsection{Writing Reflection}
+
+\input{Writing_Reflection_F20}
+
 \subsection{Op-Ed 2}
 
-Coming soon! \smiley{}
+%Coming soon! \smiley{}
 
-%\input{Op-Ed_F20-2}
-
-
-\clearpage
-\newpage
-\subsection{DRAFT Blog -- Peer Evaluation}
-
-\bigskip
-Evaluator: \rule{7cm}{0.4pt}
-
-\bigskip
-
-\noindent Presenter: \rule{7cm}{0.4pt}
-
-\begin{enumerate}
- \setlength\itemsep{4em}
-  \item Describe two items you learned.
-  \item Describe one concept or fact you would like to learn in more detail.
-\end{enumerate}
+\input{Op-Ed_F20-2}
 
 
-\begin{table}[ht!]
-\caption{Please circle the best response, where one is inadequate and five is outstanding---i.e. should be teaching the topic!}
-\begin{tabular}{|p{4in}|ccccc|}\hline
-How clear was the presentation?     & 1 & 2 & 3 & 4 & 5 \\ \hline
-Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
-&&&&& \\ \hline
-Did the analysis seem valid?        & 1 & 2 & 3 & 4 & 5 \\ \hline
-Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
-&&&&& \\ \hline
-Was information complete enough?            & 1 & 2 & 3 & 4 & 5 \\ \hline
-Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
-&&&&& \\ \hline
-To what extent could you use this example in climate discussions?            & 1 & 2 & 3 & 4 & 5 \\ \hline
-Suggestions: &&&&& \\ &&&&& \\ &&&&& \\
-&&&&& \\ \hline
-\end{tabular}
-\end{table}
-
-
+%\input{Blog_Peer_Evaluation_F19}
 
 \end{document}

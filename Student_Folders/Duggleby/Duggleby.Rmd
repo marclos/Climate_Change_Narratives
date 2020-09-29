@@ -2,16 +2,20 @@
 title: "Duggleby"
 author: "Emma Duggleby"
 date: "9/1/2020"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
-![Salt Lake City](/home/CAMPUS/edab2019/Climate_Change_Narratives/Student_Folders/Duggleby/SLC.jpg)
+![Salt Lake City](SLC.jpg)
 
 <h4>I hope to write about weather trends in Salt Lake City, Utah. I have not decided  what I would like to look into specifically, but perhaps something with snowmelt trends would be interesting, as that is where a large amount of the city's water comes from. I also might want to look at how changing climate trends affect animal behavior. </h4>
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
-climate_data = read.csv("/home/CAMPUS/edab2019/Climate_Change_Narratives/Data/FA20/Duggleby_SaltLakeCity_data.csv")
+file.path = "/home/CAMPUS/edab2019/Climate_Change_Narratives/Data/FA20/Duggleby_SaltLakeCity_data.csv"
+file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Duggleby_SaltLakeCity_data.csv"
+climate_data = read.csv(file.path)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 date = climate_data$NewDate
@@ -67,4 +71,4 @@ for (i in 1:12) {
 }
 ```
 
-![My Cat Hemingway](/home/CAMPUS/edab2019/Climate_Change_Narratives/Student_Folders/Duggleby/Hemingway.PNG)
+![My Cat Hemingway](Hemingway.PNG)

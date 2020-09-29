@@ -15,7 +15,9 @@ This blog will examine data collected regarding maximum and mininimum temperatur
 
 
 ```{r climate_data, echo=FALSE, eval=FALSE}
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+data.csv <- "/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv"
+#data.csv <- MLH can't see the data in the directory...
+climate_data <-read.csv(data.csv)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 plot(TMAX~NewDate, climate_data, ty='l', main="Daily Temperatures", ylab= "Max Temperature (C)", xlab="Year")
