@@ -1,10 +1,11 @@
 ---
-title: "Katy's Blog"
+title: "Addressing and Communicating Climate Change Risks in Southeast Texas"
 author: "Katy Swiere"
-date: "9/21/2020"
+date: "9/29/2020"
 output:
-  html_document: default
+  word_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -58,83 +59,10 @@ MonthlyTMINMean$YEAR <- as.numeric(MonthlyTMINMean$Year)
 MonthlyPRCPSum = aggregate(PRCP~ Month + Year, climate_data, sum)
 MonthlyPRCPSum$YEAR <- as.numeric(MonthlyPRCPSum$Year)
 MonthlyPRCPSum$MONTH <- as.numeric(MonthlyPRCPSum$Month)
-```{r forloops, echo = T}
-#all tmax
-Months <- c("Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec")
-par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
-TMAXresult <- NA
-for(i in 1:12) {
-  plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,], ty = "l", las = 1, xlim = c(1960,2020), main = Months[i])
-  Month.max.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,])
-  summary(Month.max.lm)
-  abline(coef(Month.max.lm), col = "red")
-  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.max.lm)[2],4), round(summary(Month.max.lm)$coefficients[2,4],4), round(summary(Month.max.lm)$r.squared,3)))
-}
-##plot all tmins at once
-
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-TMINresult <- NA
-par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
-for(i in 1:12) {
-  plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,], ty = "l", las = 1, xlim = c(1960,2020), main = Months[i])
-  Month.min.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,])
-  summary(Month.min.lm)
-  abline(coef(Month.min.lm), col = "red")
-  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.min.lm)[2],4), round(summary(Month.min.lm)$coefficients[2,4],4), round(summary(Month.min.lm)$r.squared,3)))
-}
-
-#all prcp at once
-par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
-PRCPresult <- NA
-for(i in 1:12) {
-  plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i,], ty = "l", las = 1, xlim = c(1960,2020), main = Months[i])
-  Month.PRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i,])
-  summary(Month.PRCP.lm)
-  abline(coef(Month.PRCP.lm), col = "red")
-  PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.PRCP.lm)[2],4), round(summary(Month.PRCP.lm)$coefficients[2,4],4), round(summary(Month.PRCP.lm)$r.squared,3)))
-}
-```
-Now that I've plotted them all, it will be helpful to see the actual numbers behind the graph to determine if any of the trends are statistically significant. 
-
-```{r results, echo = T}
-##Results
-Results <- data.frame(Month = TMINresult[,1],
-                      TMINSlope = TMINresult[,2],
-                      TMIN_P = as.numeric(TMINresult[,3]),
-                      TMINRsq = TMINresult[,4],
-                      TMAXSlope = TMAXresult[, 2],
-                      TMAX_P = as.numeric(TMAXresult[,3]),
-                      TMAXRsq = TMAXresult[,4],
-                      PRCPSlope = PRCPresult[,2],
-                      PRCP_P = as.numeric(PRCPresult[,3]),
-                      PRCPsq = PRCPresult[,4])
-
-Results$starTMIN <- ifelse(Results$TMIN_P <= .001, "***", 
-                           ifelse(Results$TMIN_P <= .01, "**",
-                            ifelse(Results$TMIN_P <= .05, "*", "NS")))
-Results$starTMAX <- ifelse(Results$TMAX_P <= .001, "***", 
-                                   ifelse(Results$TMAX_P <= .01, "**",
-                                          ifelse(Results$TMAX_P <= .05, "*", "NS")))
-Results$starPRCP <- ifelse(Results$PRCP_P <= .001, "***", 
-                           ifelse(Results$PRCP_P <= .01, "**",
-                                  ifelse(Results$PRCP_P <= .05, "*", "NS")))
-
-Results$TMINSlope = paste(Results$TMINSlope, Results$starTMIN)
-Results$TMAXSlope = paste(Results$TMAXSlope, Results$starTMAX)
-Results$PRCPSlope = paste(Results$PRCPSlope, Results$starPRCP)
-
-Results <- Results[c(2:13), c(1,2,3,4,5,6,7,8,9,10)]
-
-colnames(Results) = c("Month", "Slope TMIN", "P value", "R^2", "Slope TMAX", "P value", "R^2", "Slope PRCP", "P Value", "R^2")
-library(htmlTable)
-htmlTable(Results)
-
-```
 ```
 
 ```{r, echo = F}
-plot(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 4,], main = "Average Minimum Temperatures in Selected Months Over Time", type = "l", col = "pink", lty = 2, ylim = c(0,25), ylab = "Minimum Temperature in Degrees Celsius")
+plot(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 4,], main = "Average Min Temperatures in Selected Months Over Time", type = "l", col = "pink", lty = 2, ylim = c(0,25), ylab = "Minimum Temperature in Degrees Celsius")
 lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 2,], col = "blue", lty=2)
 lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 8,], col = "purple", lty=2)
 lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 3,], col = "green", lty=2)
@@ -183,7 +111,7 @@ legend("topleft", legend=c("Jan", "Feb", "March", "April", "May", "June", "July"
 ```
 In this graph, the gray dots represent every month's total precipitation in millimeters. A line of best fit for each month was added to show the differing, but similar, trends in each month. 
 
-# Peer-Reviewed Literature
+# Peer-Reviewed Literature and Impacts
 
 How does my analysis compare with peer-reviewed literature? Data analyzing the region of Southeast Texas is rare, since it is a rather small community. However, I can compare findings of literature in the surrounding area to see what other scientists have found. Mishra and Singh (2010) assert that annual precipitation extreme events have changed in mixed ways across the state of Texas, with increases in Southeast Texas. 
 
@@ -204,6 +132,9 @@ So - how do we answer this question: How are local activists using climate data?
 Many Southeast Texas local governments have begun implementing a variety of programs aimed at reducing the costs of floods, storms, and extreme weather events. One easy way to minimize flood risk damages is by limiting development in high-risk areas. This sounds simple enough, but is much more difficult in practice. For one thing, many houses, businesses, and other developments are already built in high-risk areas. Instead of simply kicking these inhabitants out, one option is for the government to subsidize movement into less flood-prone areas. In Jefferson County, this buyout program does exactly that. Harris County has a similar program, which notes that it is not an immediate flood relief program, but aims to prevent flood damage BEFORE it happens. Think of it as eating healthy to prevent disease, instead of eating only junk food and then hoping a treatment helps. 
 
 
+# Conclusion
+
+There is no question that the climate is changing but there is a lot of uncertainty about how exactly these changes will manifest themselves in Southeast Texas. Nevertheless, precipitation has - according to my analysis and that of others - increased over time and will likely continue to worsen due to human-caused climate change. Though some local governments in the area have begun taking action to address the impacts of climate change, perhaps it is time to start addresses the root causes. 
 
 
 
