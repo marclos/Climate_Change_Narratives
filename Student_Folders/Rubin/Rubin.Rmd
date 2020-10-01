@@ -1,9 +1,11 @@
 ---
-title: "The Effects of Temperature Rise on Farming in Michigan"
+title: "The Effects of Anthropogenic Climate Change on Farming in Michigan"
 author: "Lila Rubin"
-date: "9/5/2020"
+date: "October 2020"
 output: html_document
 ---
+
+*The state of Michigan sits on land stolen from multiple Indigenous communities: the Ojibwa, in the Upper Peninsula and northern Lower Peninsula; the Potawatomi, in the southern, eastern, and central parts of the state; and the Odawa, in the western Lower Peninsula. Known as the Council of the Three Fires, the three nations were primarily farming communities, raising corn, beans, squash, and more. These nations’ populations have been decimated due to the genocide of the Three Fires at the hands of European settlers. While small Ojibwa, Potawatomi, and Odawa communities continue to rebuild and thrive in the state of Michigan, it would be unacceptable to ignore the destruction and genocide of Native nations carried out by the creators of this state. As we discuss modern agriculture, those of us who are settlers remember that this land is not ours to sow.*
 
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -11,7 +13,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-This blog will examine data collected regarding maximum and mininimum temperatures in Ann Arbor, Michigan from 1891 to the present day. After displaying and analyzing the data, we will discuss what effect our conclusiosn may have on farming in the surrounding area.
+Coasts are ravaged by hurricanes, flooding, and wildfires. The central United States is plagued by drought, the South by heat waves. It is almost unanimously agreed in the scientific community that these drastic and deadly changes in climate are due to human-caused global warming (Cook, John, et al). In the agricultural cradle of the U.S. known as the Midwest, however, citizens are seeing the effects of climate change not only in the need for more deodorant as a result of hotter summers. Production of staple crops like corn, wheat, beans, and squash, along with the export and uses of water from the Great Lakes (tourism, fishing, and transport, among others), are all projected to falter or are already in the process of declining under the increasingly warm and unpredictable world. This blog examines and analyzes the impact of climate statistics and projections on the Michigan agricultural industry. We can conclude that the “Great Lakes State,” with its farmers, university students, fishermen, and urban dwellers, may be overwhelmed by the impacts of climate change on its agricultural, ecological, and economical success.
 
 
 ```{r climate_data, echo=FALSE, eval=FALSE}
@@ -22,9 +24,9 @@ plot(TMAX~NewDate, climate_data, ty='l', main="Daily Temperatures", ylab= "Max T
 bestfitline.lm <- lm(TMAX~NewDate, climate_data)
 abline(coef(bestfitline.lm), col="red")
 ```
-## Monthly Maximum Temperatures over Time
+###### Data Retrieval and Analysis
 
-*Research effect of temperature on crops*
+Statistical support in the form of graphs for this hypothesis are based on data obtained from the National Oceanic and Atmospheric Administration (NOAA), which was collected at the University of Michigan in Ann Arbor. After retrieving such data from the NOAA, it was processed through the coding interface RStudio to create summaries and graphs of the data points. Close analysis of trends and patterns in this information, along with the review of other research done in the region, informed the conclusions which will be presented in this blog. It should be noted that we will be focusing on Ann Arbor data to paint a general picture of weather anomalies in the whole state of Michigan.
 
 ```{r TMAX}
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
@@ -143,86 +145,74 @@ plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty="l", xl
 
 JanuaryTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 abline(coef(JanuaryTMIN.lm))
-summary(JanuaryTMIN.lm)
 
 # February
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Min Temperature (C)", xlab="Year")
 
 FebruaryTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
 abline(coef(FebruaryTMIN.lm))
-summary(FebruaryTMIN.lm)
 
 # March
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Min Temperature (C)", xlab="Year")
 
 MarchTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
 abline(coef(MarchTMIN.lm))
-summary(MarchTMIN.lm)
 
 # April
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Min Temperature (C)", xlab="Year")
 
 AprilTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
 abline(coef(AprilTMIN.lm))
-summary(AprilTMIN.lm)
 
 # May
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty="l", xlim=c(1891, 2020), main="May", ylab="Min Temperature (C)", xlab="Year")
 
 MayTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
 abline(coef(MayTMIN.lm))
-summary(MayTMIN.lm)
 
 # June
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Min Temperature (C)", xlab="Year")
 
 JuneTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
 abline(coef(JuneTMIN.lm))
-summary(JuneTMIN.lm)
 
 # July
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Min Temperature (C)", xlab="Year")
 
 JulyTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 abline(coef(JulyTMIN.lm))
-summary(JulyTMIN.lm)
 
 # August
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Min Temperature (C)", xlab="Year")
 
 AugustTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
 abline(coef(AugustTMIN.lm))
-summary(AugustTMIN.lm)
 
 # September
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Min Temperature (C)", xlab="Year")
 
 SeptemberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
 abline(coef(SeptemberTMIN.lm))
-summary(SeptemberTMIN.lm)
 
 # October
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Min Temperature (C)", xlab="Year")
 
 OctoberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
 abline(coef(OctoberTMIN.lm))
-summary(OctoberTMIN.lm)
 
 # November
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Min Temperature (C)", xlab="Year")
 
 NovemberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
 abline(coef(NovemberTMIN.lm))
-summary(NovemberTMIN.lm)
 
 # December
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Min Temperature (C)", xlab="Year")
 
 DecemberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
 abline(coef(DecemberTMIN.lm))
-summary(DecemberTMIN.lm)
 ```
-```{r PRCP total}
+```{r PRCP_total}
 # changing date formatting
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
@@ -240,84 +230,72 @@ plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",], ty="l", xlim
 
 JanuaryPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",])
 abline(coef(JanuaryPRCP.lm))
-summary(JanuaryPRCP.lm)
 
 # February
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Total Monthly Precipitation", xlab="Year")
 
 FebPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",])
 abline(coef(FebPRCP.lm))
-summary(FebPRCP.lm)
 
 # March
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Total Monthly Precipitation", xlab="Year")
 
 MarPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",])
 abline(coef(MarPRCP.lm))
-summary(MarPRCP.lm)
 
 # April
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Total Monthly Precipitation", xlab="Year")
 
 AprPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
 abline(coef(AprPRCP.lm))
-summary(AprPRCP.lm)
 
 # May
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",], ty="l", xlim=c(1891, 2020), main="May", ylab="Total Monthly Precipitation", xlab="Year")
 
 MayPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
 abline(coef(MayPRCP.lm))
-summary(MayPRCP.lm)
 
 # June
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Total Monthly Precipitation", xlab="Year")
 
 JunePRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",])
 abline(coef(JunePRCP.lm))
-summary(JunePRCP.lm)
 
 # July
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Total Monthly Precipitation", xlab="Year")
 
 JulyPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",])
 abline(coef(JulyPRCP.lm))
-summary(JulyPRCP.lm)
 
 # August
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Total Monthly Precipitation", xlab="Year")
 
 AugustPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",])
 abline(coef(AugustPRCP.lm))
-summary(AugustPRCP.lm)
 
 # September
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Total Monthly Precipitation", xlab="Year")
 
 SeptPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",])
 abline(coef(SeptPRCP.lm))
-summary(SeptPRCP.lm)
 
 # October
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Total Monthly Precipitation", xlab="Year")
 
 OctPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",])
 abline(coef(OctPRCP.lm))
-summary(OctPRCP.lm)
 
 # November
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Total Monthly Precipitation", xlab="Year")
 
 NovPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",])
 abline(coef(NovPRCP.lm))
-summary(NovPRCP.lm)
 
 # December
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Total Monthly Precipitation", xlab="Year")
 
 DecPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",])
 abline(coef(DecPRCP.lm))
-summary(DecPRCP.lm)
 ```
 
 ```{r SNOW}
@@ -328,7 +306,7 @@ climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 
-# PRCP business
+# SNOW business
 MonthlySNOWSum = aggregate(SNOW ~ Month + Year, climate_data, sum)
 MonthlySNOWSum$YEAR = as.numeric(MonthlySNOWSum$Year)
 MonthlySNOWSum$MONTH = as.numeric(MonthlySNOWSum$Month)
@@ -415,6 +393,5 @@ plot(SNOW~YEAR, data = MonthlySNOWSum[MonthlySNOWSum$Month=="12",], ty="l", xlim
 
 DecSNOW.lm <- lm(SNOW~YEAR, data = MonthlySNOWSum[MonthlySNOWSum$Month=="12",])
 abline(coef(DecSNOW.lm))
-summary(DecSNOW.lm)
 ```
 
