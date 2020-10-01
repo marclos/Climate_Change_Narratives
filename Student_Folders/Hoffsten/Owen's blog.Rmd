@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r readdata, echo=TRUE}
 filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/owenhoffsten_portlandme_data.csv" #path from marc's login...
-filepath = "/home/CAMPUS/omha2018/Climate_Change_Narratives/Data/FA20/owenhoffsten_portlandme_data.csv"
+#filepath = "/home/CAMPUS/omha2018/Climate_Change_Narratives/Data/FA20/owenhoffsten_portlandme_data.csv"
 
 climate_data = read.csv(filepath)
 str(climate_data)

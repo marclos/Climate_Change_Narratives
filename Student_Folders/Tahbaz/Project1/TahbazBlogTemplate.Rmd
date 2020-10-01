@@ -1,146 +1,112 @@
 ---
-title: "Temperature Changes in NYC and Less Severe Winters"
+title: "Extreme Cold Temperatures in New York City and Why Climate Change is the Culprit: What Does this Mean for the Health of New Yorkers?"
 author: "Eleanor Tahbaz"
 date: "9/12/2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+![Winter_In_NYC_1](https://rstudio.pomona.edu/s/24fdca0004bc0e6f53259/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/Winter_In_NYC_1.jpg)
 
-![Snowy Day in New York](https://rstudio.pomona.edu/s/24fdc7302027593d32a05/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/snow_day_in_nyc.jpg)
+![Winter_in_NYC_2](https://rstudio.pomona.edu/s/24fdca0004bc0e6f53259/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/Winter_in_NYC_2.jpg)
 
-## Introduction
 
-In this blog, I will discuss the rise in temperatures in and around new york city and its impact on two possible topic the impact on the four seasons and how they are all much warmer. 
-
-Main Focus: less cold/severe winters
-
-## The Four Seasons of NYC
-
-Here I will explain what most people picture as a usual year in NYC and the differences in temperature and percipitation within the seasons
-
-## What We Saw in 2019
-
-Next, I will go into the seasonal temperatures we saw in 2019 in NYC and how the expected temperatures and weather patterns were very different.
-
-For example: There was not a single big snow storm that had snow stay on the ground for more than 24 hours which is uncommon for NYC, especially in January and February
-
-## this is a plot showing the increase in temperature in and around NYC
-
-try to cut out the code that isn't doing anything you need... like the following... eval=FALSE makes it so the code isn't run. Alternatively, you might want the rblock to run, but NOT show the results, results='hide' I think is the argument to do that...
 ```{r, eval=FALSE}
-# doesn't really do anything useful. read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
+read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
 
 ```
 
-I created a file path so I find you data -- can you look at the guide and see where and how the data should be saved?
-:-)
 ```{r}
 filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
 
-# comment out my path in case I forget!
-filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
 climate_data <- read.csv(filepath)
 str(climate_data)
 strDates<-as.character(climate_data$DATE)
 climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 
-# You made a new variable name -- NewDate, but the plot function is looking for the "DATE" variable -- not sure why!  :-)   I commented it out. 
-
-#plot(TMAX~DATE, climate_data)
-
-# abline line references to an object, "slopeintercept" but that hasn't been made yet... but is it below... might just be in the wrong place..?
-
-#abline(slopeintercept, col="red")
 ```
 
-This one works as expected!  But sure is messy, but not your fault, lots of variation in the data!! This is why I think the monthly data will be better to display. 
+## Introduction
+
+Within recent years, New York City has seen some of the lowest temperatures in history and this most notability occurred during the polar vortex that hit the northeast in 2018. President Donald Trump and climate change skeptics have latched onto these cold temperatures and have been pushing the idea that climate change can’t exist when temperatures are so low. This is a misconception that scientist have been repeatedly disproving, but sometimes the science can be confusing. So, through this blog, you will better understand the climate science behind extreme weather conditions and why they actually make sense as a result of climate change. Cold temperatures can lead to negative health effects like an increase in the risk of having a heart attacks and more severe asthma. This is important to note, because this can lead to serious environmental justice issues within the five boroughs of New York City, due to the ranges in wealth and the racial disparities we see throughout. Those with higher incomes will be able to pay rising rent prices, as landlords turn up the heat, and leave it on for longer periods of time, whereas those with lower incomes, who are also in majority people of color, will not be afforded the same luxury. In all, this blog will explain how climate change is the cause of extreme cold temperatures and therefore, how climate change is greatly impacting the health and wellbeing of all New Yorkers. 
+
+## New York City Climate Data 
+
+Below are the plots showing minimum temperatures during November, December, January and February from 1990-2020 in and around New York City. There are some notable differences between the November graph and the February graph because as you can see, there are two significant dips in minimum temperatures. The one in November is showing the polar vortex we experienced in 2018, and the dip in February was another polar vortex we experienced in 2015. These low points have a pull on the data seeing as the deviation from the trend lines are pretty significant. Notice how the first two graphs, December and January, which do not have any major dips, have a more level trend line than that of the other two graphs. As mentioned earlier, skeptics have seen and experienced these cold temperatures, and question, how can the planet be warming, if we are seeing record lows? This stems from a key differentiation between weather and climate. Weather is the day to day changes in temperature, precipitation and/or humidity. Climate is defined as the average weather patterns in a region over a long period of time. So, despite the weather being extremely cold, it is important to look at those numbers in relation to the climate, which is looking at 30 years or more of weather data combined. 
 
 
-
+## Plots for January From 1990-2020
 ```{r}
-plot(TMAX~NewDate, data=climate_data)
-lm(TMAX~NewDate, data=climate_data) # calls a linear model, but doesn't create an object. Not sure this is useful.
-lm(formula = TMAX~NewDate, data=climate_data) # ditto but the use of the word formula is interesting... 
-TMAX.lm=lm(TMAX~NewDate, data=climate_data) # here you make an object.
-slopeintercept=coef(TMAX.lm)
-plot(TMAX~NewDate, data=climate_data, las=1)
-abline(slopeintercept, col="red", lwd=3)
-(TMAX.lm.sum = summary(lm(TMAX~NewDate, data=climate_data))) # shows you have a significant result, but boy lots of variation and a VERY low slope!
-
-```
-
-
-# Creating Monthly Means
-
-While I working on my drafts, I often use headers to keep track of where I am, or I can get lost!
-
-```{r}
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate[1:51684] = format(as.Date(strDates[1:51684], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data$NewDate[51685:66920] = format(as.Date(strDates[51685:66920], "%m/%d/%y"),"20%y-%m-%d") 
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%y")
-MonthlyTMAXMean = aggregate(TMAX~Month+Year, climate_data, mean)
-MonthlyTMAXMean$Year = as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$Month = as.numeric(MonthlyTMAXMean$Month)
-str(MonthlyTMAXMean)
-plot(MonthlyTMAXMean$TMAX)
-#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="01"],ty='1')
-
-
-## when I look the str(), the structure of the data.frame MonthlyTMAXmean...I only see three variables and YEAR is not there. Remember R is case sensitve. I am thinking you missed a step...
-
-
-plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="01"],xlim=c(1974, 2020))
-January.lm <- lm(TMAX~Year, date=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+#str(climate_data$NewDate)
+MonthlyTMINMean<-aggregate(TMIN ~ Month + Year, climate_data, mean)
+str(MonthlyTMINMean)
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],ty='l', xlim=c(1990,2020))
+January.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 summary(January.lm)
 abline(coef(January.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 ```
 
+## Plots for December from 1990-2020
 ```{r}
-plot(SNOW~DATE, climate_data)
-abline(slopeintercept, col="red")
-lm(formula = SNOW~NewDate, data = climate_data)
-SNOW.lm = lm(SNOW~NewDate, data = climate_data)
-slopeintercept = coef(SNOW.lm)
-plot(SNOW~NewDate, data = climate_data, las=1)
-abline(slopeintercept, col="red", lwd = 3)
-climate_data$Month = format(as.Date(climate_data$NewDate), format="%m")
-climate_data$Year = format(climate_data$NewDate, format="%y")
-MonthlySNOWMean=aggregate(SNOW~Month + Year, climate_data, mean)
-MonthlySNOWMean$YEAR=as.numeric(MonthlySNOWMean$Year)
-MonthlySNOWMean$MONTH=as.numeric(MonthlySNOWMean$Month)
-str(MonthlySNOWMean)
-plot(MonthlySNOWMean$SNOW)
-plot(SNOW~YEAR, data = MonthlySNOWMean[MonthlySNOWMean$Month=="02",], xlim=c(1975,2020))
-February.lm <-lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="02",])
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",],ty='l', xlim=c(1990,2020))
+December.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+summary(December.lm)
+abline(coef(December.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+```
+## Plots for February from 1990 - 2020
+```{r}
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",],ty='l', xlim=c(1990,2020))
+February.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
 summary(February.lm)
-# same issue as before, no "YEAR" in TMAX file...
-#lm(formula = TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
-#abline(coef(February.lm), col="red")
-
+abline(coef(February.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
 ```
 
+## Plots for Novemeber for 1990-2020
 ```{r}
-MonthlyTMINMean = aggregate(TMIN~Month + Year, climate_data, mean) # I added "mean" -- needed the function. 
-
-# I think you are something below -- why are you subtracting the vlues -- I don't think that's what you were hoping to do... 
-
-MonthlyTMINMean$Year - as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
-Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novemeber", "December")
-par(mfrow=c(4,3), mar = c(5,4,3,2) + 0.1)
-TMINresult <- NA
-for(i in 1:12) 
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
-summary(Month.lm)
-abeline(coef(Month.lm),col="red")
-TMINresult <- rbind(TMINresult, cbind(Months[i],round(coef(Month.lm)[2],4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared,3)))
-
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",],ty='l', xlim=c(1973,2020))
+November.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
+summary(November.lm)
+abline(coef(November.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
 ```
+## How Global Warming Can Lead to Cooling
 
-## The Relationship Between Temperature Increases and Less Severe Winters
+The term global warming was popularized a few decades ago to refer to the phenomenon of the greenhouse gas effect and how it traps heat in the atmosphere which warms the average temperature of the planet. Scientist now understand that an atmosphere changed by rising levels of greenhouse gases can and will lead to more climate changes then just warming. Extreme weather events we have seen in recent years include the polar vortex temperatures, more violent hurricanes and hotter wildfires which are all a result of climate change. 
+In specific connection to the polar vortex, Potsdam University physicist Stefan Rahmstorf notes that while North America was experience cold Arctic Air, the rest of the world was abnormally hot. In 2017 Nature Geoscience published a study that concluded that there is a link between Arctic air flowing south leading to harsher North American winters. Another study in the journal Nature Communications, found this same link and the study author, Jennifer Francis said that this is because, “warm temperatures in the Artic cause the jet stream to take these wild swings, and when it swings farther south, it causes cold air to reach farther south. These swings tend to hang around for a while, so the weather we have in the eastern United States, whether it’s cold or warm, tends to stay with us longer”. It is important to recognize that the Arctic is warming faster than most of the planet which has led to a dramatic decline in the quantity of sea ice that covers the region each winter. This allows for heat from the ocean to more easily be transferred through evaporation, to the atmosphere which weakens the polar vortex winds over the Artic which normally protect the rest of North America from experiencing the freezing Arctic temperatures. But as they winds have weakened; they travel south and bring along their freezing temperatures. 
+
+## What Are the Warming Trends Scientists Are Seeing?
+
+The National Oceanic and Atmospheric Administration (NOAA) has said that since modern record keeping started in 1880, the hottest 10 years measured have all been since 1998 and the three hottest years on record are 2016, 2019 and 2015 on that order. Another clear example would be that in 2006, Lake Eire didn’t freeze for the first time in its history, which actually lead to increased snowfalls because more evaporating water from the lake was in the atmosphere for precipitation. So although there was more snow, and the weather seemed more sever, it was actually because the climate had warmed. 
+What Do Colder Winters Mean for the Health of New Yorkers and others around the country?
+Colder temperatures have the ability to increase negative health affects in all ages, but most significantly in the elderly and in young children. Some common illnesses related to the cold are hypothermia and frostbite which can be brought on without temperatures seeming to be very low. Hypothermia is when your body temperature drops abnormally low which can have serious effects on brain function. Frostbite is an injury that is the result of the extremities freezing and becoming numb. Other serious effects on health, include the increased incidences of heart attacks because the concentration of blood flow in the core body  increases which then increases one’s blood pressure and puts the heart under more strain. In addition, asthma is triggered by extreme temperatures and these extremely cold temperatures increase the risk of more asthma attacks. Now, you might think that if all of these things happen in the cold, why don’t people just stay inside? This might decrease the risk of frostbite, hypothermia and the risk of heart attacks. However, being trapped inside, with limited ventilation and indoor air pollutants can aggravate asthma as well. Disease can also spread more easily when people stay inside or go to more indoor events because people will be closer to one another. Especially this year in 2020, when COVID-19 is a great concern, the ability for it to spread is increased by colder temperatures because people want to remain inside and closer together; the same is for colds and the flu.
+
+## Why Is This All Important? 
+
+A dramatic decrease in temperatures during the winter have the great potential to cause pretty sever environmental justice issues. Environmental Justice emerged as a concept in the United States in the early 1980’s. The term is used to describe the unfair distribution of environmental burdens on specific groups over others. Climate change has been known to be caused by the burning of fossil fuels and developed nations started burning these fuels beginning with industrialization and continuing to do so today, making them responsible for a very large portion of greenhouse gas emissions. The environmental justice issue arises because it is the developing nations that are bearing the brunt of the extreme weather outcomes and other adverse climate change effects. Within the United States, similar disparities are taking place, and within New York City alone, extreme cold temperatures are disproportionately impacting lower income communities of color. 
+Upper class, majority white neighborhoods in New York City will be able to have their heat on longer and at higher temperatures without the worry of if they can afford increased rent prices or utility prices from the building landlords. However, lower income communities in New York City who are majority black, will not be able to afford the same luxury and thus either have to survive in colder living conditions or possibly lose their housing. All the while, by keeping the heat on, there is an increase of fossil fuels burned which continues the greenhouse effect and propels climate change. New York City is all too familiar with severe childhood asthma that impacts black children at a very high rate. The environmental justice issue here, is that these temperatures, caused by climate change and propelled by the burning of fossil fuels, will cause children of color to suffer more severe asthma attacks. In connection with the statistics that indicate these same families lack adequate healthcare, there is a huge possibility that these children will not be able to get refills of asthma medication as needed because of how expensive they are in the United States. 
+
+## In Conclusion
+
+Throughout this blog, I have introduced the common climate change skeptic talking point regarding how climate change cannot exist if winters seem to be getting colder. We have seen that in fact, climate change is the culprit for these cold temperature in the northeastern United States due to the Artic air drifting south as the Artic warms. This extreme cold weather has very negative effects on health and this opens the door for environmental justice issues that have already started harming New Yorkers. If we want to protect New Yorkers from these issues, it is important to recognize and point out climate change was the problem and focus on ways to help stop it so that people aren’t at risk. Overall, in order to protect people from extreme weather events, the United States, along with the rest of the world needs to take action in order to keep people safe and healthy. 
 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

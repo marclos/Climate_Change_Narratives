@@ -1,0 +1,99 @@
+---
+title: "SLC_ 94361"
+author: "Emma Duggleby"
+date: "9/19/2020"
+output: html_document
+---
+
+![Salt Lake City](/home/CAMPUS/edab2019/Climate_Change_Narratives/Student_Folders/Duggleby/SLC.jpg)
+
+<h4>I am writing about inversions in SLC and their interactions with climate change :) </h4>
+<h10> ps. I included the summaries of all the graphs just as a quick shortcut for now </h10>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
+climate_data = read.csv("/home/CAMPUS/edab2019/Climate_Change_Narratives/Data/FA20/Duggleby_SaltLakeCity_data.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+date = climate_data$NewDate
+tmax=climate_data$TMAX
+snow=climate_data$SNOW
+precp=climate_data$PRCP
+
+#Month trend
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+```
+
+```{r}
+plot(TMAX~date, data=climate_data, pch=",", main = "Date vs. Maximum Temperature in Salt Lake City", ylab = "Maximum Temperature", xlab = "Date")
+bestfitline1.lm = lm(tmax~date)
+abline(coef(bestfitline1.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline1.lm)
+## plot 
+```
+
+Becuase the p-value is 0.00525, it is less than the 0.05 threshold. We can therefore can reject the null hypothesis. The multiple r-squared value is too small to be useful at 0.0001714. Our graph shows that the maximum temperature has a slope of 1.153e-05ºC or is increasing by 0.0000153 ºC per year.
+
+```{r}
+plot(SNOW~date, data=climate_data, pch=",", main = "Date and Snow in Salt Lake City", ylab = "Snow Level", xlab = "Date")
+bestfitline2.lm = lm(snow~date)
+abline(coef(bestfitline2.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline2.lm)
+## plot 
+```
+
+We can reject the null hypothesis becuase the p-value is close to 0 at 9.64e-13. Again, the multiple r-squared value is not too applicable at 0.001442. The snow level has a slope of -7.814e-05 or is decreasing by 0.00007814(in/cm?) per year.
+
+```{r}
+plot(PRCP~date, data=climate_data, pch=",", main = "Date and Precipitation in Salt Lake City", ylab = "Precipitation Level", xlab = "Date")
+bestfitline3.lm = lm(precp~date)
+abline(coef(bestfitline3.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline3.lm)
+## plot 
+```
+
+**These next three have p-values of around .9, which seems really large. Should I pick other graphs/statistics or are these ok? 
+
+We cannot reject the null hypothesis becuase the p-value is greater than 0.05 at 0.098. The multiple r-squared value is not too applicable at 6.493e-05. The slope is -2.373e-06 or is decrasing by 0.000002373(cm/in?) per year.
+
+```{r}
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",], ty='l', xlim=c(1950, 2020), main = "December", xlab = "Year")
+Dec.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+abline(coef(Dec.lm), col="blue")
+summary(Dec.lm)
+```
+
+We cannot reject the null hypothesis becuase the p-value is greater than 0.05 at 0.953. The multiple r-squared value is too small to be useful at 2.867e-05. The slope of the maximum temperatures for December is 3.673e-04 or is increasing by 0.0003673ºC per year.
+
+```{r}
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",], ty='l', xlim=c(1950, 2020) , main = "January", xlab = "Year")
+Jan.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+abline(coef(Jan.lm), col="blue")
+summary(Jan.lm)
+```
+
+We cannot reject the null hypothesis becuase the p-value is greater than 0.05 at 0.986. The multiple r-squared value is not useful at 2.527e-06. The slope is -0.0001146ºC or is decreasing by 0.0001146ºC per year.

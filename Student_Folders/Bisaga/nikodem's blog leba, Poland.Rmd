@@ -1,0 +1,85 @@
+---
+title: "leba, PL blog"
+author: "nikodem bisaga"
+date: "9/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+```
+
+```{r}
+file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv"
+climate_data <- read.csv(file.path)
+str(climate_data)
+
+
+```
+
+## Fix Dates
+
+# never created str dates... how come?
+
+```{r fixdates}
+
+strDates = as.character(climate_data$DATE) 
+climate_data$NewDate = NA
+climate_data$NewDate[1:12417] = format(as.Date(strDates[1:12417], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data$NewDate[12418:19949] = format(as.Date(strDates[12418:19949], "%m/%d/%y"),"20%y-%m-%d")
+
+str(climate_data)
+
+```
+
+```{r}
+#climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+#climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+#MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+#str(MonthlyTMAXMean)
+#MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
+
+#TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+```
+
+## Check Data
+
+```{r}
+str(climate_data)
+climate_data$NewDate
+```
+
+```{r}
+plot(TMAX ~ NewDate, data=climate_data)
+
+climate_data$TMAX
+
+
+
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+abline(slopeintercept, col="red", lwd=3)
+
+```
+
+Changes in temperature and precipitation in Łeba, Poland
+by Nikodem Bisaga
+
+I will be looking at climate data from the northern seaside city of Łeba in Poland. 
+
+![coal mining in poland](coal mining in poland.jpeg)
+
+
+
+
+
+
+
+
+
+
+
