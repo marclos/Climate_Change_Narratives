@@ -45,7 +45,7 @@ Michigan corn is generally planted in late April to early May, and, as is the ca
 Based records of daily maximum and minimum temperatures dating back to 1891, it can be confirmed that temperature ranges are on the rise in Michigan. 9 out of the 12 months, excluding October, July, and January, show upward trends in both maximum and minimum temperatures. Coincidentally, there is perhaps no better month that shows this than May, at the beginning of the crop's life cycle - and when it is most sensitive to temperatures. Both the maximum and the minimum temperature graphs, shown below, indicate a significant and steady rise in temperatures since 1891. While such an increase is still below the maximum temperature at which corn can grow, these trends are concerning for their implications for the future. Should the trend continue upward, Michigan is due for hotter temperatures than corn can withstand within 150 years.
 
 ```{r TMAX}
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -143,7 +143,7 @@ abline(coef(May.lm), col="red")
 ```{r TMIN}
 
 # changing date formatting
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -231,7 +231,7 @@ Not only do temperatures play a part in the growing and harvesting of corn, so d
 
 ```{r PRCP_total}
 # changing date formatting
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -319,8 +319,7 @@ abline(coef(MayPRCP.lm))
 
 Agricultural loss as described above will devastate the Michigan economy. Repairs to landscape damaged by climate-change-related incidents, including dredging and filling in shoreline damage and erosion, diverting water, and pollution from transportation will not only exacerbate climate change, it will cost a fortune – estimated by researcher Jean-Philippe Jenny and his team to cost “an excess of $400 million annually” (Jenny, Jean-Philippe, et-al). With a primarily agriculture-based economic model, it will be difficult to adjust to a world in which conventional agriculture is simply not possible due to extreme and unpredictable weather patterns (Kling, George W., et al). However, the looming potential of an economic disaster is not only a result of the downfall of the agricultural industry; as the second biggest industry in Michigan, tourism will also have a large impact on the future of the state’s wealth. Unfortunately, with dredging and filling, water diversion and pollution, the destruction of ecosystems, and a dying “Pick-Your-Own Fruit” industry, tourists may not be eager to flock to Michigan’s formerly pristine shores and corn mazes.
 
-	It is not difficult to conclude that Michigan is and will continue to feel both the long- and short-term effects of the warming of the Earth by human activity. In many ways, Michigan can be seen as a warning to those who don’t believe climate change will affect them. Although the signs are more subtle than fire or flood, Michigan’s climate crisis is just as grave and must be addressed with the utmost seriousness.
-
+It is not difficult to conclude that Michigan is and will continue to feel both the long- and short-term effects of the warming of the Earth by human activity. In many ways, Michigan can be seen as a warning to those who don’t believe climate change will affect them. Although the signs are more subtle than fire or flood, Michigan’s climate crisis is just as grave and must be addressed with the utmost seriousness.
 
 
 
@@ -328,20 +327,29 @@ Agricultural loss as described above will devastate the Michigan economy. Repair
 
 
 Works Cited
+
 -- Cook, John, et al. “Consensus on Consensus: A Synthesis of Consensus Estimates on Human-Caused Global Warming.” Environmental Research Letters, vol. 11, no. 4, 2016, p. 048002., doi:10.1088/1748-9326/11/4/048002.
+
 -- “Facts and Figures about the Great Lakes.” United States Environmental Protection Agency, 4 Apr. 2019, www.epa.gov/greatlakes/facts-and-figures-about-great-lakes.
+
 -- Jenny, Jean-Philippe, et al. “Scientists’ Warning to Humanity: Rapid Degradation of the World’s Large Lakes.” Journal of Great Lakes Research, vol. 46, no. 4, 25 May 2020, pp. 686–702., doi:10.1016/j.jglr.2020.05.006.
+
 -- Kling, George W., et al. Ecological Vulnerability to Climate Change: Aquatic Ecosystems. Union of Concerned Scientists, 2003, pp. 21–56, Confronting Climate Change in the Great Lakes Region: Impacts on Our Communities and Ecosystems, www.jstor.org/stable/resrep00033.10. Accessed 21 Sept. 2020.
+
 -- Project, American Security. American Security Project, 2014, Climate Change and the Threats to the American Midwest, www.jstor.org/stable/resrep05970. Accessed 21 Sept. 2020. 
+
 -- Winkler, Julie A., et al. Climate Change in the Midwest: A Synthesis Report for the National Climate Assessment https://www.researchgate.net/publication/278038317. Island Press, 2014
+
 --britannica & mi ag council
+
 https://www.nass.usda.gov/Statistics_by_State/Michigan/Publications/Annual_Statistical_Bulletin/stats20/Economics.pdf 
+
 https://phys.org/news/2019-04-excessive-rainfall-corn-yield-extreme.html
 
 
 ```{r SNOW, eval=FALSE}
 # changing date formatting
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -437,7 +445,7 @@ abline(coef(DecSNOW.lm))
 ```
 
 ```{r corn_production, eval=FALSE}
-corn_production <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_michigan_cornproduction.csv")
+corn_production <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/lila_michigan_cornproduction.csv")
 plot(corn_production$Value~corn_production$Year, corn_production, main="Corn Production Value over Time", ylab= "Annual value", xlab="Year")
 
 ```
