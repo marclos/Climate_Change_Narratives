@@ -1,17 +1,21 @@
 ---
-title: "The Effects of Temperature Rise on Farming in Michigan"
+title: "Overheating in the Mitten: The Effects of Anthropogenic Climate Change on Farming in Michigan"
 author: "Lila Rubin"
-date: "9/5/2020"
+date: "October 2020"
 output: html_document
 ---
+
+*The state of Michigan sits on land stolen from multiple Indigenous communities: the Ojibwa, in the Upper Peninsula and northern Lower Peninsula; the Potawatomi, in the southern, eastern, and central parts of the state; and the Odawa, in the western Lower Peninsula. Known as the Council of the Three Fires, the three nations were primarily farming communities, raising corn, beans, squash, and more. These nations’ populations have been decimated due to the genocide of the Three Fires at the hands of European settlers. While small Ojibwa, Potawatomi, and Odawa communities continue to rebuild and thrive in the state of Michigan, it would be unacceptable to ignore the destruction and genocide of Native nations carried out by the creators of this state. As we discuss modern agriculture, those of us who are settlers remember that this land is not ours to sow.*
 
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+# This isn't at all a final draft - I have a lot of work to do with the analysis of the graphs. I am considering adding a graph of annual corn yields to examine alongside the TMAX/MIN and PRCP graphs in order to show that the effects of temp and precipitation do in fact affect crop yields. In addition, I need to provide more information about soybean cultivation and growth. Wondering if there are other specifications I should add in order to make my case more clear?
+
 ## Introduction
 
-This blog will examine data collected regarding maximum and mininimum temperatures in Ann Arbor, Michigan from 1891 to the present day. After displaying and analyzing the data, we will discuss what effect our conclusiosn may have on farming in the surrounding area.
+Coasts are ravaged by hurricanes, flooding, and wildfires. The central United States is plagued by drought, the South by heat waves. It is almost unanimously agreed in the scientific community that these drastic and deadly changes in climate are due to human-caused global warming (Cook, John, et al). In the agricultural cradle of the U.S. known as the Midwest, however, citizens are seeing the effects of climate change not only in the need for more deodorant as a result of hotter summers. Production of staple crops like corn, wheat, beans, and squash, along with the export and uses of water from the Great Lakes (tourism, fishing, and transport, among others), are all projected to falter or are already in the process of declining under the increasingly warm and unpredictable world. This blog examines and analyzes the impact of climate statistics and projections on the Michigan agricultural industry. We can conclude that the “Great Lakes State,” with its farmers, university students, fishermen, and urban dwellers, may be overwhelmed by the impacts of climate change on its agricultural, ecological, and economical success.
 
 
 ```{r climate_data, echo=FALSE, eval=FALSE}
@@ -22,9 +26,23 @@ plot(TMAX~NewDate, climate_data, ty='l', main="Daily Temperatures", ylab= "Max T
 bestfitline.lm <- lm(TMAX~NewDate, climate_data)
 abline(coef(bestfitline.lm), col="red")
 ```
-## Monthly Maximum Temperatures over Time
+#### Data Retrieval and Analysis
 
-*Research effect of temperature on crops*
+Statistical support in the form of graphs for this hypothesis are based on data obtained from the National Oceanic and Atmospheric Administration (NOAA), which was collected at the University of Michigan in Ann Arbor. After retrieving such data from the NOAA, it was processed through the coding interface RStudio to create summaries and graphs of the data points. Close analysis of trends and patterns in this information, along with the review of other research done in the region, informed the conclusions which will be presented in this blog. It should be noted that we will be focusing on Ann Arbor data to paint a general picture of climate change in the state of Michigan.
+
+## Ecology and Economy
+
+Moderate temperatures and humid conditions have long defined Michigan weather. The Great Lakes have a chilling effect on certain parts of the Upper Peninsula and western Lower Peninsula, making them more prone to snowfall. These temperature differences lead to a more diverse agricultural industry; growing season in the Upper Peninsula stretches for about 2 months, while the Lower Peninsula has a more expansive growing season, reaching almost six months in some places. Longer crop seasons are ideal for field crops like corn and soybeans which puts Michigan at the top of the production chart of both commodities (Council, Michigan Ag). Agriculture is the state’s main export: according to the National Agricultural Statistics Service (NASS), Michigan produced around 4.1 billion dollars' worth of crops in 2019 alone. Of that 4.1 billion, around 9.8 million comes from corn sales (23.8% of total crop sales), and 7.7 million from soybean sales (around 18.7%).
+
+However, trends in temperature maximums and minimums, along with precipitation and snowfall levels, suggest a less prosperous agricultural future for the mitten state. Michigan’s land ecosystems are rapidly changing with the warming of the Earth. With changing temperatures and uncertain seasonal weather, scientists foresee a harder road ahead for farmers looking to continue producing bountiful harvests. Increased risks of extreme heat and cold events, droughts and floods, and precipitation patterns threaten to disturb growing seasons and wreak havoc on field crop production (Winkler, Julie A., et al).
+
+## Corn Conditions
+
+![Source: Randall Schaetzl, Michigan State University](corntemperaturesdiagram.gif)
+
+Michigan corn is generally planted in late April to early May, and, as is the case with all crops, requires a particular set of conditions in order to flourish. As shown by the graphic above, the crop can survive temperatures of up to 110°F (43.3°C) and down to 32°F (0°C). However, corn only grows when temperatures stay between 95°F (35°C) and 41°F (5°C), and only in the range of 91°F (32.8°C) to 62°F (16.7°C) are there optimal conditions for corn production.
+
+Based records of daily maximum and minimum temperatures dating back to 1891, it can be confirmed that temperature ranges are on the rise in Michigan. 9 out of the 12 months, excluding October, July, and January, show upward trends in both maximum and minimum temperatures. Coincidentally, there is perhaps no better month that shows this than May, at the beginning of the crop's life cycle - and when it is most sensitive to temperatures. Both the maximum and the minimum temperature graphs, shown below, indicate a significant and steady rise in temperatures since 1891. While such an increase is still below the maximum temperature at which corn can grow, these trends are concerning for their implications for the future. Should the trend continue upward, Michigan is due for hotter temperatures than corn can withstand within 150 years.
 
 ```{r TMAX}
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
@@ -36,92 +54,90 @@ MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 
-# January
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
-ty='l', xlim=c(1900, 2020), main="January", ylab="Max Temperature (C)", xlab="Year")
-
-January.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
-abline(coef(January.lm), col="red")
-
-# February
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",],
-ty='l', xlim=c(1900, 2020), main="February", ylab="Max Temperature (C)", xlab="Year")
-
-February.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
-abline(coef(February.lm), col="red")
-
-# March
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",],
-ty='l', xlim=c(1900, 2020), main="March", ylab="Max Temperature (C)", xlab="Year")
-
-March.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",])
-abline(coef(March.lm), col="red")
-
-# April
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],
-ty='l', xlim=c(1900, 2020), main="April", ylab="Max Temperature (C)", xlab="Year")
-
-April.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
-abline(coef(April.lm), col="red")
+# # January
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],
+# ty='l', xlim=c(1900, 2020), main="January", ylab="Max Temperature (C)", xlab="Year")
+# 
+# January.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+# abline(coef(January.lm), col="red")
+# 
+# # February
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",],
+# ty='l', xlim=c(1900, 2020), main="February", ylab="Max Temperature (C)", xlab="Year")
+# 
+# February.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
+# abline(coef(February.lm), col="red")
+# 
+# # March
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",],
+# ty='l', xlim=c(1900, 2020), main="March", ylab="Max Temperature (C)", xlab="Year")
+# 
+# March.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="03",])
+# abline(coef(March.lm), col="red")
+# 
+# # April
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],
+# ty='l', xlim=c(1900, 2020), main="April", ylab="Max Temperature (C)", xlab="Year")
+# 
+# April.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+# abline(coef(April.lm), col="red")
 
 # May
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
-ty='l', xlim=c(1900, 2020), main="May", ylab="Max Temperature (C)", xlab="Year")
+ty='l', xlim=c(1900, 2020), main="Average Maximum Temperatures in May", ylab="Temperature (C)", xlab="Year")
 
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 abline(coef(May.lm), col="red")
 
-# June
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",],
-ty='l', xlim=c(1900, 2020), main="June", ylab="Max Temperature (C)", xlab="Year")
-
-June.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
-abline(coef(June.lm), col="red")
-
-# July
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",],
-ty='l', xlim=c(1900, 2020), main="July", ylab="Max Temperature (C)", xlab="Year")
-
-July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
-abline(coef(July.lm), col="red")
-
-# August
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
-ty='l', xlim=c(1900, 2020), main="August", ylab="Max Temperature (C)", xlab="Year")
-
-August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
-abline(coef(August.lm), col="red")
-
-# September
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",],
-ty='l', xlim=c(1900, 2020), main="September", ylab="Max Temperature (C)", xlab="Year")
-
-September.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
-abline(coef(September.lm), col="red")
-
-# October
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],
-ty='l', xlim=c(1900, 2020), main="October", ylab="Max Temperature (C)", xlab="Year")
-
-October.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
-abline(coef(October.lm), col="red")
-
-# November
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",],
-ty='l', xlim=c(1900, 2020), main="November", ylab="Max Temperature (C)", xlab="Year")
-
-November.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",])
-abline(coef(November.lm), col="red")
-
-# December
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
-ty='l', xlim=c(1900, 2020), main="December", ylab="Max Temperature (C)", xlab="Year")
-
-December.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
-abline(coef(December.lm), col="red")
+# # June
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",],
+# ty='l', xlim=c(1900, 2020), main="June", ylab="Max Temperature (C)", xlab="Year")
+# 
+# June.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+# abline(coef(June.lm), col="red")
+# 
+# # July
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",],
+# ty='l', xlim=c(1900, 2020), main="July", ylab="Max Temperature (C)", xlab="Year")
+# 
+# July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
+# abline(coef(July.lm), col="red")
+# 
+# # August
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
+# ty='l', xlim=c(1900, 2020), main="August", ylab="Max Temperature (C)", xlab="Year")
+# 
+# August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+# abline(coef(August.lm), col="red")
+# 
+# # September
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",],
+# ty='l', xlim=c(1900, 2020), main="September", ylab="Max Temperature (C)", xlab="Year")
+# 
+# September.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
+# abline(coef(September.lm), col="red")
+# 
+# # October
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],
+# ty='l', xlim=c(1900, 2020), main="October", ylab="Max Temperature (C)", xlab="Year")
+# 
+# October.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+# abline(coef(October.lm), col="red")
+# 
+# # November
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",],
+# ty='l', xlim=c(1900, 2020), main="November", ylab="Max Temperature (C)", xlab="Year")
+# 
+# November.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",])
+# abline(coef(November.lm), col="red")
+# 
+# # December
+# plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",],
+# ty='l', xlim=c(1900, 2020), main="December", ylab="Max Temperature (C)", xlab="Year")
+# 
+# December.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
+# abline(coef(December.lm), col="red")
 ```
-
-In the few months where the maximum temperature has not experienced a significant increase in average temperatures, the climate is still changing. The average *minimum* temperature of winters is rising quickly.
 
 
 ```{r TMIN}
@@ -138,91 +154,82 @@ MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 
-# January
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty="l", xlim=c(1891, 2020), main="January", ylab="Min Temperature (C)", xlab="Year")
-
-JanuaryTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
-abline(coef(JanuaryTMIN.lm))
-summary(JanuaryTMIN.lm)
-
-# February
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Min Temperature (C)", xlab="Year")
-
-FebruaryTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
-abline(coef(FebruaryTMIN.lm))
-summary(FebruaryTMIN.lm)
-
-# March
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Min Temperature (C)", xlab="Year")
-
-MarchTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
-abline(coef(MarchTMIN.lm))
-summary(MarchTMIN.lm)
-
-# April
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Min Temperature (C)", xlab="Year")
-
-AprilTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
-abline(coef(AprilTMIN.lm))
-summary(AprilTMIN.lm)
+# # January
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="01",], ty="l", xlim=c(1891, 2020), main="January", ylab="Min Temperature (C)", xlab="Year")
+# 
+# JanuaryTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+# abline(coef(JanuaryTMIN.lm))
+# 
+# # February
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Min Temperature (C)", xlab="Year")
+# 
+# FebruaryTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+# abline(coef(FebruaryTMIN.lm))
+# 
+# # March
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Min Temperature (C)", xlab="Year")
+# 
+# MarchTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="03",])
+# abline(coef(MarchTMIN.lm))
+# 
+# # April
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Min Temperature (C)", xlab="Year")
+# 
+# AprilTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
+# abline(coef(AprilTMIN.lm))
 
 # May
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty="l", xlim=c(1891, 2020), main="May", ylab="Min Temperature (C)", xlab="Year")
 
 MayTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
-abline(coef(MayTMIN.lm))
-summary(MayTMIN.lm)
+abline(coef(MayTMIN.lm), col="red")
 
-# June
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Min Temperature (C)", xlab="Year")
-
-JuneTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
-abline(coef(JuneTMIN.lm))
-summary(JuneTMIN.lm)
-
-# July
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Min Temperature (C)", xlab="Year")
-
-JulyTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
-abline(coef(JulyTMIN.lm))
-summary(JulyTMIN.lm)
-
-# August
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Min Temperature (C)", xlab="Year")
-
-AugustTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
-abline(coef(AugustTMIN.lm))
-summary(AugustTMIN.lm)
-
-# September
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Min Temperature (C)", xlab="Year")
-
-SeptemberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
-abline(coef(SeptemberTMIN.lm))
-summary(SeptemberTMIN.lm)
-
-# October
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Min Temperature (C)", xlab="Year")
-
-OctoberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
-abline(coef(OctoberTMIN.lm))
-summary(OctoberTMIN.lm)
-
-# November
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Min Temperature (C)", xlab="Year")
-
-NovemberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
-abline(coef(NovemberTMIN.lm))
-summary(NovemberTMIN.lm)
-
-# December
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Min Temperature (C)", xlab="Year")
-
-DecemberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
-abline(coef(DecemberTMIN.lm))
-summary(DecemberTMIN.lm)
+# # June
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Min Temperature (C)", xlab="Year")
+# 
+# JuneTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
+# abline(coef(JuneTMIN.lm))
+# 
+# # July
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Min Temperature (C)", xlab="Year")
+# 
+# JulyTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
+# abline(coef(JulyTMIN.lm))
+# 
+# # August
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Min Temperature (C)", xlab="Year")
+# 
+# AugustTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+# abline(coef(AugustTMIN.lm))
+# 
+# # September
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Min Temperature (C)", xlab="Year")
+# 
+# SeptemberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
+# abline(coef(SeptemberTMIN.lm))
+# 
+# # October
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Min Temperature (C)", xlab="Year")
+# 
+# OctoberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+# abline(coef(OctoberTMIN.lm))
+# 
+# # November
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Min Temperature (C)", xlab="Year")
+# 
+# NovemberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
+# abline(coef(NovemberTMIN.lm))
+# 
+# # December
+# plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Min Temperature (C)", xlab="Year")
+# 
+# DecemberTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+# abline(coef(DecemberTMIN.lm))
 ```
-```{r PRCP total}
+
+Not only do temperatures play a part in the growing and harvesting of corn, so do precipitation levels. A 2019 study done by researchers at the University of Illinois showed that "excessive rainfall" could decrease corn crop yields by up to 34%, just as drought and heat waves can cause a decrease of up to 37%. This means that Michigan's steady upward trend in rainfall looms dangerously over corn yields, both now, and in the future. Excluding September, every month shows a noticeable increase in average monthly precipitation levels. As we have considered May for our temperature minimums and maximums, we will use the same month to examine precipitation. As the graph shows, Michigan's monthly rainfall sums are steadily increasing. When combined with rising temperatures and a less predictable weather cycle, the state's excessive rainfall does not bode well for the future of Michigan sweet corn.
+
+```{r PRCP_total}
 # changing date formatting
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
@@ -235,92 +242,104 @@ MonthlyPRCPSum = aggregate(PRCP ~ Month + Year, climate_data, sum)
 MonthlyPRCPSum$YEAR = as.numeric(MonthlyPRCPSum$Year)
 MonthlyPRCPSum$MONTH = as.numeric(MonthlyPRCPSum$Month)
 
-# January
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",], ty="l", xlim=c(1891, 2020), main="January", ylab="Total Monthly Precipitation", xlab="Year")
-
-JanuaryPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",])
-abline(coef(JanuaryPRCP.lm))
-summary(JanuaryPRCP.lm)
-
-# February
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Total Monthly Precipitation", xlab="Year")
-
-FebPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",])
-abline(coef(FebPRCP.lm))
-summary(FebPRCP.lm)
-
-# March
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Total Monthly Precipitation", xlab="Year")
-
-MarPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",])
-abline(coef(MarPRCP.lm))
-summary(MarPRCP.lm)
-
-# April
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Total Monthly Precipitation", xlab="Year")
-
-AprPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
-abline(coef(AprPRCP.lm))
-summary(AprPRCP.lm)
+# # January
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",], ty="l", xlim=c(1891, 2020), main="January", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# JanuaryPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",])
+# abline(coef(JanuaryPRCP.lm))
+# 
+# # February
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# FebPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",])
+# abline(coef(FebPRCP.lm))
+# 
+# # March
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# MarPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",])
+# abline(coef(MarPRCP.lm))
+# 
+# # April
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# AprPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
+# abline(coef(AprPRCP.lm))
 
 # May
 plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",], ty="l", xlim=c(1891, 2020), main="May", ylab="Total Monthly Precipitation", xlab="Year")
 
 MayPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
 abline(coef(MayPRCP.lm))
-summary(MayPRCP.lm)
-
-# June
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Total Monthly Precipitation", xlab="Year")
-
-JunePRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",])
-abline(coef(JunePRCP.lm))
-summary(JunePRCP.lm)
-
-# July
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Total Monthly Precipitation", xlab="Year")
-
-JulyPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",])
-abline(coef(JulyPRCP.lm))
-summary(JulyPRCP.lm)
-
-# August
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Total Monthly Precipitation", xlab="Year")
-
-AugustPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",])
-abline(coef(AugustPRCP.lm))
-summary(AugustPRCP.lm)
-
-# September
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Total Monthly Precipitation", xlab="Year")
-
-SeptPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",])
-abline(coef(SeptPRCP.lm))
-summary(SeptPRCP.lm)
-
-# October
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Total Monthly Precipitation", xlab="Year")
-
-OctPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",])
-abline(coef(OctPRCP.lm))
-summary(OctPRCP.lm)
-
-# November
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Total Monthly Precipitation", xlab="Year")
-
-NovPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",])
-abline(coef(NovPRCP.lm))
-summary(NovPRCP.lm)
-
-# December
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Total Monthly Precipitation", xlab="Year")
-
-DecPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",])
-abline(coef(DecPRCP.lm))
-summary(DecPRCP.lm)
+# 
+# # June
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# JunePRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",])
+# abline(coef(JunePRCP.lm))
+# 
+# # July
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# JulyPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",])
+# abline(coef(JulyPRCP.lm))
+# 
+# # August
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# AugustPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",])
+# abline(coef(AugustPRCP.lm))
+# 
+# # September
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# SeptPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",])
+# abline(coef(SeptPRCP.lm))
+# 
+# # October
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# OctPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",])
+# abline(coef(OctPRCP.lm))
+# 
+# # November
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# NovPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",])
+# abline(coef(NovPRCP.lm))
+# 
+# # December
+# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Total Monthly Precipitation", xlab="Year")
+# 
+# DecPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",])
+# abline(coef(DecPRCP.lm))
 ```
 
-```{r SNOW}
+## Conclusions
+
+Agricultural loss as described above will devastate the Michigan economy. Repairs to landscape damaged by climate-change-related incidents, including dredging and filling in shoreline damage and erosion, diverting water, and pollution from transportation will not only exacerbate climate change, it will cost a fortune – estimated by researcher Jean-Philippe Jenny and his team to cost “an excess of $400 million annually” (Jenny, Jean-Philippe, et-al). With a primarily agriculture-based economic model, it will be difficult to adjust to a world in which conventional agriculture is simply not possible due to extreme and unpredictable weather patterns (Kling, George W., et al). However, the looming potential of an economic disaster is not only a result of the downfall of the agricultural industry; as the second biggest industry in Michigan, tourism will also have a large impact on the future of the state’s wealth. Unfortunately, with dredging and filling, water diversion and pollution, the destruction of ecosystems, and a dying “Pick-Your-Own Fruit” industry, tourists may not be eager to flock to Michigan’s formerly pristine shores and corn mazes.
+
+	It is not difficult to conclude that Michigan is and will continue to feel both the long- and short-term effects of the warming of the Earth by human activity. In many ways, Michigan can be seen as a warning to those who don’t believe climate change will affect them. Although the signs are more subtle than fire or flood, Michigan’s climate crisis is just as grave and must be addressed with the utmost seriousness.
+
+
+
+
+
+
+
+Works Cited
+-- Cook, John, et al. “Consensus on Consensus: A Synthesis of Consensus Estimates on Human-Caused Global Warming.” Environmental Research Letters, vol. 11, no. 4, 2016, p. 048002., doi:10.1088/1748-9326/11/4/048002.
+-- “Facts and Figures about the Great Lakes.” United States Environmental Protection Agency, 4 Apr. 2019, www.epa.gov/greatlakes/facts-and-figures-about-great-lakes.
+-- Jenny, Jean-Philippe, et al. “Scientists’ Warning to Humanity: Rapid Degradation of the World’s Large Lakes.” Journal of Great Lakes Research, vol. 46, no. 4, 25 May 2020, pp. 686–702., doi:10.1016/j.jglr.2020.05.006.
+-- Kling, George W., et al. Ecological Vulnerability to Climate Change: Aquatic Ecosystems. Union of Concerned Scientists, 2003, pp. 21–56, Confronting Climate Change in the Great Lakes Region: Impacts on Our Communities and Ecosystems, www.jstor.org/stable/resrep00033.10. Accessed 21 Sept. 2020.
+-- Project, American Security. American Security Project, 2014, Climate Change and the Threats to the American Midwest, www.jstor.org/stable/resrep05970. Accessed 21 Sept. 2020. 
+-- Winkler, Julie A., et al. Climate Change in the Midwest: A Synthesis Report for the National Climate Assessment https://www.researchgate.net/publication/278038317. Island Press, 2014
+--britannica & mi ag council
+https://www.nass.usda.gov/Statistics_by_State/Michigan/Publications/Annual_Statistical_Bulletin/stats20/Economics.pdf 
+https://phys.org/news/2019-04-excessive-rainfall-corn-yield-extreme.html
+
+
+```{r SNOW, eval=FALSE}
 # changing date formatting
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
@@ -328,7 +347,7 @@ climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
 
-# PRCP business
+# SNOW business
 MonthlySNOWSum = aggregate(SNOW ~ Month + Year, climate_data, sum)
 MonthlySNOWSum$YEAR = as.numeric(MonthlySNOWSum$Year)
 MonthlySNOWSum$MONTH = as.numeric(MonthlySNOWSum$Month)
@@ -415,6 +434,11 @@ plot(SNOW~YEAR, data = MonthlySNOWSum[MonthlySNOWSum$Month=="12",], ty="l", xlim
 
 DecSNOW.lm <- lm(SNOW~YEAR, data = MonthlySNOWSum[MonthlySNOWSum$Month=="12",])
 abline(coef(DecSNOW.lm))
-summary(DecSNOW.lm)
+```
+
+```{r corn_production, eval=FALSE}
+corn_production <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_michigan_cornproduction.csv")
+plot(corn_production$Value~corn_production$Year, corn_production, main="Corn Production Value over Time", ylab= "Annual value", xlab="Year")
+
 ```
 
