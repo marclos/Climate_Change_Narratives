@@ -57,3 +57,55 @@ MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 #plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month=="08"], ty='l', ylab = "August Max Temp")
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
      ty='l', xlim=c(1890, 2022))
+augustSlope <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+abline(coef(augustSlope), col="red")
+summary(augustSlope)
+# Residuals:
+#   Min       1Q   Median       3Q      Max 
+# -2.20265 -0.60344 -0.03157  0.61231  2.22548 
+# 
+# Coefficients:
+#   Estimate Std. Error t value Pr(>|t|)    
+# (Intercept) 3.238e+01  4.471e+00   7.242  9.7e-11 ***
+#   YEAR        4.518e-04  2.292e-03   0.197    0.844    
+# ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Residual standard error: 0.8871 on 99 degrees of freedom
+# Multiple R-squared:  0.0003923,	Adjusted R-squared:  -0.009705 
+# F-statistic: 0.03885 on 1 and 99 DF,  p-value: 0.8442
+
+#creating a monthly min
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+# Month Year      TMIN YEAR MONTH
+# 1    01 1892  9.280645 1892     1
+# 2    02 1892 13.172414 1892     2
+# 3    03 1892 11.651613 1892     3
+# 4    04 1892 17.136667 1892     4
+# 5    05 1892 18.990323 1892     5
+# 6    06 1892 22.176667 1892     6
+
+Months = c("January", "February", "March", "April",
+           "May", "June", "July", "August", "September", "October",
+           "November", "December")
+# Create a panel so I can see all the figures at once.
+#par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+par(mar=c(1,1,1,1))
+TMAXresult <- NA
+for (i in 1:12) {
+  # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+  # ty='l')
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1950, 2020),
+       main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+  summary(Month.lm)
+  abline(coef(Month.lm), col = "red")
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+       round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared,3)))
+}
+
