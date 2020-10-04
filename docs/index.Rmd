@@ -14,7 +14,7 @@ output:
 bibliography: skeleton.bib
 link-citations: yes
 ---
-Updated: `r Sys.time()`
+Updated: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
 
 ```{r setup, include=FALSE}
 library(tufte)
@@ -66,6 +66,7 @@ Added students...
 
 
 [Waring (2020)](F2020/Waring.html)
+
 [Williams (2020)](F2020/Wiliams.html)
 
 
