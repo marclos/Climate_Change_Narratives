@@ -100,7 +100,7 @@ TMAXresult <- NA
 for (i in 1:12) {
   # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
   # ty='l')
-  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1950, 2020),
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(2000, 2020),
        main = Months[i])
   Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
   summary(Month.lm)
