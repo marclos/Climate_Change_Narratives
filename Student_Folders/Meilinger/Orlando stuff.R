@@ -25,8 +25,8 @@ climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
 slopeMaxTemp = lm(TMAX ~ NewDate, data= climate_data)
 coefMaxTemp = coef(slopeMaxTemp)
-(Intercept)      NewDate 
-2.834675e+01 8.480721e-06
+# (Intercept)      NewDate 
+# 2.834675e+01 8.480721e-06
 plot(TMAX ~ NewDate, data= climate_data, las=1)
 abline(coefMaxTemp, col="red", lwd=3)
 
