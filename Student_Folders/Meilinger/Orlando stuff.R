@@ -15,16 +15,18 @@ names(climate_data)
 ## [1] "STATION" "STATION_NAME" "DATE" "PRCP" "TAVG"
 ## [6] "TMAX" "TMIN"
 
-
 min(climate_data$TMAX, na.rm=T)
 ## [1] -9999
-
-
-
 
 str(climate_data)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
-abline(lm(TMAX~NewDate, climate_data))
+
+slopeMaxTemp = lm(TMAX ~ NewDate, data= climate_data)
+coefMaxTemp = coef(slopeMaxTemp)
+(Intercept)      NewDate 
+2.834675e+01 8.480721e-06
+plot(TMAX ~ NewDate, data= climate_data, las=1)
+abline(coefMaxTemp, col="red", lwd=3)
 
