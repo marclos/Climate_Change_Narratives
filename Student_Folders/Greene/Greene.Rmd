@@ -3,9 +3,9 @@ title: 'Rising Temperatures and their Activist Implications in Washington DC '
 author: '97517'
 date: "9/26/2020"
 output:
+  html_document: default
   word_document: default
   pdf_document: default
-  html_document: default
 ---
 
 
@@ -26,7 +26,7 @@ file.path = "/home/CAMPUS/jagc2019/Climate_Change_Narratives/Data/FA20/JacobGree
 climate_data <- read.csv(file.path)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-plot(TMIN~NewDate, climate_data,type='l', main= "Washington D.C. Daily TMIN vs Time", xlab= "Time ", ylab= "Daily TMIN (C)")
+plot(TMIN~NewDate, climate_data,type='l', main= "Washington D.C. Daily TMIN vs Time", xlab= "Time ", ylab= "Daily Temperature Minimums (C°)", pch=19, cex=0.5)
 TMINbestlinefit.lm=lm(TMIN~NewDate, data = climate_data)
 abline(coef(TMINbestlinefit.lm), col= "red",lwd=2)
 ```
@@ -39,10 +39,48 @@ climate_data$Year = format(as.Date(climate_data$NewDate),format= "%Y")
 MonthlyTMINMean = aggregate(TMIN~Month+Year,climate_data,mean)
 MonthlyTMINMean$YEAR= as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l',main= "July Monthly TMIN Means vs Time", xlab= "Time", ylab= "July TMINs (C)" )
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",],main= "Average Mininimum Temperatures in Select Months vs Time", xlab= "Time", ylab= " Average Temperature Minimums (C°)", pch=19, cex=0.5, col= "red", ylim=c(8,26))
 JulTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 abline(coef(JulTMIN.lm),col= "red",lwd=2)
+
+points(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",], pch=19, cex=0.5, col="green")
+SepTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
+abline(coef(SepTMIN.lm),col= "green",lwd=2)
+
+points(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], pch=19, cex=0.5, col="blue")
+MayTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+abline(coef(MayTMIN.lm),col= "blue",lwd=2)
+
+legend("topleft", legend=c("July","September","May"),
+       col=c("red","green","blue"), lty=1, cex=0.7)
+
 ```
+
+
+
+``` {r}
+library(xtable)
+Results<-data.frame(Month=TMINresult[c(2:13),1],TMINSlope=TMINresult[c(2:13),2], TMIN_P=as.numeric(TMINresult[c(2:13),3]),
+TMINRsq=TMINresult[c(2:13),4],TMAXSlope=TMAXresult[c(2:13),2],TMAX_P=as.numeric(TMAXresult[c(2:13),3]),
+TMAXRsq=TMAXresult[c(2:13),4])
+
+Results$starTMIN="NS"
+Results$starTMIN[Results$TMIN_P<=.05]="*"
+Results$starTMIN[Results$TMIN_P<0.01]="**"
+Results$starTMIN[Results$TMIN_P<0.001]="***"
+Results$starTMAX="NS"
+Results$starTMAX[Results$TMAX_P<0.05]="*"
+Results$starTMAX[Results$TMAX_P<0.01]="**"
+Results$starTMAX[Results$TMAX_P<0.001]="***"
+Results$TMINslope=paste(Results$TMINSlope,Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope,Results$starTMAX)
+colnames(Results)<-c("Month","2","3","R^2","5","6","R^2","8","9", "SlopeTMIN","SlopeTMAX")
+print(xtable(Results[,c(1,10, 4,11,7)]), type = "html")
+
+```
+points(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",], pch=19, cex=0.5, col="orange")
+JunTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
+abline(coef(MayTMIN.lm),col= "orange",lwd=2)
 
 The graph above illustrates how July TMINs have significantly (p-value= 3.94e-06) increased from 1948 to 2020. According to the slope of .033, over a 100-year span, average TMINs in July would increase by 3.3 degrees Celsius. This trend follows similarly for all other summer months: months May to August had p values less than .0005, and Months September and April had p values less than .05. Furthermore, the average TMIN warming over 100 years between April and September was 3.1 degrees Celsius. A 2015 report by Katherine Hayhoe and Anne Stoner for the DC Department of Energy and Environment corroborates this summer TMIN increase(Hayhoe et al., 2015). From synthesizing several climate change projections and two other DC weather stations in addition to the National Arboretum data I used, the authors projected that by 2100, TMINs likely will increase between 4.4 and 5.5 degrees Celsius(Hayhoe et al., 2015).
   
@@ -51,12 +89,12 @@ The graph above illustrates how July TMINs have significantly (p-value= 3.94e-06
 
 
 ```{r, TMAX plot, echo=FALSE}
-plot(TMAX~NewDate, climate_data,type='l', main= "Washington D.C. Daily TMAX vs Time", xlab= "Time", ylab= "Daily TMAX (C)")
+plot(TMAX~NewDate, climate_data,type='l', main= "D.C. Daily Temperature Maximums vs Time", xlab= "Time", ylab= "Daily Temperature Maximums (C°)")
 bestfitline.lm = lm(TMAX~NewDate, data = climate_data)
 abline(coef(bestfitline.lm), col="red", lwd=2)
 ```
 
-This graph illustrates daily TMAX values from 1948 until 2020 but was not significant (p value= .789). Although my analysis did not produce convincing results, Hayhoe and Stoner’s projections indicate that summer temperature maximums, days with the extreme heat index, and heatwaves will all increase. Like their prediction for TMINs, the authors predict that summer TMAXs will increase between 4.4 and 5.5 degrees Celsius. In their analysis, heatwaves are expected to occur more frequently, last longer, and be more severe (Hayhoe et. al, 2015).
+This graph illustrates daily TMAX values from 1948 until 2020 but was not significant (p value= .789). Although my analysis did not produce convincing results, Hayhoe and Stoner’s projections indicate that summer temperature maximums, days with the extreme heat index, and heatwaves will all increase. Like their prediction for TMINs, the authors predict that summer TMAXs will increase between 4.4° and 5.5° Celsius. In their analysis, heatwaves are expected to occur more frequently, last longer, and be more severe (Hayhoe et. al, 2015).
 
 #### Possible Misinterpretations of the Analysis
 
