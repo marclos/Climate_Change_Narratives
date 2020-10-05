@@ -100,7 +100,7 @@ TMAXresult <- NA
 for (i in 1:12) {
   # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
   # ty='l')
-  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], ty = "l", las = 1, xlim = c(1890, 2020),
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020),
        main = Months[i])
   Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
   summary(Month.lm)
@@ -109,3 +109,32 @@ for (i in 1:12) {
        round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared,3)))
 }
 
+oct.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 10, ])
+summary(oct.lm)
+
+### AND NOW MINIMUMSSS ##### WOOOOO ####AAAA
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+plot(MonthlyTMINMean$TMIN, pch=20)
+par(mfrow = c(4, 3), mar=c(1,1,1,1))
+TMINresult <- NA
+for (i in 1:12) {
+  # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+  # ty='l')
+  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020),
+       main = Months[i])
+  MonthMin.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+  summary(MonthMin.lm)
+  abline(coef(MonthMin.lm), col = "red")
+  TMINresult <- rbind(TMINresult, cbind(Months[i],
+                                        round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
+}
+
+aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+summary(aug.lm)
