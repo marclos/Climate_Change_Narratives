@@ -10,12 +10,13 @@ output: html_document
 ![Winter_in_NYC_2](https://rstudio.pomona.edu/s/24fdca0004bc0e6f53259/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/Winter_in_NYC_2.jpg)
 
 
-```{r, eval=FALSE}
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE)
 read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
 
 ```
 
-```{r}
+```{r, include=FALSE}
 filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
 
 filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
@@ -36,7 +37,7 @@ Below are the plots showing minimum temperatures during November, December, Janu
 
 
 ## Plots for January From 1990-2020
-```{r}
+```{r, include=FALSE}
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate[1:51684] = format(as.Date(strDates[1:51684], "%m/%d/%y"), "19%y-%m-%d") 
 climate_data$NewDate[51685:66920] = format(as.Date(strDates[51685:66920], "%m/%d/%y"),"20%y-%m-%d") 
@@ -48,6 +49,10 @@ str(MonthlyTMINMean)
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
 #str(MonthlyTMINMean)
+
+```
+
+```{r}
 plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],ty='l', xlim=c(1990,2020))
 January.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 summary(January.lm)
@@ -56,7 +61,7 @@ lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 ```
 
 ## Plots for December from 1990-2020
-```{r}
+```{r, include=FALSE}
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
 #str(MonthlyTMINMean)
@@ -67,7 +72,7 @@ abline(coef(December.lm), col="red")
 lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
 ```
 ## Plots for February from 1990 - 2020
-```{r}
+```{r, include=FALSE}
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
 #str(MonthlyTMINMean)
@@ -79,7 +84,7 @@ lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
 ```
 
 ## Plots for Novemeber for 1990-2020
-```{r}
+```{r, include=FALSE}
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
 #str(MonthlyTMINMean)
