@@ -1,5 +1,5 @@
 ---
-title: "leba, PL blog"
+title: "Poland's... something here"
 author: "nikodem bisaga"
 date: "9/20/2020"
 output: html_document
@@ -12,12 +12,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 ```
 
-```{r}
+```{r, echo=FALSE}
 file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv"
+file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/leba, poland data.csv"
 climate_data <- read.csv(file.path)
 str(climate_data)
-
-
 ```
 
 ## Fix Dates
