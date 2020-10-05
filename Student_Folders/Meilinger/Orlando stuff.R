@@ -94,8 +94,8 @@ Months = c("January", "February", "March", "April",
            "May", "June", "July", "August", "September", "October",
            "November", "December")
 # Create a panel so I can see all the figures at once.
-#par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
-par(mar=c(1,1,1,1))
+par(mfrow = c(4, 3), mar=c(1,1,1,1))
+#par(mar=c(1,1,1,1))   mar = c(5, 4, 3, 2) + 0.1
 TMAXresult <- NA
 for (i in 1:12) {
   # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
