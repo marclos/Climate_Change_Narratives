@@ -2,8 +2,12 @@
 title: "Climate Records, Alpine Environments, and Coastal Impacts"
 subtitle: "Uneven Knowledge and Impacts"
 author: "EA30 Students, Pomona College"
+<<<<<<< HEAD
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+=======
 date: "10/26/2019"
 #date: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
+>>>>>>> 538073b0cda7f615009b8e70d4f84d82070a3b18
 output:
   tufte::tufte_html: default
   tufte::tufte_handout:
@@ -15,7 +19,11 @@ output:
 bibliography: ../skeleton.bib
 link-citations: yes
 ---
+<<<<<<< HEAD
+Updated: `r Sys.time()`
+=======
 Updated: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
+>>>>>>> 538073b0cda7f615009b8e70d4f84d82070a3b18
 
 ```{r setup, include=FALSE}
 library(tufte)
