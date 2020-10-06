@@ -1,10 +1,10 @@
 ---
 title: "Climate Change is Disrupting the Salt Lake Valley"
-name: 'Bryan Williams'
+name: Bryan Williams
 date: "`r Sys.Date()`"
 output:
-  html_document: default
   word_document: default
+  html_document: default
   pdf_document: default
 ---
 
@@ -31,6 +31,12 @@ A recent study by premiere climatologists in Zurich, Switzerland analyzed the le
 
 
 ![View from Salt Lake International Airport Weather Station in Salt Lake City, Utah](https://live.staticflickr.com/1831/29063639228_e257d24aff_b.jpg)
+
+
+#### January is cold (but getting less so)!
+
+In Utah, it appears that our winter months have experienced warming. As such, I am going to drill down on the month of January. I've plotted January data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMAX` against year to see if there is some type of discernible trend.  
+
 
 ```{r readdata, include=FALSE}
 filepath = "/home/CAMPUS/bawa2018/Climate_Change_Narratives/Data/FA20/Williams_SaltLakeCityUT_data.csv"
@@ -62,6 +68,7 @@ plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],ty='l', xlim=
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
 summary(May.lm)
 abline(coef(May.lm), col="red")
+
 ```
 
 
@@ -130,14 +137,23 @@ colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
 "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
 htmlTable(Results[,c(1, 10, 4, 11, 7)])
 ```
-```{r Temperature and Snowfall, echo=FALSE}
-par(mfrow=c(1,3))
+  When the results of a statistical analysis provide a p-value of greater that 0.05, the null hypothesis (the hypothesis that there is no statistically significant correlation between the two measured variables) is rejected, meaning that the data is statistically significant. Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of January, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
+
+```{r July TMAXPlot, echo=FALSE}
 month_i <- 7
 i <- 7
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,],ty='l', main= Months[i], las = 1, xlim=c(1950, 2020), xlab= "Year", ylab="Maximum Average July Temperature (C)")
 July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,])
 abline(coef(July.lm), col="red")
+```
 
+
+#### January snowfall is decreasing
+It also appears that our winter months have experienced decreasing snowfall. I've plotted January data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMIN` against year to see if there is some type of discernible trend.  
+
+Based on my analysis, my data indicate that there is not a trend of increasing temperature in Salt Lake City for the month of January, failing to reject the null hypothesis (slope = 0.0435, r2 = 0, p-value = 0.29).
+
+```{r Jan TMIN Plot, echo=FALSE}
 #plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
 i <- 1
 plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",],ty='l', main = Months[i], las = 1, xlim=c(1950, 2020), ylab="Minimum Average January Temperature (C)", xlab= "Year")
@@ -146,7 +162,15 @@ abline(coef(Jan.lm), col="blue")
 Janresult <- NULL
 Janresult <- rbind(Janresult, cbind(Months[i],
   round(coef(Jan.lm)[2], 4), round(summary(Jan.lm)$coefficients[2, 4], 4), round(summary(Jan.lm)$r.squared,3)))
+```
 
+
+#### July is hot (and getting hotter)!
+It also appears that our summer months have experienced warming. As such, I am going to drill down on the month of July I've plotted July data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMAX` against year to see if there is some type of discernible trend.  
+
+Based on my analysis, my data indicate that there is a trend of decreasing snowfall in Salt Lake City for the month of January, rejecting the null hypothesis (slope = -0.0488, r2 = 0.2271, p-value = 0.02).
+
+```{r Jan Snowfall, echo=FALSE}
 i <- 1
 MonthlySNOWMean = aggregate(SNOW ~ Month + Year, climate_data, mean)
 MonthlySNOWMean$Month <- as.numeric(MonthlySNOWMean$Month)
@@ -157,25 +181,7 @@ plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l"
   SNOWresult <- NULL
   SNOWresult <- rbind(SNOWresult, cbind(Months[i],
   round(coef(SNOWMonth.lm)[2], 4), round(summary(SNOWMonth.lm)$coefficients[2, 4], 4), round(summary(SNOWMonth.lm)$r.squared,3)))
-
-``` 
-
-#### July is hot (and getting hotter)!
-It also appears that our summer months have experienced warming. As such, I am going to drill down on the month of July I've plotted July data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMAX` against year to see if there is some type of discernible trend.  
-
-Based on my analysis, my data indicate that there is a trend of decreasing snowfall in Salt Lake City for the month of January, rejecting the null hypothesis (slope = -0.0488, r2 = 0.2271, p-value = 0.02). 
- 
-#### January is cold (but getting less so)!
-
-  In Utah, it appears that our winter months have experienced warming. As such, I am going to drill down on the month of January. I've plotted January data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMAX` against year to see if there is some type of discernible trend.  
-
-  When the results of a statistical analysis provide a p-value of greater that 0.05, the null hypothesis (the hypothesis that there is no statistically significant correlation between the two measured variables) is rejected, meaning that the data is statistically significant. Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of January, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
-
-
-#### January snowfall is decreasing
-It also appears that our winter months have experienced decreasing snowfall. I've plotted January data below and have created a best-fit line (linear model/ordinary least squares model) for monthly January averages of daily `TMIN` against year to see if there is some type of discernible trend.  
-
-Based on my analysis, my data indicate that there is not a trend of increasing temperature in Salt Lake City for the month of January, failing to reject the null hypothesis (slope = 0.0435, r2 = 0, p-value = 0.29).
+```
 
 ## This Trend Needs to Change to Protect People
 
@@ -197,3 +203,4 @@ Di, Qian, et al. “Association of Short-Term Exposure to Air Pollution With Mor
 Pirozzi, Cheryl S., Barbara E. Jones, James A. VanDerslice, Yue Zhang, Robert Paine, and Nathan C. Dean. “Short-Term Air Pollution and Incident Pneumonia. A Case–Crossover Study.” Annals of the American Thoracic Society 15, no. 4 (December 28, 2017): 449–59. https://doi.org/10.1513/AnnalsATS.201706-495OC.
 
 Seidel, Klaus, Cornel Ehrler, and Jaroslav Martinec. “Effects of Climate Change on Water Resources and Runoff in an Alpine Basin.” Hydrological Processes 12, no. 10–11 (1998): 1659–69. https://doi.org/10.1002/(SICI)1099-1085(199808/09)12:10/11<1659::AID-HYP687>3.0.CO;2-4. 
+

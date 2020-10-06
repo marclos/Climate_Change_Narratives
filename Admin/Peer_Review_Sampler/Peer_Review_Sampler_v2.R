@@ -42,26 +42,10 @@ ThreeReviewer
 
 PeerReviewAssignments = merge(roster, ThreeReviewer, by.x="ID", by.y="Reviewer")
 
-# can't get this stuff to work!
-#I'll do it manually!
+PeerReviewAssignments$ReviewName1 = roster$Last[match(PeerReviewAssignments$ReviewID.1, roster$ID)]
+PeerReviewAssignments$ReviewName2 = roster$Last[match(PeerReviewAssignments$ReviewID.2, roster$ID)]
+PeerReviewAssignments$ReviewName3 = roster$Last[match(PeerReviewAssignments$ReviewID.3, roster$ID)]
 
-#library(dplyr)
-
-#left_join(PeerReviewAssignments, roster, by.x="ReviewID.1", by.y="ID") 
-          
-#PeerReviewAssignments$Review1 = 
-  
-merge(subset(PeerReviewAssignments, select=c("ReviewID.1")),
-      subset(roster, select=c("ID", "Last")), 
-      by.x="ID", by.y="ReviewID.1")
-#PeerReviewAssignments$Review2 = merge(subset(roster, select=c("ID", "Last")), 
-#     subset(PeerReviewAssignments, select=c("Last", "ReviewID.2")), 
-#     by.x="ID", by.y="ReviewID.2")$Last.y
-
-#PeerReviewAssignments$Review3 = merge(subset(roster, select=c("ID", "Last")), 
-#    subset(PeerReviewAssignments, select=c("Last", "ReviewID.3")), 
-#    by.x="ID", by.y="ReviewID.3")$Last.y
-
-write.csv(PeerReviewAssignments[,c(1:7,9)], file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/Peer_Review_Sampler/Peer_Review_2020.csv")
+write.csv(PeerReviewAssignments[,c(1:7,9:12)], file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/Peer_Review_Sampler/Peer_Review_2020.csv")
 #write.csv(combined, file = "C:\\Documents and Settings\\losh0935\\Desktop\\PeerReviewedAssignments.csv")
 
