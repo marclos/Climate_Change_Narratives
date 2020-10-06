@@ -12,9 +12,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Orlando, Florida
 
-Hello. I am going to be writing about climate data of Orlando, Florida. Orlando, Florida is known worldwide for being the home to many theme parks, most notable Disneyworld. Florida, at least in theory, makes an ideal tourist attraction: its nickname is the "Sunshine State." For this reasn, it is also known as a state where many retire--26.5% of Florida's population is over 60 (Elderly). 
+Orlando, Florida is known worldwide for being the home to many theme parks, most notable Disneyworld. With ample sunshine and seemingly no bad weather, Florida, at least in theory, makes an ideal tourist attraction. For this reason, it is also known as a state where many retire--26.5% of Florida's population is over 60 (Elderly). However, as climate change ravages our world, especially tropical lands surrounded by sea, this American peninsula is under extreme threat.  Though the state of Florida has always had hurricanes, but over the past decade, they have increasingly occured (NOAA). Individual hurricanes are hard to pin on climate change, but overall trends to them can be attributed to a rise in temperature and increased precipitation, of which Orlando has both (Bennet, NOAA).
+**please add more**
 
-
+**thesis that ill sneak in** Florida is being greatly affected by climate change, as evidenced by its warming climate.
 <!-- read.csv(/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Orlando stuff.R) -->
 
 ## Data collection
@@ -24,8 +25,8 @@ This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The obj
 
 ![](https://www.ncdc.noaa.gov/EdadsV2/api/ASOSStationPhotos/image/byhash/DE057C49AB3E1D5A61E2376C5ED947AA){width=50%}
 
-
-```{r "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv", echo=FALSE}
+<!-- take eval=false out when wish to run code in knit -->
+```{r "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv", echo=FALSE, eval=FALSE}
 # filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
 # climate_data_full <- read.csv(filepath)
 # climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
@@ -38,21 +39,15 @@ This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The obj
 # MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 # head(MonthlyTMINMean)
 
- plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
+ plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "August's Minimum Temperature" )
+
 aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
   abline(coef(aug.lm), col = "red")
-  #summary(aug.lm)
+  summary(aug.lm)
 ```
+## Temperature Risings
+The amount that Florida's temperatures will drop every day has been decreasing, as shown here by a graph of August's minimum temperature from 1892 to the present. August’s minimum temperatures have been rising at a rate of **balh** per year for the past century. This correlation is scientifically very significant, at a confidence of greater 99.99% (with a p value of >.001).
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 ## Cited Works
 Bergman, M. M. (2019, February 15). Florida is drowning. Condos are still being built. Can't humans see the writing on the wall? Retrieved October 02, 2020, from https://www.theguardian.com/environment/2019/feb/15/florida-climate-change-coastal-real-estate-rising-seas 
@@ -66,3 +61,6 @@ Environmental Protection Agency. (2016, August). What Climate Change Means for F
 National Centers for Environmental Information NOAA. (2020). Historical Observing Metadata Repository. Retrieved October 05, 2020, from  https://www.ncdc.noaa.gov/homr/#ncdcstnid=20004463&tab=LOCATIONS 
 
 NOAA National Centers for Environmental Information State Climate Summaries. (2014). Retrieved October 02, 2020, from https://statesummaries.ncics.org/chapter/fl/ 
+
+
+**Add Bennet** 
