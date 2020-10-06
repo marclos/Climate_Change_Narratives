@@ -10,14 +10,13 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Welcome To My Blog
+## Orlando, Florida: 
 
 Hello. I am going to be writing about climate data of Orlando, Florida.
 
 
 
-This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
-![orlando](https://www.ncdc.noaa.gov/EdadsV2/api/ASOSStationPhotos/image/byhash/DE057C49AB3E1D5A61E2376C5ED947AA)
+
 
 
 <!-- read.csv(/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Orlando stuff.R) -->
@@ -25,11 +24,29 @@ This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The obj
 ## Data collection
 The data was collected from the NOAA station at the Orlando Airport, pictured above. The station has been collecting data since 1892, all the way until the present. From 1974 to 1993, no data was collected, most likely because of the last of funding to the co-op that operated it. With the influx of funding, control of the station was given to orlando Executive, which to this day runs the station. The station has remained in the exact place it is since 1998--it had previously been two separate, but very close locations, moving the first time in 1929 after being in the same spot since 1892 (Metadata).  
 
+This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
+
+![orlando](https://www.ncdc.noaa.gov/EdadsV2/api/ASOSStationPhotos/image/byhash/DE057C49AB3E1D5A61E2376C5ED947AA){width=50%}
+
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r Orlando stuff.R}
-plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020),
-       main = Months[08])
+filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
+climate_data_full <- read.csv(filepath)
+climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
+
+#creating a monthly min
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+ plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
+aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+  abline(coef(aug.lm), col = "red")
+  summary(aug.lm)
 ```
 
 ## Including Plots
