@@ -1,5 +1,5 @@
 ---
-title: "Meilinger_Sarah_Test Blog"
+title: "Orlando, FL: Hahah sun go brrrr"
 author: "Sarah Meilinger"
 date: "9/12/2020"
 output: html_document
@@ -10,22 +10,38 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Welcome To My Blog
+## Orlando, Florida
 
-Hello. I am going to be writing about climate data of Orlando, Florida.
-
-
-
-Here's an image? of orlando?
-![orlando](/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Orlando)
+Hello. I am going to be writing about climate data of Orlando, Florida. Orlando, Florida is known worldwide for being the home to many theme parks, most notable Disneyworld. Florida, at least in theory, makes an ideal tourist attraction: its nickname is the "Sunshine State." For this reasn, it is also known as a state where many retire--26.5% of Florida's population is over 60 (Elderly). 
 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+<!-- read.csv(/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Orlando stuff.R) -->
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Data collection
+The data was collected from the NOAA station at the Orlando Airport, pictured above. The station has been collecting data since 1892, all the way until the present. From 1974 to 1993, no data was collected, most likely because of the last of funding to the co-op that operated it. With the influx of funding, control of the station was given to orlando Executive, which to this day runs the station. The station has remained in the exact place it is since 1998--it had previously been two separate, but very close locations, moving the first time in 1929 after being in the same spot since 1892 (National).  
 
-```{r cars}
-summary(cars)
+This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
+
+![](https://www.ncdc.noaa.gov/EdadsV2/api/ASOSStationPhotos/image/byhash/DE057C49AB3E1D5A61E2376C5ED947AA){width=50%}
+
+
+```{r "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv", echo=FALSE}
+# filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
+# climate_data_full <- read.csv(filepath)
+# climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
+#
+# #creating a monthly min
+# MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+# MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# # Fixing the Format of Month and Year as numeric
+# MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+# head(MonthlyTMINMean)
+
+ plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
+aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+  abline(coef(aug.lm), col = "red")
+  #summary(aug.lm)
 ```
 
 ## Including Plots
@@ -37,3 +53,16 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Cited Works
+Bergman, M. M. (2019, February 15). Florida is drowning. Condos are still being built. Can't humans see the writing on the wall? Retrieved October 02, 2020, from https://www.theguardian.com/environment/2019/feb/15/florida-climate-change-coastal-real-estate-rising-seas 
+
+Climate Orlando. (2020, September 29). Retrieved October 02, 2020, from https://www.meteoblue.com/en/weather/historyclimate/climatemodelled/orlando_united-states-of-america_4167147 
+
+Elderly Affairs State of Florida. (2018). Profile of Older Floridians. Retrieved October 05, 2020, from http://elderaffairs.state.fl.us/doea/pubs/stats/County_2018_projections/Counties/Florida.pdf 
+
+Environmental Protection Agency. (2016, August). What Climate Change Means for Florida. Retrieved from https://www.epa.gov/sites/production/files/2016-08/documents/climate-change-fl.pdf
+
+National Centers for Environmental Information NOAA. (2020). Historical Observing Metadata Repository. Retrieved October 05, 2020, from  https://www.ncdc.noaa.gov/homr/#ncdcstnid=20004463&tab=LOCATIONS 
+
+NOAA National Centers for Environmental Information State Climate Summaries. (2014). Retrieved October 02, 2020, from https://statesummaries.ncics.org/chapter/fl/ 

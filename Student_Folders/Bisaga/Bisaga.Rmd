@@ -1,0 +1,101 @@
+---
+title: "Poland's... something here"
+author: "nikodem bisaga"
+date: "9/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+```
+
+```{r, echo=FALSE}
+file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv"
+file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/leba, poland data.csv"
+climate_data <- read.csv(file.path)
+str(climate_data)
+```
+```{r fixdates, echo=FALSE}
+strDates = as.character(climate_data$DATE) 
+climate_data$NewDate = NA
+climate_data$NewDate[1:12417] = format(as.Date(strDates[1:12417], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data$NewDate[12418:19949] = format(as.Date(strDates[12418:19949], "%m/%d/%y"),"20%y-%m-%d")
+
+climate_data$NewDate = as.Date(climate_data$NewDate, format="%Y-%m-%d")
+str(climate_data)
+
+```
+
+```{r, monthlymeans}
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+str(MonthlyTMINMean)
+MonthlyTMINMean$Year=as.numeric(MonthlyTMINMean$Year)
+TMIN.lm = lm(TMIN ~ NewDate, data= climate_data)
+
+MonthlyPPTsum = aggregate(PRCP ~ Month + Year, climate_data, sum)
+str(MonthlyPPTsum)
+MonthlyPPTsum$Year=as.numeric(MonthlyPPTsum$Year)
+PCRP.lm = lm(PRCP ~ NewDate, data= climate_data)
+```
+
+
+## Plots 
+```{r}
+# Daily TMAX
+plot(TMAX ~ NewDate, data=climate_data, pch='.', col='gray')
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+abline(slopeintercept, col="red", lwd=3)
+
+# Monthly TMAX May
+plot(TMAX ~ Year, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], ty='l', col='black', las=1)
+May.lm = lm(TMAX ~ Year, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+slopeintercept = coef(May.lm)
+abline(slopeintercept, col="red", lwd=3)
+
+# Monthly TMIN May
+plot(TMIN ~ Year, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l', col='black', las=1)
+May.lm = lm(TMIN ~ Year, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+slopeintercept = coef(May.lm)
+abline(slopeintercept, col="red", lwd=3)
+
+# Monthly TMAX May
+plot(PRCP ~ Year, data=MonthlyPPTsum[MonthlyPPTsum$Month=="05",], ty='l', col='black', las=1, main="May PPT Sum")
+May.lm = lm(PRCP ~ Year, data=MonthlyPPTsum[MonthlyPPTsum$Month=="05",])
+slopeintercept = coef(May.lm)
+abline(slopeintercept, col="red", lwd=3)
+
+
+## alternative figure...
+barplot(MonthlyPPTsum$PRCP[MonthlyPPTsum$Month=="05"], main="May PPT Totals", xlab="Year", ylim=c(0,120), las=1)
+abline(slopeintercept, col="red", lwd=3)
+```
+
+Changes in temperature and precipitation in Łeba, Poland
+by Nikodem Bisaga
+
+I will be looking at climate data from the northern seaside city of Łeba in Poland. 
+
+![coal mining in poland](coal mining in poland.jpeg)
+
+
+
+
+
+
+
+
+
+
+
