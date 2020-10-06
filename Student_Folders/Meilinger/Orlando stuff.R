@@ -15,36 +15,31 @@ head(climate_data)
 str(climate_data)
 unique(climate_data$NAME)
 names(climate_data)
-<<<<<<< HEAD
+
 ## [1] "STATION" "STATION_NAME" "DATE" "PRCP" "TAVG"
 ## [6] "TMAX" "TMIN"
 
 # Date is in the wrong format, and it's messy
 # plot(TMAX~DATE, climate_data)
-=======
+
 ## [1] "STATION" "NAME"    "DATE"    "DAPR"    "MDPR"    "PRCP"    "SNOW"   
 ## [8] "SNWD"    "TMAX"    "TMIN"    "NewDate"
->>>>>>> 538073b0cda7f615009b8e70d4f84d82070a3b18
+
 
 min(climate_data$TMAX, na.rm=T)
 ## [1] -9999
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 538073b0cda7f615009b8e70d4f84d82070a3b18
 str(climate_data)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
-<<<<<<< HEAD
+
 
 str(climate_data)
 
 plot(TMAX ~ NewDate, data=climate_data, las=1)
 
-=======
->>>>>>> 538073b0cda7f615009b8e70d4f84d82070a3b18
 
 slopeMaxTemp = lm(TMAX ~ NewDate, data= climate_data)
 coefMaxTemp = coef(slopeMaxTemp)

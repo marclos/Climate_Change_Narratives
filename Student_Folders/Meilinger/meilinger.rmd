@@ -22,27 +22,26 @@ The data was collected from the NOAA station at the Orlando Airport, pictured ab
 
 This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
 
-![orlando](https://www.ncdc.noaa.gov/EdadsV2/api/ASOSStationPhotos/image/byhash/DE057C49AB3E1D5A61E2376C5ED947AA){width=50%}
+![](https://www.ncdc.noaa.gov/EdadsV2/api/ASOSStationPhotos/image/byhash/DE057C49AB3E1D5A61E2376C5ED947AA){width=50%}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r Orlando stuff.R, echo=FALSE}
-# # filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
-# # climate_data_full <- read.csv(filepath)
-# # climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
-# #
-# # #creating a monthly min
-# # MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-# # MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-# # # Fixing the Format of Month and Year as numeric
-# # MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-# # MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-# # head(MonthlyTMINMean)
-# 
-#  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
-# aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
-#   abline(coef(aug.lm), col = "red")
-#   #summary(aug.lm)
+```{r "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv", echo=FALSE}
+# filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
+# climate_data_full <- read.csv(filepath)
+# climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
+#
+# #creating a monthly min
+# MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+# MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# # Fixing the Format of Month and Year as numeric
+# MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+# head(MonthlyTMINMean)
+
+ plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
+aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+  abline(coef(aug.lm), col = "red")
+  #summary(aug.lm)
 ```
 
 ## Including Plots
