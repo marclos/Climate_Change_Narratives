@@ -159,9 +159,9 @@ for (i in 1:12) {
                                         round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
 }
 
+aug <- (TMIN ~ YEAR data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+
 aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
 summary(aug.lm)
-<<<<<<< HEAD
-plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
-=======
->>>>>>> 7f825b57b2caab2ca779b7857b490d377bfeb564
+
+plot(aug , pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])

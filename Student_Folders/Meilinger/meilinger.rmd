@@ -12,26 +12,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Orlando, Florida: 
 
-Hello. I am going to be writing about climate data of Orlando, Florida.
+Hello. I am going to be writing about climate data of Orlando, Florida. Orlando, Florida is known worldwide for being the home to many theme parks, most notable Disneyworld. Also, being in Florida, the Sunshine Hellstate
 
 
 
-<<<<<<< HEAD
-
-=======
-<!-- Here's an image? of orlando? -->
-<!-- ![orlando]("/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Orlando") -->
->>>>>>> 7f825b57b2caab2ca779b7857b490d377bfeb564
 
 
-<<<<<<< HEAD
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-=======
+
 <!-- read.csv(/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Orlando stuff.R) -->
 
 ## Data collection
 The data was collected from the NOAA station at the Orlando Airport, pictured above. The station has been collecting data since 1892, all the way until the present. From 1974 to 1993, no data was collected, most likely because of the last of funding to the co-op that operated it. With the influx of funding, control of the station was given to orlando Executive, which to this day runs the station. The station has remained in the exact place it is since 1998--it had previously been two separate, but very close locations, moving the first time in 1929 after being in the same spot since 1892 (Metadata).  
->>>>>>> 538073b0cda7f615009b8e70d4f84d82070a3b18
 
 This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
 
@@ -39,23 +30,23 @@ This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The obj
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r Orlando stuff.R}
-filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
-climate_data_full <- read.csv(filepath)
-climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
-
-#creating a monthly min
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-# Fixing the Format of Month and Year as numeric
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
-
- plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
-aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
-  abline(coef(aug.lm), col = "red")
-  summary(aug.lm)
+```{r Orlando stuff.R, echo=FALSE}
+# # filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
+# # climate_data_full <- read.csv(filepath)
+# # climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
+# #
+# # #creating a monthly min
+# # MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+# # MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# # # Fixing the Format of Month and Year as numeric
+# # MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# # MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+# # head(MonthlyTMINMean)
+# 
+#  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
+# aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+#   abline(coef(aug.lm), col = "red")
+#   summary(aug.lm)
 ```
 
 ## Including Plots
