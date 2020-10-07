@@ -1,5 +1,3 @@
-Admin
-Data
 # History files
 .Rhistory
 .Rapp.history
@@ -18,6 +16,7 @@ vignettes/*.html
 vignettes/*.pdf
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
+# .Rprofile
 # knitr and R markdown default cache directories
 /*_cache/
 /cache/
@@ -28,7 +27,5 @@ vignettes/*.pdf
 Climate_Narratives-concordance.tex
 Climate_Narratives.synctex.gz
 Climate_Narratives.log
-Liberation_via_Open_Source_Software.tex
-Admin
-Data
-docs
+Admin/**
+!Admin/Project_Guide/*.pdf
