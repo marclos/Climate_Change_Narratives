@@ -1,6 +1,6 @@
 #file.choose()
-#read.csv("/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Sarah_Orlando_Data.csv")
-filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
+read.csv("/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Sarah_Orlando_Data.csv")
+filepath = "/home/CAMPUS/smac2019/Climate_Changfile.choose()e_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
 #filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
 
 #climate_data[20000,]
@@ -15,36 +15,31 @@ head(climate_data)
 str(climate_data)
 unique(climate_data$NAME)
 names(climate_data)
-<<<<<<< HEAD
+
 ## [1] "STATION" "STATION_NAME" "DATE" "PRCP" "TAVG"
 ## [6] "TMAX" "TMIN"
 
 # Date is in the wrong format, and it's messy
 # plot(TMAX~DATE, climate_data)
-=======
+
 ## [1] "STATION" "NAME"    "DATE"    "DAPR"    "MDPR"    "PRCP"    "SNOW"   
 ## [8] "SNWD"    "TMAX"    "TMIN"    "NewDate"
->>>>>>> 538073b0cda7f615009b8e70d4f84d82070a3b18
+
 
 min(climate_data$TMAX, na.rm=T)
 ## [1] -9999
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 538073b0cda7f615009b8e70d4f84d82070a3b18
 str(climate_data)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
 
-<<<<<<< HEAD
+
 
 str(climate_data)
 
 plot(TMAX ~ NewDate, data=climate_data, las=1)
 
-=======
->>>>>>> 538073b0cda7f615009b8e70d4f84d82070a3b18
 
 slopeMaxTemp = lm(TMAX ~ NewDate, data= climate_data)
 coefMaxTemp = coef(slopeMaxTemp)
@@ -144,24 +139,21 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
 
-plot(MonthlyTMINMean$TMIN, pch=20)
+#plot(MonthlyTMINMean$TMIN, pch=20)
+
 par(mfrow = c(4, 3), mar=c(1,1,1,1))
 TMINresult <- NA
 for (i in 1:12) {
-  # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
-  # ty='l')
   plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020),
-       main = Months[i])
+   main = Months[i])
   MonthMin.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
-  summary(MonthMin.lm)
   abline(coef(MonthMin.lm), col = "red")
-  TMINresult <- rbind(TMINresult, cbind(Months[i],
-                                        round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
+  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
+  summary(MonthMin.lm)
 }
 
-aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+aug <- (TMIN ~ YEAR data= MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 12, ])
 summary(aug.lm)
-<<<<<<< HEAD
-plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
-=======
->>>>>>> 7f825b57b2caab2ca779b7857b490d377bfeb564
+
+plot(aug , pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
