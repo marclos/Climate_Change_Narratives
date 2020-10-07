@@ -1,8 +1,10 @@
 ---
-title: "Draft Regional Analysis "
+title: 'Blog '
 author: "Claire Manning"
 date: "9/12/2020"
-output: word_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -107,7 +109,9 @@ round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,
 4], 4), round(summary(Month.lm)$r.squared,
 3)))}
 ```
-##How are these changes affecting farmers?
+
+
+## How are these changes affecting farmers?
 
 These changes in climate are affecting nearly every aspect of life for residents of McCall whether they consciously realize it or not, and unfortunately many residents are not connecting the changes in the local climate to the overall human-caused global climate change. Farmers are a unique group because their life and job require constant attention to the local weather and climate. The rising temperatures that result from climate change are increasing instances of drought and causing insect infestations. They also indirectly cause disruptions in water management and the availability of water for irrigation. Many farmers fall into the group of residents that are not making these connections and this often happens in connection with strong political and religious ideologies. The reality is that regardless of religious beliefs or political ideologies, the local climate is changing and temperatures are rising. It is important to understand that accepting this fact doesn’t invalidate or undermine any group’s religious beliefs or political ideologies. Instead it helps the community, understand the efforts and tangible changes that farmers and individuals can make to work toward achieving sustainability, for example making the switch to organic farming. Making shifts toward sustainability will positively impact the productivity of farms, and over the long run, will likely reduce the severity of water issues, such as drought, pollution from fertilizer runoff, and algal blooms. 
 
