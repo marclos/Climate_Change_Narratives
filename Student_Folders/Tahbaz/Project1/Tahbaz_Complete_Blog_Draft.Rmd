@@ -1,5 +1,5 @@
 ---
-title: "How Are Polar Vortex Temperatures Cuased by Climate Change:What Does this Mean for the Health of New Yorkers?"
+title: "The Polar Vortex, Climate Change and the Health of New Yorkers"
 author: "Eleanor Tahbaz"
 date: "9/12/2020"
 output: html_document
@@ -26,49 +26,39 @@ climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 
 ```
 
-## Introduction
+## Why Are Winters in NYC Getting Colder?
 
 Within recent years, New York City has seen some of the lowest temperatures in history and this most notability occurred during the polar vortex that hit the northeast in 2018. President Donald Trump and climate change skeptics have latched onto these cold temperatures and have been pushing the idea that climate change can’t exist when temperatures are so low. This is a misconception that scientist have been repeatedly disproving, but sometimes the science can be confusing. So, through this blog, you will better understand the climate science behind extreme weather conditions and why they actually make sense as a result of climate change. Cold temperatures can lead to negative health effects like an increase in the risk of having a heart attacks and more severe asthma. This is important to note, because this can lead to serious environmental justice issues within the five boroughs of New York City, due to the ranges in wealth and the racial disparities we see throughout. Those with higher incomes will be able to pay rising rent prices, as landlords turn up the heat, and leave it on for longer periods of time, whereas those with lower incomes, who are also in majority people of color, will not be afforded the same luxury. In all, this blog will explain how climate change is the cause of extreme cold temperatures and therefore, how climate change is greatly impacting the health and wellbeing of all New Yorkers. 
 
-## New York City Climate Data 
+## What Does the Data Show Us About New York City Temperatures? 
 
 Below are the plots showing minimum temperatures during November, December, January and February from 1990-2020 in and around New York City. There are some notable differences between the November graph and the February graph because as you can see, there are two significant dips in minimum temperatures. The one in November is showing the polar vortex we experienced in 2018, and the dip in February was another polar vortex we experienced in 2015. These low points have a pull on the data seeing as the deviation from the trend lines are pretty significant. Notice how the first two graphs, December and January, which do not have any major dips, have a more level trend line than that of the other two graphs. As mentioned earlier, skeptics have seen and experienced these cold temperatures, and question, how can the planet be warming, if we are seeing record lows? This stems from a key differentiation between weather and climate. Weather is the day to day changes in temperature, precipitation and/or humidity. Climate is defined as the average weather patterns in a region over a long period of time. So, despite the weather being extremely cold, it is important to look at those numbers in relation to the climate, which is looking at 30 years or more of weather data combined. 
 
-
-## Plots for January From 1990-2020
-```{r, include=FALSE}
+## Data Analysis
+```{r, echo=FALSE}
+## monthly data
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate[1:51684] = format(as.Date(strDates[1:51684], "%m/%d/%y"), "19%y-%m-%d") 
 climate_data$NewDate[51685:66920] = format(as.Date(strDates[51685:66920], "%m/%d/%y"),"20%y-%m-%d") 
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
-#str(climate_data$NewDate)
 MonthlyTMINMean<-aggregate(TMIN ~ Month + Year, climate_data, mean)
 str(MonthlyTMINMean)
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
-#str(MonthlyTMINMean)
 
-```
-
-## Plots for February from 1990 - 2020
-```{r}
+## plot for February
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
-#str(MonthlyTMINMean)
 plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",],ty='l', xlim=c(1990,2020))
 February.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
 summary(February.lm)
 abline(coef(February.lm), col="red")
 lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
 
-```
-
-## Plots for Novemeber for 1990-2020
-```{r}
+## plot for november
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
-#str(MonthlyTMINMean)
 plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",],ty='l', xlim=c(1973,2020))
 November.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
 summary(November.lm)
