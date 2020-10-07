@@ -16,10 +16,10 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-# file.path= "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Bisaga/westchester temp records.csv"
+file.path= "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Bisaga/westchester temp records.csv"
 
 # this is niko's path
-file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/westchester temp records.csv"
+# file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/westchester temp records.csv"
 climate_data = read.csv(file.path)
 str(climate_data)
 strDates <- as.character(climate_data$DATE)
@@ -40,16 +40,9 @@ str(climate_data)
 plot(TMAX ~ NewDate2, data=climate_data, pch=20, cex=0.3)
 
 
-TMAX.lm = lm(TMAX ~ NewDate2, data= climate_data)
-slopeintercept = coef(TMAX.lm)
-abline(slopeintercept, col="red", lwd=3)
+
 
 ```
-Changing temperature in Westchester County, NY
-By Nikodem Bisaga
-
-Temperature records are taken from the Westchester Airport over a 80 year period to see changes in average minimum and maximum temperature, and precipitation. 
-![airport weather station](airportweatherstation.jpg)
 
 
 
