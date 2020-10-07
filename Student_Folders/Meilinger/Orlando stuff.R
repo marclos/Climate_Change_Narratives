@@ -1,6 +1,6 @@
 #file.choose()
-#read.csv("/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Sarah_Orlando_Data.csv")
-filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
+read.csv("/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Sarah_Orlando_Data.csv")
+filepath = "/home/CAMPUS/smac2019/Climate_Changfile.choose()e_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
 #filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
 
 #climate_data[20000,]
@@ -139,24 +139,21 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
 
-plot(MonthlyTMINMean$TMIN, pch=20)
+#plot(MonthlyTMINMean$TMIN, pch=20)
+
 par(mfrow = c(4, 3), mar=c(1,1,1,1))
 TMINresult <- NA
 for (i in 1:12) {
-  # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
-  # ty='l')
   plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020),
-       main = Months[i])
+   main = Months[i])
   MonthMin.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
-  summary(MonthMin.lm)
   abline(coef(MonthMin.lm), col = "red")
-  TMINresult <- rbind(TMINresult, cbind(Months[i],
-                                        round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
+  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
+  summary(MonthMin.lm)
 }
 
-aug <- (TMIN ~ YEAR data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
-
-aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+aug <- (TMIN ~ YEAR data= MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
+aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 12, ])
 summary(aug.lm)
 
 plot(aug , pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])

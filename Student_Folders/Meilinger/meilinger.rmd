@@ -1,7 +1,7 @@
 ---
 title: "Orlando, FL: Hahah sun go brrrr"
 author: "Sarah Meilinger"
-date: "9/12/2020"
+date: "2020"
 output: html_document
 ---
 
@@ -23,31 +23,77 @@ The data was collected from the NOAA station at the Orlando Airport, pictured ab
 
 This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
 
-![](https://www.ncdc.noaa.gov/EdadsV2/api/ASOSStationPhotos/image/byhash/DE057C49AB3E1D5A61E2376C5ED947AA){width=50%}
+![](Orlando_station.jpg){width=40%}
 
-<!-- take eval=false out when wish to run code in knit -->
-```{r "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv", echo=FALSE, eval=FALSE}
-# filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
-# climate_data_full <- read.csv(filepath)
-# climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
-#
-# #creating a monthly min
-# MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-# MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-# # Fixing the Format of Month and Year as numeric
-# MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-# MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-# head(MonthlyTMINMean)
+## Temperature Risings
+The amount that Florida's temperatures will drop every day has been decreasing, as shown here by a graph of August's minimum temperature from 1892 to the present. August’s minimum temperatures is rising at a rate of 1.75 degrees celsius per century. This correlation is scientifically very significant, at a confidence of greater 99.99% (with a p value of less than .001).
 
- plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "August's Minimum Temperature" )
+This change is occuring throughout the whole year, though the change is more pronounced in mid to late summer.
+
+For example, January has the least significant correlation between temperature minimums and the year. It still has an upward trend of 0.68 degrees celsius per century, which, while not necessarily as incredibly alarming (especially at its 79% confidence inerval) is still an amount that is unsustainable. 
+
+Moreover, if you take February, it is shown to be rising at a rate of 2.67 celsius per century at a confident interval of greater than 99.99%! I dont know how r values work, but multiple r squared is 15% and adjusted is 14%, which indicated some variable causation. **(is this a lie i feel like those are tricky words to throw around)**
+
+
+```{r,  echo=FALSE, results='hide', fig.width= 5, fig.length= 2}
+filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
+climate_data_full <- read.csv(filepath)
+climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
+
+str(climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+#creating a monthly min
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+ plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "August's Minimum Temperature")
 
 aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
   abline(coef(aug.lm), col = "red")
-  summary(aug.lm)
-```
-## Temperature Risings
-The amount that Florida's temperatures will drop every day has been decreasing, as shown here by a graph of August's minimum temperature from 1892 to the present. August’s minimum temperatures have been rising at a rate of **balh** per year for the past century. This correlation is scientifically very significant, at a confidence of greater 99.99% (with a p value of >.001).
+  #summary(aug.lm)
 
+ plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 01, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "January's Minimum Temperature")
+
+jan.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 01, ])
+  abline(coef(jan.lm), col = "red")
+  summary(jan.lm)
+
+plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 02, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "February's Minimum Temperature")
+
+feb.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 02, ])
+  abline(coef(jan.lm), col = "red")
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+
+#   par(mfrow = c(4, 3), mar=c(1,1,1,1))
+# TMINresult <- NA
+# for (i in 1:12) {
+#   plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[i])
+#   MonthMin.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+#   abline(coef(MonthMin.lm), col = "red")
+#   TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
+#   summary(MonthMin.lm)
+# }
+  
+```
+
+## A Happy Ending This Does Not Make
+If serious, wide reaching actions are not taken soon, there will be serious consequences for Orlando, and Floridians all over the state. Firstly, hurricanes can be incredibly deadly, especially when you consider a pandemic on top of them, stressing evacuation sites and solutions that previously worked. Every year, hurricanes kill **put a damn number** people. Luckily, damage control can be done to stop this, as most deaths from hurricanes occur from Carbon Monoxide poisioning when people turn to gas stoves after losing power. Having emergency backup generators could solve this. **bitch give me a fucking source motherfucker** However, many other pro 
 
 ## Cited Works
 Bergman, M. M. (2019, February 15). Florida is drowning. Condos are still being built. Can't humans see the writing on the wall? Retrieved October 02, 2020, from https://www.theguardian.com/environment/2019/feb/15/florida-climate-change-coastal-real-estate-rising-seas 
