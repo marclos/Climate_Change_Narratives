@@ -1,13 +1,12 @@
 ---
-title: "Extreme Cold Temperatures in New York City and Why Climate Change is the Culprit: What Does this Mean for the Health of New Yorkers?"
+title: "How Are Polar Vortex Temperatures Cuased by Climate Change:What Does this Mean for the Health of New Yorkers?"
 author: "Eleanor Tahbaz"
 date: "9/12/2020"
 output: html_document
 ---
-
-![Winter_In_NYC_1](https://rstudio.pomona.edu/s/24fdca0004bc0e6f53259/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/Winter_In_NYC_1.jpg)
-
-![Winter_in_NYC_2](https://rstudio.pomona.edu/s/24fdca0004bc0e6f53259/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/Winter_in_NYC_2.jpg)
+<center>
+![Bus Riders Trekking Through the Snow](https://rstudio.pomona.edu/s/24fdca0004bc0e6f53259/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/Bus%20Riders%20Trekking%20Through%20the%20Snow.jpg)
+</center>
 
 
 ```{r, include=FALSE}
@@ -52,27 +51,8 @@ MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
 
 ```
 
-```{r}
-plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],ty='l', xlim=c(1990,2020))
-January.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
-summary(January.lm)
-abline(coef(January.lm), col="red")
-lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
-```
-
-## Plots for December from 1990-2020
-```{r, include=FALSE}
-MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
-#str(MonthlyTMINMean)
-plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",],ty='l', xlim=c(1990,2020))
-December.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
-summary(December.lm)
-abline(coef(December.lm), col="red")
-lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
-```
 ## Plots for February from 1990 - 2020
-```{r, include=FALSE}
+```{r}
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
 #str(MonthlyTMINMean)
@@ -81,10 +61,11 @@ February.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02
 summary(February.lm)
 abline(coef(February.lm), col="red")
 lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+
 ```
 
 ## Plots for Novemeber for 1990-2020
-```{r, include=FALSE}
+```{r}
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
 #str(MonthlyTMINMean)
@@ -98,6 +79,10 @@ lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
 
 The term global warming was popularized a few decades ago to refer to the phenomenon of the greenhouse gas effect and how it traps heat in the atmosphere which warms the average temperature of the planet. Scientist now understand that an atmosphere changed by rising levels of greenhouse gases can and will lead to more climate changes then just warming. Extreme weather events we have seen in recent years include the polar vortex temperatures, more violent hurricanes and hotter wildfires which are all a result of climate change. 
 In specific connection to the polar vortex, Potsdam University physicist Stefan Rahmstorf notes that while North America was experience cold Arctic Air, the rest of the world was abnormally hot. In 2017 Nature Geoscience published a study that concluded that there is a link between Arctic air flowing south leading to harsher North American winters. Another study in the journal Nature Communications, found this same link and the study author, Jennifer Francis said that this is because, “warm temperatures in the Artic cause the jet stream to take these wild swings, and when it swings farther south, it causes cold air to reach farther south. These swings tend to hang around for a while, so the weather we have in the eastern United States, whether it’s cold or warm, tends to stay with us longer”. It is important to recognize that the Arctic is warming faster than most of the planet which has led to a dramatic decline in the quantity of sea ice that covers the region each winter. This allows for heat from the ocean to more easily be transferred through evaporation, to the atmosphere which weakens the polar vortex winds over the Artic which normally protect the rest of North America from experiencing the freezing Arctic temperatures. But as they winds have weakened; they travel south and bring along their freezing temperatures. 
+
+<center>
+![The Science Behind the Polar Vortex](https://rstudio.pomona.edu/s/24fdca0004bc0e6f53259/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/The%20Science%20Behind%20the%20Polar%20Vortex.jpg)
+</center>
 
 ## What Are the Warming Trends Scientists Are Seeing?
 
