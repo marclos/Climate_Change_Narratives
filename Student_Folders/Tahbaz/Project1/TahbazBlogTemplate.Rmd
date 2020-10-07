@@ -1,8 +1,13 @@
 ---
+<<<<<<< HEAD
+title: "How Are Polar Vortex Temperatures Cuased by Climate Change:What Does this Mean for the Health of New Yorkers?"
+=======
 title: "Temperature Changes in NYC and Less Severe Winters"
+>>>>>>> b545a47c9c128240a81d91d87c3474b459fcb855
 author: "Eleanor Tahbaz"
 date: "9/12/2020"
-output: html_document
+output:
+    html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -27,6 +32,17 @@ Next, I will go into the seasonal temperatures we saw in 2019 in NYC and how the
 
 For example: There was not a single big snow storm that had snow stay on the ground for more than 24 hours which is uncommon for NYC, especially in January and February
 
+<<<<<<< HEAD
+```{r, include=FALSE}
+read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
+
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning = FALSE)
+filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+=======
 ## this is a plot showing the increase in temperature in and around NYC
 
 try to cut out the code that isn't doing anything you need... like the following... eval=FALSE makes it so the code isn't run. Alternatively, you might want the rblock to run, but NOT show the results, results='hide' I think is the argument to do that...
@@ -42,11 +58,26 @@ filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahb
 
 # comment out my path in case I forget!
 filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+>>>>>>> b545a47c9c128240a81d91d87c3474b459fcb855
 climate_data <- read.csv(filepath)
 str(climate_data)
 strDates<-as.character(climate_data$DATE)
 climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 
+<<<<<<< HEAD
+##monthly trends
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate[1:51684] = format(as.Date(strDates[1:51684], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data$NewDate[51685:66920] = format(as.Date(strDates[51685:66920], "%m/%d/%y"),"20%y-%m-%d") 
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+#str(climate_data$NewDate)
+MonthlyTMINMean<-aggregate(TMIN ~ Month + Year, climate_data, mean)
+str(MonthlyTMINMean)
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+=======
 # You made a new variable name -- NewDate, but the plot function is looking for the "DATE" variable -- not sure why!  :-)   I commented it out. 
 
 #plot(TMAX~DATE, climate_data)
@@ -54,6 +85,7 @@ climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 # abline line references to an object, "slopeintercept" but that hasn't been made yet... but is it below... might just be in the wrong place..?
 
 #abline(slopeintercept, col="red")
+>>>>>>> b545a47c9c128240a81d91d87c3474b459fcb855
 ```
 
 This one works as expected!  But sure is messy, but not your fault, lots of variation in the data!! This is why I think the monthly data will be better to display. 
@@ -78,6 +110,10 @@ abline(slopeintercept, col="red", lwd=3)
 While I working on my drafts, I often use headers to keep track of where I am, or I can get lost!
 
 ```{r}
+<<<<<<< HEAD
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],ty='l', xlim=c(1990,2020))
+January.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+=======
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%y")
 MonthlyTMAXMean = aggregate(TMAX~Month+Year, climate_data, mean)
@@ -93,9 +129,32 @@ plot(MonthlyTMAXMean$TMAX)
 
 plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$Month=="01"],xlim=c(1974, 2020))
 January.lm <- lm(TMAX~Year, date=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+>>>>>>> b545a47c9c128240a81d91d87c3474b459fcb855
 summary(January.lm)
 abline(coef(January.lm), col="red")
 ```
+<<<<<<< HEAD
+```{r}
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",],ty='l', xlim=c(1990,2020))
+December.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+summary(December.lm)
+abline(coef(December.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="12",])
+```
+```{r}
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",],ty='l', xlim=c(1990,2020))
+February.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+summary(February.lm)
+abline(coef(February.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+```
+```{r}
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",],ty='l', xlim=c(1973,2020))
+November.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
+summary(November.lm)
+abline(coef(November.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
+=======
 
 ```{r}
 plot(SNOW~DATE, climate_data)
@@ -119,6 +178,7 @@ summary(February.lm)
 #lm(formula = TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="02",])
 #abline(coef(February.lm), col="red")
 
+>>>>>>> b545a47c9c128240a81d91d87c3474b459fcb855
 ```
 
 ```{r}
