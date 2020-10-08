@@ -130,7 +130,7 @@ for (i in 1:12) {
 oct.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 10, ])
 summary(oct.lm)
 
-### AND NOW MINIMUMSSS ##### WOOOOO ####AAAA
+### AND NOW MINIMUMSSS ##### WOOOOO 
 
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
