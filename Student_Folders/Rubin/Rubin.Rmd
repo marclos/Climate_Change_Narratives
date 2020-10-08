@@ -8,7 +8,7 @@ output:
   html_document: default
 ---
 
-*The state of Michigan sits on land stolen from multiple Indigenous communities: the Ojibwa, in the Upper Peninsula and northern Lower Peninsula; the Potawatomi, in the southern, eastern, and central parts of the state; and the Odawa, in the western Lower Peninsula. Known as the Council of the Three Fires, the three nations were primarily farming communities, raising corn, beans, squash, and more. These nations’ populations have been decimated due to the genocide of the Three Fires at the hands of European settlers. While small Ojibwa, Potawatomi, and Odawa communities continue to rebuild and thrive in the state of Michigan, it would be unacceptable to ignore the destruction and genocide of Native nations carried out by the creators of this state. As we discuss modern agriculture, those of us who are settlers remember that this land is not ours to sow.*
+ *The state of Michigan sits on land stolen from multiple Indigenous communities: the Ojibwa, in the Upper Peninsula and northern Lower Peninsula; the Potawatomi, in the southern, eastern, and central parts of the state; and the Odawa, in the western Lower Peninsula. Known as the Council of the Three Fires, the three nations were primarily farming communities, raising corn, beans, squash, and more. These nations’ populations have been decimated due to the genocide of the Three Fires at the hands of European settlers. While small Ojibwa, Potawatomi, and Odawa communities continue to rebuild and thrive in the state of Michigan, it would be unacceptable to ignore the destruction and genocide of Native nations carried out by the creators of this state. As we discuss modern agriculture, those of us who are settlers remember that this land is not ours to sow.*
 
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -50,7 +50,7 @@ Michigan corn is generally planted in late April to early May, and, as is the ca
 Based records of daily maximum and minimum temperatures dating back to 1891, it can be confirmed that temperature ranges are on the rise in Michigan. 9 out of the 12 months, excluding October, July, and January, show upward trends in both maximum and minimum temperatures. Coincidentally, there is perhaps no better month that shows this than May, at the beginning of the crop's life cycle - and when it is most sensitive to temperatures. Both the maximum and the minimum temperature graphs, shown below, indicate a significant and steady rise in temperatures since 1891. While such an increase is still below the maximum temperature at which corn can grow, these trends are concerning for their implications for the future. Should the trend continue upward, Michigan is due for hotter temperatures than corn can withstand within 150 years.
 
 ```{r TMAX}
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/lila_annarbor_temp_and_precip.csv")
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
