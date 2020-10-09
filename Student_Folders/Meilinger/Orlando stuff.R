@@ -157,3 +157,25 @@ aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 12, ])
 summary(aug.lm)
 
 plot(aug , pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[08])
+
+
+## TABLE OF MINS
+
+library(xtable)
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+
+Results <- data.frame(Month = TMINresult[c(2:13), 1], TMINSlope = TMINresult[c(2:13),2], TMIN_P = as.numeric(TMINresult[c(2:13),3]), TMINRsq = TMINresult[c(2:13),4], TMAXSlope = TMAXresult[c(2:13),2], TMAX_P = as.numeric(TMAXresult[c(2:13),3]), TMAXRsq = TMAXresult[c(2:13),4])
+
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+                       "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[, c(1, 10, 4, 11, 7)]))
