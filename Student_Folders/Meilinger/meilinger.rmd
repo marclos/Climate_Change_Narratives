@@ -1,7 +1,6 @@
 ---
-title: "Orlando, FL: Hahah sun go brrrr"
+title: "Orlando, FL: It Was *Already* Hot"
 author: "Sarah Meilinger"
-date: "2020"
 output: html_document
 ---
 
@@ -10,29 +9,24 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+*This blog would like to acknowledge that the land now known as Orlando, Florida, was previously land occupied by the Seminole and Timucua tribes. While acknowlegding this fact cannot erase the tangible suffering of colonization, it is still true that colonized land should never be allowed to go unrecognized. As millions of tourists flock to Orlando most every year, it should be known that they walk on land that was, and remains, stolen.*
+
+
 ## Orlando, Florida
 
-Orlando, Florida is known worldwide for being the home to many theme parks, most notable Disneyworld. With ample sunshine and seemingly no bad weather, Florida, at least in theory, makes an ideal tourist attraction. For this reason, it is also known as a state where many retire--26.5% of Florida's population is over 60 (Elderly). However, as climate change ravages our world, especially tropical lands surrounded by sea, this American peninsula is under extreme threat.  Though the state of Florida has always had hurricanes, but over the past decade, they have increasingly occured (NOAA). Individual hurricanes are hard to pin on climate change, but overall trends to them can be attributed to a rise in temperature and increased precipitation, of which Orlando has both (Bennet, NOAA).
-**please add more**
+Orlando, Florida is known worldwide for being the home to many theme parks, most notable Disneyworld. With ample sunshine and seemingly no bad weather, Florida, at least in theory, makes an ideal tourist attraction. For this reason, it is also known as a state where many retire--26.5% of Florida's population is over 60 (Elderly). However, as climate change ravages our world, especially tropical lands surrounded by sea, this American peninsula is under extreme threat. At present day, Florida has not experienced an increase of hurricanes, luckily. However, overall trends of them can be attributed to a rise in temperature and increased precipitation, of which Orlando has both (Bennet, NOAA). Still, extreme weather events are not the only thing that Florida will be afflicted by as it warms. Both in the region and globally, climate change cotinues to progress, and Orlando and Florida as a whole will face serious consequences, especially as Orlandos own temperatures climb.
 
-**thesis that i'll sneak in** Florida is being greatly affected by climate change, as evidenced by its warming climate.
-<!-- read.csv(/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Orlando stuff.R) -->
-
-## Data collection
-The data was collected from the NOAA station at the Orlando Airport, pictured above. The station has been collecting data since 1892, all the way until the present. From 1974 to 1993, no data was collected, most likely because of the last of funding to the co-op that operated it. With the influx of funding, control of the station was given to orlando Executive, which to this day runs the station. The station has remained in the exact place it is since 1998--it had previously been two separate, but very close locations, moving the first time in 1929 after being in the same spot since 1892 (National).  
-
-This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
 
 ![](Orlando_station.jpg){width=40%}
 
-## Temperature Risings
-The amount that Florida's temperatures will drop every day has been decreasing, as shown here by a graph of August's minimum temperature from 1892 to the present. August’s minimum temperatures is rising at a rate of 1.75 degrees celsius per century. This correlation is scientifically very significant, at a confidence of greater 99.99% (with a p value of less than .001).
+## How These Numbers Were Collected
+This is an image of the NOAA station at the Orlando Airport, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
 
-This change is occuring throughout the whole year, though the change is more pronounced in mid to late summer.
+The station has been collecting data since 1892, all the way until the present. From 1974 to 1993, no data was collected, as the RIVER BASIN (COOP NETWORK) most likely ran out of funding to operated it (National). With the influx of funding in 1993, after Clinton's election, control of the station was given to Orlando Executive. To this day it runs the station. The exact location of the station has remained in the same since 1998--it had previously been two separate, but very close locations, moving the first time in 1929 after being in the same spot since 1892 (National).  
 
-For example, January has the least significant correlation between temperature minimums and the year. It still has an upward trend of 0.68 degrees celsius per century, which, while not necessarily as incredibly alarming (especially at its 79% confidence inerval) is still an amount that is unsustainable. 
+This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
 
-Moreover, if you take February, it is shown to be rising at a rate of 2.67 celsius per century at a confident interval of greater than 99.99%! I dont know how r values work, but multiple r squared is 15% and adjusted is 14%, which indicated some variable causation. **(is this a lie i feel like those are tricky words to throw around)**
 
 
 ```{r,  echo=FALSE, results='hide', fig.width= 5, fig.length= 2}
@@ -92,8 +86,20 @@ head(MonthlyTMINMean)
   
 ```
 
+## The Temperature is Rising, featuring: some numbers
+The amount that Florida's temperatures will drop every day has been decreasing, as shown here by a graph of August's minimum temperature from 1892 to the present. August’s minimum temperatures is rising at a rate of 1.75 degrees celsius per century. This correlation is scientifically very significant, at a confidence of greater 99.99% (with a p value of less than .001).
+
+This change is occuring throughout the whole year, though the change is more pronounced in mid to late summer.
+
+For example, January has the least significant correlation between temperature minimums and the year. It still has an upward trend of 0.68 degrees celsius per century, which, while not necessarily as incredibly alarming (especially at its 79% confidence inerval) is still an unsustainable figure. 
+
+February's data suggests that January's more shallow climb is not a pattern for all of winter. The plot shows the temperature to be rising at a rate of 2.67 celsius per century at a confidence interval of greater than 99.99%. I dont know how r values work, but multiple r squared is 15% and adjusted is 14%, which means that the date has a 14% or 15% predictability for the temperature of Orlando. **(is this a lie i feel like those are tricky words to throw around)**
+
 ## A Happy Ending This Does Not Make
 If serious, wide reaching actions are not taken soon, there will be serious consequences for Orlando, and Floridians all over the state. Firstly, hurricanes can be incredibly deadly, especially when you consider a pandemic on top of them, stressing evacuation sites and solutions that previously worked. Every year, hurricanes kill **put a damn number** people. Luckily, damage control can be done to stop this, as most deaths from hurricanes occur from Carbon Monoxide poisioning when people turn to gas stoves after losing power. Having emergency backup generators could solve this. **bitch give me a fucking source motherfucker** However, many other problems will become apparent with global warming. Setting aside the fact that if the ocean rises by **dkfj;lajd** inches, Florida will basically cease to exist, causing millions of people to lose their homes, livelihoods, and communities, while Florida *does* exist, it will not have an easy time of it (**SOURCE BITCH**). 
+
+As climate change occurs, more energy will be available in the atmosphere, causing more tension to be available as the catalyst for natural distaters, including hurricanes (Bennet).
+As storms thus increase in Florida, the state may become at risk of losing its drinking water. Over half of the state of Florida, including Orlando, is **whats the drinking equivelent of the word fed** through the Floridian Aquifier, making it the most dependant state on ground water East of the Missippi River (Factsheet). Groundwater aquifers are replenished increadibly slowly, and heat waves and droughts, which Florida might see, do not help with that. Moreover, storms and rising sea levels increase the chances that salf-water will infiltrate the clean drinking water. If this occurs, either the state will have to go to extreme lengths to find another water source, or filter the salt water reserves. In both cases, the solutions will be costly (Factsheet).
 
 ## If This Has Not Convinced You: Money Will Also be Lost
 
@@ -114,5 +120,7 @@ National Centers for Environmental Information NOAA. (2020). Historical Observin
 NOAA National Centers for Environmental Information State Climate Summaries. (2014). Retrieved October 02, 2020, from https://statesummaries.ncics.org/chapter/fl/ 
 
 **please properly cite bitch** https://www.orlandoweekly.com/Blogs/archives/2018/10/29/orlando-ranks-among-largest-tourism-markets-in-the-world-but-the-citys-reliance-on-the-industry-could-be-a-problem 
+
+https://www.epa.gov/sites/production/files/2017-02/documents/ws-ourwater-florida-state-fact-sheet.pdf 
 
 **Add Bennet** 
