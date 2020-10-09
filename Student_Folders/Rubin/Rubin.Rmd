@@ -357,7 +357,7 @@ https://phys.org/news/2019-04-excessive-rainfall-corn-yield-extreme.html
 
 ```{r SNOW, eval=FALSE}
 # changing date formatting
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/lila_annarbor_temp_and_precip.csv")
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -472,13 +472,79 @@ corn_bushels_per_acre <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narrative
 str(corn_bushels_per_acre)
 corn_bushels_per_acre$Value = as.numeric(gsub(",", "", corn_bushels_per_acre$Value))
 
-plot(corn_bushels_per_acre$Value~corn_bushels_per_acre$Year, corn_bushels_per_acre, main="Corn Production in Bushels per Acre over Time", ylab= "Bushels per Acre", xlab="Year")
+plot(corn_bushels_per_acre$Value~corn_bushels_per_acre$Year, corn_bushels_per_acre, ty = "l", main="Corn Production in Bushels per Acre over Time", ylab= "Bushels per Acre", xlab="Year")
+
 cornproductionbushels.lm <- lm(corn_bushels_per_acre$Value~corn_bushels_per_acre$Year, corn_bushels_per_acre)
 abline(coef(cornproductionbushels.lm))
+
+#1866-1920
+plot(corn_bushels_per_acre$Value[100:155]~corn_bushels_per_acre$Year[100:155], xlim=c(1866, 1920), ylim=c(0, 80), ty = "l", main="Corn Production in Bushels per Acre over Time", ylab="Bushels per Acre", xlab="Year")
+
+cornproductionbushel1866to1920.lm <- lm(corn_bushels_per_acre$Value[100:155]~corn_bushels_per_acre$Year[100:155], corn_bushels_per_acre)
+abline(coef(cornproductionbushel1866to1920.lm))
+summary(cornproductionbushel1866to1920.lm)
+
+
+#1920-1970
+plot(corn_bushels_per_acre$Value[50:100]~corn_bushels_per_acre$Year[50:100], xlim=c(1920,1970), ylim=c(0,80), ty = "l", main="Corn Production in Bushels per Acre over Time", ylab= "Bushels per Acre", xlab="Year")
+
+cornproductionbushel1920to1970.lm <- lm(corn_bushels_per_acre$Value[50:100]~corn_bushels_per_acre$Year[50:100], corn_bushels_per_acre)
+abline(coef(cornproductionbushel1920to1970.lm))
+summary(cornproductionbushel1920to1970.lm)
+
+# 1970-2020
+plot(head(corn_bushels_per_acre$Value, n=50)~head(corn_bushels_per_acre$Year, n=50), corn_bushels_per_acre, ty = "l", main="Corn Production in Bushels per Acre over Time, 1970-2020", ylab= "Bushels per Acre", xlab="Year")
+
+cornproductionbushel1970to2020.lm <- lm(head(corn_bushels_per_acre$Value, n=50)~head(corn_bushels_per_acre$Year, n=50), corn_bushels_per_acre)
+abline(coef(cornproductionbushel1970to2020.lm))
+summary(cornproductionbushel1970to2020.lm)
+```
+1866-1920 
+Residual standard error: 3.824 on 54 degrees of freedom
+Multiple R-squared:  0.01452,	Adjusted R-squared:  -0.003726 
+F-statistic: 0.7958 on 1 and 54 DF,  p-value: 0.3763
+
+1920-1970
+Residual standard error: 7.52 on 49 degrees of freedom
+Multiple R-squared:  0.7646,	Adjusted R-squared:  0.7598 
+F-statistic: 159.2 on 1 and 49 DF,  p-value: < 2.2e-16
+
+1970-2020
+Residual standard error: 10.18 on 48 degrees of freedom
+Multiple R-squared:  0.8767,	Adjusted R-squared:  0.8741 
+F-statistic: 341.3 on 1 and 48 DF,  p-value: < 2.2e-16
+
+
+
+
+
+
+# Planted and Harvested 1940-2020
+```{r total_corn_planted, eval=FALSE}
+total_planted <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_total_planted.csv")
+total_planted$Value = as.numeric(gsub(",", "", total_planted$Value))/1000000
+
+plot(total_planted$Value~total_planted$Year, ty = "l", total_planted, main="Total Acres Planted over Time", ylab= "Bushels per Acre (per million)", xlab="Year")
+
+totalplanted.lm <- lm(total_planted$Value~total_planted$Year, total_planted)
+abline(coef(totalplanted.lm), col="red")
+summary(totalplanted.lm)
 ```
 
+```{r total_corn_harvested, eval=FALSE}
+total_harvested <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_total_harvested.csv")
+total_harvested$Value = as.numeric(gsub(",", "", total_harvested$Value))/1000000
+
+plot(total_harvested$Value~total_harvested$Year, ty = "l", total_harvested, main="Total Acres Harvested over Time", ylab= "Bushels per Acre (per million)", xlab="Year")
+
+totalharvested.lm <- lm(total_harvested$Value~total_harvested$Year, total_harvested)
+abline(coef(totalharvested.lm), col="red")
+summary(totalharvested.lm)
+```
+
+
 # Excellent decreasing, Poor increasing -- neither statistically significant
-```{r corn_condition_excellent}
+```{r corn_condition_excellent, eval=FALSE}
 corn_condition_exc <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_corncondition_excellent.csv")
 
 strDates_corn <- as.character(corn_condition_exc$Week.Ending)
@@ -495,7 +561,7 @@ abline(coef(cornconditionexc.lm), col="red")
 summary(cornconditionexc.lm)
 ```
 
-```{r corn_condition_poor}
+```{r corn_condition_poor, eval=FALSE}
 corn_condition_poor <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_corn_condition_poor.csv")
 
 strDates_corn <- as.character(corn_condition_poor$Week.Ending)
@@ -517,26 +583,3 @@ summary(cornconditionexc.lm)
 # abline(coef(cornconditionpoortwo.lm))
 # summary(cornconditionpoortwo.lm)
 ```
-
-```{r total_corn_planted}
-total_planted <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_total_planted.csv")
-total_planted$Value = as.numeric(gsub(",", "", total_planted$Value))/1000000
-
-plot(total_planted$Value~total_planted$Year, ty = "l", total_planted, main="Total Acres Planted over Time", ylab= "Bushels per Acre (per million)", xlab="Year")
-
-totalplanted.lm <- lm(total_planted$Value~total_planted$Year, total_planted)
-abline(coef(totalplanted.lm), col="red")
-summary(totalplanted.lm)
-```
-
-```{r total_corn_harvested}
-total_harvested <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_total_harvested.csv")
-total_harvested$Value = as.numeric(gsub(",", "", total_harvested$Value))/1000000
-
-plot(total_harvested$Value~total_harvested$Year, ty = "l", total_harvested, main="Total Acres Harvested over Time", ylab= "Bushels per Acre (per million)", xlab="Year")
-
-totalharvested.lm <- lm(total_harvested$Value~total_harvested$Year, total_harvested)
-abline(coef(totalharvested.lm), col="red")
-summary(totalharvested.lm)
-```
-
