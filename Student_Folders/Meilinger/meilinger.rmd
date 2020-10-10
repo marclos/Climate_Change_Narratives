@@ -1,7 +1,10 @@
 ---
-title: "Orlando, FL: It Was *Already* Hot"
+title: 'Orlando, FL: It Was *Already* Hot'
 author: "Sarah Meilinger"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 
@@ -95,8 +98,8 @@ For example, January has the least significant correlation between temperature m
 
 February's data suggests that January's more shallow climb is not a pattern for all of winter. The plot shows the temperature to be rising at a rate of 2.67 celsius per century at a confidence interval of greater than 99.99%. I dont know how r values work, but multiple r squared is 15% and adjusted is 14%, which means that the date has a 14% or 15% predictability for the temperature of Orlando. **(is this a lie i feel like those are tricky words to throw around)**
 
-<!--
-```{r,  echo=FALSE, results='hide', fig.width= 5, fig.length= 2}
+
+```{r,  echo=FALSE, results='hide', fig.width= 5, eval=FALSE, fig.length= 2}
 
 filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
 #filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
@@ -133,7 +136,7 @@ plot(TMAX ~ NewDate, data=climate_data, las=1)
 
 slopeMaxTemp = lm(TMAX ~ NewDate, data= climate_data)
 coefMaxTemp = coef(slopeMaxTemp)
-# (Intercept)      NewDate  
+# (Intercept)      NewDate
 # 2.834675e+01 8.480721e-06
 plot(TMAX ~ NewDate, data= climate_data, ty='l', las=1, xlab = "Date", ylab = "Daily Max Temperature", pch=20)
 abline(coefMaxTemp, col="red", lwd=3)
@@ -175,7 +178,7 @@ Months = c("January", "February", "March", "April",
 
 
 
-### AND NOW MINIMUMSSS ##### WOOOOO 
+### AND NOW MINIMUMSSS ##### WOOOOO
 
 MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
 MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
@@ -232,7 +235,9 @@ colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
                        "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
 print(xtable(Results[, c(1, 10, 4, 11, 7)]))
 ```
--->
+
+
+
 ## A Happy Ending This Does Not Make
 If serious, wide reaching actions are not taken soon, there will be serious consequences for Orlando, and Floridians all over the state. Firstly, hurricanes can be incredibly deadly, especially when you consider a pandemic on top of them, stressing evacuation sites and solutions that previously worked. Every year, hurricanes kill **put a number** people. Luckily, damage control can be done to stop this, as most deaths from hurricanes occur from Carbon Monoxide poisioning when people turn to gas stoves after losing power. Having emergency backup generators could solve this. **get yourself a source i BEG you** However, many other problems will become apparent with global warming. Setting aside the fact that if the ocean rises by **dkfj;lajd** inches, Florida will basically cease to exist, causing millions of people to lose their homes, livelihoods, and communities, while Florida *does* exist, it will not have an easy time of it (**SOURCE P L E A SE**). 
 
