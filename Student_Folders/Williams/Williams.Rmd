@@ -34,6 +34,16 @@ A recent study from ETH Zurich, a leading climatology research institute in Swit
 
 ![View from Salt Lake International Airport Weather Station in Salt Lake City, Utah](https://live.staticflickr.com/1831/29063639228_e257d24aff_b.jpg)
 
+### Methods
+
+  I analyzed temperature trend data in the Salt Lake Valley from 1942 to 2020 using NOAA satellite data collected by the Salt Lake International Airport Weather Station. This weather station is central and topographically similar to the majority of the rest of the Salt Lake Valley, providing a representative sample. It also has complete daily data since the 1940s, charting temperature, precipitation, and other relevant climate variables. 
+  
+  I analyzed summer temperature data as well as winter temperature data and snowfall data. The variables measured are TMAX in July--the average daily maximum temperature, TMIN in January--the average daily minimum temperature, and average daily snowfall in January. July and January were selected because they represent the highest and lowest average points of temperature in the Valley, respectively. January also tends to have the highest rate of snowfall. 
+
+  For each of the variables measured, a linear regression test was conducted to analyze and chart the satellite data. A linear model compares two variables over time, plots them in a slope (in this study's case, temperature or snowfall over decades), and determines if there is a statistically significant correlation between them. If two variables are significantly correlated, that means that the trends are most likely not due to random chance, and instead, the variables influence one another. 
+
+  When the slope has a p-value that is less than 0.05, the traditional threshold for determining statistical significance, the null hypothesis is rejected, meaning that the slope is likely not due to random chance. R-squared is a statistical measure of how close the data are to the regression line. Although the R-squared values are zero or close to zero in this study, this is to be expected for weather data given its high variability and the significant p-values are sufficient to draw conclusions. 
+
 ```{r readdata, include=FALSE}
 filepath = "/home/CAMPUS/bawa2018/Climate_Change_Narratives/Data/FA20/Williams_SaltLakeCityUT_data.csv"
 climate_data = read.csv(filepath)
@@ -165,15 +175,6 @@ plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l"
 
 ``` 
 
-### Methods
-
-  I analyzed temperature trend data in the Salt Lake Valley from 1942 to 2020 using NOAA satellite data collected by the Salt Lake International Airport Weather Station. This weather station is central and topographically similar to the majority of the rest of the Salt Lake Valley, providing a representative sample. It also has complete daily data since the 1940s, charting temperature, precipitation, and other relevant climate variables. 
-  
-  I analyzed summer temperature data as well as winter temperature data and snowfall data. The variables measured are TMAX in July--the average daily maximum temperature, TMIN in January--the average daily minimum temperature, and average daily snowfall in January. July and January were selected because they represent the highest and lowest average points of temperature in the Valley, respectively. January also tends to have the highest rate of snowfall. 
-
-  For each of the variables measured, a linear regression test was conducted to analyze and chart the satellite data. A linear model compares two variables over time, plots them in a slope (in this study's case, temperature or snowfall over decades), and determines if there is a statistically significant correlation between them. If two variables are significantly correlated, that means that the trends are most likely not due to random chance, and instead, the variables influence one another. 
-
-  When the slope has a p-value that is less than 0.05, the traditional threshold for determining statistical significance, the null hypothesis is rejected, meaning that the slope is likely not due to random chance. R-squared is a statistical measure of how close the data are to the regression line. Although the R-squared values are zero or close to zero in this study, this is to be expected for weather data given its high variability and the significant p-values are sufficient to draw conclusions. 
 
 ### Results
 #### July is warming significantly
