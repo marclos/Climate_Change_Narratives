@@ -4,8 +4,8 @@ title: 'Overheating in the Mitten: The Effects of Anthropogenic Climate Change o
 author: "Lila Rubin"
 date: "October 2020"
 output:
-  word_document: default
   html_document: default
+  word_document: default
 ---
 
 *The state of Michigan sits on land of multiple Indigenous communities: the Ojibwa, the Potawatomi, and the Odawa. Known as the Council of the Three Fires, the three nations were primarily farming communities, raising corn, beans, squash, and more. As we discuss modern agriculture, those of us who are settlers remember that this land is not ours to sow.*
@@ -14,27 +14,30 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-![Windmill farm in Pidgeon, MI. Source: Shutterstock](Climate_Change_Narratives/Student_Folders/Rubin/Rubin_files/metrodetroitmichigan.jpg)
+![Windmill farm in Pidgeon, MI. Source: Shutterstock](Rubin_files/metrodetroitmichigan.jpg)
 
-## Introduction
+## Introduction [change to flashier title]
 
 Coasts are ravaged by hurricanes, flooding, and wildfires. The central United States is plagued by drought, the South by heat waves (U.S. Global Change Research Program 2014). It is almost unanimously agreed in the scientific community that these drastic and deadly changes in climate are due to human-caused global warming (Cook, John, et al 2016). In the agricultural cradle of the U.S. known as the Midwest, however, citizens are seeing the effects of climate change in their backyard from a more subtle perspective. The production of staple crops like corn, wheat, beans, and squash, can actually benefit from the world’s rising temperature, as the warmer climate extends Michigan’s growing season. However, warmer temperatures are not the only symptom of climate change – increases in extreme weather events, for example, are common. This means that should climate change continue on its projected path, bumper crops one year may give way to empty siloes the next may lead to bumper crops in the third year, and so on and so forth. This blog examines and analyzes the impact of climate statistics and projections on the Michigan agriculture. While the rise in temperature may be beneficial to farmers in the Mitten at surface level, the dangers of unpredictable seasons lurk just below the water line. Climate change mitigation is essential to ensuring consistent, plentiful harvests for Michiganders and the rest of the world.
 
 
 #### Data Retrieval and Analysis
 
-In order to analyze the impacts of climate change on the state of Michigan, this blog will center around the analysis of climate data including minimum and maximum daily temperatures and precipitation levels in Ann Arbor, Michigan, from the October 1st of 1891 to September 2nd of 2020.  Statistical support in the form of graphs for this hypothesis are based on data curated by the National Oceanic and Atmospheric Administration (NOAA), which was collected at the University of Michigan in Ann Arbor, and data from the National Agricultural Statistics Service (NASS_. This freely available data can be analyzed for various trends using R (National Oceanic and Atmospheric Administration 2020; National Agricultural Statistics Service 2020). Close analysis of trends and patterns in this information, along with the review of other research done in the region, informed the conclusions which will be presented in this blog. It should be noted that we will be focusing on Ann Arbor data to paint a general picture of weather anomalies in the whole state of Michigan, but total state data for agricultural trends.
+In order to analyze the impacts of climate change on the state of Michigan, this blog will center around the analysis of climate data including minimum and maximum daily temperatures and precipitation levels in Ann Arbor, Michigan, from the October 1st of 1891 to September 2nd of 2020, in tandem with data on total corn yield and conditions in the entire state from 1866 to 2020. This statistical support is based on data curated by the National Oceanic and Atmospheric Administration (NOAA), which was collected at the weather station GHCND:USC00200230 at the University of Michigan in Ann Arbor. Agricultural data is curated by the National Agricultural Statistics Service (NASS). These freely available datasets can be analyzed for various trends using R (National Oceanic and Atmospheric Administration 2020; National Agricultural Statistics Service 2020). Close analysis of trends and patterns in this information, along with the review of other research done in the region, informed the conclusions which will be presented in this blog. It should be noted that we will focus on Ann Arbor data to paint a general picture of weather anomalies in the whole state of Michigan, but total state data for agricultural trends. We have chosen the University of Michigan's weather station to represent state weather because of its extensive and consistent daily summaries of temperature and precipitation.
+
+![Michigan Hardiness Zones. Source: https://commons.wikimedia.org/wiki/File:MichiganHardinessZones_in_Celsius.svg](Rubin_files/904px-MichiganHardinessZones.svg.png)
+![Frequency of Corn Production in Michigan. Source: National Agricultural Statistics Survey 2019](Rubin_files/michigan_corn_frequency.pdf)
 
 
 ## Ecology and Economy
 
-Moderate temperatures and humid conditions have long defined Michigan weather. The Great Lakes have a chilling effect on certain parts of the Upper Peninsula and western Lower Peninsula, making them more prone to snowfall. These temperature differences lead to a more diverse agricultural industry; growing season in the Upper Peninsula stretches for about 2 months, while the Lower Peninsula has a more expansive growing season, reaching almost six months in some places. Longer crop seasons are ideal for field crops like corn and soybeans which puts Michigan at the top of the production chart of both commodities (Council, Michigan Ag). Agriculture is the state’s main export: according to the National Agricultural Statistics Service (NASS), Michigan produced around 4.1 billion dollars' worth of crops in 2019 alone. Of that 4.1 billion, around 9.8 million comes from corn sales (23.8% of total crop sales), and 7.7 million from soybean sales (around 18.7%).
+Moderate temperatures and humid conditions have long defined Michigan weather. The Great Lakes have a chilling effect on certain parts of the Upper Peninsula and western Lower Peninsula, making them more prone to snowfall. These temperature differences lead to a more diverse agricultural industry; growing season in the Upper Peninsula stretches for about 2 months, while the Lower Peninsula has a longer growing season, reaching almost six months in some places. Longer crop seasons are ideal for field crops like corn and soybeans which puts Michigan at the top of the production chart of both commodities (Council, Michigan Ag [date unknown]). Agriculture is the state’s main export: according to the National Agricultural Statistics Service, Michigan produced around 4.1 billion dollars' worth of crops in 2019 alone. Of that 4.1 billion, around 9.8 million comes from corn sales (23.8% of total crop sales), and 7.7 million from soybean sales (around 18.7%) (NASS Economic Statistical Bulletin 2020).
 
-However, trends in temperature maximums and minimums, along with precipitation and snowfall levels, suggest a less prosperous agricultural future for the mitten state. Michigan’s land ecosystems are rapidly changing with the warming of the Earth. With changing temperatures and uncertain seasonal weather, scientists foresee a harder road ahead for farmers looking to continue producing bountiful harvests. Increased risks of extreme heat and cold events, droughts and floods, and precipitation patterns threaten to disturb growing seasons and wreak havoc on field crop production (Winkler, Julie A., et al).
+These numbers are certainly impressive, and the warming climate may take partial credit for such high yields. As increased heat may wither crops in states south of Michigan, a solely warming climate actually benefits the formerly chilly Michigan. However, as trends in temperature maximums and minimums rise, so too do the frequency and intensity of extreme weather events. With rapidly changing temperatures and increasingly unpredictable seasonal weather, scientists foresee a harder road ahead for farmers looking to produce continually bountiful harvests. Increased risks of extreme heat and cold events, droughts and floods, and precipitation patterns threaten to disturb growing seasons and wreak havoc on field crop production (Winkler, Andresen, et al. 2014).
 
 ## Corn Conditions
 
-![Source: Randall Schaetzl, Michigan State University](Graphics/corntemperaturesdiagram.gif)
+![Source: Randall Schaetzl, Michigan State University](Rubin_files/corntemperaturesdiagram.gif)
 
 Michigan corn is generally planted in late April to early May, and, as is the case with all crops, requires a particular set of conditions in order to flourish. As shown by the graphic above, the crop can survive temperatures of up to 110°F (43.3°C) and down to 32°F (0°C). However, corn only grows when temperatures stay between 95°F (35°C) and 41°F (5°C), and only in the range of 91°F (32.8°C) to 62°F (16.7°C) are there optimal conditions for corn production.
 
@@ -129,7 +132,7 @@ abline(coef(MayPRCP.lm))
 ```
 
 ```{r TMAX}
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/lila_annarbor_temp_and_precip.csv")
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
@@ -408,7 +411,7 @@ https://phys.org/news/2019-04-excessive-rainfall-corn-yield-extreme.html
 
 ## Original Temp. Graph
 ```{r climate_data, echo=FALSE, eval=FALSE}
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Student_Folders/Rubin/lila_annarbor_temp_and_precip.csv")
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
 plot(TMAX~NewDate, climate_data, ty='l', main="Daily Temperatures", ylab= "Max Temperature (C)", xlab="Year")
