@@ -179,3 +179,4 @@ Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
 colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
                        "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
 print(xtable(Results[, c(1, 10, 4, 11, 7)]))
+

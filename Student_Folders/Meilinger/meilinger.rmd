@@ -1,7 +1,10 @@
 ---
-title: "Orlando, FL: It Was *Already* Hot"
+title: 'Orlando, FL: It Was *Already* Hot'
 author: "Sarah Meilinger"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 
@@ -94,6 +97,146 @@ This change is occuring throughout the whole year, though the change is more pro
 For example, January has the least significant correlation between temperature minimums and the year. It's actually the only month to not be shown as significantly correlated when comparing the average minimum temperatures over time. However, it still has an upward trend of 0.68 degrees celsius per century, which supports the overall pattern of rising temperatures.
 
 February's data suggests that January's more shallow climb is not a pattern for all of winter. The plot shows the temperature to be rising at a rate of 2.67 celsius per century at a confidence interval of greater than 99.99%. I dont know how r values work, but multiple r squared is 15% and adjusted is 14%, which means that the date has a 14% or 15% predictability for the temperature of Orlando. **(is this a lie i feel like those are tricky words to throw around)**
+
+
+```{r,  echo=FALSE, results='hide', fig.width= 5, eval=FALSE, fig.length= 2}
+
+filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
+#filepath = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
+
+#climate_data[20000,]
+
+climate_data_full <- read.csv(filepath)
+# subset the data
+
+climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
+droplevels(climate_data)
+
+head(climate_data)
+str(climate_data)
+unique(climate_data$NAME)
+names(climate_data)
+
+
+
+min(climate_data$TMAX, na.rm=T)
+## [1] -9999
+
+
+str(climate_data)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+
+
+
+str(climate_data)
+
+plot(TMAX ~ NewDate, data=climate_data, las=1)
+
+
+slopeMaxTemp = lm(TMAX ~ NewDate, data= climate_data)
+coefMaxTemp = coef(slopeMaxTemp)
+# (Intercept)      NewDate
+# 2.834675e+01 8.480721e-06
+plot(TMAX ~ NewDate, data= climate_data, ty='l', las=1, xlab = "Date", ylab = "Daily Max Temperature", pch=20)
+abline(coefMaxTemp, col="red", lwd=3)
+summary(slopeMaxTemp)
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+#plot(MonthlyTMAXMean$TMAX, ty='l', xlab = "Year", ylab = "Monthly Max Temp")
+#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month=="08"], ty='l', ylab = "August Max Temp")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
+     ty='l', xlim=c(1890, 2022))
+augustSlope <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+abline(coef(augustSlope), col="red")
+summary(augustSlope)
+
+#creating a monthly min
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+# Month Year      TMIN YEAR MONTH
+# 1    01 1892  9.280645 1892     1
+# 2    02 1892 13.172414 1892     2
+# 3    03 1892 11.651613 1892     3
+# 4    04 1892 17.136667 1892     4
+# 5    05 1892 18.990323 1892     5
+# 6    06 1892 22.176667 1892     6
+
+Months = c("January", "February", "March", "April",
+           "May", "June", "July", "August", "September", "October",
+           "November", "December")
+
+
+
+
+### AND NOW MINIMUMSSS ##### WOOOOO
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+
+#plot(MonthlyTMINMean$TMIN, pch=20)
+
+par(mfrow = c(4, 3), mar=c(1,1,1,1))
+TMINresult <- NA
+for (i in 1:12) {
+  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020),
+   main = Months[i])
+  MonthMin.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
+  abline(coef(MonthMin.lm), col = "red")
+  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
+  summary(MonthMin.lm)
+}
+
+TMAXresult <- NA
+for (i in 1:12) {
+  # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i],
+  # ty='l')
+  plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020),
+       main = Months[i])
+  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
+  summary(Month.lm)
+  abline(coef(Month.lm), col = "red")
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i],
+       round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared,3)))
+}
+
+
+## TABLE OF MINS
+
+library(xtable)
+par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
+
+Results <- data.frame(Month = TMINresult[c(2:13), 1], TMINSlope = TMINresult[c(2:13),2], TMIN_P = as.numeric(TMINresult[c(2:13),3]), TMINRsq = TMINresult[c(2:13),4], TMAXSlope = TMAXresult[c(2:13),2], TMAX_P = as.numeric(TMAXresult[c(2:13),3]), TMAXRsq = TMAXresult[c(2:13),4])
+
+Results$starTMIN = "NS"
+Results$starTMIN[Results$TMIN_P <= .05] = "*"
+Results$starTMIN[Results$TMIN_P < 0.01] = "**"
+Results$starTMIN[Results$TMIN_P < 0.001] = "***"
+Results$starTMAX = "NS"
+Results$starTMAX[Results$TMAX_P < 0.05] = "*"
+Results$starTMAX[Results$TMAX_P < 0.01] = "**"
+Results$starTMAX[Results$TMAX_P < 0.001] = "***"
+Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
+colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
+                       "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
+print(xtable(Results[, c(1, 10, 4, 11, 7)]))
+```
+
+
 
 ## A Happy Ending This Does Not Make
 If serious, wide reaching actions are not taken soon, there will be serious consequences for Orlando, and Floridians all over the state. Firstly, hurricanes can be incredibly deadly, especially when you consider a pandemic on top of them, stressing evacuation sites and solutions that previously worked. Every year, hurricanes kill **put a number** people. Luckily, damage control can be done to stop this, as most deaths from hurricanes occur from Carbon Monoxide poisioning when people turn to gas stoves after losing power. Having emergency backup generators could solve this. **get yourself a source i BEG you** However, many other problems will become apparent with global warming. Setting aside the fact that if the ocean rises by **dkfj;lajd** inches, Florida will basically cease to exist, causing millions of people to lose their homes, livelihoods, and communities, while Florida *does* exist, it will not have an easy time of it (**SOURCE P L E A SE**). 
