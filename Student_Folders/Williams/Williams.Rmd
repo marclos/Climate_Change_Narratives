@@ -27,9 +27,9 @@ A recent study from ETH Zurich, a leading climatology research institute in Swit
   While revenues from ski resorts are important to the city's economy, there is a very pressing matter of environmental injustice: disparate air pollution damages. As anthropogenic fossil fuel burning continues to facilitate climate change, it also creates toxic air pollutants. Utah’s large metropolitan area, the Wasatch Front, has been notorious for trapping particulates, far exceeding the federal air quality standards set by the U.S. Environmental Protection Agency (EPA). The majority of communities that are exposed to this toxic air quality are Hispanic, Black, and Pacific Islander residents(Collins, 2019). This dire situation has led to a litany of health complications, including, but not limited to, asthma, cardiac diseases, and about 200 people hospitalized with severe pneumonia per year (Pirozzi, 2017).  The EPA defines “orange” and “red” risk days as extremely dangerous, but even “green” days can perpetuate higher risk of death among the elderly in the Salt Lake Valley (Di, 2017). It is vital to prioritize the safety of Salt Lake City's most disadvantaged communities. In order to take the first step in accomplishing this goal, one must first recognize and assess the problem. Therefore, I elected to conduct a climate data analysis in the region to understand the trends that facilitate these threats. 
 
 ## The Climate Data Behind These Issues
-  To supplement this literature on climate change damages for the Salt Lake City populace, I analyzed temperature trend data in the Salt Lake Valley from 1942 to 2020 using NOAA satellite data collected by the Salt Lake International Airport Weather Station. This weather station is central and topographically similar to the majority of the rest of the Salt Lake Valley, providing a representative sample. It also has complete daily data since the 1940s, charting temperature, precipitation, and other relevant climate variables. 
+  To supplement this literature on climate change damages for the Salt Lake City populace, I analyzed temperature trend data in the Salt Lake Valley from 1942 to 2020 using NOAA satellite data collected by the Salt Lake International Airport Weather Station. 
   
-  I analyzed summer temperature data as well as winter temperature data and snowfall data. The results indicate a significant increase in summer temperatures, increase in winter temperatures, and decrease in overall snowfall, supporting literature that these weather anomalies in Utah are climate change caused. 
+  The results indicate a significant increase in summer temperatures, increase in winter temperatures, and decrease in overall snowfall, supporting literature that these weather anomalies in Utah are climate change caused. 
 
 
 ![View from Salt Lake International Airport Weather Station in Salt Lake City, Utah](https://live.staticflickr.com/1831/29063639228_e257d24aff_b.jpg)
@@ -139,6 +139,7 @@ par(mfrow=c(1,3))
 month_i <- 7
 i <- 7
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,],ty='l', main= "July Temperature", las = 1, xlim=c(1950, 2020), xlab= "Year", ylab="Average Maximum Temperature (°C)")
+
 July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,])
 abline(coef(July.lm), col="red")
 
@@ -164,11 +165,21 @@ plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l"
 
 ``` 
 
+### Methods
+
+  I analyzed temperature trend data in the Salt Lake Valley from 1942 to 2020 using NOAA satellite data collected by the Salt Lake International Airport Weather Station. This weather station is central and topographically similar to the majority of the rest of the Salt Lake Valley, providing a representative sample. It also has complete daily data since the 1940s, charting temperature, precipitation, and other relevant climate variables. 
+  
+  I analyzed summer temperature data as well as winter temperature data and snowfall data. The variables measured are TMAX in July--the average daily maximum temperature, TMIN in January--the average daily minimum temperature, and average daily snowfall in January. July and January were selected because they represent the highest and lowest average points of temperature in the Valley, respectively. January also tends to have the highest rate of snowfall. 
+
+  For each of the variables measured, a linear regression test was conducted to analyze and chart the satellite data. A linear model compares two variables over time, plots them in a slope (in this study's case, temperature or snowfall over decades), and determines if there is a statistically significant correlation between them. If two variables are significantly correlated, that means that the trends are most likely not due to random chance, and instead, the variables influence one another. 
+
+  When the slope has a p-value that is less than 0.05, the traditional threshold for determining statistical significance, the null hypothesis is rejected, meaning that the slope is likely not due to random chance. R-squared is a statistical measure of how close the data are to the regression line. Although the R-squared values are zero or close to zero in this study, this is to be expected for weather data given its high variability and the significant p-values are sufficient to draw conclusions. 
+
+### Results
 #### July is warming significantly
 
-  In Utah, it appears that our summer months have experienced warming. July was selected for the summer analysis because it is midsummer and one of the hottest months of the year. I have plotted July data below and have created a best-fit line (linear model/ordinary least squares model) for monthly July averages of  `TMAX`(maximum daily temperature) against year to see if there is some type of discernible trend. A linear model compares two variables over time, plots them in a slope,  and determines if there is a statistically significant correlation between them. If two variables are significantly correlated, that means that the trends are most likely not due to random chance, and instead, the variables influence one another. 
 
-  When the slope has a p-value that is less than 0.05, the traditional threshold for determining statistical significance, the null hypothesis is rejected, meaning that the slope is likely not due to random chance. Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of July, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
+  In Utah, it appears that our summer months have experienced warming. July was selected for the summer analysis because it is midsummer and one of the hottest months of the year. I have plotted July data below and have created a best-fit line (linear model/ordinary least squares model) for monthly July averages of  `TMAX`(maximum daily temperature) against year to see if there is some type of discernible trend. Based on my analysis, my data indicate that there is  a trend of increasing temperature in Salt Lake City for the month of July, rejecting the null hypothesis. (slope = 0.019, r2 = 0, p-value = 0.024).
 
  
 #### January is warming significantly
@@ -187,29 +198,28 @@ plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l"
 
   The most important takeaway is not data--it is the effect that these trends have on people. For the sake of Utahn health and incomes, our goal as a city should be to reverse these climate change trends. Salt Lake City has lost up to $1 billion from smaller and poorer winters influenced by climate change and these impacts are only projected to worsen (Salt Lake Tribune, 2013). Accompanying climate change, as further fossil fuels are burned, the increasing intensity of air pollution causes significant respiratory complications, particularly for the least advantaged. Action on climate change, such as reducing reliance on fossil fuels and incorporating more sustainable infrastructure, is in the best interest of the people of Salt Lake City. 
   
-  
-
-
-
 ## Works Cited
-American Lung Association. “State of the Air 2019: Salt Lake City-Provo-Orem, UT.”2019, https://www.lung.org/our-initiatives/healthy-air/sota/city-rankings/msas/salt-lake-city-provo-orem-ut.html#ozone. 
+Bastin, J.-F., Clark, E., Elliott, T., Hart, S., Hoogen, J. van den, Hordijk, I., Ma, H., Majumder, S., Manoli, G., Maschler, J., Mo, L., Routh, D., Yu, K., Zohner, C. M., & Crowther, T. W. (2019). Understanding climate change from a global analysis of city analogues. PLOS ONE, 14(7), e0217592. https://doi.org/10.1371/journal.pone.0217592
 
-Bastin, Jean-Francois, Emily Clark, Thomas Elliott, Simon Hart, Johan van den Hoogen, Iris Hordijk, Haozhi Ma, et al. “Understanding Climate Change from a Global Analysis of City Analogues.” PLOS ONE 14, no. 7 (July 10, 2019): e0217592. https://doi.org/10.1371/journal.pone.0217592.
+Bedford, D., & Douglass, A. (2008). Changing Properties of Snowpack in the Great Salt Lake 
 
-Bedford Daniel and Andrea Douglass. “Changing Properties of Snowpack in the Great Salt Lake Basin, Western United States, from a 26-Year SNOTEL Record.” The Professional Geographer 60(3): 374–386, 2008. https://www.tandfonline.com/doi/abs/10.1080/00330120802013646
+Basin, Western United States, from a 26-Year SNO℡ Record. The Professional Geographer, 60(3), 374–386. https://doi.org/10.1080/00330120802013646
 
-Collins, Timothy W., and Sara E. Grineski. “Environmental Injustice and Religion: Outdoor Air Pollution Disparities in Metropolitan Salt Lake City, Utah.” Annals of the American Association of Geographers 109, no. 5 (September 3, 2019): 1597–1617. https://doi.org/10.1080/24694452.2018.1546568.
+Collins, T. W., & Grineski, S. E. (2019). Environmental Injustice and Religion: Outdoor Air Pollution Disparities in Metropolitan Salt Lake City, Utah. Annals of the American Association of Geographers, 109(5), 1597–1617. https://doi.org/10.1080/24694452.2018.1546568
 
-Di, Qian, et al. “Association of Short-Term Exposure to Air Pollution With Mortality in Older Adults.” Jama, vol. 318, no. 24, 2017, p. 2446., doi:10.1001/jama.2017.17923. https://jamanetwork.com/journals/jama/article-abstract/2667069
+Di, Q., Dai, L., Wang, Y., Zanobetti, A., Choirat, C., Schwartz, J. D., & Dominici, F. (2017). Association of Short-term Exposure to Air Pollution With Mortality in Older Adults. JAMA, 318(24), 2446. https://doi.org/10.1001/jama.2017.17923
 
-Herald, Billy Hesterman-Daily. “Winter Sports Industry Crucial to Utah Economy.” Daily Herald. 2013 Accessed October 8, 2020. https://www.heraldextra.com/business/local/winter-sports-industry-crucial-to-utah-economy/article_5ecca646-e487-553c-98f5-e8ea04da8ff1.html.
+Herald, B. H.-D. (n.d.). Winter sports industry crucial to Utah economy. Daily Herald. Retrieved October 10, 2020, from https://www.heraldextra.com/business/local/winter-sports-industry-crucial-to-utah-economy/article_5ecca646-e487-553c-98f5-e8ea04da8ff1.html
 
-Pirozzi, Cheryl S., Barbara E. Jones, James A. VanDerslice, Yue Zhang, Robert Paine, and Nathan C. Dean. “Short-Term Air Pollution and Incident Pneumonia. A Case–Crossover Study.” Annals of the American Thoracic Society 15, no. 4 (December 28, 2017): 449–59. https://doi.org/10.1513/AnnalsATS.201706-495OC.
+Pirozzi, C. S., Jones, B. E., VanDerslice, J. A., Zhang, Y., Paine, R., & Dean, N. C. (2017). Short-Term Air Pollution and Incident Pneumonia. A Case–Crossover Study. Annals of the American Thoracic Society, 15(4), 449–459. https://doi.org/10.1513/AnnalsATS.201706-495OC
 
-Seidel, Klaus, Cornel Ehrler, and Jaroslav Martinec. “Effects of Climate Change on Water Resources and Runoff in an Alpine Basin.” Hydrological Processes 12, no. 10–11 (1998): 1659–69. https://doi.org/10.1002/(SICI)1099-1085(199808/09)12:10/11<1659::AID-HYP687>3.0.CO;2-4. 
+Report: Global warming hits Utah’s ski industry hard. (n.d.). The Salt Lake Tribune. Retrieved October 10, 2020, from https://archive.sltrib.com/article.php?id=55416130&itype=CMSID
+S, J. (2017, February 28). Wasatch Weather Weenies: Is March Really Utah’s Snowiest Month? 
 
-Steenburgh, Jim. “Wasatch Weather Weenies: Is March Really Utah’s Snowiest Month?” Wasatch Weather Weenies (blog), February 28, 2017. https://wasatchweatherweenies.blogspot.com/2017/02/is-march-really-utahs-snowiest-month.html.
+Wasatch Weather Weenies. https://wasatchweatherweenies.blogspot.com/2017/02/is-march-really-utahs-snowiest-month.html
+Salt Lake City-Provo-Orem, UT. (n.d.). American Lung Association. Retrieved October 10, 2020, from https://www.stateoftheair.org/city-rankings/msas/salt-lake-city-provo-orem-ut.html
 
-The Salt Lake Tribune. “Report: Global Warming Hits Utah’s Ski Industry Hard.” Accessed October 8, 2020. https://archive.sltrib.com/article.php?id=55416130&itype=CMSID.
+Seidel, K., Ehrler, C., & Martinec, J. (1998). Effects of climate change on water resources and runoff in an Alpine basin. Hydrological Processes, 12(10–11), 1659–1669. https://doi.org/10.1002/(SICI)1099-1085(199808/09)12:10/11<1659::AID-HYP687>3.0.CO;2-4
+
 
 
