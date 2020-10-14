@@ -1,7 +1,7 @@
 ---
-title: 'Rising Temperatures and their Activist Implications in Washington DC '
-author: '97517'
-date: "9/26/2020"
+title: 'As DC Summers Get Hotter, Residents Will Have To Fight Greater Inequality '
+author: 'Jacob Greene'
+date: "10/14/2020"
 output:
   html_document: default
 ---
@@ -9,142 +9,123 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-![View Tidal Basin and Jefferson Memorial](WAshington DC Image Jefferson Memorial.jpg)
+![Image 1: View of the Tidal Basin and the Washington Monument during a 2018 July heatwave (Ake, 2018).](Washington DC Sunset.jpg){width=60%}
 
-Washington DC, the nation’s capital, is situated geographically on the eastern fall line. Although it is often called a swamp for its hot, humid summers (and slow-moving politics), the city is actually in a humid subtropical climate, with pleasant springs and autumns and cold winters. However, since 1948 the climate of DC has changed, and it will likely continue to change in the future.
+The first time I had a heat stroke, it was scary. I was ten and did not realize that there had been a heatwave during my week of summer camp. The counselors may not have either because they were not well prepared, but thankfully, I was fine.
+ 
+ Washington DC, my hometown and the focus of this blog, will increasingly have to be cautious when it comes to heat’s health effects. Located in the mid-atlantic region, the city is often called a swamp for its hot, humid summers (and slow-moving politics). However, the city actually has a humid subtropical climate, with pleasant springs and autumns as well as cold winters. DC is often referred to as the “City of Trees,” but since 1950, the tree canopy has decreased from 50% to 39% with low income and black residents living in the least forested areas (Harden, 2020). Although many would not immediately connect it to heat health effects, the city has rampant inequality, with higher rates of income inequality than any state according to one measure (Naveed, 2017). The city is also plurality black, but black residents make, on average, one-third of the median income of white residents (Naveed,2017). Similarly, black residents are six times more likely to die of diabetes than white residents (King, 2016). Black and low-income residents that face these inequalites primarily live in Southeast Washington--- in wards 5,7, and 8--- while white wealthy residents primarly live in Northwest Washington--- in Wards 2 and 3 ("Demographic and Housing...",2011). As you will soon see, this geographically segregated inequality is entangled with heat’s health impacts for DC residents.
 
-This blog’s analysis draws on daily temperature maximum (TMAX) and daily temperature minimum (TMIN). The National Arboretum gathered these records between 1948 and 2020 and I obtained the data through the NOAA National Climate Datacenter. For the TMAX and TMIN analyses, I had to change date formats, and, when plotting trends across different months, I had to aggregate months and years. Among these analyses, significant correlations were not found for TMAX, but strong correlations were found for TMIN changes, particularly during DC summers. These increases will worsen human health, harm ecosystem health, and destroy DC property due to rising tides. But first, I will discuss how TMIN and potential TMAX correlations were assessed.
+But has DC’s climate even changed? And are the health implications serious or distributed unequally? Have DC activists responded to this mess?
 
-#### TMIN Increases 1948-2020
+To answer these questions, I relied on my own scientific analysis of daily temperature maximum and minimum data, peer-reviewed literature, and publications about the response to heat-related health issues.
 
-```{r TMIN plot, echo=FALSE}
+I found that yes, DC summers are getting hotter and will have harmful health effects for particularly low-income and black residents; however, activists have responded to this reality and provide actionable steps that any resident can take.
+
+
+### Has DC’s Climate Changed?
+
+
+To answer the first question scientifically, I tested the null hypothesis that DC maximum and minimum temperatures have not changed significantly. For these tests, I used DC daily temperature maximum and minimum data collected at the National Arboretum between 1948-2020 (the earliest records to current day) that I obtained through the NOAA National Centers for Environmental Information ("Daily Summaries...", n.d.). Using r software for the statistical analysis, I calculated monthly means from the daily data and plotted them versus time. Finally, to determine the statistical significance of the results, I used p-values< .05 along with r2 values to measure the spread of the data. Overall, I found that daily summer minimums have increased, and according to climate change models, both summer minimums and maximums will get hotter going forward.
+
+
+#### Warmer Summer Nights 1948-2020
+
+
+```{r TMIN July, echo=FALSE, fig.cap= "Graph 1: May, July, and September have been getting hotter in DC between 1948-2020. April and June, which also have significant trends, were not shown in this graph. Our data across these months did not violate the assumptions of the linear model. Meeting these assumptions suggests that there is support for the interpretation of this model."}
 file.path = "/home/CAMPUS/jagc2019/Climate_Change_Narratives/Data/FA20/JacobGreene_WashingtonDC_Data.csv"
 climate_data <- read.csv(file.path)
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-plot(TMIN~NewDate, climate_data,type='l', main= "Washington D.C. Daily TMIN vs Time", xlab= "Time ", ylab= "Daily Temperature Minimums (C°)", pch=19, cex=0.5)
-TMINbestlinefit.lm=lm(TMIN~NewDate, data = climate_data)
-abline(coef(TMINbestlinefit.lm), col= "red",lwd=2)
-```
-  
-The graph above illustrates how July TMINs have significantly (p-value= 3.94e-06) increased from 1948 to 2020. According to the slope of .033, over a 100-year span, average TMINs in July would increase by 3.3 degrees Celsius. This trend follows similarly for all other summer months: months May to August had p values less than .0005, and Months September and April had p values less than .05. Furthermore, the average TMIN warming over 100 years between April and September was 3.1 degrees Celsius. A 2015 report by Katherine Hayhoe and Anne Stoner for the DC Department of Energy and Environment corroborates this summer TMIN increase (Hayhoe et al., 2015). To produce their results, the authors reviewed. In addition to the National Arboretum data I used, the authors three DC weather stations (including the National Arboretum data I used). They used this historical data and predicted emission trends to simulate climate change projection models for the region. In terms of TMIN, the authors projected that by 2100, TMINs likely will increase between 4.4 and 5.5 degrees Celsius (Hayhoe et al., 2015).No Significant TMAX changes 1948-2020.
-
-```{r TMIN July, echo=FALSE}
 climate_data$Month = format(as.Date(climate_data$NewDate),format="%m")
 climate_data$Year = format(as.Date(climate_data$NewDate),format= "%Y")
 MonthlyTMINMean = aggregate(TMIN~Month+Year,climate_data,mean)
 MonthlyTMINMean$YEAR= as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",],main= "Average Mininimum Temperatures in Select Months vs Time", xlab= "Time", ylab= " Average Temperature Minimums (C°)", pch=19, cex=0.5, col= "red", ylim=c(8,26))
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",],main= "Average Mininimum Temperatures in Select Months vs Time", xlab= "Time", ylab= " Average Temperature Minimums (C°)", pch=19, cex=0.5, col= "dark red", ylim=c(8,26))
 JulTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
-abline(coef(JulTMIN.lm),col= "red",lwd=2)
+abline(coef(JulTMIN.lm),col= "dark red",lwd=2)
 
-points(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",], pch=19, cex=0.5, col="orange")
+points(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",], pch=19, cex=0.5, col="dark orange")
 SepTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="09",])
-abline(coef(SepTMIN.lm),col= "orange",lwd=2)
+abline(coef(SepTMIN.lm),col= "dark orange",lwd=2)
 
-points(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], pch=19, cex=0.5, col="green")
+points(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], pch=19, cex=0.5, col="dark green")
 MayTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
-abline(coef(MayTMIN.lm),col= "green",lwd=2)
+abline(coef(MayTMIN.lm),col= " dark green",lwd=2)
 
 legend("topleft", legend=c("July","September","May"),
-       col=c("red","orange","green"), lty=1, cex=0.7)
-summary(MayTMIN.lm)
-summary(JulTMIN.lm)
-summary(SepTMIN.lm)
-```
-[May: pvalue<.001,adjusted r2=.15, July: pvalue<.001, adjusted r2=.26, September: pvalue<.01, adjusted r2=.01]
-```{r}
-Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
-TMINresult <- NA
-for (i in 1:12){
-  plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty='l', las=1, xlim=c(1948, 2020), main=Months[i])
-  TMINMonth.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
-  summary(TMINMonth.lm)
-  abline(coef(TMINMonth.lm), col="red")
-  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(TMINMonth.lm)[2], 4),round(summary(TMINMonth.lm)$coefficients[2,4],4),round(summary(TMINMonth.lm)$r.squared, 3)))
-}
+       col=c("dark red","dark orange","dark green"), lty=1, cex=0.7)
 ```
 
-
-```{r,results="asis"}
-
-Results<-data.frame(Month=TMINresult[c(2:13),1],TMINSlope=TMINresult[c(2:13),2], TMIN_P=as.numeric(TMINresult[c(2:13),3]),
-TMINRsq=TMINresult[c(2:13),4],TMAXSlope=TMAXresult[c(2:13),2],TMAX_P=as.numeric(TMAXresult[c(2:13),3]),
-TMAXRsq=TMAXresult[c(2:13),4])
-
-Results$starTMIN="NS"
-Results$starTMIN[Results$TMIN_P<=.05]="*"
-Results$starTMIN[Results$TMIN_P<0.01]="**"
-Results$starTMIN[Results$TMIN_P<0.001]="***"
-Results$starTMAX="NS"
-Results$starTMAX[Results$TMAX_P<0.05]="*"
-Results$starTMAX[Results$TMAX_P<0.01]="**"
-Results$starTMAX[Results$TMAX_P<0.001]="***"
-Results$TMINslope=paste(Results$TMINSlope,Results$starTMIN)
-Results$TMAXslope=paste(Results$TMAXSlope,Results$starTMAX)
-colnames(Results)<-c("Month","2","3","R^2","5","6","R^2","8","9", "SlopeTMIN","SlopeTMAX")
-
-library(xtable)
-print(xtable(Results[,c(1,10, 4,11,7)]), type = "html")
-
-```
-points(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",], pch=19, cex=0.5, col="orange")
-JunTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="06",])
-abline(coef(MayTMIN.lm),col= "orange",lwd=2)
-
-The graph above illustrates how July TMINs have significantly (p-value= 3.94e-06) increased from 1948 to 2020. According to the slope of .033, over a 100-year span, average TMINs in July would increase by 3.3 degrees Celsius. This trend follows similarly for all other summer months: months May to August had p values less than .0005, and Months September and April had p values less than .05. Furthermore, the average TMIN warming over 100 years between April and September was 3.1 degrees Celsius. A 2015 report by Katherine Hayhoe and Anne Stoner for the DC Department of Energy and Environment corroborates this summer TMIN increase(Hayhoe et al., 2015). From synthesizing several climate change projections and two other DC weather stations in addition to the National Arboretum data I used, the authors projected that by 2100, TMINs likely will increase between 4.4 and 5.5 degrees Celsius(Hayhoe et al., 2015).
-  
-  
-#### No Significant TMAX changes 1948-2020
-
-
-```{r, TMAX plot, echo=FALSE}
-plot(TMAX~NewDate, climate_data,type='l', main= "D.C. Daily Temperature Maximums vs Time", xlab= "Time", ylab= "Daily Temperature Maximums (C°)")
-bestfitline.lm = lm(TMAX~NewDate, data = climate_data)
-abline(coef(bestfitline.lm), col="red", lwd=2)
+Table 1.  Washington DC, Late Spring and Summer Monthly Temperature Minimum Trends (1948-2020)
+![](Pvalue Table.png){width=50%}
+```{font=it}
+Table 1: Over a 100-year span, for significant slopes, temperatures have increased by, on average, 3.1 degrees Celsius in these months. Excluding August, p-values were all significant (p<.05) or very significant (p<.001) for summer months. However, winter and fall months (not shown) had no significant correlations. Of the months in the table, many of their adjusted r-squared values were small, such as May’s and September’s, which means that our linear model does not account for the variation of the data that well; however, small r squared values do not refute the correlation between time and temperature.
 ```
 
-This graph illustrates daily TMAX values from 1948 until 2020 but was not significant (p value= .789). Although my analysis did not produce convincing results, Hayhoe and Stoner’s projections indicate that summer temperature maximums, days with the extreme heat index, and heatwaves will all increase. Like their prediction for TMINs, the authors predict that summer TMAXs will increase between 4.4° and 5.5° Celsius. In their analysis, heatwaves are expected to occur more frequently, last longer, and be more severe (Hayhoe et. al, 2015).
+From temperature minimum analyses, the bottom line is that other than in August, late spring and summer temperature minimums have been significantly getting hotter between 1948-2020 (p-values<.05). The linear model reveals that, for significant slopes, over a 100-year span, temperatures have increased by 3.1 degrees Celsius on average in these months.  Hayhoe and Stoner (2015), who synthesized data from two other DC weather stations, corroborated these results independently. They predict that future minimum temperatures will increase even faster than 3.1 degrees Celsius over 100 years. By 2010, they suspect that summer minimums will be hotter by around 4.4 to 5.5 degrees Celsius (Hayhoe et al., 2015).
+
+
+#### Daily Temperature Maximu Mixed Results 
+
+
+Although I found no significant temperature maximum changes from 1948 until 2020 using daily data, Hayhoe and Stoner’s (2015) analysis found that summer maximums will get hotter. More specifically, Hayhoe and Stoner’s projections indicate that summer temperature maximums, days with the extreme heat index, and heatwaves will all increase. Like their prediction for daily temperature minimums, the authors predict that summer daily temperature maximums will increase between 4.4 and 5.5 degrees Celsius. They also projected that heatwaves will occur more frequently, last longer, and be more severe (Hayhoe et al., 2015). 
+
 
 #### Possible Misinterpretations of the Analysis
 
-To avoid possible misinterpretations, it is important to note that historical warming is not necessarily a result of climate change. There are other variables at play. For example, since 1950, Washington DC forest canopy has gone from covering more than 50% of the city to now only covering 39% (Harden, 2020) The decrease in trees likely has led to increased heat because trees are good regulators of hot air. Even though the city has committed to increasing forest cover, efforts have proved more difficult than expected, especially because most DC property is private. While climate change cannot be singled out as the single historical reason for DC warming trends, climate change models, like the ones presented by Hayhoe and Stoner, suggest that carbon emissions going forward will increase DC’s temperature.
 
-The data is also not perfect. For example, the equipment used between 1948 and 1989 is unknown to NOAA. Therefore, we do not know the accuracy of the instruments for 41 years of our data. Within the known equipment used, there have been eight equipment changes since 1989. Temperature measurements can vary marginally because of different equipment. Therefore, we cannot be sure that the data is 100% accurate. Lastly, from 1989 to 2001, the station recorded data at one hour earlier than other dates (at 7 am as opposed to 8 am). Earlier measurement times could impact the temperature that is calculated. Because of these uncertainties, the data should be taken with a grain of salt. That being said, our overall correlations are supported by regional models as well as by two other DC weather stations (Hayhoe et al., 2015). Because of this evidence, DC needs to assess warming ramifications.
+Although there is historical minimum summer warming in DC, I would like to clarify that this warming is not necessarily a result of climate change; there are other variables at play. For example, DC’s tree loss between 1950 and 2020 has likely warmed the city because trees are good regulators of hot air (Harden, 2020). However, while climate change cannot be singled out as the single historical reason for DC warming trends, Hayhoe and Stoner (2015) show that global climate change will increase DC’s temperature. Therefore, there is reason to be concerned.
 
-#### Implications
-
-Increasing temperature minimums and potentially increasing temperature maximums will have profound public health implications. Perhaps most significantly, higher minimum and maximum temperatures contribute to higher heat-related hospitalizations and mortalities (Choudhary et al., 2014; Gregory, 2018). Wealthy white communities are often covered by trees, have access to AC, and benefit from lower rates of heart problems. Homeless people and less privileged communities do not (Gregory, 2018). One study finds that from analyzing tree cover alone, black residents were 50% more susceptible to the health implications of hot summer days and nights (Jesdale, 2013). Without proper environmental justice policy action, the consequences of warming will likely perpetuate existing inequalities in the district.
-
-Like for humans, increasing heat can lead to worsened ecosystem health. A recent study looked at 581 species at 532 sites around the world and correlated local extinctions with heat. They found that the 44% local extinction rate of these species was correlated strongly with an increase in temperature on the hottest days of the year (Román-Palacios et.al, 2019). An increase in tree mortality could serve as positive feedbacks to worsen heat effects because of the loss of their heat regulation mechanisms. Shifting flowering dates could also hurt DC’s ecosystems. In the capital, cherry blossoms, which are good indicators for other spring blossoms, are flowering earlier (Chung et al., 2011). In a study of two Washington DC native perennial wildflowers, flowering earlier than historic times decreased both the average effectiveness of pollinators and the expected rates of pollinator success (Rafferty, 2012). Therefore, changing flowering times (perhaps due to temperature changes) in the district could impact plant the region’s species (Rafferty, 2012). There may be a few silver linings. For example, ragweed seasons, which contribute to hay fever and seasonal allergies and are common in DC, are expected to shorten in the area (Case, 2018). However, for the most part, increasing temperatures will hurt DC flora and fauna as well as all of the ecosystem benefits they provide for residents.
-
-Although global sea-level rise due to thermal expansion and melting sea ice is not directly part of this analysis, sea-level rise is important to note in this blog because of its implications for flooding and property damage in Washington DC. The following map, produced by researchers for the non-profit Climate Central, shows potential high tide lines for Washington DC depending on different warming scenarios.
+The data I used is also not perfect. For one, between 1948 and 1989 (41 years of our data), there is no record of the equipment that scientists used ("Daily Summaries...", n.d.). For another, within the known dates, the station changed equipment eight times ("Daily Summaries...", n.d.). Lastly, between 1989 to 2001, the station recorded data at one hour earlier than other dates (at 7 am as opposed to 8 am) ("Daily Summaries...", n.d.). These inconsistencies produce uncertainties. Therefore, my data analysis should be taken with a grain of salt. That being said, regional models, as well as two DC weather stations, corroborate DC warming (Hayhoe et al., 2015). Because of this evidence, DC needs to assess warming ramifications.
 
 
-![Map of high tide lines for Washington DC based off a global rise in four or two degrees Celsius. Dark blue coloring represents current bodies of water. Light blue coloring represents new areas where high tides would reach.](Map of high tide DC.jpg)
+### Are Heat’s Heath Implications Serious? Are these Implications Distributed Evenly?
 
-In the district, 5,000 people live in nearly 2,000 homes that are ten feet or less above the current high tideline. This area has property worth a total of $9 billion and 26 EPA listed sites (including hazardous waste dumps and sewage sites). These areas would be severely harmed due to the effects of global sea-level rise.
 
-#### Activists in DC
+At first glance, hotter summers may seem like an inconvenience, but, overall, no big deal. However, contrary to this initial reaction, hotter days and nights will determine the health and survival of many Washingtonians, especially Black and low-income residents.
 
-Global warming activism in DC has mostly been directed towards the federal government. Justifiably so. Washington DC is not the place that will be most hurt (although hopefully, this analysis is convincing enough that the environmental harms are great), and, in general, pressuring the federal government has given the US some of the biggest environmental wins in US history. For example, the Clean Air Act and Clean Water Act in the 1970s. Perhaps because of these wins, DC protests have revolved around federal action such as the Green New Deal
+Heat health effects are well documented in the US and globally, and the evidence is not good news for DC residents. During heatwaves, which Hayhoe and Stoner (2015) expect to be longer and more frequent in DC, hot days shock people’s bodies, and warm nights prevent recovery (Peninah et al., 2017). Because of this physiological stress, in the US, higher maximum and minimum temperatures contribute to higher heat-related hospitalizations and mortalities (Choudhary et al., 2014; Gregory, 2018). Intense heat is the leading cause of extreme weather deaths in the US (more than hurricanes, tornados, etc.) (Climate change and...", 2016). In total, heat kills over 1,500 people each year in the US (Climate change and...", 2016). In the 2003 European heatwave alone, there were 70,000 excess deaths according to an epidemiological analysis by Robine et al. (2008).
 
-Like local activists, the DC government has pursued climate activism even if historically they have often failed to do so. For example, the Department of Energy and Environment has pledged to reduce emissions by 50% by 2032 and reach carbon neutrality by 2050 (DOEE, 2020). That being said, historically, the DC government has failed to act on environmental issues. For example, the government failed to regulate tree loss in the district that has likely led to greater heat and runoff problems (Harden, 2020).
+Being a mid-Atlantic US city, DC is not excluded from heat’s effects. Although one may expect heat health effects to be most pronounced in hotter regions like the South, more northern cities, where people are less accustomed to extreme heat, have recently experienced some of the deadliest heat waves ("Climate change and...", 2016). Furthermore, because of the well documented Urban Heat Island effect, cities are typically hotter than rural areas. The EPA estimates that city daytime temperatures are around 1-7 degrees Fahrenheit higher, and nighttime temperatures are 2-5 degrees Fahrenheit higher (“Heat Island Effect”, 2020). The evidence is overwhelming; DC residents will have to face the serious health consequences of heat, but who specifically will be hurt most?
 
-At the end of the day, residents will have to face rising minimum summer temperatures, summer maximum temperatures, and tides that are exacerbated by climate change. Activists need to continue to pressure the DC and the federal government to enact concrete policy action to decrease the dangers of climate change. We should demand measures that will protect the health of residents and ecosystems. ronmental education efforts to curb illegal tree removal (Harden, 2020). Perhaps most importantly, we need to demand that environmental justice frameworks are implemented. Minority and low-income communities should not have to face the heaviest impacts of climate change. Although the realities of climate change are often bleak, with engaged residents at a local level, there is hope that these issues will be addressed.
+In DC, the answer will likely be Black and low-income residents. According to Vivek Chandras, an urban planner at Oregon State, “there’s an upwards of 15- to 20-degree Fahrenheit differences within a city” (Pearce, 2019). His research reveals that among these differences, there are strong correlations between lower-income neighborhoods and higher temperatures (Pearce, 2018). Although there has not been a formal analysis of such correlations in DC, the following maps can idea of how heat and income are connected.  
 
-#### Citations
+![Image 2: The left-hand image displays a snapshot of temperatures on August 17th, 2014, a randomly chosen date by the DC Policy Institute. On this day, the temperatures ranged from 102 degrees F (in red) to 75 degrees F (in blue). The right-handed image displays median household income by city district. Yearly income medians ranged from $0 (in solid red) to $250,000 (in solid green). Although this is no formal evaluation, the black circles show that low-income southeast DC is hotter than high-income northwest DC. Black residents compared to white residents also tended to be in hotter areas, but an image of racial distributions was not included here to make the data more digestible.(Smith, 2016; Smith, 2016).](Image of heat vs income.jpg)
 
-1. Case, M. J., & Stinson, K. A. (2018). Climate change impacts on the distribution of the allergenic plant, common ragweed (Ambrosia artemisiifolia) in the eastern United States. Plos One, 13(10). doi:10.1371/journal.pone.0205677
-2. Chung, U., Mack, L., Yun, J. I., & Kim, S. (2011). Predicting the Timing of Cherry Blossoms in Washington, DC and Mid-Atlantic States in Response to 3. Climate Change. PLoS ONE, 6(11). doi:10.1371/journal.pone.0027439
-3. Department of Energy & Environment: Environmental Services. (n.d.). Retrieved September 27, 2020, from https://doee.dc.gov/service/environmental-services
-4. Gregory, N. (2018, September 05). How Hotter Nights Hurt Your Health. Retrieved September 27, 2020, from https://www2.calstate.edu/csu-system/news/Pages/Rise-in-nighttime-temperatures-and-health.aspx
-5. Harden, J. (2020, March 27). D.C. planted nearly 80 trees a day to reach a canopy target. It's running out of space. Retrieved September 27, 2020, from https://www.washingtonpost.com/dc-md-va/2020/03/27/tough-place-tree-live-dc-planted-nearly-80-trees-day-reach-canopy-target-its-running-out-space/?arc404=true
-6. Hayhoe, K., & Stoner, A. (2015, April). Climate Change Projections for the District of Columbia (Rep.). Retrieved https://doee.dc.gov/sites/default/files/dc/sites/ddoe/publication/attachments/Attachment%201%20.ARC_.Report_07-10-2015.pdf
-7. Jesdale, B. M., Morello-Frosch, R., & Cushing, L. (2013). The Racial/Ethnic Distribution of Heat Risk–Related Land Cover in Relation to Residential Segregation. Environmental Health Perspectives, 121(7), 811-817. doi:10.1289/ehp.1205919
-8. Rafferty, N. E., & Ives, A. R. (2012). Pollinator effectiveness varies with experimental shifts in flowering time. Ecology, 93(4), 803-814. doi:10.1890/11-0967.1
-9. Strauss, B., C. Tebaldi, S. Kulp, S. Cutter, C. Emrich, D. Rizza, and D. Yawitz (2014). Washington, D.C. and the Surging Sea: A vulnerability assessment with projections for sea level rise and coastal flood risk. Climate Central Research Report. pp 1-28. 
-10. Washington DC Climate. (n.d.). Retrieved September 27, 2020, from http://www.city-data.com/us-cities/The-South/Washington-D-C-Geography-and-Climate.html
+One driver for hotter temperatures in DC low-income communities and black communities is less tree cover. Trees, along with providing other ecosystem benefits such as stormwater management and pollution removal, are natural heat regulators. According to the EPA, shade from tree canopies can reduce the heat of an area by 11-25 degrees Celsius (20-45 degrees Fahrenheit) ("Using Trees and...", 2019). This difference not only raises the energy bills for low-income residents with fewer trees but also puts low-income people who live in less vegetated areas at an estimated 5% more risk of dying from heat-related causes, according to a review paper of epidemiological literature (Schinasi et al. 2017). The following analysis done by the nonprofit Casey Trees reveals how income and tree coverage are correlated: 
+
+![Image 3: Wealthy areas, in general, have high tree coverage compared with impoverished areas that have low tree cover. From this analysis, all areas that were in the bottom two wealth brackets had low tree coverage. (Elwell,2017).](Income vs tree canopy.png){width=80%}
+
+Not only do black and low-income residents feel more heat, but they may also be more vulnerable to its effects. According to the CDC, obesity is a risk factor for heat-related illnesses ("Heat Related Illness", n.d. ). Black residents suffer from higher rates of obesity (1/3 of Black DC residents are obese compared with 1/10 white residents), making Black residents also more vulnerable to heat effects (King, 2016). In total, likely due to fewer trees in their neighborhoods, low-income, and Black residents live in hotter areas. Unfortunratly, without proper mitigation, this heat exposure will lead to a greater risk of death and health problems.
+
+
+### How are DC Activist Responding?
+
+
+The good news is that according to Vivek Chandras, the same urban planner that studies urban heat, heat deaths are “very preventable deaths” (Pearce, 2018). Activist's efforts across DC have hoped to decrease urban heat by planting trees, especially in low-income neighborhoods, but there is still a long way to go.
+
+One DC activist group named Casey Trees that focuses on revitalizing DC’s tree canopy and has partnered with the city government to reach a 40% tree canopy by 2032--- right now, according to Harden (2020) the district is at 39%. This government partnered program is mainly focused on public planting sites such as parks and city tree lots (Harden, 2020). However, for the plan to work, officials rely on residents not to remove trees from private property (Harden, 2020). To minimize this tree removal, the government charges fines and to incentivize planting on private land, which is the majority of DC land. Casey Trees, in partnership with the DC government, offers either $50 or $100 in tree rebates for residents who plant a tree in their yard ("Tree Rebate", 2019). Along with subsidizing these programs, the DC government created public cooling stations with AC across the district, providing safety for many residents, such as people experiencing homelessness. The government has also created building restrictions that require energy efficiency and incentivize green roofs.
+          
+ Overall, these programs are promising to curb the effects of heat; however, the DC government still has a lot of work to do. With public tree plots, the DC government has struggled to repair the unequal distribution of trees that has hurt low-income and black communities. According to a 2018 analysis by Chris Cioffi of government-owned tree lots using DC inventories, black and low-income wards have higher proportions of unplanted tree lots (Cioffi, 2018). Specifically, Wards 5,7, and 8, the lowest income wards with the highest percentage of black residents, have 11%, 12%, and 10% empty tree lots compared with ward 2 and ward 3, the wealthiest wards, that have 1% and 4% empty tree boxes respectively (“Demographic and housing…”, 2011; Cioffi, 2018).
+
+![Image 4: Empty public tree boxes are predominantly in wards 5,7,8, the lowest income wards with the highest proportion of black residents. Since 2008, nearly half tree box plantings have been in ward 5,7, and 8 (Cioffi, 2018) ](Empty tree lots chart.png){width=70%}
+
+Along with not fully correcting past tree inequities, DC policy has struggled to disincentivize private property tree removal. Around half of DC is private land, and, because there is diminished public land to plant trees, private tree planting is becoming increasingly important (Harden, 2020). However, private tree removal permits have increased in the last decade. In 2013, 713 permits for the removal of 990 trees were issued (Harden, 2020). By 2019, more than 1,500 permits were issued for 3,200 trees (Harden, 2020). Much of these removals can be attributed to development projects that officials, often with the backing of residents, have approved (Harden, 2020). However, these approved permits for development threaten the 40% tree canopy target that Casey Trees and the DC government want to reach.
+
+Along with not sufficiently curbing tree removal, the government does not properly incentivize private planting. For one, according to my own calculations, the current rebate program to incentivize this planting is undervalued. Using a Casey Trees 2015 report, DC’s 2.4 million trees provide an estimated 4.28 billion dollars to the city every year ("Urban Forest Effects...", 2015). That makes each DC tree worth around $180 per year. In comparison, the DC government, in partnership with Casey Trees, offers only a $50 to $100 one-time rebate ("Tree Rebate", 2019). A $100 rebate, which likely could not the cost of pruning alone, is not enough.
+When it comes to correcting inequality, there is a bigger problem than inadequate rebate programs: many black people or low-income communities may not want trees. For example, during a Casey Trees planting event in South East (Ward 8), not everyone was pleased to see the new plantings. Resident Ladawn Bynum, worried that increased greenery would enable crime. She said, “It’s not the trees’ fault, but a lot of people in this neighborhood don’t have the best intentions. So, the way it is I think is okay, because you can see what's going on” (Elwell, 2017). The documentary City of Trees follows a DC green jobs initiative run by the group Washington Parks & People to replant trees in Ward 8. In the documentary, residents often opposed the group's tree plans. Washington Parks & People learn this opposition immediately when someone slashes one group member's car tires on their first day of planting at a specific park (Nelson, 2017). Additionally, one DC forester in the movie comments “I’ve looked at this area many, many times, and I could never get the community to buy into planting trees here”. The fact that many communities that need trees the most do not want them poses a serious problem in correcting inequalities in the city (Nelson, 2017).
+
+One solution to this problem is promoting citizen science. In the documentary, Washington Parks & People find the most success when they hire community members as part of their team (Nelson, 2017). With these new local employees, the group is better able to convince community members that the tree programs are useful (Nelson, 2017). Today, the organization is centered around education and partnership programs with the local community. Another form of citizen science was showcased by the urban planner Vivek Chandras who recruited an army of citizen scientists to collect urban heat island data (Pearce, 2018). By incorporating locals into the project, Chandras helped disseminate the importance of heat mitigation (Pearce, 2018). Education programs traditionally have focused on disseminating information rather than working alongside communities, but efforts like Vivek’s and the Washington Parks & People that incorporate citizens more into decision-making may be more impactful (Nelson, 2017). In total, activist groups like Casey Trees and Washington Parks & People should continue to pressure the city government to lead with programs that focus on citizen science while also trying to increase planting, reject tree removals permits meant for development, and increase rebate programs. 
+
+
+### Conclusion: What DC Residents Can Do
+
+
+The DC government and non-profits need to increase planting in low-income neighborhoods, create better-funded rebate programs, and engage more involve more low-income and black residents into their heat reduction plans. However, there are things that any resident in DC can do right now too. Non-profits like Casey Trees and Washington Parks and people require funding. Small donations can go a long way in correcting DC’s heat effects. Even more important than donations, residents need to be informed about the harms of heat and what can be done to mitigate these issues. On their website, Casey Trees provides a free online program that teaches residents effective ways to raise awareness about the benefits of trees and hold government officials accountable by sending testimonies to City Council. With engaged activists involved in coummunity and government decisions, there is hope that the district will respond properly to climate change's unequal harms.
+
+In all, just like my heat stroke when I was ten, the realities of climate change’s heat effects are scary. Even if residents and the DC government plant trees, the district will still have incredibly high inequality rates and face many more environmental challenges that I was not able to cover due to space. The solution to problems as big as climate change and health inequality will require much greater systemic reform than only tree planting and citizen science initiatives. However, tree education and planting programs in low-income and Black DC neighborhoods would be a good start in the right direction.
+
+### Citations
+
 
