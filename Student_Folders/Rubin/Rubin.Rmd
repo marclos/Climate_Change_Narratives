@@ -58,37 +58,33 @@ MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 
 attach(climate_data)
 par(mfrow=c(2,2))
-layout(matrix(c(1, 2, 3, 4), 2, 2, byrow = TRUE), widths=c(6,6), heights=c(6,6))
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty="l", xlim=c(1891, 2020), main="Average Mininum Temperature (August)", ylab="Min Temperature (C)", xlab="Year", las=1)
-AugustTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
-abline(coef(AugustTMIN.lm), col="red")
-summary(AugustTMIN.lm)
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty="l", xlim=c(1891, 2020), main="Average Minimum Temperature (May)", ylab="Min Temperature (C)", xlab="Year", las=1)
-MayTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
-abline(coef(MayTMIN.lm), col="purple")
-summary(MayTMIN.lm)
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
-ty='l', xlim=c(1900, 2020), main="Average Maximum Temperature (August)", ylab="Max Temperature (C)", xlab="Year", las=1)
+layout(matrix(c(1, 2), byrow = TRUE))
+
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",], ty="l", xlim=c(1891, 2020), ylim=c(13, 33), main="Average Temperature (August)", ylab="Temperature (C)", xlab="Year", las=1)
+lines(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
+ty='l', col="red")
 August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
-abline(coef(August.lm), col="red")
-summary(August.lm)
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
-ty='l', xlim=c(1900, 2020), main="Average Maximum Temperatures (May)", ylab="Temperature (C)", xlab="Year",las=1)
+AugustTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty="l", xlim=c(1891, 2020), ylim=c(4, 26), main="Average Temperature (May)", ylab="Temperature (C)", xlab="Year", las=1)
+lines(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', col="purple")
 May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+MayTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+abline(coef(MayTMIN.lm))
 abline(coef(May.lm), col="purple")
-summary(May.lm)
 ```
 
-In order to analyze patterns in temperatures over the span of more than a century, I graphed the daily maximum and minimum temperatures of each month from 1891 to 2020. I chose to display the May and August results in this blog as May is generally the beginning of the growing season and August is nearing the end. Each month displays minimum and maximum temperature graphs with increasing slopes - however, there is always the possibility that data is statistically insignificant. When we ran the graphs through statistical analysis, 10 out of 12 months of average minimum temperatures (excluding January and October) proved to be highly statistically significant (p-values ranged from 0.022 to 0.0002), disproving the null hypothesis and showing that there is a strong correlation between increasing minimum temperatures and time. Interestingly, only half of the increasing slopes in maximum temperatures were statistically significant. Average maximum temperatures from February to June disprove the null hypothesis (p-values range from 0.010 to 0.00001), as do maximum temperatures in December. These significant trends from February to June indicate that Michigan springs and early summers are increasing in both minimum and maximum temperatures, and that the coldest month (December) is becoming more temperate. July to November, however, do not show statistically significant trends, nor does January. From this information we can conclude that late summer to late fall, along with the month of January, are relatively stagnant in terms of changes in temperature from between 1891 to 2020.
+In order to analyze patterns in temperatures over the span of more than a century, I graphed the daily maximum and minimum temperatures of each month from 1891 to 2020. I chose to display the May and August results in this blog as May is generally the beginning of the growing season and August is nearing the end. Each month displays minimum and maximum temperature graphs with increasing slopes - however, there is always the possibility that data is statistically insignificant. To avoid misconstruing data or jumping to conclusions, we ran the graphs through a series of statistical analysis tests. 10 out of 12 months of average minimum temperatures (excluding January and October) proved to be highly statistically significant (p-values ranged from 0.022 to 0.0002), disproving the null hypothesis and showing that there is a strong correlation between increasing minimum temperatures and time. Interestingly, only half of the increasing slopes in maximum temperatures were statistically significant. Average maximum temperatures from February to June disprove the null hypothesis (p-values range from 0.010 to 0.00001), as do maximum temperatures in December. These significant trends from February to June indicate that Michigan springs and early summers are increasing in both minimum and maximum temperatures, and that the coldest month (December) is becoming more temperate. July to November, however, do not show statistically significant trends, nor does January. From this information we can conclude that late summer to late fall, along with the month of January, are relatively stagnant in terms of changes in temperature from between 1891 to 2020.
 
 This data fits scientists' predictions of longer and perhaps potentially more prosperous Michigan growing seasons. As temperatures increase in early spring, farmers are able to plant crops sooner, and crops like corn, which requires a longer growing season, still flourish in the steady temperatures of late summer and fall.
 
 
-## Corn Conditions
+## Growing Temperatures, Sowing Corn
 
 ![Source: Randall Schaetzl, Michigan State University](Graphics/corntemperaturesdiagram.gif)
 
-Michigan corn is generally planted in late April or early May, and, as is the case with all crops, requires a particular set of conditions in order to flourish. As shown by the graphic above, the crop can survive temperatures of up to 110°F (43.3°C) and down to 32°F (0°C). However, corn only grows between 95°F (35°C) and 41°F (5°C). Optimal corn conditions fall in the range of 91°F (32.8°C) to 62°F (16.7°C). Referring back to May temperatures, 2020 has seen a large drop in temperatures, but the average minimum in the 2010s can be estimated to around 9°C and the maximum to around 22°C. In the next 100 years, these averages can be expected to rise by 1.5 to 2 degrees, drawing temperatures closer to optimal growing conditions. Graphs for July and June
+Michigan corn is generally planted in late April or early May, and, as is the case with all crops, requires a particular set of conditions in order to flourish. As shown by the graphic above, the crop can survive temperatures of up to 110°F (43.3°C) and down to 32°F (0°C). However, corn only grows between 95°F (35°C) and 41°F (5°C). Optimal corn conditions fall in the range of 91°F (32.8°C) to 62°F (16.7°C). Referring back to May temperatures, 2020 has seen a large drop in temperatures, but the average minimum in the 2010s can be estimated to around 9°C and the maximum to around 22°C. In the next 100 years, these averages can be expected to rise by 1.5 to 2 degrees, drawing temperatures closer to optimal growing conditions. Graphs for July and June show temperatures hitting peak optimal conditions for corn production with highs around 27-32°C and lows at 15-17°C.
 
 ```{r summer_temperatures}
 # June TMIN
@@ -109,8 +105,9 @@ JulyTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",
 abline(coef(JulyTMIN.lm))
 July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
 abline(coef(July.lm), col="red")
-
 ```
+
+Increasing temperatures alone can provide benefits to farmers - at least, for now. Based on the trends in our data, if no climate change mitigations are enacted, average temperatures in Michigan will increase by around 2 degrees within 100 years. Climate change is predicted to accelerate, however, should drastic measures not be taken to prevent the release of more greenhouse gases into the atmosphere (IPCC [Core Writing Team] 2014). This means that instead of temperatures growing at a linear pace, they will grow exponentially. In other words, it is likely that 2 degrees in the next 100 years is an under-estimate.
 
 
 Not only do temperatures play a part in the growing and harvesting of corn, so do precipitation levels. A 2019 study done by researchers at the University of Illinois showed that "excessive rainfall" could decrease corn crop yields by up to 34%, just as drought and heat waves can cause a decrease of up to 37% (Yoksoulian 2019). This means that Michigan's steady upward trend in rainfall looms dangerously over corn yields, both now, and in the future. Excluding September, every month shows a noticeable increase in average monthly precipitation levels. As we have considered May for our temperature minimums and maximums, we will use the same month to examine precipitation. As the graph shows, Michigan's monthly rainfall sums are steadily increasing. When combined with rising temperatures and a less predictable weather cycle, the state's excessive rainfall does not bode well for the future of Michigan sweet corn.
@@ -223,13 +220,13 @@ corn_bushels_per_acre <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narrative
 str(corn_bushels_per_acre)
 corn_bushels_per_acre$Value = as.numeric(gsub(",", "", corn_bushels_per_acre$Value))
 
-plot(corn_bushels_per_acre$Value~corn_bushels_per_acre$Year, corn_bushels_per_acre, ty = "l", main="Corn Production in Bushels per Acre over Time", ylab= "Bushels per Acre", xlab="Year")
+plot(corn_bushels_per_acre$Value~corn_bushels_per_acre$Year, corn_bushels_per_acre, ty = "l", main="Corn Production in Bushels per Acre over Time", ylab= "Bushels per Acre", xlab="Year", las=1)
 
 cornproductionbushels.lm <- lm(corn_bushels_per_acre$Value~corn_bushels_per_acre$Year, corn_bushels_per_acre)
 abline(coef(cornproductionbushels.lm))
 
 #1866-1920
-plot(corn_bushels_per_acre$Value[100:155]~corn_bushels_per_acre$Year[100:155], xlim=c(1866, 1920), ylim=c(0, 80), ty = "l", main="Corn Production in Bushels per Acre over Time", ylab="Bushels per Acre", xlab="Year")
+plot(corn_bushels_per_acre$Value[100:155]~corn_bushels_per_acre$Year[100:155], xlim=c(1866, 1920), ylim=c(0, 80), ty = "l", main="Corn Production in Bushels per Acre over Time", ylab="Bushels per Acre", xlab="Year", las=1)
 
 cornproductionbushel1866to1920.lm <- lm(corn_bushels_per_acre$Value[100:155]~corn_bushels_per_acre$Year[100:155], corn_bushels_per_acre)
 abline(coef(cornproductionbushel1866to1920.lm))
@@ -237,7 +234,7 @@ summary(cornproductionbushel1866to1920.lm)
 
 
 #1920-1970
-plot(corn_bushels_per_acre$Value[50:100]~corn_bushels_per_acre$Year[50:100], xlim=c(1920,1970), ylim=c(0,80), ty = "l", main="Corn Production in Bushels per Acre over Time", ylab= "Bushels per Acre", xlab="Year")
+plot(corn_bushels_per_acre$Value[50:100]~corn_bushels_per_acre$Year[50:100], xlim=c(1920,1970), ylim=c(0,200), ty = "l", main="Corn Production in Bushels per Acre over Time", ylab= "Bushels per Acre", xlab="Year", col="red")
 
 cornproductionbushel1920to1970.lm <- lm(corn_bushels_per_acre$Value[50:100]~corn_bushels_per_acre$Year[50:100], corn_bushels_per_acre)
 abline(coef(cornproductionbushel1920to1970.lm))
@@ -287,7 +284,9 @@ It is not difficult to conclude that Michigan is and will continue to feel both 
 9. National Agricultural Statistics Service. Annual Statistical Bulletin: Economics. 2020. https://www.nass.usda.gov/Statistics_by_State/Michigan/Publications/Annual_Statistical_Bulletin/stats20/Economics.pdf
 10. Yoksoulian L. Excessive rainfall as damaging to corn yield as extreme heat, drought. Phys.org. 2019 Apr 30 [accessed 2020 Oct 11]. https://phys.org/news/2019-04-excessive-rainfall-corn-yield-extreme.html
 11. National Oceanic and Atmospheric Administration. ANN ARBOR U OF MICH, MI US: Daily Summaries. National Centers for Environmental Information. 2020.
-
+12. National Agricultural Statistics Service. CORN, GRAIN - PRODUCTION, MEASURED IN BU. Quick Stats. 2020. https://quickstats.nass.usda.gov/results/B239FD85-E069-3E6E-AEC4-33D45EF8D084
+13. National Agricultural Statistics Service. Cropland Data Layer. 2019. https://nassgeodata.gmu.edu/CropScape/
+14. IPCC [Core Writing Team]. Climate Change 2014: Synthesis Report. In: R.K. Pachauri and L.A. Meyer, editor. Contribution of Working Groups I, II and III to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change. Geneva, Switzerland: IPPC; 2014. p. 167.
 
 
 
