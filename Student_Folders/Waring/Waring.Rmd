@@ -1,21 +1,20 @@
 ---
-title: "Climate Change in Paradise"
+title: "Climate Narratives Blog"
 author: "Melia Waring"
 date: "9/1/2020"
-output:
-  word_document: default
-  html_document: default
+output: html_document
 ---
 
-How does climate change in Honolulu, Hawaii affect maximum temperatures and what ecological impact does that have on ocean ecosystems? 
-
-Hawaii is one of the most popular vacation spots in the world. With it's tropical weather, beautiful beaches, and stunning hiking trails, Honolulu, Hawaii is the perfect destination for a relaxing vacation. Tourists from all over the world travel to the islands for a tropical retreat to escape the cold in the winter. Unfortunately, not even in Hawaii can one escape the impacts of climate change. 
-
-Located along the southern coast of the island of Oahu, Honolulu is the capital and the largest city in the state of Hawaii. Honolulu experiences a semi-tropical climate with trade winds that keep the city comfortable, and the temperatures vary little throughout the months. This blog works with climate data in the region of Honolulu, Hawaii to call attention to the evident warming trend. In addition, this blog explores the various effects of global warming as well as Native Hawaiian climate change activists.
+#Climate Narratives
 
 ![Honolulu, Hawaii](https://about.hawaiilife.com/wp-content/uploads/2018/01/Honolulu-Hawaii-624711274_2125x1416-e1514508467409-1.jpeg)
- 
-```{r Importing data, include=FALSE}
+
+• This blog is going to explore the temperature trends of Honolulu, Hawaii using data gathered from NOAA. The data will be analyzed and presented in an appropriate form in order to reach a conclusion.
+
+• Variables to examine include maximum temperature (TMAX) and (possibly) precipitation.
+
+    
+```{r Importing data, echo=TRUE}
 ### 1: Importing Data
 climate_data <- read.csv("/home/CAMPUS/mmwa2019/GitHub/Climate_Change_Narratives/Data/FA20/Waring_Honolulu_data.csv")
 str(climate_data)
@@ -28,115 +27,13 @@ TMAX <- climate_data$TMAX
 ```
 
 
-### Methods
-The data was gathered from the National Ocean and Atmospheric Administration (NOAA), which provides global historical weather and station history information. The Honolulu International Airport, HI US Station (station ID: USW00022521) was the selected station from which the data was obtained. This station has been recording since June 1, 1939 to the present day and it has a 98% degree of data coverage. Located on the southern end of the island of Oahu near the ocean, this station's climate readings are fairly representative of the larger region of Honolulu, Hawaii.
+```{r Plot of TMAX vs TIME, echo=FALSE}
+### 2: Plotting temperature vs date
+plot(TMAX~NewDate, climate_data)
 
-Using RStudio software, the data was plotted, analyzed, and evaluated. Daily maximum temperature for Honolulu was graphed and a line of best fit was created using linear regression. To further examine the data trend, two months (May and November) were selected and analyzed with a plot and a line of best fit. 
-
-In order to determine the significance of the data, the p-value was analyzed in relation to the null hypothesis. The null hypothesis states that there is no relationship between the two variables and that the results are due to random chance. A rejection of the null hypothesis results in the acception of the alternative hypothesis. The alternative hypothesis states that there is a relationship between the two variables of study. Statistical significance is represented as a p-value, whose value is between 0 and 1. A p-value greater than 0.05 means that the data is not statistically significant and the null hypothesis is accepted. If the p-value is less than 0.05, the data is statistically significant and the null hypothesis is rejected. 
-
-
-### Maximum Temperature Data
-
-The figure below displays a graph between maximum temperature in degrees Celsius, plotted on the y-axis, and time in years, plotted on the x-axis. A line of best fit was generated and its slope indicated an increase of 4.056e-5 °C per year, or 0.004056 °C per 100 years. In addition, the data has a p-value of <2e-16, which means the null hypothesis is rejected and there exists an increase in maximum temperatures (a heating trend) recorded in Honolulu from 1940 to 2020.
-
-```{r 2.4 Creating Plot and Linear Model, echo=FALSE}
-###2.4 Creating Plot and Linear Model
-TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
-slopeintercept = coef(TMAX.lm)
-plot(TMAX~NewDate, data=climate_data, las=1, xlab="Year", ylab = "Maximum daily temperature in Celsius", pch="•")
-abline(slopeintercept, col="red", lwd=3)
+### 2.1: Line of bestfit
+lm(TMAX~NewDate)
+bestfitline.lm <- lm(TMAX~NewDate)
+abline(coef(bestfitline.lm), col="purple")
 ```
-
-### Maximum Temperature Data for the Month of May
-
-The tropical weather in Hawaii is pretty consistent and does not experience much seasonal change. Instead, throughout the year, there are only small changes in the temperature. Tradiaionally, Hawaii only experiences 2 seasons: summer (Kau), which stretches from May to October, and winter (Hooilo), which stretches from November to April. The month of May was chosen to test for a heating trend in the summer (or the dry season). The figure below displays a graph between maximum temperature in degrees Celsius in May, plotted on the y-axis, and time in years, plotted on the x-axis. A line of best fit was generated and its slope indicated an increase of 0.015 °C per year. The data has a p-value of 0.000386, which means the null hypothesis is rejected and the heating trend is evident in the month of May and during the summer. 
-
-```{r 3.1.1 Creating Monthly Means, include=FALSE}
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
-
-str(MonthlyTMAXMean)
-plot(MonthlyTMAXMean$TMAX, ty='l')
-```
-
-```{r 3.2 Selecting for 1 month - May, echo=FALSE}
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",], pch="•", xlim=c(1950, 2020), ylab="Maximum temperature in Celsius")
-May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",]) 
-abline(coef(May.lm), col="red")
-```
-
-
-### Maximum Temperature Data for the Month of November
-
-The month of november was chosen to represent the winter season and to test for a heating trend. The figure below displays a graph between maximum temperature in degrees Celsius in November, which is plotted on the y-axis, and time in years, which is plotted on the x-axis. A line of best fit was generated and its slope indicated an increase of 0.00846°C per year. The data has a p-value of 0.0498, which means the null hypothesis is rejected and the heating trend exists in the month of November and during the winter.
-
-```{r 3.2 Selecting for 1 month - December, echo=FALSE}
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",], pch="•", xlim=c(1950, 2020), ylab="Maximum temperature in Celsius")
-November.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="11",]) 
-abline(coef(May.lm), col="red")
-```
-
-
-### Analysis
-
-There is an evident warming temperature trend for the maximum temperatures of Honolulu. The lines of best fit for the yearly and monthly graphs have a positive slope, which indicates an increase in the recorded temperatures from 1940 to the present day. Based on the monthly data, the summer and winter seasons of Hawaii also exhibit this heating trend. 
-
-
-### Climate Change Impacts
-
-Climate change impacts in Hawaii include shifting rainfall patterns, rising sea levels, and an increase in ocean acidity. Changes in precipitation caused by climate change can have severe effects on the function and structure of streams. “We determined that predicted flow alterations would decrease stream resource and consumer quantity and quality, which can alter stream function, as well as biomass and habitat for freshwater, marine, and terrestrial consumers dependent on their resources” (Frauendorf et al., 2019). 
-
-Since Hawaii is made up of islands, the ocean is especially important when identifying climate change impacts in the state. Rising sea levels will increase coastal flooding and erosion, damaging coastal ecosystems, infrastructure, and agriculture. Also, warming oceans lead to disease outbreaks and threaten fisheries.
-
-### Ocean Acidification
-
-In addition to the heating trend explained by the data gathered from the NOAA, ocean acidification is a related issue that has devastating effects on marine ecosystems. As atmospheric levels of carbon dioxide rise, thermodynamics and air-sea gas transfer processes drive some of the extra carbon dioxide into ocean surface waters, leading to substantial shifts in seawater acid-base chemistry and the chemical speciation of the large reservoir of inorganic carbon dissolved in seawater (DONEY et al., 2009). This chemical process is defined as ocean acidification. Ocean acidification decreases the seawater pH, which reflects an increase in acidity. 
-
-The figure below is a graph of the carbon dioxide time series in the North Pacific. Carbon dioxide dissolved into the ocean is represented by the green data set and seawater pH is represented by the blue data set. The data was collected from Station ALOHA, located north of the island of Oahu. The data indicates a positive trend of carbon dioxide dissolved into the ocean from 1958 to 2018 as well as a decrease in seawater pH. In other words, ocean acidification is occurring in the sea surrounding the Hawaiian Islands, which could potentially transform the ocean ecosystem.
-
-![Source: NOAA](https://www.pmel.noaa.gov/co2/files/co2_time_series_aloha_06-11-2019.jpg)
-
-### Coral Reefs
-
-Coral reefs are very diverse, marine ecosystems that provide important ecosystem services, such as coastline protection, fish habitat, and recreation. In addition to their importance in the oceanic ecosystem, coral reefs have also been proven to have high economic value as well. Since Hawaii relies so heavily on tourism, this is an important factor to consider. A study of the economic values of coral reefs have been estimated that the net annual benefits of coral reefs worldwide are $33.6 billion per year. However, coral reef ecosystems all across the globe have been declining rapidly due to factors such as overfishing, pollution, and habitat destruction. Climate change has posed a new threat to coral reefs in the recent years. “Greenhouse gas (GHG) emissions and climate change pose grave threats to coral reefs from the combined effects of elevated sea-surface temperatures (SSTs) that increase the risk of coral bleaching and rising atmospheric carbon dioxide levels that result in increased ocean acidification, which affects the process of coral growth” (Lane et al., 2013). 
-
-![This figure displays a before (the left image) and after (the right image) comparison of the Rapture Reef in the French Frigate Shoals, the largest atoll in the Northwestern Hawaiian Islands. Source: The Weather Channel](https://s.w-x.co/ReefBeforeAfter.jpg)
-
-
-According to a recent study conducted on Elkhorn coral, an endangered coral species, "ocean acidification could compromise the successful fertilization, larval settlement, and survivorship of the coral" (Albright et al. 2010). An increase in ocean acidification has also been shown to reduce the ability of reef-building coral to produce their skeletons, as well as significantly impact the ability of coral to recover from disturbances. As a result, coral reefs may begin to erode faster than they can be rebuilt. This could have devastating effects on the long-term variability of these ecosystems as well as the one million species that depend on the coral reef habitat.
-
-### Conclusions
-
-Hawaii's climate is changing as we experience rising air temperatures, increased ocean acidity, damaged coral reefs, and many more. It is more important now than ever for local leaders and experts to bring diverse minds to the table in order to work toward cliamte mitigation and adaptation. Researchers and policy makers need to provide provide room for the most vulnerable and at risk to speak out for themselves. In addition, researchers need to combine data and methodologies from political, social, and Earth-systems sciences to model risk holistically from local to global scales (Pelling and Garschagen, 2019).
-
-Rosie Alegado is a University of Hawaii oceanography professor and a member of the Honolulu Climate Change Commission. In July of 2019, she was one of six women speaking on the opening panel of the Hawaii Conservation Conference. The panel discussed their perceptions of climate change from a traditional Native Hawaiian cultural lens. Alegado argues that the Indigenous people of Hawaii are experiencing a third wave of colonialism: the first was geographic displacement, the second was social and psychocultural (such as illegal occupation, forced assimilation, and militarism in Hawaii), and the third is climate change (driven by a consumer capitalist economy). Despite the looming threat of the climate crisis, Alegado brought an empowering attitude, which she attributed to the island mentality in relation to the role that survival has long played in the Hawaiian culture. Alegado emphasized the importance of community within the broader spectrum of climate change as a whole. In addition, Alegado pointed out how scientists have shifted their focus from saving individual species to restoring entire ecosystems, underlining their interconnectedness.
-
-The voices of affected communities and Indigenous people are essential to further understanding the issue of climate change and working toward climate mitigation and adaptation.
-
-### Works Cited 
-
-Albright, R., Mason, B., Miller, M., & Langdon, C. (2010). Ocean acidification compromises recruitment success of the threatened Caribbean coral Acropora palmata. Proceedings of the National Academy of Sciences, 107(47), 20400–20404. https://doi.org/10.1073/pnas.1007273107
-
-DONEY, S. C., BALCH, W. M., FABRY, V. J., & FEELY, R. A. (2009). OCEAN ACIDIFICATION: A CRITICAL EMERGING PROBLEM FOR THE OCEAN SCIENCES. Oceanography, 22(4), 16–25. JSTOR.
-
-Eagle, N. (2019, July 10). “We’re Not Scared”: Hawaii Confronts Next Wave Of Climate Change. Honolulu Civil Beat. https://www.civilbeat.org/2019/07/were-not-scared-hawaii-confronts-next-wave-of-climate-change/
-
-Frauendorf, T. C., MacKenzie, R. A., Tingley, R. W., Frazier, A. G., Riney, M. H., & El‐Sabaawi, R. W. (2019). Evaluating ecosystem effects of climate change on tropical island streams using high spatial and temporal resolution sampling regimes. Global Change Biology, 25(4), 1344–1357. https://doi.org/10.1111/gcb.14584
-
-Lane, D. R., Ready, R. C., Buddemeier, R. W., Martinich, J. A., Shouse, K. C., & Wobus, C. W. (2013). Quantifying and Valuing Potential Climate Change Impacts on Coral Reefs in the United States: Comparison of Two Scenarios. PLoS ONE, 8(12), 1–13. https://doi.org/10.1371/journal.pone.0082579
-
-Pelling, M., & Garschagen, M. (2019). Put equity first in climate adaptation. Nature, 569(7756), 327–329. https://doi.org/10.1038/d41586-019-01497-9
-
-Regional_releases_hawaii.pdf. (n.d.). Retrieved September 30, 2020, from https://www.edf.org/sites/default/files/content/regional_releases_hawaii.pdf
-
-Showalter, K., López-Carr, D., & Ervin, D. (2019). Climate change and perceived vulnerability: Gender, heritage, and religion predict risk perception and knowledge of climate change in Hawaii. Geographical Bulletin, 60(1), 49–71.
-
-What Climate Change Means for Hawaii. (n.d.). United States Environmental Protection Agency.
-
-What is Ocean Acidification? (n.d.). Retrieved September 30, 2020, from https://www.pmel.noaa.gov/co2/story/What+is+Ocean+Acidification%3F
 
