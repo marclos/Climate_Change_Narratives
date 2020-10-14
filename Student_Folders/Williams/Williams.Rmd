@@ -20,30 +20,30 @@ Climate change is transforming the landscape of the Salt Lake Valley in Utah by 
 #### Scorching Salt Lake City
 A recent study from ETH Zurich, a leading climatology research institute in Switzerland, analyzed the level of impact climate change has exerted on the Northern Hemisphere through a climate-analog study (Bastin, 2019). A climate analog study compares two different climates over time to demonstrate climate change impacts; in the case of this study, Salt Lake City is compared to Las Vegas. The study projects (a conservative estimate) that average Salt Lake City summer temperatures are likely to increase by 10 degrees Fahrenheit in the next 30 years. Thus, Salt Lake Valley summers may begin to feel closer to Las Vegas’s current scorching heat, increasing an average of 90 degrees to 100 degrees Fahrenheit.
 
-#### Shrinking Winters and Ski Seasons
+#### Shrinking Water Resources and Ski Seasons
   Climate change will likely reduce snowpack as winters warm. Snowpack is a critical resource for Salt Lake City, serving as a water resource for millions and an economic powerhouse in facilitating revenues from ski resorts (Seidel, 1998). Daily observation of snowpack telemetry (SNOTEL) data from 1981 to 2007 indicate that the overall level of snowfall has decreased significantly in the Great Salt Lake Basin (Bedford, 2007). This decreases the opportunity for the wintertime recreation and increases the chances of late-summer water shortages that are particularly potent as the population of the valley is rapidly increasing. The ski season in Utah is crucial, contributing $1.29 billion to Utah's economy and creating 20,000 jobs. As winters continue to warm, these resources will continue to be threatened. 
 
 #### The Environmental Injustice of Air Pollution
-  While revenues from ski resorts are important to the city's economy, there is a very pressing matter of environmental injustice: disparate air pollution damages. As anthropogenic fossil fuel burning continues to facilitate climate change, it also creates toxic air pollutants. Utah’s large metropolitan area, the Wasatch Front, has been notorious for trapping particulates, far exceeding the federal air quality standards set by the U.S. Environmental Protection Agency (EPA). The majority of communities that are exposed to this toxic air quality are Hispanic, Black, and Pacific Islander residents(Collins, 2019). This dire situation has led to a litany of health complications, including, but not limited to, asthma, cardiac diseases, and about 200 people hospitalized with severe pneumonia per year (Pirozzi, 2017).  The EPA defines “orange” and “red” risk days as extremely dangerous, but even “green” days can perpetuate higher risk of death among the elderly in the Salt Lake Valley (Di, 2017). It is vital to prioritize the safety of Salt Lake City's most disadvantaged communities. In order to take the first step in accomplishing this goal, one must first recognize and assess the problem. Therefore, I elected to conduct a climate data analysis in the region to understand the trends that facilitate these threats. 
+  While revenues from ski resorts are important to the city's economy, there is a very pressing matter of environmental injustice: disparate air pollution damages. As anthropogenic fossil fuel burning continues to facilitate climate change, it also creates toxic air pollutants. Utah’s large metropolitan area, the Wasatch Front, has been notorious for trapping particulates, far exceeding the federal air quality standards set by the U.S. Environmental Protection Agency (EPA).
+  The majority of communities that are exposed to this toxic air quality are Hispanic, Black, and Pacific Islander residents(Collins, 2019). This dire situation has led to a litany of health complications, including, but not limited to, asthma, cardiac diseases, and about 200 people hospitalized with severe pneumonia per year (Pirozzi, 2017).  The EPA defines “orange” and “red” risk days as extremely dangerous, but even “green” days can perpetuate higher risk of death among the elderly in the Salt Lake Valley (Di, 2017). Several environmental adovcacy groups in the region, such as HEAL Utah, are figthing the deregulation of fossil fuel usage and air quality control (HEAL Utah, 2020). It is vital to prioritize the safety of Salt Lake City's most disadvantaged communities. 
+  In order to take the first step in accomplishing this goal, one must first recognize and assess the problem. Therefore, I elected to conduct a climate data analysis in the region to understand the trends that facilitate these threats. This research ought to be useful for environmental advocates because it provides further precedence for the very real issue of anthropogenic climate change. 
 
 ## The Climate Data Behind These Issues
   To supplement this literature on climate change damages for the Salt Lake City populace, I analyzed temperature trend data in the Salt Lake Valley from 1942 to 2020 using NOAA satellite data collected by the Salt Lake International Airport Weather Station. 
-  
-  The results indicate a significant increase in summer temperatures, increase in winter temperatures, and decrease in overall snowfall, supporting literature that these weather anomalies in Utah are climate change caused. 
+  I hypothesized that due to global climate change increasing temperatures in the region, temperatures would increase in the summer and winter and the winter snowfall would be decreased. The results indicate a significant increase in summer temperatures, increase in winter temperatures, and decrease in overall snowfall, supporting literature that these weather anomalies in Utah are climate change caused. 
 
 
 ![View from Salt Lake International Airport Weather Station in Salt Lake City, Utah](https://live.staticflickr.com/1831/29063639228_e257d24aff_b.jpg)
 
 ### Methods
 
-  I analyzed temperature trend data in the Salt Lake Valley from 1942 to 2020 using NOAA satellite data collected by the Salt Lake International Airport Weather Station. This weather station is central and topographically similar to the majority of the rest of the Salt Lake Valley, providing a representative sample. It also has complete daily data since the 1940s, charting temperature, precipitation, and other relevant climate variables. 
+  Using R, I analyzed temperature trend data in the Salt Lake Valley from 1942 to 2020 using NOAA satellite data collected by the Salt Lake International Airport Weather Station. This weather station is central and topographically similar to the majority of the rest of the Salt Lake Valley, providing a representative sample. This station has been collecting robust daily data since the 1940s, charting temperature, precipitation, and other relevant climate variables so it is a great resource for this study. 
   
   I analyzed summer temperature data as well as winter temperature data and snowfall data. The variables measured are TMAX in July--the average daily maximum temperature, TMIN in January--the average daily minimum temperature, and average daily snowfall in January. July and January were selected because they represent the highest and lowest average points of temperature in the Valley, respectively. January also tends to have the highest rate of snowfall. 
 
   For each of the variables measured, a linear regression test was conducted to analyze and chart the satellite data. A linear model compares two variables over time, plots them in a slope (in this study's case, temperature or snowfall over decades), and determines if there is a statistically significant correlation between them. If two variables are significantly correlated, that means that the trends are most likely not due to random chance, and instead, the variables influence one another. 
 
   When the slope has a p-value that is less than 0.05, the traditional threshold for determining statistical significance, the null hypothesis is rejected, meaning that the slope is likely not due to random chance. R-squared is a statistical measure of how close the data are to the regression line. Although the R-squared values are zero or close to zero in this study, this is to be expected for weather data given its high variability and the significant p-values are sufficient to draw conclusions. 
-
 ```{r readdata, include=FALSE}
 filepath = "/home/CAMPUS/bawa2018/Climate_Change_Narratives/Data/FA20/Williams_SaltLakeCityUT_data.csv"
 climate_data = read.csv(filepath)
@@ -142,21 +142,22 @@ colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
 "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
 htmlTable(Results[,c(1, 10, 4, 11, 7)])
 ```
-
-
 ```{r Temperature and Snowfall, echo=FALSE}
-par(mfrow=c(1,3))
+par(mfrow=c(1,3),cex.main=0.8, cex.lab=0.8, cex.axis=0.8, xpd=FALSE, mar=c(5, 4, 5, 1))
 month_i <- 7
 i <- 7
 plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,],ty='l', main= "July Temperature", las = 1, xlim=c(1950, 2020), xlab= "Year", ylab="Average Maximum Temperature (°C)")
-
-July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==month_i,])
+July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
 abline(coef(July.lm), col="red")
+Julyresult <- NULL
+Julyresult <- rbind(Julyresult, cbind(Months[i],round(coef(July.lm)[2], 4), round(summary(July.lm)$coefficients[2, 4], 4), round(summary(July.lm)$r.squared,3)))
+  
+legend("topleft", inset=c(-.25,-.15), legend=c("July Temp", "January Temp", "January Snowfall"), col=c("red", "blue", "turquoise"),cex=0.5, lty=1:1:1, xpd=TRUE)
 
-#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="05"], ty='l')
+#plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="01"], ty='l')
 i <- 1
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",],ty='l', main = "January Temperature", las = 1, xlim=c(1950, 2020), ylab="Average Mimimum Temperature (°C)", xlab= "Year")
-Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
+plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],ty='l', main = "January Temperature", las = 1, xlim=c(1950, 2020), ylab="Average Mimimum Temperature (°C)", xlab= "Year")
+Jan.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
 abline(coef(Jan.lm), col="blue")
 Janresult <- NULL
 Janresult <- rbind(Janresult, cbind(Months[i],
@@ -173,8 +174,8 @@ plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l"
   SNOWresult <- rbind(SNOWresult, cbind(Months[i],
   round(coef(SNOWMonth.lm)[2], 4), round(summary(SNOWMonth.lm)$coefficients[2, 4], 4), round(summary(SNOWMonth.lm)$r.squared,3)))
 
-``` 
 
+```
 
 ### Results
 #### July is warming significantly
@@ -194,7 +195,6 @@ plot(SNOW ~ Year, data = MonthlySNOWMean[MonthlySNOWMean$Month == i, ], ty = "l"
 
   Based on my analysis, my data indicate that there is a significant trend of decreasing snowfall in Salt Lake City for the month of January, rejecting the null hypothesis (slope = -0.0488, r2 = 0.2271, p-value = 0.02). 
 
-
 ## This Trend Needs to Change to Protect People
 
   The most important takeaway is not data--it is the effect that these trends have on people. For the sake of Utahn health and incomes, our goal as a city should be to reverse these climate change trends. Salt Lake City has lost up to $1 billion from smaller and poorer winters influenced by climate change and these impacts are only projected to worsen (Salt Lake Tribune, 2013). Accompanying climate change, as further fossil fuels are burned, the increasing intensity of air pollution causes significant respiratory complications, particularly for the least advantaged. Action on climate change, such as reducing reliance on fossil fuels and incorporating more sustainable infrastructure, is in the best interest of the people of Salt Lake City. 
@@ -211,6 +211,9 @@ Collins, T. W., & Grineski, S. E. (2019). Environmental Injustice and Religion: 
 Di, Q., Dai, L., Wang, Y., Zanobetti, A., Choirat, C., Schwartz, J. D., & Dominici, F. (2017). Association of Short-term Exposure to Air Pollution With Mortality in Older Adults. JAMA, 318(24), 2446. https://doi.org/10.1001/jama.2017.17923
 
 Herald, B. H.-D. (n.d.). Winter sports industry crucial to Utah economy. Daily Herald. Retrieved October 10, 2020, from https://www.heraldextra.com/business/local/winter-sports-industry-crucial-to-utah-economy/article_5ecca646-e487-553c-98f5-e8ea04da8ff1.html
+
+
+ISSUE: Clean Air Act. (2020, May 18). HEAL Utah. https://www.healutah.org/blog-issue-clean-air-act/
 
 Pirozzi, C. S., Jones, B. E., VanDerslice, J. A., Zhang, Y., Paine, R., & Dean, N. C. (2017). Short-Term Air Pollution and Incident Pneumonia. A Case–Crossover Study. Annals of the American Thoracic Society, 15(4), 449–459. https://doi.org/10.1513/AnnalsATS.201706-495OC
 
