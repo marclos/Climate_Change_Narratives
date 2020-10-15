@@ -1,6 +1,6 @@
 ---
-title: "Climate Change Science"
-subtitle: "Climate activists, climate records, and ???"
+title: "Regional Narratives in Climate Change"
+subtitle: "Activists, weather records, and political change"
 author: "EA30 Students, Pomona College"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
@@ -14,7 +14,7 @@ output:
 bibliography: skeleton.bib
 link-citations: yes
 ---
-Updated: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
+Updated: Last compiled on `r format(Sys.time(), '%d %B, %Y')`
 
 ```{r setup, include=FALSE}
 library(tufte)
@@ -24,7 +24,7 @@ options(htmltools.dir.version = FALSE)
 ```
 # Introduction
 
-## Climate Activists and Defining Regional Narratives
+## Climate Activists and Defining Regional Naratives
 
 Human activities are driving climate change. And the impacts are being felt throughout the world --- and in spite of or because of climate activists are organizing around the issue. 
 
@@ -46,7 +46,7 @@ muanaloa.loess = loess(average~year, data=maunaloa, span = 0.75, degree = 2, par
   drop.square = FALSE, normalize = TRUE)
 
 maunaloa$loess <- predict(muanaloa.loess)
-lines(loess~decimal.date, data=maunaloa, lwd=2, col="red")
+lines(loess~decimal.date, data=maunaloa, lwd=1.4, col="red")
 
 ```
 
@@ -64,11 +64,11 @@ As we document below every region in the US and beyond respond differently to th
 
 ## Activitism 
 
-Ken Saro-Wiwa was a Nigirian activitists, devoting most of his time to human rights and environmental causes, particularly in Ogoniland. He was one of the earliest members of the Movement for the Survival of the Ogoni People (MOSOP), which advocated for the rights of the Ogoni people. He was particularly critical of the Royal Dutch Shell Company for its impact on Ogoni lands. In 1995, he was sentance to death, based on false charges, which provoked international outrage and the immediate suspension of Nigeria from the Commonwealth of Nations, as well as the calling back of many foreign diplomats for consultation. Saro-Wiwa remains an important symbol of resistance to the impacts of the fossil fuel demand.
-
 ```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='Tribute photo for Ken Saro Wiwa anniversary. Reflection in polluted river of local activist who follows in Ken"s footsteps, Kegbaradere community Luka Tomac/Friends of the Earth International. Taken 5 November 2015. Some rights reserved. creativecommons license 2.0'}
 knitr::include_graphics('F2020/Images/KenSara-Wiwa.jpg')
 ```
+
+Ken Saro-Wiwa was a Nigirian activitists, devoting most of his time to human rights and environmental causes, particularly in Ogoniland. He was one of the earliest members of the Movement for the Survival of the Ogoni People (MOSOP), which advocated for the rights of the Ogoni people. He was particularly critical of the Royal Dutch Shell Company for its impact on Ogoni lands. In 1995, he was sentance to death, based on false charges, which provoked international outrage and the immediate suspension of Nigeria from the Commonwealth of Nations, as well as the calling back of many foreign diplomats for consultation. Saro-Wiwa remains an important symbol of resistance to the impacts of the fossil fuel demand.
 
 ## Weather Records and Climate Trends
 
