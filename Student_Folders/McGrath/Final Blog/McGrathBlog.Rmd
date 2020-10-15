@@ -1,0 +1,251 @@
+---
+title: "Chicago, An Urban Heat Island Getting Hotter?"
+author: "Olivia McGrath - Pomona College EA30"
+date: "October 2020"
+output:
+ word_document: default 
+ pdf_document: default
+ html_document:
+        bootstrap_version: 4+3
+        theme: spacelab
+---
+
+``` {r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(htmlTable)
+library(tidyverse)
+library(bootstraplib)
+library(ggplot2)
+data(diamonds) 
+significance_star <- function(input_vector) { # create a function to auto"magically" assign asterisk values corresponding to the significance level observed in the month-by-month TMAX or TMIN outputs; it takes input_vector as its only argument
+  out_star_vec <- dplyr::case_when( # create an output object (out_star_vec) using the case_when function from the dplyr package
+    input_vector <= 0.001 ~ "***", # assign 3 asterisks to lowest arbitrary threshold of significance
+    input_vector <= 0.01 & input_vector > 0.001 ~ "**",
+    input_vector <= 0.05 & input_vector > 0.01 ~ "*",
+    TRUE ~ "NS" # give the non-significant marker of NS for all other values greater than 0.05
+  )
+  return(out_star_vec) # ?return for more details
+}
+```
+
+
+### Overview:
+Is Chicago getting hotter? How will this interact with the fact that it is an Urban Heat Island? What can we do? This blog is intended to analyze temperature trends in Chicago and investigate how these trends work towards proving a pattern of warming resulting from anthropogenic effects on the planet. In addition, it will examine how the Urban Heat Island effect is unevenly distributed across Chicago, how it can worsen effects of climate change, and how activists can address both environmental inequality and mitigation of warming.
+
+
+### Chicago:
+The third most populous US city and my hometown, Chicago is home to a population of around 2.7 million people. It is a hub of finance and transportation and boasts some of the country’s tallest skyscrapers. The climate is continental, with cold winters and warm summers. 
+Chicago is an “Urban Heat Island” or UHI. This term refers to the fact that more densely populated areas experience higher temperatures than rural areas. This is a result of the sun’s rays being absorbed by the concentration of buildings and other infrastructure, the greater emission of gases from industry and cars, and the lack of green spaces that absorb these emissions. This means that Chicago is already hotter than surrounding rural areas, and rising temperatures present a possibility of worsening the effect.
+
+
+
+<center>
+![The City of Chicago](Chicago smog.jpg) </center>
+
+
+
+### What Effects will Rising Temperature Have on Chicago?
+Upon conducting a literature review, I found reports of projected effects of global warming and climate change on the city. Global warming will have ecological, economic, and social impacts on the city of Chicago. As a result of rising temperature, weather events including heatwaves, more heavy precipitation and long-term decreases in snowfall are projected (Hayhoe et. al, 2010). Many Chicagoans remember the 1995 heat wave. Around 700 people died as a result of the record temperatures. Health problems such as heat stress, exposure to insect-borne illness, and respiratory afflictions resulting from poor air quality are also possible (Patz et. al, 2014). In addition to humans, plants and animals can be affected by changing temperatures, with crop yields fluctuating. Warming can have economic implications on the city, from property damaged by weather events to healthcare costs. Later, I discuss how implications can be more severe for those made vulnerable by environmental inequity.
+
+
+### Methodology:
+First, to look for warming trends I used R to analyze data from the NOAA National Centers for Environmental Information datasets (https://www.ncdc.noaa.gov/cdo-web/datasets). I chose to use the Midway Airport station as it has data reaching back to the 1920s, and out of the stations monitoring Chicago temperature and weather it has the greatest coverage, based on the range and extensiveness of the data.
+
+
+I first looked at maximum daily temperatures by year (in degrees Celsius) As the graph’s line of best fit indicates, there is a slight warming trend over the years, with an estimated slope of .036˚C per year. Still, there was a lot of “noise” or variation with the X variable being years, so I looked at an aggregation of data from certain months.
+
+```{r readdata, echo=FALSE}
+# Olivia, you'll want to use choose.file() to find your path and paste it below, then uncomment it so it over-writes mine...
+#file.choose()
+filepath = "/home/CAMPUS/ocma2018/Climate_Change_Narratives/Data/FA20/olivia_chicagomidway_data.csv"
+climate_data = read.csv(filepath) 
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+```
+
+```{r plotdailydata, echo=FALSE, include=FALSE}
+plot(TMAX~NewDate, data=climate_data, ty='l', xlab='Year', ylab='Max Temp (C˚)')
+TMAX.lm = lm(TMAX ~ NewDate, data=climate_data) 
+slopeintercept = coef(TMAX.lm)
+abline(coef(TMAX.lm), col = 'pink') 
+lm(TMAX ~ NewDate, data=climate_data)
+lm(TMAX ~ NewDate, data=climate_data)
+TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
+slopeintercept = coef(TMAX.lm)
+```
+``` {r dailybyyear, echo=FALSE, fig.align="center"}
+plot(TMAX ~ NewDate, data= climate_data, type='l', las=1, xlab="Year", ylab = "Temperature (°C)")
+abline(slopeintercept, col="red", lwd=3)
+#(TMAX.lm.sum = summary(lm(TMAX ~ NewDate, data=climate_data)))
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+#str(MonthlyTMAXMean)
+#summary(TMAX.lm)
+```
+
+```{r plotmonthbymonth, include=FALSE}
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
+ty='l', xlab="Year", ylab="Max Temp (C˚)", xlim=c(1950, 2020))
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+abline(coef(May.lm), col="red")
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+par(mfrow = c(4, 3), mar = c(2, 2, 2, 2) + 0.1) 
+TMAXresult <- NA 
+for (i in 1:12) {
+plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ], ty = "l", las = 1, xlab="Year", ylab = "Temperature (°C)", xlim = c(1940, 2020),
+main = Months[i])
+Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH ==
+i, ])
+#summary(Month.lm)
+abline(coef(Month.lm), col = "red")
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4], 4), round(summary(Month.lm)$r.squared,3)))
+}
+```
+
+I singled out March—generally part of Chicago's cold winter—and July—the height of summer, to make sure I wasn’t focusing on one season. It is possible to observe a slight trend of warming. For March, the slope is .026˚C per year, with a p value of .017 and $R^2_{adj}$ of .05. For July, the slope is .018˚C per year with a p value of .016 and $R^2_{adj}$ of .05. 
+
+```{r max temp, echo=FALSE, fig.width=15, fig.height=6, fig.cap="Figure 1. Maximum Temperatures for March and July.", fig.align="center"}
+par(mfrow=c(1,2))
+i <- 3
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$Month <- as.numeric(MonthlyTMAXMean$Month)
+MonthlyTMAXMean$Year <- as.numeric(MonthlyTMAXMean$Year)
+plot(TMAX ~ Year, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == i, ], pch=8, cex=0.5, las=1, xlab="Year", ylab = "Temperature (°C)", xlim = c(1940, 2020), main = Months[i])
+  TMAXMonth.lm <- lm(TMAX ~ Year, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == i, ])
+  #summary(TMAXMonth.lm)
+  abline(coef(TMAXMonth.lm), col = "red")
+ TMAXresult <- NULL
+TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(TMAXMonth.lm)[2], 4), round(summary(TMAXMonth.lm)$coefficients[2, 4], 4), round(summary(TMAXMonth.lm)$r.squared,3)))
+#TMAXresult
+i <- 7
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$Month <- as.numeric(MonthlyTMAXMean$Month)
+MonthlyTMAXMean$Year <- as.numeric(MonthlyTMAXMean$Year)
+plot(TMAX ~ Year, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == i, ], pch=8, cex=0.5, las=1, xlab="Year", ylab = "Temperature (°C)", xlim = c(1940, 2020), main = Months[i])
+  TMAXMonth.lm <- lm(TMAX ~ Year, data = MonthlyTMAXMean[MonthlyTMAXMean$Month == i, ])
+  #summary(TMAXMonth.lm)
+  abline(coef(TMAXMonth.lm), col = "red")
+TMAXresult <- NULL
+TMAXresult <- rbind(TMAXresult, cbind(Months[i],round(coef(TMAXMonth.lm)[2], 4), round(summary(TMAXMonth.lm)$coefficients[2, 4], 4), round(summary(TMAXMonth.lm)$r.squared,3)))
+#TMAXresult 
+```
+
+To see if the minimum temperatures in summer and winter months were increasing as well, I graphed this data. I chose to show August and November, one month in the peak of summer and one in the beginning of the winter. August has a trend line showing a slope of .026˚C per year and p value of .002 and $R^2_{adj}$ of .14. November's minimum temperatures also slow a positive trendline, with a slope of .038˚C per year, and p value of .0004 and $R^2_{adj}$ was .09.
+
+```{r plottmin, echo=FALSE, include=FALSE}
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+# Fixing the Format of Month and Year as numeric
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+#library(xtable)
+### 3.1: Specifying plotting window parameters
+#par(mfrow = c(4, 3), mar = c(5, 4, 1, 1) + 0.1) 
+ # TMINresult <- NULL 
+#for (i in 1:12) { 
+#Month_sub_DF <- MonthlyTMINMean[MonthlyTMINMean$MONTH==i, ] 
+#MonthMin_lm <- lm(TMIN ~ YEAR, data=Month_sub_DF)
+#TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(MonthMin_lm)[2], 3), round(summary(MonthMin_lm)$coefficients[2,4], 3), round(summary(MonthMin_lm)$r.squared, 2)))
+  #plot(TMIN~YEAR,data=Month_sub_DF, type='l', ylab='Min T (*C)', xlab='Years',main=Months[i], bty="L", las=1) 
+# abline(coef(MonthMin_lm),col="pink") 
+#}
+```
+
+
+```{r min temp, echo=FALSE, fig.width=15, fig.height=6, fig.cap="Figure 2. Minimum Temperatures for August and November", fig.align="center"}
+par(mfrow=c(1,2))
+i <- 8
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$Month <- as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$Year <- as.numeric(MonthlyTMINMean$Year)
+plot(TMIN ~ Year, data = MonthlyTMINMean[MonthlyTMINMean$Month == i, ], pch=8, cex=0.5, las=1, xlab="Year", ylab = "Temperature (°C)", xlim = c(1940, 2020), main = Months[i])
+  TMINMonth.lm <- lm(TMIN ~ Year, data = MonthlyTMINMean[MonthlyTMINMean$Month == i, ])
+  #summary(TMINMonth.lm)
+  abline(coef(TMINMonth.lm), col = "red")
+ #TMINresult <- NULL
+  #TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(TMINMonth.lm)[2], 4), round(summary(TMINMonth.lm)$coefficients[2, 4], 4), round(summary(TMINMonth.lm)$r.squared,3)))
+#TMINresult
+  i <- 11
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$Month <- as.numeric(MonthlyTMINMean$Month)
+MonthlyTMINMean$Year <- as.numeric(MonthlyTMINMean$Year)
+plot(TMIN ~ Year, data = MonthlyTMINMean[MonthlyTMINMean$Month == i, ], pch=8, cex=0.5, las=1, xlab="Year", ylab = "Temperature (°C)", xlim = c(1940, 2020), main = Months[i])
+  TMINMonth.lm <- lm(TMIN ~ Year, data = MonthlyTMINMean[MonthlyTMINMean$Month == i, ])
+  #summary(TMINMonth.lm)
+  abline(coef(TMINMonth.lm), col = "red")
+#TMINresult <- NULL
+#TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(TMINMonth.lm)[2], 4), round(summary(TMINMonth.lm)$coefficients[2, 4], 4), round(summary(TMINMonth.lm)$r.squared,R)))
+#TMINresult
+```
+
+
+### What Does this Data Mean?
+To ensure the efficiency of my models, I tested linear model assumptions for all the monthly data via a linear regression analysis. The plots showed a linear relationship between the X and Y variables, with normally distributed residuals. Homoscedasticity was demonstrated, and outliers did not influence the linear regression. When analyzing data, the probability value and $R^2_{adj}$ were taken into consideration. The p value, when less than 0, enabled me to safely reject the notion that there was no correlation between the X and Y values—the null hypothesis. Therefore, I can say that there is a positive slope, or increase, in monthly maximum and minimum temperatures. $R^2_{adj}$ conveyed the degree of variation explained in the variable of temperature by the model. These values were on the low end, with the greatest being for August minimum temperatures—with around 10% of variance in temperature being explained by the variation in year—this is likely due to the number of conflicting variables involved in natural events
+
+
+
+### How are Different Areas of the City Affected by Higher Temperatures?
+The Urban Heat Island effect is not experienced as intensely in all Chicago neighborhoods. Due to redlining and other instances of systemic discrimination stemming from America’s history of segregation, lower-income BIPOC communities are often pushed into areas with greater environmental risks. Undesirable sites, such as factories and power plants, add to the Urban Heat Island effect and contribute to other aspects of climate change, affecting health, ecology, and the economy of affected neighborhoods. Analyzing the heat risk of areas using density of structure, lack of vegetation, and land surface temperature, the writing of Mitchell et. al demonstrates a relationship between heat exposure and factors such as socioeconomic status and race. The danger of inequity and risk of heat exposure can increase if the planet continues to warm and there is no acknowledgment of underlying inequity (Mitchell et. al, 2015). An event like the 1995 heat wave is a harrowing example of this, as a majority of the fatalities were included in this demographic of vulnerability (Whitman, 1997).
+Fig. 3 is an approximate racial geography of Chicago, based on census reports, side by side with Fig. 4, a visualization of UHI hotspots. Many hotter areas are occupied by nonwhite Chicagoans.
+
+
+
+<center>
+![Fig. 3 Race by Neighborhood According to Chicago Census](race by area.png){ width=200, height=350 } ![Fig. 4 UHI Hotspots (based on Land Temperature)](heat chicago.png){width=200, height=350} </center>
+
+
+
+### Activism:
+How can Chicago work to decrease the Urban Heat Island Effect and adapt to rising temperatures? 
+Structural changes should be introduced to minimize negative effects of warming. One way to a adapt to a changing climate and reduce stress on citizens is increasing vegetation—through requiring the construction of green roofs like that at Chicago City Hall in Fig. 5, turning vacated lots into parks, and protecting Chicago’s native plants—the city’s landscape maintenance fund could be reallocated to preserve these native environments (Eng, 2019). In addition, reducing greenhouse gas emissions with the use of renewable energy sources is a way to minimize heat island effects. Transportation is the leading cause of GHG emissions, if Mayor Lori Lightfoot carries out her campaign promise of transitioning CTA buses away from fossil fuels by 2030, the relief on the climate would be equivalent to removing 43,000 cars from the road (Eng, 2019). 
+There are many organizations working to create a sustainable future in Chicago. Some examples include the Center for Neighborhood Technology (https://www.cnt.org/), Friends of the Parks (https://fotp.org/), and the Natural Land Institutue (https://www.naturalland.org/)
+Whether political, community-based, or individual, action is crucial to address climate risks.
+
+How are activists addressing environmental injustice?
+Chicago policy and resource allocation needs to reflect the exposure of low-income and BIPOC communities to risk of heat-related issues. The above initiatives should prioritize areas most at risk of stress from heat. Some Chicago communities are taking initiative and protesting environmental injustice in their neighborhoods. The Little Village Environmental Justice Organization (http://www.lvejo.org/about-us/history/) and PERRO of Pilsen (https://pilsenperro.org/our-mission/), areas with large Hispanic populations, have advocated for changes like the closure of coal plants and the construction of new parks (LVEO, 2014) to address disproportionate exposure to pollution and lack of open space. In addition, Blacks in Green (https://www.blacksingreen.org/8-principles), founded by educator and activist Naomi Davis, strives to create sustainable, diverse, educated, and culturally-rich communities in black neighborhoods.
+These are examples of intersectional climate activists and the change they make possible.
+
+
+
+
+<center>
+![Fig. 5 Green roof on Chicago City Hall](green roof.jpg){width=400} </center>
+
+
+
+
+### In Conclusion...
+
+Climate is inherently variable and it is extremely difficult to predict the future. However, in analyzing both my temperature data and global warming trends observed by scientists in Chicago and beyond, it is clear to me that inactivity in the face of anthropogenic climate change could leave Chicagoans experiencing consequences exacerbated by the heat island effect and disproportionate due to environmental injustice. Examining warming trends in Chicago and reading literature about their projected impact has reinforced my belief that it is essential for Chicago to prepare for future increases in temperature, and work to minimize the impact of urban heat—especially for vulnerable populations. 
+
+
+
+
+## Works Cited:
+
+* Bruce C Mitchell and Jayajit Chakraborty 2015 Environ. Res. Lett. 10 115005
+
+* Eng, M. (2019, September 17). 10 Things Chicago Mayor Lightfoot Can Do To Combat Climate Change. Retrieved October 14, 2020, from https://www.npr.org/local/309/2019/09/17/761288487/10-things-chicago-mayor-lightfoot-can-do-to-combat-climate-change
+
+* Hayhoe, K., Vandorn, J., Croley, T., Schlegal, N., & Wuebbles, D. (2010). Regional climate change projections for Chicago and the US Great Lakes. Journal of Great Lakes Research, 36, 7-21. doi:10.1016/j.jglr.2010.03.012
+
+* Little Village Environmental Justice Organization. (n.d.). Retrieved October 14, 2020, from http://www.lvejo.org/
+
+* National Centers for Environmental Information (NCEI). (n.d.). Daily Summaries Location Details. Retrieved September 2, 2020, from https://www.ncdc.noaa.gov/cdo-web/datasets/GHCND/locations/CITY:US170006/detail
+
+* Patz, J. A., Frumkin, H., Holloway, T., Vimont, D. J., & Haines, A. (2014). Climate change: challenges and opportunities for global health. JAMA, 312(15), 1565–1580. https://doi.org/10.1001/jama.2014.13186
+
+* R. Alfraihat, G. Mulugeta, and T. S. Gala, “Ecological Evaluation of Urban Heat Island in Chicago City, USA.” Journal of Atmospheric Pollution, vol. 4, no. 1 (2016): 23-29. doi: 10.12691/jap-4-1-3
+
+* US EPA. (n.d.). Retrieved September 27, 2020, from https://climatechange.chicago.gov/climate-impacts/climate-impacts-midwest
+Vegetation Limits City Warming Effects. (2015). Retrieved September 27, 2020, from https://earthobservatory.nasa.gov/images/86440/vegetation-limits-city-warming-effects
+
+* Whitman, S., PhD, Good, G., MS, Donoghue, E., MD, Benbow, N., MAS, Shou, W., MS, & Mou, S., MS. (1997). Mortality in Chicago Attributed to the July 1995 Heat Wave. American Journal of Public Health, 87(9).
