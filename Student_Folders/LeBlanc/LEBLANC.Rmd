@@ -1,65 +1,57 @@
 ---
-<<<<<<< HEAD
 title: "Global Climate Change, Oregon Wildfires, and Portland Air Quality"
 author: "Claire LeBlanc"
+date: "10/14/2020"
 output:
   html_document: default
   pdf_document: default
-=======
-title: "Global Climate Change, Oregon's Wildfires, and Portland's Air Quality"
-author: Claire LeBlanc
-output: html_document
->>>>>>> 7902162f6e9e739fe3282cbbdb8c419627328d54
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-<br>
 
-## Oregon Wildfires and Air Quality
+## "Once in a Generation" Wildfires
 
-On September 9th and 10th, a windstorm roared through Oregon. After an extremely dry summer, this created a “once in a generation” wildfire event, with over one million acres burning and multiple lives being lost. In Portland, the largest city in Oregon, we avoided the worst of the consequences. We were not forced to evacuate, and we did not lose our homes and neighborhoods to the flames. 
+On September 9th and 10th, 2020, a windstorm roared through Oregon. After an extremely dry summer, this created, according to Governor Brown, a “once in a generation” wildfire event, with over one million acres burning and multiple lives lost (Newberger 2020). Fortunately, in Portland, we avoided the worst of the consequences. We were not forced to evacuate, and we did not lose our homes and neighborhoods to the flames. One of the main effects of the fires for Portlanders was air quality in the “hazardous” range for over a week, sometimes rising to levels above the EPA scale.
 
-One of the main effects for Portlanders was air quality in the “hazardous” range for over a week, sometimes rising to levels above the EPA scale. While this had impacts on everyone in Portland, the impacts were not felt equally. For those experiencing homelessness, those with essential jobs, and those without an air sealed home or the resources to buy an air filter, the effects were much more severe. 
+Portland is located on the border between Oregon and Washington, next to the Colombia and Willamette rivers. The temperate climate, with warm dry summers and wet mild winters, makes it easy to miss the subtle climate changes that are occurring in the region. Extreme weather events, such as these unprecedented wildfires, can bring attention to the climate crisis. 
 
-<br>
-
-```{r, echo=FALSE, fig.show="hold", out.width="50%", fig.allign = "center", fig.cap= "Figure 1: Twitter posts connecting the smoke in Portland, OR to climate change"}
+<center>
+```{r, echo=FALSE, fig.show="hold", out.width="50%", fig.allign = "center", fig.cap= "**Figure 1:** Twitter posts connecting the smoke in Portland, OR to climate change"}
 knitr::include_graphics ("Screen Shot 2020-09-21 at 8.55.15 PM.png")
 knitr::include_graphics ("Screen Shot 2020-09-21 at 9.03.22 PM.png")
 ```
-
-<br>
-
-Many in Portland connected the decreased air quality to climate change (Figure 1). But has climate change actually caused a significant decrease in air quality?
-
-To investigate this, I looked at two possible climate impacts in Portland, increasing temperatures and decreasing Air Quality. Both increasing temperature and decreasing air quality have the potential to cause devestating impacts to the portland area. 
-
-
-### But how bad could rising temperatures and poor air quality really be? 
-Poor smoke from wildfires and increasing temperatures are climate justice issues. For example, people experiencing homelessness experience a greater exposure to wildfire smoke. According to the US Interagency Council on Homelessness, about 15,876 people experience homelessness on any given day in Oregon and about 4,015 of those people are in Multnomah county (8).  After adjusting for population, Portland has one of the highest rates of homelessness in the country, due to a lack of affordable housing and mental health resources (8). Poor air quality will undoubtedly affect these individuals more, as they often do not have a safe indoor space where they can escape the poor air quality for long periods of time. 
-
-Additionally, those in the essential workforce or low-income people who cannot take time off of work, such as farmers and construction workers, are more likely to be working outside in the dangerous air quality. People with low incomes may not have the resources to afford air filters or other technologies to keep out the smoke.  
-
-A variety of studies have investigated the health impacts of exposure to wildfire smoke. Lui et al. reviewed 61 studies investigating the relationship between wildfire smoke and health. They reported that 90% of the studies found a significant association between wildfire smoke and an increased risk of respiratory morbidity (5). Another study by Jones et al. found that smoke-related health costs rose 1256% in Oregon from 2005 to 2015, and that wildfire smoke related health costs in the Western US totaled $165 million per year (3). 
-
-Studies have also found that the health effects of poor air quality disproportionately affect minority groups. These disparities are caused by the systematic racism that pervades all levels of US society. One study by Liu et al. looking at individuals over 65 years of age found that a higher fraction of Blacks were exposed to more than one smoke wave. They also found that Blacks had a 21.7% increased rate of respiratory admissions to hospitals, compared to a 6.9% increase for whites. (6) 
-
-ADD CONSEQUENCES ABOUT INCREASED TEMPERATURE--SCHOOL, ETC. 
-
-<br>
-
-<center>
-![Figure 2: Fire prevelence graph. While this graph contains a lot of information, the important trends are shown with the white and black trend lines. As shown with the white line, the total number of fires is not increasing. With the black trend line, which shows acres burned, you can see it has increased in recent years.](Fire chart 2.png)
-
-<br>
 </center>
 
-## Portland is Getting Hotter
-I investigated temperature trends in four fire season months, June, July, August, and September. These months were anlyzed because they make up the fire season in Oregon, as well as the four hottest months of the year. Daily temperature data collected at the Portland International Airport was obtained from the NOAA database. 
+Many in Portland connected the decreased air quality to climate change (Figure 1). But has climate change actually caused a significant decrease in air quality? What other less noticeable climate changes may be occurring? 
 
-From this data, monthly means were calculated and graphed using a linear model. ADD ASSUMPTIONS OF THE LINEAR MODEL. I hypothesized that there would be an increase in daily maximum temperature over the four months looked at: June, July, August, and September. To test this, I looked at whether the null hypothesis, that there is no increase in temperature, could be rejected using a 95% confidence level 
+To answer these questions, I focused my analysis on changes in temperature and air quality, because both of these could have devastating effects. 
+
+## Why do temperature and air quality matter? 
+Poor air quality and increasing temperatures are intricately related. Increased temperatures can increase fire risk, which in turn causes poorer air quality. One study by Holden et al. (2018), looked at the factors that affect fires in the West, and they found that summer temperatures were strongly correlated with the area burned. The higher the temperature, the greater the area burned. Additionally, extreme heat can cause air stagnation, which traps pollutants and causes poor air quality (How, [date unknown]).
+
+Extreme heat can be very dangerous. According to the EPA, from 2006-2015, extreme heat caused more deaths than any other weather-related hazard, and 65,000 Americans visit an emergency room each summer due to acute heat illness (Edison et al., 2016). Similarly, a variety of studies have found that exposure to wildfire smoke causes negative health outcomes. Lui et al. (2015) reviewed 61 studies investigating the relationship between wildfire smoke and health. They reported that 90% of the studies found a significant association between wildfire smoke and an increased risk of respiratory morbidity. Another study by Jones et al. (2017) found that smoke-related health costs rose 1256% in Oregon from 2005 to 2015, and that wildfire smoke-related health costs in the Western US totaled $165 million per year.
+
+Studies have also found that the health eﬀects of poor air quality disproportionately aﬀect minority groups. These disparities are caused by the systematic racism that pervades all levels of US society. One study by Liu et al. looking at individuals over 65 years of age found that a higher fraction of Blacks were exposed to more than one smoke wave. They also found that Blacks had a 21.7% increased rate of respiratory admissions to hospitals, compared to a 6.9% increase for whites. (Lui et al., 2016). 
+
+Economic status also influences exposure to air pollution. Trees are a natural and relatively easy solution to improve air quality and cool down neighborhoods, but not all Portlanders have equal access to trees. According to Portland Parks and Recreation, tree canopy in Portland neighborhoods varies from 5-70%, and this variation is closely correlated to income (DiSalvo, 2018). 
+
+People experiencing homelessness also experience greater exposure to wildfire smoke and high temperatures. According to the US Interagency Council on Homelessness, about 15,876 people experience homelessness on any given day in Oregon and about 4,015 of those people are in Multnomah county (SOH, 2019).  After adjusting for population, Portland has one of the highest rates of homelessness in the country, due to a lack of affordable housing and mental health resources (SOH, 2019). Poor air quality and increased heat will undoubtedly affect these individuals more, as they often do not have a safe indoor space where they can escape the poor air quality or heat for long periods of time. Additionally, those in the essential workforce or those who cannot afford to take time off of work, such as farmworkers and construction workers, are more likely to experience poor air quality and hotter temperatures. People with low incomes are also less likely to have the resources to afford air filters and air conditioners. 
+
+Air quality and temperature can also have negative effects on education. A recent study by Park et al. (2020) looked at the relationship between learning and heat exposure. They found that US students in school during hotter years scored worse on standardized tests than students in the same district in colder years. They also found that the damage associated with hotter temperatures was larger for racial minorities and low-income populations. Another study by Ebenstein et al. (2016), looked at the relationship between air pollution and test scores. They found that higher PM~2.5~ exposure was associated with a significant decline in student performance on exams. Both of the studies illustrate that air temperature and air quality have an impact beyond public health. 
+
+Clearly, the potential damage from poor air quality and increasing temperatures is great, but is Portland's climate actually changing? To investigate this, I looked for trends in air quality and temperature data using the R programming language for June, July, August, and September. These months were chosen because they encompass Oregon's fire season, and they also represent the hottest months where potential temperature increases may have the largest health and educational effects. 
+
+<br>
+
+
+## Portland is Heating Up
+I downloaded daily temperature data collected at the Portland International Airport from an NOAA database ( [Link to dataset](https://www.ncdc.noaa.gov/cdo-web/) ). From these data, I calculated and plotted monthly means using a linear model. 
+
+The linear model assumes that the two variables have a linear relationship, that the data points are evenly distributed from the trend line, that the noise in the data is similar across time, and that there are no outliers that are skewing the model. The temperature data below did not exhibit any substantial violations of these assumptions.
+
+I hypothesized that there would be an increase in daily maximum temperature over time in the four months looked at: June, July, August, and September. I tested if the null hypothesis, that there is no increase in temperature, could be rejected with a 95% confidence level.
 
 ```{r temp setup, echo = FALSE}
 climate_data <-read.csv("/home/CAMPUS/cjld2018/Climate_Change_Narratives/Data/FA20/LeBlanc_temp_percp_data.csv")
@@ -74,45 +66,46 @@ MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
 ```
 
-```{r temp graphs, echo = FALSE, fig.show="hold", out.width="50%", fig.cap="Figure 3: Graphs of average daily max temperature in June, July, August, and September. All four months showed a significant trend. For June, p = 0.03627 < 0.05 and Adjusted R-squared = 0.04132. For July, p = 0.0223 < 0.05 and the Adjusted R-squared = 0.0512. For August, p = 0.000008038 < 0.05 and the Adjusted R-squared = 0.2096. For September, p = 0.03693 < 0.05 and Adjusted R-squared = 0.04095."}
+```{r temp graphs, echo = FALSE, fig.show="hold", out.width="50%", fig.cap=  "**Figure 2:** Graphs of average daily max temperature in June, July, August, and September. All four months showed a significant trend. For June, p = $0.036$ and $R^2_{adj} = 0.041$. For July, p = $0.022$ and the $R^2_{adj} = 0.051$. For August, p = $8.0*10$^-6^ and the $R^2_{adj} = 0.21$. For September, p = $0.037$ and $R^2_{adj} = 0.04095.$"}
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",], ty='l', xlim=c(1940, 2019), main="Average Maximum Temperature in June", xlab = "Year", ylab= "Average Max Temperature (Celcius)", col="coral1")
+
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",], ty="p", xlim=c(1940, 2019), main="Average Maximum Temperature in June", xlab = "Year", ylab= "Average Max Temperature (°C)", col="coral1")
 June.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
 abline(coef(June.lm))
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",], ty='l', xlim=c(1940, 2019), main="Average Maximum Temperature in July", xlab = "Year", ylab= "Average Max Temperature (Celcius)", col="cornflowerblue")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",], ty="p", xlim=c(1940, 2019), main="Average Maximum Temperature in July", xlab = "Year", ylab= "Average Max Temperature (°C)", col="cornflowerblue")
 July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
 abline(coef(July.lm))
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], ty='l', xlim=c(1940, 2019), main="Average Maximum Temperature in August", xlab = "Year", ylab= "Average Max Temperature (Celcius)", col="aquamarine4")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], ty='p', xlim=c(1940, 2019), main="Average Maximum Temperature in August", xlab = "Year", ylab= "Average Max Temperature (°C)", col="aquamarine4")
 August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
 abline(coef(August.lm))
 
-plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",], ty='l', xlim=c(1940, 2019), main="Average Maximum Temperature in September", xlab = "Year", ylab= "Average Max Temperature (Celcius)", col="mediumpurple1")
+plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",], ty='p', xlim=c(1940, 2019), main="Average Maximum Temperature in September", xlab = "Year", ylab= "Average Max Temperature (°C)", col="mediumpurple1")
 September.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="09",])
 abline(coef(September.lm))
 ```
 
-<br>
-
-As you can see from Figure 3, all four months show an increase in temperature. Additionally, for all four months, the null hypothesis is rejected and the increase in temperature is found to be significant. 
-
-Notably, in August, one of the main fire season months, this trend is particularly strong, with an extremely small p-value (p = 8.038 x 10^-6). August also had an adjusted R-squared value of about .2, meaning that 20% of the variation in the data can be explained by simply looking at the year. This is very high for climate data which, as shown in Figure 1, tends to vary greatly by year, suggesting that climate change is having a large effect in August in particular. In addition, the August trendline had the largest slop, with temperature increasing by 0.037 degrees per year. While this may seem small, it corresponds to a two degree increase over fifty years!
 
 <br>
 
-## Air Quality is Not Getting Worse (But it's Not Getting Better)
-I also investigated air quality data in the months of June, July, August, and September, as these months corresponded to Oregon fire season, and I was particularly interested in the effect of smoke on air quality. 
+All of these months showed an increasing temperature trend. Based on our linear model, June, July, August, and September saw annual increases of 0.017 °C, 0.019 °C, 0.035 °C, and 0.017 °C per year, respectively. This corresponds to a rise of about 1.3 °C in June, 1.5 °C in July, 2.8 °C in August, and 1.3 °C in September over the 79 year period from 1940-2019.  Additionally, for all four months, I rejected the null hypothesis meaning that the increase in temperature is significant.
 
-I obtained air quality data from the EPA, which compiled daily air quality measurements for a variety of pollutants from a variety of different locations around Portland. 
+Notably, in August, this trend is particularly strong, with an extremely small p-value (p = 8.038 x 10^-6). For the August data, around 20% of the variation in the data can be explained by simply looking at the year, which is much higher than any of the other months. In addition, the August trendline had the largest slope, with temperature increasing by 0.037 degrees per year. While this may seem small, it corresponds to a two-degree increase over fifty years, which will have a significant eﬀect on a variety of climatic and ecological systems. 
 
-The EPA monitors and measures air quality under the Clean Air Act of 1970. It then ranks each pollutant on a scale known as the Air Quality Index (AQI) which ranges from 0-500, where higher values represent greater pollution and health risk. The EPA uses the AQI to measure the concentrations of five main pollutants: particulate matter, ground-level ozone, carbon monoxide, sulfur dioxide, and nitrogen dioxide. (1)
+<br>
 
-Smoke from fires contains many different chemicals, but this analysis will focus on one of the most dangerous components, PM 2.5, or particulate matter with a diameter of 2.5 micrometers and smaller. These particles are particularly dangerous because, due to their small size, they can travel deep in the lungs (1). Focusing on PM 2.5, however, also limited the length of this analysis, as PM 2.5 data was only available starting in 1999. 
+## Air Quality Shows A Murky Story 
 
-The data from the EPA provided a daily PM 2.5 value, which I used to create and graph monthly averages using a linear model. ADD SOMETHING ABOUT THE ASSUMPTIONS 
+I obtained air quality data from the EPA ( [Link to database](https://www.epa.gov/outdoor-air-quality-data/download-daily-data) ), which compiles daily air quality measurements for a variety of pollutants from a variety of different locations around Portland. 
 
-I hypothesized that air quality decreased over time (causing increasing AQI values and a positive trend in the graph). To test this, I investigated the null hypothesis, that there was no increasing or decreasing trend. A 95% confidence level was used for this analysis as well. 
+The EPA monitors and measures air quality under the Clean Air Act of 1970. It then calibrates levels of each pollutant to a scale known as the Air Quality Index (AQI) which ranges from 0-500, where higher values represent greater pollution levels and greater health risks. The EPA uses the AQI to measure the concentrations of five main pollutants: particulate matter, ground-level ozone, carbon monoxide, sulfur dioxide, and nitrogen dioxide. (AQI, [date unknown])
+
+While wildfire smoke contains many hazardous chemicals, this analysis will focus on one of the most dangerous components, PM~2.5~, or particulate matter with a diameter of 2.5 micrometers and smaller. These particles are particularly dangerous because, due to their small size, they can travel deep in the lungs (AQI, [date unknown]). Focusing on PM~2.5~, however, also limited the length of this analysis, as PM~2.5~ data were only available starting in 1999. 
+
+The data from the EPA provided a daily PM~2.5~ value, which I used to plot monthly averages, which I then analyzed using a linear model. The data did not exhibit any substantial violations of the assumptions of the linear model.  
+
+I hypothesized that air quality decreased over time (which would cause increasing AQI values and a positive trend in the graph). To test this, I investigated the null hypothesis, that there was no increasing or decreasing trend. A 95% confidence level was used for this analysis as well. 
 
 ```{r AQ setup, include = FALSE}
 setwd("/home/CAMPUS/cjld2018/Climate_Change_Narratives/Student_Folders/LeBlanc/aq_data")
@@ -136,77 +129,121 @@ MonthlyPMMean$YEAR = as.numeric(MonthlyPMMean$Year)
 MonthlyPMMean$MONTH = as.numeric(MonthlyPMMean$Month)
 ```
 
-```{r AQ graphs, echo = FALSE, fig.show="hold", out.width="50%", fig.cap= "Figure 4: Graphs of average daily PM 2.5 AQI value for June, July, August, and September. For June, p = 0.01491 < 0.05, Adjusted R-squared = 0.2357, and slope = -1.539. For July p = 0.03258 < 0.05, Adjusted R-squared = 0.1775, and slope = -2.461. For August, p = 0.09299 > 0.05, Adjusted R-squared = 0.09619, and slope = 2.542. For September, p = 0.651 > 0.05, Adjusted R-squared = -0.04105, and slope = 0.5974. "}
+```{r AQ graphs, echo = FALSE, fig.show="hold", out.width="50%", fig.cap= "**Figure 3:** Graphs of average daily PM~2.5~ AQI value for June, July, August, and September. For June, p = $0.015$, $R^2_{adj} = 0.24$, and Slope = $-1.5$. For July, p = $0.033$, $R^2_{adj} = 0.18$, and Slope = $-2.5$. For August, p= $0.093$, $R^2_{adj} = 0.096$, and Slope = $2.5$. For September, p = $0.65$,$R^2_{adj} = -0.041$, and Slope = $0.60$."}
 #June
-plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="06",], ty='l', xlim=c(2000, 2019), main="Average Air Quality in June", xlab = "Year", ylab= "Average PM 2.5 Level", col="coral1")
+plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="06",], ty='p', xlim=c(2000, 2019), main="Average Air Quality in June", xlab = "Year", ylab= "Average PM~2.5~ Level", col="coral1")
 June.lm <- lm(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="06",])
 abline(coef(June.lm))
 
 #July
-plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="07",], ty='l', xlim=c(2000, 2019), main="Air Quality in July", xlab = "Year", ylab= "Average PM 2.5 Level", col="cornflowerblue")
+plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="07",], ty='p', xlim=c(2000, 2019), main="Air Quality in July", xlab = "Year", ylab= "Average PM~2.5~ Level", col="cornflowerblue")
 July.lm <- lm(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="07",])
 abline(coef(July.lm))
 
 #August
-plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="08",], ty='l', xlim=c(2000, 2019), main="Air Quality in August", xlab = "Year", ylab= "Average PM 2.5 Level", col="aquamarine4")
+plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="08",], ty='p', xlim=c(2000, 2019), main="Air Quality in August", xlab = "Year", ylab= "Average PM~2.5~ Level", col="aquamarine4")
 August.lm <- lm(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="08",])
 abline(coef(August.lm))
 
 #September
-plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="09",], ty='l', xlim=c(2000, 2019), main="Air Quality in September", xlab = "Year", ylab= "Average PM 2.5 Level", col="mediumpurple1")
+plot(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="09",], ty='p', xlim=c(2000, 2019), main="Air Quality in September", xlab = "Year", ylab= "Average PM~2.5~ Level", col="mediumpurple1")
 September.lm <- lm(PM25~YEAR, data=MonthlyPMMean[MonthlyPMMean$Month=="09",])
 abline(coef(September.lm))
 ```
 
+
 <br>
 
-Figure 4 shows the average AQI PM 2.5 reading for Portland from 1999 to 2019. For the months of June and July, both my hypothesis and the null hypothesis were rejected. Instead, both months showed a significant decreasing trend in AQI. Additionally, both had very high Adjusted R-squared values of 0.24 and 0.18 respectively, meaning that 24% and 18% of the variation in the data can be explained by time alone. This suggests that, for June and July, there is a strong correlation between time and decreasing AQI values (improving air quality).
+Figure 3 shows the average AQI PM~2.5~ reading for Portland from 1999 to 2019. For June and July, there was a significant decreasing trend in AQI. Additionally, both had very high Adjusted R-squared values of 0.24 and 0.18 respectively, meaning that 24% and 18% of the variation in the data can be explained by time alone. This suggests that, for June and July, there is a strong correlation between time and decreasing AQI values (improving air quality).
 
-In August and September, this trend was not maintained. Instead, both graphs showed an increase in the average AQI value over time. This increase, however, was not found to be significant within a 95% confidence level If we lower to a 90% confidence level, however, the increasing trend in August is found to be significant (p = 0.09299 > 0.10).
 
-At first glance, this data seems to imply that climate change is not having a perceptible impact on air quality, but that may not be the full story. According to the EPA/National Park Service Visibility Program (known as IMPROVE), PM 2.5 AQI values have been improving throughout the US due to EPA regulations after the Clean Air Act of 1970 (7). Many other sources besides wildfire pollute PM 2.5, such as construction sites, fields, smokestacks, and reactions between other pollutants in the atmosphere (1). Regulations and decreases in these forms of pollution have contributed to a general decrease in PM 2.5 AQI and an improvement in air quality. 
+In August and September, this trend was not maintained. Instead, both graphs showed an increase in the average AQI value over time. This increase, however, was not significant within a 95% confidence level, however, the August data are trending toward significance (p < 0.10).
 
-This theory helps explain the difference between June/July and September/August. Although all months are technically fire season, the majority of fires occur in August and September. Thus, the majority of the air pollution of smoke is occuring then as well. In other words, increases in forest fire smoke, however, may be preventing improvement in the PM 2.5 AQI in August and September. 
+While these data alone do not tell a clear story about AQI over time, there may be more to the story. According to the EPA/National Park Service Visibility Program (known as IMPROVE), PM~2.5~ AQI values have been improving throughout the US due to EPA regulations after the Clean Air Act of 1970 (O'Dell, 2019). Many other sources besides wildfire emit PM~2.5~ pollutants, such as construction sites, fields, smokestacks, and reactions between other pollutants in the atmosphere (AQI, [date unknown]). As such, increases in forest fire smoke may be one reason that August and September, the biggest fire months, do not align with general patterns where PM~2.5~ AQI is decreasing.
 
-Although it seems likely, it is difficult to prove that this lack of improvement in PM 2.5 concentrations is due to forest fires. O’Dell et al. investigated this question. Looking at the Western United States, they combined PM 2.5 measurments with satellite smoke data to try and determine which days and locations were “smoke influenced.” When excluding these smoke days, there was a significant decrease in PM 2.5 values, suggesting that increases in air pollution from wildfires is cancelling out decreases in pollution from other sources. (7)
+This theory helps to explain the difference between June/July and September/August. The majority of fires occur in August and September, thus, the majority of the air pollution of smoke is occurring then as well. In other words, increases in forest fire smoke may be preventing improvement in the PM~2.5~ AQI in August and September. 
+
+Many researchers have tried to quantify the effect of wildfire smoke. Liu et al. (2016) used a chemical transport model to model the impact of smoke on different counties in 2009 and 2051. They found that the three counties that make up Portland--Clackamas, Washington, and Multnomah--all had a smoke risk of 4 (with 5 being the highest) in 2009. By 2051, their model showed that Clackamas and Washington counties would enter the highest risk level, while Multnomah would remain at the second-highest level 4 risk. This supports the hypothesis that wildfire smoke is affecting summer air quality. O’Dell et al. (2019) also tried to quantify the effect of smoke. Looking at the Western United States, they combined PM~2.5~ measurements with satellite smoke data to try and determine which days and locations were “smoke influenced.” When excluding these smoke days, there was a significant decrease in PM~2.5~ values, suggesting that increases in air pollution from wildfires is canceling out decreases in pollution from other sources. 
 
 <br>
 
 ## What should climate activists (and you!) do?
 
-![Figure 5: Smoke due to wildfires in Portland, OR on September 12, 2020. Source: https://www.koin.com/news/wildfires/trash-collection-delayed-by-hazardous-air-quality-in-portland-metro/](AP20257021718485.jpg)
+<center>
+```{r, echo=FALSE, fig.show="hold", out.width="75%", fig.allign = "center", fig.cap= "**Figure 4:** Smoke due to wildfires in Portland, OR on September 12, 2020. Source: [Koin](https://www.koin.com/news/wildfires/trash-collection-delayed-by-hazardous-air-quality-in-portland-metro/)"}
+knitr::include_graphics ("AP20257021718485.jpg")
+```
+</center>
 
-<br>
+From the analysis above, it is clear that Oregon's climate is changing, with the potential to cause great harm. A variety of activists and activist organizations are dedicated to solving these issues. 
 
-Although the majority of Oregon residents support some kind of climate action, none has been passed due to walkouts from the Oregon Republican Senators. In response, Governor Kate Brown passed an executive order to combate climate change in the Spring of 2020, which is now being challenged in the courts. One way this executive order could be protected is by using the air quality data above. The Clean Air Act mandates that states meet certain targets set by the EPA (citation), which includes PM 2.5. 
+Although the majority of Oregon residents support some kind of climate action, no statewide legislation has been passed due to walkouts from the Oregon Republican Senators. In response, Governor Kate Brown passed an executive order to combat climate change in the Spring of 2020, which is now being challenged in the courts. One way this executive order could be protected is by using the air quality data above. As outlined in the Clean Air Act, the US Environmental Protection Agency (EPA) establishes national standards for six pollutants (Ozone, Particulate Matter, Carbon Monoxide, Lead, Sulfur Dioxide, and Nitrogen Dioxide) (Government, 2020). States are required to develop plans to meet these standards. Connecting rising carbon dioxide levels to the lack of improvement in PM~2.5~ levels in fire months could be used the defend Governor Brown's executive order. On the EPA’s website, it states that it creates “national and regional rules to reduce emissions of pollutants that form PM” (Government, 2020). Based on this reasoning, CO~2~ regulations to reduce PM~2.5~ are not only valid but also necessary.
 
-Connecting rising carbon dioxide levels to worsening levels of PM 2.5 could be used the defend Governor Brown's executive order. On the EPA’s website, it states that it creates “national and regional rules to reduce emissions of pollutants that form PM” (Citation). Based on this reasoning, CO2 regulations to reduce PM 2.5 are not only valid, but also necessary. 
+Activist groups can use this analysis to fight for these greenhouse gas regulations. One local activist group that focuses on policymaking is the League of Women's Voters of Portland. Some of their activities include tracking what goes on in climate-related public meetings and hearings, reviewing proposed climate plans, recommending or writing testimony on bills, and lobbying legislators (Noel, 2020). In their legislative work and lobbying, they could use the connection between greenhouse gases, PM~2.5~, and the Clean Air Act to strengthen and vary their arguments for climate change action. If you are interested in helping with their efforts, you can get involved with the League [here](https://lwvpdx.org/help-fight-climate-change/). 
 
-The League of Women's Voters of Portland in one local activist group that focuses on policy making. Some of their activities include tracking what goes on in climate-related public meetings and hearings, reviewing proposed climate plans, recommending or writing testimony on bills, and lobbying legislators. In their legislative work and lobbying, they could use the connection between CO2, PM 2.5, and the Clean Air Act to strengthen or varry their arguments and justifications for climate change action. (Citation).
-You can get involved with the League here. ADD LINK
+Other climate activist groups can also use the temperature and air quality analysis above to broaden their appeal. For example, both 360 PDX and the Sunrise Movement PDX focus on a variety of climate solutions, which is great, but neither website talks about the local impacts of climate change. The temperature and air quality data in this blog could be used to show locals how they will be impacted by climate change. Sometimes it is hard to process the magnitude of global climate change, so discussing local impacts may help to engage and motivate people. You can get involved with these organizations [here](https://350pdx.org/action/) and [here](https://www.sunrisepdx.org/get-involved). 
 
-Other climate activists groups can also use the temperature and air quality data to strengthen their arguments. For example both 360 PDX and the Oregon Environmental Council, focus on a variety of local climate solutions, which is really great! But, neither website talks about the local impacts of climate change. The temperature and air quality data in this blog could help show locals how they will be impacted by climate change, which may motivate them more to take action. You can also get involved with either of these activists groups here or here. ADD LINKS
+Focusing on the connection between climate change, health, and social justice is also powerful and effective, especially in engaging a wider variety of individuals and activists. For example, climate activist Meredith Connolly, who is the Oregon director of the organization Climate Solutions, effectively highlighted this connection in a twitter post (figure 5). 
 
-Focusing on the connection between climate change, health, and social justice is also be powerful and effective. For example, climate activist Meredith Connolly, who has a significant twitter presence and is the director for the activists organization Climate Solutions, effectively highlighted this connection (figure #). 
+<center>
+```{r, echo=FALSE, fig.show="hold", out.width="75%", fig.allign = "center", fig.cap= "**Figure 5:** Twitter post by Meredith Connolly (@ConnollyMer)."}
+knitr::include_graphics ("AirQualityHealth.png")
+```
+</center>
 
-![](AirQualityHealth.png)
+Additionally, activists shouldn't be afraid to point out the successes of the past. For example, a post by the Oregon Environmental Council, an environmental activist group, states that "our air is unhealthy and we are experiencing more and more unhealthy scenarios" (figure 6). While they are referring to unhealthy scenarios beyond air quality, this post misses an opportunity. Air quality is generally getting less unhealthy, and pointing this out is more honest, and serves to highlight strategies that have worked in the past. Pointing out those successes would give them the opportunity to highlight the necessity of such regulations, and the problems that will emerge as many of these regulations are removed under President Trump or as PM~2.5~ emissions rise along with increasing wildfires. You can get involved with the Oregon environmental council [here](https://oeconline.org/take-action/).
 
-Additionally, activists shouldn't be afraid to point out the sucesses of the past. For example, a post by the Oregon Environemntal Council states that "our air is unhealthy and we are experiencing more and more unhealthy senarios" (figure #) This statement is misleading, as air quality in generally getting less unhealthy. Pointing this out is more honest, hopefull, and serves to highlight strategies that have worked in the past. This could also be an opportunity to stress the importance of such regulations, and the problems that could emerge as they are appealed under President Trump.
+<center>
+```{r, echo=FALSE, fig.show="hold", out.width="75%", fig.allign = "center", fig.cap= "**Figure 6:** Twitter post by the Oregon Environmental Council (@oeconline)."}
+knitr::include_graphics ("AirQualityWorse.png")
+```
+</center>
 
-![](AirQualityWorse.png)
+Lastly, as we approach a very important election, it is so incredibly important that those who can vote, do! Regardless of your ability to vote, if you would like to help with the election, you can volunteer for the candidates you support. You can find who is running in your area [here](https://www.vote411.org). Additionally, the Sunrise Movement PDX, another local activist organization, is hosting daily phone banking sessions that anyone can participate in [here](https://www.sunrisepdx.org/calendar). 
 
-Lastly, if you are able to vote, do! Make sure you vote for candidates who believe in science, and who will make climate change a top priority. To check your registration, register, or read an unpartisan ballot guide, go here. ADD LINK
+Only two aspects of climate change, air quality and temperature, were explored in this analysis, yet it is clear that both have the potential to have horrible public health and social justice consequences. Our city needs to respond to these challenges. We need elected representatives from all parties who will protect us and represent our best interests, and if those we have elected are not doing that, we need to hold them accountable. So, protest, call your representatives, email them, support the climate activists that are fighting so hard for our future, and become a climate activist yourself. 
 
 <br> 
 
 ### Citations
 
-<<<<<<< HEAD
-1.	AQI Basics [Internet]. [place unknown]: AirNow; [date unknown; cited 2020 Sep 26]. Available from: https://www.airnow.gov/aqi/aqi-basics/
-2.	Allison JE, Press D, Horowitz C, Millard-Ball A, Pincetl S. Chapter 7. Paths to Carbon Neutrality: Lessons from California. Collabra Psychol [Internet]. 2016 [cited 2020 Sep 26];2(1):1-15. doi: 10.1525/collabra.66 
-3.	Jones BA, Berrens RP. Application of an Original Wildfire Smoke Health Cost Benefits Transfer Protocol to the Western US, 2005-2015. Environ Manage [Internet]. 2017 Sep [cited 2020 Sep 19];60:809-822. doi:10.1007/s00267-017-0930-4 
-4.	Liu JC, Mickley LJ, Sulprizio MP, Dominici F, Yue X, Ebisu K, Anderson GB, Khan RFA, Bravo MA, Bell ML. Particulate Air Pollution from Wildfires in the Western US under Climate Change. Clim Change [Internet]. 2016 Oct [cited 2020 Sep 19];138(3):655-666. doi: 10.1007/s10584-016-1762-6 
-5.	Liu JC, Pereira G, Uhl SA, Bravo MA, Bell ML. A systematic review of the physical health impacts from non-occupational exposure to wildfire smoke. Environ Res [Internet]. 2015 Jan [cited 2020 Sep 19];136:120-132. doi: 10.1016/j.envres.2014.10.015 
-6.	Liu JC, Wilson A, Mickley LJ, Ebisu K, Sulprizio MP, Wang Y, Peng RD, Yue X, Dominici F, Bell ML. Who Among the Elderly Is Most Vulnerable to Exposure to and Health Risks of Fine Particulate Matter From Wildfire Smoke. AM J Epidemiol [Internet]. 2017 Sep [cited 2020 Sep 26];186(6):730-735. doi: 10.1093/aje/kwx141 
-7.	O’Dell K, Ford B, Fischer EV, Pierce JR. Contribution of Wildland-Fire Smoke to US PM2.5 and Its Influence on Recent Trends. Environ Sci Technol [Internet]. 2019 Jan [cited 2020 Sep 19];53(4):1797-1804. doi: /10.1021/acs.est.8b05430 
-8.	SOH: State and CoC Dashboards [Internet]. Washington, DC: National Alliance to End Homelessness; [updated 2019; cited 2020 Sep 26]. Available from:  https://endhomelessness.org/homelessness-in-america/homelessness-statistics/state-of-homelessness-dashboards/?State=Oregon
+AQI Basics [Internet]. [place unknown]: AirNow; [date unknown; cited 2020 Sep 26]. Available from: https://www.airnow.gov/aqi/aqi-basics/
+
+Allison JE, Press D, Horowitz C, Millard-Ball A, Pincetl S. Chapter 7. Paths to Carbon Neutrality: Lessons from California. Collabra Psychol [Internet]. 2016 [cited 2020 Sep 26];2(1):1-15. doi: 10.1525/collabra.66 
+
+DiSalvo A, Yun Hsiao C, Wells L. Growing a More Equitable Urban Forest: Portland's Citywide Tree Planting Strategy [Internet]. Portland: Portland Parks & Recreation; 2018 [cited 2020 Oct 13]. Available from: https://www.portlandoregon.gov/parks/article/705823
+
+Ebenstein A, Lavy V, Roth S. The Long-Run Economic Consequences of High-Stakes Examinations: Evidence frmo Transitory Variation in Pollution. Am Econ J Appl Econ [Internet]. 2016 Oct [cited 2020 Oct 13];8(4):36-65. doi: 10.1257/app.20150213
+
+Eidson M, Mack S, Ship-Hilts A, Raab K, Roach M. Climate Change and Extreme Heat: What You Can Do to Prepare [Internet]. Washington DC: United States Environmental Protection Agency; 2016 [cited 2020 Oct 13]. Available from: https://www.epa.gov/sites/production/files/2016-10/documents/extreme-heat-guidebook.pdf
+
+Jones BA, Berrens RP. Application of an Original Wildfire Smoke Health Cost Benefits Transfer Protocol to the Western US, 2005-2015. Environ Manage [Internet]. 2017 Sep [cited 2020 Sep 19];60:809-822. doi: 10.1007/s00267-017-0930-4 
+
+Get Involved [Internet]. Portland (OR): Sunrise Movement PDX; [date unknown, cited 2020 Oct 13]. Available from:  https://www.sunrisepdx.org/get-involved
+
+Government Partnerships to Reduce Air Pollution [Internet]. Washington DC: United States Environmental Protection Agency; [cited 2020 Oct 13]. Available from: https://www.epa.gov/clean-air-act-overview/government-partnerships-reduce-air-pollution 
+
+Holden ZA, Swanson A, Luce CH, Jolly WM, Maneta M, Oyler JW, Warren DA, Parsons R, Affleck D. Decreasing fire season precipitation increased recent western US forest wildfire activity. Proc Natl Acad Sci U S A [Internet]. 2018 Aug [cited 2020 Sep 19];115(36): E8349-E8357. doi: 10.1073/pnas.1802316115
+
+How Weather Affects Air Quality [Internet]. Boulder (CO): Center for Science Education; [date unknown, cited 2020 Oct 13]. Available from: https://scied.ucar.edu/learning-zone/air-quality/how-weather-affects-air-quality. 
+
+Liu JC, Mickley LJ, Sulprizio MP, Dominici F, Yue X, Ebisu K, Anderson GB, Khan RFA, Bravo MA, Bell ML. Particulate Air Pollution from Wildfires in the Western US under Climate Change. Clim Change [Internet]. 2016 Oct [cited 2020 Sep 19];138(3):655-666. doi: 10.1007/s10584-016-1762-6 
+
+Liu JC, Pereira G, Uhl SA, Bravo MA, Bell ML. A systematic review of the physical health impacts from non-occupational exposure to wildfire smoke. Environ Res [Internet]. 2015 Jan [cited 2020 Sep 19];136:120-132. doi: 10.1016/j.envres.2014.10.015 
+
+Liu JC, Wilson A, Mickley LJ, Ebisu K, Sulprizio MP, Wang Y, Peng RD, Yue X, Dominici F, Bell ML. Who Among the Elderly Is Most Vulnerable to Exposure to and Health Risks of Fine Particulate Matter From Wildfire Smoke. AM J Epidemiol [Internet]. 2017 Sep [cited 2020 Sep 26];186(6):730-735. doi: 10.1093/aje/kwx141 
+
+Newberger E. At least 33 dead as wildfires scorch millions of acres across Western U.S. — ‘It is apocalyptic’ [Internet]. Englewood Cliffs (NJ): CNBC; [updated 2020 Sep 15, cited 2020 Oct 13]. Available from: https://www.cnbc.com/2020/09/12/fires-in-oregon-california-and-washington-spread-death-toll-rises.html
+
+Noel M. Help Fight Climate Change [Internet]. Portland: League of Women Voters of Portland; 2020 [cited 2020 Oct 13]. Available from: https://lwvpdx.org/help-fight-climate-change/
+
+O’Dell K, Ford B, Fischer EV, Pierce JR. Contribution of Wildland-Fire Smoke to US PM2.5 and Its Influence on Recent Trends. Environ Sci Technol [Internet]. 2019 Jan [cited 2020 Sep 19];53(4):1797-1804. doi: 10.1021/acs.est.8b05430 
+
+Sickinger T. Business Groups Sue to Overturn Gov. Kate Brown's Executive Order on Climate Change [Internet]. Portland (OR): The Oregoninan; [updaed 2020 Aug 1, cited 2020 Oct 13]. Available from: https://www.oregonlive.com/politics/2020/08/business-groups-sue-to-overturn-gov-kate-browns-executive-order-on-climate-change.html
+
+SOH: State and CoC Dashboards [Internet]. Washington, DC: National Alliance to End Homelessness; [updated 2019; cited 2020 Sep 26]. Available from:  https://endhomelessness.org/homelessness-in-america/homelessness-statistics/state-of-homelessness-dashboards/?State=Oregon
+
+Take Action Now [Internet]. Portland (OR): 350PDX; [date unknown, cited 2020 Oct 13]. Available from: https://350pdx.org/action/
+
+Take Action Today [Internet]. Portland (OR): Oregon Environmental Council; [date unknown, cited 2020 Oct 13]. Available from: https://oeconline.org/get-updates/
+
