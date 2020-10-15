@@ -1,0 +1,116 @@
+---
+title: "Effects of Rising Temperatures on Urban Communities in Los Angeles, California"
+author: "Christina Marsh"
+date: "Saturday, October 10th"
+output:
+  html_document: default
+  word_document: default
+---
+
+![Fig. 1 Los Angeles Skyline](https://upload.wikimedia.org/wikipedia/commons/3/32/20190616154621%21Echo_Park_Lake_with_Downtown_Los_Angeles_Skyline.jpg) 
+
+
+## The Climate of Los Angeles
+Each year, more Americans die as a result of heat than all other natural disasters combined. The climate of Los Angeles is a mild-to-hot and mostly dry climate for the year round. The climate is described as a Mediterranean climate, which is a type of dry subtropical climate. Climate change is primarily responsible for the warming trend seen Los ANgeles and across the globe, but it’s not the only force at work (Montanñez, 2017).
+
+## Complications of Heat
+Unlike many other Californians, and Americans in general, some Angelenos are also contending with an additional layer of heat intensification caused by what’s known as the “urban heat island effect.” It means that cities — with their asphalt streets, dark roofs, sparse vegetation and traffic congested roads — are almost always a few degrees warmer than the more rural areas that surround them (Netburn, 2017).  And the L.A. neighborhoods that have the least tree canopy are at greatest risk for heat-related hospitalizations and deaths (Montañez, 2017). I will analyze temperature data of avarage minimum temperature and average maximum temperature to see if there is a significant increase according to the Downtown Los Angeles weather station. I will provide an idea of the rate of warming so that if the temperature increase is significant here, we can assume that the urban heat island effect makes it even worse for those living in low income and densly populated parts of the city.   
+
+I hypothesize that this means that the data will show an average temperature steadily rising from 1906 onward that surpasses the global average temperature rise of a similar time.  This blog will examine temperature and records for Los Angeles from 1906 to 2010 and discuss conclusions we can draw from said statistics as they relate to extreme heat's disproportionate effect on urban and low-income communities.  
+
+## Reading Air Temperature Data
+For this blog, I accessed the database on National Oceanic and Atmospheric Administration (NOAA) to collect air temperature data in my region of study, Los Angeles. I collected data from a station in Downtown Los Angeles because it had the most expansive data of the 3 stations in Los Angeles area (NOAA). I chose to use the data from August because it showed the largest variability of months and was one of the hottest months on average. I graphed temperature average maximums and minimums across the 104 year period to show clear temperature increases in both the minimum and maximum averages.
+
+To analyze the data, I read and interpreted the p and adjusted r2 values to ultimately test this null hypothesis: that the slope is 0. The significance of the p value and r2 value depends on how high the values are. In an effort to further the scope of my study, I accessed multiple peer review journals for the information about heat mitigation and impact studies. Results are significant if there is at least one * next to the slope value; this means that the p-value is less than .05 and one can reject the null hypothesis. NS means that there is no significance.
+
+![Fig.2 Urban heat island temperatures in the greater Los Angeles area divided by Census Tract Boundraies. The Urban Heat Index is calculated as a temperature differential over time between an urban census tract and nearby upwind rural reference points. The index is reported in degree-hours per day on a Celcius scale and is demonstrated through the color shifts on the map. Colors approaching white indicate higher temperatures.The weather station referenced is located in a light green 51-60 UHII category. Image via CalEPA 2020](https://calepa.ca.gov/wp-content/uploads/sites/6/2020/06/43_Southern_CA_UHII_DH_day.jpg)
+
+
+## Average Minimum Temperature Data 
+Based on my analysis of the monthly temperature trends, there is significant change in temperature in the data collected in all months excluding November and December which showed almost 0 change in average minimum and maximum temperatures.
+Looking at this summary we see a slightly positive temperature slope (5.835e-05) which is highly significant. (The p-value is 2e-16, which is much less than 0.05). We see lots of variability that is not date driven. Therefore we reject the null hypothesis that there is a slope of 0! While we have determined that the overall trend of TMAX is significantly positive, it could be more revealing of certain trends to break these graphics down into smaller sets of data. Because this represents so much data compressed into one small graphic, its difficult to derive any meaning from this plot aside from a large general upward trend over time
+TMIN ($p\in[0.001, 0.04]$) 
+
+
+
+
+
+
+```{r August TMIN DATA, echo = FALSE, results = FALSE}
+climate_data <- read.csv("/home/CAMPUS/cdma2019/ChristinaMarsh_LosAngeles_data.csv")
+head(climate_data)
+str(climate_data)
+names(climate_data)
+min(climate_data$TMIN)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+lm(TMIN ~ NewDate, data=climate_data)
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean) 
+str(MonthlyTMINMean)
+MonthlyTMINMean$Year.num = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num = as.numeric(MonthlyTMINMean$Month)
+str(MonthlyTMINMean)
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",], xlim=c(1906, 2014), xlab="Year", ylab="Minimum Temperature (C°)", pch=19, cex=0.5, col="red")     
+ablineSept1<-lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+abline(ablineSept1, col="blue")
+
+```
+
+The p-value for this model was 1.762e-07 (which is much less than 0.05) and r-squared value of .228, meaning the trend is statistically significant, and that temperatures are in fact increasing in Los Angeles. Therefore we reject the null hypothesis that there is no association between time and minimum temperature! The overall trend of Minimum Temperature data is significantly positive meaning the trend is statistically significant, and that temperatures are in fact increasing in Los Angeles. 
+
+## Average Maximum Temperature Data
+
+```{r August TMAX Data, echo = FALSE, results = FALSE}
+head(climate_data)
+str(climate_data)
+names(climate_data)
+min(climate_data$TMAX)
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+lm(TMAX ~ NewDate, data=climate_data)
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean) 
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",], xlim=c(1906, 2014), xlab="Year", ylab="Maximum Temperature (C°)", pch=19, cex=0.5, col="red")     
+ablineSept1<-lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
+abline(ablineSept1, col="blue")
+```
+
+The p-value for this model was 4.201e-11 (which is much less than 0.05) and r-squared value of .0338. We see lots of variability that is not date driven. Therefore we reject the null hypothesis that there is a slope of 0! While we have determined that the overall trend of Maximum Temperature data is significantly positive meaning the trend is statistically significant, and that temperatures are in fact increasing in Los Angeles.
+
+
+
+## Discussion
+
+This data can help strengthen existing arguments around the idea that local activists and politicians have raised around the need for better heat mitigation to help the Los Angeles Metropolitan area. Eric Garcetti, Mayor of Los Angeles, has pointed for the need to take actions to fight against climate change through appropriate mitigation efforts (Netburn).The study Characterization of Urban Heat and Exacerbation: Development of a Heat Island Index discusses concerns that heat events may become more common with climate change and exacerbate urban populations particularly the elderly. The study helped determine that urban heat is exacerbated during warmer weather and that, in turn, can worsen the health impacts of heat events presently and in the future, for which it is expected that both the frequency and duration of heat waves will increase. This research can help public health agencies in quantify heat stress and make clear where developing mitigation plans or allocating various resources would be most effective (Taha 18, 2017). Potential overall heat exposure reduction associated with implementation of heat mitigation strategies in Los Angele gives fascinating insight into heat mitigation that compares a variety of strategies. It explores both the benefits and flaws of analyzing the effects of increasing vegetative cooling the urban environment and its adverse consequences due to the associated potential increase in dew point temperatures (Sailor 5, 2020). Additional research must be done to account for monetary costs to implementation. It ignores a key factor of accessibility and general feasibility.
+
+The analysis does not fully account for other factors that effect temperature averages throughout the years. Factors such as wind, existing vegetation, variance in existing architecture, etc. But, rather it points to a trend of large temperature rises that lack the same explanation as the wider look at climate change.
+
+Additionally, when analyzed togethe, several weather stations throughout Los Angeles can create an more comprhensive picture of the temperature shifts present then what will be apparent from looking at just one station alone. More exploration needs to be done in determining how widespread these problems are and if the urban heat island phenomenon extends to more major cities (Taha 15, 2017).
+
+## Conclusion: A Call to Action
+This study points to an uneven distribution of negative effects of rising temperatures even across an area as small as one county. From reading several studies, I have come to the conclusion that elderly populations are at high risk for heat induced mortality and health issues. Additionally, I concluded that it is likely with proper preparedness and mitigation efforts, Los Angeles can reduce the negative effects of heat on the population. More research needs to be done to access cost effective and timely ways in which communities can implement mitigation techniques.
+
+## References  
+
+Kalkstein, A.J., Kalkstein, L.S., Vanos, J.K. et al. Heat/mortality sensitivities in Los Angeles during winter: a unique phenomenon in the United States. Environ Health 17, 45 (2018). https://doi.org/10.1186/s12940-018-0389-7
+
+Montañez, C., & Fink, D. (2017, February 15). Opinion: L.A. is already trying to reduce the effect of its 'urban heat island'. Retrieved September 27, 2020, from https://www.latimes.com/opinion/readersreact/la-ol-le-heat-island-los-angeles-20170215-story.html 
+
+Netburn, D. (2017, February 9). L.A.'s mayor wants to lower the city's temperature. These scientists are figuring out how to do it. Retrieved September 27, 2020, from https://www.latimes.com/projects/la-sci-cooling-los-angeles/
+
+Sailor, D.J., Anand, J. Potential overall heat exposure reduction associated with implementation of heat mitigation strategies in Los Angeles. Int J Biometeorol (2020). https://doi.org/10.1007/s00484-020-01954-5
+Southern California Public Radio. (2017, May 31). LA area has highest urban heat island effect in California. Retrieved September 27, 2020, from https://www.scpr.org/news/2015/09/21/54511/la-area-has-highest-urban-heat-island-effect-in-ca/
+
+Taha, H. Characterization of Urban Heat and Exacerbation: Development of a Heat Island Index for California. Climate 2017, 5, 59. https://www.mdpi.com/2225-1154/5/3/59# 
+
+https://www.epa.gov/climate-indicators/climate-change-indicators-us-and-global-temperature
+
+
+
