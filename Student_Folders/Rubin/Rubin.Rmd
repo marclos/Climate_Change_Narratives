@@ -107,98 +107,12 @@ July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
 abline(coef(July.lm), col="red")
 ```
 
-Increasing temperatures alone can provide benefits to farmers - at least, for now. Based on the trends in our data, if no climate change mitigations are enacted, average temperatures in Michigan will increase by around 2 degrees within 100 years. Climate change is predicted to accelerate, however, should drastic measures not be taken to prevent the release of more greenhouse gases into the atmosphere (IPCC [Core Writing Team] 2014). This means that instead of temperatures growing at a linear pace, they will grow exponentially. In other words, it is likely that 2 degrees in the next 100 years is an under-estimate.
+Increasing temperature alone can provide benefits to farmers - at least, for now. Based on the trends in our data, if no climate change mitigations are enacted, average temperatures in Michigan will increase by around 2 degrees within 100 years. Climate change is predicted to accelerate, however, should drastic measures not be taken to prevent the release of more greenhouse gases into the atmosphere (IPCC [Core Writing Team] 2014). This means that instead of temperatures growing at a linear pace, they will grow exponentially. In other words, it is likely that 2 degrees in the next 100 years is an under-estimate.
+
+In addition, increasing temperature is determinedly not the only result of climate change. The frequency of extreme and unpredictable weather events like heavy rain and flooding, flash freezes, and droughts, among others, has risen with the warming of the globe as well (Union of Concerned Scientists 2018).
 
 
-Not only do temperatures play a part in the growing and harvesting of corn, so do precipitation levels. A 2019 study done by researchers at the University of Illinois showed that "excessive rainfall" could decrease corn crop yields by up to 34%, just as drought and heat waves can cause a decrease of up to 37% (Yoksoulian 2019). This means that Michigan's steady upward trend in rainfall looms dangerously over corn yields, both now, and in the future. Excluding September, every month shows a noticeable increase in average monthly precipitation levels. As we have considered May for our temperature minimums and maximums, we will use the same month to examine precipitation. As the graph shows, Michigan's monthly rainfall sums are steadily increasing. When combined with rising temperatures and a less predictable weather cycle, the state's excessive rainfall does not bode well for the future of Michigan sweet corn.
-
-```{r PRCP_total}
-# changing date formatting
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-# PRCP business
-MonthlyPRCPSum = aggregate(PRCP ~ Month + Year, climate_data, sum)
-MonthlyPRCPSum$YEAR = as.numeric(MonthlyPRCPSum$Year)
-MonthlyPRCPSum$MONTH = as.numeric(MonthlyPRCPSum$Month)
-
-# January
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",], ty="l", xlim=c(1891, 2020), main="January", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# JanuaryPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",])
-# abline(coef(JanuaryPRCP.lm))
-# 
-# February
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# FebPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",])
-# abline(coef(FebPRCP.lm))
-# 
-# March
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# MarPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",])
-# abline(coef(MarPRCP.lm))
-# 
-# April
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# AprPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
-# abline(coef(AprPRCP.lm))
-
-# May
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",], ty="l", xlim=c(1891, 2020), main="May", ylab="Total Monthly Precipitation", xlab="Year")
-
-MayPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
-abline(coef(MayPRCP.lm))
-# 
-# June
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# JunePRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",])
-# abline(coef(JunePRCP.lm))
-# 
-# July
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# JulyPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",])
-# abline(coef(JulyPRCP.lm))
-# 
-# August
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# AugustPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",])
-# abline(coef(AugustPRCP.lm))
-# 
-# September
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# SeptPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",])
-# abline(coef(SeptPRCP.lm))
-# 
-# October
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# OctPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",])
-# abline(coef(OctPRCP.lm))
-# 
-# November
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# NovPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",])
-# abline(coef(NovPRCP.lm))
-# 
-# December
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# DecPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",])
-# abline(coef(DecPRCP.lm))
-```
-
-
+A 2019 study done by researchers at the University of Illinois showed that "excessive rainfall" could decrease corn crop yields by up to 34%, just as drought and heat waves can cause a decrease of up to 37% (Yoksoulian 2019). 
 
 ## Testing for Corn
 
@@ -291,7 +205,6 @@ It is not difficult to conclude that Michigan is and will continue to feel both 
 
 
 
-## Original Temp. Graph
 ```{r climate_data, echo=FALSE, eval=FALSE}
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
@@ -300,10 +213,6 @@ plot(TMAX~NewDate, climate_data, ty='l', main="Daily Temperatures", ylab= "Max T
 bestfitline.lm <- lm(TMAX~NewDate, climate_data)
 abline(coef(bestfitline.lm), col="red")
 ```
-
-
-## Snowfall and Excess TMIN, TMAX
-
 ```{r SNOW, eval=FALSE}
 # changing date formatting
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
@@ -400,7 +309,95 @@ plot(SNOW~YEAR, data = MonthlySNOWSum[MonthlySNOWSum$Month=="12",], ty="l", xlim
 DecSNOW.lm <- lm(SNOW~YEAR, data = MonthlySNOWSum[MonthlySNOWSum$Month=="12",])
 abline(coef(DecSNOW.lm))
 ```
+```{r PRCP_total, eval=FALSE}
+# changing date formatting
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
 
+# PRCP business
+MonthlyPRCPSum = aggregate(PRCP ~ Month + Year, climate_data, sum)
+MonthlyPRCPSum$YEAR = as.numeric(MonthlyPRCPSum$Year)
+MonthlyPRCPSum$MONTH = as.numeric(MonthlyPRCPSum$Month)
+
+# January
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",], ty="l", xlim=c(1891, 2020), main="January", ylab="Total Monthly Precipitation", xlab="Year")
+
+JanuaryPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",])
+abline(coef(JanuaryPRCP.lm))
+summary(JanuaryPRCP.lm)
+
+# February
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Total Monthly Precipitation", xlab="Year")
+
+FebPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",])
+abline(coef(FebPRCP.lm))
+summary(FebPRCP.lm)
+
+# March
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Total Monthly Precipitation", xlab="Year")
+
+MarPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",])
+abline(coef(MarPRCP.lm))
+summary(MarPRCP.lm)
+# April
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Total Monthly Precipitation", xlab="Year")
+
+AprPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
+abline(coef(AprPRCP.lm))
+summary(AprPRCP.lm)
+
+# May
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",], ty="l", xlim=c(1891, 2020), main="May", ylab="Total Monthly Precipitation", xlab="Year")
+MayPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",])
+abline(coef(MayPRCP.lm))
+summary(MayPRCP.lm)
+
+# June
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Total Monthly Precipitation", xlab="Year")
+
+JunePRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",])
+abline(coef(JunePRCP.lm))
+summary(JunePRCP.lm)
+# July
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Total Monthly Precipitation", xlab="Year")
+
+JulyPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",])
+abline(coef(JulyPRCP.lm))
+summary(JulyPRCP.lm)
+# August
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Total Monthly Precipitation", xlab="Year")
+
+AugustPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",])
+abline(coef(AugustPRCP.lm))
+summary(AugustPRCP.lm)
+# September
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Total Monthly Precipitation", xlab="Year")
+
+SeptPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",])
+abline(coef(SeptPRCP.lm))
+summary(SeptPRCP.lm)
+# October
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Total Monthly Precipitation", xlab="Year")
+
+OctPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",])
+abline(coef(OctPRCP.lm))
+summary(OctPRCP.lm)
+# November
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Total Monthly Precipitation", xlab="Year")
+
+NovPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",])
+abline(coef(NovPRCP.lm))
+summary(NovPRCP.lm)
+# December
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Total Monthly Precipitation", xlab="Year")
+
+DecPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",])
+abline(coef(DecPRCP.lm))
+summary(DecPRCP.lm)
+```
 ```{r, TMIN_excess, eval=FALSE}
 # 
  # January and 
@@ -567,9 +564,6 @@ December.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 abline(coef(December.lm), col="red")
 summary(December.lm)
 ```
-
-
-# Planted and Harvested 1940-2020
 ```{r total_corn_planted, eval=FALSE}
 total_planted <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_total_planted.csv")
 total_planted$Value = as.numeric(gsub(",", "", total_planted$Value))/1000000
@@ -580,7 +574,6 @@ totalplanted.lm <- lm(total_planted$Value~total_planted$Year, total_planted)
 abline(coef(totalplanted.lm), col="red")
 summary(totalplanted.lm)
 ```
-
 ```{r total_corn_harvested, eval=FALSE}
 total_harvested <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_total_harvested.csv")
 total_harvested$Value = as.numeric(gsub(",", "", total_harvested$Value))/1000000
@@ -591,9 +584,6 @@ totalharvested.lm <- lm(total_harvested$Value~total_harvested$Year, total_harves
 abline(coef(totalharvested.lm), col="red")
 summary(totalharvested.lm)
 ```
-
-
-# Excellent decreasing, Poor increasing -- neither statistically significant
 ```{r corn_condition_excellent, eval=FALSE}
 corn_condition_exc <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_corncondition_excellent.csv")
 
@@ -610,7 +600,6 @@ cornconditionexc.lm <- lm(newValue_exc~newYear_exc)
 abline(coef(cornconditionexc.lm), col="red")
 summary(cornconditionexc.lm)
 ```
-
 ```{r corn_condition_poor, eval=FALSE}
 corn_condition_poor <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_corn_condition_poor.csv")
 
