@@ -540,7 +540,7 @@ Temperatures, Bangkok, Thailand}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Fri Sep 18 15:37:53 2020
+% Thu Oct 15 22:14:23 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
@@ -789,10 +789,83 @@ Try not to get bogged down in the code at this point. But noting this function c
 \end{knitrout}
 \end{figure}
 
-To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
+To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. 
 
-A properly specified model is shown in 
+Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
+
+A properly specified model is shown in\ldots\footnote{Coming soon} 
 
 %Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
+
+\section{Is there a direct relationship between CO2 and temperature?}
+
+\subsection{Year is not a mechanism}
+
+Although we have looked at temperture change over time, we don't have an actual mechanism as an explanatory factor. In fact, the only thing time is useful for is to explain age. But ailments associated with aging is not caused directly, but indirectly with age. Thus, the addage of correlatina is not causation. 
+
+So, can we directly test the role of CO2 on climate?  Let's find out! 
+
+
+
+\begin{figure}
+\label{fig:carbondioxide}
+\caption{Carbon Dioxide and TMIN.}
+%\setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
+% R code chunk that produces a graphic
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlkwd{plot}\hlstd{(TMIN} \hlopt{~} \hlstd{average,} \hlkwc{data}\hlstd{=MonthlyTMINMean,} \hlkwc{ty}\hlstd{=}\hlstr{'p'}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.4}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'gray'}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"[CO2]"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Temperature C"}\hlstd{)}
+
+\hlstd{CO2.lm}\hlkwb{<-} \hlkwd{lm}\hlstd{(TMIN} \hlopt{~} \hlstd{average,} \hlkwc{data}\hlstd{=MonthlyTMINMean)}
+\hlkwd{summary}\hlstd{(CO2.lm)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = TMIN ~ average, data = MonthlyTMINMean)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.7951 -0.8450  0.4486  1.3057  4.1161 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)
+## (Intercept) 16.421134   0.950709  17.273   <2e-16
+## average      0.022660   0.002679   8.459   <2e-16
+##                
+## (Intercept) ***
+## average     ***
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.833 on 641 degrees of freedom
+## Multiple R-squared:  0.1004,	Adjusted R-squared:  0.09902 
+## F-statistic: 71.56 on 1 and 641 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\begin{alltt}
+\hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(CO2.lm))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-23-1} 
+
+\end{knitrout}
+\end{figure}
+
+What if we look at 12 months...
+
+\begin{figure}
+\label{fig:xxx}
+\caption{Carbon Dioxide and TMIN.}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-24-1} 
+
+\end{knitrout}
+\end{figure} 
+
+I can already see problems with this figure... 1) the co2 are serially correlated which shows up as odd diagonal points. 2) Doesn't really tell us the that earth is warming through time, however, the mechanism is more direct!
 
 \end{document}
