@@ -1,5 +1,5 @@
 ---
-title: "Climate Change, The Polar Vortex and the Health - Inequality of New Yorkers"
+title: "Climate Change, The Polar Vortex and the Health Inequality of New Yorkers"
 author: "Eleanor Tahbaz"
 date: "9/12/2020"
 output: html_document
@@ -20,19 +20,13 @@ filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahb
 
 filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
 climate_data <- read.csv(filepath)
-##str(climate_data)
+str(climate_data)
 strDates<-as.character(climate_data$DATE)
 climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 
+##loess
 ```
 
-## Why Are Winters in NYC Getting Colder?
-
-Within recent years, New York City has seen some of the lowest temperatures in history and this most notability occurred during the polar vortex that hit the northeast in 2018. President Donald Trump and climate change skeptics have latched onto these cold temperatures and have been pushing the idea that climate change can’t exist when temperatures are so low. This is a misconception that scientist have been repeatedly disproving, but sometimes the science can be confusing. So, through this blog, you will better understand the climate science behind extreme weather conditions and why they actually make sense as a result of climate change. Cold temperatures can lead to negative health effects like an increase in the risk of having a heart attacks and more severe asthma. This is important to note, because this can lead to serious environmental justice issues within the five boroughs of New York City, due to the ranges in wealth and the racial disparities we see throughout. Those with higher incomes will be able to pay rising rent prices, as landlords turn up the heat, and leave it on for longer periods of time, whereas those with lower incomes, who are also in majority people of color, will not be afforded the same luxury. In all, this blog will explain how climate change is the cause of extreme cold temperatures and therefore, how climate change is greatly impacting the health and wellbeing of all New Yorkers. 
-
-## What Does the Data Show Us About New York City Temperatures? 
-
-Below are the plots showing minimum temperatures during November, December, January and February from 1990-2020 in and around New York City. There are some notable differences between the November graph and the February graph because as you can see, there are two significant dips in minimum temperatures. The one in November is showing the polar vortex we experienced in 2018, and the dip in February was another polar vortex we experienced in 2015. These low points have a pull on the data seeing as the deviation from the trend lines are pretty significant. Notice how the first two graphs, December and January, which do not have any major dips, have a more level trend line than that of the other two graphs. As mentioned earlier, skeptics have seen and experienced these cold temperatures, and question, how can the planet be warming, if we are seeing record lows? This stems from a key differentiation between weather and climate. Weather is the day to day changes in temperature, precipitation and/or humidity. Climate is defined as the average weather patterns in a region over a long period of time. So, despite the weather being extremely cold, it is important to look at those numbers in relation to the climate, which is looking at 30 years or more of weather data combined. 
 
 ```{r, echo=FALSE, fig.height=8, fig.width=10}
 ## monthly data
@@ -49,6 +43,7 @@ MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
 par(mfrow=c(2,2),las=1)
 
 ## plot for February
+subset(climate_data,NAME=="NY CITY CENTRAL PARK, NY US")
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
 plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",],ty='p',pch=20, xlim=c(1990,2020), main="February",xlab="year", ylab="Temperatures in °C", ylim=c(-21,5))
@@ -60,47 +55,53 @@ abline(coef(February.lm), col="red")
 ##lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
 
 ## daily feb
-dailyTMIN2015<-subset(climate_data, Month=="02" & Year=="2015")
+climate_data2=subset(climate_data,NAME=="NY CITY CENTRAL PARK, NY US")
+strDates<-as.character(climate_data2$DATE)
+climate_data2$NewDate <-as.Date(strDates, "%m/%d/%y")
+strDates <- as.character(climate_data$DATE)
+climate_data2$NewDate[1:9861] = format(as.Date(strDates[1:9861], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data2$NewDate[9862:17412] = format(as.Date(strDates[9862:17412], "%m/%d/%y"),"20%y-%m-%d") 
+climate_data2$Month = format(as.Date(climate_data2$NewDate), format = "%m")
+climate_data2$Year = format(climate_data2$NewDate, format="%Y")
+climate_data2$Day = format(climate_data2$NewDate, format="%d")
+str(climate_data2)
+dailyTMIN2015<-subset(climate_data2, Month=="02" & Year=="2015")
 plot(TMIN~Day, data=dailyTMIN2015, ty='p', main="February Minimum Temperatures in 2015", xlab="Day", ylab = "")
 points(TMIN~Day, data=dailyTMIN2015,col="blue",pch=20, cex=1.5)
+loess_fit <- loess(TMIN ~ Day, dailyTMIN2015)
+lines(dailyTMIN2015$Day, predict(loess_fit),col="blue")
 
-## plot for November
-MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
-plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",],ty='p',pch=20, xlim=c(1990,2020), main="November",xlab="Year", ylab="Temperatures in °C", ylim=c(-6,10))
-points(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02"&MonthlyTMINMean$Year==2019,],col="blue",pch=20, cex=1.5)
-November.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11",])
-November.2019 <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="11"&MonthlyTMINMean$Year!=2019,])
-abline(coef(November.lm), col="red")
 
-## daily Noc
-dailyTMIN2019<-subset(climate_data, Month=="11" & Year=="2019")
-plot(TMIN~Day, data=dailyTMIN2019, ty='p', main="November Minimum Temperatures in 2019", xlab="Day", ylab = "")
-points(TMIN~Day, data=dailyTMIN2019,col="blue",pch=20, cex=1.5)
 ```
  NEED TO INSERT MORE DATA ANALYSIS & IMAGE CAPTION
-## How Global Warming Can Lead to Cooling
 
-The term global warming was popularized a few decades ago to refer to the phenomenon of the greenhouse gas effect and how it traps heat in the atmosphere which warms the average temperature of the planet. Scientist now understand that an atmosphere changed by rising levels of greenhouse gases can and will lead to more climate changes then just warming. Extreme weather events we have seen in recent years include the polar vortex temperatures, more violent hurricanes and hotter wildfires which are all a result of climate change. 
-In specific connection to the polar vortex, Potsdam University physicist Stefan Rahmstorf notes that while North America was experience cold Arctic Air, the rest of the world was abnormally hot. In 2017 Nature Geoscience published a study that concluded that there is a link between Arctic air flowing south leading to harsher North American winters. Another study in the journal Nature Communications, found this same link and the study author, Jennifer Francis said that this is because, “warm temperatures in the Artic cause the jet stream to take these wild swings, and when it swings farther south, it causes cold air to reach farther south. These swings tend to hang around for a while, so the weather we have in the eastern United States, whether it’s cold or warm, tends to stay with us longer”. It is important to recognize that the Arctic is warming faster than most of the planet which has led to a dramatic decline in the quantity of sea ice that covers the region each winter. This allows for heat from the ocean to more easily be transferred through evaporation, to the atmosphere which weakens the polar vortex winds over the Artic which normally protect the rest of North America from experiencing the freezing Arctic temperatures. But as they winds have weakened; they travel south and bring along their freezing temperatures. 
 
 <center>
 ![The Science Behind the Polar Vortex](images/Polar_Vortex.jpg)
 </center>
 
-## What Are the Warming Trends Scientists Are Seeing?
 
-The National Oceanic and Atmospheric Administration (NOAA) has said that since modern record keeping started in 1880, the hottest 10 years measured have all been since 1998 and the three hottest years on record are 2016, 2019 and 2015 on that order. Another clear example would be that in 2006, Lake Eire didn’t freeze for the first time in its history, which actually lead to increased snowfalls because more evaporating water from the lake was in the atmosphere for precipitation. So although there was more snow, and the weather seemed more sever, it was actually because the climate had warmed. 
-What Do Colder Winters Mean for the Health of New Yorkers and others around the country?
-Colder temperatures have the ability to increase negative health affects in all ages, but most significantly in the elderly and in young children. Some common illnesses related to the cold are hypothermia and frostbite which can be brought on without temperatures seeming to be very low. Hypothermia is when your body temperature drops abnormally low which can have serious effects on brain function. Frostbite is an injury that is the result of the extremities freezing and becoming numb. Other serious effects on health, include the increased incidences of heart attacks because the concentration of blood flow in the core body  increases which then increases one’s blood pressure and puts the heart under more strain. In addition, asthma is triggered by extreme temperatures and these extremely cold temperatures increase the risk of more asthma attacks. Now, you might think that if all of these things happen in the cold, why don’t people just stay inside? This might decrease the risk of frostbite, hypothermia and the risk of heart attacks. However, being trapped inside, with limited ventilation and indoor air pollutants can aggravate asthma as well. Disease can also spread more easily when people stay inside or go to more indoor events because people will be closer to one another. Especially this year in 2020, when COVID-19 is a great concern, the ability for it to spread is increased by colder temperatures because people want to remain inside and closer together; the same is for colds and the flu.
+## Citations
 
-## Why Is This All Important? 
+About Us. 350 NYC. [accessed 2020 Oct 16]. https://350nyc.org/about-2/ 
 
-A dramatic decrease in temperatures during the winter have the great potential to cause pretty sever environmental justice issues. Environmental Justice emerged as a concept in the United States in the early 1980’s. The term is used to describe the unfair distribution of environmental burdens on specific groups over others. Climate change has been known to be caused by the burning of fossil fuels and developed nations started burning these fuels beginning with industrialization and continuing to do so today, making them responsible for a very large portion of greenhouse gas emissions. The environmental justice issue arises because it is the developing nations that are bearing the brunt of the extreme weather outcomes and other adverse climate change effects. Within the United States, similar disparities are taking place, and within New York City alone, extreme cold temperatures are disproportionately impacting lower income communities of color. 
-Upper class, majority white neighborhoods in New York City will be able to have their heat on longer and at higher temperatures without the worry of if they can afford increased rent prices or utility prices from the building landlords. However, lower income communities in New York City who are majority black, will not be able to afford the same luxury and thus either have to survive in colder living conditions or possibly lose their housing. All the while, by keeping the heat on, there is an increase of fossil fuels burned which continues the greenhouse effect and propels climate change. New York City is all too familiar with severe childhood asthma that impacts black children at a very high rate. The environmental justice issue here, is that these temperatures, caused by climate change and propelled by the burning of fossil fuels, will cause children of color to suffer more severe asthma attacks. In connection with the statistics that indicate these same families lack adequate healthcare, there is a huge possibility that these children will not be able to get refills of asthma medication as needed because of how expensive they are in the United States. 
+Cold Weather Health and Safety. Cold Weather Health and Safety | IDPH. [accessed 2020 Oct 16]. https://www.dph.illinois.gov/topics-services/prevention-wellness/cold-weather-health-and-safety 
 
-## In Conclusion
+Gibbens S. Why cold weather doesn't mean climate change is fake. National Geographic. 2019 Jan 29 [accessed 2020 Oct 16]. https://www.nationalgeographic.com/environment/2019/01/climate-change-colder-winters-global-warming-polar-vortex/ 
 
-Throughout this blog, I have introduced the common climate change skeptic talking point regarding how climate change cannot exist if winters seem to be getting colder. We have seen that in fact, climate change is the culprit for these cold temperature in the northeastern United States due to the Artic air drifting south as the Artic warms. This extreme cold weather has very negative effects on health and this opens the door for environmental justice issues that have already started harming New Yorkers. If we want to protect New Yorkers from these issues, it is important to recognize and point out climate change was the problem and focus on ways to help stop it so that people aren’t at risk. Overall, in order to protect people from extreme weather events, the United States, along with the rest of the world needs to take action in order to keep people safe and healthy. 
+Pierre-louis K. Why Is the Cold Weather So Extreme if the Earth Is Warming? The New York Times. 2019 Jan 28 [accessed 2020 Oct 16]. https://www.nytimes.com/interactive/2019/climate/winter-cold-weather.html 
 
+Publishing HH. How does cold weather affect your health? Harvard Health. 2014 [accessed 2020 Oct 16]. https://www.health.harvard.edu/staying-healthy/how-does-cold-weather-affect-your-health 
+
+Radcliff S. How Extremely Cold Weather Can Affect Your Health. Healthline. 2019 [accessed 2020]. https://www.healthline.com/health-news/how-extremely-cold-weather-can-affect-your-health#Staying-safe-in-extreme-winter 
+
+Roth S. It's cold outside, but that doesn't mean climate change isn't real. USA Today. 2017 Dec 29 [accessed 2020 Oct 16]. https://www.usatoday.com/story/weather/2017/12/28/its-cold-outside-but-doesnt-mean-climate-change-isnt-real/987948001/ 
+
+Simpson IR, Hitchcock P, Seager R, Wu Y, Callaghan P. The Downward Influence of Uncertainty in the Northern Hemisphere Stratospheric Polar Vortex Response to Climate Change. Journal of Climate. 2018;31(16):6371–6391. doi:10.1175/jcli-d-18-0041.1 
+
+Spector D. Why Cold Weather Doesn't Mean Global Warming Isn't Real. Business Insider. 2014 Nov 21 [accessed 2020 Oct 16]. https://www.businessinsider.com/cold-weather-doesnt-discredit-climate-change-2014-11 
+
+Why Global Warming Can Mean Harsher Winter Weather. Scientific American. 2009 Feb 25 [accessed 2020 Oct 16]. https://www.scientificamerican.com/article/earthtalks-global-warming-harsher-winter/ 
+
+Zhang Y, Li J, Zhou L. The Relationship between Polar Vortex and Ozone Depletion in the Antarctic Stratosphere during the Period 1979–2016. Advances in Meteorology. 2017;2017:1–12. doi:10.1155/2017/3078079 
 
