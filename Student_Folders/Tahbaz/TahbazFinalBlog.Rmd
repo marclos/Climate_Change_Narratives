@@ -1,0 +1,107 @@
+---
+title: "Climate Change, The Polar Vortex and the Health Inequality of New Yorkers"
+author: "Eleanor Tahbaz"
+date: "9/12/2020"
+output: html_document
+---
+<center>
+![Bus Riders Trekking Through the Snow](images/Bus_Riders.jpg)
+</center>
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE)
+read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
+
+```
+
+```{r, include=FALSE}
+filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+
+filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+climate_data <- read.csv(filepath)
+str(climate_data)
+strDates<-as.character(climate_data$DATE)
+climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
+
+##loess
+```
+
+
+```{r, echo=FALSE, fig.height=8, fig.width=10}
+## monthly data
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate[1:51684] = format(as.Date(strDates[1:51684], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data$NewDate[51685:66920] = format(as.Date(strDates[51685:66920], "%m/%d/%y"),"20%y-%m-%d") 
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+climate_data$Day = format(climate_data$NewDate, format="%d")
+MonthlyTMINMean<-aggregate(TMIN ~ Month + Year, climate_data, mean)
+##str(MonthlyTMINMean)
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+par(mfrow=c(2,2),las=1)
+
+## plot for February
+subset(climate_data,NAME=="NY CITY CENTRAL PARK, NY US")
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",],ty='p',pch=20, xlim=c(1990,2020), main="February",xlab="year", ylab="Temperatures in °C", ylim=c(-21,5))
+points(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02"&MonthlyTMINMean$Year==2015,],col="blue",pch=20, cex=1.5)
+February.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+February.2015 <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02"&MonthlyTMINMean$Year!=2015,])
+##summary(February.2015)
+abline(coef(February.lm), col="red")
+##lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
+
+## daily feb
+climate_data2=subset(climate_data,NAME=="NY CITY CENTRAL PARK, NY US")
+strDates<-as.character(climate_data2$DATE)
+climate_data2$NewDate <-as.Date(strDates, "%m/%d/%y")
+strDates <- as.character(climate_data$DATE)
+climate_data2$NewDate[1:9861] = format(as.Date(strDates[1:9861], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data2$NewDate[9862:17412] = format(as.Date(strDates[9862:17412], "%m/%d/%y"),"20%y-%m-%d") 
+climate_data2$Month = format(as.Date(climate_data2$NewDate), format = "%m")
+climate_data2$Year = format(climate_data2$NewDate, format="%Y")
+climate_data2$Day = format(climate_data2$NewDate, format="%d")
+str(climate_data2)
+dailyTMIN2015<-subset(climate_data2, Month=="02" & Year=="2015")
+plot(TMIN~Day, data=dailyTMIN2015, ty='p', main="February Minimum Temperatures in 2015", xlab="Day", ylab = "")
+points(TMIN~Day, data=dailyTMIN2015,col="blue",pch=20, cex=1.5)
+loess_fit <- loess(TMIN ~ Day, dailyTMIN2015)
+lines(dailyTMIN2015$Day, predict(loess_fit),col="blue")
+
+
+```
+ NEED TO INSERT MORE DATA ANALYSIS & IMAGE CAPTION
+
+
+<center>
+![The Science Behind the Polar Vortex](images/Polar_Vortex.jpg)
+</center>
+
+
+## Citations
+
+About Us. 350 NYC. [accessed 2020 Oct 16]. https://350nyc.org/about-2/ 
+
+Cold Weather Health and Safety. Cold Weather Health and Safety | IDPH. [accessed 2020 Oct 16]. https://www.dph.illinois.gov/topics-services/prevention-wellness/cold-weather-health-and-safety 
+
+Gibbens S. Why cold weather doesn't mean climate change is fake. National Geographic. 2019 Jan 29 [accessed 2020 Oct 16]. https://www.nationalgeographic.com/environment/2019/01/climate-change-colder-winters-global-warming-polar-vortex/ 
+
+Pierre-louis K. Why Is the Cold Weather So Extreme if the Earth Is Warming? The New York Times. 2019 Jan 28 [accessed 2020 Oct 16]. https://www.nytimes.com/interactive/2019/climate/winter-cold-weather.html 
+
+Publishing HH. How does cold weather affect your health? Harvard Health. 2014 [accessed 2020 Oct 16]. https://www.health.harvard.edu/staying-healthy/how-does-cold-weather-affect-your-health 
+
+Radcliff S. How Extremely Cold Weather Can Affect Your Health. Healthline. 2019 [accessed 2020]. https://www.healthline.com/health-news/how-extremely-cold-weather-can-affect-your-health#Staying-safe-in-extreme-winter 
+
+Roth S. It's cold outside, but that doesn't mean climate change isn't real. USA Today. 2017 Dec 29 [accessed 2020 Oct 16]. https://www.usatoday.com/story/weather/2017/12/28/its-cold-outside-but-doesnt-mean-climate-change-isnt-real/987948001/ 
+
+Simpson IR, Hitchcock P, Seager R, Wu Y, Callaghan P. The Downward Influence of Uncertainty in the Northern Hemisphere Stratospheric Polar Vortex Response to Climate Change. Journal of Climate. 2018;31(16):6371–6391. doi:10.1175/jcli-d-18-0041.1 
+
+Spector D. Why Cold Weather Doesn't Mean Global Warming Isn't Real. Business Insider. 2014 Nov 21 [accessed 2020 Oct 16]. https://www.businessinsider.com/cold-weather-doesnt-discredit-climate-change-2014-11 
+
+Why Global Warming Can Mean Harsher Winter Weather. Scientific American. 2009 Feb 25 [accessed 2020 Oct 16]. https://www.scientificamerican.com/article/earthtalks-global-warming-harsher-winter/ 
+
+Zhang Y, Li J, Zhou L. The Relationship between Polar Vortex and Ozone Depletion in the Antarctic Stratosphere during the Period 1979–2016. Advances in Meteorology. 2017;2017:1–12. doi:10.1155/2017/3078079 
+
