@@ -21,19 +21,19 @@ knitr::opts_chunk$set(echo = TRUE)
 Orlando, Florida is known worldwide for being the home to many theme parks, most notable Disneyworld. With ample sunshine and seemingly no bad weather, Florida, at least in theory, makes an ideal tourist attraction. For this reason, it is also known as a state where many retire--26.5% of Florida's population is over 60 (Elderly, 2018). However, as climate change ravages our world, especially tropical lands surrounded by sea, this American peninsula is under extreme threat. At present day, Florida has not experienced an increase of hurricanes, luckily. However, overall trends of them can be attributed to a rise in temperature and increased precipitation, of which Orlando has both (Bennet, 2018, NOAA, 2014). Still, extreme weather events are not the only thing that Florida will be afflicted by as it warms. Both in the region and globally, climate change cotinues to progress, and Orlando and Florida as a whole will face serious consequences, especially as Orlandos own temperatures climb.
 
 
-<center>![](Orlando_station.jpg){width=40%}\center
+<center> \center
+![*Figure 1*](Orlando_station.jpg){width=40%}
 
+Above this is an image of the NOAA station at the Orlando Airport, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
 
+<!-- *Figure 1* -->
 ## How These Numbers Were Collected
-This is an image of the NOAA station at the Orlando Airport, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
 
 The station has been collecting data since 1892, all the way until the present. From 1974 to 1993, no data was collected, as the River Basin Co-op Network most likely ran out of funding to operated it (National, 2020). With the influx of funding in 1993, after Clinton's election, control of the station was given to Orlando Executive. To this day it runs the station. The exact location of the station has remained in the same since 1998--it had previously been two separate, but very close locations, moving the first time in 1929 after being in the same spot since 1892 (National, 2020).  
 
-This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
 
 
-
-```{r,  echo=FALSE, results='hide', fig.width= 5, fig.length= 2}
+```{r,  echo=FALSE, results='hide'}
 filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
 climate_data_full <- read.csv(filepath)
 climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
@@ -53,13 +53,16 @@ MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
 head(MonthlyTMINMean)
 
+
+ par(mfrow= c(2,2), cex.main=0.75, cex.lab=0.75, cex.axis=0.75, pin= c(1.5, 1), mar=c(2,1.75,1,1))
  plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "August's Minimum Temperature")
 
 aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
   abline(coef(aug.lm), col = "red")
   #summary(aug.lm)
 
- plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 01, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "January's Minimum Temperature")
+
+   plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 01, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "January's Minimum Temperature")
 
 jan.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 01, ])
   abline(coef(jan.lm), col = "red")
@@ -91,7 +94,7 @@ head(MonthlyTMINMean)
 ```
 
 ## The Temperature is Rising, featuring: Some Numbers
-The amount that Florida's temperatures will drop every day has been decreasing, as shown here by a graph of August's minimum temperature from 1892 to the present. August’s minimum temperatures is rising at a rate of 1.75 degrees celsius per century. This correlation is scientifically very significant, at a confidence of greater 99.99% (with a p value of less than .001).
+The amount that Florida's temperatures will drop every day has been decreasing, as shown here by a graph of August's minimum temperature from 1892 to the present. August’s minimum temperatures is rising at a rate of 1.75 degrees celsius per century. This correlation is statistically very significant, at a confidence of greater 99.99% (with a p value of less than .001). With these patterns, we reject the null hypothesis of no temperature change over time.
 
 This change is occuring throughout the whole year, though the change is more pronounced in mid to late summer.
 
@@ -237,7 +240,7 @@ If serious, wide reaching actions are not taken soon, there will be serious cons
 Moreover, about half of Florida's population lives on land that's just 2 meters above the highest of Florida's tides (Rush, 2018). As climate change progresses, the source of the stangnat amount of actual warming in our climate is the fact that so much of that energy is going into the ocean (Bennet, 2016). This energy means the oceans are expanding, and at a rate that some scientists say could mean much of Florida will be underwater by the end of the century (Rush, 2018). People will lose their homes, livelihoods, and communities. In short, this spells devestation for millions of Floridians. Orlando is 25 meters above sea level, but could easily see an influx of climate refugees from the other parts of Florida, including Miami, which is less than 2 meters above sea level, and right next to the Atlantic. 
 
 
-As storms thus increase in Florida, the state may become at risk of losing its drinking water. Over half of the state of Florida, including Orlando, is hydrated through the Floridian Aquifier, making it the most dependant state on ground water East of the Missippi River (Watersense, 2014). Groundwater aquifers are replenished increadibly slowly, and heat waves and droughts, which Florida might see, do not help with that. Moreover, storms and rising sea levels increase the chances that salf-water will infiltrate the clean drinking water. If this occurs, either the state will have to go to extreme lengths to find another water source, or filter the salt water reserves. In both cases, the solutions will be costly (Watersense, 2014).
+As storms thus increase in Florida, the state may become at risk of losing its drinking water. Over half of the state of Florida, including Orlando, is hydrated through the Floridian Aquifier, making it the most dependant state on ground water East of the Missippi River (Watersense, 2017). Groundwater aquifers are replenished increadibly slowly, and heat waves and droughts, which Florida might see, do not help with that. Moreover, storms and rising sea levels increase the chances that salf-water will infiltrate the clean drinking water. If this occurs, either the state will have to go to extreme lengths to find another water source, or filter the salt water reserves. In both cases, the solutions will be costly (Watersense, 2017).
 
 ## If This Has Not Convinced You: Money Will Also be Lost
 
