@@ -5,7 +5,7 @@ date: "9/12/2020"
 output: html_document
 ---
 <center>
-![Bus Riders Trekking Through the Snow](images/Bus_Riders.jpg)
+![Bus Riders Trekking Through the Snow](Project1/images/Bus_Riders.jpg)
 
 
 
@@ -16,13 +16,13 @@ output: html_document
 ## Why Are Winters in NYC Getting Colder?
 Within recent years, New York City has seen some of the lowest temperatures in history and this most notability occurred during the polar vortex that hit the northeast both in 2015 and 2018. Climate activists in New York City like the organization, 350NYC, have been working hard to educate New Yorkers about climate change for years. Despite their efforts, former New Yorker, President Donald J. Trump, and other climate change skeptics who do not believe in climate change, have latched onto these cold temperatures and have been pushing the idea that climate change can’t exist when temperatures are so low. This is a misconception that scientist have been repeatedly disproving, but sometimes the science can be confusing. So, through this blog, you will better understand the climate science behind extreme weather conditions and why they actually make sense as a result of climate change. Cold temperatures can lead to negative health effects like an increase in the risk of having a heart attack and more severe asthma. This is important to note, because this can lead to serious environmental justice issues within the five boroughs of New York City, due to the ranges in wealth and the racial disparities we see throughout the city. Those with higher incomes will be able to pay rising rent prices, as landlords turn up the heat, and leave it on for longer periods of time, whereas those with lower incomes, who are also in majority, people of color, will not be afforded the same luxury. In all, this blog will explain how climate change is the cause of extreme cold temperatures and therefore, how climate change is greatly impacting the health and wellbeing of all New Yorkers. 
 
-```{r, include=FALSE}
+```{r, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo=FALSE, warning=FALSE)
 read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
 
 ```
 
-```{r, include=FALSE}
+```{r, include=FALSE, echo=FALSE}
 filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
 
 filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
@@ -36,7 +36,7 @@ climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
 ## What Does the Data Show Us About New York City Temperatures? 
 
 The two plots below are showing the average minimum yearly and daily temperatures during February from 1980-2020 in New York City. The data here is from the National Oceanic and Atmospheric Administration of the United States(NOAA), from their temperature collecting station in New York’s Central Park. The main question this data is trying to answer, is if Polar Vortex winds have a significant impact on the regional temperatures of New York City. The null hypothesis here would be that there is no impact on NYC temperatures during a polar vortex. In order to tell if the data is significant, data analysists look to the p-value, which if lower than 0.05, shows significance and we can reject the null hypothesis, and if it is higher than 0.05 then we cannot reject the null hypothesis. 
-```{r, echo=FALSE, fig.height=8, fig.width=10}
+```{r, echo=FALSE, results='hide', fig.height=6, fig.width=10}
 ## monthly data
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate[1:51684] = format(as.Date(strDates[1:51684], "%m/%d/%y"), "19%y-%m-%d") 
@@ -48,14 +48,14 @@ MonthlyTMINMean<-aggregate(TMIN ~ Month + Year, climate_data, mean)
 ##str(MonthlyTMINMean)
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
-par(mfrow=c(2,2),las=1)
+par(mfrow=c(1,2),las=1)
 
 ## plot for February
 subset(climate_data,NAME=="NY CITY CENTRAL PARK, NY US")
 MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
-plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",],ty='p',pch=20, xlim=c(1980,2020), main="February Average Minimum Temperature",xlab="Year", ylab="Temperatures in °F", ylim=c(-15,5))
-points(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02"&MonthlyTMINMean$Year==2015,],col="blue",pch=20, cex=1.5)
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",],ty='p',pch=20, xlim=c(1980,2020), main="February Average Minimum Temperature",xlab="Year", ylab="Temperature in °F", ylim=c(-16.5,2))
+points(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02"&MonthlyTMINMean$Year==2015,],col="blue",pch=20, cex=2)
 February.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02",])
 February.2015 <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="02"&MonthlyTMINMean$Year!=2015,])
 ##summary(February.2015)
@@ -74,15 +74,15 @@ climate_data2$Year = format(climate_data2$NewDate, format="%Y")
 climate_data2$Day = format(climate_data2$NewDate, format="%d")
 str(climate_data2)
 dailyTMIN2015<-subset(climate_data2, Month=="02" & Year=="2015")
-plot(TMIN~Day, data=dailyTMIN2015, ty='p', main="February Minimum Temperatures in 2015", xlab="Day", ylab = "", ylim=c(-20,5))
+plot(TMIN~Day, data=dailyTMIN2015, ty='p', main="February Minimum Temperatures in 2015", xlab="Day", ylab = "", ylim=c(-16.5,2))
 points(TMIN~Day, data=dailyTMIN2015,col="blue",pch=20, cex=1.5)
-loess_fit <- loess(TMIN ~ Day, dailyTMIN2015)
+loess_fit <- loess(TMIN ~ Day, dailyTMIN2015, span=0.4, degree = 2)
 lines(dailyTMIN2015$Day, predict(loess_fit),col="blue")
 ##summary(loess_fit)
 
 
 ```
-The graph on the left titled, February Average Minimum Temperature, shows the Yearly average minimum temperatures in Feburary from 1980 to 2020. The blue dot farthest away from the red tend line, is the average minimum temperature for the year 2015, which is examined more closely in the other graph, when a Polar Vortex occured in New York City and brought down freezing temperatues. The p-value is 0.0179, which is smaller than 0.05 and indicates that this data is significant and that the null hypothesis is rejected. The graph on the right shows the Daily average temperatures for February in the Polar Vortex year, 2015. The curved blue trend line shows the significant dip in temperatures from the 15th to the 25th. Indicating, that there were 10 days where daily temperatures were below -15 degrees Fahrenheit. In a research paper titled, The Relationship between Polar Vortex and Ozone Depletion in the Antarctic Stratosphere during the Period 1979–2016, researches found "that the fluctuations of the polar vortex prfoundly impact the mean temperature and the frequency of occurrence of extreme cold events throughout the Northern Hemisphere", which follows aong exactly with the data shown here (Zhang Yu et al., 2017). 
+The graph on the left titled, February Average Minimum Temperature, shows the Yearly average minimum temperatures in Feburary from 1980 to 2020. The blue dot farthest away from the red tend line, is the average minimum temperature for the year 2015, which is examined more closely in the other graph, when a Polar Vortex occured in New York City and brought down freezing temperatues. The p-value is 0.0179, which is smaller than 0.05 and indicates that this data is significant and that the null hypothesis is rejected. The graph on the right shows the Daily average temperatures for February in the Polar Vortex year, 2015. The curved blue trend line shows the significant drop in temperatures from the 15th to the 25th. Indicating, that there were 10 days where daily temperatures were below -15 degrees Fahrenheit. In a research paper titled, The Relationship between Polar Vortex and Ozone Depletion in the Antarctic Stratosphere during the Period 1979–2016, researches found "that the fluctuations of the polar vortex prfoundly impact the mean temperature and the frequency of occurrence of extreme cold events throughout the Northern Hemisphere", which follows aong exactly with the data shown here (Zhang Yu et al., 2017). 
 
 Based on the significance of the p-value and the very cold temperatures in February 2015, we can clearly see that the Polar Vortex tempertures do have a strong influence on how cold winters in New York City are, and without the Polar Vortex events, winters will continue to warm. The question still remains, how is climate change connected to a polar vortex, when climate change means that the world is getting warmer? 
 
@@ -91,7 +91,7 @@ Based on the significance of the p-value and the very cold temperatures in Febru
 The term global warming was popularized a few decades ago to refer to the phenomenon of the greenhouse gas effect and how it traps heat in the atmosphere which warms the average temperature of the planet. Scientist now understand that an atmosphere changed by rising levels of greenhouse gases can and will lead to more climate changes then just warming. Extreme weather events, as we have seen in recent years, include the polar vortex temperatures, more violent hurricanes and hotter wildfires which are all a result of climate change. Zhang, Yu, and their team of scientists defined the term "vortex" as the, "flow of air that helps maintain the colder air proximity with the poles (Zhang Yu et al., 2017). The science behind polar vortex temperatures is also shown in the image below. 
 
 <center>
-![The Science Behind the Polar Vortex](images/Polar_Vortex.jpg)
+![The Science Behind the Polar Vortex](Project1/images/Polar_Vortex.jpg)
 </center>
 
  
@@ -107,6 +107,10 @@ Colder temperatures have the ability to increase negative health affects in all 
 
 A dramatic decrease in temperatures during the winter have the great potential to cause pretty sever environmental justice issues. Environmental Justice emerged as a concept in the United States in the early 1980’s. The term is used to describe the unfair distribution of environmental burdens on specific groups over others. Climate change has been known to be caused by the burning of fossil fuels and developed nations started burning these fuels beginning with industrialization and continuing to do so today, making them responsible for a very large portion of greenhouse gas emissions. The environmental justice issue arises because it is the developing nations that are bearing the brunt of the extreme weather outcomes and other adverse climate change effects. Within the United States, similar disparities are taking place, and within New York City alone, extreme cold temperatures are disproportionately impacting lower income communities of color. 
 Upper class, majority white neighborhoods in New York City will be able to have their heat on longer and at higher temperatures without the worry of if they can afford increased rent prices or utility prices from the building landlords. However, lower income communities in New York City who are majority black, will not be able to afford the same luxury and thus either have to survive in colder living conditions or possibly lose their housing. In a New York Times article titled, 1,713 Mammoth Boilers, and Winter Weeks Away, a reporter looked into how a large portion of buildings needed their boilers replaced many, many years before they were and this all happened in low-income neighborhoods on New York City. This lead to many people having no heat, or inconsistent heat in ther homes for many years, leading to severe adverse health effects. All the while, by keeping the heat on, there is an increase of fossil fuels burned which continues the greenhouse effect and propels climate change. New York City is all too familiar with severe childhood asthma that impacts black children at a very high rate. The environmental justice issue here, is that these temperatures, caused by climate change and propelled by the burning of fossil fuels, will cause children of color to suffer more severe asthma attacks. In connection with the statistics that indicate these same families lack adequate healthcare, there is a huge possibility that these children will not be able to get refills of asthma medication as needed because of how expensive they are in the United States. 
+
+<center>
+![Winter Wonderland](Project1/images/winter_trees.jpg)
+<center>
 
 ## In Conclusion
 
