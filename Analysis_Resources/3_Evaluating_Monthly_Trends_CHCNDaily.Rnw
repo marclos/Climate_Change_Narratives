@@ -549,10 +549,70 @@ plot(lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==1,]))
 @
 \end{figure}
 
-To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
+To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. 
 
-A properly specified model is shown in 
+Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
+
+A properly specified model is shown in\ldots\footnote{Coming soon} 
 
 %Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
+
+\section{Is there a direct relationship between CO2 and temperature?}
+
+\subsection{Year is not a mechanism}
+
+Although we have looked at temperture change over time, we don't have an actual mechanism as an explanatory factor. In fact, the only thing time is useful for is to explain age. But ailments associated with aging is not caused directly, but indirectly with age. Thus, the addage of correlatina is not causation. 
+
+So, can we directly test the role of CO2 on climate?  Let's find out! 
+
+<< maunaloa, echo=FALSE>>=
+address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
+download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
+
+maunaloa <- read.table("maunaloa", skip=70)
+names(maunaloa) <- c("year", "month", "decimal.date", "average", "interpolated", "trend", "days")
+maunaloa$average[maunaloa$average==-99.99] <- NA
+maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=maunaloa$decimal.date, average=maunaloa$average)
+
+MonthlyTMINMean = merge(MonthlyTMINMean, maunaloa, by.x=c("Year.num", "Month.num"), by.y=c("year", "month"))
+@
+
+\begin{figure}
+\label{fig:carbondioxide}
+\caption{Carbon Dioxide and TMIN.}
+%\setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
+% R code chunk that produces a graphic
+<<echo = T, fig= 'true' >>=
+par(las=1)
+plot(TMIN ~ average, data=MonthlyTMINMean, ty='p', pch=20, cex=.4, col='gray', xlab="[CO2]", ylab="Temperature C")
+
+CO2.lm<- lm(TMIN ~ average, data=MonthlyTMINMean)
+summary(CO2.lm)
+abline(coef(CO2.lm))
+@
+\end{figure}
+
+What if we look at 12 months...
+
+\begin{figure}
+\label{fig:xxx}
+\caption{Carbon Dioxide and TMIN.}
+<<echo=FALSE>>=
+par(mfrow=c(4,3), mar=c(4, 4, 2, 1) + 0.1)
+TMINresult <- NA
+for (i in 1:12){
+plot(TMIN~average, data=MonthlyTMINMean[MonthlyTMINMean$Month.num==i,], ty='p', las=1, main=Months[i], xlab="CO2")
+Month.lm <- lm(TMIN~average, data=MonthlyTMINMean[MonthlyTMINMean$Month.num==i,])
+
+summary(Month.lm)
+
+abline(coef(Month.lm), col="red")
+
+TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2,4],4), round(summary(Month.lm)$r.squared, 3)))
+}
+@
+\end{figure} 
+
+I can already see problems with this figure... 1) the co2 are serially correlated which shows up as odd diagonal points. 2) Doesn't really tell us the that earth is warming through time, however, the mechanism is more direct!
 
 \end{document}

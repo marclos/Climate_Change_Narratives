@@ -3,7 +3,6 @@ title: 'Hotter Summers and Health Inequality: Temperature, Health, and Activist 
 author: "Jacob Greene"
 date: "10/14/2020"
 output:
-  word_document: default
   html_document: default
 ---
 ```{r setup, include=FALSE}
@@ -29,6 +28,7 @@ I found that yes, D.C. summers are getting hotter and will have harmful health e
 To answer the first question scientifically, I tested the null hypothesis that D.C.'s maximum and minimum temperatures have not changed significantly. For these tests, I used D.C. daily temperature maximum and minimum data collected at the National Arboretum between 1948-2020 (the earliest records to the current day).  I obtained these records through the NOAA National Centers for Environmental Information ("Daily Summaries...", n.d.). Using r software for the statistical analysis, I calculated monthly means from the daily data and plotted them versus time. Finally, to determine the statistical significance of the results, I used p-values less than .05 along with r squared values to measure the spread of the data. Overall, I found that daily summer minimums have increased, and according to climate change models, both summer minimums and maximums will get hotter going forward.
 
 
+
 #### Warmer Summer Nights 1948-2020
 
 
@@ -42,7 +42,7 @@ climate_data$Year = format(as.Date(climate_data$NewDate),format= "%Y")
 MonthlyTMINMean = aggregate(TMIN~Month+Year,climate_data,mean)
 MonthlyTMINMean$YEAR= as.numeric(MonthlyTMINMean$Year)
 MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",],main= "Average Min Temps in Select Months vs Time", xlab= "Time", ylab= " Average Temperature Minimums (C°)", pch=19, cex=0.5, col= "dark red", ylim=c(8,26))
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",],main= "Average Min Temps in Select Months vs Time", xlab= "Time", ylab= " Average Temperature Minimums (C°)", pch=19, cex=0.5, col= "dark red", las=1, ylim=c(8,26))
 JulTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
 abline(coef(JulTMIN.lm),col= "dark red",lwd=2)
 
@@ -54,14 +54,14 @@ points(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], pch=19, 
 MayTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
 abline(coef(MayTMIN.lm),col= " dark green",lwd=2)
 
-legend("topleft", legend=c("July","September","May"),
-       col=c("dark red","dark orange","dark green"), lty=1, cex=0.7)
+legend(x=1960, y=27, legend=c("July","September","May"),
+       col=c("dark red","dark orange","dark green"), lty=1, cex=1)
 ```
 
 Table 1.  Washington D.C., Late Spring and Summer Monthly Temperature Minimum Trends (1948-2020)
-![](Pvalue Table.png){width=40%}
+![](Pvalue Table.png){width=45%}
 
-Table 1: Over a 100-year span, for significant slopes, temperatures have increased by, on average, 3.1 degrees Celsius (5.6 degrees Fahrenheit) in these months. Excluding August, p-values were all significant (p<.05) or very significant (p<.001) for summer months. However, winter and fall months (not shown) had no significant correlations. Of the months in the table, many of their adjusted r-squared values were small, such as May’s and September’s, which means that our linear model does not account for the variation of the data that well; however, small r squared values do not refute the correlation between time and temperature.
+Table 1: Over a 100-year span, for significant slopes, temperatures have increased by, on average, 3.1 degrees Celsius (5.6 degrees Fahrenheit) in these months. Across these summer and late-spring months (excluding August,), p-values were all significant (p<.05) or very significant (p<.001). However, winter and fall months (not shown) had no significant correlations. Of the months in the table, many of their adjusted r-squared values were small, such as May’s and September’s, which means that our linear model does not account for the variation of the data that well; however, small r squared values do not refute the correlation between time and temperature.
 
 
 From temperature minimum analyses, the bottom line is that other than in August, late spring and summer temperature minimums have been significantly getting hotter between 1948-2020 (p-values<.05). The linear model reveals that, for significant slopes, over a 100-year span, temperatures have increased by 3.1 degrees Celsius (5.6 degrees Fahrenheit) on average in these months.  Hayhoe and Stoner (2015), who synthesized data from two other D.C. weather stations, corroborated these results independently. They predict that future minimum temperatures will increase even faster than 3.1 degrees Celsius (5.6 degrees Fahrenheit) over 100 years. By 2010, they suspect that summer minimums will be hotter by around 4.4 to 5.5 degrees Celsius (7.9 to 8.3 degrees Fahrenheit) (Hayhoe et al., 2015).
