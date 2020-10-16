@@ -4,8 +4,8 @@ title: 'Overheating in the Mitten: The Effects of Anthropogenic Climate Change o
 author: "Lila Rubin"
 date: "October 2020"
 output:
-  html_document: default
   word_document: default
+  html_document: default
 ---
 
 *The state of Michigan sits on land of multiple Indigenous communities: the Ojibwa, the Potawatomi, and the Odawa. Known as the Council of the Three Fires, the three nations were primarily farming communities, raising corn, beans, squash, and more. As we discuss modern agriculture, those of us who are settlers remember that this land is not ours to sow.*
@@ -17,8 +17,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 <center>![Windmill farm in Pidgeon, MI. Source: Shutterstock](Graphics/metrodetroitmichigan.jpg)</center>
 
-## Introduction [change to flashier title]
-
+#
 Coasts are ravaged by hurricanes, flooding, and wildfires. The central United States is plagued by drought, the South by heat waves (U.S. Global Change Research Program 2014). It is almost unanimously agreed in the scientific community that these drastic and deadly changes in climate are due to human-caused global warming (Cook, John, et al 2016). In the agricultural cradle of the U.S. known as the Midwest, however, citizens are seeing the effects of climate change in their backyard from a more subtle perspective. The production of staple crops like corn, wheat, beans, and squash, can actually benefit from the world’s rising temperature, as the warmer climate extends Michigan’s growing season (American Security Project). However, warmer temperatures are not the only symptom of climate change – increases in extreme weather events, for example, are common. This means that should climate change continue on its projected path, bumper crops one year may give way to empty siloes in the next, may lead to bumper crops in the third year, and so on and so forth. This blog examines and analyzes the impact of climate statistics and projections on the Michigan agriculture. While the rise in temperature may be beneficial to farmers in the Mitten at surface level, the dangers of unpredictable seasons lurk just below the rising water line. Climate change mitigation is essential to ensuring consistent, plentiful harvests for Michiganders and the rest of the world.
 
 
@@ -27,6 +26,7 @@ Coasts are ravaged by hurricanes, flooding, and wildfires. The central United St
 In order to analyze the impacts of climate change on the state of Michigan, this blog will center around the analysis of climate data including minimum and maximum daily temperatures and precipitation levels in Ann Arbor, Michigan, from the October 1st of 1891 to September 2nd of 2020, in tandem with data on total corn yield and conditions in the entire state from 1866 to 2020. This statistical support is based on data curated by the National Oceanic and Atmospheric Administration (NOAA), which was collected at the University of Michigan (at weather station GHCND:USC00200230) in Ann Arbor. Agricultural data is curated by the National Agricultural Statistics Service (NASS). These freely available datasets can be analyzed for various trends using R (National Oceanic and Atmospheric Administration 2020; National Agricultural Statistics Service 2020). Close analysis of trends and patterns in this information, along with the review of other research done in the region, informed the conclusions which will be presented in this blog. It should be noted that we will focus on Ann Arbor data to paint a general picture of weather anomalies in the whole state of Michigan, but total state data for agricultural trends. We have chosen the University of Michigan's weather station to represent state weather because of its extensive and consistent daily summaries of temperature and precipitation. In addition, Ann Arbor lies in the same plant hardiness zone of the major corn counties of Michigan. The term "plant hardiness zone" was created by the United States Department of Agriculture to identify similar ranges of climate conditions based on an area's geographic location in order to better inform farmers on what crops could thrive in their area. The two images below show the correlation between Michigan's plant hardiness zones and the frequency of corn crops from 2008 to 2019. We see that Ann Arbor is in Zones 5b and 6a similar to the rest of Michigan excluding the Upper Peninsula northern Lower Peninsula. We also see that these two zones correlate with the major corn producing areas of Michigan, which extend across the southern half of the mitten. Such information from the USDA shows us that Ann Arbor's climate can act as an indication of climatic conditions across the state's corn-growing regions.
 
 ![Michigan Hardiness Zones. Source: https://commons.wikimedia.org/wiki/File:MichiganHardinessZones_in_Celsius.svg](Graphics/michigan_hardiness_zones.jpg){height=350px}![Frequency of Corn Production in Michigan. Source: National Agricultural Statistics Survey 2019](Graphics/corn_frequency_layer.jpg){height=350px}
+#
 
 ## Ecology and Economy
 
@@ -65,6 +65,8 @@ lines(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],
 ty='l', col="red")
 August.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
 AugustTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="08",])
+abline(coef(August.lm))
+abline(coef(AugustTMIN.lm))
 
 plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty="l", xlim=c(1891, 2020), ylim=c(4, 26), main="Average Temperature (May)", ylab="Temperature (C)", xlab="Year", las=1)
 lines(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",],
@@ -79,8 +81,9 @@ In order to analyze patterns in temperatures over the span of more than a centur
 
 This data fits scientists' predictions of longer and perhaps potentially more prosperous Michigan growing seasons. As temperatures increase in early spring, farmers are able to plant crops sooner, and crops like corn, which requires a longer growing season, still flourish in the steady temperatures of late summer and fall.
 
+#
 
-## Growing Temperatures, Sowing Corn
+## Sowing Corn in Growing Temperatures
 
 ![Source: Randall Schaetzl, Michigan State University](Graphics/corntemperaturesdiagram.gif)
 
@@ -107,168 +110,74 @@ July.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="07",])
 abline(coef(July.lm), col="red")
 ```
 
-Increasing temperatures alone can provide benefits to farmers - at least, for now. Based on the trends in our data, if no climate change mitigations are enacted, average temperatures in Michigan will increase by around 2 degrees within 100 years. Climate change is predicted to accelerate, however, should drastic measures not be taken to prevent the release of more greenhouse gases into the atmosphere (IPCC [Core Writing Team] 2014). This means that instead of temperatures growing at a linear pace, they will grow exponentially. In other words, it is likely that 2 degrees in the next 100 years is an under-estimate.
+Increasing temperature alone can provide benefits to farmers - at least, for now. Based on the trends in our data, if no climate change mitigations are enacted, average temperatures in Michigan will increase by around 2 degrees within 100 years. A study published by the National Academy of Sciences, shown below, predicts that a 1°C increase in temperature could result in the loss of around 10% of corn yields in Champaign, Illinois - a close neighbor of Michigan who shares the same plant hardiness zone (Liang, Wu, et al. 2017).
 
 
-Not only do temperatures play a part in the growing and harvesting of corn, so do precipitation levels. A 2019 study done by researchers at the University of Illinois showed that "excessive rainfall" could decrease corn crop yields by up to 34%, just as drought and heat waves can cause a decrease of up to 37% (Yoksoulian 2019). This means that Michigan's steady upward trend in rainfall looms dangerously over corn yields, both now, and in the future. Excluding September, every month shows a noticeable increase in average monthly precipitation levels. As we have considered May for our temperature minimums and maximums, we will use the same month to examine precipitation. As the graph shows, Michigan's monthly rainfall sums are steadily increasing. When combined with rising temperatures and a less predictable weather cycle, the state's excessive rainfall does not bode well for the future of Michigan sweet corn.
+<center> ![Temperature Impact on Crop Yield (% per °C). Source: Liang X-Z, Wu Y, et al. 2017](Graphics/temperature impact on crop yield.png) </center>
 
-```{r PRCP_total}
-# changing date formatting
-climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-# PRCP business
-MonthlyPRCPSum = aggregate(PRCP ~ Month + Year, climate_data, sum)
-MonthlyPRCPSum$YEAR = as.numeric(MonthlyPRCPSum$Year)
-MonthlyPRCPSum$MONTH = as.numeric(MonthlyPRCPSum$Month)
-
-# January
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",], ty="l", xlim=c(1891, 2020), main="January", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# JanuaryPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",])
-# abline(coef(JanuaryPRCP.lm))
-# 
-# February
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# FebPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",])
-# abline(coef(FebPRCP.lm))
-# 
-# March
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# MarPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",])
-# abline(coef(MarPRCP.lm))
-# 
-# April
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# AprPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
-# abline(coef(AprPRCP.lm))
-
-# May
-plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",], ty="l", xlim=c(1891, 2020), main="May", ylab="Total Monthly Precipitation", xlab="Year")
-
-MayPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
-abline(coef(MayPRCP.lm))
-# 
-# June
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# JunePRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",])
-# abline(coef(JunePRCP.lm))
-# 
-# July
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# JulyPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",])
-# abline(coef(JulyPRCP.lm))
-# 
-# August
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# AugustPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",])
-# abline(coef(AugustPRCP.lm))
-# 
-# September
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# SeptPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",])
-# abline(coef(SeptPRCP.lm))
-# 
-# October
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# OctPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",])
-# abline(coef(OctPRCP.lm))
-# 
-# November
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# NovPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",])
-# abline(coef(NovPRCP.lm))
-# 
-# December
-# plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Total Monthly Precipitation", xlab="Year")
-# 
-# DecPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",])
-# abline(coef(DecPRCP.lm))
-```
+#
+On top of this fact, climate change is predicted to accelerate if drastic measures are not taken to prevent the release of more greenhouse gases into the atmosphere (IPCC [Core Writing Team] 2014). This means that instead of temperatures growing at a linear pace, they will grow exponentially. In other words, even 1°C could make a huge difference in corn yields, *and* it is likely that 2 degrees in the next 100 years is an under-estimate. To add to all of this, increasing temperature is determinedly not the only result of climate change. The frequency of extreme and unpredictable weather events like heavy rain and flooding, flash freezes, and droughts, among others, has risen with the warming of the globe as well (Union of Concerned Scientists 2018). A 2019 study done by researchers at the University of Illinois showed that "excessive rainfall" could decrease corn crop yields by up to 34%, just as drought and heat waves can cause a decrease of up to 37% (Yoksoulian 2019). The unpredictability of these events are of great concern to scientists studying the Great Lakes State due to the food shortages and economic gravity, among many environmental impacts, that such events will bring about (Yoksoulian 2019; Winkler, Andresen, et al. 2014). And the consequences of extreme weather events already seem to be taking their toll on corn yields in Michigan.
 
 
+## Predicting Production
 
-## Testing for Corn
-
-```{r corn_production, eval=FALSE}
-corn_production <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_cornproduction.csv")
-str(corn_production)
-corn_production$Value
-corn_production$Value = as.numeric(gsub(",", "", corn_production$Value))/1000000
-str(corn_production)
-
-plot(corn_production$Value~corn_production$Year, corn_production, main="Corn Production Income over Time", ylab= "Annual value", xlab="Year")
-
-corn_production_value.lm <- lm(corn_production$Value~corn_production$Year)
-abline(coef(corn_production_value.lm))
-```
-
-```{r corn_bushels_per_acre}
+In order to visualize what such a change in crop yields might look like, I have graphed annual Michigan corn yields since 1866 to 2019 (the 2020 data is not available yet, as the growing season is not quite over as I am conducting my research) using data curated by the National Agricultural Statistics Service. This data is freely available for anyone to view and analyze (NASS 2020). To show the broader picture before zooming in, I first looked at yields from 1866 to 2019 all together.
+```{r, echo=FALSE}
 corn_bushels_per_acre <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_cornbuperacre.csv")
-str(corn_bushels_per_acre)
 corn_bushels_per_acre$Value = as.numeric(gsub(",", "", corn_bushels_per_acre$Value))
+```
 
-plot(corn_bushels_per_acre$Value~corn_bushels_per_acre$Year, corn_bushels_per_acre, ty = "l", main="Corn Production in Bushels per Acre over Time", ylab= "Bushels per Acre", xlab="Year", las=1)
+```{r cornbushels, echo=FALSE}
+plot(corn_bushels_per_acre$Value~corn_bushels_per_acre$Year, corn_bushels_per_acre, main="Corn Yields from 1866 to Present", ylab= "Bushels per Acre", xlab="Year", las=1)
 
 cornproductionbushels.lm <- lm(corn_bushels_per_acre$Value~corn_bushels_per_acre$Year, corn_bushels_per_acre)
 abline(coef(cornproductionbushels.lm))
+```
 
+From this graph, we can see that corn yields were relatively similar and steady from the 1860s to the late 1940s. In the 1950s, however, corn production grew dramatically, easily surpassing even the bountiful harvests of years prior. As the 1900s drew to an end, we see the data spread, indicating a more drastic contrast between year-to-year yields than seen before. To explore this hypothesis, I've broken the graph into three eras: 1866 to 1920, the years of steady production; 1920 to 1970, in which yields take a sharp upturn; and 1970 to 2019, where our data spreads out. In order to measure the accuracy of the trends and examine differences in spreads of data, we will look both at the p-value and standard deviation of each line of best fit.
+
+```{r 1860-1920}
 #1866-1920
-plot(corn_bushels_per_acre$Value[100:155]~corn_bushels_per_acre$Year[100:155], xlim=c(1866, 1920), ylim=c(0, 80), ty = "l", main="Corn Production in Bushels per Acre over Time", ylab="Bushels per Acre", xlab="Year", las=1)
+plot(corn_bushels_per_acre$Value[100:155]~corn_bushels_per_acre$Year[100:155], xlim=c(1866, 1920), ylim=c(20, 120), main="Corn Yields from 1866 to 1920", ylab="Bushels per Acre", xlab="Year", las=1)
 
 cornproductionbushel1866to1920.lm <- lm(corn_bushels_per_acre$Value[100:155]~corn_bushels_per_acre$Year[100:155], corn_bushels_per_acre)
 abline(coef(cornproductionbushel1866to1920.lm))
-summary(cornproductionbushel1866to1920.lm)
+# summary(cornproductionbushel1866to1920.lm)
+# sd(corn_bushels_per_acre$Value[100:155])
+```
+
+The downward trend from 1866 to 1920 is not statistically significant (p-value = 0.376) and can therefore be discounted as an indication of a decrease in corn productivity. The line's standard deviation is low, sitting at 3.817, and indicates a steady period of corn production.
 
 
+```{r 1920-70}
 #1920-1970
-plot(corn_bushels_per_acre$Value[50:100]~corn_bushels_per_acre$Year[50:100], xlim=c(1920,1970), ylim=c(0,200), ty = "l", main="Corn Production in Bushels per Acre over Time", ylab= "Bushels per Acre", xlab="Year", col="red")
+plot(corn_bushels_per_acre$Value[50:100]~corn_bushels_per_acre$Year[50:100], xlim=c(1920,1970), ylim=c(25, 135), main="Corn Yields from 1920 to 1970", ylab= "Bushels per Acre", xlab="Year")
 
 cornproductionbushel1920to1970.lm <- lm(corn_bushels_per_acre$Value[50:100]~corn_bushels_per_acre$Year[50:100], corn_bushels_per_acre)
 abline(coef(cornproductionbushel1920to1970.lm))
-summary(cornproductionbushel1920to1970.lm)
+# summary(cornproductionbushel1920to1970.lm)
+# sd(corn_bushels_per_acre$Value[50:100])
+```
 
+From 1920 to 1970, the increase in yield is well beyond the point of statistically significant (p-value = 2.2e-16), confirming that the era was indeed a time of extreme growth for the Michigan corn industry. We also see the data start to spread out, with a higher standard deviation of 15.345, a sign that something has caused less steady corn yields than our first era. 1920 is also just after the start of Industrial Revolution, which some scientists peg as the beginning of dramatic anthropogenic climate change as well (Cook, Oreskes, et al. 2016), and based on the research we have studied so far, one could infer that the two are linked.
+
+```{r 1970-2020}
 # 1970-2020
-plot(head(corn_bushels_per_acre$Value, n=50)~head(corn_bushels_per_acre$Year, n=50), corn_bushels_per_acre, ty = "l", main="Corn Production in Bushels per Acre over Time, 1970-2020", ylab= "Bushels per Acre", xlab="Year")
+plot(head(corn_bushels_per_acre$Value, n=50)~head(corn_bushels_per_acre$Year, n=50), corn_bushels_per_acre, main="Corn Yields from 1970 to 2020", ylab= "Bushels per Acre", xlab="Year")
 
 cornproductionbushel1970to2020.lm <- lm(head(corn_bushels_per_acre$Value, n=50)~head(corn_bushels_per_acre$Year, n=50), corn_bushels_per_acre)
 abline(coef(cornproductionbushel1970to2020.lm))
-summary(cornproductionbushel1970to2020.lm)
+# summary(cornproductionbushel1970to2020.lm)
+# sd(head(corn_bushels_per_acre$Value, n=50))
 ```
 
-1866-1920 
-Residual standard error: 3.824 on 54 degrees of freedom
-Multiple R-squared:  0.01452,	Adjusted R-squared:  -0.003726 
-F-statistic: 0.7958 on 1 and 54 DF,  p-value: 0.3763
-
-1920-1970
-Residual standard error: 7.52 on 49 degrees of freedom
-Multiple R-squared:  0.7646,	Adjusted R-squared:  0.7598 
-F-statistic: 159.2 on 1 and 49 DF,  p-value: < 2.2e-16
-
-1970-2020
-Residual standard error: 10.18 on 48 degrees of freedom
-Multiple R-squared:  0.8767,	Adjusted R-squared:  0.8741 
-F-statistic: 341.3 on 1 and 48 DF,  p-value: < 2.2e-16
+Lastly, we get to our most recent era, one that is currently taking place. The line of best fit still trends significantly upward, even more than before; this is the era where we see an even more heightened standard deviation of 28.691, indicating a growing disparity in the predictability of annual corn yields.
 
 ## Conclusions
 
-Agricultural loss as described above will devastate the Michigan economy. Repairs to landscape damaged by climate-change-related incidents, including dredging and filling in shoreline damage and erosion, diverting water, and pollution from transportation will not only exacerbate climate change, it will cost a fortune – estimated by researcher Jean-Philippe Jenny and his team to cost “an excess of $400 million annually” (Jenny, Jean-Philippe, et-al). With a primarily agriculture-based economic model, it will be difficult to adjust to a world in which conventional agriculture is simply not possible due to extreme and unpredictable weather patterns (Kling, George W., et al). However, the looming potential of an economic disaster is not only a result of the downfall of the agricultural industry; as the second biggest industry in Michigan, tourism will also have a large impact on the future of the state’s wealth. Unfortunately, with dredging and filling, water diversion and pollution, the destruction of ecosystems, and a dying “Pick-Your-Own Fruit” industry, tourists may not be eager to flock to Michigan’s formerly pristine shores and corn mazes.
+Given the research conducted and cited above, there is strong reason to believe that the growing standard deviation in Michigan corn yields is at least in part due to the effects of climate change on the state. Although heightened temperatures may temporarily and occasionally benefit the mitten state's agricultural industry, extreme temperature waves and increasingly erratic weather patterns have and will wreak havoc on the dependability of crop production for the population and the economy. Michigan is home to more than 52,000 farms, each with mouths to feed both on the farm, in their community, and around the world (Michigan Ag Council [date unknown]). Without a dependable harvest or income, families and communities will be left struggling to make ends meet under the pressures of empty siloes, stomachs, and savings accounts. With a primarily agriculture-based economic model, it will be difficult to adjust to a world in which conventional agriculture is unreliable due to extreme and unpredictable weather patterns (Kling, George W., et al). While scary to think about, this is also where some of the best change can be made.
 
-It is not difficult to conclude that Michigan is and will continue to feel both the long- and short-term effects of the warming of the Earth by human activity. In many ways, Michigan can be seen as a warning to those who don’t believe climate change will affect them. Although the signs are more subtle than fire or flood, Michigan’s climate crisis is just as grave and must be addressed with the utmost seriousness.
-
+Farmers have been and are beginning to focus more and more on creating sustainable practices. Organizations like Farmers for a Sustainable Future can make a huge difference in the fight for climate change mitigation because of their unique position to cut methane, nitrous oxide, and carbon dioxide emissions on their farms, from recycling water and using animal waste to generate electricity to creating their own natural fertilizer from manure and straw, practicing sustainable farming is a huge step in the fight to stop climate change (Hyson, Webb, et al. 2018). In addition, Farmers for Sustainable Future involves farmers around the country in grassroots organizing, political advocacy, and legal aid to integrate their industry into the fight for a greener future (American Farm Bureau Federation). Michigan farmers know better than anyone: although the signs are more subtle than fire or flood, Michigan’s climate crisis is just as grave and must be addressed with the utmost seriousness.
 
 
 ## References
@@ -287,11 +196,11 @@ It is not difficult to conclude that Michigan is and will continue to feel both 
 12. National Agricultural Statistics Service. CORN, GRAIN - PRODUCTION, MEASURED IN BU. Quick Stats. 2020. https://quickstats.nass.usda.gov/results/B239FD85-E069-3E6E-AEC4-33D45EF8D084
 13. National Agricultural Statistics Service. Cropland Data Layer. 2019. https://nassgeodata.gmu.edu/CropScape/
 14. IPCC [Core Writing Team]. Climate Change 2014: Synthesis Report. In: R.K. Pachauri and L.A. Meyer, editor. Contribution of Working Groups I, II and III to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change. Geneva, Switzerland: IPPC; 2014. p. 167.
+15. Union of Concerned Scientists. The Science Connecting Extreme Weather to Climate Change. 2018.
+16. Liang X-Z, Wu Y, Chambers RG, Schmoldt DL, Gao W, Liu C, Liu Y-A, Sun C, Kennedy JA. Determining climate effects on US total agricultural productivity. Proceedings of the National Academy of Sciences of the United States of America. 2017;114(12):E2285–E2292.
+17. Hyson P, Webb L, Lowe S, Ackers K, Bingham R, Mathews B. Sustainable dairy farming - is it possible? Ecoandbeyond.co. 2018 May 2 [accessed 2020 Oct 15].
+18. Advocacy - American Farm Bureau Federation. Www.fb.org. [accessed 2020 Oct 15]. https://www.fb.org/advocacy
 
-
-
-
-## Original Temp. Graph
 ```{r climate_data, echo=FALSE, eval=FALSE}
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
 strDates <- as.character(climate_data$DATE)
@@ -300,10 +209,6 @@ plot(TMAX~NewDate, climate_data, ty='l', main="Daily Temperatures", ylab= "Max T
 bestfitline.lm <- lm(TMAX~NewDate, climate_data)
 abline(coef(bestfitline.lm), col="red")
 ```
-
-
-## Snowfall and Excess TMIN, TMAX
-
 ```{r SNOW, eval=FALSE}
 # changing date formatting
 climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
@@ -400,7 +305,95 @@ plot(SNOW~YEAR, data = MonthlySNOWSum[MonthlySNOWSum$Month=="12",], ty="l", xlim
 DecSNOW.lm <- lm(SNOW~YEAR, data = MonthlySNOWSum[MonthlySNOWSum$Month=="12",])
 abline(coef(DecSNOW.lm))
 ```
+```{r PRCP_total, eval=FALSE}
+# changing date formatting
+climate_data <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_annarbor_temp_and_precip.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
 
+# PRCP business
+MonthlyPRCPSum = aggregate(PRCP ~ Month + Year, climate_data, sum)
+MonthlyPRCPSum$YEAR = as.numeric(MonthlyPRCPSum$Year)
+MonthlyPRCPSum$MONTH = as.numeric(MonthlyPRCPSum$Month)
+
+# January
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",], ty="l", xlim=c(1891, 2020), main="January", ylab="Total Monthly Precipitation", xlab="Year")
+
+JanuaryPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="01",])
+abline(coef(JanuaryPRCP.lm))
+summary(JanuaryPRCP.lm)
+
+# February
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",], ty="l", xlim=c(1891, 2020), main="February", ylab="Total Monthly Precipitation", xlab="Year")
+
+FebPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="02",])
+abline(coef(FebPRCP.lm))
+summary(FebPRCP.lm)
+
+# March
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",], ty="l", xlim=c(1891, 2020), main="March", ylab="Total Monthly Precipitation", xlab="Year")
+
+MarPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="03",])
+abline(coef(MarPRCP.lm))
+summary(MarPRCP.lm)
+# April
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",], ty="l", xlim=c(1891, 2020), main="April", ylab="Total Monthly Precipitation", xlab="Year")
+
+AprPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="04",])
+abline(coef(AprPRCP.lm))
+summary(AprPRCP.lm)
+
+# May
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",], ty="l", xlim=c(1891, 2020), main="May", ylab="Total Monthly Precipitation", xlab="Year")
+MayPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="05",])
+abline(coef(MayPRCP.lm))
+summary(MayPRCP.lm)
+
+# June
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",], ty="l", xlim=c(1891, 2020), main="June", ylab="Total Monthly Precipitation", xlab="Year")
+
+JunePRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="06",])
+abline(coef(JunePRCP.lm))
+summary(JunePRCP.lm)
+# July
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",], ty="l", xlim=c(1891, 2020), main="July", ylab="Total Monthly Precipitation", xlab="Year")
+
+JulyPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="07",])
+abline(coef(JulyPRCP.lm))
+summary(JulyPRCP.lm)
+# August
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",], ty="l", xlim=c(1891, 2020), main="August", ylab="Total Monthly Precipitation", xlab="Year")
+
+AugustPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="08",])
+abline(coef(AugustPRCP.lm))
+summary(AugustPRCP.lm)
+# September
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",], ty="l", xlim=c(1891, 2020), main="September", ylab="Total Monthly Precipitation", xlab="Year")
+
+SeptPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="09",])
+abline(coef(SeptPRCP.lm))
+summary(SeptPRCP.lm)
+# October
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",], ty="l", xlim=c(1891, 2020), main="October", ylab="Total Monthly Precipitation", xlab="Year")
+
+OctPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="10",])
+abline(coef(OctPRCP.lm))
+summary(OctPRCP.lm)
+# November
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",], ty="l", xlim=c(1891, 2020), main="November", ylab="Total Monthly Precipitation", xlab="Year")
+
+NovPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="11",])
+abline(coef(NovPRCP.lm))
+summary(NovPRCP.lm)
+# December
+plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",], ty="l", xlim=c(1891, 2020), main="December", ylab="Total Monthly Precipitation", xlab="Year")
+
+DecPRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$Month=="12",])
+abline(coef(DecPRCP.lm))
+summary(DecPRCP.lm)
+```
 ```{r, TMIN_excess, eval=FALSE}
 # 
  # January and 
@@ -567,9 +560,6 @@ December.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="12",])
 abline(coef(December.lm), col="red")
 summary(December.lm)
 ```
-
-
-# Planted and Harvested 1940-2020
 ```{r total_corn_planted, eval=FALSE}
 total_planted <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_total_planted.csv")
 total_planted$Value = as.numeric(gsub(",", "", total_planted$Value))/1000000
@@ -580,7 +570,6 @@ totalplanted.lm <- lm(total_planted$Value~total_planted$Year, total_planted)
 abline(coef(totalplanted.lm), col="red")
 summary(totalplanted.lm)
 ```
-
 ```{r total_corn_harvested, eval=FALSE}
 total_harvested <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_total_harvested.csv")
 total_harvested$Value = as.numeric(gsub(",", "", total_harvested$Value))/1000000
@@ -591,9 +580,6 @@ totalharvested.lm <- lm(total_harvested$Value~total_harvested$Year, total_harves
 abline(coef(totalharvested.lm), col="red")
 summary(totalharvested.lm)
 ```
-
-
-# Excellent decreasing, Poor increasing -- neither statistically significant
 ```{r corn_condition_excellent, eval=FALSE}
 corn_condition_exc <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_corncondition_excellent.csv")
 
@@ -610,7 +596,6 @@ cornconditionexc.lm <- lm(newValue_exc~newYear_exc)
 abline(coef(cornconditionexc.lm), col="red")
 summary(cornconditionexc.lm)
 ```
-
 ```{r corn_condition_poor, eval=FALSE}
 corn_condition_poor <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_corn_condition_poor.csv")
 
@@ -632,4 +617,16 @@ summary(cornconditionexc.lm)
 # cornconditionpoortwo.lm <- lm(corn_condition_poor$Value~corn_condition_poor$Week.Ending)
 # abline(coef(cornconditionpoortwo.lm))
 # summary(cornconditionpoortwo.lm)
+```
+```{r corn_production, eval=FALSE}
+corn_production <-read.csv("/home/CAMPUS/lraa2020/Climate_Change_Narratives/Data/FA20/lila_michigan_cornproduction.csv")
+str(corn_production)
+corn_production$Value
+corn_production$Value = as.numeric(gsub(",", "", corn_production$Value))/1000000
+str(corn_production)
+
+plot(corn_production$Value~corn_production$Year, corn_production, main="Corn Production Income over Time", ylab= "Annual value", xlab="Year")
+
+corn_production_value.lm <- lm(corn_production$Value~corn_production$Year)
+abline(coef(corn_production_value.lm))
 ```
