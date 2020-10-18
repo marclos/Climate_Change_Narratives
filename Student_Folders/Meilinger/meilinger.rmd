@@ -1,10 +1,8 @@
 ---
-title: 'Orlando, FL: It Was *Already* Hot'
+title: "Meilinger_Sarah_Test Blog"
 author: "Sarah Meilinger"
-output:
-  html_document: default
-  pdf_document: default
-  word_document: default
+date: "9/12/2020"
+output: html_document
 ---
 
 
@@ -12,261 +10,30 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Welcome To My Blog
 
-*This blog would like to acknowledge that the land now known as Orlando, Florida, was previously land occupied by the Seminole and Timucua tribes. While acknowlegding this fact cannot erase the tangible suffering of colonization, it is still true that colonized land should never be allowed to go unrecognized. As millions of tourists flock to Orlando most every year, it should be known that they walk on land that was, and remains, stolen.*
-
-
-## Orlando, Florida
-
-Orlando, Florida is known worldwide for being the home to many theme parks, most notable Disneyworld. With ample sunshine and seemingly no bad weather, Florida, at least in theory, makes an ideal tourist attraction. For this reason, it is also known as a state where many retire--26.5% of Florida's population is over 60 (Elderly, 2018). However, as climate change ravages our world, especially tropical lands surrounded by sea, this American peninsula is under extreme threat. At present day, Florida has not experienced an increase of hurricanes, luckily. However, overall trends of them can be attributed to a rise in temperature and increased precipitation, of which Orlando has both (Bennet, 2018, NOAA, 2014). Still, extreme weather events are not the only thing that Florida will be afflicted by as it warms. Both in the region and globally, climate change cotinues to progress, and Orlando and Florida as a whole will face serious consequences, especially as Orlandos own temperatures climb.
-
-
-<center>![](Orlando_station.jpg){width=40%}\center
-
-
-## How These Numbers Were Collected
-This is an image of the NOAA station at the Orlando Airport, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
-
-The station has been collecting data since 1892, all the way until the present. From 1974 to 1993, no data was collected, as the River Basin Co-op Network most likely ran out of funding to operated it (National, 2020). With the influx of funding in 1993, after Clinton's election, control of the station was given to Orlando Executive. To this day it runs the station. The exact location of the station has remained in the same since 1998--it had previously been two separate, but very close locations, moving the first time in 1929 after being in the same spot since 1892 (National, 2020).  
-
-This is an image of the NOAA station in Orlando, taken March 23rd, 1999. The objective of the photos was to document possible obtructions of the weather it is to measure.
+Hello. I am going to be writing about climate data of Orlando, Florida.
 
 
 
-```{r,  echo=FALSE, results='hide', fig.width= 5, fig.length= 2}
-filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
-climate_data_full <- read.csv(filepath)
-climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
-
-str(climate_data)
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-#creating a monthly min
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-# Fixing the Format of Month and Year as numeric
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
-
- plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "August's Minimum Temperature")
-
-aug.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 08, ])
-  abline(coef(aug.lm), col = "red")
-  #summary(aug.lm)
-
- plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 01, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "January's Minimum Temperature")
-
-jan.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 01, ])
-  abline(coef(jan.lm), col = "red")
-  summary(jan.lm)
-
-plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 02, ], pch= 20 , las = 1, xlim = c(1890, 2020), xlab = "Year", ylab = "Minimum Temperature", main = "February's Minimum Temperature")
-
-feb.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == 02, ])
-  abline(coef(jan.lm), col = "red")
-
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-# Fixing the Format of Month and Year as numeric
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
+Here's an image? of orlando?
+![orlando](/home/CAMPUS/smac2019/Climate_Change_Narratives/Student_Folders/Meilinger/Orlando)
 
 
-#   par(mfrow = c(4, 3), mar=c(1,1,1,1))
-# TMINresult <- NA
-# for (i in 1:12) {
-#   plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[i])
-#   MonthMin.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
-#   abline(coef(MonthMin.lm), col = "red")
-#   TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
-#   summary(MonthMin.lm)
-# }
-  
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
 ```
 
-## The Temperature is Rising, featuring: Some Numbers
-The amount that Florida's temperatures will drop every day has been decreasing, as shown here by a graph of August's minimum temperature from 1892 to the present. August’s minimum temperatures is rising at a rate of 1.75 degrees celsius per century. This correlation is scientifically very significant, at a confidence of greater 99.99% (with a p value of less than .001).
+## Including Plots
 
-This change is occuring throughout the whole year, though the change is more pronounced in mid to late summer.
+You can also embed plots, for example:
 
-For example, January has the least significant correlation between temperature minimums and the year. It's actually the only month to not be shown as significantly correlated when comparing the average minimum temperatures over time. However, it still has an upward trend of 0.68 degrees celsius per century, which supports the overall pattern of rising temperatures.
-
-February's data agrees that January's more shallow climb is not a pattern for all of winter. The plot shows the temperature to be rising at a rate of 2.67 celsius per century at a confidence interval of greater than 99.99%. The multiple r squared is 15% and adjusted is 14%, which means that what ever year it is has a 14% or 15% ability to predict for the temperature of Orlando. Because the year is not something able to influence the temperature of the climate, this means that the temperature must therefore be rising because of a different factor. In this case, human caused additions to the greenhouse gases in the atmosphere.
-
-<!-- eval=FALSE, results='asis', -->
-```{r, results='hide', eval=FALSE,  echo=FALSE, fig.width= 5, fig.length= 2}
-
-filepath = "/home/CAMPUS/smac2019/Climate_Change_Narratives/Data/FA20/Sarah_Orlando_Data.csv"
-climate_data_full <- read.csv(filepath)
-# subset the data
-
-climate_data <- subset(climate_data_full, subset=c(STATION=="USW00012841"))
-droplevels(climate_data)
-
-head(climate_data)
-str(climate_data)
-unique(climate_data$NAME)
-names(climate_data)
-
-
-
-min(climate_data$TMAX, na.rm=T)
-## [1] -9999
-
-
-str(climate_data)
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-
-
-
-str(climate_data)
-
-#plot(TMAX ~ NewDate, data=climate_data, las=1)
-
-
-slopeMaxTemp = lm(TMAX ~ NewDate, data= climate_data)
-coefMaxTemp = coef(slopeMaxTemp)
-# (Intercept)      NewDate
-# 2.834675e+01 8.480721e-06
-#plot(TMAX ~ NewDate, data= climate_data, ty='l', las=1, xlab = "Date", ylab = "Daily Max Temperature", pch=20)
-#abline(coefMaxTemp, col="red", lwd=3)
-summary(slopeMaxTemp)
-
-climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
-climate_data$Year = format(climate_data$NewDate, format="%Y")
-
-MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
-MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
-#plot(MonthlyTMAXMean$TMAX, ty='l', xlab = "Year", ylab = "Monthly Max Temp")
-#plot(MonthlyTMAXMean$TMAX[MonthlyTMAXMean$Month=="08"], ty='l', ylab = "August Max Temp")
-#plot(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",],ty='l', xlim=c(1890, 2022))
-augustSlope <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="08",])
-#abline(coef(augustSlope), col="red")
-summary(augustSlope)
-
-#creating a monthly min
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-# Fixing the Format of Month and Year as numeric
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
-# Month Year      TMIN YEAR MONTH
-# 1    01 1892  9.280645 1892     1
-# 2    02 1892 13.172414 1892     2
-# 3    03 1892 11.651613 1892     3
-# 4    04 1892 17.136667 1892     4
-# 5    05 1892 18.990323 1892     5
-# 6    06 1892 22.176667 1892     6
-
-Months = c("January", "February", "March", "April",
-           "May", "June", "July", "August", "September", "October",
-           "November", "December")
-
-
-
-
-### AND NOW MINIMUMSSS ##### WOOOOO
-
-MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-# Fixing the Format of Month and Year as numeric
-MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
-
-#plot(MonthlyTMINMean$TMIN, pch=20)
-
-par(mfrow = c(4, 3), mar=c(1,1,1,1))
-TMINresult <- NA
-for (i in 1:12) {
-  #plot(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[i])
-  MonthMin.lm <- lm(TMIN ~ YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i, ])
-  #abline(coef(MonthMin.lm), col = "red")
-  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(MonthMin.lm)[2], 4), round(summary(MonthMin.lm)$coefficients[2, 4], 4), round(summary(MonthMin.lm)$r.squared,3)))
-  summary(MonthMin.lm)
-}
-
-TMAXresult <- NA
-for (i in 1:12) {
-  # plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month==i], ty='l')
-  #plot(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ], pch= 20 , las = 1, xlim = c(1890, 2020), main = Months[i])
-  Month.lm <- lm(TMAX ~ YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i, ])
-  summary(Month.lm)
-  #abline(coef(Month.lm), col = "red")
-  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4), round(summary(Month.lm)$coefficients[2, 4], 4), round(summary(Month.lm)$r.squared,3)))
-}
-
-
-## TABLE OF MINS
-
-library(xtable)
-par(mfrow = c(4, 3), mar = c(5, 4, 3, 2) + 0.1)
-
-Results <- data.frame(Month = TMINresult[c(2:13), 1], TMINSlope = TMINresult[c(2:13),2], TMIN_P = as.numeric(TMINresult[c(2:13),3]), TMINRsq = TMINresult[c(2:13),4], TMAXSlope = TMAXresult[c(2:13),2], TMAX_P = as.numeric(TMAXresult[c(2:13),3]), TMAXRsq = TMAXresult[c(2:13),4])
-
-Results$starTMIN = "NS"
-Results$starTMIN[Results$TMIN_P <= .05] = "*"
-Results$starTMIN[Results$TMIN_P < 0.01] = "**"
-Results$starTMIN[Results$TMIN_P < 0.001] = "***"
-Results$starTMAX = "NS"
-Results$starTMAX[Results$TMAX_P < 0.05] = "*"
-Results$starTMAX[Results$TMAX_P < 0.01] = "**"
-Results$starTMAX[Results$TMAX_P < 0.001] = "***"
-Results$TMINslope=paste(Results$TMINSlope, Results$starTMIN)
-Results$TMAXslope=paste(Results$TMAXSlope, Results$starTMAX)
-colnames(Results) <- c("Month", "2", "3", "R^2", "5", "6",
-                       "R^2", "8", "9", "Slope TMIN", "Slope TMAX")
-print(xtable(Results[, c(1, 10, 4, 11, 7)]))
+```{r pressure, echo=FALSE}
+plot(pressure)
 ```
 
-
-
-## A Happy Ending This Does Not Make
-If serious, wide reaching actions are not taken soon, there will be serious consequences for Orlando, and Floridians all over the state. Firstly, hurricanes can be incredibly deadly, especially when you consider a pandemic on top of them, stressing evacuation sites and solutions that previously worked. 88% of people who die from hurricanes or tropical storms and depressions die from "storm surge, rainfall flooding, high surf, and deaths...within 50 nautical miles of the coast," according to weather.com (Erdman, 2019). As climate change occurs, more energy will be available in the atmosphere, causing more tension to be available as the catalyst for natural distaters, including hurricanes (Bennet, 2016). Thus, with more hurricanes, many more people will be at risk in Florida.
-
-
-Moreover, about half of Florida's population lives on land that's just 2 meters above the highest of Florida's tides (Rush, 2018). As climate change progresses, the source of the stangnat amount of actual warming in our climate is the fact that so much of that energy is going into the ocean (Bennet, 2016). This energy means the oceans are expanding, and at a rate that some scientists say could mean much of Florida will be underwater by the end of the century (Rush, 2018). People will lose their homes, livelihoods, and communities. In short, this spells devestation for millions of Floridians. Orlando is 25 meters above sea level, but could easily see an influx of climate refugees from the other parts of Florida, including Miami, which is less than 2 meters above sea level, and right next to the Atlantic. 
-
-
-As storms thus increase in Florida, the state may become at risk of losing its drinking water. Over half of the state of Florida, including Orlando, is hydrated through the Floridian Aquifier, making it the most dependant state on ground water East of the Missippi River (Watersense, 2014). Groundwater aquifers are replenished increadibly slowly, and heat waves and droughts, which Florida might see, do not help with that. Moreover, storms and rising sea levels increase the chances that salf-water will infiltrate the clean drinking water. If this occurs, either the state will have to go to extreme lengths to find another water source, or filter the salt water reserves. In both cases, the solutions will be costly (Watersense, 2014).
-
-## If This Has Not Convinced You: Money Will Also be Lost
-
-As discussed earlier, tourism is a large part of Florida's revenue. Orlando alone bring in more revenue than New York City does, to the tune of 24.8 billion dollars in 2018 (Storey, 2018). As Florida gradually becomes more and more inhospitable, all of that money will stop flowing in. Of American cities, Orlando is the most dependant on tourism.  Tourism makes up almost 20% of all of Orlando's gross domestic product, a percent that has some worried about the dependance on tourism (Storey, 2018). 17% of Orlando residents have jobs in the tourist industry, so its collapse would not only cause loss in industry money, but that of everyday person (Storey, 2018). 
-
-## This All To Say...
-Climate change is real, and climate change is occuring in Orlando, Florida. And unfortunately, the average person can only do so much to help. If you are able, putting your money where your mouth is and trying your absolute best not to monetarily support companies that use (and waste) lots of energy is good. Try switching your power to something renewable, if possible. If your are in Florida, consider a solar panel, because the state gets so much sun. But that has been said before and it will be said again. The best thing to do is to keep trying. It is so hard to continue fighting for climate justice in America, and being in Florida is not always easier (Central Florida's Sierra Club two concerns are the environment and friendship), but it is so, so important (Sierra 2020). Talk to your friends and family about climate change, because you are who they are most likely to listen to. Keep your eye on the ball, and donate your time or money to an environmentally focused group. It is hard giving advice. This system was not made to be broken so easily. Yet it must be broken, and soon. Otherwise it is peril for us all.
-
-
-## Cited Works 
-
-Bennett, J. O. (2016). A global warming primer: Answering your questions about the science, the consequences, and the solutions. Boulder, CO: Big Kid Science.
-
-Bergman, M. M. (2019, February 15). Florida is drowning. Condos are still being built. Can't humans see the writing on the wall? Retrieved October 02, 2020, from https://www.theguardian.com/environment/2019/feb/15/florida-climate-change-coastal-real-estate-rising-seas 
-
-Climate Orlando. (2020, September 29). Retrieved October 02, 2020, from https://www.meteoblue.com/en/weather/historyclimate/climatemodelled/orlando_united-states-of-america_4167147 
-
-Elderly Affairs State of Florida. (2018). Profile of Older Floridians. Retrieved October 05, 2020, from http://elderaffairs.state.fl.us/doea/pubs/stats/County_2018_projections/Counties/Florida.pdf 
-
-Environmental Protection Agency. (2016, August). What Climate Change Means for Florida. Retrieved from https://www.epa.gov/sites/production/files/2016-08/documents/climate-change-fl.pdf
-
-Erdman, J. (2019, July 09). 88% of U.S. Deaths From Hurricanes, Tropical Storms Are From Water, Not Wind. Retrieved October 11, 2020, from https://weather.com/safety/hurricane/news/hurricanes-tropical-storms-us-deaths-surge-flooding
-
-National Centers for Environmental Information NOAA. (2020). Historical Observing Metadata Repository. Retrieved October 05, 2020, from  https://www.ncdc.noaa.gov/homr/#ncdcstnid=20004463&tab=LOCATIONS 
-
-NOAA National Centers for Environmental Information State Climate Summaries. (2014). Retrieved October 02, 2020, from https://statesummaries.ncics.org/chapter/fl/ 
-
-Storey, K. (2018, October 29). Orlando ranks among largest tourism markets in the world, but the city's reliance on the industry could be a problem. Retrieved October 11, 2020, from https://www.orlandoweekly.com/Blogs/archives/2018/10/29/orlando-ranks-among-largest-tourism-markets-in-the-world-but-the-citys-reliance-on-the-industry-could-be-a-problem
-
-WaterSense. (2017, February). Saving Water in Florida. Retrieved October 11, 2020, from https://www.epa.gov/sites/production/files/2017-02/documents/ws-ourwater-florida-state-fact-sheet.pdf 
-
-
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

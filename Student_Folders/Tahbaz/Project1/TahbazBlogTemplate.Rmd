@@ -1,0 +1,164 @@
+---
+title: "Seasonal Temp Changes"
+author: "Eleanor Tahbaz"
+date: "9/12/2020"
+output: html_document
+---
+
+![Snowy Day in New York](https://rstudio.pomona.edu/s/24fdc7302027593d32a05/files/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/images/snow_day_in_nyc.jpg)
+
+
+try to cut out the code that isn't doing anything you need... like the following... eval=FALSE makes it so the code isn't run. Alternatively, you might want the rblock to run, but NOT show the results, results='hide' I think is the argument to do that...
+```{r, eval=FALSE}
+# doesn't really do anything useful. read.csv("/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv")
+
+```
+
+I created a file path so I find you data -- can you look at the guide and see where and how the data should be saved?
+:-)
+```{r}
+filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+
+# comment out my path in case I forget!
+filepath = "/home/CAMPUS/erta2020/Climate_Change_Narratives/Student_Folders/Tahbaz/Project1/EleanorTahbaz_NY,NY region_data.csv"
+climate_data <- read.csv(filepath)
+str(climate_data)
+strDates<-as.character(climate_data$DATE)
+climate_data$NewDate <-as.Date(strDates, "%m/%d/%y")
+
+```
+
+
+## Plots for January - TMIN
+```{r}
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate[1:51684] = format(as.Date(strDates[1:51684], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data$NewDate[51685:66920] = format(as.Date(strDates[51685:66920], "%m/%d/%y"),"20%y-%m-%d") 
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+#str(climate_data$NewDate)
+MonthlyTMINMean<-aggregate(TMIN ~ Month + Year, climate_data, mean)
+str(MonthlyTMINMean)
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",],ty='l', xlim=c(1973,2020))
+January.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+summary(January.lm)
+abline(coef(January.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="01",])
+#Marc, here I wanted to try what you did in class, but I am still not completely sure what it all means. for this graph, it looks like the data is okay, and that there isn't nanything that is greatly impapacting my best fit line. What do you think? 
+par(mfrow=c(2,2))
+plot(January.lm)
+par(mfrow=c(1,1))
+```
+## Plots for January - TMAX
+```{r}
+MonthlyTMAXMean<-aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num=as.numeric(MonthlyTMAXMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",],ty='l', xlim=c(1973,2020))
+January.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+summary(January.lm)
+abline(coef(January.lm), col="red")
+lm(formula = TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="01",])
+```
+
+## Plots for July - TMAX
+```{r}
+MonthlyTMAXMean<-aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num=as.numeric(MonthlyTMAXMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",],ty='l', xlim=c(1973,2020))
+June.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+summary(June.lm)
+abline(coef(June.lm), col="red")
+lm(formula = TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+#Marc, here I did the same thing, and I was wondering again, what you think of the data
+par(mfrow=c(2,2))
+plot(June.lm)
+par(mfrow=c(1,1))
+```
+
+## Plots for June
+```{r}
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",],ty='l', xlim=c(1973,2020))
+July.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
+summary(July.lm)
+abline(coef(July.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
+#and again here
+par(mfrow=c(2,2))
+plot(July.lm)
+par(mfrow=c(1,1))
+```
+## Plots for April - TMIN
+```{r}
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",],ty='l', xlim=c(1973,2020))
+April.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
+summary(April.lm)
+abline(coef(April.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="04",])
+```
+
+## Plots for April - TMAX
+```{r}
+MonthlyTMAXMean<-aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num=as.numeric(MonthlyTMAXMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",],ty='l', xlim=c(1973,2020))
+April.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+summary(April.lm)
+abline(coef(April.lm), col="red")
+lm(formula = TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="04",])
+```
+## Plots for October - TMAX
+```{r}
+MonthlyTMAXMean<-aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num=as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num=as.numeric(MonthlyTMAXMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMAXMean$TMAX, ty='l')
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",],ty='l', xlim=c(1973,2020))
+October.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+summary(October.lm)
+abline(coef(October.lm), col="red")
+lm(formula = TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="10",])
+```
+## Plots for October - TMIN
+```{r}
+MonthlyTMINMean$Year.num=as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$Month.num=as.numeric(MonthlyTMINMean$Month)
+#str(MonthlyTMINMean)
+plot(MonthlyTMINMean$TMIN, ty='l')
+plot(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",],ty='l', xlim=c(1973,2020))
+October.lm <- lm(TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+summary(October.lm)
+abline(coef(October.lm), col="red")
+lm(formula = TMIN~Year.num, data=MonthlyTMINMean[MonthlyTMINMean$Month=="10",])
+```
+
+
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
