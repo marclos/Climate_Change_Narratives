@@ -33,6 +33,7 @@ names(SCZ)
 # [19] "SITE_LATITUDE"                  "SITE_LONGITUDE"  
 
 #plotting
+<<<<<<< HEAD
 par(mfrow= c(1,2), cex.main=0.75, cex.lab=0.75, cex.axis=0.75, pin= c(1.5, 1) )
 min(SCZ$Daily.Mean.PM2.5.Concentration, na.rm=T)
 max(SCZ$Daily.Mean.PM2.5.Concentration, na.rm=T)
@@ -65,3 +66,9 @@ Monthly$Months
 ## Warning: Unknown or uninitialised column: `Months`.
 NULL
 print(xtable(Monthly), include.rownames=FALSE)
+=======
+min(SCZ$Daily.Mean.PM2.5.Concentration, na.rm=T)
+max(SCZ$Daily.Mean.PM2.5.Concentration, na.rm=T)
+plot(Date ~ Daily.Mean.PM2.5.Concentration, data= SCZ)
+
+>>>>>>> c956768... 10/17 wooo
