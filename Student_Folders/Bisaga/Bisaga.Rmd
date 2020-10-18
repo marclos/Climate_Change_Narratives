@@ -12,14 +12,14 @@ In this blog, I will be looking at climate data from the northern seaside city o
 ![Tourists at the beach](leba beach.jpg)
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, results='hide'}
 file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Data/FA20/leba, poland data.csv"
 #file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/leba, poland data.csv"
 climate_data <- read.csv(file.path)
 str(climate_data)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, results='hide'}
 
 strDates = as.character(climate_data$DATE) 
 climate_data$NewDate = NA
@@ -40,7 +40,7 @@ str(climate_data)
 #TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, results='hide'}
 str(climate_data)
 climate_data$NewDate
 ```
