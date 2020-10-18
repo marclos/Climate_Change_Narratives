@@ -1,5 +1,4 @@
 ## Summarizes data.
-
 ## Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%).
 ##   data: a data frame.
 ##   measurevar: the name of a column that contains the variable to be summariezed

@@ -18,7 +18,7 @@ The first analysis, that looks at daily temperature minimums from 1948-2020, rej
 climate_data <- read.csv("/home/CAMPUS/jagc2019/JacobGreene_WashingtonDC_Data.csv")
 strDates <- as.character(climate_data$DATE)
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-plot(TMIN~NewDate, climate_data,type='l', main= "Washington D.C. Daily TMIN vs Time", xlab= "Time ", ylab= "Daily TMIN (C)")
+plot(TMIN~NewDate, climate_data,type='l', main= "Washington D.C. Daily Temperature Minimum vs Time", xlab= "Time ", ylab= "Daily Temperature Minimum (C)")
 TMINbestlinefit.lm=lm(TMIN~NewDate, data = climate_data)
 abline(coef(TMINbestlinefit.lm), col= "red",lwd=2)
 summary(TMINbestlinefit.lm)
@@ -38,10 +38,10 @@ MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
 str(MonthlyTMINMean)
 #plot(MonthlyTMINMean$TMIN,type = "l")
 par(mfrow=c(1,1))
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l',main= "May Monthly TMIN Means vs Time", xlab= "Time", ylab= "May TMINs (C)" )
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",], ty='l',main= "May Monthly Temperature Minimum Means vs Time" )
 MayTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="05",])
-abline(coef(MayTMIN.lm),col= "red")
 summary(MayTMIN.lm)
+abline(coef(MayTMIN.lm),col= "red")
 ```
 
 
@@ -50,45 +50,12 @@ Lastly, the analysis of the month of July, the hottest month of the year in DC, 
 
 
 ```{r TMIN July, echo=FALSE}
-climate_data$Month = format(as.Date(climate_data$NewDate),format="%m")
-climate_data$Year = format(as.Date(climate_data$NewDate),format= "%Y")
-MonthlyTMINMean = aggregate(TMIN~Month+Year,climate_data,mean)
-MonthlyTMINMean$YEAR= as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$MONTH= as.numeric(MonthlyTMINMean$Month)
-str(MonthlyTMINMean)
-plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l',main= "July Monthly TMIN Means vs Time", xlab= "Time", ylab= "July TMINs (C)" )
+plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",], ty='l',main= "July Monthly Temperature Minimum Means vs Time" )
 JulTMIN.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$Month=="07",])
-abline(coef(JulTMIN.lm),col= "red")
 summary(JulTMIN.lm)
-```
-```{r TMIN mean, echo=FALSE}
-x = c(.019185,.034764,.03787,.033226,.030513,.029181)
-mean(x)
+abline(coef(JulTMIN.lm),col= "red")
 ```
 
-```{r Panel, echo=FALSE}
-Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
-TMINresult <- NA
-for (i in 1:12){
-plot(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,], ty='l', las=1, main=Months[i])
-  TMINMonth.lm <- lm(TMIN~YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==i,])
-  summary(TMINMonth.lm)
-  abline(coef(TMINMonth.lm), col="red")
-  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(TMINMonth.lm)[2], 4),round(summary(Month.lm)$coefficients[2,4],4),round(summary(TMINMonth.lm)$r.squared, 3)))
-}
-```
-
-Months = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
-TMINresult <- NA
-for (i in 1:12){
-  plot(TMIN~YEAR, data=MonthlyTMAXMean[MonthlyTMINMean$MONTH==i,], ty='l', las=1, xlim=c(1950, 2020), main=Months[i])
-  Month.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$MONTH==i,])
-  summary(Month.lm)
-  abline(coef(Month.lm), col="red")
-  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.lm)[2], 4),round(summary(Month.lm)$coefficients[2,4],4),round(summary(Month.lm)$r.squared, 3)))
-}
 
 ####Uncertainty
 
