@@ -33,7 +33,35 @@ names(SCZ)
 # [19] "SITE_LATITUDE"                  "SITE_LONGITUDE"  
 
 #plotting
+par(mfrow= c(1,2), cex.main=0.75, cex.lab=0.75, cex.axis=0.75, pin= c(1.5, 1) )
 min(SCZ$Daily.Mean.PM2.5.Concentration, na.rm=T)
 max(SCZ$Daily.Mean.PM2.5.Concentration, na.rm=T)
-plot(Date ~ Daily.Mean.PM2.5.Concentration, data= SCZ)
+plot(SCZ$Daily.Mean.PM2.5.Concentration ~ SCZ$Date, data= SCZ, ylim= c(1,40), xlab = "Year", ylab = "Daily PM 2.5", main = "Daily PM 2.5 Readings in Oakland Califonia")
+abline(h=12, col="red")
+plot(SCZ$Daily.Mean.PM2.5.Concentration ~ SCZ$Date, data= SCZ, xlab = "Year", ylab = "Daily PM 2.5", main = "Daily PM 2.5 Readings in Oakland Califonia")
+abline(h=12, col="red")
 
+library(dplyr)
+library(lubridate)
+#str(SCZ)
+tmp1 <- mutate(SCZ, Date = ymd(Date),Year = year(Date), Month = month(Date))
+tmp2 <- group_by(tmp1, Month, Year)
+Monthly <- summarise(tmp2, result = mean(Daily.Mean.PM2.5.Concentration) )
+Monthly <- SCZ %>%
+  mutate(Date = ymd(Date),Year = year(Date), Month = month(Date)) %>%
+  group_by(Month) %>%
+  summarise(mean = mean(Daily.Mean.PM2.5.Concentration),
+            sd = sd(Daily.Mean.PM2.5.Concentration),
+            N = length(Daily.Mean.PM2.5.Concentration) )
+
+qnorm(.975)
+## [1] 1.959964
+Monthly$UCL95 = Monthly$mean + qnorm(.975)*Monthly$sd/sqrt(Monthly$N)
+Monthly$LCL95 = Monthly$mean - qnorm(.975)*Monthly$sd/sqrt(Monthly$N)
+
+library(xtable)
+Monthly$Months
+4
+## Warning: Unknown or uninitialised column: `Months`.
+NULL
+print(xtable(Monthly), include.rownames=FALSE)
