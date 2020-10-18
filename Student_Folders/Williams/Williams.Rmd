@@ -152,7 +152,7 @@ abline(coef(July.lm), col="red")
 Julyresult <- NULL
 Julyresult <- rbind(Julyresult, cbind(Months[i],round(coef(July.lm)[2], 4), round(summary(July.lm)$coefficients[2, 4], 4), round(summary(July.lm)$r.squared,3)))
   
-legend("topleft", inset=c(-.25,-.15), legend=c("July Temp", "January Temp", "January Snowfall"), col=c("red", "blue", "turquoise"),cex=0.5, lty=1:1:1, xpd=TRUE)
+legend("topleft", inset=c(-.52,-.15), legend=c("July Temp", "January Temp", "January Snowfall"), col=c("red", "blue", "turquoise"),cex=0.5, lty=1:1:1, xpd=TRUE)
 
 #plot(MonthlyTMAXMean£TMAX[MonthlyTMAXMean£Month=="01"], ty='l')
 i <- 1
