@@ -14,10 +14,14 @@ In this blog, I will be looking at climate data from the northern seaside city o
 
 ```{r, echo=FALSE, results='hide'}
 <<<<<<< HEAD
+<<<<<<< HEAD
 file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv"
 =======
 file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Data/FA20/leba, poland data.csv"
 >>>>>>> 6236315... data now hidden
+=======
+file.path = "/home/CAMPUS/jnba2020/Climate_Change_Narratives/Student_Folders/Bisaga/leba, poland data.csv"
+>>>>>>> 67e7b22... keep losing my pictures
 #file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/leba, poland data.csv"
 climate_data <- read.csv(file.path)
 str(climate_data)
