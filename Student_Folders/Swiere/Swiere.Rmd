@@ -1,50 +1,37 @@
 ---
-title: "Addressing and Communicating Climate Change Risks in Southeast Texas"
+title: "Temperature and Precipitation Changes in Southeast Texas"
 author: "Katy Swiere"
-date: "9/29/2020"
-output:
-  word_document: default
-  pdf_document: default
-  html_document: default
+date: "9/19/20"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-# Introduction
 
-## About Orange, Texas
-The town I grew up in sits along the Gulf of Mexico, at the Southernmost point where Texas and Louisiana meet. The climate is a humid, subtropical one, and has been victim to a significant amount of flooding during my lifetime. The area also suffers from droughts, tornados, hurricanes and occasionally severe winter weather. 
-
-Not many people would argue that hurricanes, tropical storms, and other severe weather seem to only be getting worse. Few, however, connect it to our changing climate worldwide. 
+In this blog I will be exploring climate change in Southeast Texas, using data from the National Oceanic and Atmospheric Association (NOAA). I'm using Orange, Texas data which is the place I grew up.
 
 ![Where is Orange?](mapoforange.png)
+First I need to import my data. I do this, and then choose the variable TMAX, which is maximum daily temperature, to focus on. 
 
-## Economics, Politics, and Culture in Southeast Texas
-
-Southeast Texas and Southwest Louisiana are dominated economically by petrochemical industries, like oil refining and natural gas liquification. These jobs often pay well, rarely require more than technical school, and are more or less ubiquitous in our community. Perhaps understandably so, many residents fear that a transition to a clean energy economy and bold action on climate change means lost jobs; they fear that for them, the "cure" will be worse than the "disease."
-
-
-
-# Is the climate of Orange, Texas changing?
-
-When you think of climate change, you may mostly think about changes in temperature. We know, however, that the impacts of climate change are much more than simple increases in temperature. 
-
-I conducted a regional analysis using daily data from Orange, Texas weather stations. This data was accessed for free through the National Oceanic and Atmospheric Administration, and you can even download the datayourself here: https://www.ncdc.noaa.gov/cdo-web/search
-
-For my analysis, I used both minimum daily temperatures and maximum daily temperatures, averaged them for each month, and determined if there was a statistically significant trend. For most months, there was no disernable trend in temperature. I did find trends in the months of February, March, April, and August for minimum temperature as well as a trend in July for maximum temperature. 
-
-Let's look at what we found:
-
-```{r set up variables etc, echo = F}
-file.path = "/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_DataNEW.csv"
-# file.path = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA20/Swiere_OrangeTX_Data.csv"
-climate_data <- read.csv(file.path)
+```{r part two, echo=TRUE}
+climate_data <- read.csv("/home/CAMPUS/kmsa2017/Climate_Change_Narratives/Student_Folders/Swiere/Swiere_OrangeTX_DataNEW.csv")
 
 
 strDates <- as.character(climate_data$DATE) #create object dates as characters
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y") #turn it into New Date
 
+plot(TMAX~NewDate, climate_data, main = "TMAX Orange Texas", ylab = "Degrees C", xlab = "Time", type = "l") 
+
+bestfit <- lm(TMAX~NewDate, climate_data)
+abline(coef(bestfit), col = "red")
+```
+
+Now I can get a general idea of what it looks like. Then I can start formatting things in useful ways and plotting the data. I've skipped over plotting individual months, since I will do all months together using for loops later.
+
+In this next chunk, I'll code new variables into useful formats so that we can use them in our for loops.
+```{r tmax codes, echo = TRUE}
+#tmax
 climate_data$Month <- format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year <- format(as.Date(climate_data$NewDate), format = "%Y")
 
@@ -52,17 +39,117 @@ MonthlyTMAXMean = aggregate(TMAX~Month + Year, climate_data, mean)
 MonthlyTMAXMean$YEAR <- as.numeric(MonthlyTMAXMean$Year)
 MonthlyTMAXMean$MONTH <- as.numeric(MonthlyTMAXMean$Month)
 
+##tmin
 MonthlyTMINMean <- aggregate(TMIN~Month + Year, climate_data, mean)
 MonthlyTMINMean$MONTH <- as.numeric(MonthlyTMINMean$Month)
 MonthlyTMINMean$YEAR <- as.numeric(MonthlyTMINMean$Year)
 
-MonthlyPRCPSum = aggregate(PRCP~ Month + Year, climate_data, sum)
-MonthlyPRCPSum$YEAR <- as.numeric(MonthlyPRCPSum$Year)
-MonthlyPRCPSum$MONTH <- as.numeric(MonthlyPRCPSum$Month)
+#i'll also plot tmin since we did tmax earlier 
+plot(TMIN~NewDate, climate_data, main = "TMIN SETX", ylab = "Degrees C", xlab = "Time", type = "l")
+lm.min <- lm(TMIN~NewDate, climate_data)
+abline(lm.min, col = "red")
 ```
 
-```{r, echo = F}
-plot(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 4,], main = "Average Min Temperatures in Selected Months Over Time", type = "l", col = "pink", lty = 2, ylim = c(0,25), ylab = "Minimum Temperature in Degrees Celsius")
+We haven't looked at precipitation, which, in my opinion, is the most interesting since floods are major weather events in the area and can cause high levels of damage!
+```{r prcp setup, echo = TRUE}
+
+###PRECIPITATION
+MonthlyPRCPSum = aggregate(PRCP~ Month + Year, climate_data, sum)
+
+MonthlyPRCPSum$YEAR <- as.numeric(MonthlyPRCPSum$Year)
+MonthlyPRCPSum$MONTH <- as.numeric(MonthlyPRCPSum$Month)
+plot(PRCP~YEAR, MonthlyPRCPSum, pch = 2, col = "darkslategray3") #does the triangle kind of remind you of a raindrop? ;) 
+
+```
+
+Now that I have all of my data (it very very rarely snows in Southeast Texas, so I won't be using that variable), I want to use for loops to look at all months at once for TMAX, TMIN, and PRCP. 
+
+```{r forloops, echo = T}
+#all tmax
+Months <- c("Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec")
+par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
+TMAXresult <- NA
+for(i in 1:12) {
+  plot(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,], ty = "l", las = 1, xlim = c(1960,2020), main = Months[i])
+  Month.max.lm <- lm(TMAX~YEAR, data = MonthlyTMAXMean[MonthlyTMAXMean$MONTH == i,])
+  summary(Month.max.lm)
+  abline(coef(Month.max.lm), col = "red")
+  TMAXresult <- rbind(TMAXresult, cbind(Months[i], round(coef(Month.max.lm)[2],4), round(summary(Month.max.lm)$coefficients[2,4],4), round(summary(Month.max.lm)$r.squared,3)))
+}
+##plot all tmins at once
+
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+TMINresult <- NA
+par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
+for(i in 1:12) {
+  plot(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,], ty = "l", las = 1, xlim = c(1960,2020), main = Months[i])
+  Month.min.lm <- lm(TMIN~YEAR, data = MonthlyTMINMean[MonthlyTMINMean$MONTH == i,])
+  summary(Month.min.lm)
+  abline(coef(Month.min.lm), col = "red")
+  TMINresult <- rbind(TMINresult, cbind(Months[i], round(coef(Month.min.lm)[2],4), round(summary(Month.min.lm)$coefficients[2,4],4), round(summary(Month.min.lm)$r.squared,3)))
+}
+
+#all prcp at once
+par(mfrow = c(4,3), mar = c(5,4,3,2) +.1)
+PRCPresult <- NA
+for(i in 1:12) {
+  plot(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i,], ty = "l", las = 1, xlim = c(1960,2020), main = Months[i])
+  Month.PRCP.lm <- lm(PRCP~YEAR, data = MonthlyPRCPSum[MonthlyPRCPSum$MONTH == i,])
+  summary(Month.PRCP.lm)
+  abline(coef(Month.PRCP.lm), col = "red")
+  PRCPresult <- rbind(PRCPresult, cbind(Months[i], round(coef(Month.PRCP.lm)[2],4), round(summary(Month.PRCP.lm)$coefficients[2,4],4), round(summary(Month.PRCP.lm)$r.squared,3)))
+}
+```
+Now that I've plotted them all, it will be helpful to see the actual numbers behind the graph to determine if any of the trends are statistically significant. 
+
+```{r results, echo = T}
+##Results
+Results <- data.frame(Month = TMINresult[,1],
+                      TMINSlope = TMINresult[,2],
+                      TMIN_P = as.numeric(TMINresult[,3]),
+                      TMINRsq = TMINresult[,4],
+                      TMAXSlope = TMAXresult[, 2],
+                      TMAX_P = as.numeric(TMAXresult[,3]),
+                      TMAXRsq = TMAXresult[,4],
+                      PRCPSlope = PRCPresult[,2],
+                      PRCP_P = as.numeric(PRCPresult[,3]),
+                      PRCPsq = PRCPresult[,4])
+
+Results$starTMIN <- ifelse(Results$TMIN_P <= .001, "***", 
+                           ifelse(Results$TMIN_P <= .01, "**",
+                            ifelse(Results$TMIN_P <= .05, "*", "NS")))
+Results$starTMAX <- ifelse(Results$TMAX_P <= .001, "***", 
+                                   ifelse(Results$TMAX_P <= .01, "**",
+                                          ifelse(Results$TMAX_P <= .05, "*", "NS")))
+Results$starPRCP <- ifelse(Results$PRCP_P <= .001, "***", 
+                           ifelse(Results$PRCP_P <= .01, "**",
+                                  ifelse(Results$PRCP_P <= .05, "*", "NS")))
+
+Results$TMINSlope = paste(Results$TMINSlope, Results$starTMIN)
+Results$TMAXSlope = paste(Results$TMAXSlope, Results$starTMAX)
+Results$PRCPSlope = paste(Results$PRCPSlope, Results$starPRCP)
+
+Results <- Results[c(2:13), c(1,2,3,4,5,6,7,8,9,10)]
+
+colnames(Results) = c("Month", "Slope TMIN", "P value", "R^2", "Slope TMAX", "P value", "R^2", "Slope PRCP", "P Value", "R^2")
+library(htmlTable)
+htmlTable(Results)
+
+```
+Amazing! Now we have a lovely table that lays out all of the analysis I just did. 
+
+Our monthly average minimum temperatures (TMIN) only have a statistically significant trend in the months of February, March, April, and August, with February and August being the strongest. We can only reject the null hypothesis in these 4 months. All of the effects are slight, and April's is actually negative (meaning there is a trend of lower minimum temperatures in April). 
+
+```{r tmin overall, echo = T}
+.0548+.0364+.019-.0375
+```
+It seems though that overall the increases in minimum temperature slightly outweigh April's decrease. This makes sense, since our first graph showed a slight up trend, though it was not statistically significant. I'm also not sure if this is the best/correct way to determine if the increases in 3 months outweigh the decreases of one month, but at least it's a start! 
+
+Here's a plot including TMINs for the statistically significant months:
+
+```{r selected month tmin, echo = T}
+plot(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 4,], main = "Average Minimum Temperatures in Selected Months Over Time", type = "l", col = "pink", lty = 2, ylim = c(0,25))
 lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 2,], col = "blue", lty=2)
 lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 8,], col = "purple", lty=2)
 lines(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 3,], col = "green", lty=2)
@@ -72,70 +159,46 @@ abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 8,])), col = 
 abline(coef(lm(TMIN~YEAR, MonthlyTMINMean[MonthlyTMINMean$MONTH == 3,])), col = "green", lwd = 2)
 legend("topleft", legend=c("Feb", "March", "April", "Aug"),
        col=c("blue", "green", "pink", "purple"), lty=2, cex=0.4)
-```
-First, for our minimum temperature trends, three months seem to be warming (Feb, March, and Aug) while April appears to be cooling. Additionally, for our maximum temperature trend in July, it seems that daily maximum temperatures are actually decreasing.
 
-```{r tmax july, echo = F}
-plot(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7,], main = "Maximum Temperature Averages for July Over Time", type = "l", ylab = "Maximum Temperature in Degrees Celsius")
+```
+
+
+Our monthly average maximum temperatures only show one statistically significant trend, which is in July. We can reject the null hypothesis for July, but no other months. It shows that maximum temperatures in the month of July are actually decreasing slightly, which I found very interesting. Unfortunately, our significant data with TMIN and TMAX doesn't overlap on months, which means I can't make a cool graph with both TMIN and TMAX for a given month... but I'll do this later for all months anyway because it's fun...
+
+Our TMAX graph for July is messy and shows graphically what we knew from our chart, which is that the trend is small. This is a reminder that just because we designate something as "statistically significant" doesn't necessarily mean it is significant enough for other purposes (such as city planning or policymaking). The trend is there - that is all that our P value tells us; it does not tell us whether the trend is important or not for decision making.
+
+```{r tmax july, echo = T}
+plot(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7,], main = "Maximum Temperature Averages for July Over Time", type = "l")
 abline(coef(lm(TMAX~YEAR, MonthlyTMAXMean[MonthlyTMAXMean$MONTH == 7,])), col = "red", lwd = 2)
 ```
 
-These temperature changes, regardless of whether they are going up or down, will affect weather patterns, agriculture, wildlife, and even human health. This highlights a very important axiom in the climate field: "global warming" does NOT mean that all places are warming all the time. Instead, it means that many places are seeing changes in trends over time.  The findings of my analysis do not mean that the global average temperature is not changing, nor does it mean that Southeast Texas will not be affected by these changes. 
 
-We can see more worrisome changes much more clearly using precipitation data. For example, let's take the month of August which is in the middle of the North Atlantic Hurricane Season.
+Precipitation was the most interesting and statistically revelant data. All of the trends are significant, meaning we can reject the null hypothesis for all months for the precipitation variable. They are also positive, meaning rainfall has increased over time in all months. The highest of these are especially from June to October, which makes perfect sense as it coincides with North Atlantic Hurricane Season. I would like to find a dataset with tropical cylones to plot as a supplement for this data.
 
-```{r, echo = F}
-plot(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 8,], pch = 2, col = "darkslategray3", main = "August Precipitation Over Time", ylab = "Total Monthly Rainfall, in millimeters")
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 8,])), lwd = 2.5)
+```{r precipitation in focus, echo = TRUE}
+plot(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 8,], pch = 2, col = "darkslategray3", main = "August Precipitation Over Time")
+abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 8,])))
 ```
-We can see from this graph, which shows data from the month of August, that precipitation has been steadily increasing over time.The black line is the line of best fit, and has a slope of 6.89, meaning that on average rainfall has increased about 6.89 millimeters per year since 1900. We can also see the extreme rainfall associated with Hurricane Harvey, which hit the area in August of 2017. 
-![This is a photo of the flooding from Harvey in my hometown, Orange, TX.](harveyorange.jpg)
-
-We can also see all months at the same time with this graph, which shows that August is not an exception. In fact, it looks like December has the strongest increase in precipitation over time. My analysis shows that total rainfall has increased overtime, in every month of the year. The R squared, an important metric in statistics which shows how well the observed data matches the line of best fit, is rather large for many months for the precipitation variable, making this conclusion even more compelling (.34 for January,  .28 June, and .22 December are some particularly higher examples). This supports the conclusion of Mishra and Singh in “Changes in extreme precipitation in Texas” (2010) who assert that annual precipitation extreme events have increased in Southeast Texas.
-
-```{r precipitation in focus, echo = F}
-plot(PRCP~YEAR, MonthlyPRCPSum, col = "grey", main = "Monthly Precipitation Over Time", ylab = "Total Monthly Rainfall, in millimeters", ylim = c(0,2000))
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 1,])), lwd = 2, col = "firebrick")
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 2,])), lwd = 2, col = "orange")
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 3,])), lwd = 2, col = "yellow")
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 4,])), lwd = 2, col= "green")
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 5,])), lwd = 2, col= "blue")
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 6,])), lwd = 2, col= "darkslateblue")
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 7,])), lwd = 2, col= "purple")
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 8,])), lwd = 2, col= "red", lty = 2)
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 9,])), lwd = 2, col= "orange", lty = 2)
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 10,])), lwd = 2, col= "yellow", lty = 2)
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 11,])), lwd = 2, col= "green", lty = 2)
-abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$MONTH == 4,])), lwd = 2, col= "blue", lty = 2)
-legend("topleft", legend=c("Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"), col=c("firebrick", "orange", "yellow", "green", "blue", "darkslateblue", "purple", "darkorchid4", "darkorange3", "black", "brown", "firebrick1"), lty = c(1,1,1,1,1,1,1,2,2,2,2,2), cex=1)
+It looks like there's one outlier that may be skewing the data, what is it?
+```{r outlier, echo = T}
+max(MonthlyPRCPSum$PRCP, na.rm = T)
+MonthlyPRCPSum$Year[MonthlyPRCPSum$PRCP == 4422.4]
 ```
-In this graph, the gray dots represent every month's total precipitation in millimeters. A line of best fit for each month was added to show the differing, but similar, trends in each month. 
+So it's from August 2017, which was when Hurricane Harvey hit. ![This is a photo of the flooding from Harvey in my hometown, Orange, TX.](harveyorange.jpg)
 
-# Peer-Reviewed Literature and Impacts
+What happens when we excluse this "100 year storm"?
 
-How does my analysis compare with peer-reviewed literature? Data analyzing the region of Southeast Texas is rare, since it is a rather small community. However, I can compare findings of literature in the surrounding area to see what other scientists have found. Mishra and Singh (2010) assert that annual precipitation extreme events have changed in mixed ways across the state of Texas, with increases in Southeast Texas. 
+plot(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$YEAR != 2017,], pch = 2, col = "darkslategray3", main = "August Precipitation Over Time, excluding 2017") #this doesn't work yet but I'm going to figure it out eventually, just maybe not in time for this assignment submission! this also isn't just august.. i think I need to use an & symbol maybe?
+abline(coef(lm(PRCP~YEAR, MonthlyPRCPSum[MonthlyPRCPSum$YEAR != 2017])))
 
-In “Projected changes of temperature and precipitation in Texas from downscaled global climate models” (2012), Jiang and Yang project steadily increasing temperatures in Southeast Texas and a complicated relationship with precipitation. Based on an emissions scenario of 3.6 degrees Celsius increase by the end of the century, the authors project small increases in temperature and a wetter climate for Southeast Texas, which aligns well with my regional analysis. They note that East and Central Texas “are projected to become drier in winter and wetter in summer" which has not yet begun according to my analysis, which predicts wetter conditions in every month. 
+Can we plot min and max graphs together? This is just for fun :) 
+```{r max and min yearly, echo = T}
+plot(TMAX~YEAR, MonthlyTMAXMean, type = "l", col = "red", xlim = c(1960,2020))
+lines(TMIN~YEAR, MonthlyTMINMean, col = "blue", xlim = c(1960,2020))
+abline(coef(lm(TMAX~YEAR, MonthlyTMAXMean),), col = "darkred", lwd = 5)
+abline(coef(lm(TMIN~YEAR, MonthlyTMINMean),), col = "darkblue", lwd = 5)
+```
 
-These impacts can be severe. According to the project Flood Factor, 1,998,521 properties are already at risk in Texas, and within 30 years, about 2,115,886 will be at risk. Additionally, Marsha, Sain, Heaton, Monaghan, and Wilhelmi (2018) assert that higher emissions will lead to higher levels of heat-related mortality in the region. 
-
-# Activists
-
-"Climate activits" as we might normally define the term, are a rare species in Orange, Texas. In fact, I would be hard-pressed to find a single other person in my community who is actively concerned about and regularly takes actions on mitigating or adaptating to climate change. 
-
-As one Grist journalist points out, "‘Future-proofing’ is how you say climate change in Texas."
-
-"Stopping climate change" is political and threatening. "Future-proofing", on the other hand, is just good practice. 
-
-So - how do we answer this question: How are local activists using climate data? In this case, we'll think about how state and local government is preparing for climate change, even without saying those two little words. 
-
-Many Southeast Texas local governments have begun implementing a variety of programs aimed at reducing the costs of floods, storms, and extreme weather events. One easy way to minimize flood risk damages is by limiting development in high-risk areas. This sounds simple enough, but is much more difficult in practice. For one thing, many houses, businesses, and other developments are already built in high-risk areas. Instead of simply kicking these inhabitants out, one option is for the government to subsidize movement into less flood-prone areas. In Jefferson County, this buyout program does exactly that. Harris County has a similar program, which notes that it is not an immediate flood relief program, but aims to prevent flood damage BEFORE it happens. Think of it as eating healthy to prevent disease, instead of eating only junk food and then hoping a treatment helps. 
-
-
-# Conclusion
-
-There is no question that the climate is changing but there is a lot of uncertainty about how exactly these changes will manifest themselves in Southeast Texas. Nevertheless, precipitation has - according to my analysis and that of others - increased over time and will likely continue to worsen due to human-caused climate change. Though some local governments in the area have begun taking action to address the impacts of climate change, perhaps it is time to start addresses the root causes. 
-
-
+In conclusion, the climate data for Southeast Texas does not by itself show a warming trend, but does show increased rainfall over time. This highlights the importance of what can happen when you cherry pick data, and also shows why "climate change" is a more accurate term than "global warming." The globe overall is warming, but that does not mean that every single place is getting hotter! These data could easily be used by deniers and perhaps partially explains the prevalence of them in the region... but we know better!
 
 

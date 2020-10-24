@@ -1,269 +1,30 @@
 ---
-title: "San Diego Regional Climate Analysis"
+title: "Vivianna's Blog"
 author: "Vivianna Plancarte"
-date: "9/17/2020"
-output:
-  word_document: default
-  html_document: default
+date: "8/31/2020"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## R Markdown
 
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-```{r, fig.show='hide',results= 'hide'}
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-## Data Sources
-file.path="/home/CAMPUS/vipa2017/Github/Climate_Change_Narratives/Student_Folders/Plancarte/Plancarte_SanDiego_data.csv"
-file.path="/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Student_Folders/Plancarte/Plancarte_SanDiego_data.csv"
-climate_data=read.csv(file.path)
-strDates <- as.character(climate_data$DATE)
-climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
-plot(TMAX~NewDate, climate_data,ty='l')
-bestfitline.lm=lm(TMAX~NewDate,data=climate_data)
-coef(bestfitline.lm)
-abline(coef(bestfitline.lm),col="red", lwd=3)
-(TMAX.lm.sum=summary(lm(TMAX~NewDate,data=climate_data)))
-#Although the slope is decreasing at a rate of -2.516x10^-5. We cannot reject the null hypothesis which states that there is no change in temperature, since p-value is 0.3267 and greater than 0.05. Therefore we cannot conclude that temperatures are decreasing at a rate of 0.0025 degrees celcius per 100 years
-
-#R-squared estimate was <3x10^-5 (why is r-squared so low &what does it mean)
+```{r cars}
+summary(cars)
 ```
 
+## This is a plot
 
+You can also embed plots, for example:
 
-```{r, fig.show='hide',results= 'hide'}
-## Monthly Means
-climate_data$Month=format(as.Date(climate_data$NewDate),format="%m")
-climate_data$Year=format(climate_data$NewDate,format="%Y")
-MonthlyTMAXMean=aggregate(TMAX~Month+Year,climate_data,mean)
- MonthlyTMAXMean$Year=as.numeric(MonthlyTMAXMean$Year)
-MonthlyTMAXMean$Month=as.numeric(MonthlyTMAXMean$Month)
-str(MonthlyTMAXMean)
-plot(MonthlyTMAXMean$TMAX,ty='l')
-#Selecting 1 Month (May)
-plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="5",],ty='l', xlim=c(1950,2020))
-May.lm<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="5",])
-summary(May.lm)
-abline(coef(May.lm),col="red")
+```{r pressure, echo=FALSE}
+plot(pressure)
 ```
 
-
-```{r, fig.show='hide',results= 'hide'}
-#Now the change is -0.005537 degrees C/year or 0.5 degrees Celcius per 100 years with a probability of 0.3528. Since p>.05, we cannot reject the null hypothesis that there is no change (and thus conclude there's a significant change in temp.)
-MonthlyTMINMean=aggregate(TMIN~Month+Year,climate_data,mean)
-MonthlyTMINMean$Year  =as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$Year =as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$Month=as.numeric(MonthlyTMINMean$Month)
-head(MonthlyTMINMean)
-str(MonthlyTMINMean)
-```
-
-
-```{r, fig.show='hide',results= 'hide'}
-## Annual Maximum Temperatures
-Months=c("January", "February", "March","April","May","June","July","August","September","October","November","December")
-par(mfrow=c(4,3),mar=c(2,2,2,2)+0.1)
-TMAXresult<-NA
-# loop 
-for(i in 1:12){
-  plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month==i,],ty="l",las=1,xlim=c(1940,2020), main=Months[i])
-  Month.lm<-lm(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month==i,])
-  summary(Month.lm)
-  abline(coef(Month.lm),col="red")
-  TMAXresult<-rbind(TMAXresult,cbind(Months[i],round(coef(Month.lm)[2],4),round(summary(Month.lm)$coefficients[2,4],4),round(summary(Month.lm)$r.squared,3)))}
-
-```
-
-
-
-```{r, fig.show='hide',results= 'hide', message=FALSE}
-## Annual Minimum Temperatures
-Months=c("January", "February", "March","April","May","June","July","August","September","October","November","December")
-par(mfrow=c(4,3),mar=c(2,2,2,2)+0.1)
-TMINresult<-NA
-for(i in 1:12){
-  plot(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month==i,],ty="l",las=1,xlim=c(1940,2020), main=Months[i])
-  Month.lm<-lm(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month==i,])
-  summary(Month.lm)
-  abline(coef(Month.lm),col="red")
-  TMINresult<-rbind(TMINresult,cbind(Months[i],round(coef(Month.lm)[2],4),round(summary(Month.lm)$coefficients[2,4],4),round(summary(Month.lm)$r.squared,3)))}
-```
-
-
-```{r,fig.show='hide', message=FALSE}
-plot(MonthlyTMINMean$TMIN,ty='l')
-```
-
-
-```{r, fig.show='hide',results= 'hide', message=FALSE}
-## Precipitation
-climate_data$PRCP[climate_data$PRCP==-999]<-NA
-Missing<-aggregate(is.na(climate_data$PRCP),
-                   list(climate_data$Month,climate_data$Year),sum)
-Missing$Date=as.numeric(Missing$Group.1)+as.numeric(Missing$Group.2)/12
-plot(x~Date,data=Missing)
-#check to see what you created
-TotalPPT<-aggregate(climate_data$PRCP,
-                    list(climate_data$Month,climate_data$Year),sum,na.rm=T)
-names(TotalPPT)=c("Group.1","Group.2","ppt")
-NonMissing<-Missing[Missing$x<5,c(1:3)]
-library(dplyr)
-##Attaching package:'dplyr'
-PPT<-merge(TotalPPT,NonMissing,all.y=TRUE)
-PPT$Date<-as.numeric(PPT$Group.1)+as.numeric(PPT$Group.2)/12
-head(PPT)
-PRCP_mean=mean(PPT$ppt)
-plot(ppt~Date,data=PPT)
-abline(h=PRCP_mean,col="blue")
-
-```
-
-```{r, fig.show='hide',results= 'hide', message=FALSE}
-climate_data$Month=format(as.Date(climate_data$NewDate),format="%m")
-climate_data$Year=format(climate_data$NewDate,format="%Y")
-MonthlyTMINMean=aggregate(TMIN~Month+Year,climate_data,mean)
- MonthlyTMINMean$Year=as.numeric(MonthlyTMINMean$Year)
-MonthlyTMINMean$Month=as.numeric(MonthlyTMINMean$Month)
-str(MonthlyTMINMean)
-plot(MonthlyTMINMean$TMIN,ty='l')
-#Selecting 1 Month (August)
-plot(TMAX~Year,data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="8",],ty='l', xlim=c(1950,2020))
-August.lm<-lm(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="8",])
-summary(August.lm)
-abline(coef(August.lm),col="red")
-
-
-```
-
-## Introduction
-
-Alongside Mexico and the Southern California coastline, possessing miles of ocean shoreline, forested hills, fertile valleys, mountains, canyons, and desert, San Diego’s diverse terrain and mild climate makes the region an attractive place to live or visit. Indeed, it’s coastal location along an international border has also allowed tourism, international trade, manufacturing, and military operations to flourish and develop the area economically.
-
-Getting an average of 12 inches of rain per year, 0 inches of snow, and possessing average high temperatures ranging from 67 degrees Fahrenheit in January and 78 degrees in September, San Diego has a mild Mediterranean climate characterized by cooler winters and dry summers. However, its distinct climate and terrain combined with population characteristics has caused it to be an especially vulnerable place for climate change induced warming, precipitation changes, droughts, and wildfires.
-
-## Background 
-
-To preserve San Diego’s ecological beauty and economic value in the midst of rising temperatures caused by increased atmospheric greenhouse gases (GHGs), the city of San Diego partnered with experts to develop climate models from 2008 to 2011 that explored how climate change and related issues are projected to impact the San Diego region by the year 2050. This research has allowed regional stakeholders to formulate more robust climate projections and inform better regional planning.
-
-The climate change projections are based on three climate models  and two scenarios of energy use and greenhouse-gas (GHG) emissions which have been used in the IPCC’s 2007 climate assessment (A2 and B1). The A2 emissions scenario represents a future where high economic inequities between now industrialized and developing parts of the world persist, leading sustainable technology to spread slowly. The B1 scenario presents a future with high environmental consciousness and a global approach to climate change mitigation. These six climate scenarios were key to formulating projections for ecological, economic, and social implications of climate change induced warming, precipitation changes, droughts, and wildfires in the San Diego region.
-
-Although trends were found among the models for some of the potential effects of climate change such as warming, they were variable for others (wildfires). For example, all six simulations produced by Messner et al. (2011) predict climatic warming over the next five decades in the San Diego region. Estimates of overall temperature increases range from 1.5°F to 4.5°F (0.8°C to 2.5°C), with greater warming in the summer than in winter. Additionally, all simulations predict hot daytime and nighttime temperatures (heat waves) will occur more frequently, with increased intensity and duration over the next 50 years. Although extreme warm temperatures mostly occur from July to August, as climate change continues, extreme warm temperatures are likely to be seen sooner in the year (June) and last longer (September).
-
-
-Making the climate situation more dire, the models predict that prolonged drought conditions will increase the likelihood of large wildfires in the San Diego region in the upcoming decades. However, there is uncertainty regarding how Santa Ana wind conditions (dry hot downslope winds that blow from the mountains and deserts in the east), will influence future fires in the San Diego region. While some climate change models suggest higher temperatures in the wintertime will lead to a lower pressure gradient between the mountains and ocean, and thus lower incidence of Santa Ana winds (Hughes et al. 2011), an earlier analysis proposed that Santa Ana winds may increase earlier in the fire season (September) and decrease later (December) (Miller and Schlegel 2006).
-
-
-## Current Study
-
-In an effort to assess where climate projections stand nearly a decade later, regional climate data was used to test the null hypotheses, which in this case states that there is no relationship between temperatures in San Diego and time. If the probability value (p-value) is found to be less than 0.05, then trends in the data are statistically significant and the null hypothesis can be rejected; it would thus be concluded that there is a relationship between temperatures in San Diego and time.
-
-## Methods
-
-Temperature data was downloaded from NOAA (National Oceanic and Atmospheric Administration) from a weather station in San Diego, California (USW00023188). The NOAA provides a free archive of historical weather and climate data as well as station history from stations around the globe. The data reflect temperatures beginning July 1, 1939 (the earliest date that temperature data were available from the station) to August 29, 2020 (the most recent date that temperature data were available at the time of download). To improve the quality of the data before its analysis in R-Studio, the data were first “cleaned” by eliminating incomplete and inaccurate records. Then, linear models with trendlines were created to analyze the maximum and minimum temperatures (in degrees Celsius) over the 81-year period as well as for the individual months.
-
-
-## Results
-
-```{r results= 'hide'}
-par(mfrow=c(1,2), cex.main=0.9, cex.lab=0.8, cex.axis=0.8)
-plot(TMAX~NewDate, climate_data,ty='l',col="grey",main="Annual Maximum Temperatures \nin San Diego", xlab="Year", ylab="Maximum Temperatures (°Celsius)")
-bestfitline.lm=lm(TMAX~NewDate,data=climate_data)
-coef(bestfitline.lm)
-abline(coef(bestfitline.lm),col="red", lwd=3)
-(TMAX.lm.sum=summary(lm(TMAX~NewDate,data=climate_data)))
-
-
-plot(TMIN~NewDate, climate_data,ty='l', col="grey", main="Annual Minimum Temperatures \nin San Diego", xlab="Year", ylab="Maximum Temperatures (°Celsius)")
-bestfitline.lm=lm(TMIN~NewDate,data=climate_data)
-coef(bestfitline.lm)
-abline(coef(bestfitline.lm),col="red", lwd=3)
-(TMIN.lm.sum=summary(lm(TMIN~NewDate,data=climate_data)))
-```
-
-To the left is the plotted graph for the mean maximum annual temperatures in San Diego, CA from 1939 to 2020. The graph does not reveal a clear trend in the data. After calculating descriptive statistics, it was found that the p-value is 0.35285. Because the significance value is less than 0.05, we cannot reject the null hypothesis that there is not a relationship between maximum mean annual temperatures in San Diego and time.
-
-To the right is the plotted graph for the mean minimum annual temperatures in San Diego, CA from 1939 to 2020. The graph shows a slight overall increasing trend in the data, as the best fit line shows a positive slope of 0.00008210. With a p-value of 2.2x10^-16, we can reject the null hypothesis and reliably conclude that there is an increasing trend between mean minimum annual temperatures in San Diego and time.
-
-Surprisingly, the regional NOAA data for mean maximum annual temperure in San Diego do no show a significant increasing trend like might have been expected from the climate models. However, the data for mean minimum annual temperatures in San Diego do show a significant increasing trend over time. This suggests that we may expect warming temperatures during parts of the day that are usually cool as time passes.Since mean maximum annual temperaures did not show an overall significant increasing or decreasing trend over time, minimum temperatures for August and September, summer months where warming may be particularly impactful, were further analyzed.
-
-
-```{r echo=FALSE}
-par(cex.main=1, cex.lab=1, cex.axis=1)
-plot(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="8",],
-ty="l", xlim=c(1939,2020), main="Minumum Temperatures in San Diego in August",
-xlab="Year", ylab="Minimum Temperatures (°Celsius)", col="grey")
-bestfitAugust<-lm(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="8",])
-abline(bestfitAugust, col="red")
-```
-
-Above is the plotted graph for the minimum mean temperatures for the month of August in San Diego, CA from 1939 to 2020. The graph reveals an overall increasing trend in the data, as the best fit line has a positive slope increasing at a rate of 0.0283. With a significant p-value of 1.321e-06 (p<.001), we can reject the null hypothesis that there is no relationship between temperatures in San Diego and time, and reasonably conclude that minimum temperatures in San Diego are increasing at a rate of 0.0283 degrees Celsius per year. Additionally, the R-squared value is 0.255, thus for the month of August, about 25.5% of the variance in the model is explained by time.
-
-
-```{r echo=FALSE}
-par(cex.main=1, cex.lab=1, cex.axis=1)
-plot(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="9",],
-ty="l", xlim=c(1939,2020), main="Minumum Temperatures in September in San Diego",
-xlab="Year", ylab="Minimum Temperatures (°Celsius)", col="grey")
-bestfitSeptember<-lm(TMIN~Year,data=MonthlyTMINMean[MonthlyTMINMean$Month=="9",])
-abline(bestfitSeptember, col="red")
-```
-
-In line with predictions made by the climate models developed by Messner et al. 2011, the graph above reveals that warm temperatures are lasting later into the year and nighttime temperatures are increasing. With a significant p-value less than 0.001, we can reject the null hypothesis that there is no relationship between minimum mean temperatures in San Diego during September and time, and reasonably conclude that temperatures are increasing at a rate of 0.0337 degrees Celsius per year. Additionally, the R-squared value is 0.267, thus for the month of September, about 26.7% of the variance in the model is explained by time.
-
-## Heat Wave Impacts
-
-Such heat spells can have severely negative implications for public health and the regional economy. According to the National Oceanic and Atmospheric Administration (NOAA), heat waves are one of the deadliest weather-related events claiming hundreds of lives each year. Among the most vulnerable are young children under 5 years of age, elderly people 65 years and older, and those who are chronically ill (Knowlton et al. 2009; Iñiguez et al. 2010). Demographic projections estimate that nearly 25% of the region’s population, an estimated one million people, will be 65 years and older (Messner et al. 2011). Thus, as climate change continues its course, San Diego’s aging population will likely face an increase in mortality events associated with warming temperatures.
-
-Additionally, the San Diego Foundation’s Economic Resilience: Health Study, highlights the effects that increases in extreme heat may have on the region’s workforce and economy (2014). According to the study, approximately 220,000 workers are currently employed in heat-exposed industries such as construction, agriculture, transportation, and manufacturing. Current estimates show that $32 billion are generated for the region’s economy by this heat-exposed workforce. However, as the temperatures which employees work rise, it becomes increasingly more difficult for them to concentrate and work efficiently. Apart from feeling overheated themselves, workers may need to increasingly tend to family members who are vulnerable to such high heats like children or the elderly. The research suggests that 41 minutes of work time are lost from heat-exposed workers on days when peak temperatures are between 95- and 100-degrees Fahrenheit, and 58 minutes when temperatures exceed 100 degrees Fahrenheit. Thus, by 2050, it is predicted that 65,000 production hours, and a proportionate amount of revenue, will be lost to climate change. Moreover, maintaining worker health and productivity through air cooling is expected to increase commercial sector spending on electricity by 17 percent.
-
-## Wildfire Impacts
-
-Linked to the heatwaves, prolonged drought conditions and rises in temperature were predicted to increase the likelihood of large wildfires in the San Diego region in the upcoming decades, especially during summer months such as August when temperatures are at their peak. It's these rise in temperatures as presented in the graphs above which have likely contributed to the Volcano Fire burining 45 acres west of Temecula city this August and the Valley fire sparked Southeast of Alpine, which burned 16,390 acres over a 19-day period this September.
-
-
-Wildfires can significantly impact public health and add hidden costs through its contribution to air pollution. Containing numerous of primary and secondary pollutants and some with toxicological hazard potential, wildfire smoke can have short- and long-term health implications when inhaled. In two studies conducted post the 2003 southern California wildfires, wildfire-related PM2.5 was found to be associated with a higher number of respiratory hospital admissions in the general population (Delfino et al. 2009) as well as increased eye and respiratory symptoms, medication use and physician visits among children (Kunzli et al. 2006). Moreover, a study which quantified the economic costs of health effects from the largest wildfire in Los Angeles County’s modern history estimated that the cost of illness associated with wildfire smoke is $9.50 per exposed person per day (Richardson et al. 2012). 
-
-
-
-## Next Steps
-
-Because of the various threats that climate change poses on the San Diego region, regional government officials have mobilized towards a more sustainable future. In 2018, the San Diego County Board of Supervisors adopted a Climate Action Plan (CAP). The CAP identifies strategies and measures to reduce the County’s contribution of greenhouse gas emissions to the atmosphere and achieve co-benefits including energy and water conservation, cleaner air, community health, biological resource conservation, cost savings, and job creation. Considering the additional climate data by the NOAA which highlight the gravity of meeting the CAP's climate goals, it would be wise to reconsider the strength of the current efforts being put forth to mitigate climate change. 
-
-
-## References
-1.	Cayan DR, Bromirski PD, Hayhoe K, Tyree M, Dettinger MD, Flick RE. 2008a. Climate change projections of sea level extremes along the California coast: special issue on California climate scenarios. Clim Chang [Internet]. [cited 20 Sep 2020]; 87(Suppl 1): S57–S73. 
-2.	Delfino RJ, Brummel S, Wu J, Stern H, Ostro B, Lipsett M, Winer A, Street DH, Zhang L, Tjoa T, Gillen DL. 2009. The relationship of respiratory and cardiovascular hospital admissions to the southern California wildfires of 2003. Occup Environ Med [Internet]. [cited 20 Sep 2020]; 66:189–197
-3.	Flick, RE. 2014. San Diego, 2050 is calling. how will we answer? – facing the future: how science can help prepare San Diego regional leaders for climate change. Oceanogrphy Prog Pub [Internet]. [cited 20 Sep 2020]; [Internet]. [cited 20 Sep 2020]; Retrieved from https://escholarship.org/uc/item/9sb5f1s5
-4.	Hughes M, Hall A, Kim J. 2011. Human-induced changes in wind, temperature and relative humidity during Santa Ana events. Clim Change. [Internet]. [cited 20 Sep 2020];   109 (Suppl 1)
-5.	Iñiguez CF, Ballester J, Ferrandiz S, Pérez-Hoyos M, Sáez AL. 2010. Relation between temperature and mortality in thirteen Spanish cities. Int J Environ Res Publ Health [Internet]. [cited 20 Sep 2020]; 7(8):3196–3210
-6.	Knowlton K, Rotkin-Ellman M, King G, Margolis HG, Smith D, Solomon G, Trent R, English P. 2009. The 2006 California heat wave: impacts on hospitalizations and emergency department visits. Environ Heal Perspect [Internet]. [cited 20 Sep 2020]; 117:1
-7.	Künzli N et al. 2006. Health effects of the 2003 southern California wildfires on children. Am J RespirCrit Care Med [Internet]. [cited 20 Sep 2020]; 174:1221–1228
-8.	Messner S, Miranda SC, Young E, Hedge N. 2011. Climate change-related impacts in the San Diego region by 2050. Clim Change. [Internet]. [cited 20 Sep 2020];109(S1):505–531. 
-9.	NOAA (National Oceanic and Atmospheric Administration). 2020. Heat Safety Tips and Resources. [Internet]. [Cited 20 September 2020.] Available from: https://www.weather.gov/safety/heat
-10.	Richardson LA, Champ PA, Loomis JB. 2012. The hidden cost of wildfires: economic valuation of health effects of wildfire smoke exposure in southern California. J of Forst Econ. [Internet]. [cited 20 Sep 2020];18(1):14–35. 
-11.	San Diego County. Climate Action Plan. 2018. [Internet]. [cited 20 Sep 2020]. Available from https://www.sandiegocounty.gov/content/sdc/sustainability/climateactionplan.html
-12.	Spracklen DV, Mickley LJ, Logan JA, Hudman RC, Yevich R, Flannigan MD, Westerling AL. 2009. Impacts of climate change from 2000 to 2050 on wildfire activity and carbonaceous aerosol concentrations in the western United States. J Geophys Res. [Internet]. [cited 20 Sep 2020]; 114:D20301. 
-13.	The San Diego Foundation (2014) Economic resilience: health. [Internet]. [cited 20 Sep 2020]. Available from: https://www.sdfoundation.org/wp-content/uploads/2016/04/economic-resilience-health.pdf
-
-
-```{r results='asis',fig.show='hide',results= 'hide'}
-## Minimum Temperatures in San Diego Data Table
-library(xtable)
-Results<-data.frame(Month=TMINresult[c(2:13),1],TMINSlope=TMINresult[c(2:13),2], TMIN_P=as.numeric(TMINresult[c(2:13),3]),
-                    TMINRsq=TMINresult[c(2:13),4],TMAXSlope=TMAXresult[c(2:13),2],TMAX_P=as.numeric(TMAXresult[c(2:13),3]),
-                    TMAXRsq=TMAXresult[c(2:13),4])
-Results$starTMIN="NS"
-Results$starTMIN[Results$TMIN_P<=.05]="*"
-Results$starTMIN[Results$TMIN_P<0.01]="**"             
-Results$starTMIN[Results$TMIN_P<0.001]="***"
-Results$starTMAX="NS"
-Results$starTMAX[Results$TMAX_P<0.05]="*"
-Results$starTMAX[Results$TMAX_P<0.01]="**"
-Results$starTMAX[Results$TMAX_P<0.001]="***"
-Results$TMINslope=paste(Results$TMINSlope,Results$starTMIN)
-Results$TMAXslope=paste(Results$TMAXSlope,Results$starTMAX)
-colnames(Results)<-c("Month","2","3","R^2","5","6","R^2","8","9", "SlopeTMIN","SlopeTMAX")
-print(xtable(Results[,c(1,10, 4,11,7)]), type = "html")
-```
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

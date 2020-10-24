@@ -1,0 +1,169 @@
+---
+title: "Global Warming and Water Scarcity in Salt Lake City, Utah"
+author: "Emma Duggleby"
+date: "9/19/2020"
+output:
+  html_document: default
+  word_document: default
+---
+<body>
+<style>
+body {
+  background-color:#edfffe;
+}
+
+img {
+  border: 4px solid #8cced1;
+  margin: 7px;
+}
+</style>
+
+![](SLC.jpg)
+<div style="background-color:#ffffff; text-align:left; vertical-align: middle; padding:10px 10px; opacity: 50%; margin: 10px">
+<h3 style="color:#000000;" text-align:middle;">An Introduction to Salt Lake City</h3>
+Utah's capitol, Salt Lake City, sits in a valley at the base of the Wasatch Mountain Range in the state's northern region and neighboring the Great Salt Lake for which it is named. With a population of 200,567 in the city itself and 1,222,540 in the valley as a whole, Salt Lake relies on many different economic areas, notably including the winter skiing tourist industry and the interesection of two large interstates. Culturally, the city is home to the Mormon church, a defining aspect of the state and its politics, but it also enjoys a liberal influence from the University of Utah and the quickly increasing population.
+  
+Because the city is situated an arid mountainous desert, the summers are hot and dry while the winters are snowy and cold, especially in the surrounding peaks. Although it is a desert, it is not waterless and recieves precipitation throughout the winters, springs, and even into the summer. 
+
+This precipitation, especially in the form of mountain snowpack, does much more than create a vibrant skiing culture. In the context of a desert city, Salt Lake actually recieves much of its water from spring runoff. As one study by Fritze <i> et al.</i> states, "this spring snowmelt runoff pulse contributes up to 75% of total annual runoff for the snowmelt-dominated basins"(989). In a world quickly warming due to climate change, these runoff patterns may be threatened, leading to a significant decrease in the valley's water supply. This blog, therefore, looks to identify the extent to which warming temperatures increase water scarcity throughout the valley and subsequently affect the lives of those living in the valley itself as seen through a social justice frameworks.
+</div>
+
+<h3>The Data</h3>
+The data set shown in this blog, including air temperatures and snow levels, is continousouly recorded at the Salt Lake City Airport, beginning in the late 1940s, which sits to the northwest of the city itself. It is accessible online through NOAA's website and therefore easily downloadable into R studio, the analysis program we used. By charting the desired data into models of linear regression, we found general statistics determining the relationship between time and a data point of choice. This blog specifically looks at maximum recorded valley temperatures and snowfall trends over time throughout the valley.
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
+climate_data = read.csv("/home/CAMPUS/edab2019/Climate_Change_Narratives/Data/FA20/Duggleby_SaltLakeCity_data.csv")
+strDates <- as.character(climate_data$DATE)
+climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
+date = climate_data$NewDate
+tmax=climate_data$TMAX
+snow=climate_data$SNOW
+precp=climate_data$PRCP
+
+#Month trend
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+MonthlyTMAXMean$YEAR = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$MONTH = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+May.lm <- lm(TMAX~YEAR, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="05",])
+summary(May.lm)
+
+MonthlyTMINMean = aggregate(TMIN ~ Month + Year, climate_data, mean)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$YEAR = as.numeric(MonthlyTMINMean$Year)
+MonthlyTMINMean$MONTH = as.numeric(MonthlyTMINMean$Month)
+head(MonthlyTMINMean)
+Months = c("January", "February", "March", "April",
+"May", "June", "July", "August", "September", "October",
+"November", "December")
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlyTMAXMean = aggregate(TMAX ~ Month + Year, climate_data, mean)
+str(MonthlyTMAXMean)
+MonthlyTMAXMean$Year.num = as.numeric(MonthlyTMAXMean$Year)
+MonthlyTMAXMean$Month.num = as.numeric(MonthlyTMAXMean$Month)
+str(MonthlyTMAXMean)
+
+YearlySum = aggregate(SNOW ~ Year, climate_data, sum)
+YearlySum$YEAR = as.numeric(YearlySum$Year)
+YearlyMean = mean(YearlySum$SNOW)
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlySNOWMean = aggregate(SNOW ~ Month + Year, climate_data, mean)
+MonthlySNOWMean$YEAR = as.numeric(MonthlySNOWMean$Year)
+MonthlySNOWMean$MONTH = as.numeric(MonthlySNOWMean$Month)
+str(MonthlySNOWMean)
+
+climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
+climate_data$Year = format(climate_data$NewDate, format="%Y")
+MonthlySNWDMean = aggregate(SNWD ~ Month + Year, climate_data, mean)
+MonthlySNWDMean$YEAR = as.numeric(MonthlySNWDMean$Year)
+MonthlySNWDMean$MONTH = as.numeric(MonthlySNWDMean$Month)
+str(MonthlySNWDMean)
+```
+
+```{r include=FALSE}
+plot(SNOW~date, data=climate_data, pch=",", main = "Date and Snow in Salt Lake City", ylab = "Snow Level", xlab = "Year")
+bestfitline2.lm = lm(snow~date)
+abline(coef(bestfitline2.lm), col = "#7a7fff", lwd=2.5)
+summary(bestfitline2.lm)
+## plot 
+```
+
+```{r, include=FALSE}
+plot(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="01",], ty='l', xlim=c(1950, 2020), main = "January Snowfall in the Salt Lake Valley Throughout Time", xlab = "Year", ylab="Snowfall (mm)")
+Dec.lm <- lm(SNOW~YEAR, data=MonthlySNOWMean[MonthlySNOWMean$Month=="01",])
+abline(coef(Dec.lm), col="blue")
+```
+
+```{r, out.width = "50%"}
+plot(TMAX~date, data=climate_data, pch=",", main = "Maximum Recorded Temperatures in Salt Lake City", ylab = "Maximum Recorded Temperature (ºC)", xlab = "Year")
+bestfitline1.lm = lm(tmax~date)
+abline(coef(bestfitline1.lm), col = "powderblue", lwd=2.5)
+```
+
+First, I think it is important to look at general maximum recorded temperature trends over time. While this graph does include a fair amount of noise, the statistics themselves are clear. They give a slope of 4.559e-05 or an increase in the maximum temperature by 0.04559ºC over a 100 year time span. This interval may appear small, but it is important to keep in mind that any small change in the general climate can have large impacts on an ecosystem unused to higher average temperatures. 
+
+The p-value of this graph is 1.28e-06 or 0.00000128. Because this number is extremely close to 0, it is less than the 0.05 threshold determining statistcal significant. We can therefore reject the null hypothesis that the displayed warming trends are due to chance. 
+
+```{r include=TRUE}
+plot(SNOW~YEAR, data=YearlySum, las=1, ty="p", main = "Sum of Yearly Snowfall Throughout Time", xlab="Year", ylab="Yearly Sum of Snowfall (mm)")
+YearlySum.lm = lm(SNOW~YEAR, data=YearlySum)
+abline(coef(YearlySum.lm), col="green")
+```
+
+In terms of the amount of snow Salt Lake is receiving, this graph focusing on the sum of yearly snowfall gives a slope of -8.195 or a decrease in total snowfall by 8.195 mm each year. We can, again, reject the null hypothesis that these findings are due to chance, as the p-value is 0.00224 and thus below the 0.05 statistical significance threshold. 
+
+```{r}
+plot(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",], ty='l', xlim=c(1950, 2020), main = "Maximum Recorded Temperatures in June Throughout Time", xlab = "Year", ylab="Maximum Recorded Temperature (ºC)")
+Dec.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month=="06",])
+abline(coef(Dec.lm), col="blue")
+```
+
+Finally, temperature trends in late spring and early summer present, as characterized by June trends, a slope or maximum temperature increase of 0.02468ºC per year. In statistics comparable to the overall maximum temperature graph displayed earlier, this June trend gives an increase of 2.468ºC over a 100 year time period. With a p-value of 0.0489, we can reject the null hypothesis and conclude that these results are not due to chance because it is less than the 0.05 statistical significance threshold.
+
+
+<h3>Analysis Summary</h3> #creative headers -- questions and such
+As shown by our data and p-values, there is a definite trend between time and warming temperatures, as well as between time and the sum of yearly snowfall. Because all three p-values are less than 0.05, we can reasonably conclude that these results are not due to chance.
+
+It is important to highlight the areas of possible uncertainty in the data and analysis, although none of these should completely undermine the conclusions drawn above. For one, the station itself is not situated in the mountains where snowpack is present, but is rather on the valley floor in the city. While overall weather patterns are similar due to proximity, the specifics may be slightly different than what they would be in the mountains. Specifically, snowfall measurements would probably be greater than recorded for the valley, due to higher elevation. In addition, looking at the sum of the total snowfall throughout a year disregards the possibility of melting betweeen deposits. As Dettinger et al. state, observations of Western water patterns in the context of climate change “inevitably include natural hydroclimatic variations as well as local human influences” and, therefore, “the precise effects of climate change on water supply in the basin as a whole remain uncertain” (2070, 2082). 
+
+
+<h3>Practical Connection to SLC</h3>
+After analyzing the data, we can reasonably tie the observed trends to their possible impacts on the water supply of the Salt Lake Valley overall. For one, a decrease in general snowfall throughout the year leads to less winter snowpack available for spring runoff. In addition, greater and earlier warming, demonstrated by the increase in the maximum temperature of June, also deplete the amount of water stored throughout the summer months. These trends then combine and exacerbate one another, creating an environment where a decreased snowpack melts earlier in the year and lessens the amount of water available.  
+
+
+<h3>Implications for Water Use and Social Justice In the Valley</h3>
+Water scarcity due to climate change and warming temperatures is one major issue facing, especially, Western states who rely on precipitation and snowpack for summer water sources. 
+
+Ecologically, the trends that I have outlined point toward earlier spring warming and decreased winter snowfall. These results align with one study by Fritze et al. analyzing these runoff and snowmelt trends, asserting “correlations between warmer temperatures around the timing of peak flow and earlier melt and runoff are strong” for the Southwest in particular, directly implicating global warming and higher spring temperatures in premature and decreased runoff patterns (1004). Another study by Dettinger, Udall, and Georgakakos explains that “the loss of snowpack to warming may affect [groundwater] recharge rates and patterns” (2076). This research therefore contends that even large stores of groundwater may be depleted and become unreliable due to decreased snowpack and runoff. 
+
+Changes in runoff and snowmelt patterns also have large economic implications for both the state and the individuals living in and around Salt Lake. Due to the population increase in Utah, one study by Khatri et al. has found that the “total water demand averaged across the 11 basins will increase by approximately 23% by the 2060s,” putting strain on the allocation of water and demand sacrifice in the many sectors that water is used for (21258). As MacDonald elaborates, these many sacrifices may be the “loss of agricultural sector sustainability, rural socioeconomic decline, increased food prices, decreased food choice, decreased food security, increased carbon footprint for imported food, and decreased foreign trade balance” (21261). With an economy even partially dependent on agricultural exports, less water availability leads to a decrease in the ability to grow crops and therefore less overall income on the statewide level. With less food as well, these prices will increase. Finally, not only will food imports increase in price, but so will imports of water, as no water availability necessitates greater expenditures toward importing it. 
+
+In the end, the increasing scarcity of water stemming from earlier snowmelt trends and overall less snowpack holds major implications for social justice issues across the valley in relation to water accessibility. In tandem with the probable economic upset caused by water shortage, MacDonald warns that “changes in the agricultural productivity of the Southwest in response to water shortages and/or reallocation will have direct implications for food supply and security,” speaking to the consequences on the social level for those already struggling to afford food and water (21258). 
+
+In terms of local belief, an important study by Flint et al. summarizes survey responses from a range of Salt Lake Valley citizens, finding that the many different views on the severity of water scarcity “might reflect distinctive patterns of exposure or vulnerability to different types of risks, suggesting the need for context-specific public engagement and communication efforts” (899). Therefore, even beyond analyzing general worry over water in Salt Lake, it is important to recognize the differences in social position that detail a variety of complex relationships to water access. For instance, those who do not live in white or affluent neighborhoods may be first impacted by lower water supplies and the issues that come with this. 
+
+Flint et al. add that individuals had “lower levels of concern when supply was framed in terms of climate change impacts. This finding is in line with Utah’s lower climate change concerns and politically conservative orientation” (897). Framing the issues of water scarcity against this conservative backdrop, water justice rights within the city specifically must pay attention to the many different impacts that climate change will have on different social groups. 
+
+Because conservative policy may steer toward protecting economic interest or denying the eventuality of climate change, it is critical that all community voices are included and supported in the focus to combat water scarcity and climate change in general.
+Global warming has immediate and serious implications for the Salt Lake Valley in terms of future water availability. This threat plays out within an existing economic and, especially, social tapestry that determines who will have the best access to water in the future. While this paper details the future, it is a highly possible course and therefore requires attention in the present to not only combat climate change overall, but to also fight for policy and infrastructure that protects the rights of everyone living in the valley. Water scarcity is a very real issue that will only worsen with time and cannot be ignored without serious consequences.
+
+
+<h3>Works Cited:</h3>
+-Fritze H, Stewart IT, Pebesma E. Shifts in Western North American Snowmelt Runoff Regimes for the Recent Warm Decades. Journal of Hydrometeorology [Internet]. 2011 Oct [cited 2020 Sep 22]; 12(5): pp. 989-1006. Available from: https://www.jstor.org/stable/10.2307/24912980. 
+
+-Flint CG, Dai X, Jackson-Smith D, Endter-Wada J, Yeo SK, Hale R, Dolan MK. Social and Geographic Contexts of Water Concerns in Utah. Society & Natural Resources [Internet]. 2017 Jan 17 [cited 2020 Sep 22]; 30(8): pp. 885-902. Available from: http://dx.doi.org/10.1080/08941920.2016.1264653.  
+
+-Dettinger M, Udall B, Georgakakos A. Western Water and Climate Change. Ecological Applications [Internet]. 2015 Dec 1 [cited 2020 Sep 22]; 25(8): pp. 2069–2093. Available from: https://doi.org/10.1890/15-0938.1. 
+
+-MacDonald GM. Water, climate change, and sustainability in the southwest. PNAS [Internet]. 2010 Dec 14 [cited 2020 Sep 23]; 107(50): pp. 2069–2093. Available from: http://www.pnas.org/cgi/doi/10.1073/pnas.0909651107/. 
+
+-Khatri KB, Strong C, Kochanski AK, Burian S, Miller C, Hasenyager C. Water Resources Criticality Due to Future Climate Change and Population Growth: Case of River Basins in Utah, USA. Journal of Water Resources Planning and Management [Internet]. 2018 Aug [cited 2020 Sep 23]; 144(8): 04018041. Available from: https://doi.org/10.1061/(ASCE)WR.1943-5452.0000959.
+
+</body>
