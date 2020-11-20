@@ -26,13 +26,31 @@ options(htmltools.dir.version = FALSE)
 
 ## Weather Records and Climate Trends
 
-```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='Tribute photo for Ken Saro Wiwa anniversary. Reflection in polluted river of local activist who follows in Ken"s footsteps, Kegbara- dere community Luka Tomac/Friends of the Earth International. Taken 5 November 2015. Some rights reserved. creativecommons license 2.0'}
-knitr::include_graphics('F2020/KenSaro-Wiwa.jpg')
+Human activities are driving climate change. And the impacts are being felt throughout the world --- and in spite of or because of climate activists are organizing around the issue. 
+
+```{r maunaloa, echo=FALSE}
+address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
+download.file(address, "maunaloa", quiet = F, mode = "w", cacheOK = T)
+maunaloa <- read.table("maunaloa", skip=70)
+names(maunaloa) <- c("year", "month", "decimal.date", "average", "interpolated", "trend", "days")
+maunaloa$average[maunaloa$average==-99.99] <- NA
+maunaloa <- data.frame(year=maunaloa$year, month=maunaloa$month, decimal.date=maunaloa$decimal.date, average=maunaloa$average)
+```
+```{r fig-margin, fig.margin = TRUE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing.", fig.width=3.5, fig.height=3.5, cache=TRUE, echo=FALSE}
+par(las=1)
+plot(maunaloa$decimal.date, maunaloa$average, type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", 
+main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
+#abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
+muanaloa.loess = loess(average~year, data=maunaloa, span = 0.75, degree = 2, parametric = FALSE, 
+  drop.square = FALSE, normalize = TRUE)
+maunaloa$loess <- predict(muanaloa.loess)
+lines(loess~decimal.date, data=maunaloa, lwd=1.4, col="red")
 ```
 
-<<<<<<< HEAD
-However, as Bruno Latour has noted the process to modernize is both uneven and inconsistent [@latour2012we; @pachauri2015ipcc]. And as we look to use weather stations, which had been established answer specific local questions, e.g. when will there be enough water to plant rice or warm enough to sow corn. But as we try to evaluate how the ``average weather" or climate might be changing we learn about how complex it is to use these weather stations. 
-=======
+These activists include a diverse set of players --- many of whom be obscure. Others are well known and use media to draw attention to their views. 
+
+But our question this year, is how do activitists use weather records and climate science as a whole to support their arguments?  Some may emphasize the uncertainty, others may rely on well trusted sources. Each use various sources of information to push for specific policy goals. As a class we summarized climate change patterns for various regions around the world while describing how various activists engage in policy or politics. 
+
 These activists include a diverse set of players --- many of whom be obscure. Others are well known and use media to draw attention to their views. 
 
 But our question this year, is how do activitists use weather records and climate science as a whole to support their arguments?  Some may emphasize the uncertainty, others may rely on well trusted sources. Each use various sources of information to push for specific policy goals. As a class we summarized climate change patterns for various regions around the world while describing how various activists engage in policy or politics. 
@@ -48,8 +66,10 @@ As we document below every region in the US and beyond respond differently to th
 ## Activitism 
 
 ```{r echo=FALSE, fig.margin = TRUE, out.width='100%', fig.cap='Tribute photo for Ken Saro Wiwa anniversary. Reflection in polluted river of local activist who follows in Ken"s footsteps, Kegbaradere community Luka Tomac/Friends of the Earth International. Taken 5 November 2015. Some rights reserved. creativecommons license 2.0'}
-knitr::include_graphics('F2020/Images/KenSara-Wiwa.jpg')
+knitr::include_graphics('F2020/Images/KenSaro-Wiwa.jpg')
 ```
+
+
 
 Ken Saro-Wiwa was a Nigirian activitists, devoting most of his time to human rights and environmental causes, particularly in Ogoniland. He was one of the earliest members of the Movement for the Survival of the Ogoni People (MOSOP), which advocated for the rights of the Ogoni people. He was particularly critical of the Royal Dutch Shell Company for its impact on Ogoni lands. In 1995, he was sentance to death, based on false charges, which provoked international outrage and the immediate suspension of Nigeria from the Commonwealth of Nations, as well as the calling back of many foreign diplomats for consultation. Saro-Wiwa remains an important symbol of resistance to the impacts of the fossil fuel demand.
 
