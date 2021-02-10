@@ -52,9 +52,17 @@ Your data file is now uploaded to the Rstudio server! All this means is that the
 
 \section{Reading CSV Files into R}
 
-Now that we got the file saved onto the Rstudio Server it's time to tell R to read the file so we can look at the data! This will require telling R to read the file. In order to do this we will use R commands. (remember these commands are to be typed in the R ``console") %One way to confirm this is to look at the Rstudio tab \textbf{`Environment'} in the top right window, where the file shoud be listed. If you don't see anything here it's because the file has not yet been loaded into R. 
+\subsection{Creating a Record of your R-code}
 
- \subsection{Finding the data path to the file}
+Now that we got the file saved onto the Rstudio Server it's time to tell R to read the file so we can look at the data! This will require telling R to read the file. In order to do this we will use R commands. (remember these commands are to be typed in the R ``console") %One way to confirm this is to look at the Rstudio tab \textbf{`Environment'} in the top right window, where the file shoud be listed. If you don't see anything here it's because the file has not yet been loaded into R.
+
+To begin, create a 'R Markdown' file by navigating the menu in the following order 'File/New File/R Markdown'. Enter a title (can be changed later), enter your name as the author, and make sure you have selected html as an output option, which can also be changed later! 
+
+I suggest you save the file and 'knit' it to see what happens, i.e. it works!  I will 'knit', which also saves the files every few minutes to make sure the code is doing what I figured it should do, i.e. not give me errors!
+
+Except for the setup options chuck, we can begin altering the R chunks with code that will document your work AND if you have trouble, you can show the problem to the instructor for trouble shooting!
+
+ \subsection{Finding the data path to the csv file}
 In order to tell R to read the file you also have to let it know where the file is (R is funny that way). We use an R command to help us find the specific data path to the file. \\
 In the console type in the following and then follow these steps: 
 \begin{verbatim}
@@ -206,7 +214,7 @@ In this case, we find that Date is a factor, which means that we will not be abl
 
 Factors in R are thought of as unique observations of character or numeric strings. But R does not understand the numeric and ordered nature of dates, e.g. 12 months, some months with 28, 29 (leap year), 30, and 31 days. When you think about it, dates are very strange. 
 
-So, we need to convert these to a date format that R understands. 
+So, we need to convert these to a date format that R understands. This is the hardest part of this process. Pay attention to the date formats!  If you assume a particular format that is wrong, it can lead to a reasonbly frustrating process. Note: I have found myself missing the details of the stage below leading to the loss of valuable time. 
 
 
 \subsection{Determine and Convert Date Format}
@@ -316,13 +324,13 @@ plot(TMAX~NewDate, climate_data[1:1835,], ty='l')
 
 Our next task is to create a template to automatically run our code, so we can regenerate the pre-processed data within a Rmd file, which will then produce a figure. 
 
-\subsection{Creating the Rmd as a blog template}
+\subsection{Summarizing wat your code is doing}
 
-Start a new file -- File/New/Rmarkdown. Enter a draft title and make sure the author name is correct. Save the file in the your student folder. 
+%Start a new file -- File/New/Rmarkdown. Enter a draft title and make sure the author name is correct. Save the file in the your student folder. 
 
-Knit to make sure it works. 
+%Knit to make sure it works. 
 
-Now you will begin creating your blog by getting the commands you created before into an R block so that your data is available for the kniting process.
+%Now you will begin creating your blog by getting the commands you created before into an R block so that your data is available for the kniting process.
 
 Thus, far, we have already completed the following\ldots
 
@@ -333,7 +341,7 @@ Thus, far, we have already completed the following\ldots
   \item Fix the date formats.
 \end{enumerate}
 
-But now we need to paste this into the Blog Rmd (R markdown) file. After you put your code into the .Rmd file, make sure it knits. If not , please stage, commmit, and push to github and send a note to Marc or Char for help. 
+%But now we need to paste this into the Blog Rmd (R markdown) file. After you put your code into the .Rmd file, make sure it knits. If not , please stage, commmit, and push to github and send a note to Marc or Char for help. 
 
 If you are successful on this step, the next set of action items are the following: 
 
