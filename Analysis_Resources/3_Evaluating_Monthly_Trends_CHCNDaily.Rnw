@@ -34,7 +34,6 @@ climate_data <- CSV_import("/home/CAMPUS/mwl04747/github/Climate_Change_Narrativ
 
 \end{abstract}
 
-
 \section{Introduction}
 
 \subsection{Goals for This Document}
@@ -175,7 +174,7 @@ For now, we can appreciate the the temperature is changing, i.e. increasing, wit
 
 One of the first things to note is how messy the data look and there are lots of sources of variation. For example, we expect months to respond differently to the climate change. To assess this, we will now analyze the data for monthly means of the maximum temperatures.
 
-\subsubsection{Creating Monthly Means}
+\subsection{Creating Monthly Means}
 
 To create monthly means, we need to disagragate the NewDate variable into a month and year variables.
 
@@ -189,7 +188,7 @@ climate_data$Year = format(climate_data$NewDate, format="%Y")
 Note: 
 Some data sets might not show the century in front of the year, which confuses R when plotting graphs, since it cannot distinguish between different centuries. For example, if under Year in your data set you only see “10”,”11”,”12” and your data runs from 1910 to 2010, R will not know how to distinguish the “10” from 1910 and the “10” from 2010, and your plot will jump back and forward a century. Therefore, you need to format your years so that it displays the century. This is how it is done:
 
-1) Open up your climate_data table from your files in R studio.
+1) Open up your climate\_data table from your files in R studio.
 
 2) Find the point at which the entries jump from one century to the next. (eg. 1999 to 2000)
 

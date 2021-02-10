@@ -78,7 +78,6 @@
 
 \end{abstract}
 
-
 \section{Introduction}
 
 \subsection{Goals for This Document}
@@ -259,7 +258,7 @@ For now, we can appreciate the the temperature is changing, i.e. increasing, wit
 
 One of the first things to note is how messy the data look and there are lots of sources of variation. For example, we expect months to respond differently to the climate change. To assess this, we will now analyze the data for monthly means of the maximum temperatures.
 
-\subsubsection{Creating Monthly Means}
+\subsection{Creating Monthly Means}
 
 To create monthly means, we need to disagragate the NewDate variable into a month and year variables.
 
@@ -273,6 +272,33 @@ First we can use the \texttt{as.Date()} function to extract a portion of the dat
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+Note: 
+Some data sets might not show the century in front of the year, which confuses R when plotting graphs, since it cannot distinguish between different centuries. For example, if under Year in your data set you only see “10”,”11”,”12” and your data runs from 1910 to 2010, R will not know how to distinguish the “10” from 1910 and the “10” from 2010, and your plot will jump back and forward a century. Therefore, you need to format your years so that it displays the century. This is how it is done:
+
+1) Open up your climate\_data table from your files in R studio.
+
+2) Find the point at which the entries jump from one century to the next. (eg. 1999 to 2000)
+
+3) Write down the row number of the last entry of the earlier century (1999) and the first entry of the new century (2000). 
+
+4) Format your code in R using [1:(last entry of 19th century)], [(first entry of 19th century):(last entry)]
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate[}\hlnum{1}\hlopt{:}\hlnum{23344}\hlstd{]} \hlkwb{=} \hlkwd{format}\hlstd{(}\hlkwd{as.Date}\hlstd{(strDates[}\hlnum{1}\hlopt{:}\hlnum{23344}\hlstd{],} \hlstr{"%m/%d/%y"}\hlstd{),} \hlstr{"19%y-%m-%d"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(strDates[1:23344], "{}\%m/\%d/\%y"{}): object 'strDates' not found}}\begin{alltt}
+\hlstd{climate_data}\hlopt{$}\hlstd{NewDate[}\hlnum{23345}\hlopt{:}\hlnum{45332}\hlstd{]} \hlkwb{=} \hlkwd{format}\hlstd{(}\hlkwd{as.Date}\hlstd{(strDates[}\hlnum{23345}\hlopt{:}\hlnum{45332}\hlstd{],} \hlstr{"%m/%d/%y"}\hlstd{),}\hlstr{"20%y-%m-%d"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(strDates[23345:45332], "{}\%m/\%d/\%y"{}): object 'strDates' not found}}\end{kframe}
+\end{knitrout}
+
 
 After creating the month and year as separate variables, we can use them to caculate the mean using the \texttt{aggregate()} function. In the code below, we can also calculate the standard deviation too, although I haven't used this measure in this document, several students have asked for this for their analysis.
 
@@ -540,7 +566,7 @@ Temperatures, Bangkok, Thailand}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Fri Sep 18 15:37:53 2020
+% Wed Feb 10 09:51:52 2021
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
