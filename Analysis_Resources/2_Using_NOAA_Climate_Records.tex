@@ -106,7 +106,7 @@ Your data file is now uploaded to the Rstudio server! All this means is that the
 
 Now that we got the file saved onto the Rstudio Server it's time to tell R to read the file so we can look at the data! This will require telling R to read the file. In order to do this we will use R commands. (remember these commands are to be typed in the R ``console") %One way to confirm this is to look at the Rstudio tab \textbf{`Environment'} in the top right window, where the file shoud be listed. If you don't see anything here it's because the file has not yet been loaded into R.
 
-To begin, create a 'R Markdown' file by navigating the menu in the following order 'File/New File/R Markdown'. Enter a title (can be changed later), enter your name as the author, and make sure you have selected html as an output option, which can also be changed later! 
+To begin, create a `R Markdown' file by navigating the menu in the following order 'File/New File/R Markdown'. Enter a title (can be changed later), enter your name as the author, and make sure you have selected html as an output option, which can also be changed later! 
 
 I suggest you save the file and 'knit' it to see what happens, i.e. it works!  I will 'knit', which also saves the files every few minutes to make sure the code is doing what I figured it should do, i.e. not give me errors!
 
@@ -127,6 +127,15 @@ file.choose()
 \item \textbf{Copy} the data path (including the quotation marks)
 \end{itemize}
 
+I suggest we create an object with the path, for example, often write out something like this:
+
+\begin{verbatim}
+climate_data.csv = ``your file path''
+\end{verbatim}
+
+\noindent where I paste in the results of the file choose into the quoted section.
+
+
 \subsection{Telling R to Read the Data File}
 
 Now that we know where the data file is we will tell R to read it! In the console type in the following command and follow the next steps: 
@@ -135,7 +144,12 @@ read.csv()
 \end{verbatim}
 
 \begin{itemize}
-\item This time before you press enter on the R command \textbf{Paste} in the data path you copied inbetween the parenthesis of the R command (be sure to include the parenthesis)
+\item This time before you press enter on the R command \textbf{Paste} in the data path you copied inbetween the parenthesis of the R command (be sure to include the parenthesis). As described above, I recommend using the path object we created, i.e.
+
+\begin{verbatim}
+read.csv(climate_data.csv)
+\end{verbatim}
+
 \item press enter
 \item If your command worked you should see a bunch of text in your console window now. This means R read your file!
 \end{itemize}
@@ -459,6 +473,8 @@ Doesn't seem to work, I had to brut force it... will work on this next summer!
 
 \subsection{Checking the New Dates}
 
+To check the NewDate variable, I like to make sure I can get a plot that makes sense. In the code below I have subsetted the data for the first 1835 observations -- however, you may not have that many, so you'll get an error. Remove the code with the square brackets (including the square brackets) and that should work. 
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -469,6 +485,8 @@ Doesn't seem to work, I had to brut force it... will work on this next summer!
 
 \end{knitrout}
 
+
+With these data, you can see we have a very strange pattern -- lots of missing data. At this point, I might need to find a better dataset -- however, because I truncated the data, the more recent data might be fine. This is part of the scientific process -- deciding on what qualifies as high quality data!
 %\subsection{Subset Sites}
 
 %unique(import$STATION_NAME)
@@ -507,7 +525,7 @@ Thus, far, we have already completed the following\ldots
 
 %But now we need to paste this into the Blog Rmd (R markdown) file. After you put your code into the .Rmd file, make sure it knits. If not , please stage, commmit, and push to github and send a note to Marc or Char for help. 
 
-If you are successful on this step, the next set of action items are the following: 
+\noindent If you have been successful with these steps, our nextg action items include the following: 
 
 \begin{enumerate}
   \item Create a figure of Tmax versus time (\texttt{plot()}).
