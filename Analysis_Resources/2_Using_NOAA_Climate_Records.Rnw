@@ -83,7 +83,7 @@ I suggest we create an object with the path, for example, often write out someth
 climate_data.csv = ``your file path''
 \end{verbatim}
 
-\noindent where I paste in the results of the file choose into the quoted section.
+\noindent where I paste in the results of the file choose into the quoted section. Do not use write ``your file path''! That is the intent, not the exact content!
 
 
 \subsection{Telling R to Read the Data File}
@@ -121,7 +121,9 @@ In R usually ``no news is good news" after you hit enter on a command. In other 
 
 \section{Confirming the Proper Reading of the CSV file}
 <<echo=FALSE, message=FALSE, results='hide'>>=
-climate_data<- read.csv("../Data/MLH/test_data/Singapore_ClimateData.csv")
+climate_data.csv = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/MLH/test_data/Singapore_ClimateData.csv" 
+  
+climate_data<- read.csv(climate_data.csv)
 @
 
 So we see that the data file is actually an object in R now. But what does it actually look like and what's in it? 
@@ -170,19 +172,21 @@ climate_data$TMAX
 
 And R will spit out the data in just that column. 
 
-\section{Plotting the Data}
+\section{Checking for Missing Data}
 
-Now we will check the data by plotting it (Figure~\ref{fig:plotmissing}). 
+%Now we will check the data by plotting it(Figure~\ref{fig:plotmissing}). 
 
-\begin{figure}
-<<echo=T, fig=TRUE>>=
-plot(TMAX~DATE, climate_data)
-@
-\caption{These data are plotted with DATE on the x-asis and TMAX on the y-asis. These data have a fair amount of missing data (-9999). Not all the datasets will report missing data in this way. In some cases, they are just missing.}
-\label{fig:plotmissing}
-\end{figure}
+%\begin{figure}
+%<<echo=T, fig=TRUE>>=
+%plot(TMAX~DATE, climate_data)
+%@
+%\caption{These data are plotted with DATE on the x-asis and TMAX on the y-asis. These data have a fair amount of missing data (-9999). Not all the datasets will report missing data in this way. In some cases, they are just missing.}
+%\label{fig:plotmissing}
+%\end{figure}
 
-We find some rather odd low temperature values in the plot. We can find some of these with the \texttt{min()} function. This function works when there are no missing data, otherwise it will just report NA. 
+In some cases, we might some rather odd low temperature values in the plot. Missing data used to be documented as -9999. Obviously, this will throw our means off!
+
+Let's check if we have these using the \texttt{min()} function. This function works when there are no missing data, otherwise it will just report NA. 
 
 <<>>=
 min(climate_data$TMAX)
@@ -210,15 +214,15 @@ climate_data$TMAX[climate_data$TMAX==-9999] = NA
 climate_data$TMIN[climate_data$TMIN==-9999] = NA
 @
 
-Okay, now we'll check again, but let's plot a just a few years, let's say five years (356 days * 5 years = 1825) or 1825 observations. I am using this to check my dataframe -- based on the number of observations that I have, but your data set will vary and you may find this selection of rows to be unhelpful.\footnote{IMPORTANT: when we plot with a type (ty) as a line, we define that as the letter 'l' not the number '1'!}
+%Okay, now we'll check again, but let's plot a just a few years, let's say five years (356 days * 5 years = 1825) or 1825 observations. I am using this to check my dataframe -- based on the number of observations that I have, but your data set will vary and you may find this selection of rows to be unhelpful.\footnote{IMPORTANT: when we plot with a type (ty) as a line, we define that as the letter 'l' not the number '1'!}
 
-<<>>=
-plot(TMAX~DATE, climate_data[1:1835,], ty='l')
-@
+%<<>>=
+%plot(TMAX~DATE, climate_data[1:1835,], ty='l')
+%@
 
-In the case of the Singapore data we have a new problem. What's wrong? It appears we have gaps in the data -- but we already removed our missing data, why are these big jumps in the data.
+%In the case of the Singapore data we have a new problem. What's wrong? It appears we have gaps in the data -- but we already removed our missing data, why are these big jumps in the data.
 
-As it turns out stations might have one of three types of date formats -- and each of them are problematic. The first thing to note is that they are factors instead of begin formatted as a Date. You can check this with the following function:
+As it turns out stations might have one of several types of date formats -- and each of them are problematic. The first thing to note is that they are factors instead of begin formatted as a Date. You can check this with the following function:
 
 <<>>=
 str(climate_data)
@@ -228,8 +232,7 @@ In this case, we find that Date is a factor, which means that we will not be abl
 
 Factors in R are thought of as unique observations of character or numeric strings. But R does not understand the numeric and ordered nature of dates, e.g. 12 months, some months with 28, 29 (leap year), 30, and 31 days. When you think about it, dates are very strange. 
 
-So, we need to convert these to a date format that R understands. This is the hardest part of this process. Pay attention to the date formats!  If you assume a particular format that is wrong, it can lead to a reasonbly frustrating process. Note: I have found myself missing the details of the stage below leading to the loss of valuable time. 
-
+So, we need to convert these to a date format that R understands. This is the hardest part of this process. Pay attention to the date formats!  If you assume a particular format that is wrong, it can lead to a reasonably frustrating process. Note: I have missed details from the stage below and subsequently loss of valuable time. 
 
 \subsection{Determine and Convert Date Format}
 
@@ -240,52 +243,87 @@ First, we convert the date to a string of character values. Next, we'll convert 
 \begin{description}
   \item[MM/DD/YYYY] This is a standard data for many US stations. To convert the dates, we first create a vector of just the dates. Then, we can reformat the dates using the syntax below:
   
-<<>>=
+\begin{verbatim}
 strDates <- as.character(climate_data$DATE)
 
 climate_data$NewDate <- as.Date(strDates, "%m/%d/%Y")
-@
+\end{verbatim}
 
 Caution: Be sure the dates were actually converted correctly, using the \texttt{head()} or \texttt{str()} functions.
 
 
 \item[MM-DD-YYYY] Sometimes, the dates are formatted by month-day-year, where we can use the code below to reformat the dates:
 
-  
-<<>>=
+\begin{verbatim}
 strDates <- as.character(climate_data$DATE)
 
 climate_data$NewDate <- as.Date(strDates, "%m-%d-%Y")
-@
+\end{verbatim}
 
 \item[YYYY/MM/DD] Sometimes, the dates are formatted by year/month/day, where we can use the code below to reformat the dates:
 
   
-<<>>=
+\begin{verbatim}
 strDates <- as.character(climate_data$DATE)
 
 climate_data$NewDate <- as.Date(strDates, "%Y/%m/%d")
-@
+\end{verbatim}
 
 \item[YYYY-MM-DD] Sometimes, the dates are formatted by year-month-dayy, where we can use the code below to reformat the dates:
 
   
-<<>>=
+\begin{verbatim}
 strDates <- as.character(climate_data$DATE)
 
 climate_data$NewDate <- as.Date(strDates, "%Y-%m-%d")
-@
+\end{verbatim}
 
 \item[YYYYMMDD] In certain cases, the dates are formatted as a long number starting with year. Although these dates sort correctly, they create big gaps at the new year: Let's say that the data have a year change between 1913 and 1914. The date format in the NOAA data are YYYYMMDD, or year, month, and day with 4, 2, 2 digits, respectively. Thus, the last day of 1913 is 19131231 or Dec, 31, 1913. The next day is January 1st or 19140101. But when you plot these on the x-axis, the order of the values should be $19131231 \rightarrow 19131232 \rightarrow 19131233 \rightarrow 19131234$, etc but there is no 32nd, 33rd or 34th of December. Instead the dates go from  $19131231 \rightarrow 19140101$. We have lots of numbers that are skipped, but no coded as missing, but missing all the same. So, now we need to convert our dates to something more sensible. In R, that means creating a variable with a format that expects dates, thus doesn't plot numbers that are impossible dates!
   
 <<>>=
 strDates <- as.character(climate_data$DATE)
 
-climate_data$NewDate <- as.Date(strDates, "%Y%m%d")
+climate_data$NewDate <- as.Date(strDates, format = "%Y%m%d") 
 @
 
 
-\item[2-digit Years] Is a total mess. See Marc for help!
+\item[2-digit Years] Is a total mess. Try the instructions below, but also reach out to Marc for help, because every data set seems to have some unique issues. 
+
+First, we need to appreciate that we might have two centuries of data the the exact date!  So, we use the order of the data to assign the century and figure out where it changes after 12/31/99. 
+
+In the case of a location in China, we actually have a format change in the datset too! 
+<<>>=
+china = read.csv("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/MLH/Data-China.csv")
+str(china)
+@
+
+Scroll to observation 5841 to see part of the problem!
+<<>>=
+china[5840:5845,]
+@
+
+So, we'll have to convert the first part (1:5841), which does have a 4-year format, different than the rest, which has 2-year format. 
+
+<<>>=
+strDates <- as.character(china$DATE)
+china$NewDate = NA
+
+china$NewDate[1:5841] <-format(as.Date(china$DATE[1:5841]), "%Y-%m-%d")
+
+# I don't know why I can't the code "%m/%d/%19y" to work... so I had to hack something lame...
+
+strDates <- as.Date(china$DATE[5842:41964], format = "%m/%d/%y")-365*100-24
+
+
+china$NewDate[5842:41964] <- strDates
+  
+as.Date(strDates, format="%Y-%m-%d")
+
+china$NewDate[41965:49673] <- format(as.Date(china$DATE[41965:49673], "%m/%d/%y"))
+
+str(china)
+@
+
 
 
 \item[Mixed Formats]... see Valentina's data!
@@ -342,7 +380,7 @@ With these data, you can see we have a very strange pattern -- lots of missing d
 
 Our next task is to create a template to automatically run our code, so we can regenerate the pre-processed data within a Rmd file, which will then produce a figure. 
 
-\subsection{Summarizing wat your code is doing}
+\section{Summarizing what Our Code is Doing}
 
 %Start a new file -- File/New/Rmarkdown. Enter a draft title and make sure the author name is correct. Save the file in the your student folder. 
 

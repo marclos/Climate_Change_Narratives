@@ -59,7 +59,7 @@
   linkcolor  = black
 }
 
-\title{Evaluating Monthly Trends using CHCN-Daily}
+\title{Evaluating Precipitation Trends using CHCN-Daily}
 \author{Marc Los Huertos}
 
 % Setting up the margins, etc for R
@@ -82,15 +82,11 @@
 
 \subsection{Goals for This Document}
 
-This document provides EA students with the methods to analyze climate data based on monthly averages and evaluate if these data are reliable compared to the CHCN-Monthly and investigate sources of uncertainty. 
+This document provides EA students with the methods to analyze climate data based on monthly averages and evaluate if these data are reliable compared to the CHCN-Monthly and investigate sources of uncertainty.
 
-\section{Creating a Best Fit Line for Daily TMAX data}
+\subsection{Summary of Steps Described}
 
-\subsection{To Begin}
-
-You should have R code that generates a plot of daily TMAX data for a site with a best fit line overlaid. If not, please go back to ``Using NOAA Clamate Records.''
-
-\subsection{Generalized Steps}
+This guides relies on existing pre-processed data, a dataframe with properly formated dates. You should have R code that generates a plot of daily TMAX data for a site with a best fit line overlaid. If not, please go back to ``Using NOAA Clamate Records.''
 
 In this SOP you will\ldots
 
@@ -461,7 +457,73 @@ Below, I have create code to evaluate all of the months at once, but you may pre
 \end{knitrout}
 \end{figure}
 
-\subsection{Next Steps}
+\subsection{Assumptions of the Linear Regression}
+
+Regression models, like all statistics, rely on certain assumptions. Violations of these assumptions reduces the validity of the model. If the violations are serious, then the model could be misleading or even incorrect.
+
+TBD
+
+%Here is a list of assumptions to produce a valid regression model:
+
+%\begin{description}
+%  \item[Homogeneity of Variance]
+%  \item[something else]
+%\end{description}
+
+\subsubsection{Assumptions about $\epsilon$}
+
+The error term should have 
+
+\begin{description}
+  \item [E(et) = 0], zero mean
+
+  \item[E(et) = s], constant variance
+
+  \item[E(et, Xt) = 0] , no correlation with X 
+
+  \item[TBD] E(e , e ), no autocorrelation. t t-1
+
+  \item[e ~ Normally distributed] (for hypothesis testing). 
+
+\end{description}
+
+Assumption four is especially important and most likely not to be met when using time series data.
+
+Autocorrelation.
+
+1. It is not uncommon for errors to `track' themselves; that is, for the error a time t to depend in part on its value at t - m, where m is a prior time period.
+
+\subsubsection{Model Diagnostics}
+
+With every statistical test done, researchers validate their model in some way or anther. Often this entails the use of diagnostics, a standardize battery of procedures to check to see if the data are following the assumptions. 
+
+In R four plots are created by default.  To see them all at the same time, we need to change the graphical parameters, using the par() function. In this case, we use \texttt{par(mfrow=c(2,2))} to create alter the graphics window expects four panels, in this case a 2 rows and two columns.
+
+Try not to get bogged down in the code at this point. But noting this function can be handy in a number of ways to improve one's graphics. 
+
+% Additional LaTeX code to add caption to figure
+\begin{figure}
+\label{fig:diagnostics}
+\caption{Default diagnostic plots for a linear model in R.}
+%\setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
+% R code chunk that produces a graphic
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMIN} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMINMean[MonthlyTMINMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{1}\hlstd{,]))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'MonthlyTMINMean' not found}}\end{kframe}
+\end{knitrout}
+\end{figure}
+
+To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
+
+A properly specified model is shown in 
+
+%Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
 
 \subsubsection{Analyzing Minimum Daily Temperatures}
 
@@ -477,7 +539,7 @@ Alternatively, it might be important to evaluate changes to the daily mininum te
 \caption{Minimum Daily Temperatures in Bangkok, Thailand.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-11-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
 
 \end{knitrout}
 \end{figure}
@@ -517,7 +579,7 @@ There appears to be a trend, but it's clouded with lots of variation.
 \hlkwd{plot}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} 
 
 \end{knitrout}
 
@@ -566,7 +628,7 @@ Temperatures, Bangkok, Thailand}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Wed Feb 10 09:51:52 2021
+% Fri Mar  5 12:28:10 2021
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
@@ -605,220 +667,12 @@ As we might expect, the a small amount of the variance is explained by the ``Mon
 
 \end{enumerate}
 
-\subsubsection{Precipitation: Departure from Mean}
+\section{Exporting Data to Create Class Database}
 
-Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but have found some datasets have problems. 
+\subsection{Developing a Database}
 
-Precipitation is something that might increase or decrease due to climate change. So, to analyze this, we will evaluate how much precipitation has deveated from the mean, by plotting the rainfall and the mean in a time-series plot. 
+\section{Summarizing what Our Code is Doing}
 
-Second, we need to remove the missing values and evaluate which years that are complete -- why do you think missing variables might be an issue analyzing precipiation? 
-
-If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season? We'll need to be consistent -- assuming that missing data are not zeros, we'll define complete years as over 300 days of data. 
-
-NOTE: The missing values have not been converted to NAs!
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{climate_data}\hlopt{$}\hlstd{PRCP[climate_data}\hlopt{$}\hlstd{PRCP}\hlopt{==-}\hlnum{9999}\hlstd{]} \hlkwb{<-} \hlnum{NA}
-
-\hlstd{Missing} \hlkwb{<-} \hlkwd{aggregate}\hlstd{(}\hlkwd{is.na}\hlstd{(climate_data}\hlopt{$}\hlstd{PRCP),}
-          \hlkwd{list}\hlstd{(climate_data}\hlopt{$}\hlstd{Month, climate_data}\hlopt{$}\hlstd{Year), sum)}
-
-\hlcom{# The aggregate command is used to create a simplified dataset. In this case}
-\hlcom{# we are creating a sum of PRCP based on each month and year.}
-
-\hlstd{Missing}\hlopt{$}\hlstd{Date} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(Missing}\hlopt{$}\hlstd{Group.1)} \hlopt{+} \hlkwd{as.numeric}\hlstd{(Missing}\hlopt{$}\hlstd{Group.2)}\hlopt{/}\hlnum{12}
-
-\hlkwd{plot}\hlstd{(x} \hlopt{~} \hlstd{Date,} \hlkwc{data}\hlstd{=Missing)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-14-1} 
-
-\end{knitrout}
-
-Third, we will need to decide what level of aggredation -- monthly, yearly, etc.  Let's aggreate by month and year to get monthly totals. 
-
-There are loads of missing values in many months. Let's cut of the months that have more than 4 missing days. 
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{TotalPPT} \hlkwb{<-} \hlkwd{aggregate}\hlstd{(climate_data}\hlopt{$}\hlstd{PRCP,}
-            \hlkwd{list}\hlstd{(climate_data}\hlopt{$}\hlstd{Month, climate_data}\hlopt{$}\hlstd{Year), sum,} \hlkwc{na.rm}\hlstd{=T)}
-
-\hlcom{# Check to see what you created.}
-
-\hlkwd{names}\hlstd{(TotalPPT)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"Group.1"}\hlstd{,} \hlstr{"Group.2"}\hlstd{,} \hlstr{"ppt"}\hlstd{)}
-
-\hlstd{NonMissing} \hlkwb{<-} \hlstd{Missing[Missing}\hlopt{$}\hlstd{x} \hlopt{<} \hlnum{5}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{)]}
-\hlkwd{library}\hlstd{(dplyr)}
-\end{alltt}
-
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'dplyr'}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following objects are masked from 'package:stats':\\\#\# \\\#\#\ \ \ \  filter, lag}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following objects are masked from 'package:base':\\\#\# \\\#\#\ \ \ \  intersect, setdiff, setequal, union}}\begin{alltt}
-\hlstd{PPT} \hlkwb{<-} \hlkwd{merge}\hlstd{(TotalPPT, NonMissing,} \hlkwc{all.y}\hlstd{=}\hlnum{TRUE}\hlstd{)}
-\hlstd{PPT}\hlopt{$}\hlstd{Date} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(PPT}\hlopt{$}\hlstd{Group.1)} \hlopt{+} \hlkwd{as.numeric}\hlstd{(PPT}\hlopt{$}\hlstd{Group.2)}\hlopt{/}\hlnum{12}
-\hlkwd{head}\hlstd{(PPT)}
-\end{alltt}
-\begin{verbatim}
-##   Group.1 Group.2  ppt x     Date
-## 1      01    1951  0.2 0 163.5833
-## 2      01    1952  0.0 0 163.6667
-## 3      01    1953 20.3 0 163.7500
-## 4      01    1954  5.3 0 163.8333
-## 5      01    1955  2.2 0 163.9167
-## 6      01    1956  5.6 0 164.0000
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-First, we need a ``mean" -- The IPCC uses 1961-1990 as a norm for temperature, I don't know what is the standard for rainfall or Thailand, so we should look that up. For now, we'll use our filtered records to generate a mean.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{PRCP_mean} \hlkwb{=} \hlkwd{mean}\hlstd{(PPT}\hlopt{$}\hlstd{ppt)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{plot}\hlstd{(ppt}\hlopt{~}\hlstd{Date,} \hlkwc{data}\hlstd{=PPT)}
-\hlkwd{abline}\hlstd{(}\hlkwc{h}\hlstd{=PRCP_mean,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-17-1} 
-
-\end{knitrout}
-
-Wow, these data look terrible -- the mean looks meaningless given the biased data set. I don't think we can do more analysis with this. But let's look at a few months and see what we can decipher.
-
-\begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-18-1} 
-
-\end{knitrout}
-\end{figure}
- 
-%Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA}
-\hlcom{#YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)}
-\hlcom{#YearlySum$YEAR = as.numeric(YearlySum$Year) }
-\hlcom{#YearlyMean = mean(YearlySum$PRCP)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
-
-Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")}
-\hlcom{#abline(h=YearlyMean, col="blue")}
-\hlcom{#YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)}
-\hlcom{#abline(coef(YearlySum.lm), col="green")}
-
-\hlcom{#n <- 5}
-\hlcom{#k <- rep(1/n, n)}
-\hlcom{#k}
-
-\hlcom{#y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)}
-\hlcom{#lines(YearlySum$YEAR, y_lag, col="red")}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-%The model suggests that the precipitation is declining at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#summary(YearlySum.lm)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\subsection{Assumptions of the Linear Regression}
-
-Regression models, like all statistics, rely on certain assumptions. Violations of these assumptions reduces the validity of the model. If the violations are serious, then the model could be misleading or even incorrect.
-
-TBD
-
-%Here is a list of assumptions to produce a valid regression model:
-
-%\begin{description}
-%  \item[Homogeneity of Variance]
-%  \item[something else]
-%\end{description}
-
-\subsubsection{Assumptions about $\epsilon$}
-
-The error term should have 
-
-
-\begin{description}
-  \item [E(et) = 0], zero mean
-
-  \item[E(et) = s], constant variance
-
-  \item[E(et, Xt) = 0] , no correlation with X 
-
-  \item[TBD] E(e , e ), no autocorrelation. t t-1
-
-  \item[e ~ Normally distributed] (for hypothesis testing). 
-
-\end{description}
-
-Assumption four is especially important and most likely not to be met when using time series data.
-
-Autocorrelation.
-
-1. It is not uncommon for errors to “track’ themselves; that is, for the error a time t to depend in part on its value at t - m, where m is a prior time period.
-
-\subsubsection{Model Diagnostics}
-
-With every statistical test done, researchers validate their model in some way or anther. Often this entails the use of diagnostics, a standardize battery of procedures to check to see if the data are following the assumptions. 
-
-In R four plots are created by default.  To see them all at the same time, we need to change the graphical parameters, using the par() function. In this case, we use \texttt{par(mfrow=c(2,2))} to create alter the graphics window expects four panels, in this case a 2 rows and two columns.
-
-Try not to get bogged down in the code at this point. But noting this function can be handy in a number of ways to improve one's graphics. 
-
-% Additional LaTeX code to add caption to figure
-\begin{figure}
-\label{fig:diagnostics}
-\caption{Default diagnostic plots for a linear model in R.}
-%\setkeys{Gin}{width=0.75\textwidth} % LaTeX code to read the graphic file in at 75% of its original size
-% R code chunk that produces a graphic
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
-\hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMIN} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMINMean[MonthlyTMINMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{1}\hlstd{,]))}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(predvars, data, env): object 'YEAR' not found}}\end{kframe}
-\end{knitrout}
-\end{figure}
-
-To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
-
-A properly specified model is shown in 
-
-%Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
+\section{Next Steps}
 
 \end{document}

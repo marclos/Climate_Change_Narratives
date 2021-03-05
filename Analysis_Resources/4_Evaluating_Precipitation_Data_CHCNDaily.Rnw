@@ -1,0 +1,129 @@
+\documentclass{article}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{gensymb}
+\usepackage{hyperref}
+\hypersetup{%
+  colorlinks = true,
+  linkcolor  = black
+}
+
+\title{Evaluating Monthly Trends using CHCN-Daily}
+\author{Marc Los Huertos}
+
+% Setting up the margins, etc for R
+<<echo = F, results='hide'>>=
+options(width=50)
+rm(list = ls())
+@
+
+
+\begin{document}
+
+\subsubsection{Precipitation: Departure from Mean}
+
+Precipiation might depend more on the departure from the mean (often referred as as normal, whatever that means!).  I think it's worth pursuing, but have found some datasets have problems. 
+
+Precipitation is something that might increase or decrease due to climate change. So, to analyze this, we will evaluate how much precipitation has deveated from the mean, by plotting the rainfall and the mean in a time-series plot. 
+
+Second, we need to remove the missing values and evaluate which years that are complete -- why do you think missing variables might be an issue analyzing precipiation? 
+
+If you are missing rainy months, then the whole year should be thrown out -- but what about partial years in the drought season? We'll need to be consistent -- assuming that missing data are not zeros, we'll define complete years as over 300 days of data. 
+
+NOTE: The missing values have not been converted to NAs!
+<<>>=
+climate_data$PRCP[climate_data$PRCP==-9999] <- NA
+
+Missing <- aggregate(is.na(climate_data$PRCP), 
+          list(climate_data$Month, climate_data$Year), sum)
+
+# The aggregate command is used to create a simplified dataset. In this case
+# we are creating a sum of PRCP based on each month and year.
+
+Missing$Date = as.numeric(Missing$Group.1) + as.numeric(Missing$Group.2)/12
+
+plot(x ~ Date, data=Missing)
+@
+
+Third, we will need to decide what level of aggredation -- monthly, yearly, etc.  Let's aggreate by month and year to get monthly totals. 
+
+There are loads of missing values in many months. Let's cut of the months that have more than 4 missing days. 
+
+<<>>=
+TotalPPT <- aggregate(climate_data$PRCP, 
+            list(climate_data$Month, climate_data$Year), sum, na.rm=T)
+
+# Check to see what you created.
+
+names(TotalPPT) = c("Group.1", "Group.2", "ppt")
+
+NonMissing <- Missing[Missing$x < 5, c(1:3)]
+library(dplyr)
+PPT <- merge(TotalPPT, NonMissing, all.y=TRUE)
+PPT$Date <- as.numeric(PPT$Group.1) + as.numeric(PPT$Group.2)/12
+head(PPT)
+@
+
+First, we need a ``mean'' -- The IPCC uses 1961-1990 as a norm for temperature, I don't know what is the standard for rainfall or Thailand, so we should look that up. For now, we'll use our filtered records to generate a mean.
+
+<<>>=
+PRCP_mean = mean(PPT$ppt)
+@
+
+<<>>=
+plot(ppt~Date, data=PPT)
+abline(h=PRCP_mean, col="blue")
+@
+
+Wow, these data look terrible -- the mean looks meaningless given the biased data set. I don't think we can do more analysis with this. But let's look at a few months and see what we can decipher.
+
+\begin{figure}
+<<echo=F>>=
+names(PPT) = c("Month", "Year", "ppt", "Missing", "Date")
+PPT$Month.num = as.numeric(PPT$Month)
+
+par(mfrow=c(4,3))
+for(i in 1:12){
+plot(ppt~Date, data=PPT[PPT$Month.num==i,], las=1)
+abline(coef(lm(ppt~Date, data=PPT[PPT$Month.num==i,])))
+}
+@
+\end{figure}
+ 
+%Fourth, in CA the water year starts in Oct 1. Should we follow the same convention?
+
+<<>>=
+#LosAngeles$PRCP[LosAngeles$PRCP==-9999] <- NA
+#YearlySum = aggregate(PRCP ~ Year, LosAngeles, sum)
+#YearlySum$YEAR = as.numeric(YearlySum$Year) 
+#YearlyMean = mean(YearlySum$PRCP)
+@
+
+A yearly mean, based on the annual sum for the entire records. Not sure this is appropriate.
+
+Figure has points of the yearly sum of rainfall and the blue line mean. The greenline is the trend and red line is a five year running average, I think!  I am still trying to understand what the code is doing.
+
+<<>>=
+#plot(PRCP~YEAR, data=YearlySum, las=1, ty="p")
+#abline(h=YearlyMean, col="blue")
+#YearlySum.lm = lm(PRCP~YEAR, data=YearlySum)
+#abline(coef(YearlySum.lm), col="green")
+
+#n <- 5
+#k <- rep(1/n, n)
+#k
+
+#y_lag <- stats::filter(YearlySum$PRCP, k, sides=1)
+#lines(YearlySum$YEAR, y_lag, col="red")
+@
+
+%The model suggests that the precipitation is declining at a rate of `r coef(YearlySum.lm)[2]` cm yr$^{-1}~$, or `r round(coef(YearlySum.lm)[2]*10, 2)` cm decade$^{-1}$.
+
+<<>>=
+#summary(YearlySum.lm)
+@
+
+
+
+\end{document}
