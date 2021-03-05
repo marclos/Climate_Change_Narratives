@@ -51,11 +51,11 @@ In this SOP you will\ldots
   \item create new variables for date and month;
   \item create a new dataframe with monthly averages;
   \item model and estimate average trend for each month;
-  \item evaluate the validity of the models; and
+  \item evaluate the validity (assumptions) of the models; and
   \item interpret the trend data
 \end{enumerate}
 
-\subsection{Regression and Climate Change}
+\section{Regression and Climate Change}
 
 One of the ourcomes of the linear regression is to estimate the best fit line
 
@@ -78,7 +78,7 @@ Okay, let's see if we can do this for our Bangkok data. Let's test if there is a
 TMAX \sim \alpha + \beta * time + \epsilon
 \end{equation}
 
-Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in "2 Using NOAA Climate Records". 
+Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in ``2 Using NOAA Climate Records.'' 
 
 For the response variable, we will use the daily maximum temeratures, TMAX. Remember there are some missing data, it will be interesting to note how R deals with that.
 
@@ -90,7 +90,7 @@ First, let's create a plot of data using \texttt{plot()}, whose format is \textt
 \caption{Maximum daily temperatures for Bangkok, Thailand.}
 \label{fig:test12}
 <<label='Tmaxplot', echo = F, fig = 'true' >>=
-par(las=1)
+par(las=1, mfrow=c(1,1))
 plot(TMAX ~ NewDate, data=climate_data, ylab="degrees C", xlab="Date", pch=20, main="TMAX, \n Bankok, Thailand" )
 @
 \end{figure}
@@ -108,16 +108,16 @@ From this model, we learn that the change in $TMAX$ is
 
 We know tha the slope and intercept can used to define a line -- so, next we can add a line to the plot. First, let's see how we can create a linear model object using \texttt{lm() }and extract the coefficients from linear model, usinig \texttt{coef()}.
 
-I am going to name the linear model with an ``.lm'' suffix to keep track of the type of object created. Then name an object ``slopeintercept'' to be clear where those two values lie. 
+I am going to name the linear model with an ``.lm'' suffix to keep track of the type of object created. Then name an object ``slopeintercept'' so the two values can be referenced later. 
 
-<<>>=
+<<createTMAX.lm>>=
 TMAX.lm = lm(TMAX ~ NewDate, data= climate_data)
 slopeintercept = coef(TMAX.lm)
 @
 
 \noindent Now, we can plot the the data with the best fit line. 
 
-<<eval=FALSE>>=
+<<plotTMAXDaily>>=
 plot(TMAX ~ NewDate, data= climate_data, las=1)
 abline(slopeintercept, col="red", lwd=3)
 @
@@ -128,9 +128,9 @@ abline(slopeintercept, col="red", lwd=3)
 \begin{figure}
 \caption{Maximum Daily Temperatures in Bangkok, Thailand.}
 \label{fig:TMAX_trend}
-<<echo = F, fig = 'true' >>=
+<<label='TMAXTrendDaily', echo = F, fig = 'true' >>=
 par(las=1)
-plot(TMAX ~ NewDate, data=climate_data, type="l", ylab="degrees", xlab="Date", main="Maximum Daily Temperature, \n Bangkok, Thailand", las=1 )
+plot(TMAX ~ NewDate, data=climate_data, type="l", ylab="degrees", xlab="Date", main="Maximum Daily Temperature, \n Bangkok, Thailand", col='grey' )
 
 abline(coef(lm(TMAX~NewDate, data=climate_data)), col="red", lwd=2)
 @
@@ -179,22 +179,6 @@ First we can use the \texttt{as.Date()} function to extract a portion of the dat
 <<label='createmonthvar'>>=
 climate_data$Month = format(as.Date(climate_data$NewDate), format = "%m")
 climate_data$Year = format(climate_data$NewDate, format="%Y")
-@
-
-Note: 
-Some data sets might not show the century in front of the year, which confuses R when plotting graphs, since it cannot distinguish between different centuries. For example, if under Year in your data set you only see “10”,”11”,”12” and your data runs from 1910 to 2010, R will not know how to distinguish the “10” from 1910 and the “10” from 2010, and your plot will jump back and forward a century. Therefore, you need to format your years so that it displays the century. This is how it is done:
-
-1) Open up your climate\_data table from your files in R studio.
-
-2) Find the point at which the entries jump from one century to the next. (eg. 1999 to 2000)
-
-3) Write down the row number of the last entry of the earlier century (1999) and the first entry of the new century (2000). 
-
-4) Format your code in R using [1:(last entry of 19th century)], [(first entry of 19th century):(last entry)]
-
-<<label='Addcenturies'>>=
-climate_data$NewDate[1:23344] = format(as.Date(strDates[1:23344], "%m/%d/%y"), "19%y-%m-%d") 
-climate_data$NewDate[23345:45332] = format(as.Date(strDates[23345:45332], "%m/%d/%y"),"20%y-%m-%d")
 @
 
 
@@ -255,40 +239,9 @@ Now, the change is \Sexpr{round(coef(May.lm)[2], 4)} degress C/year or \Sexpr{ro
 
 Note: if you are getting an error saying: error in plot.window(need finite `ylim' values), you may need to check your data format and see whether the months in your data set have a 0 infront of them or not. If not, try ``5" instead of ``05".
 
-\subsection{Testing all the Months}
 
-This section for advanced users and specific questions. Please do not proceed without consulting Marc.
 
-I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
-
-Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year -- but if you do you the code below, try to figure out what each line is doing. 
-
-\begin{figure}
-<<echo=TRUE, label='12MonthsTMAX', tidy=TRUE>>=
-# First I create a vector of months
-Months = c("January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December")
-
-# Create a panel so I can see all the figures at once.
-par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
-TMAXresult <- NA
-for (i in 1:12){
-plot(TMAX~Year.num, 
-  data=MonthlyTMAXMean[MonthlyTMAXMean$Month.num==i,], 
-  ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
-Month.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month.num==i,])
-summary(Month.lm)
-abline(coef(Month.lm), col="red")
-
-TMAXresult <- rbind(TMAXresult, 
-    cbind(Months[i], round(coef(Month.lm)[2], 4), 
-      round(summary(Month.lm)$coefficients[2,4],4), 
-      round(summary(Month.lm)$r.squared, 3)))
-}
-@
-\end{figure}
-
-\subsection{Assumptions of the Linear Regression}
+\section{Assumptions of the Linear Regression}
 
 Regression models, like all statistics, rely on certain assumptions. Violations of these assumptions reduces the validity of the model. If the violations are serious, then the model could be misleading or even incorrect.
 
@@ -340,19 +293,91 @@ Try not to get bogged down in the code at this point. But noting this function c
 % R code chunk that produces a graphic
 <<echo = T, fig= 'true' >>=
 par(mfrow=c(2,2))
-plot(lm(TMIN ~ YEAR, data=MonthlyTMINMean[MonthlyTMINMean$MONTH==1,]))
+plot(lm(TMAX ~ Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month.num==1,]))
 @
 \end{figure}
 
 To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
 
-A properly specified model is shown in 
+A properly specified model is shown in... coming soon! 
 
 %Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
 
-\subsubsection{Analyzing Minimum Daily Temperatures}
+\section{Temperature Trends by Month}
 
-Alternatively, it might be important to evaluate changes to the daily mininum temperatures. Following the same steps we used before but using the TMIN instead of TMAX, let's analyze the monthly average of daily minimum temperatures by following these steps: 
+\subsection{Variation in Trends}
+
+We may already appreciate the spatial variability of climate change. But we should also determine how climate change might vary by season, in in this case by month. 
+
+Thus, we will now evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
+
+\subsection{Semi-Indendent Working}
+
+As we move into more advanced topics, the code provided requires some independent work. 
+Thus, I recommend that you consulting with Marc and go over your progress before starting this.
+
+Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year -- but if you do you the code below, I suggest you work out what each line is doing. Then, you will be use the code to analyze TMINs as well. 
+
+
+\subsection{Analyzing and Plotting Data in a Loop}
+Below, I created a loop to ``index'' through each month, 1-12. Inside the loop is a plot command and a way to record the summary statistics into a dataframe.
+
+<<echo=TRUE, label='12MonthsTMAXCode', tidy=TRUE, eval=FALSE>>=
+# First I create a vector of months
+Months = c("January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December")
+
+# Create a panel so I can see all the figures at once.
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+plot(TMAX~Year.num, 
+  data=MonthlyTMAXMean[MonthlyTMAXMean$Month.num==i,], 
+  ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month.num==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+
+TMAXresult <- rbind(TMAXresult, 
+    cbind(Months[i], round(coef(Month.lm)[2], 4), 
+      round(summary(Month.lm)$coefficients[2,4],4), 
+      round(summary(Month.lm)$r.squared, 3)))
+}
+@
+
+\begin{figure}
+
+<<echo=FALSE, label='12MonthsTMAX', tidy=TRUE>>=
+# First I create a vector of months
+Months = c("January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December")
+
+# Create a panel so I can see all the figures at once.
+par(mfrow=c(4,3), mar=c(5, 4, 3, 2) + 0.1)
+TMAXresult <- NA
+for (i in 1:12){
+plot(TMAX~Year.num, 
+  data=MonthlyTMAXMean[MonthlyTMAXMean$Month.num==i,], 
+  ty='l', las=1, xlim=c(1940, 2020), main=Months[i])
+Month.lm <- lm(TMAX~Year.num, data=MonthlyTMAXMean[MonthlyTMAXMean$Month.num==i,])
+summary(Month.lm)
+abline(coef(Month.lm), col="red")
+
+TMAXresult <- rbind(TMAXresult, 
+    cbind(Months[i], round(coef(Month.lm)[2], 4), 
+      round(summary(Month.lm)$coefficients[2,4],4), 
+      round(summary(Month.lm)$r.squared, 3)))
+}
+@
+\caption{Trends in Maximum Temperatures by Month (Bangkok, Thailand).}
+\label{fig:MonthlyTMAX}
+\end{figure}
+
+For these data, Figure \ref{fig:MonthlyTMAX}, we find the slopes vary dramatically by month. However, noting the pattern, we might also consider how the minimum temperatures might be trending.
+
+\section{Analyzing Minimum Daily Temperatures}
+
+Alternatively, it is be important to evaluate changes to the daily mininum temperatures. Following the same steps we used before but using the TMIN instead of TMAX, let's analyze the monthly average of daily minimum temperatures by following these steps: 
 
 \begin{enumerate}
 
@@ -362,7 +387,7 @@ Alternatively, it might be important to evaluate changes to the daily mininum te
 \begin{figure}
 \label{fig:TMIN_trend}
 \caption{Minimum Daily Temperatures in Bangkok, Thailand.}
-<<echo = F, fig = 'true' >>=
+<<label='plotDailyTMIN', echo = F, fig = 'true' >>=
 par(las=1)
 plot(TMIN ~ NewDate, data=climate_data, type="l", ylab="degrees", xlab="Date", 
      main="Minimum Daily Temperature, \n Bangkok, Thailand" )
@@ -387,7 +412,7 @@ head(MonthlyTMINMean)
 \item Create a plot of the monthly average of the daily minimum temperatures. 
 
 
-<<>>=
+<<plotmonthlyTMINsimple>>=
 plot(MonthlyTMINMean$TMIN, ty='l')
 @
 
@@ -465,8 +490,48 @@ As we might expect, the a small amount of the variance is explained by the ``Mon
 
 \subsection{Developing a Database}
 
+As a part of our work together, we want to put our results in the context of with other data. Thus, for this section, we will export our results (slope, intercept, r$^2$, and p-value) for TMIN and TMAX, so we can look at the results in a temporal and spatial context. 
+
+First, we'll need to add metadata. For example, we need to document the range of the dates analyzed and the location of the station analyzed. 
+
+We will add these our results (Results). First the start and end of the monthly means for both TMAX and TMIN, which in some cases have different records. 
+
+<<>>=
+Results$TMAX_Start <- range(MonthlyTMAXMean$Year.num[!is.na(MonthlyTMAXMean$TMAX)])[1]
+Results$TMAX_End <- range(MonthlyTMAXMean$Year.num[!is.na(MonthlyTMAXMean$TMAX)])[2]
+
+Results$TMIN_Start<- range(MonthlyTMINMean$Year.num[!is.na(MonthlyTMINMean$TMIN)])[1]
+Results$TMIN_End<- range(MonthlyTMINMean$Year.num[!is.na(MonthlyTMINMean$TMIN)])[2]
+
+@
+
+Now, we'll add the location of the station using decimal degrees (converted from degrees/minutues, seconds). 
+
+<<>>=
+latitude = 18.783
+longitude = 98.983
+
+Results$Longitude <- latitude
+Results$Latitude <- longitude
+
+@
+
+Now we are going to export this as a flat file (csv) and include the name of your station.
+
+<<>>=
+write.csv(Results, file="ChiangMai.csv")
+@
+
+Please submit the csv to Sakai when you have completed this activity. And we will map these together in a future session.
+
 \section{Summarizing what Our Code is Doing}
 
+We created monthly means for TMAX and TMIN. We also analyzed the best fit line for each month and put all of these results into a single dataframe. 
+
+With the dataframe, we added the range of dates in the dataset and added the longitude and latitude for the station location and wrote the dataframe into a csv file. 
+
 \section{Next Steps}
+
+Next, we'll analyze precipation. As you have probably guessed, precipation is a bit different. Doing a monthly average is not appropriate because there are not the same number of days per month and change in precipation is best analyzed as change in total amount and change in extreme events, e.g. drought and flooding. So, the next guide \#4 will deal with this.
 
 \end{document}

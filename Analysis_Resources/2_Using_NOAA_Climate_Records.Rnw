@@ -310,20 +310,39 @@ china$NewDate = NA
 
 china$NewDate[1:5841] <-format(as.Date(china$DATE[1:5841]), "%Y-%m-%d")
 
-# I don't know why I can't the code "%m/%d/%19y" to work... so I had to hack something lame...
+# I don't know why I can't the code "%m/%d/%19y" to work... 
+
+#so I had to hack something lame...
 
 strDates <- as.Date(china$DATE[5842:41964], format = "%m/%d/%y")-365*100-24
 
 
+# 20th Century
 china$NewDate[5842:41964] <- strDates
   
-as.Date(strDates, format="%Y-%m-%d")
+as.Date(strDates, format="%Y-%m-%d")[1:3]
 
+# 21 Century
 china$NewDate[41965:49673] <- format(as.Date(china$DATE[41965:49673], "%m/%d/%y"))
 
 str(china)
 @
 
+% OLD SECTION NEEDS REVISION
+%Some data sets might not show the century in front of the year, which confuses R when plotting graphs, since it cannot distinguish between different centuries. For example, if under Year in your data set you only see ``10'', ``11'', ``12'' and your data runs from 1910 to 2010, R will not know how to distinguish the ``10'' from 1910 and the ``10'' from 2010, and your plot will jump back and forward a century. Therefore, you need to format your years so that it displays the century. This is how it is done:
+
+%1) Open up your climate\_data table from your files in R studio.
+
+%2) Find the point at which the entries jump from one century to the next. (eg. 1999 to 2000)
+
+%3) Write down the row number of the last entry of the earlier century (1999) and the first entry of the new century (2000). 
+
+%4) Format your code in R using [1:(last entry of 19th century)], [(first entry of 19th century):(last entry)]
+
+<<label='Addcenturies', eval=FALSE>>=
+climate_data$NewDate[1:23344] = format(as.Date(strDates[1:23344], "%m/%d/%y"), "19%y-%m-%d") 
+climate_data$NewDate[23345:45332] = format(as.Date(strDates[23345:45332], "%m/%d/%y"),"20%y-%m-%d")
+@
 
 
 \item[Mixed Formats]... see Valentina's data!

@@ -95,11 +95,11 @@ In this SOP you will\ldots
   \item create new variables for date and month;
   \item create a new dataframe with monthly averages;
   \item model and estimate average trend for each month;
-  \item evaluate the validity of the models; and
+  \item evaluate the validity (assumptions) of the models; and
   \item interpret the trend data
 \end{enumerate}
 
-\subsection{Regression and Climate Change}
+\section{Regression and Climate Change}
 
 One of the ourcomes of the linear regression is to estimate the best fit line
 
@@ -122,7 +122,7 @@ Okay, let's see if we can do this for our Bangkok data. Let's test if there is a
 TMAX \sim \alpha + \beta * time + \epsilon
 \end{equation}
 
-Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in "2 Using NOAA Climate Records". 
+Translating this in R will take some additional tricks besides just getting the code figured out. First, we need to identify the predictor variable, 'NewDate', in the data frame which we created in ``2 Using NOAA Climate Records.'' 
 
 For the response variable, we will use the daily maximum temeratures, TMAX. Remember there are some missing data, it will be interesting to note how R deals with that.
 
@@ -166,7 +166,7 @@ From this model, we learn that the change in $TMAX$ is
 
 We know tha the slope and intercept can used to define a line -- so, next we can add a line to the plot. First, let's see how we can create a linear model object using \texttt{lm() }and extract the coefficients from linear model, usinig \texttt{coef()}.
 
-I am going to name the linear model with an ``.lm'' suffix to keep track of the type of object created. Then name an object ``slopeintercept'' to be clear where those two values lie. 
+I am going to name the linear model with an ``.lm'' suffix to keep track of the type of object created. Then name an object ``slopeintercept'' so the two values can be referenced later. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -186,6 +186,8 @@ I am going to name the linear model with an ``.lm'' suffix to keep track of the 
 \hlkwd{abline}\hlstd{(slopeintercept,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{)}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{figure/plotTMAXDaily-1} 
+
 \end{knitrout}
 
 \noindent Notice that I added some arguments in the function to improve the graphics. However, I added others in Figure~\ref{fig:TMAX_trend}, like x- and y-axis labels, that I am not showing to keep coding easier. I encourage you to look up these other arguments by searching online. 
@@ -196,7 +198,7 @@ I am going to name the linear model with an ``.lm'' suffix to keep track of the 
 \label{fig:TMAX_trend}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+\includegraphics[width=\maxwidth]{figure/TMAXTrendDaily-1} 
 
 \end{knitrout}
 \end{figure}
@@ -269,32 +271,6 @@ First we can use the \texttt{as.Date()} function to extract a portion of the dat
 \end{kframe}
 \end{knitrout}
 
-Note: 
-Some data sets might not show the century in front of the year, which confuses R when plotting graphs, since it cannot distinguish between different centuries. For example, if under Year in your data set you only see “10”,”11”,”12” and your data runs from 1910 to 2010, R will not know how to distinguish the “10” from 1910 and the “10” from 2010, and your plot will jump back and forward a century. Therefore, you need to format your years so that it displays the century. This is how it is done:
-
-1) Open up your climate\_data table from your files in R studio.
-
-2) Find the point at which the entries jump from one century to the next. (eg. 1999 to 2000)
-
-3) Write down the row number of the last entry of the earlier century (1999) and the first entry of the new century (2000). 
-
-4) Format your code in R using [1:(last entry of 19th century)], [(first entry of 19th century):(last entry)]
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{climate_data}\hlopt{$}\hlstd{NewDate[}\hlnum{1}\hlopt{:}\hlnum{23344}\hlstd{]} \hlkwb{=} \hlkwd{format}\hlstd{(}\hlkwd{as.Date}\hlstd{(strDates[}\hlnum{1}\hlopt{:}\hlnum{23344}\hlstd{],} \hlstr{"%m/%d/%y"}\hlstd{),} \hlstr{"19%y-%m-%d"}\hlstd{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(strDates[1:23344], "{}\%m/\%d/\%y"{}): object 'strDates' not found}}\begin{alltt}
-\hlstd{climate_data}\hlopt{$}\hlstd{NewDate[}\hlnum{23345}\hlopt{:}\hlnum{45332}\hlstd{]} \hlkwb{=} \hlkwd{format}\hlstd{(}\hlkwd{as.Date}\hlstd{(strDates[}\hlnum{23345}\hlopt{:}\hlnum{45332}\hlstd{],} \hlstr{"%m/%d/%y"}\hlstd{),}\hlstr{"20%y-%m-%d"}\hlstd{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(strDates[23345:45332], "{}\%m/\%d/\%y"{}): object 'strDates' not found}}\end{kframe}
-\end{knitrout}
-
 
 After creating the month and year as separate variables, we can use them to caculate the mean using the \texttt{aggregate()} function. In the code below, we can also calculate the standard deviation too, although I haven't used this measure in this document, several students have asked for this for their analysis.
 
@@ -360,7 +336,7 @@ Now, let's see what plot looks like. Should look pretty different than the daily
 \hlkwd{plot}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
 
 \end{knitrout}
 
@@ -405,7 +381,7 @@ In addition, I have selected the 5th month of the year, i.e. May!  Note that I a
 \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(May.lm),} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
 
 \end{knitrout}
 
@@ -415,49 +391,9 @@ Now, the change is 0.0088 degress C/year or 0.876 degress C/100 years with a pro
 
 Note: if you are getting an error saying: error in plot.window(need finite `ylim' values), you may need to check your data format and see whether the months in your data set have a 0 infront of them or not. If not, try ``5" instead of ``05".
 
-\subsection{Testing all the Months}
 
-This section for advanced users and specific questions. Please do not proceed without consulting Marc.
 
-I think you should evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
-
-Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year -- but if you do you the code below, try to figure out what each line is doing. 
-
-\begin{figure}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# First I create a vector of months}
-\hlstd{Months} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"January"}\hlstd{,} \hlstr{"February"}\hlstd{,} \hlstr{"March"}\hlstd{,} \hlstr{"April"}\hlstd{,}
-    \hlstr{"May"}\hlstd{,} \hlstr{"June"}\hlstd{,} \hlstr{"July"}\hlstd{,} \hlstr{"August"}\hlstd{,} \hlstr{"September"}\hlstd{,} \hlstr{"October"}\hlstd{,}
-    \hlstr{"November"}\hlstd{,} \hlstr{"December"}\hlstd{)}
-
-\hlcom{# Create a panel so I can see all the figures at}
-\hlcom{# once.}
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{3}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{)} \hlopt{+} \hlnum{0.1}\hlstd{)}
-\hlstd{TMAXresult} \hlkwb{<-} \hlnum{NA}
-\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{12}\hlstd{) \{}
-    \hlkwd{plot}\hlstd{(TMAX} \hlopt{~} \hlstd{Year.num,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month.num} \hlopt{==}
-        \hlstd{i, ],} \hlkwc{ty} \hlstd{=} \hlstr{"l"}\hlstd{,} \hlkwc{las} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1940}\hlstd{,} \hlnum{2020}\hlstd{),}
-        \hlkwc{main} \hlstd{= Months[i])}
-    \hlstd{Month.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{Year.num,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month.num} \hlopt{==}
-        \hlstd{i, ])}
-    \hlkwd{summary}\hlstd{(Month.lm)}
-    \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(Month.lm),} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{)}
-
-    \hlstd{TMAXresult} \hlkwb{<-} \hlkwd{rbind}\hlstd{(TMAXresult,} \hlkwd{cbind}\hlstd{(Months[i],}
-        \hlkwd{round}\hlstd{(}\hlkwd{coef}\hlstd{(Month.lm)[}\hlnum{2}\hlstd{],} \hlnum{4}\hlstd{),} \hlkwd{round}\hlstd{(}\hlkwd{summary}\hlstd{(Month.lm)}\hlopt{$}\hlstd{coefficients[}\hlnum{2}\hlstd{,}
-            \hlnum{4}\hlstd{],} \hlnum{4}\hlstd{),} \hlkwd{round}\hlstd{(}\hlkwd{summary}\hlstd{(Month.lm)}\hlopt{$}\hlstd{r.squared,}
-            \hlnum{3}\hlstd{)))}
-\hlstd{\}}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/12MonthsTMAX-1} 
-
-\end{knitrout}
-\end{figure}
-
-\subsection{Assumptions of the Linear Regression}
+\section{Assumptions of the Linear Regression}
 
 Regression models, like all statistics, rely on certain assumptions. Violations of these assumptions reduces the validity of the model. If the violations are serious, then the model could be misleading or even incorrect.
 
@@ -511,23 +447,85 @@ Try not to get bogged down in the code at this point. But noting this function c
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
-\hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMIN} \hlopt{~} \hlstd{YEAR,} \hlkwc{data}\hlstd{=MonthlyTMINMean[MonthlyTMINMean}\hlopt{$}\hlstd{MONTH}\hlopt{==}\hlnum{1}\hlstd{,]))}
+\hlkwd{plot}\hlstd{(}\hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{Year.num,} \hlkwc{data}\hlstd{=MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month.num}\hlopt{==}\hlnum{1}\hlstd{,]))}
 \end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'MonthlyTMINMean' not found}}\end{kframe}
 \end{knitrout}
 \end{figure}
 
 To determine the validity of linear model assumptions (e.g. normality or heterogeneity of variance), you have probably used statistical tests; in contrast statisticians almost exclusively look at diagnostic plots. Why?  When assumptions are violated the tests to determine violations do not perform well. So, let's see how to look at these assumptions graphically with these diagnostic plots. Linear models should have diagnostic plots that do not have any obvious structure or pattern. In this case, Figure~\ref{fig:diagnostics} should show a great deal remaining structure in the residuals. Although for today, we are not going to try to interpret these figures, but you should notice there is a ton of unaccounted structure, i.e. variance, in the model. This is due, in part, to a violation of independence; these data are serially correlated and the model does not account for that and is inappropriate because of this. It also appears that a straight-line model does not fit well and a curvilinear should be investigated.
 
-A properly specified model is shown in 
+A properly specified model is shown in... coming soon! 
 
 %Figure~\ref{fig:co2_data_mlo}. In this case, the trend line has been developing using a time series analysis, which is beyond the scope of this course. Nevertheless, you want to keep this in mind during the semester because we will see a fair amount of data that looks like this.
 
-\subsubsection{Analyzing Minimum Daily Temperatures}
+\section{Temperature Trends by Month}
 
-Alternatively, it might be important to evaluate changes to the daily mininum temperatures. Following the same steps we used before but using the TMIN instead of TMAX, let's analyze the monthly average of daily minimum temperatures by following these steps: 
+\subsection{Variation in Trends}
+
+We may already appreciate the spatial variability of climate change. But we should also determine how climate change might vary by season, in in this case by month. 
+
+Thus, we will now evaluate every month and see what happens. You might also consider looking at the TMIN as well. Could be important!\footnote{What about multiple hypotheses in one dataset!}
+
+\subsection{Semi-Indendent Working}
+
+As we move into more advanced topics, the code provided requires some independent work. 
+Thus, I recommend that you consulting with Marc and go over your progress before starting this.
+
+Below, I have create code to evaluate all of the months at once, but you may prefer to go through each month manually and change the number from 5 to other months of the year -- but if you do you the code below, I suggest you work out what each line is doing. Then, you will be use the code to analyze TMINs as well. 
+
+
+\subsection{Analyzing and Plotting Data in a Loop}
+Below, I created a loop to ``index'' through each month, 1-12. Inside the loop is a plot command and a way to record the summary statistics into a dataframe.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# First I create a vector of months}
+\hlstd{Months} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"January"}\hlstd{,} \hlstr{"February"}\hlstd{,} \hlstr{"March"}\hlstd{,} \hlstr{"April"}\hlstd{,}
+    \hlstr{"May"}\hlstd{,} \hlstr{"June"}\hlstd{,} \hlstr{"July"}\hlstd{,} \hlstr{"August"}\hlstd{,} \hlstr{"September"}\hlstd{,} \hlstr{"October"}\hlstd{,}
+    \hlstr{"November"}\hlstd{,} \hlstr{"December"}\hlstd{)}
+
+\hlcom{# Create a panel so I can see all the figures at}
+\hlcom{# once.}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{3}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{)} \hlopt{+} \hlnum{0.1}\hlstd{)}
+\hlstd{TMAXresult} \hlkwb{<-} \hlnum{NA}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{12}\hlstd{) \{}
+    \hlkwd{plot}\hlstd{(TMAX} \hlopt{~} \hlstd{Year.num,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month.num} \hlopt{==}
+        \hlstd{i, ],} \hlkwc{ty} \hlstd{=} \hlstr{"l"}\hlstd{,} \hlkwc{las} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1940}\hlstd{,} \hlnum{2020}\hlstd{),}
+        \hlkwc{main} \hlstd{= Months[i])}
+    \hlstd{Month.lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(TMAX} \hlopt{~} \hlstd{Year.num,} \hlkwc{data} \hlstd{= MonthlyTMAXMean[MonthlyTMAXMean}\hlopt{$}\hlstd{Month.num} \hlopt{==}
+        \hlstd{i, ])}
+    \hlkwd{summary}\hlstd{(Month.lm)}
+    \hlkwd{abline}\hlstd{(}\hlkwd{coef}\hlstd{(Month.lm),} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{)}
+
+    \hlstd{TMAXresult} \hlkwb{<-} \hlkwd{rbind}\hlstd{(TMAXresult,} \hlkwd{cbind}\hlstd{(Months[i],}
+        \hlkwd{round}\hlstd{(}\hlkwd{coef}\hlstd{(Month.lm)[}\hlnum{2}\hlstd{],} \hlnum{4}\hlstd{),} \hlkwd{round}\hlstd{(}\hlkwd{summary}\hlstd{(Month.lm)}\hlopt{$}\hlstd{coefficients[}\hlnum{2}\hlstd{,}
+            \hlnum{4}\hlstd{],} \hlnum{4}\hlstd{),} \hlkwd{round}\hlstd{(}\hlkwd{summary}\hlstd{(Month.lm)}\hlopt{$}\hlstd{r.squared,}
+            \hlnum{3}\hlstd{)))}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{figure}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/12MonthsTMAX-1} 
+
+\end{knitrout}
+\caption{Trends in Maximum Temperatures by Month (Bangkok, Thailand).}
+\label{fig:MonthlyTMAX}
+\end{figure}
+
+For these data, Figure \ref{fig:MonthlyTMAX}, we find the slopes vary dramatically by month. However, noting the pattern, we might also consider how the minimum temperatures might be trending.
+
+\section{Analyzing Minimum Daily Temperatures}
+
+Alternatively, it is be important to evaluate changes to the daily mininum temperatures. Following the same steps we used before but using the TMIN instead of TMAX, let's analyze the monthly average of daily minimum temperatures by following these steps: 
 
 \begin{enumerate}
 
@@ -539,7 +537,7 @@ Alternatively, it might be important to evaluate changes to the daily mininum te
 \caption{Minimum Daily Temperatures in Bangkok, Thailand.}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
+\includegraphics[width=\maxwidth]{figure/plotDailyTMIN-1} 
 
 \end{knitrout}
 \end{figure}
@@ -579,7 +577,7 @@ There appears to be a trend, but it's clouded with lots of variation.
 \hlkwd{plot}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN,} \hlkwc{ty}\hlstd{=}\hlstr{'l'}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} 
+\includegraphics[width=\maxwidth]{figure/plotmonthlyTMINsimple-1} 
 
 \end{knitrout}
 
@@ -628,7 +626,7 @@ Temperatures, Bangkok, Thailand}
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(Results[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{11}\hlstd{,} \hlnum{7}\hlstd{)]))}
 \end{alltt}
 \end{kframe}% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Fri Mar  5 12:28:10 2021
+% Fri Mar  5 15:31:50 2021
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
@@ -671,8 +669,58 @@ As we might expect, the a small amount of the variance is explained by the ``Mon
 
 \subsection{Developing a Database}
 
+As a part of our work together, we want to put our results in the context of with other data. Thus, for this section, we will export our results (slope, intercept, r$^2$, and p-value) for TMIN and TMAX, so we can look at the results in a temporal and spatial context. 
+
+First, we'll need to add metadata. For example, we need to document the range of the dates analyzed and the location of the station analyzed. 
+
+We will add these our results (Results). First the start and end of the monthly means for both TMAX and TMIN, which in some cases have different records. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Results}\hlopt{$}\hlstd{TMAX_Start} \hlkwb{<-} \hlkwd{range}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{Year.num[}\hlopt{!}\hlkwd{is.na}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX)])[}\hlnum{1}\hlstd{]}
+\hlstd{Results}\hlopt{$}\hlstd{TMAX_End} \hlkwb{<-} \hlkwd{range}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{Year.num[}\hlopt{!}\hlkwd{is.na}\hlstd{(MonthlyTMAXMean}\hlopt{$}\hlstd{TMAX)])[}\hlnum{2}\hlstd{]}
+
+\hlstd{Results}\hlopt{$}\hlstd{TMIN_Start}\hlkwb{<-} \hlkwd{range}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Year.num[}\hlopt{!}\hlkwd{is.na}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN)])[}\hlnum{1}\hlstd{]}
+\hlstd{Results}\hlopt{$}\hlstd{TMIN_End}\hlkwb{<-} \hlkwd{range}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{Year.num[}\hlopt{!}\hlkwd{is.na}\hlstd{(MonthlyTMINMean}\hlopt{$}\hlstd{TMIN)])[}\hlnum{2}\hlstd{]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Now, we'll add the location of the station using decimal degrees (converted from degrees/minutues, seconds). 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{latitude} \hlkwb{=} \hlnum{18.783}
+\hlstd{longitude} \hlkwb{=} \hlnum{98.983}
+
+\hlstd{Results}\hlopt{$}\hlstd{Longitude} \hlkwb{<-} \hlstd{latitude}
+\hlstd{Results}\hlopt{$}\hlstd{Latitude} \hlkwb{<-} \hlstd{longitude}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Now we are going to export this as a flat file (csv) and include the name of your station.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{write.csv}\hlstd{(Results,} \hlkwc{file}\hlstd{=}\hlstr{"ChiangMai.csv"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Please submit the csv to Sakai when you have completed this activity. And we will map these together in a future session.
+
 \section{Summarizing what Our Code is Doing}
 
+We created monthly means for TMAX and TMIN. We also analyzed the best fit line for each month and put all of these results into a single dataframe. 
+
+With the dataframe, we added the range of dates in the dataset and added the longitude and latitude for the station location and wrote the dataframe into a csv file. 
+
 \section{Next Steps}
+
+Next, we'll analyze precipation. As you have probably guessed, precipation is a bit different. Doing a monthly average is not appropriate because there are not the same number of days per month and change in precipation is best analyzed as change in total amount and change in extreme events, e.g. drought and flooding. So, the next guide \#4 will deal with this.
 
 \end{document}
