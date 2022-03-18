@@ -1,0 +1,357 @@
+\documentclass{article}
+\usepackage{hyperref}
+<<>>=
+library(rgdal)
+library(tidyverse)
+library(plyr)
+library(rnoaa)
+library(ncdf4)
+@
+
+<<noaakey, echo=FALSE>>=
+options(noaakey = "qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb")
+@
+
+\title{Obtaining Climate Records}
+\author{Marc Los Huertos}
+
+\begin{document}
+\maketitle
+
+\section{Terrestrial Meteorological Data}
+
+\subsection{Selected History of Meteorology}
+
+
+
+\subsubsection{List of Cities}
+
+rNOAA has a simple function to list the cities:
+
+Commented out -- takes forever and errors out!
+<<listoflocations>>=
+ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
+
+ncdc_locs(locationcategoryid='ST', limit=52) # States
+
+ncdc_locs(locationid='FIPS:01', limit=52) # Alabama
+
+ncdc_locs(locationcategoryid='CITY', locationid='FIPS:01', sortfield='name', sortorder='desc')
+
+ncdc_datasets(locationcategoryid='CITY', locationid='FIPS:01', sortfield='name', sortorder='desc')
+@
+
+The function queries the NOAA website and retrieves city names and the dates of the climate records. Importantly, the records include the station ID, which can be used to college the data for that city. 
+
+%NOTE: By default 25 records (cities) are retrieved. See \texttt{?ncdc_locs} to learn how to include arguments to obtain more records.  
+
+NOTE2: It would be nice to make a map of how concentrated the stations spatially. 
+
+\subsection{Getting Data}
+
+\subsubsection{Selection Stations}
+
+%Using the station ID, we can download the dataset for the entire city using \texttt{ncdc_stations()}. 
+<<ncdc_stations>>=
+ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00084289')
+
+# alabama stations.. sorted by the most recent
+test <- ncdc_stations(datasetid='GHCND', locationid='FIPS:01', limit=1000, sortfield = 'maxdate', sortorder='desc')
+test <- ncdc_stations(datasetid='GSOM', locationid='FIPS:01', limit=1000, sortfield = 'maxdate', sortorder='desc')
+
+str(test)
+
+recent = test$data[test$data$maxdate=='2022-02-01',]
+str(recent)
+
+(longest = recent[recent$mindate == min(recent$mindate),])
+(startyear=as.numeric(format(as.Date(longest$mindate), format = "%Y")))
+#(endyear=as.numeric(format(as.Date(longest$maxdate), format = "%Y")))
+ncdc(datasetid='GSOM', stationid=longest$id, startdate = '2021-01-01', enddate = '2022-01-01', datatypeid='TMAX')
+@
+
+
+\subsubsection{Functions to Collect and Clean GSOM}
+
+<<>>=
+get_GSOM <- function(stid, datatype) {
+   wtr<-list()  # create an empty list
+   for (i in startyear:2021) {
+      start_date <- paste0(i, "-01-01")
+      end_date <- paste0(i, "-12-31")
+      
+      #save data portion to the list (elements named for the year
+      wtr[[as.character(i)]] <- ncdc(datasetid='GSOM', stationid=stid, datatypeid=datatype, startdate = start_date, enddate = end_date, limit=400)$data
+   }
+   #return the full list of data frames
+   return(wtr)
+}
+
+GSOM_TMAX <- get_GSOM(longest$id, 'TMAX')
+GSOM_TMIN <- get_GSOM(longest$id, 'TMIN')
+
+#bind the dataframes in the list together into one large dataframe
+library(dplyr)
+tbl_TMAX <- dplyr::bind_rows(GSOM_TMAX)
+tbl_TMIN <- dplyr::bind_rows(GSOM_TMIN)
+
+class(test) # [1] "tbl_df"     "tbl"        "data.frame"
+dfTbl_TMAX = as.data.frame(tbl_TMAX)
+dfTbl_TMIN = as.data.frame(tbl_TMIN)
+class(dfTbl_TMAX) # [1] "data.frame"
+dfTbl_TMAX$TMAX = dfTbl_TMAX$value/10*9/5+32
+dfTbl_TMIN$TMIN = dfTbl_TMIN$value/10*9/5+32
+
+dfTbl_TMAX$Date = as.Date(dfTbl_TMAX$date)
+dfTbl_TMIN$Date = as.Date(dfTbl_TMIN$date)
+
+dfTbl_TMAX <- subset(dfTbl_TMAX, select=c(Date, station, TMAX))
+dfTbl_TMIN <- subset(dfTbl_TMIN, select=c(Date, station, TMIN))
+str(dfTbl_TMIN)
+
+GSOM <- merge(dfTbl_TMAX, dfTbl_TMIN, by="Date")
+
+GSOM$Month = as.numeric(format(as.Date(GSOM$Date), format = "%m"))
+GSOM$Year = as.numeric(format(as.Date(GSOM$Date), format = "%Y"))
+
+@
+
+
+
+<<>>=
+
+# find most important month
+sumstats = NA
+for (m in 1:12){
+  TMAX.lm = lm(TMAX~Date, GSOM[GSOM$Month==m,])
+  TMIN.lm = lm(TMIN~Date, GSOM[GSOM$Month==m,])
+sumstats = rbind(sumstats, data.frame(Month = m, TMIN_Slope = coef(TMIN.lm)[2], TMIN_r2 = summary(TMIN.lm)$r.squared, TMIN_p_value= anova(TMIN.lm)$'Pr(>F)'[1], TMAX_Slope = coef(TMAX.lm)[2], TMAX_r2 = summary(TMAX.lm)$r.squared, TMAX_p_value= anova(TMAX.lm)$'Pr(>F)'[1]))
+
+}
+sumstats=data.frame(sumstats)[-1,]
+(maxmonth = sumstats$Month[sumstats$TMIN_Slope == max(sumstats$TMIN_Slope, na.rm=T)])
+(maxmonth = sumstats$Month[sumstats$TMAX_Slope == max(sumstats$TMAX_Slope, na.rm=T)])
+
+par(las=1, mfrow=c(2,1), mar= c(2, 4, 2, 1) + 0.1)
+
+for(i in min(GSOM$Year+5):max(GSOM$Year) by=3) 
+   {
+   GSOMsub <- GSOM[GSOM$Year<=i,]
+plot(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,], col='gray50', pch=20, xlab="")
+GSOM.lm = lm(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,]) 
+abline(coef(GSOM.lm), col='red')
+summary(GSOM.lm); anova(GSOM.lm)$'Pr(>F)'[1]
+plot(TMAX~Date, GSOMsub[GSOMsub$Month==maxmonth,], col='gray50', pch=20, xlab="")
+GSOM.lm = lm(TMAX~Date, GSOMsub[GSOMsub$Month==maxmonth,]) 
+abline(coef(GSOM.lm), col='red')
+#summary(GSOM.lm); 
+text(i, coef(GSOM.lm)[2]*i+coef(GSOM.lm)[1], paste("p-value", round(anova(GSOM.lm)$'Pr(>F)'[1], 4)))
+}
+
+
+@
+
+
+<<>>=
+library(magick)
+#setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media")
+
+par(las=1, mfrow=c(2,1), mar= c(2, 4, 2, 1) + 0.1)
+img <- image_graph(600, 480, res = 96)
+for(i in min(GSOM$Year+5):max(GSOM$Year)) {
+#png(paste0("png//Rplot_", i, ".png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
+   GSOMsub <- GSOM[GSOM$Year<=i,]
+par(las=1, mfrow=c(2,1), mar= c(2, 4, 2, 1) + 0.1)
+plot(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,], col='gray50', pch=20, xlab="")
+GSOM.lm = lm(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,]) 
+abline(coef(GSOM.lm), col='red')
+#summary(GSOM.lm); anova(GSOM.lm)$'Pr(>F)'[1]
+plot(TMAX~Date, GSOMsub[GSOMsub$Month==maxmonth,], col='gray50', pch=20, xlab="")
+GSOM.lm = lm(TMAX~Date, GSOMsub[GSOMsub$Month==maxmonth,]) 
+abline(coef(GSOM.lm), col='red')
+#summary(GSOM.lm); 
+text(i, coef(GSOM.lm)[2]*i+coef(GSOM.lm)[1], paste("p-value", round(anova(GSOM.lm)$'Pr(>F)'[1], 4)))
+}
+dev.off()
+@
+
+<<>>=
+GSOM_animation <- image_animate(img, fps = 1, optimize = TRUE)
+print(GSOM_animation)
+
+image_write(GSOM_animation, "GSOM.gif")
+@
+
+
+# Other attempts...
+
+<<>>=
+out <- ncdc(datasetid='NORMAL_DLY', stationid='GHCND:USW00014895', datatypeid='dly-tmax-normal', startdate = '2010-05-01', enddate = '2010-05-10')
+@
+
+<<>>=
+with_units <- ncdc(datasetid='GHCND', stationid='GHCND:USW00014895', datatypeid='PRCP', startdate = '2010-05-01', enddate = '2010-10-31', limit=500, add_units = TRUE)
+head( with_units$data )
+@
+<<>>=
+with_units <- ncdc(datasetid='GHCND', stationid='GHCND:USW00014895', datatypeid='TMAX', startdate = '2010-05-01', enddate = '2010-10-31', limit=500, add_units = TRUE)
+head( with_units$data )
+@
+
+<<>>=
+ncdc_plot(with_units, breaks="45 days")
+@
+\subsection{Evaluating Records}
+
+TBD
+
+\subsection{Export Options}
+
+TBD
+
+\section{Sea Surface Temperature Data -- SURP PROJECT WAITING TO HAPPEN}
+
+In contrast to terrestrial data, sea surface temperature (SST) is quite difficult to obtain and process. There are numerous tools to access the data, but they often require knowledge of complex software tools that are not easy to set up or programming experience with python or others.
+
+\url{https://climexp.knmi.nl/select.cgi?id=someone@somewhere&field=ersstv5}
+
+There are, however, a few tools build for R users that seem to accomplish all that we need. 
+
+\url{https://rda.ucar.edu/index.html?hash=data_user&action=register}
+
+\url{https://rda.ucar.edu/datasets/ds277.9/}
+
+Alternatively, we can download flat ascII tables of gridded data:
+
+\url{https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/}
+
+
+<<echo=TRUE, eval=FALSE>>=
+
+library(chron)
+library(RColorBrewer)
+library(lattice)
+#library(ncdf)
+library(ncdf4)
+#library(greenbrown) # for gridded trend analysis
+
+ersst.nc = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Data/FA19/ersst.v5.185401.nc"
+Y1854 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1854.asc"
+Y1864 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1864.asc"
+Y1874 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1874.asc"
+Y1884 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1884.asc"
+Y1894 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1894.asc"
+Y1904 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1904.asc"
+Y1914 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1914.asc"
+Y1924 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1924.asc"
+Y1934 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1934.asc"
+Y1944 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1944.asc"
+Y1954 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1954.asc"
+Y1964 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1964.asc"
+Y1974 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1974.asc"
+Y1984 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1984.asc"
+Y1994 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.1994.asc"
+Y2004 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.2004.asc"
+Y2014 = "https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/ersst.v5.2014.asc"
+
+temp = rbind(read.table(Y1854)[75,67], read.table(Y1864)[75,67], read.table(Y1874)[75,67],
+read.table(Y1884)[75,67], read.table(Y1894)[75,67], read.table(Y1904)[75,67],
+read.table(Y1914)[75,67], read.table(Y1924)[75,67], read.table(Y1934)[75,67],
+read.table(Y1944)[75,67], read.table(Y1954)[75,67], read.table(Y1964)[75,67],
+read.table(Y1974)[75,67], read.table(Y1984)[75,67], read.table(Y1994)[75,67],
+read.table(Y2004)[75,67], read.table(Y2014)[75,67])
+
+temp.df = data.frame(Temp = as.vector(temp)/100); temp.df
+temp.df$Year = seq(1854, 2014, 10)
+plot(Temp~ Year, temp.df)
+abline(coef(lm(Temp~Year, data=temp.df)), col="red")
+#automating this process!
+
+directory = "/pub/data/cmb/ersst/v5/ascii"
+
+B195401 = nc_open(ersst.nc)
+
+
+# str(B195401)
+# print(B195401)
+
+ncin = B195401
+
+print(ncin)
+lon <- ncvar_get(ncin, "lon")
+nlon <- dim(lon)
+head(lon)
+
+lat <- ncvar_get(ncin, "lat", verbose = F)
+nlat <- dim(lat)
+head(lat)
+
+print(c(nlon, nlat))
+
+t <- ncvar_get(ncin, "time")
+tunits <- ncatt_get(ncin, "time", "units")
+nt <- dim(t); nt
+
+lat.sel = 67; lon.set = 75
+
+#ncvar_get(ncin, sst) #object 'sst' not found
+
+#ncvar_get(ncin, var$sst) object of type 'closure' is not subsettable
+#ncvar_get(ncin, var) second argument to ncvar_get must be an object of type ncvar or ncdim (both parts of the ncdf object returned by nc_open()), the character-string name of a variable or dimension or NA to get the default variable from the file.  If the file is netcdf version 4 format and uses groups, then the fully qualified var name must be given, for example, model1/run5/Temperature
+
+ncvar_get(ncin, "sst") #spits out the temperatures. but why the negative numbers!
+
+# tmp.array <- ncvar_get(ncin, dname) # doesn't work...
+
+tmp.array <- ncvar_get(ncin, "sst")
+dim(tmp.array)
+
+tmp.array[75, 67]
+
+tmp.array[67,]
+
+dlname <- ncatt_get(ncin, "sst", "long_name")
+dunits <- ncatt_get(ncin, "sst", "units")
+fillvalue <- ncatt_get(ncin, "sst", "_FillValue")
+dim(tmp.array)
+
+title <- ncatt_get(ncin, 0, "title")
+institution <- ncatt_get(ncin, 0, "institution")
+datasource <- ncatt_get(ncin, 0, "source")
+references <- ncatt_get(ncin, 0, "references")
+history <- ncatt_get(ncin, 0, "history")
+Conventions <- ncatt_get(ncin, 0, "Conventions")
+
+# split the time units string into fields
+tustr <- strsplit(tunits$value, " ")
+tdstr <- strsplit(unlist(tustr)[3], "-")
+tmonth = as.integer(unlist(tdstr)[2])
+tday = as.integer(unlist(tdstr)[3])
+tyear = as.integer(unlist(tdstr)[1])
+chron(t, origin = c(tmonth, tday, tyear))
+
+# tmp.array[tmp.array == fillvalue$value] <- NA
+
+# length(na.omit(as.vector(tmp.array[, , 1])))
+
+m <- 1
+tmp.slice <- tmp.array[, , m]
+
+image(lon, lat, tmp.array, col = rev(brewer.pal(10, "RdBu")))
+
+# image(lon, lat, tmp.slice, col = rev(brewer.pal(10, "RdBu")))
+
+
+@
+
+\section{Satellite Data}
+
+TBD
+
+\section{Ice-Core Data}
+
+TBD
+
+
+
+\end{document}
