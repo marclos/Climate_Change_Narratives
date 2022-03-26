@@ -89,7 +89,17 @@ The first to propose the role of CO2 on the Earth's atmosphere was a XX scientie
 
 \subsection{rNOAA Package and R}
 
-\subsection{Generate Temperature Record For Each State}
+R is an open source programming environment that has become one of the most popular tools for statiticians and data scientists. Capitalizing on the open source framework, a wide range of libraries or packages have been developed to faciliate data processing, analysis, and graphical displays. On such package is rNOAA developed to collect and display climate records stored on NOAA servers.
+
+\section{Temperature Trends by State}
+
+\subsection{State Temperature Records}
+
+There are numerous ways to analyze temperature records, where stations can be analyzed individually or records could be sampled and analyzed in spatially in grids. Each of these are valid approaches depending on the question to be addressed. 
+
+In this case the question is ``Based on the longest state meterological record, is there a temperature trend?"
+
+\subsection{Approach}
 
 \subsubsection{List of Cities}
 
@@ -124,7 +134,9 @@ First, we subset the data for stations that actively collecting data. Then we'll
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# alabama stations.. sorted by the most recent}
-\hlcom{# test <- ncdc_stations(datasetid='GHCND', datatypeid = c("TMAX", "TMIN"), locationid='FIPS:01', limit=1000, sortfield = 'maxdate', sortorder='desc')}
+\hlcom{# test <- ncdc_stations(datasetid='GHCND', }
+\hlcom{# datatypeid = c("TMAX", "TMIN"), locationid='FIPS:01', }
+\hlcom{# limit=1000, sortfield = 'maxdate', sortorder='desc')}
 
 \hlstd{get_locationid} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{FIPS}\hlstd{)\{}
    \hlstd{fips} \hlkwb{=} \hlkwd{ncdc_locs}\hlstd{(}\hlkwc{locationcategoryid}\hlstd{=}\hlstr{'ST'}\hlstd{,} \hlkwc{limit}\hlstd{=}\hlnum{55}\hlstd{)}
@@ -139,19 +151,22 @@ First, we subset the data for stations that actively collecting data. Then we'll
 \end{knitrout}
 \subsubsection{Select State}
 
+Using the rNOAA function ncdc_locs(), we can queary NOAA's database to identify station codes (FIPS) by state. With the states and some territories, there are 55 FIPS for US weather stations. 
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{fips} \hlkwb{=} \hlkwd{get_locationid}\hlstd{(}\hlnum{18}\hlstd{);} \hlkwd{str}\hlstd{(fips);}
+\hlstd{fips} \hlkwb{=} \hlkwd{get_locationid}\hlstd{(}\hlnum{38}\hlstd{);} \hlkwd{str}\hlstd{(fips);}
 \end{alltt}
 \begin{verbatim}
 ## 'data.frame':	1 obs. of  2 variables:
-##  $ State: chr "Kentucky"
-##  $ id   : chr "FIPS:21"
+##  $ State: chr "Oregon"
+##  $ id   : chr "FIPS:41"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
+After 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -161,19 +176,28 @@ First, we subset the data for stations that actively collecting data. Then we'll
                \hlkwc{locationid}\hlstd{=fips}\hlopt{$}\hlstd{id,} \hlkwc{limit}\hlstd{=}\hlnum{1000}\hlstd{,}
                \hlkwc{sortfield} \hlstd{=} \hlstr{'maxdate'}\hlstd{,} \hlkwc{sortorder}\hlstd{=}\hlstr{'desc'}\hlstd{)}
 
-\hlstd{GSOM_Recent} \hlkwb{=} \hlstd{GSOM_Stations}\hlopt{$}\hlstd{data[GSOM_Stations}\hlopt{$}\hlstd{data}\hlopt{$}\hlstd{maxdate}\hlopt{>=}\hlstr{'2021-11-01'}\hlstd{,]}
+\hlstd{GSOM_Recent} \hlkwb{=}
+   \hlstd{GSOM_Stations}\hlopt{$}\hlstd{data[GSOM_Stations}\hlopt{$}\hlstd{data}\hlopt{$}\hlstd{maxdate}\hlopt{>=}\hlstr{'2021-11-01'}\hlstd{,]}
 
-\hlstd{GSOM_Coverage} \hlkwb{=} \hlstd{GSOM_Recent[GSOM_Recent}\hlopt{$}\hlstd{datacoverage} \hlopt{>} \hlnum{0.90}\hlstd{,]}
+\hlstd{GSOM_Coverage} \hlkwb{=}
+   \hlstd{GSOM_Recent[GSOM_Recent}\hlopt{$}\hlstd{datacoverage} \hlopt{>} \hlnum{0.95}\hlstd{,]}
 \hlstd{GSOM_Longest} \hlkwb{=}
    \hlstd{GSOM_Coverage[GSOM_Coverage}\hlopt{$}\hlstd{mindate} \hlopt{==} \hlkwd{min}\hlstd{(GSOM_Coverage}\hlopt{$}\hlstd{mindate),]}
-\hlstd{GSOM_Longest} \hlkwb{=} \hlstd{GSOM_Longest[}\hlnum{1}\hlstd{,]} \hlcom{#Pick first if more than one.}
-\hlstd{GSOM_Longest}
+\hlstd{GSOM_Longest} \hlkwb{=}
+   \hlstd{GSOM_Longest[}\hlnum{1}\hlstd{,]} \hlcom{#Pick first if more than one.}
 \end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{verbatim}
-##   elevation    mindate    maxdate latitude                               name
-## 4     293.2 1872-11-01 2022-03-01 38.03391 LEXINGTON BLUEGRASS AIRPORT, KY US
-##   datacoverage                id elevationUnit longitude
-## 4       0.9242 GHCND:USW00093820        METERS -84.61138
+##     elevation    mindate    maxdate latitude           name datacoverage
+## 243       527 1892-07-01 2022-02-01 42.21306 ASHLAND, OR US        0.993
+##                    id elevationUnit longitude
+## 243 GHCND:USC00350304        METERS -122.7148
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -183,7 +207,7 @@ First, we subset the data for stations that actively collecting data. Then we'll
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{verbatim}
-## [1] 1872
+## [1] 1892
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -219,51 +243,8 @@ The function relies on two inputs, the station id and the measured parameter -- 
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{GSOM_TMAX} \hlkwb{<-} \hlkwd{get_GSOM}\hlstd{(GSOM_Longest}\hlopt{$}\hlstd{id,} \hlstr{'TMAX'}\hlstd{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}\begin{alltt}
 \hlstd{GSOM_TMIN} \hlkwb{<-} \hlkwd{get_GSOM}\hlstd{(GSOM_Longest}\hlopt{$}\hlstd{id,} \hlstr{'TMIN'}\hlstd{)}
-\end{alltt}
 
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Sorry, no data found}}\begin{alltt}
 \hlcom{# Bind the dataframes in the list }
 \hlcom{# together into one large dataframe}
 
@@ -292,13 +273,12 @@ The function relies on two inputs, the station id and the measured parameter -- 
 
 \hlstd{dfTbl_TMAX} \hlkwb{<-} \hlkwd{subset}\hlstd{(dfTbl_TMAX,} \hlkwc{select}\hlstd{=}\hlkwd{c}\hlstd{(Date, station, TMAX))}
 \hlstd{dfTbl_TMIN} \hlkwb{<-} \hlkwd{subset}\hlstd{(dfTbl_TMIN,} \hlkwc{select}\hlstd{=}\hlkwd{c}\hlstd{(Date, TMIN))}
-\hlkwd{str}\hlstd{(dfTbl_TMAX)}
+
+\hlstd{dfTbl_TMAX[}\hlnum{1}\hlstd{,]}
 \end{alltt}
 \begin{verbatim}
-## 'data.frame':	1653 obs. of  3 variables:
-##  $ Date   : Date, format: "1872-11-01" "1872-12-01" ...
-##  $ station: chr  "GHCND:USW00093820" "GHCND:USW00093820" "GHCND:USW00093820" "GHCND:USW00093820" ...
-##  $ TMAX   : num  44.1 34 36.7 43.7 51.4 ...
+##         Date           station   TMAX
+## 1 1892-07-01 GHCND:USC00350304 84.146
 \end{verbatim}
 \begin{alltt}
 \hlstd{GSOM} \hlkwb{<-} \hlkwd{merge}\hlstd{(dfTbl_TMAX, dfTbl_TMIN,} \hlkwc{by}\hlstd{=}\hlstr{"Date"}\hlstd{)}
@@ -356,6 +336,8 @@ Evaluate both TMAX and TMIN in GSOM by Year using MonthEvalStats() function.
    
 \subsubsection{Determine Months with Biggest Changes}
 
+Admittedly, determining the months with the biggest changes isn't a very good approach for hypothesize testing -- it's more like a fishing expedition, but as long as we understand the difference between an a priori hypothesis and an exploratory analysis, we should be okay if we make appropriate conclusions. 
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -390,32 +372,28 @@ Evaluate both TMAX and TMIN in GSOM by Year using MonthEvalStats() function.
 
 \hlstd{report_prob2} \hlkwb{<-}\hlkwa{function}\hlstd{(}\hlkwc{lm}\hlstd{)\{}
    \hlcom{# lm=GSOM.lm}
-   \hlkwa{if}\hlstd{(}\hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{]} \hlopt{>} \hlnum{0.05}\hlstd{)} \hlkwd{return}\hlstd{(}\hlstr{"p-value > 0.05 (Not Significant)"}\hlstd{)}
-   \hlkwa{if}\hlstd{(}\hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{]} \hlopt{<} \hlnum{0.05} \hlopt{&} \hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{]} \hlopt{>=} \hlnum{0.001}\hlstd{)} \hlkwd{return}\hlstd{(}
-      \hlkwd{paste}\hlstd{(}\hlstr{"Change "}\hlstd{,} \hlkwd{round}\hlstd{(}\hlkwd{coef}\hlstd{(lm)[}\hlnum{2}\hlstd{]}\hlopt{*}\hlnum{356.25}\hlopt{*}\hlnum{100}\hlstd{,} \hlnum{1}\hlstd{),} \hlstr{"/100 years, "}\hlstd{,} \hlstr{"p-value ="}\hlstd{,} \hlkwd{round}\hlstd{(}\hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{],} \hlnum{3}\hlstd{),} \hlstr{"(Statistically Significant)"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{))}
-   \hlkwa{if}\hlstd{(}\hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{]} \hlopt{<} \hlnum{0.001}\hlstd{)} \hlkwd{return}\hlstd{(}
-      \hlkwd{paste}\hlstd{(}\hlstr{"Change "}\hlstd{,} \hlkwd{round}\hlstd{(}\hlkwd{coef}\hlstd{(lm)[}\hlnum{2}\hlstd{]}\hlopt{*}\hlnum{325.25}\hlopt{*}\hlnum{100}\hlstd{,} \hlnum{1}\hlstd{),} \hlstr{"/100 years, "}\hlstd{,} \hlstr{"p-value < 0.001 (Statistically Significant)"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{))}
+   \hlkwa{if}\hlstd{(}\hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{]} \hlopt{>} \hlnum{0.05}\hlstd{)\{}
+         \hlkwd{return}\hlstd{(}\hlstr{"p-value > 0.05 (Not Significant)"}\hlstd{)}
+      \hlstd{\}}
+   \hlkwa{if}\hlstd{(}\hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{]} \hlopt{<} \hlnum{0.05} \hlopt{&}
+      \hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{]} \hlopt{>=} \hlnum{0.001}\hlstd{)\{}
+         \hlkwd{return}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"Change "}\hlstd{,} \hlkwd{round}\hlstd{(}\hlkwd{coef}\hlstd{(lm)[}\hlnum{2}\hlstd{]}\hlopt{*}\hlnum{356.25}\hlopt{*}\hlnum{100}\hlstd{,} \hlnum{1}\hlstd{),}
+         \hlstr{"/100 years, "}\hlstd{,} \hlstr{"p-value ="}\hlstd{,} \hlkwd{round}\hlstd{(}\hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{],} \hlnum{3}\hlstd{),}
+         \hlstr{"(Statistically Significant)"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{))}
+      \hlstd{\}}
+   \hlkwa{if}\hlstd{(}\hlkwd{anova}\hlstd{(lm)}\hlopt{$}\hlstr{'Pr(>F)'}\hlstd{[}\hlnum{1}\hlstd{]} \hlopt{<} \hlnum{0.001}\hlstd{) \{}
+         \hlkwd{return}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"Change "}\hlstd{,} \hlkwd{round}\hlstd{(}\hlkwd{coef}\hlstd{(lm)[}\hlnum{2}\hlstd{]}\hlopt{*}\hlnum{325.25}\hlopt{*}\hlnum{100}\hlstd{,} \hlnum{1}\hlstd{),}
+         \hlstr{"/100 years, "}\hlstd{,} \hlstr{"p-value < 0.001 (Statistically Significant)"}\hlstd{,}
+         \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{))}
+   \hlstd{\}}
 \hlstd{\}}
-
-\hlcom{#test function}
-\hlkwd{summary}\hlstd{(GSOM.lm);} \hlkwd{coef}\hlstd{(GSOM.lm)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in summary(GSOM.lm): object 'GSOM.lm' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in coef(GSOM.lm): object 'GSOM.lm' not found}}\begin{alltt}
-\hlkwd{report_prob2}\hlstd{(GSOM.lm)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in anova(lm): object 'GSOM.lm' not found}}\end{kframe}
+\end{kframe}
 \end{knitrout}
 
 \subsection{Extreme Temperture Events}
 
 \subsubsection{Functions to Collect and Clean CHCND}
-
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -423,36 +401,53 @@ Evaluate both TMAX and TMIN in GSOM by Year using MonthEvalStats() function.
 \hlstd{GSOM_Longest}\hlopt{$}\hlstd{id}
 \end{alltt}
 \begin{verbatim}
-## [1] "GHCND:USW00093820"
+## [1] "GHCND:USC00350304"
 \end{verbatim}
 \begin{alltt}
 \hlstd{stid} \hlkwb{=} \hlkwd{substr}\hlstd{(GSOM_Longest}\hlopt{$}\hlstd{id,} \hlnum{7}\hlstd{,} \hlnum{17}\hlstd{)}
 
-\hlstd{CHCND} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/USC00013511.csv"}\hlstd{)}
+\hlstd{CHCND.https} \hlkwb{<-} \hlstr{"https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/"}
 
 \hlstd{get_CHCND} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{stid}\hlstd{) \{}
    \hlcom{#stid = "USC00013511"}
-   \hlstd{import} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/"}\hlstd{, stid,} \hlstr{".csv"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{))}
+   \hlstd{import} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlkwd{paste}\hlstd{(CHCND.https, stid,} \hlstr{".csv"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{))}
    \hlstd{selected} \hlkwb{=} \hlkwd{subset}\hlstd{(import,} \hlkwc{select}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"DATE"}\hlstd{,} \hlstr{"TMAX"}\hlstd{,} \hlstr{"TMIN"}\hlstd{))}
    \hlstd{selected}\hlopt{$}\hlstd{TMAX} \hlkwb{=} \hlstd{selected}\hlopt{$}\hlstd{TMAX}\hlopt{/}\hlnum{10}\hlopt{*}\hlstd{(}\hlnum{9}\hlopt{/}\hlnum{5}\hlstd{)}\hlopt{+}\hlnum{32}
    \hlstd{selected}\hlopt{$}\hlstd{TMIN} \hlkwb{=} \hlstd{selected}\hlopt{$}\hlstd{TMIN}\hlopt{/}\hlnum{10}\hlopt{*}\hlstd{(}\hlnum{9}\hlopt{/}\hlnum{5}\hlstd{)}\hlopt{+}\hlnum{32}
    \hlstd{selected}\hlopt{$}\hlstd{Date} \hlkwb{=} \hlkwd{as.Date}\hlstd{(selected}\hlopt{$}\hlstd{DATE)}
-   \hlcom{#head(selected)}
+   \hlstd{selected} \hlkwb{=} \hlstd{selected[}\hlkwd{complete.cases}\hlstd{(selected}\hlopt{$}\hlstd{TMAX),]}
    \hlstd{selected}
 \hlstd{\}}
 
-
-\hlstd{CHCND} \hlkwb{<-} \hlkwd{get_CHCND}\hlstd{(stid)}
+\hlstd{CHCND} \hlkwb{<-} \hlkwd{get_CHCND}\hlstd{(stid);} \hlkwd{nrow}\hlstd{(CHCND)}
+\end{alltt}
+\begin{verbatim}
+## [1] 47094
+\end{verbatim}
+\begin{alltt}
 \hlcom{#str(CHCND)}
 
 \hlstd{CHCND}\hlopt{$}\hlstd{Month} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(}\hlkwd{format}\hlstd{(}\hlkwd{as.Date}\hlstd{(CHCND}\hlopt{$}\hlstd{Date),} \hlkwc{format} \hlstd{=} \hlstr{"%m"}\hlstd{))}
-\hlstd{CHCND}\hlopt{$}\hlstd{Month.name} \hlkwb{=} \hlkwd{factor}\hlstd{(}\hlkwd{format}\hlstd{(}\hlkwd{as.Date}\hlstd{(CHCND}\hlopt{$}\hlstd{Date),} \hlkwc{format} \hlstd{=} \hlstr{"%b"}\hlstd{))}
-\hlstd{CHCND}\hlopt{$}\hlstd{TMAX[CHCND}\hlopt{$}\hlstd{TMAX}\hlopt{>}\hlnum{150}\hlstd{]} \hlkwb{=} \hlnum{NA}
-\hlstd{CHCND}\hlopt{$}\hlstd{Month.name} \hlkwb{<-} \hlkwd{reorder}\hlstd{(CHCND}\hlopt{$}\hlstd{Month.name, CHCND}\hlopt{$}\hlstd{Month)}
-\hlkwd{levels}\hlstd{(CHCND}\hlopt{$}\hlstd{Month.name)}
+\hlstd{CHCND}\hlopt{$}\hlstd{Month.name} \hlkwb{=} \hlkwd{factor}\hlstd{(}\hlkwd{format}\hlstd{(}\hlkwd{as.Date}\hlstd{(CHCND}\hlopt{$}\hlstd{Date),} \hlkwc{format} \hlstd{=} \hlstr{"%b"}\hlstd{),}
+         \hlkwc{levels} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Jan"}\hlstd{,} \hlstr{"Feb"}\hlstd{,} \hlstr{"Mar"}\hlstd{,} \hlstr{"Apr"}\hlstd{,} \hlstr{"May"}\hlstd{,} \hlstr{"Jun"}\hlstd{,} \hlstr{"Jul"}\hlstd{,}
+                     \hlstr{"Aug"}\hlstd{,} \hlstr{"Sep"}\hlstd{,} \hlstr{"Oct"}\hlstd{,} \hlstr{"Nov"}\hlstd{,} \hlstr{"Dec"}\hlstd{))}
+\hlcom{#levels(CHCND$Month.name)}
+
+\hlkwd{range}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX,} \hlkwc{na.rm}\hlstd{=T)}
 \end{alltt}
 \begin{verbatim}
-##  [1] "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec"
+## [1] -95.08 111.92
+\end{verbatim}
+\begin{alltt}
+\hlstd{spread} \hlkwb{=} \hlkwd{sd}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX,} \hlkwc{na.rm}\hlstd{=T)}\hlopt{*}\hlnum{4}
+\hlstd{TMAX_mean} \hlkwb{=} \hlkwd{mean}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX,} \hlkwc{na.rm}\hlstd{=T)}
+
+\hlstd{CHCND}\hlopt{$}\hlstd{TMAX[}\hlkwd{complete.cases}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX)} \hlopt{&} \hlstd{CHCND}\hlopt{$}\hlstd{TMAX} \hlopt{>} \hlstd{TMAX_mean}\hlopt{+}\hlstd{spread]} \hlkwb{<-}\hlnum{NA}
+\hlstd{CHCND}\hlopt{$}\hlstd{TMAX[}\hlkwd{complete.cases}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX)} \hlopt{&} \hlstd{CHCND}\hlopt{$}\hlstd{TMAX} \hlopt{<} \hlstd{TMAX_mean}\hlopt{-}\hlstd{spread]} \hlkwb{<-}\hlnum{NA}
+\hlkwd{range}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX,} \hlkwc{na.rm}\hlstd{=T)}
+\end{alltt}
+\begin{verbatim}
+## [1]  15.08 111.92
 \end{verbatim}
 \begin{alltt}
 \hlstd{CHCND}\hlopt{$}\hlstd{Year} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(}\hlkwd{format}\hlstd{(}\hlkwd{as.Date}\hlstd{(CHCND}\hlopt{$}\hlstd{Date),} \hlkwc{format} \hlstd{=} \hlstr{"%Y"}\hlstd{))}
@@ -462,680 +457,13 @@ Evaluate both TMAX and TMIN in GSOM by Year using MonthEvalStats() function.
 \end{kframe}
 \end{knitrout}
 
-\subsection{Extreme Temperatures}
+\subsection{Determine Record Setting Temperatures}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Create Max for each Julian Date}
-\hlstd{df} \hlkwb{=} \hlkwd{data.frame}\hlstd{(}\hlkwc{date}\hlstd{=}\hlnum{1}\hlopt{:}\hlnum{20}\hlstd{,} \hlkwc{year}\hlstd{=}\hlkwd{rep}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlkwc{each}\hlstd{=}\hlnum{4}\hlstd{),} \hlkwc{julian}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{),}\hlkwc{TMAX} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{8}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{9}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{10}\hlstd{))}
-\hlstd{df}\hlopt{$}\hlstd{maxTMAX[df}\hlopt{$}\hlstd{year}\hlopt{==}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlstd{df}\hlopt{$}\hlstd{TMAX[df}\hlopt{$}\hlstd{year}\hlopt{==}\hlnum{1}\hlstd{]}
-\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{max}\hlstd{(df}\hlopt{$}\hlstd{date))\{}
-   \hlstd{df}\hlopt{$}\hlstd{year[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]}
-   \hlstd{df}\hlopt{$}\hlstd{julian[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]}
-   \hlstd{df}\hlopt{$}\hlstd{TMAX[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]}
-   \hlkwd{max}\hlstd{(df}\hlopt{$}\hlstd{maxTMAX[df}\hlopt{$}\hlstd{julian[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]],} \hlkwc{na.rm}\hlstd{=T)}
-   \hlkwa{if}\hlstd{(df}\hlopt{$}\hlstd{TMAX[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]} \hlopt{>}
-      \hlkwd{max}\hlstd{(df}\hlopt{$}\hlstd{maxTMAX[df}\hlopt{$}\hlstd{julian[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]],} \hlkwc{na.rm}\hlstd{=T) )\{}
-      \hlstd{df}\hlopt{$}\hlstd{maxTMAX[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]} \hlkwb{<-} \hlstd{df}\hlopt{$}\hlstd{TMAX[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]}
-   \hlkwd{print}\hlstd{(i)}
-   \hlstd{\}} \hlkwa{else} \hlstd{df}\hlopt{$}\hlstd{maxTMAX[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]} \hlkwb{<-} \hlkwd{max}\hlstd{(df}\hlopt{$}\hlstd{maxTMAX[df}\hlopt{$}\hlstd{julian[df}\hlopt{$}\hlstd{date}\hlopt{==}\hlstd{i]],} \hlkwc{na.rm}\hlstd{=T)}
-\hlstd{\}}
-\end{alltt}
-\begin{verbatim}
-## [1] 5
-## [1] 8
-## [1] 12
-## [1] 16
-## [1] 17
-## [1] 18
-## [1] 19
-## [1] 20
-\end{verbatim}
-\begin{alltt}
-\hlcom{#CHCND$Julian = as.numeric(format(CHCND$Date, "%j"))}
-\hlstd{CHCND}\hlopt{$}\hlstd{mmdd} \hlkwb{<-} \hlkwd{format}\hlstd{(CHCND}\hlopt{$}\hlstd{Date,} \hlstr{"%m-%d"}\hlstd{)}
-\hlstd{CHCND_Mean} \hlkwb{=} \hlkwd{mean}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX,} \hlkwc{na.rm}\hlstd{=T)}
 
-\hlstd{CHCND}\hlopt{$}\hlstd{maxTMAX} \hlkwb{=} \hlnum{NA}
-\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{max}\hlstd{(}\hlkwd{nrow}\hlstd{(CHCND)))\{}
 
-\hlcom{#for(i in 1:10)\{}
-\hlcom{#i=2}
-   \hlkwa{if}\hlstd{(}\hlkwd{is.na}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX[i]))} \hlkwa{next}
-\hlstd{CHCND}\hlopt{$}\hlstd{maxTMAX[i]} \hlkwb{<-} \hlstd{CHCND}\hlopt{$}\hlstd{TMAX[i]}
-\hlstd{CHCNDmmdd} \hlkwb{<-} \hlstd{CHCND}\hlopt{$}\hlstd{mmdd[i]}
 
-\hlkwa{if}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX[i]} \hlopt{<}
-      \hlkwd{max}\hlstd{(CHCND}\hlopt{$}\hlstd{TMAX[CHCND}\hlopt{$}\hlstd{mmdd}\hlopt{==}\hlstd{CHCNDmmdd],} \hlkwc{na.rm}\hlstd{=T) )\{}
-      \hlstd{CHCND}\hlopt{$}\hlstd{maxTMAX[i]} \hlkwb{<-} \hlnum{NA}\hlstd{\}} \hlkwa{else}
-      \hlstd{\{}
-      \hlstd{CHCND}\hlopt{$}\hlstd{maxTMAX[i]} \hlkwb{<-} \hlstd{CHCND}\hlopt{$}\hlstd{TMAX[i]}
-      \hlstd{\}}
- \hlstd{\}}
 
-\hlkwd{head}\hlstd{(CHCND)}
-\end{alltt}
-\begin{verbatim}
-##         DATE  TMAX  TMIN       Date Month Month.name Year  mmdd maxTMAX
-## 1 1872-10-11 48.02 35.96 1872-10-11    10        Oct 1872 10-11      NA
-## 2 1872-10-12 55.04 37.94 1872-10-12    10        Oct 1872 10-12      NA
-## 3 1872-10-13 55.04 39.92 1872-10-13    10        Oct 1872 10-13      NA
-## 4 1872-10-14 48.02 32.00 1872-10-14    10        Oct 1872 10-14      NA
-## 5 1872-10-15 59.00 33.08 1872-10-15    10        Oct 1872 10-15      NA
-## 6 1872-10-16 66.92 46.94 1872-10-16    10        Oct 1872 10-16      NA
-\end{verbatim}
-\begin{alltt}
-\hlstd{test} \hlkwb{=} \hlstd{CHCND[}\hlopt{!}\hlkwd{is.na}\hlstd{(CHCND}\hlopt{$}\hlstd{maxTMAX),]; test[}\hlkwd{order}\hlstd{(test}\hlopt{$}\hlstd{mmdd),]}
-\end{alltt}
-\begin{verbatim}
-##             DATE   TMAX  TMIN       Date Month Month.name Year  mmdd maxTMAX
-## 24835 1952-01-01  71.06 42.98 1952-01-01     1        Jan 1952 01-01   71.06
-## 44560 2006-01-02  66.92 48.92 2006-01-02     1        Jan 2006 01-02   66.92
-## 8401  1907-01-03  68.00 53.96 1907-01-03     1        Jan 1907 01-03   68.00
-## 42369 2000-01-03  68.00 53.06 2000-01-03     1        Jan 2000 01-03   68.00
-## 43831 2004-01-04  68.00 48.92 2004-01-04     1        Jan 2004 01-04   68.00
-## 41276 1997-01-05  66.02 35.96 1997-01-05     1        Jan 1997 01-05   66.02
-## 44928 2007-01-05  66.02 55.04 2007-01-05     1        Jan 2007 01-05   66.02
-## 22649 1946-01-06  71.06 51.08 1946-01-06     1        Jan 1946 01-06   71.06
-## 45295 2008-01-07  69.98 57.02 2008-01-07     1        Jan 2008 01-07   69.98
-## 19364 1937-01-08  71.06 51.08 1937-01-08     1        Jan 1937 01-08   71.06
-## 16808 1930-01-09  69.98 37.04 1930-01-09     1        Jan 1930 01-09   69.98
-## 49681 2020-01-10  66.92 57.02 2020-01-10     1        Jan 2020 01-10   66.92
-## 49682 2020-01-11  75.02 50.00 2020-01-11     1        Jan 2020 01-11   75.02
-## 2202  1890-01-12  71.06    NA 1890-01-12     1        Jan 1890 01-12   71.06
-## 40553 1995-01-13  69.08 53.06 1995-01-13     1        Jan 1995 01-13   69.08
-## 17543 1932-01-14  68.00 53.96 1932-01-14     1        Jan 1932 01-14   68.00
-## 49686 2020-01-15  69.08 37.04 2020-01-15     1        Jan 2020 01-15   69.08
-## 23755 1949-01-16  69.08 42.08 1949-01-16     1        Jan 1949 01-16   69.08
-## 24851 1952-01-17  66.92 44.06 1952-01-17     1        Jan 1952 01-17   66.92
-## 48593 2017-01-17  66.92 44.96 2017-01-17     1        Jan 2017 01-17   66.92
-## 16452 1929-01-18  71.96 48.92 1929-01-18     1        Jan 1929 01-18   71.96
-## 8417  1907-01-19  68.00 48.92 1907-01-19     1        Jan 1907 01-19   68.00
-## 8053  1906-01-20  69.98 55.04 1906-01-20     1        Jan 1906 01-20   69.98
-## 8054  1906-01-21  71.96 55.04 1906-01-21     1        Jan 1906 01-21   71.96
-## 42023 1999-01-22  73.04 55.04 1999-01-22     1        Jan 1999 01-22   73.04
-## 21570 1943-01-23  68.00 44.96 1943-01-23     1        Jan 1943 01-23   68.00
-## 30336 1967-01-23  68.00 55.04 1967-01-23     1        Jan 1967 01-23   68.00
-## 21571 1943-01-24  80.06 46.94 1943-01-24     1        Jan 1943 01-24   80.06
-## 24129 1950-01-25  75.92 59.00 1950-01-25     1        Jan 1950 01-25   75.92
-## 21938 1944-01-26  71.06 50.00 1944-01-26     1        Jan 1944 01-26   71.06
-## 21939 1944-01-27  73.94 51.08 1944-01-27     1        Jan 1944 01-27   73.94
-## 1205  1876-01-28  68.00 55.04 1876-01-28     1        Jan 1876 01-28   68.00
-## 33264 1975-01-29  69.08 35.06 1975-01-29     1        Jan 1975 01-29   69.08
-## 11715 1916-01-30  69.08 59.00 1916-01-30     1        Jan 1916 01-30   69.08
-## 43128 2002-01-31  71.06 53.06 2002-01-31     1        Jan 2002 01-31   71.06
-## 9891  1911-02-01  66.92 42.08 1911-02-01     2        Feb 1911 02-01   66.92
-## 48243 2016-02-02  71.96 35.96 2016-02-02     2        Feb 2016 02-02   71.96
-## 2224  1890-02-03  69.98 59.00 1890-02-03     2        Feb 1890 02-03   69.98
-## 2225  1890-02-04  69.98 53.96 1890-02-04     2        Feb 1890 02-04   69.98
-## 28522 1962-02-04  69.98 42.08 1962-02-04     2        Feb 1962 02-04   69.98
-## 15739 1927-02-05  68.00 55.94 1927-02-05     2        Feb 1927 02-05   68.00
-## 15010 1925-02-06  66.92 44.96 1925-02-06     2        Feb 1925 02-06   66.92
-## 49344 2019-02-07  71.96 39.92 2019-02-07     2        Feb 2019 02-07   71.96
-## 19395 1937-02-08  73.94 50.00 1937-02-08     2        Feb 1937 02-08   73.94
-## 42772 2001-02-09  69.98 37.04 2001-02-09     2        Feb 2001 02-09   69.98
-## 17570 1932-02-10  75.02 55.94 1932-02-10     2        Feb 1932 02-10   75.02
-## 42043 1999-02-11  73.94 53.06 1999-02-11     2        Feb 1999 02-11   73.94
-## 19764 1938-02-12  73.04 46.04 1938-02-12     2        Feb 1938 02-12   73.04
-## 19765 1938-02-13  71.06 53.96 1938-02-13     2        Feb 1938 02-13   71.06
-## 28531 1962-02-13  71.06 33.98 1962-02-13     2        Feb 1962 02-13   71.06
-## 9904  1911-02-14  69.98 48.02 1911-02-14     2        Feb 1911 02-14   69.98
-## 12461 1918-02-14  69.98 44.06 1918-02-14     2        Feb 1918 02-14   69.98
-## 22324 1945-02-15  75.92 42.98 1945-02-15     2        Feb 1945 02-15   75.92
-## 1872  1889-02-16  69.08    NA 1889-02-16     2        Feb 1889 02-16   69.08
-## 48988 2018-02-16  69.08 37.04 2018-02-16     2        Feb 2018 02-16   69.08
-## 15751 1927-02-17  71.96 48.92 1927-02-17     2        Feb 1927 02-17   71.96
-## 23422 1948-02-18  69.98 39.92 1948-02-18     2        Feb 1948 02-18   69.98
-## 20136 1939-02-19  75.02 50.00 1939-02-19     2        Feb 1939 02-19   75.02
-## 48992 2018-02-20  80.06 62.06 2018-02-20     2        Feb 2018 02-20   80.06
-## 48628 2017-02-21  71.96 55.04 2017-02-21     2        Feb 2017 02-21   71.96
-## 13930 1922-02-22  69.98 55.04 1922-02-22     2        Feb 1922 02-22   69.98
-## 40959 1996-02-23  80.06 50.00 1996-02-23     2        Feb 1996 02-23   80.06
-## 48631 2017-02-24  78.98 57.92 2017-02-24     2        Feb 2017 02-24   78.98
-## 42422 2000-02-25  73.94 53.96 2000-02-25     2        Feb 2000 02-25   73.94
-## 21969 1944-02-26  75.92 55.94 1944-02-26     2        Feb 1944 02-26   75.92
-## 40963 1996-02-27  73.04 53.96 1996-02-27     2        Feb 1996 02-27   73.04
-## 12475 1918-02-28  75.02 44.96 1918-02-28     2        Feb 1918 02-28   75.02
-## 32199 1972-02-29  75.02 46.04 1972-02-29     2        Feb 1972 02-29   75.02
-## 33661 1976-03-01  73.04 50.00 1976-03-01     3        Mar 1976 03-01   73.04
-## 33662 1976-03-02  75.02 57.02 1976-03-02     3        Mar 1976 03-02   75.02
-## 6269  1901-03-03  75.92 41.00 1901-03-03     3        Mar 1901 03-03   75.92
-## 33664 1976-03-04  80.96 59.00 1976-03-04     3        Mar 1976 03-04   80.96
-## 36221 1983-03-05  78.08 57.92 1983-03-05     3        Mar 1983 03-05   78.08
-## 9559  1910-03-06  77.00 42.08 1910-03-06     3        Mar 1910 03-06   77.00
-## 32570 1973-03-06  77.00 46.94 1973-03-06     3        Mar 1973 03-06   77.00
-## 32936 1974-03-07  78.08 60.08 1974-03-07     3        Mar 1974 03-07   78.08
-## 32937 1974-03-08  78.08 55.94 1974-03-08     3        Mar 1974 03-08   78.08
-## 15041 1925-03-09  78.08 42.98 1925-03-09     3        Mar 1925 03-09   78.08
-## 32574 1973-03-10  77.00 53.96 1973-03-10     3        Mar 1973 03-10   77.00
-## 38784 1990-03-11  78.08 57.02 1990-03-11     3        Mar 1990 03-11   78.08
-## 9930  1911-03-12  77.00 41.00 1911-03-12     3        Mar 1911 03-12   77.00
-## 30385 1967-03-13  80.96 55.04 1967-03-13     3        Mar 1967 03-13   80.96
-## 32578 1973-03-14  80.96 62.06 1973-03-14     3        Mar 1973 03-14   80.96
-## 21987 1944-03-15  80.96 48.92 1944-03-15     3        Mar 1944 03-15   80.96
-## 22353 1945-03-16  82.94 59.00 1945-03-16     3        Mar 1945 03-16   82.94
-## 18336 1934-03-17  75.92    NA 1934-03-17     3        Mar 1934 03-17   75.92
-## 38425 1989-03-17  75.92 37.94 1989-03-17     3        Mar 1989 03-17   75.92
-## 35869 1982-03-18  78.98 41.00 1982-03-18     3        Mar 1982 03-18   78.98
-## 8476  1907-03-19  78.98 53.96 1907-03-19     3        Mar 1907 03-19   78.98
-## 22356 1945-03-19  78.98 60.08 1945-03-19     3        Mar 1945 03-19   78.98
-## 46828 2012-03-19  78.98 59.00 2012-03-19     3        Mar 2012 03-19   78.98
-## 46829 2012-03-20  82.94 62.96 2012-03-20     3        Mar 2012 03-20   82.94
-## 8478  1907-03-21  82.94 46.04 1907-03-21     3        Mar 1907 03-21   82.94
-## 8479  1907-03-22  82.04 62.96 1907-03-22     3        Mar 1907 03-22   82.04
-## 8480  1907-03-23  82.04 60.08 1907-03-23     3        Mar 1907 03-23   82.04
-## 9577  1910-03-24  84.92 57.92 1910-03-24     3        Mar 1910 03-24   84.92
-## 16518 1929-03-25  86.00 62.06 1929-03-25     3        Mar 1929 03-25   86.00
-## 8483  1907-03-26  80.06 60.98 1907-03-26     3        Mar 1907 03-26   80.06
-## 45008 2007-03-26  80.06 60.98 2007-03-26     3        Mar 2007 03-26   80.06
-## 9580  1910-03-27  84.02 57.92 1910-03-27     3        Mar 1910 03-27   84.02
-## 8485  1907-03-28  82.94 64.94 1907-03-28     3        Mar 1907 03-28   82.94
-## 9581  1910-03-28  82.94 60.98 1910-03-28     3        Mar 1910 03-28   82.94
-## 9582  1910-03-29  82.94 62.06 1910-03-29     3        Mar 1910 03-29   82.94
-## 4105  1895-03-30  82.94 59.00 1895-03-30     3        Mar 1895 03-30   82.94
-## 35517 1981-03-31  82.04 44.96 1981-03-31     3        Mar 1981 03-31   82.04
-## 37343 1986-03-31  82.04 53.06 1986-03-31     3        Mar 1986 03-31   82.04
-## 28943 1963-04-01  82.04 60.98 1963-04-01     4        Apr 1963 04-01   82.04
-## 20544 1940-04-02  84.02 48.92 1940-04-02     4        Apr 1940 04-02   84.02
-## 22735 1946-04-02  84.02 66.02 1946-04-02     4        Apr 1946 04-02   84.02
-## 18353 1934-04-03  84.02 50.00 1934-04-03     4        Apr 1934 04-03   84.02
-## 18354 1934-04-04  86.00 55.94 1934-04-04     4        Apr 1934 04-04   86.00
-## 18355 1934-04-05  87.98 53.96 1934-04-05     4        Apr 1934 04-05   87.98
-## 46115 2010-04-06  84.92 64.04 2010-04-06     4        Apr 2010 04-06   84.92
-## 3383  1893-04-07  84.02 62.06 1893-04-07     4        Apr 1893 04-07   84.02
-## 42829 2001-04-07  84.02 64.94 2001-04-07     4        Apr 2001 04-07   84.02
-## 42830 2001-04-08  82.94 66.02 2001-04-08     4        Apr 2001 04-08   82.94
-## 12880 1919-04-09  84.02 62.96 1919-04-09     4        Apr 1919 04-09   84.02
-## 47215 2013-04-10  84.02 62.06 2013-04-10     4        Apr 2013 04-10   84.02
-## 16900 1930-04-11  84.92 60.98 1930-04-11     4        Apr 1930 04-11   84.92
-## 16901 1930-04-12  84.92 62.96 1930-04-12     4        Apr 1930 04-12   84.92
-## 8136  1906-04-13  84.02 59.00 1906-04-13     4        Apr 1906 04-13   84.02
-## 20920 1941-04-13  84.02 55.04 1941-04-13     4        Apr 1941 04-13   84.02
-## 34070 1977-04-14  84.02 51.08 1977-04-14     4        Apr 1977 04-14   84.02
-## 46124 2010-04-15  84.02 55.04 2010-04-15     4        Apr 2010 04-15   84.02
-## 4488  1896-04-16  84.92 62.06 1896-04-16     4        Apr 1896 04-16   84.92
-## 2662  1891-04-17  87.08 60.08 1891-04-17     4        Apr 1891 04-17   87.08
-## 4490  1896-04-18  87.98 68.00 1896-04-18     4        Apr 1896 04-18   87.98
-## 20926 1941-04-19  86.00 60.08 1941-04-19     4        Apr 1941 04-19   86.00
-## 4492  1896-04-20  84.92 62.96 1896-04-20     4        Apr 1896 04-20   84.92
-## 11430 1915-04-20  84.92 59.00 1915-04-20     4        Apr 1915 04-20   84.92
-## 26771 1957-04-20  84.92 64.94 1957-04-20     4        Apr 1957 04-20   84.92
-## 28963 1963-04-21  86.00 55.04 1963-04-21     4        Apr 1963 04-21   86.00
-## 22025 1944-04-22  84.92 57.92 1944-04-22     4        Apr 1944 04-22   84.92
-## 37000 1985-04-22  84.92 60.08 1985-04-22     4        Apr 1985 04-22   84.92
-## 37730 1987-04-22  84.92 55.04 1987-04-22     4        Apr 1987 04-22   84.92
-## 15086 1925-04-23  86.00 62.96 1925-04-23     4        Apr 1925 04-23   86.00
-## 19469 1937-04-23  86.00 55.04 1937-04-23     4        Apr 1937 04-23   86.00
-## 22756 1946-04-23  86.00 60.08 1946-04-23     4        Apr 1946 04-23   86.00
-## 15087 1925-04-24  89.96 69.08 1925-04-24     4        Apr 1925 04-24   89.96
-## 11435 1915-04-25  87.98 62.96 1915-04-25     4        Apr 1915 04-25   87.98
-## 18741 1935-04-26  87.98 46.04 1935-04-26     4        Apr 1935 04-26   87.98
-## 19837 1938-04-26  87.98 55.04 1938-04-26     4        Apr 1938 04-26   87.98
-## 37370 1986-04-27  87.08 57.92 1986-04-27     4        Apr 1986 04-27   87.08
-## 26779 1957-04-28  86.00 60.98 1957-04-28     4        Apr 1957 04-28   86.00
-## 5596  1899-04-29  86.00 66.92 1899-04-29     4        Apr 1899 04-29   86.00
-## 48695 2017-04-29  86.00 64.04 2017-04-29     4        Apr 2017 04-29   86.00
-## 21302 1942-04-30  91.04 59.00 1942-04-30     4        Apr 1942 04-30   91.04
-## 24590 1951-05-01  89.96 62.96 1951-05-01     5        May 1951 05-01   89.96
-## 27513 1959-05-02  87.98 59.00 1959-05-02     5        May 1959 05-02   87.98
-## 27514 1959-05-03  87.98 64.04 1959-05-03     5        May 1959 05-03   87.98
-## 19845 1938-05-04  87.98 60.08 1938-05-04     5        May 1938 05-04   87.98
-## 23863 1949-05-04  87.98 59.00 1949-05-04     5        May 1949 05-04   87.98
-## 24960 1952-05-05  91.94 60.08 1952-05-05     5        May 1952 05-05   91.94
-## 19117 1936-05-06  89.06 53.06 1936-05-06     5        May 1936 05-06   89.06
-## 42858 2001-05-06  89.06 60.98 2001-05-06     5        May 2001 05-06   89.06
-## 19118 1936-05-07  89.06 59.00 1936-05-07     5        May 1936 05-07   89.06
-## 20579 1940-05-07  89.06 60.08 1940-05-07     5        May 1940 05-07   89.06
-## 19119 1936-05-08  89.96 57.92 1936-05-08     5        May 1936 05-08   89.96
-## 19120 1936-05-09  95.00 57.92 1936-05-09     5        May 1936 05-09   95.00
-## 19121 1936-05-10  95.00 60.98 1936-05-10     5        May 1936 05-10   95.00
-## 4513  1896-05-11  91.94 68.00 1896-05-11     5        May 1896 05-11   91.94
-## 22045 1944-05-12  89.96 57.92 1944-05-12     5        May 1944 05-12   89.96
-## 26429 1956-05-13  89.06 66.02 1956-05-13     5        May 1956 05-13   89.06
-## 26794 1957-05-13  89.06 62.96 1957-05-13     5        May 1957 05-13   89.06
-## 49075 2018-05-14  89.96 66.02 2018-05-14     5        May 2018 05-14   89.96
-## 28622 1962-05-15  89.06 66.02 1962-05-15     5        May 1962 05-15   89.06
-## 49076 2018-05-15  89.06 68.00 2018-05-15     5        May 2018 05-15   89.06
-## 5978  1900-05-16  91.04 62.96 1900-05-16     5        May 1900 05-16   91.04
-## 28623 1962-05-16  91.04 66.02 1962-05-16     5        May 1962 05-16   91.04
-## 28624 1962-05-17  91.94 68.00 1962-05-17     5        May 1962 05-17   91.94
-## 28625 1962-05-18  91.94 68.00 1962-05-18     5        May 1962 05-18   91.94
-## 22052 1944-05-19  91.04 64.04 1944-05-19     5        May 1944 05-19   91.04
-## 22053 1944-05-20  91.04 64.04 1944-05-20     5        May 1944 05-20   91.04
-## 20958 1941-05-21  91.94 55.04 1941-05-21     5        May 1941 05-21   91.94
-## 20959 1941-05-22  96.08 60.98 1941-05-22     5        May 1941 05-22   96.08
-## 19134 1936-05-23  91.04 59.00 1936-05-23     5        May 1936 05-23   91.04
-## 20229 1939-05-23  91.04 60.98 1939-05-23     5        May 1939 05-23   91.04
-## 20230 1939-05-24  93.02 64.04 1939-05-24     5        May 1939 05-24   93.02
-## 25345 1953-05-25  91.04 69.08 1953-05-25     5        May 1953 05-25   91.04
-## 20232 1939-05-26  93.92 62.96 1939-05-26     5        May 1939 05-26   93.92
-## 10006 1911-05-27  93.02 71.06 1911-05-27     5        May 1911 05-27   93.02
-## 10007 1911-05-28  93.02 69.08 1911-05-28     5        May 1911 05-28   93.02
-## 20965 1941-05-28  93.02 66.02 1941-05-28     5        May 1941 05-28   93.02
-## 20966 1941-05-29  93.92 64.04 1941-05-29     5        May 1941 05-29   93.92
-## 19506 1937-05-30  91.94 60.98 1937-05-30     5        May 1937 05-30   91.94
-## 22063 1944-05-30  91.94 62.96 1944-05-30     5        May 1944 05-30   91.94
-## 25350 1953-05-30  91.94 71.06 1953-05-30     5        May 1953 05-30   91.94
-## 19507 1937-05-31  95.00 64.94 1937-05-31     5        May 1937 05-31   95.00
-## 19508 1937-06-01  95.00 68.00 1937-06-01     6        Jun 1937 06-01   95.00
-## 24622 1951-06-02  96.08 68.00 1951-06-02     6        Jun 1951 06-02   96.08
-## 4170  1895-06-03  93.92 71.06 1895-06-03     6        Jun 1895 06-03   93.92
-## 15128 1925-06-04  96.98 71.96 1925-06-04     6        Jun 1925 06-04   96.98
-## 21338 1942-06-05  93.92 68.00 1942-06-05     6        Jun 1942 06-05   93.92
-## 21704 1943-06-06  95.00 64.94 1943-06-06     6        Jun 1943 06-06   95.00
-## 18053 1933-06-07  95.00 75.92 1933-06-07     6        Jun 1933 06-07   95.00
-## 18054 1933-06-08  95.00 80.06 1933-06-08     6        Jun 1933 06-08   95.00
-## 24994 1952-06-08  95.00 68.00 1952-06-08     6        Jun 1952 06-08   95.00
-## 25359 1953-06-08  95.00 66.92 1953-06-08     6        Jun 1953 06-08   95.00
-## 25360 1953-06-09  96.08 73.94 1953-06-09     6        Jun 1953 06-09   96.08
-## 10020 1911-06-10  95.00 69.98 1911-06-10     6        Jun 1911 06-10   95.00
-## 10021 1911-06-11  93.92 73.04 1911-06-11     6        Jun 1911 06-11   93.92
-## 21710 1943-06-12  95.00 66.02 1943-06-12     6        Jun 1943 06-12   95.00
-## 22076 1944-06-12  95.00 64.04 1944-06-12     6        Jun 1944 06-12   95.00
-## 25728 1954-06-12  95.00 69.08 1954-06-12     6        Jun 1954 06-12   95.00
-## 21711 1943-06-13  96.08 69.08 1943-06-13     6        Jun 1943 06-13   96.08
-## 21712 1943-06-14  93.92 68.00 1943-06-14     6        Jun 1943 06-14   93.92
-## 38149 1988-06-14  93.92 60.08 1988-06-14     6        Jun 1988 06-14   93.92
-## 25001 1952-06-15  96.98 71.96 1952-06-15     6        Jun 1952 06-15   96.98
-## 25002 1952-06-16  96.08 71.06 1952-06-16     6        Jun 1952 06-16   96.08
-## 19159 1936-06-17  98.96 66.02 1936-06-17     6        Jun 1936 06-17   98.96
-## 22081 1944-06-17  98.96 71.96 1944-06-17     6        Jun 1944 06-17   98.96
-## 22082 1944-06-18  98.96 71.96 1944-06-18     6        Jun 1944 06-18   98.96
-## 1630  1888-06-19  96.98 71.06 1888-06-19     6        Jun 1888 06-19   96.98
-## 40345 1994-06-19  96.98 69.08 1994-06-19     6        Jun 1994 06-19   96.98
-## 25371 1953-06-20 100.04 69.08 1953-06-20     6        Jun 1953 06-20  100.04
-## 25372 1953-06-21  96.98 73.04 1953-06-21     6        Jun 1953 06-21   96.98
-## 38156 1988-06-21  96.98 69.98 1988-06-21     6        Jun 1988 06-21   96.98
-## 38157 1988-06-22  98.96 71.96 1988-06-22     6        Jun 1988 06-22   98.96
-## 22087 1944-06-23  96.08 73.94 1944-06-23     6        Jun 1944 06-23   96.08
-## 25374 1953-06-23  96.08 69.08 1953-06-23     6        Jun 1953 06-23   96.08
-## 38158 1988-06-23  96.08 73.94 1988-06-23     6        Jun 1988 06-23   96.08
-## 11130 1914-06-24  96.98 77.00 1914-06-24     6        Jun 1914 06-24   96.98
-## 38160 1988-06-25 100.94 71.96 1988-06-25     6        Jun 1988 06-25  100.94
-## 25742 1954-06-26 100.94 66.92 1954-06-26     6        Jun 1954 06-26  100.94
-## 22091 1944-06-27 100.94 68.00 1944-06-27     6        Jun 1944 06-27  100.94
-## 22092 1944-06-28 102.92 73.04 1944-06-28     6        Jun 1944 06-28  102.92
-## 19171 1936-06-29 104.00 64.04 1936-06-29     6        Jun 1936 06-29  104.00
-## 46931 2012-06-30 102.92 66.92 2012-06-30     6        Jun 2012 06-30  102.92
-## 46932 2012-07-01 102.92 69.08 2012-07-01     7        Jul 2012 07-01  102.92
-## 18808 1935-07-02  96.98 68.00 1935-07-02     7        Jul 1935 07-02   96.98
-## 31592 1970-07-02  96.98 71.96 1970-07-02     7        Jul 1970 07-02   96.98
-## 46933 2012-07-02  96.98 66.92 2012-07-02     7        Jul 2012 07-02   96.98
-## 10043 1911-07-03  98.06 75.02 1911-07-03     7        Jul 1911 07-03   98.06
-## 46935 2012-07-04  98.96 71.06 2012-07-04     7        Jul 2012 07-04   98.96
-## 46936 2012-07-05  98.96 71.96 2012-07-05     7        Jul 2012 07-05   98.96
-## 46937 2012-07-06 102.92 66.92 2012-07-06     7        Jul 2012 07-06  102.92
-## 46938 2012-07-07 105.08 73.04 2012-07-07     7        Jul 2012 07-07  105.08
-## 19180 1936-07-08 105.98 69.98 1936-07-08     7        Jul 1936 07-08  105.98
-## 19181 1936-07-09 105.98 71.96 1936-07-09     7        Jul 1936 07-09  105.98
-## 19182 1936-07-10 107.96 75.92 1936-07-10     7        Jul 1936 07-10  107.96
-## 19183 1936-07-11 104.00 71.96 1936-07-11     7        Jul 1936 07-11  104.00
-## 19184 1936-07-12 104.00 73.04 1936-07-12     7        Jul 1936 07-12  104.00
-## 19185 1936-07-13 102.92 73.94 1936-07-13     7        Jul 1936 07-13  102.92
-## 19186 1936-07-14 105.98 71.06 1936-07-14     7        Jul 1936 07-14  105.98
-## 19187 1936-07-15 107.96 71.06 1936-07-15     7        Jul 1936 07-15  107.96
-## 35259 1980-07-16 100.04 75.02 1980-07-16     7        Jul 1980 07-16  100.04
-## 18823 1935-07-17  98.96 62.96 1935-07-17     7        Jul 1935 07-17   98.96
-## 25764 1954-07-18 100.04 75.92 1954-07-18     7        Jul 1954 07-18  100.04
-## 35262 1980-07-19  98.96 66.92 1980-07-19     7        Jul 1980 07-19   98.96
-## 25766 1954-07-20  98.96 78.08 1954-07-20     7        Jul 1954 07-20   98.96
-## 18462 1934-07-21 100.04 75.02 1934-07-21     7        Jul 1934 07-21  100.04
-## 6410  1901-07-22 102.02 73.04 1901-07-22     7        Jul 1901 07-22  102.02
-## 18464 1934-07-23  98.96 75.02 1934-07-23     7        Jul 1934 07-23   98.96
-## 25039 1952-07-23  98.96 71.06 1952-07-23     7        Jul 1952 07-23   98.96
-## 36361 1983-07-23  98.96 75.02 1983-07-23     7        Jul 1983 07-23   98.96
-## 6412  1901-07-24 100.94 71.96 1901-07-24     7        Jul 1901 07-24  100.94
-## 18466 1934-07-25 100.94 75.92 1934-07-25     7        Jul 1934 07-25  100.94
-## 25042 1952-07-26 100.04 64.94 1952-07-26     7        Jul 1952 07-26  100.04
-## 25043 1952-07-27 102.92 69.98 1952-07-27     7        Jul 1952 07-27  102.92
-## 17008 1930-07-28 104.00 80.96 1930-07-28     7        Jul 1930 07-28  104.00
-## 20662 1940-07-29 100.04 73.94 1940-07-29     7        Jul 1940 07-29  100.04
-## 42212 1999-07-30 102.92 73.04 1999-07-30     7        Jul 1999 07-30  102.92
-## 42213 1999-07-31  98.96 75.02 1999-07-31     7        Jul 1999 07-31   98.96
-## 21395 1942-08-01  96.98 69.08 1942-08-01     8        Aug 1942 08-01   96.98
-## 25413 1953-08-01  96.98 71.96 1953-08-01     8        Aug 1953 08-01   96.98
-## 21396 1942-08-02  98.06 73.04 1942-08-02     8        Aug 1942 08-02   98.06
-## 43311 2002-08-02  98.06 68.00 2002-08-02     8        Aug 2002 08-02   98.06
-## 1675  1888-08-03  98.96 73.94 1888-08-03     8        Aug 1888 08-03   98.96
-## 17015 1930-08-04  98.96 75.02 1930-08-04     8        Aug 1930 08-04   98.96
-## 43313 2002-08-04  98.96 71.96 2002-08-04     8        Aug 2002 08-04   98.96
-## 43314 2002-08-05  98.06 69.08 2002-08-05     8        Aug 2002 08-05   98.06
-## 12634 1918-08-06 100.04 71.06 1918-08-06     8        Aug 1918 08-06  100.04
-## 17018 1930-08-07  96.98 71.96 1930-08-07     8        Aug 1930 08-07   96.98
-## 18844 1935-08-07  96.98 71.06 1935-08-07     8        Aug 1935 08-07   96.98
-## 21036 1941-08-07  96.98 62.96 1941-08-07     8        Aug 1941 08-07   96.98
-## 45142 2007-08-07  96.98 75.02 2007-08-07     8        Aug 2007 08-07   96.98
-## 17019 1930-08-08  98.96 75.92 1930-08-08     8        Aug 1930 08-08   98.96
-## 21037 1941-08-08  98.96 66.92 1941-08-08     8        Aug 1941 08-08   98.96
-## 17020 1930-08-09  98.96 66.92 1930-08-09     8        Aug 1930 08-09   98.96
-## 10081 1911-08-10  98.96 71.06 1911-08-10     8        Aug 1911 08-10   98.96
-## 10082 1911-08-11  98.06 71.96 1911-08-11     8        Aug 1911 08-11   98.06
-## 21040 1941-08-11  98.06 71.96 1941-08-11     8        Aug 1941 08-11   98.06
-## 19215 1936-08-12  98.06 66.92 1936-08-12     8        Aug 1936 08-12   98.06
-## 44417 2005-08-12  98.06 71.96 2005-08-12     8        Aug 2005 08-12   98.06
-## 42226 1999-08-13  98.06 71.06 1999-08-13     8        Aug 1999 08-13   98.06
-## 21773 1943-08-14 100.04 66.92 1943-08-14     8        Aug 1943 08-14  100.04
-## 45150 2007-08-15 100.94 68.00 2007-08-15     8        Aug 2007 08-15  100.94
-## 45151 2007-08-16 102.02 69.98 2007-08-16     8        Aug 2007 08-16  102.02
-## 19220 1936-08-17  98.96 69.08 1936-08-17     8        Aug 1936 08-17   98.96
-## 19221 1936-08-18 102.92 71.06 1936-08-18     8        Aug 1936 08-18  102.92
-## 19222 1936-08-19 105.08 75.02 1936-08-19     8        Aug 1936 08-19  105.08
-## 19223 1936-08-20 104.00 71.06 1936-08-20     8        Aug 1936 08-20  104.00
-## 19224 1936-08-21 104.00 75.92 1936-08-21     8        Aug 1936 08-21  104.00
-## 19225 1936-08-22 104.00 75.02 1936-08-22     8        Aug 1936 08-22  104.00
-## 45158 2007-08-23  96.98 73.94 2007-08-23     8        Aug 2007 08-23   96.98
-## 19227 1936-08-24  98.96 73.94 1936-08-24     8        Aug 1936 08-24   98.96
-## 21783 1943-08-24  98.96 69.08 1943-08-24     8        Aug 1943 08-24   98.96
-## 21784 1943-08-25 102.02 69.08 1943-08-25     8        Aug 1943 08-25  102.02
-## 19229 1936-08-26  98.96 73.94 1936-08-26     8        Aug 1936 08-26   98.96
-## 23612 1948-08-26  98.96 66.92 1948-08-26     8        Aug 1948 08-26   98.96
-## 19230 1936-08-27 100.94 66.92 1936-08-27     8        Aug 1936 08-27  100.94
-## 19231 1936-08-28 100.04 66.02 1936-08-28     8        Aug 1936 08-28  100.04
-## 25441 1953-08-29  98.06 69.08 1953-08-29     8        Aug 1953 08-29   98.06
-## 25442 1953-08-30  96.98 68.00 1953-08-30     8        Aug 1953 08-30   96.98
-## 25443 1953-08-31  98.96 66.92 1953-08-31     8        Aug 1953 08-31   98.96
-## 25444 1953-09-01 100.94 66.92 1953-09-01     9        Sep 1953 09-01  100.94
-## 25445 1953-09-02 100.04 71.96 1953-09-02     9        Sep 1953 09-02  100.04
-## 25446 1953-09-03 100.04 75.92 1953-09-03     9        Sep 1953 09-03  100.04
-## 25812 1954-09-04  98.06 64.04 1954-09-04     9        Sep 1954 09-04   98.06
-## 25813 1954-09-05 102.92 69.08 1954-09-05     9        Sep 1954 09-05  102.92
-## 25814 1954-09-06 102.02 71.06 1954-09-06     9        Sep 1954 09-06  102.02
-## 5727  1899-09-07  96.98 71.06 1899-09-07     9        Sep 1899 09-07   96.98
-## 20336 1939-09-07  96.98 64.04 1939-09-07     9        Sep 1939 09-07   96.98
-## 20337 1939-09-08 100.94 71.06 1939-09-08     9        Sep 1939 09-08  100.94
-## 20338 1939-09-09 100.94 66.92 1939-09-09     9        Sep 1939 09-09  100.94
-## 49559 2019-09-10 100.04 68.00 2019-09-10     9        Sep 2019 09-10  100.04
-## 5001  1897-09-11  95.00 71.96 1897-09-11     9        Sep 1897 09-11   95.00
-## 36411 1983-09-11  95.00 71.96 1983-09-11     9        Sep 1983 09-11   95.00
-## 49560 2019-09-11  95.00 73.94 2019-09-11     9        Sep 2019 09-11   95.00
-## 20341 1939-09-12  96.98 51.98 1939-09-12     9        Sep 1939 09-12   96.98
-## 20342 1939-09-13  98.96 66.02 1939-09-13     9        Sep 1939 09-13   98.96
-## 19248 1936-09-14 100.94 71.96 1936-09-14     9        Sep 1936 09-14  100.94
-## 19249 1936-09-15  96.98 69.98 1936-09-15     9        Sep 1936 09-15   96.98
-## 5006  1897-09-16  96.08 73.04 1897-09-16     9        Sep 1897 09-16   96.08
-## 49565 2019-09-16  96.08 64.04 2019-09-16     9        Sep 2019 09-16   96.08
-## 25825 1954-09-17  93.92 64.94 1954-09-17     9        Sep 1954 09-17   93.92
-## 25461 1953-09-18  96.08 60.98 1953-09-18     9        Sep 1953 09-18   96.08
-## 25827 1954-09-19  95.00 66.92 1954-09-19     9        Sep 1954 09-19   95.00
-## 20715 1940-09-20  96.08 60.08 1940-09-20     9        Sep 1940 09-20   96.08
-## 20716 1940-09-21  96.98 62.06 1940-09-21     9        Sep 1940 09-21   96.98
-## 19256 1936-09-22  96.98 62.06 1936-09-22     9        Sep 1936 09-22   96.98
-## 46285 2010-09-23  93.92 66.92 2010-09-23     9        Sep 2010 09-23   93.92
-## 45190 2007-09-24  93.02 66.92 2007-09-24     9        Sep 2007 09-24   93.02
-## 45191 2007-09-25  93.02 69.98 2007-09-25     9        Sep 2007 09-25   93.02
-## 6111  1900-09-26  89.96 68.00 1900-09-26     9        Sep 1900 09-26   89.96
-## 20355 1939-09-26  89.96 62.96 1939-09-26     9        Sep 1939 09-26   89.96
-## 49576 2019-09-27  93.92 57.02 2019-09-27     9        Sep 2019 09-27   93.92
-## 49577 2019-09-28  96.08 73.04 2019-09-28     9        Sep 2019 09-28   96.08
-## 25472 1953-09-29  96.98 57.92 1953-09-29     9        Sep 1953 09-29   96.98
-## 49579 2019-09-30  96.98 71.06 2019-09-30     9        Sep 2019 09-30   96.98
-## 49580 2019-10-01  96.98 69.08 2019-10-01    10        Oct 2019 10-01   96.98
-## 49581 2019-10-02  96.08 69.98 2019-10-02    10        Oct 2019 10-02   96.08
-## 49582 2019-10-03  96.08 69.08 2019-10-03    10        Oct 2019 10-03   96.08
-## 27668 1959-10-04  91.04 66.92 1959-10-04    10        Oct 1959 10-04   91.04
-## 21095 1941-10-05  89.06 71.06 1941-10-05    10        Oct 1941 10-05   89.06
-## 24747 1951-10-05  89.06 57.92 1951-10-05    10        Oct 1951 10-05   89.06
-## 27669 1959-10-05  89.06 69.08 1959-10-05    10        Oct 1959 10-05   89.06
-## 21096 1941-10-06  93.02 69.98 1941-10-06    10        Oct 1941 10-06   93.02
-## 21097 1941-10-07  91.94 62.06 1941-10-07    10        Oct 1941 10-07   91.94
-## 45204 2007-10-08  91.04 62.96 2007-10-08    10        Oct 2007 10-08   91.04
-## 20368 1939-10-09  91.04 62.96 1939-10-09    10        Oct 1939 10-09   91.04
-## 10873 1913-10-10  87.08 64.94 1913-10-10    10        Oct 1913 10-10   87.08
-## 20369 1939-10-10  87.08 53.96 1939-10-10    10        Oct 1939 10-10   87.08
-## 20736 1940-10-11  87.08 46.04 1940-10-11    10        Oct 1940 10-11   87.08
-## 21831 1943-10-11  87.08 46.04 1943-10-11    10        Oct 1943 10-11   87.08
-## 20006 1938-10-12  86.00 55.94 1938-10-12    10        Oct 1938 10-12   86.00
-## 18911 1935-10-13  87.98 57.92 1935-10-13    10        Oct 1935 10-13   87.98
-## 5034  1897-10-14  86.00 62.06 1897-10-14    10        Oct 1897 10-14   86.00
-## 5035  1897-10-15  87.98 62.96 1897-10-15    10        Oct 1897 10-15   87.98
-## 5036  1897-10-16  87.08 60.08 1897-10-16    10        Oct 1897 10-16   87.08
-## 20011 1938-10-17  87.08 51.98 1938-10-17    10        Oct 1938 10-17   87.08
-## 20012 1938-10-18  87.08 50.00 1938-10-18    10        Oct 1938 10-18   87.08
-## 48503 2016-10-19  87.08 66.02 2016-10-19    10        Oct 2016 10-19   87.08
-## 29145 1963-10-20  86.00 57.02 1963-10-20    10        Oct 1963 10-20   86.00
-## 25494 1953-10-21  84.92 55.04 1953-10-21    10        Oct 1953 10-21   84.92
-## 23303 1947-10-22  84.92 53.06 1947-10-22    10        Oct 1947 10-22   84.92
-## 29148 1963-10-23  84.02 51.98 1963-10-23    10        Oct 1963 10-23   84.02
-## 20383 1939-10-24  82.04 46.04 1939-10-24    10        Oct 1939 10-24   82.04
-## 29150 1963-10-25  82.94 57.02 1963-10-25    10        Oct 1963 10-25   82.94
-## 20751 1940-10-26  87.08 59.00 1940-10-26    10        Oct 1940 10-26   87.08
-## 20752 1940-10-27  87.08 53.06 1940-10-27    10        Oct 1940 10-27   87.08
-## 20753 1940-10-28  84.92 53.96 1940-10-28    10        Oct 1940 10-28   84.92
-## 48513 2016-10-29  82.04 53.96 2016-10-29    10        Oct 2016 10-29   82.04
-## 32077 1971-10-30  82.94 55.04 1971-10-30    10        Oct 1971 10-30   82.94
-## 18929 1935-10-31  82.04 51.08 1935-10-31    10        Oct 1935 10-31   82.04
-## 24408 1950-10-31  82.04 57.02 1950-10-31    10        Oct 1950 10-31   82.04
-## 37923 1987-11-01  82.94 48.92 1987-11-01    11        Nov 1987 11-01   82.94
-## 48516 2016-11-01  82.94 62.96 2016-11-01    11        Nov 2016 11-01   82.94
-## 37924 1987-11-02  82.04 53.96 1987-11-02    11        Nov 1987 11-02   82.04
-## 48517 2016-11-02  82.04 59.00 2016-11-02    11        Nov 2016 11-02   82.04
-## 22950 1946-11-03  78.08 57.92 1946-11-03    11        Nov 1946 11-03   78.08
-## 37925 1987-11-03  78.08 53.96 1987-11-03    11        Nov 1987 11-03   78.08
-## 34274 1977-11-04  78.08 62.96 1977-11-04    11        Nov 1977 11-04   78.08
-## 48153 2015-11-04  78.08 53.06 2015-11-04    11        Nov 2015 11-04   78.08
-## 34275 1977-11-05  78.98 62.96 1977-11-05    11        Nov 1977 11-05   78.98
-## 20031 1938-11-06  78.08 44.06 1938-11-06    11        Nov 1938 11-06   78.08
-## 4327  1895-11-07  78.08 55.94 1895-11-07    11        Nov 1895 11-07   78.08
-## 20032 1938-11-07  78.08    NA 1938-11-07    11        Nov 1938 11-07   78.08
-## 49984 2020-11-08  77.00 50.00 2020-11-08    11        Nov 2020 11-08   77.00
-## 49985 2020-11-09  78.08 51.98 2020-11-09    11        Nov 2020 11-09   78.08
-## 49986 2020-11-10  77.00 57.02 2020-11-10    11        Nov 2020 11-10   77.00
-## 6887  1902-11-11  75.02 55.04 1902-11-11    11        Nov 1902 11-11   75.02
-## 24054 1949-11-11  75.02 51.98 1949-11-11    11        Nov 1949 11-11   75.02
-## 20037 1938-11-12  75.02 51.98 1938-11-12    11        Nov 1938 11-12   75.02
-## 22594 1945-11-12  75.02 55.94 1945-11-12    11        Nov 1945 11-12   75.02
-## 26247 1955-11-13  78.08 60.98 1955-11-13    11        Nov 1955 11-13   78.08
-## 32092 1971-11-14  77.00 50.00 1971-11-14    11        Nov 1971 11-14   77.00
-## 32093 1971-11-15  77.00 57.02 1971-11-15    11        Nov 1971 11-15   77.00
-## 32094 1971-11-16  77.00 51.98 1971-11-16    11        Nov 1971 11-16   77.00
-## 27347 1958-11-17  80.06 62.06 1958-11-17    11        Nov 1958 11-17   80.06
-## 48533 2016-11-18  78.08 53.06 2016-11-18    11        Nov 2016 11-18   78.08
-## 17122 1930-11-19  77.00 57.02 1930-11-19    11        Nov 1930 11-19   77.00
-## 21505 1942-11-19  77.00 59.00 1942-11-19    11        Nov 1942 11-19   77.00
-## 21506 1942-11-20  78.08 57.02 1942-11-20    11        Nov 1942 11-20   78.08
-## 18585 1934-11-21  77.00 55.94 1934-11-21    11        Nov 1934 11-21   77.00
-## 17490 1931-11-22  75.92 59.00 1931-11-22    11        Nov 1931 11-22   75.92
-## 17491 1931-11-23  73.04 57.02 1931-11-23    11        Nov 1931 11-23   73.04
-## 17492 1931-11-24  69.98 41.00 1931-11-24    11        Nov 1931 11-24   69.98
-## 32833 1973-11-24  69.98 59.00 1973-11-24    11        Nov 1973 11-24   69.98
-## 4711  1896-11-25  71.96 51.98 1896-11-25    11        Nov 1896 11-25   71.96
-## 1424  1887-11-26  71.96 57.92 1887-11-26    11        Nov 1887 11-26   71.96
-## 39045 1990-11-27  75.92 62.96 1990-11-27    11        Nov 1990 11-27   75.92
-## 44525 2005-11-28  71.06 48.02 2005-11-28    11        Nov 2005 11-28   71.06
-## 16036 1927-11-29  71.06 57.92 1927-11-29    11        Nov 1927 11-29   71.06
-## 18228 1933-11-29  71.06 39.92 1933-11-29    11        Nov 1933 11-29   71.06
-## 18594 1934-11-30  71.96    NA 1934-11-30    11        Nov 1934 11-30   71.96
-## 31744 1970-12-01  69.98 57.02 1970-12-01    12        Dec 1970 12-01   69.98
-## 36128 1982-12-02  75.02 62.06 1982-12-02    12        Dec 1982 12-02   75.02
-## 36129 1982-12-03  75.02 60.08 1982-12-03    12        Dec 1982 12-03   75.02
-## 36130 1982-12-04  73.94 55.94 1982-12-04    12        Dec 1982 12-04   73.94
-## 43071 2001-12-05  71.96 50.00 2001-12-05    12        Dec 2001 12-05   71.96
-## 41976 1998-12-06  71.96 60.08 1998-12-06    12        Dec 1998 12-06   71.96
-## 24810 1951-12-07  68.00 51.98 1951-12-07    12        Dec 1951 12-07   68.00
-## 35403 1980-12-07  68.00 46.94 1980-12-07    12        Dec 1980 12-07   68.00
-## 41977 1998-12-07  68.00 51.08 1998-12-07    12        Dec 1998 12-07   68.00
-## 14219 1922-12-08  68.00 37.04 1922-12-08    12        Dec 1922 12-08   68.00
-## 25178 1952-12-09  68.00 50.00 1952-12-09    12        Dec 1952 12-09   68.00
-## 32118 1971-12-10  71.96 53.06 1971-12-10    12        Dec 1971 12-10   71.96
-## 45268 2007-12-11  69.98 44.96 2007-12-11    12        Dec 2007 12-11   69.98
-## 48191 2015-12-12  69.98 59.00 2015-12-12    12        Dec 2015 12-12   69.98
-## 16050 1927-12-13  69.98 53.96 1927-12-13    12        Dec 1927 12-13   69.98
-## 32122 1971-12-14  69.08 42.08 1971-12-14    12        Dec 1971 12-14   69.08
-## 36871 1984-12-14  69.08 59.00 1984-12-14    12        Dec 1984 12-14   69.08
-## 36872 1984-12-15  71.96 55.94 1984-12-15    12        Dec 1984 12-15   71.96
-## 36873 1984-12-16  69.98 51.98 1984-12-16    12        Dec 1984 12-16   69.98
-## 36874 1984-12-17  71.06 57.02 1984-12-17    12        Dec 1984 12-17   71.06
-## 14960 1924-12-18  66.92 55.04 1924-12-18    12        Dec 1924 12-18   66.92
-## 2178  1889-12-19  68.00 51.98 1889-12-19    12        Dec 1889 12-19   68.00
-## 24093 1949-12-20  66.02 42.08 1949-12-20    12        Dec 1949 12-20   66.02
-## 47470 2013-12-21  71.96 57.02 2013-12-21    12        Dec 2013 12-21   71.96
-## 21173 1941-12-22  64.04 44.06 1941-12-22    12        Dec 1941 12-22   64.04
-## 31766 1970-12-23  68.00 26.96 1970-12-23    12        Dec 1970 12-23   68.00
-## 2183  1889-12-24  68.00 44.06 1889-12-24    12        Dec 1889 12-24   68.00
-## 29576 1964-12-24  68.00 53.06 1964-12-24    12        Dec 1964 12-24   68.00
-## 36151 1982-12-25  69.98 57.92 1982-12-25    12        Dec 1982 12-25   69.98
-## 50396 2021-12-25  69.98 50.00 2021-12-25    12        Dec 2021 12-25   69.98
-## 48571 2016-12-26  73.94 55.04 2016-12-26    12        Dec 2016 12-26   73.94
-## 45650 2008-12-27  69.98 55.94 2008-12-27    12        Dec 2008 12-27   69.98
-## 48206 2015-12-27  69.98 42.08 2015-12-27    12        Dec 2015 12-27   69.98
-## 36885 1984-12-28  66.92 57.02 1984-12-28    12        Dec 1984 12-28   66.92
-## 50399 2021-12-28  66.92 42.98 2021-12-28    12        Dec 2021 12-28   66.92
-## 36886 1984-12-29  68.00 60.08 1984-12-29    12        Dec 1984 12-29   68.00
-## 1176  1875-12-30  66.92 50.00 1875-12-30    12        Dec 1875 12-30   66.92
-## 24834 1951-12-31  71.96 55.04 1951-12-31    12        Dec 1951 12-31   71.96
-\end{verbatim}
-\begin{alltt}
-\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq}\hlstd{(}\hlkwd{min}\hlstd{(CHCND}\hlopt{$}\hlstd{Year),} \hlkwd{max}\hlstd{(CHCND}\hlopt{$}\hlstd{Year),} \hlkwc{by}\hlstd{=}\hlnum{2}\hlstd{))\{}
-  \hlcom{#i=52742'}
-   \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{Date, CHCND[CHCND}\hlopt{$}\hlstd{Year}\hlopt{<=}\hlstd{i,],} \hlkwc{pch}\hlstd{=}\hlstr{'.'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"grey80"}\hlstd{)}
-   \hlkwd{points}\hlstd{(maxTMAX}\hlopt{~}\hlstd{Date,} \hlkwc{data}\hlstd{=CHCND[CHCND}\hlopt{$}\hlstd{Year}\hlopt{<=}\hlstd{i,],} \hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.8} \hlstd{)}
-\hlstd{\}}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-2} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-3} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-4} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-5} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-6} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-7} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-8} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-9} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-10} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-11} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-12} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-13} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-14} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-15} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-16} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-17} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-18} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-19} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-20} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-21} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-22} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-23} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-24} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-25} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-26} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-27} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-28} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-29} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-30} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-31} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-32} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-33} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-34} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-35} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-36} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-37} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-38} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-39} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-40} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-41} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-42} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-43} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-44} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-45} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-46} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-47} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-48} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-49} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-50} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-51} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-52} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-53} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-54} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-55} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-56} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-57} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-58} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-59} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-60} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-61} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-62} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-63} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-64} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-65} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-66} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-67} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-68} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-69} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-70} 
-
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-71} 
-\end{knitrout}
-\subsection{Iterate Boxplots}
+\subsection{Iterate TMAX Boxplots}
 
 
 
@@ -1145,7 +473,14 @@ Evaluate both TMAX and TMIN in GSOM by Year using MonthEvalStats() function.
 
 To test the code, I have created graphics that can then be used in the animation process, i.e. try to create code that doesn't get too complicated and then fail! 
 
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 \subsection{Animation}
 
@@ -1159,6 +494,7 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
 \hlcom{#par(las=1, mfrow=c(2,1), mar= c(2, 4, 2, 1) + 0.1)}
 \hlstd{img} \hlkwb{<-} \hlkwd{image_graph}\hlstd{(}\hlnum{600}\hlstd{,} \hlnum{480}\hlstd{,} \hlkwc{res} \hlstd{=} \hlnum{96}\hlstd{)}
 \hlcom{# START ------------------------------------------}
+
 \hlstd{ylim_new}\hlkwb{=}\hlnum{NA}
 \hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq}\hlstd{(}\hlkwd{min}\hlstd{(GSOM}\hlopt{$}\hlstd{Year),} \hlkwd{max}\hlstd{(GSOM}\hlopt{$}\hlstd{Year),} \hlkwc{by}\hlstd{=}\hlnum{2}\hlstd{))}
    \hlstd{\{}
@@ -1167,11 +503,14 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
    \hlkwa{if}\hlstd{(}\hlkwd{nrow}\hlstd{(GSOMsub)}\hlopt{<}\hlnum{10}\hlstd{)} \hlkwa{next}
 \hlkwd{plot}\hlstd{(TMIN}\hlopt{~}\hlstd{Date, GSOMsub[GSOMsub}\hlopt{$}\hlstd{Month}\hlopt{==}\hlstd{maxmonth,],}
    \hlkwc{col}\hlstd{=}\hlstr{'gray70'}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{""}\hlstd{,}
-   \hlkwc{main}\hlstd{=}\hlkwd{paste}\hlstd{(}\hlstr{"Mean"}\hlstd{,} \hlkwd{format}\hlstd{(GSOMsub}\hlopt{$}\hlstd{Date,}\hlstr{"%B"}\hlstd{)[}\hlnum{1}\hlstd{],} \hlstr{"Min. Temp"}\hlstd{, GSOM_Longest}\hlopt{$}\hlstd{name))}
+   \hlkwc{main}\hlstd{=}\hlkwd{paste}\hlstd{(}\hlstr{"Mean"}\hlstd{,} \hlkwd{format}\hlstd{(GSOMsub}\hlopt{$}\hlstd{Date,}\hlstr{"%B"}\hlstd{)[}\hlnum{1}\hlstd{],}
+              \hlstr{"Min. Temp"}\hlstd{, GSOM_Longest}\hlopt{$}\hlstd{name))}
 \hlstd{GSOM.lm} \hlkwb{=} \hlkwd{lm}\hlstd{(TMIN}\hlopt{~}\hlstd{Date, GSOMsub)}
-\hlstd{pred_dates} \hlkwb{<-}\hlkwd{data.frame}\hlstd{(}\hlkwc{Date} \hlstd{= GSOMsub}\hlopt{$}\hlstd{Date);} \hlkwd{str}\hlstd{(pred_dates)}
+\hlstd{pred_dates} \hlkwb{<-}\hlkwd{data.frame}\hlstd{(}\hlkwc{Date} \hlstd{= GSOMsub}\hlopt{$}\hlstd{Date);}
+\hlkwd{nrow}\hlstd{(pred_dates); pred_dates}
 \hlcom{#Predits the values with confidence interval }
-\hlstd{ci} \hlkwb{<-} \hlkwd{predict}\hlstd{(GSOM.lm,} \hlkwc{newdata} \hlstd{= pred_dates,} \hlkwc{interval} \hlstd{=} \hlstr{'confidence'}\hlstd{)}
+\hlstd{ci} \hlkwb{<-} \hlkwd{predict}\hlstd{(GSOM.lm,} \hlkwc{newdata} \hlstd{= pred_dates,}
+              \hlkwc{interval} \hlstd{=} \hlstr{'confidence'}\hlstd{)}
 \hlcom{#   str(ci)}
 \hlkwd{lines}\hlstd{(pred_dates}\hlopt{$}\hlstd{Date,} \hlkwd{as.numeric}\hlstd{(ci[,}\hlnum{1}\hlstd{]),} \hlkwc{col}\hlstd{=}\hlstr{"darkred"}\hlstd{)}
 \hlkwd{lines}\hlstd{(pred_dates}\hlopt{$}\hlstd{Date,} \hlkwd{as.numeric}\hlstd{(ci[,}\hlnum{2}\hlstd{]),} \hlkwc{col}\hlstd{=}\hlstr{"darkorange"}\hlstd{)}
@@ -1182,7 +521,7 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
 \hlkwd{text}\hlstd{(pred_dates}\hlopt{$}\hlstd{Date[location_index], ci[location_index,}\hlnum{3}\hlstd{],}
      \hlkwd{paste}\hlstd{(}\hlkwd{report_prob2}\hlstd{(GSOM.lm)),} \hlkwc{pos}\hlstd{=}\hlnum{2}\hlstd{)}
 
-\hlcom{# Box Plot of  -------------------------------}
+\hlcom{# Box Plot of TMAX by Month -------------------------------}
 \hlstd{CHCNDsub} \hlkwb{=} \hlkwd{subset}\hlstd{(CHCND, CHCND}\hlopt{$}\hlstd{Year}\hlopt{<=}\hlstd{i,}
                   \hlkwc{select}\hlstd{=}\hlkwd{c}\hlstd{(Month, Month.name, TMAX, TMIN))}
 
@@ -1190,10 +529,12 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
         \hlkwc{main}\hlstd{=}\hlstr{""}\hlstd{)}
 \hlstd{symbol.y} \hlkwb{=} \hlstd{(}\hlkwd{par}\hlstd{()}\hlopt{$}\hlstd{yaxp[}\hlnum{2}\hlstd{])}\hlopt{-}\hlkwd{diff}\hlstd{(}\hlkwd{par}\hlstd{()}\hlopt{$}\hlstd{yaxp[}\hlnum{1}\hlopt{:}\hlnum{2}\hlstd{])}\hlopt{*}\hlnum{.99}
 \hlcom{#symbol.y = (par()$yaxp[2])}
-\hlkwd{text}\hlstd{(sumstats}\hlopt{$}\hlstd{Month, symbol.y, sumstats}\hlopt{$}\hlstd{TMAX_Symbol,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{2}\hlstd{)}
-\hlkwd{mtext}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"Maximum Daily Temperatures"}\hlstd{,} \hlkwd{min}\hlstd{(CHCND}\hlopt{$}\hlstd{Year),} \hlstr{"-"}\hlstd{,}
-                   \hlstd{i, GSOM_Longest}\hlopt{$}\hlstd{name),} \hlkwc{line}\hlstd{=}\hlnum{1}\hlstd{)}
-\hlkwd{mtext}\hlstd{(}\hlstr{"(NOTE: Red astrisks correspond to signficant changes)"}\hlstd{,} \hlkwc{line}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.7}\hlstd{)}
+\hlkwd{text}\hlstd{(sumstats}\hlopt{$}\hlstd{Month, symbol.y, sumstats}\hlopt{$}\hlstd{TMAX_Symbol,}
+     \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{2}\hlstd{)}
+\hlkwd{mtext}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"Maximum Daily Temperatures"}\hlstd{,} \hlkwd{min}\hlstd{(CHCND}\hlopt{$}\hlstd{Year),}
+      \hlstr{"-"}\hlstd{, i, GSOM_Longest}\hlopt{$}\hlstd{name),} \hlkwc{line}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlkwd{mtext}\hlstd{(}\hlstr{"(NOTE: Red astrisks correspond to signficant changes)"}\hlstd{,}
+      \hlkwc{line}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.7}\hlstd{)}
 
 \hlcom{# TMAX --------------------------------}
 
@@ -1205,8 +546,8 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
                 \hlstr{"Max. Temp"}\hlstd{, GSOM_Longest}\hlopt{$}\hlstd{name))}
 \hlstd{GSOM.lm} \hlkwb{=} \hlkwd{lm}\hlstd{(TMAX}\hlopt{~}\hlstd{Date, GSOMsub)}
 
-\hlstd{ci} \hlkwb{<-} \hlkwd{predict}\hlstd{(GSOM.lm,} \hlkwc{newdata} \hlstd{= pred_dates,} \hlkwc{interval} \hlstd{=} \hlstr{'confidence'}\hlstd{)}
-\hlcom{#   str(ci)}
+\hlstd{ci} \hlkwb{<-} \hlkwd{predict}\hlstd{(GSOM.lm,} \hlkwc{newdata} \hlstd{= pred_dates,}
+              \hlkwc{interval} \hlstd{=} \hlstr{'confidence'}\hlstd{)}
 \hlkwd{lines}\hlstd{(pred_dates}\hlopt{$}\hlstd{Date,} \hlkwd{as.numeric}\hlstd{(ci[,}\hlnum{1}\hlstd{]),} \hlkwc{col}\hlstd{=}\hlstr{"darkred"}\hlstd{)}
 \hlkwd{lines}\hlstd{(pred_dates}\hlopt{$}\hlstd{Date,} \hlkwd{as.numeric}\hlstd{(ci[,}\hlnum{2}\hlstd{]),} \hlkwc{col}\hlstd{=}\hlstr{"darkorange"}\hlstd{)}
 \hlkwd{lines}\hlstd{(pred_dates}\hlopt{$}\hlstd{Date, ci[,}\hlnum{3}\hlstd{],} \hlkwc{col}\hlstd{=}\hlstr{"darkorange"}\hlstd{)}
@@ -1216,9 +557,10 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
 
 \hlkwd{plot}\hlstd{(TMAX}\hlopt{~}\hlstd{Date, CHCND[CHCND}\hlopt{$}\hlstd{Year}\hlopt{<=}\hlstd{i,],} \hlkwc{pch}\hlstd{=}\hlstr{'.'}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"grey80"}\hlstd{,}
      \hlkwc{main}\hlstd{=}\hlstr{"Recorded Daily High Temperatures"}\hlstd{)}
-   \hlkwd{points}\hlstd{(maxTMAX}\hlopt{~}\hlstd{Date,} \hlkwc{data}\hlstd{=CHCND[CHCND}\hlopt{$}\hlstd{Year}\hlopt{<=}\hlstd{i,],} \hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.8} \hlstd{)}
-
+\hlkwd{points}\hlstd{(maxTMAX}\hlopt{~}\hlstd{Date,} \hlkwc{data}\hlstd{=CHCND[CHCND}\hlopt{$}\hlstd{Year}\hlopt{<=}\hlstd{i,],} \hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{,}
+       \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{.8} \hlstd{)}
 \hlstd{\}}
+
 \hlcom{# END -----------------------------------------------------}
 \hlkwd{dev.off}\hlstd{()}
 \end{alltt}
@@ -1231,55 +573,18 @@ The file is saved in the main directory.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{print}\hlstd{(img)}
+\hlcom{#print(img)}
 \end{alltt}
-\begin{verbatim}
-## # A tibble: 64 x 7
-##    format width height colorspace matte filesize density
-##    <chr>  <int>  <int> <chr>      <lgl>    <int> <chr>  
-##  1 PNG      600    480 sRGB       TRUE         0 96x96  
-##  2 PNG      600    480 sRGB       TRUE         0 96x96  
-##  3 PNG      600    480 sRGB       TRUE         0 96x96  
-##  4 PNG      600    480 sRGB       TRUE         0 96x96  
-##  5 PNG      600    480 sRGB       TRUE         0 96x96  
-##  6 PNG      600    480 sRGB       TRUE         0 96x96  
-##  7 PNG      600    480 sRGB       TRUE         0 96x96  
-##  8 PNG      600    480 sRGB       TRUE         0 96x96  
-##  9 PNG      600    480 sRGB       TRUE         0 96x96  
-## 10 PNG      600    480 sRGB       TRUE         0 96x96  
-## # ... with 54 more rows
-\end{verbatim}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/print_img-1} 
 \end{knitrout}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{GSOM_animation} \hlkwb{<-} \hlkwd{image_animate}\hlstd{(img,} \hlkwc{fps} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{loop}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{optimize} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlkwd{print}\hlstd{(GSOM_animation)}
-\end{alltt}
-\begin{verbatim}
-## # A tibble: 64 x 7
-##    format width height colorspace matte filesize density
-##    <chr>  <int>  <int> <chr>      <lgl>    <int> <chr>  
-##  1 gif      600    480 sRGB       TRUE         0 96x96  
-##  2 gif      569    456 sRGB       TRUE         0 96x96  
-##  3 gif      526    449 sRGB       TRUE         0 96x96  
-##  4 gif      547    449 sRGB       TRUE         0 96x96  
-##  5 gif      547    449 sRGB       TRUE         0 96x96  
-##  6 gif      519    449 sRGB       TRUE         0 96x96  
-##  7 gif      498    449 sRGB       TRUE         0 96x96  
-##  8 gif      565    456 sRGB       TRUE         0 96x96  
-##  9 gif      521    449 sRGB       TRUE         0 96x96  
-## 10 gif      504    449 sRGB       TRUE         0 96x96  
-## # ... with 54 more rows
-\end{verbatim}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/write_img-1} 
-\begin{kframe}\begin{alltt}
-\hlkwd{setwd}\hlstd{(}\hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/gif"}\hlstd{)}
-\hlkwd{image_write}\hlstd{(GSOM_animation,} \hlkwd{paste}\hlstd{(fips}\hlopt{$}\hlstd{State,} \hlstr{"_GSOM.gif"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{))}
+\hlcom{#print(GSOM_animation)}
+\hlkwd{setwd}\hlstd{(}\hlstr{"/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media"}\hlstd{)}
+\hlkwd{image_write}\hlstd{(GSOM_animation,} \hlkwd{paste}\hlstd{(}\hlstr{"gif/"}\hlstd{, fips}\hlopt{$}\hlstd{State,} \hlstr{"_GSOM.gif"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{))}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1299,86 +604,82 @@ The file is saved in the main directory.
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# Please cite ggmap if you use it! See citation("{}ggmap"{}) for details.}}\begin{alltt}
 \hlcom{#API = "AIzaSyBfkMN5PYsB0A92RbOxo1bc51y-5aitKDI"}
 \hlcom{#register_google(key = API, write = TRUE)}
-
-\hlstd{GSOM_Longest}\hlopt{$}\hlstd{name}
-\end{alltt}
-\begin{verbatim}
-## [1] "LEXINGTON BLUEGRASS AIRPORT, KY US"
-\end{verbatim}
-\begin{alltt}
-\hlstd{locus}\hlkwb{=}\hlkwd{c}\hlstd{(}\hlkwc{lat} \hlstd{= GSOM_Longest}\hlopt{$}\hlstd{latitude,} \hlkwc{lon} \hlstd{= GSOM_Longest}\hlopt{$}\hlstd{longitude)}
-\hlstd{locus}
-\end{alltt}
-\begin{verbatim}
-##       lat       lon 
-##  38.03391 -84.61138
-\end{verbatim}
-\begin{alltt}
-\hlcom{# You may also use the coordinates (latitude and longitude), }
-\hlcom{# if you have them locus=c(lat = 45.4344700786,lon = 12.3394828851)}
-\hlcom{# Now we require the information from Google, by also zooming on the map}
-
-\hlcom{#myMap <- c(left = -125, bottom = 25.75, right = -67, top = 49)}
-\hlcom{#get_stamenmap(us, zoom = 5, maptype = "toner-lite") %>% ggmap() }
-
-
-\hlcom{#myMap <- get_map(location=locus, zoom= 18, source="google", maptype="roadmap", crop=TRUE)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
 \hlcom{#ggmap(myMap)+}
 \hlcom{#geom_point(aes(x = locus[1], y = locus[2]),}
  \hlcom{#alpha = .5, color="darkred", size = 3)}
 
-\hlstd{myLocation} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwc{lon} \hlstd{=} \hlopt{-}\hlnum{95.3632715}\hlstd{,} \hlkwc{lat} \hlstd{=} \hlnum{29.7632836}\hlstd{)}
-\hlstd{myLocation} \hlkwb{<-} \hlstd{locus}
-\hlstd{myMap} \hlkwb{<-} \hlkwd{get_map}\hlstd{(}\hlkwc{location}\hlstd{=myLocation,}
-\hlkwc{source}\hlstd{=}\hlstr{"stamen"}\hlstd{,} \hlkwc{maptype}\hlstd{=}\hlstr{"watercolor"}\hlstd{,} \hlkwc{crop}\hlstd{=}\hlnum{FALSE}\hlstd{)}
+\hlstd{GSOM_Longest}\hlopt{$}\hlstd{name}
+\end{alltt}
+\begin{verbatim}
+## [1] "ASHLAND, OR US"
+\end{verbatim}
+\begin{alltt}
+\hlstd{lat} \hlkwb{=} \hlstd{GSOM_Longest}\hlopt{$}\hlstd{latitude}
+\hlstd{lon} \hlkwb{=} \hlstd{GSOM_Longest}\hlopt{$}\hlstd{longitude}
+\hlstd{station} \hlkwb{=} \hlkwd{c}\hlstd{(lon, lat)}
+\hlstd{station.df} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{lon} \hlstd{= GSOM_Longest}\hlopt{$}\hlstd{longitude,}
+                         \hlkwc{lat} \hlstd{= GSOM_Longest}\hlopt{$}\hlstd{latitude,}
+                         \hlkwc{Station} \hlstd{= GSOM_Longest}\hlopt{$}\hlstd{name);}
+\hlkwd{str}\hlstd{(station.df)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	1 obs. of  3 variables:
+##  $ lon    : num -123
+##  $ lat    : num 42.2
+##  $ Station: Factor w/ 1 level "ASHLAND, OR US": 1
+\end{verbatim}
+\begin{alltt}
+\hlstd{myMap} \hlkwb{<-} \hlkwd{get_map}\hlstd{(}\hlkwc{location}\hlstd{=station,} \hlkwc{zoom}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{scale} \hlstd{=}\hlnum{2}\hlstd{,}
+\hlkwc{source}\hlstd{=}\hlstr{"stamen"}\hlstd{,} \hlkwc{maptype}\hlstd{=}\hlstr{"terrain"}\hlstd{,} \hlkwc{messaging} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{crop}\hlstd{=}\hlnum{FALSE}\hlstd{)}
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# note : locations should be specified in the lon/lat format, not lat/lon.}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : https://maps.googleapis.com/maps/api/staticmap?center=42.21306,-122.71478\&zoom=7\&size=640x640\&scale=2\&maptype=terrain\&key=xxx-5aitKDI}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : https://maps.googleapis.com/maps/api/staticmap?center=38.03391,-84.61138\&zoom=10\&size=640x640\&scale=2\&maptype=terrain\&key=xxx-5aitKDI}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/terrain/7/19/46.png}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/270/393.jpg}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/terrain/7/20/46.png}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/271/393.jpg}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/terrain/7/21/46.png}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/272/393.jpg}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/terrain/7/19/47.png}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/270/394.jpg}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/terrain/7/20/47.png}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/271/394.jpg}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/terrain/7/21/47.png}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/272/394.jpg}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/terrain/7/19/48.png}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/270/395.jpg}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/terrain/7/20/48.png}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/271/395.jpg}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/272/395.jpg}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/270/396.jpg}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/271/396.jpg}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/watercolor/10/272/396.jpg}}\begin{alltt}
-\hlkwd{ggmap}\hlstd{(myMap)}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Source : http://tile.stamen.com/terrain/7/21/48.png}}\begin{alltt}
+\hlkwd{ggmap}\hlstd{(myMap)} \hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= lon,} \hlkwc{y} \hlstd{= lat),}
+      \hlkwc{data} \hlstd{= station.df,} \hlkwc{alpha} \hlstd{=} \hlnum{.5}\hlstd{,} \hlkwc{color}\hlstd{=}\hlstr{"darkred"}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{3}\hlstd{)} \hlopt{+}
+      \hlkwd{geom_text}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= lon,} \hlkwc{y} \hlstd{= lat,} \hlkwc{label}\hlstd{=Station),}
+      \hlkwc{data} \hlstd{= station.df,} \hlkwc{alpha} \hlstd{=} \hlnum{.5}\hlstd{,} \hlkwc{color}\hlstd{=}\hlstr{"darkred"}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{3}\hlstd{,}
+      \hlkwc{hjust}\hlstd{=}\hlnum{.1}\hlstd{,} \hlkwc{vjust}\hlstd{=}\hlopt{-}\hlnum{1}\hlstd{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 \begin{kframe}\begin{alltt}
+\hlcom{#zoom = 11, scale = 2, maptype ='watercolor',}
+
+\hlkwd{png}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"png//MAP-"}\hlstd{, fips}\hlopt{$}\hlstd{State,} \hlstr{".png"}\hlstd{),}
+    \hlkwc{width} \hlstd{=} \hlnum{480}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{480}\hlstd{,} \hlkwc{units} \hlstd{=} \hlstr{"px"}\hlstd{,}
+    \hlkwc{pointsize} \hlstd{=} \hlnum{12}\hlstd{,} \hlkwc{bg} \hlstd{=} \hlstr{"white"}\hlstd{)}
 \hlkwd{ggmap}\hlstd{(myMap)}\hlopt{+}
-\hlkwd{geom_point}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= lon,} \hlkwc{y} \hlstd{= lat),} \hlkwc{data} \hlstd{= locus,} \hlkwc{alpha} \hlstd{=} \hlnum{.5}\hlstd{,} \hlkwc{color}\hlstd{=}\hlstr{"darkred"}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{3}\hlstd{)}
+\hlkwd{geom_point}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= lon,} \hlkwc{y} \hlstd{= lat),} \hlkwc{data} \hlstd{= station.df,}
+   \hlkwc{alpha} \hlstd{=} \hlnum{.5}\hlstd{,} \hlkwc{color}\hlstd{=}\hlstr{"darkred"}\hlstd{,} \hlkwc{size} \hlstd{=} \hlnum{3}\hlstd{)} \hlopt{+}
+   \hlkwd{geom_text}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= lon,} \hlkwc{y} \hlstd{= lat,} \hlkwc{label}\hlstd{=Station),}
+      \hlkwc{data} \hlstd{= station.df,} \hlkwc{alpha} \hlstd{=} \hlnum{.5}\hlstd{,} \hlkwc{color}\hlstd{=}\hlstr{"darkred"}\hlstd{,}
+      \hlkwc{size} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{hjust}\hlstd{=}\hlnum{.1}\hlstd{,} \hlkwc{vjust}\hlstd{=}\hlopt{-}\hlnum{1}\hlstd{)}
+\hlkwd{dev.off}\hlstd{()}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `fortify()`:\\\#\# ! `data` must be a data frame, or other object coercible by `fortify()`, not a numeric vector.}}\end{kframe}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 
 \begin{knitrout}

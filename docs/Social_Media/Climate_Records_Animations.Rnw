@@ -39,7 +39,17 @@ The first to propose the role of CO2 on the Earth's atmosphere was a XX scientie
 
 \subsection{rNOAA Package and R}
 
-\subsection{Generate Temperature Record For Each State}
+R is an open source programming environment that has become one of the most popular tools for statiticians and data scientists. Capitalizing on the open source framework, a wide range of libraries or packages have been developed to faciliate data processing, analysis, and graphical displays. On such package is rNOAA developed to collect and display climate records stored on NOAA servers.
+
+\section{Temperature Trends by State}
+
+\subsection{State Temperature Records}
+
+There are numerous ways to analyze temperature records, where stations can be analyzed individually or records could be sampled and analyzed in spatially in grids. Each of these are valid approaches depending on the question to be addressed. 
+
+In this case the question is ``Based on the longest state meterological record, is there a temperature trend?"
+
+\subsection{Approach}
 
 \subsubsection{List of Cities}
 
@@ -69,7 +79,9 @@ First, we subset the data for stations that actively collecting data. Then we'll
 <<ncdc_stations, results='hide'>>=
 
 # alabama stations.. sorted by the most recent
-# test <- ncdc_stations(datasetid='GHCND', datatypeid = c("TMAX", "TMIN"), locationid='FIPS:01', limit=1000, sortfield = 'maxdate', sortorder='desc')
+# test <- ncdc_stations(datasetid='GHCND', 
+# datatypeid = c("TMAX", "TMIN"), locationid='FIPS:01', 
+# limit=1000, sortfield = 'maxdate', sortorder='desc')
 
 get_locationid <- function(FIPS){
    fips = ncdc_locs(locationcategoryid='ST', limit=55)
@@ -83,24 +95,35 @@ get_locationid <- function(FIPS){
 @
 \subsubsection{Select State}
 
+Using the rNOAA function ncdc\_locs(), we can queary NOAA's database to identify station codes (FIPS) by state. With the states and some territories, there are 55 FIPS for US weather stations. 
+
 <<>>=
-fips = get_locationid(18); str(fips); 
+fips = get_locationid(1); str(fips); 
 
 @
 
+After 
 
-<<>>=   
+<<selectstation>>=   
 GSOM_Stations <- ncdc_stations(datasetid='GSOM', 
                datatypeid = c("TMAX", "TMIN"),
                locationid=fips$id, limit=1000, 
                sortfield = 'maxdate', sortorder='desc')
 
-GSOM_Recent = GSOM_Stations$data[GSOM_Stations$data$maxdate>='2021-11-01',]
+GSOM_Recent = 
+   GSOM_Stations$data[GSOM_Stations$data$maxdate>='2021-11-01',]
 
-GSOM_Coverage = GSOM_Recent[GSOM_Recent$datacoverage > 0.90,]
+GSOM_Coverage = 
+   GSOM_Recent[GSOM_Recent$datacoverage > 0.95,]
 GSOM_Longest = 
    GSOM_Coverage[GSOM_Coverage$mindate == min(GSOM_Coverage$mindate),]
-GSOM_Longest = GSOM_Longest[1,] #Pick first if more than one.
+GSOM_Longest = 
+   GSOM_Longest[1,] #Pick first if more than one.
+@
+
+The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
+
+<<echo=FALSE>>=
 GSOM_Longest
 @
 
@@ -135,7 +158,7 @@ get_GSOM <- function(stid, datatype) {
 
 The function relies on two inputs, the station id and the measured parameter -- TMAX and TMIN in this case. After that, the data needs to be clean up quite a bit. 
 
-<<getGSOM>>=
+<<getGSOM, warning=FALSE>>=
 GSOM_TMAX <- get_GSOM(GSOM_Longest$id, 'TMAX')
 GSOM_TMIN <- get_GSOM(GSOM_Longest$id, 'TMIN')
 
@@ -157,7 +180,8 @@ dfTbl_TMIN$Date = as.Date(dfTbl_TMIN$date)
 
 dfTbl_TMAX <- subset(dfTbl_TMAX, select=c(Date, station, TMAX))
 dfTbl_TMIN <- subset(dfTbl_TMIN, select=c(Date, TMIN))
-str(dfTbl_TMAX)
+
+dfTbl_TMAX[1,]
 
 GSOM <- merge(dfTbl_TMAX, dfTbl_TMIN, by="Date")
 
@@ -237,6 +261,8 @@ return(sumstats)
    
 \subsubsection{Determine Months with Biggest Changes}
 
+Admittedly, determining the months with the biggest changes isn't a very good approach for hypothesize testing -- it's more like a fishing expedition, but as long as we understand the difference between an a priori hypothesis and an exploratory analysis, we should be okay if we make appropriate conclusions. 
+
 <<EvaluatingMonths>>=
 # Selecting Most Important Month (TMAX overwrites)
 sumstats = MonthEvalStats(GSOM)
@@ -265,74 +291,74 @@ report_prob(0.0032)
 
 report_prob2 <-function(lm){
    # lm=GSOM.lm
-   if(anova(lm)$'Pr(>F)'[1] > 0.05) return("p-value > 0.05 (Not Significant)")
-   if(anova(lm)$'Pr(>F)'[1] < 0.05 & anova(lm)$'Pr(>F)'[1] >= 0.001) return(
-      paste("Change ", round(coef(lm)[2]*356.25*100, 1), "/100 years, ", "p-value =", round(anova(lm)$'Pr(>F)'[1], 3), "(Statistically Significant)", sep=""))
-   if(anova(lm)$'Pr(>F)'[1] < 0.001) return(
-      paste("Change ", round(coef(lm)[2]*325.25*100, 1), "/100 years, ", "p-value < 0.001 (Statistically Significant)", sep=""))
+   if(anova(lm)$'Pr(>F)'[1] > 0.05){
+         return("p-value > 0.05 (Not Significant)")
+      }
+   if(anova(lm)$'Pr(>F)'[1] < 0.05 & 
+      anova(lm)$'Pr(>F)'[1] >= 0.001){
+         return(paste("Change ", round(coef(lm)[2]*356.25*100, 1), 
+         "/100 years, ", "p-value =", round(anova(lm)$'Pr(>F)'[1], 3), 
+         "(Statistically Significant)", sep=""))
+      }
+   if(anova(lm)$'Pr(>F)'[1] < 0.001) {
+         return(paste("Change ", round(coef(lm)[2]*325.25*100, 1), 
+         "/100 years, ", "p-value < 0.001 (Statistically Significant)", 
+         sep=""))
+   }
 }
 
-#test function
-summary(GSOM.lm); coef(GSOM.lm)
-report_prob2(GSOM.lm)
 @
 
 \subsection{Extreme Temperture Events}
 
 \subsubsection{Functions to Collect and Clean CHCND}
 
-
 <<CHCND_Download>>=
 GSOM_Longest$id
 
 stid = substr(GSOM_Longest$id, 7, 17)
 
-CHCND <- read.csv("https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/USC00013511.csv")
+CHCND.https <- "https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/"
 
 get_CHCND <- function(stid) {
    #stid = "USC00013511"
-   import <- read.csv(paste("https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/", stid, ".csv", sep=""))
+   import <- read.csv(paste(CHCND.https, stid, ".csv", sep=""))
    selected = subset(import, select=c("DATE", "TMAX", "TMIN"))
    selected$TMAX = selected$TMAX/10*(9/5)+32
    selected$TMIN = selected$TMIN/10*(9/5)+32
    selected$Date = as.Date(selected$DATE)
-   #head(selected)
+   selected = selected[complete.cases(selected$TMAX),]
    selected
 }
 
-
-CHCND <- get_CHCND(stid)
+CHCND <- get_CHCND(stid); nrow(CHCND)
 #str(CHCND)
 
 CHCND$Month = as.numeric(format(as.Date(CHCND$Date), format = "%m"))
-CHCND$Month.name = factor(format(as.Date(CHCND$Date), format = "%b"))
-CHCND$TMAX[CHCND$TMAX>150] = NA
-CHCND$Month.name <- reorder(CHCND$Month.name, CHCND$Month)
-levels(CHCND$Month.name)
+CHCND$Month.name = factor(format(as.Date(CHCND$Date), format = "%b"),
+         levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+                     "Aug", "Sep", "Oct", "Nov", "Dec"))
+#levels(CHCND$Month.name)
+
+range(CHCND$TMAX, na.rm=T)
+spread = sd(CHCND$TMAX, na.rm=T)*4
+TMAX_mean = mean(CHCND$TMAX, na.rm=T)
+
+CHCND$TMAX[complete.cases(CHCND$TMAX) & 
+              CHCND$TMAX > TMAX_mean+spread] <-NA
+CHCND$TMAX[complete.cases(CHCND$TMAX) & 
+              CHCND$TMAX < TMAX_mean-spread] <-NA
+range(CHCND$TMAX, na.rm=T)
+
 CHCND$Year = as.numeric(format(as.Date(CHCND$Date), format = "%Y"))
 
 #head(CHCND)
 @
 
-\subsection{Extreme Temperatures}
+\subsection{Determine Record Setting Temperatures}
 
-<<>>=
-# Create Max for each Julian Date
-df = data.frame(date=1:20, year=rep(1:5, each=4), julian=c(1:4),TMAX = c(3,0,1,0,4,0,1,2,0,0,1,8,3,0,0,9,5,5,5,10))
-df$maxTMAX[df$year==1] <- df$TMAX[df$year==1]
-for(i in 1:max(df$date)){
-   df$year[df$date==i]
-   df$julian[df$date==i]
-   df$TMAX[df$date==i]
-   max(df$maxTMAX[df$julian[df$date==i]], na.rm=T)
-   if(df$TMAX[df$date==i] > 
-      max(df$maxTMAX[df$julian[df$date==i]], na.rm=T) ){ 
-      df$maxTMAX[df$date==i] <- df$TMAX[df$date==i]
-   print(i)
-   } else df$maxTMAX[df$date==i] <- max(df$maxTMAX[df$julian[df$date==i]], na.rm=T)
-}
+<<extremetempplot, echo=FALSE, results='hide'>>=
 
-#CHCND$Julian = as.numeric(format(CHCND$Date, "%j"))
 CHCND$mmdd <- format(CHCND$Date, "%m-%d")
 CHCND_Mean = mean(CHCND$TMAX, na.rm=T)
 
@@ -352,18 +378,20 @@ if(CHCND$TMAX[i] <
       CHCND$maxTMAX[i] <- CHCND$TMAX[i]
       }
  }
- 
-head(CHCND)
-test = CHCND[!is.na(CHCND$maxTMAX),]; test[order(test$mmdd),]
 
+@
 
+<<testplot_noeval, echo=FALSE, eval=FALSE>>=
 for(i in seq(min(CHCND$Year), max(CHCND$Year), by=2)){
-  #i=52742'
+ # i=min(CHCND$Year)
    plot(TMAX~Date, CHCND[CHCND$Year<=i,], pch='.', col="grey80")
-   points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], pch=20, col="red", cex=.8 )
+   points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], 
+          pch=20, col="red", cex=.8 )
 }
 @
-\subsection{Iterate Boxplots}
+
+\subsection{Iterate TMAX Boxplots}
+
 <<boxplots, eval=FALSE, echo=FALSE>>=
 for(i in min(CHCND$Year+5):max(CHCND$Year)){
   # i=1930
@@ -381,18 +409,18 @@ text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, col="red", cex=2)
 }
 @
 
-
 \section{Plot Results}
 
 \subsection{Static Plots}
 
 To test the code, I have created graphics that can then be used in the animation process, i.e. try to create code that doesn't get too complicated and then fail! 
 
-<<static_template, eval=FALSE, echo=FALSE>>=
+<<static_template, eval=TRUE, echo=FALSE>>=
 setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media")
 png(paste0("png//GSOM-", fips$State, ".png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 #png(paste0("png//Rplot_", i, ".png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 #------------------------------------
+
 ylim_new=NA
 for(i in seq(min(GSOM$Year), max(GSOM$Year), by=2)) 
    {
@@ -401,36 +429,35 @@ par(las=1, mfrow=c(4,1), mar= c(2, 4, 2, 1) + 0.1)
    if(nrow(GSOMsub)<10) next
 plot(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,], 
    col='gray70', pch=20, xlab="", 
-   main=paste("Mean", format(GSOMsub$Date,"%B")[1], "Min. Temp", GSOM_Longest$name))
+   main=paste("Mean", format(GSOMsub$Date,"%B")[1], 
+              "Min. Temp", GSOM_Longest$name))
 GSOM.lm = lm(TMIN~Date, GSOMsub)
-pred_dates <-data.frame(Date = GSOMsub$Date); str(pred_dates)
+pred_dates <-data.frame(Date = GSOMsub$Date); 
+nrow(pred_dates); pred_dates
 #Predits the values with confidence interval 
-ci <- predict(GSOM.lm, newdata = pred_dates, interval = 'confidence')
-#   str(ci)
+ci <- predict(GSOM.lm, newdata = pred_dates, 
+              interval = 'confidence')
 lines(pred_dates$Date, as.numeric(ci[,1]), col="darkred")
 lines(pred_dates$Date, as.numeric(ci[,2]), col="darkorange")
 lines(pred_dates$Date, ci[,3], col="darkorange")
-
 location_index = round(length(GSOMsub$Date) * 0.99,0)
-
 text(pred_dates$Date[location_index], ci[location_index,3], 
      paste(report_prob2(GSOM.lm)), pos=2)
 
-# Box Plot of  -------------------------------
+# Box Plot of TMAX by Month -------------------------------
 CHCNDsub = subset(CHCND, CHCND$Year<=i, 
-                  select=c(Month, Month.name, TMAX, TMIN))
-
-boxplot(TMAX ~ Month.name, data=CHCNDsub, 
-        main="")
+      select=c(Month, Month.name, TMAX, TMIN))
+boxplot(TMAX ~ Month.name, data=CHCNDsub, main="")
 symbol.y = (par()$yaxp[2])-diff(par()$yaxp[1:2])*.99
 #symbol.y = (par()$yaxp[2])
-text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, col="red", cex=2)
-mtext(paste("Maximum Daily Temperatures", min(CHCND$Year), "-",
-                   i, GSOM_Longest$name), line=1)
-mtext("(NOTE: Red astrisks correspond to signficant changes)", line=0, cex=.7)
+text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, 
+     col="red", cex=2)
+mtext(paste("Maximum Daily Temperatures", min(CHCND$Year), 
+      "-", i, GSOM_Longest$name), line=1)
+mtext("(NOTE: Red astrisks correspond to signficant changes)", 
+      line=0, cex=.7)
 
 # TMAX --------------------------------
-
 ylim = range(GSOMsub$TMAX)
 #if(!is.na(ylim_new)) ylim[2]=ylim_new
 plot(TMAX~Date, GSOMsub, col='gray70', pch=20, xlab="",
@@ -439,8 +466,8 @@ plot(TMAX~Date, GSOMsub, col='gray70', pch=20, xlab="",
                 "Max. Temp", GSOM_Longest$name))
 GSOM.lm = lm(TMAX~Date, GSOMsub) 
 
-ci <- predict(GSOM.lm, newdata = pred_dates, interval = 'confidence')
-#   str(ci)
+ci <- predict(GSOM.lm, newdata = pred_dates, 
+              interval = 'confidence')
 lines(pred_dates$Date, as.numeric(ci[,1]), col="darkred")
 lines(pred_dates$Date, as.numeric(ci[,2]), col="darkorange")
 lines(pred_dates$Date, ci[,3], col="darkorange")
@@ -450,9 +477,10 @@ text(pred_dates$Date[location_index], ci[location_index,3],
 
 plot(TMAX~Date, CHCND[CHCND$Year<=i,], pch='.', col="grey80", 
      main="Recorded Daily High Temperatures")
-   points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], pch=20, col="red", cex=.8 )
-
+points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], pch=20, 
+       col="red", cex=.8 )
 }
+
 #----------------------------------------------------
 dev.off()
 @
@@ -468,6 +496,7 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
 #par(las=1, mfrow=c(2,1), mar= c(2, 4, 2, 1) + 0.1)
 img <- image_graph(600, 480, res = 96)
 # START ------------------------------------------
+
 ylim_new=NA
 for(i in seq(min(GSOM$Year), max(GSOM$Year), by=2)) 
    {
@@ -476,11 +505,14 @@ par(las=1, mfrow=c(4,1), mar= c(2, 4, 2, 1) + 0.1)
    if(nrow(GSOMsub)<10) next
 plot(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,], 
    col='gray70', pch=20, xlab="", 
-   main=paste("Mean", format(GSOMsub$Date,"%B")[1], "Min. Temp", GSOM_Longest$name))
+   main=paste("Mean", format(GSOMsub$Date,"%B")[1], 
+              "Min. Temp", GSOM_Longest$name))
 GSOM.lm = lm(TMIN~Date, GSOMsub)
-pred_dates <-data.frame(Date = GSOMsub$Date); str(pred_dates)
+pred_dates <-data.frame(Date = GSOMsub$Date); 
+nrow(pred_dates); pred_dates
 #Predits the values with confidence interval 
-ci <- predict(GSOM.lm, newdata = pred_dates, interval = 'confidence')
+ci <- predict(GSOM.lm, newdata = pred_dates, 
+              interval = 'confidence')
 #   str(ci)
 lines(pred_dates$Date, as.numeric(ci[,1]), col="darkred")
 lines(pred_dates$Date, as.numeric(ci[,2]), col="darkorange")
@@ -491,7 +523,7 @@ location_index = round(length(GSOMsub$Date) * 0.99,0)
 text(pred_dates$Date[location_index], ci[location_index,3], 
      paste(report_prob2(GSOM.lm)), pos=2)
 
-# Box Plot of  -------------------------------
+# Box Plot of TMAX by Month -------------------------------
 CHCNDsub = subset(CHCND, CHCND$Year<=i, 
                   select=c(Month, Month.name, TMAX, TMIN))
 
@@ -499,10 +531,12 @@ boxplot(TMAX ~ Month.name, data=CHCNDsub,
         main="")
 symbol.y = (par()$yaxp[2])-diff(par()$yaxp[1:2])*.99
 #symbol.y = (par()$yaxp[2])
-text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, col="red", cex=2)
-mtext(paste("Maximum Daily Temperatures", min(CHCND$Year), "-",
-                   i, GSOM_Longest$name), line=1)
-mtext("(NOTE: Red astrisks correspond to signficant changes)", line=0, cex=.7)
+text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, 
+     col="red", cex=2)
+mtext(paste("Maximum Daily Temperatures", min(CHCND$Year), 
+      "-", i, GSOM_Longest$name), line=1)
+mtext("(NOTE: Red astrisks correspond to signficant changes)", 
+      line=0, cex=.7)
 
 # TMAX --------------------------------
 
@@ -514,8 +548,8 @@ plot(TMAX~Date, GSOMsub, col='gray70', pch=20, xlab="",
                 "Max. Temp", GSOM_Longest$name))
 GSOM.lm = lm(TMAX~Date, GSOMsub) 
 
-ci <- predict(GSOM.lm, newdata = pred_dates, interval = 'confidence')
-#   str(ci)
+ci <- predict(GSOM.lm, newdata = pred_dates, 
+              interval = 'confidence')
 lines(pred_dates$Date, as.numeric(ci[,1]), col="darkred")
 lines(pred_dates$Date, as.numeric(ci[,2]), col="darkorange")
 lines(pred_dates$Date, ci[,3], col="darkorange")
@@ -525,9 +559,10 @@ text(pred_dates$Date[location_index], ci[location_index,3],
 
 plot(TMAX~Date, CHCND[CHCND$Year<=i,], pch='.', col="grey80", 
      main="Recorded Daily High Temperatures")
-   points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], pch=20, col="red", cex=.8 )
-
+points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], pch=20, 
+       col="red", cex=.8 )
 }
+
 # END -----------------------------------------------------
 dev.off()
 @
@@ -536,14 +571,14 @@ dev.off()
 The file is saved in the main directory. 
 
 <<print_img>>=
-print(img)
+#print(img)
 @
 
 <<write_img>>=
 GSOM_animation <- image_animate(img, fps = 1, loop=2, optimize = TRUE)
-print(GSOM_animation)
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/gif")
-image_write(GSOM_animation, paste(fips$State, "_GSOM.gif", sep=""))
+#print(GSOM_animation)
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media")
+image_write(GSOM_animation, paste("gif/", fips$State, "_GSOM.gif", sep=""))
 @
 
 
@@ -553,39 +588,41 @@ image_write(GSOM_animation, paste(fips$State, "_GSOM.gif", sep=""))
 library(ggmap)
 #API = "AIzaSyBfkMN5PYsB0A92RbOxo1bc51y-5aitKDI"
 #register_google(key = API, write = TRUE)
-
-GSOM_Longest$name
-
-locus=c(lat = GSOM_Longest$latitude, lon = GSOM_Longest$longitude)
-locus
-
-# You may also use the coordinates (latitude and longitude), 
-# if you have them locus=c(lat = 45.4344700786,lon = 12.3394828851)
-# Now we require the information from Google, by also zooming on the map
-
-#myMap <- c(left = -125, bottom = 25.75, right = -67, top = 49)
-#get_stamenmap(us, zoom = 5, maptype = "toner-lite") %>% ggmap() 
-
-
-#myMap <- get_map(location=locus, zoom= 18, source="google", maptype="roadmap", crop=TRUE)
-
-@
-
-<<>>=
-
 #ggmap(myMap)+
 #geom_point(aes(x = locus[1], y = locus[2]),
  #alpha = .5, color="darkred", size = 3)
 
-myLocation <- c(lon = -95.3632715, lat = 29.7632836)
-myLocation <- locus
-myMap <- get_map(location=myLocation,
-source="stamen", maptype="watercolor", crop=FALSE)
-ggmap(myMap)
+GSOM_Longest$name
 
+lat = GSOM_Longest$latitude
+lon = GSOM_Longest$longitude
+station = c(lon, lat)
+station.df <- data.frame(lon = GSOM_Longest$longitude, 
+                         lat = GSOM_Longest$latitude, 
+                         Station = GSOM_Longest$name); 
+str(station.df)
+
+myMap <- get_map(location=station, zoom=7, scale =2, 
+source="stamen", maptype="terrain", messaging = FALSE, crop=FALSE)
+
+ggmap(myMap) + geom_point(aes(x = lon, y = lat), 
+      data = station.df, alpha = .5, color="darkred", size = 3) +
+      geom_text(aes(x = lon, y = lat, label=Station), 
+      data = station.df, alpha = .5, color="darkred", size = 3, 
+      hjust=.1, vjust=-1)
+
+#zoom = 11, scale = 2, maptype ='watercolor',
+
+png(paste0("png//MAP-", fips$State, ".png"), 
+    width = 480, height = 480, units = "px", 
+    pointsize = 12, bg = "white")
 ggmap(myMap)+
-geom_point(aes(x = lon, y = lat), data = locus, alpha = .5, color="darkred", size = 3)
-
+geom_point(aes(x = lon, y = lat), data = station.df, 
+   alpha = .5, color="darkred", size = 3) + 
+   geom_text(aes(x = lon, y = lat, label=Station), 
+      data = station.df, alpha = .5, color="darkred", 
+      size = 3, hjust=.1, vjust=-1)
+dev.off()
 @
 
 <<eval=FALSE>>=
