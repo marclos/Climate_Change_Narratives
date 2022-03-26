@@ -1,0 +1,29 @@
+---
+title: "Individual Species"
+author: 'Dolf Andringa'
+date: "February 7, 2016"
+output: html_document
+---
+```{r echo=FALSE, eval=TRUE, include=FALSE}
+library(knitr)
+library(lmtest)
+load("samples.RDa")
+#data <-subset(samples, species_group==sg)
+#data$y <- data[,c(sp)]
+```
+
+```{r eval='TRUE', echo=FALSE, results='asis'}
+if(specnum==0) cat('\n##',sg,'\n');
+```
+
+### `r sp` {.tabset}
+`r sp.common`
+
+```{r eval=TRUE, echo=FALSE}
+
+# process some data...
+
+str(sg)
+
+knitr::kable(coefs)
+```
