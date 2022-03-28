@@ -1,0 +1,34 @@
+---
+title: "Weather Station Trends: Alaska"
+author: "nor_soCal"
+date: "3/23/2022"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+# https://marclos.github.io/Climate_Change_Narratives/Social_Media/
+```
+
+```{r, child=c('Intro.Rmd')}
+```
+
+## Selected Station
+
+```{r, echo=FALSE, out.width='70%'}
+   knitr::include_graphics('../png/MAP-Alaska.png')
+```
+
+## Temperature Trends
+
+```{r, echo=FALSE, out.width='60%'}
+   knitr::include_graphics('../png/KISS-Alaska.png')
+```
+ <font size="2"> (https://marclos.github.io/Climate_Change_Narratives/Social_Media/gif/Alaska_GSOM.gif)</font>
+ 
+## Impacts
+```{r, child=c('Alaska_X_Impacts.Rmd')}
+```
+
+
+

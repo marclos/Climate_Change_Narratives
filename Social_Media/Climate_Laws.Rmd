@@ -1,0 +1,34 @@
+---
+title: "Climate Laws"
+author: "Marc Los Huertos"
+date: "3/14/2022"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+temp <- read.csv("https://climate-laws.org/legislation_and_policies.csv")
+filename <- "/home/CAMPUS/mwl04747/github/EIA_Analysis/laws_and_policies_15032022_clean.csv"
+temp <- read.csv(filename)
+#names(temp)
+
+#head(temp)
+```
+## Climate Change Adaptations
+
+### International Attempts to Address 
+
+The difference between tolerated climate changes attempts and completing priorities. These difference have created a wide range of legal work. 
+
+```{r}
+#head(temp$Events, format="dd/mm/Y")
+temp$Date <- as.Date(temp$Events, format="%d/%m/%Y")
+temp$Year <- format(temp$Date, format = "%Y")
+Laws <- aggregate(temp$Title, by=list(temp$Year), length)
+#str(Laws)
+barplot(Laws$x, names.arg = Laws$Group.1, las=1, main="Climate Change Laws", ylim=c(0,210), col="blue")
+```
+
+
+## Laws are Changing
+
