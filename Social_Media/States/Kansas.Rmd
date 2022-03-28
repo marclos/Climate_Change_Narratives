@@ -1,6 +1,6 @@
 ---
-title: "Kansas"
-author: "Marc"
+title: "Weather Station Trends: Kansas"
+author: "nor_soCal"
 date: "3/23/2022"
 output: ioslides_presentation
 ---
@@ -10,42 +10,27 @@ knitr::opts_chunk$set(echo = FALSE)
 # https://marclos.github.io/Climate_Change_Narratives/Social_Media/
 ```
 
-## Data Source and Procedures
-
-Open Source Software & Publicly Available Data
-
-- GSOM (Monthly Average Data -- not corrected for biases)
-- Analysis and Graphics R/Rstudio
-- Selected Station with longest and fewest missing data
-- Determined which month had strongest signal
-- Evaluate Temp Trend for record
-
-## Results
-
-```{r, echo=FALSE, out.width='80%'}
-   knitr::include_graphics('../png/MAP-Kansas.png')
+```{r, child=c('Intro.Rmd')}
 ```
 
 ## Results
 
 ```{r, echo=FALSE, out.width='70%'}
-   knitr::include_graphics('../png/GSOM-Kansas.png')
+   knitr::include_graphics('../png/MAP-Kansas.png')
 ```
 
-## Conclusion
+## Results
 
-### Impacts
-- Significant warming in March and June
-- ~3 degrees/100 years
-- If trend continues...
-    - Increase Heat-related public health impacts
-    - Increase in A/C costs
-    - Earlier planting of crops (increase yields?)
-    - Hotter summer Temps (lower yields?)
+```{r, echo=FALSE, out.width='60%'}
+   knitr::include_graphics('../png/KISS-Kansas.png')
+```
 
-### State Adaptation / Mitigation Plans
-
-Kansas has not developed a statewide adaptation plan (Source: Georgetown Climate Center)
+ <font size="2">[Link to Gif](https://marclos.github.io/Climate_Change_Narratives/Social_Media/gif/Kansas_GSOM.gif)</font>
+ 
+## Impacts
+ 
+```{r, child=c('Kansas_X_Impacts.Rmd')}
+```
 
 
 

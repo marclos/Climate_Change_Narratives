@@ -98,7 +98,7 @@ get_locationid <- function(FIPS){
 Using the rNOAA function ncdc\_locs(), we can queary NOAA's database to identify station codes (FIPS) by state. With the states and some territories, there are 55 FIPS for US weather stations. 
 
 <<>>=
-fips = get_locationid(2); str(fips); 
+fips = get_locationid(3); str(fips); 
 
 @
 
@@ -416,7 +416,7 @@ text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, col="red", cex=2)
 To test the code, I have created graphics that can then be used in the animation process, i.e. try to create code that doesn't get too complicated and then fail! 
 
 <<static_template, eval=TRUE, echo=FALSE>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media")
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media")
 png(paste0("png//GSOM-", fips$State, ".png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 #png(paste0("png//Rplot_", i, ".png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 #------------------------------------
@@ -491,9 +491,6 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
 
 <<animate, results='hide', eval=TRUE>>=
 
-#setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media")
-
-#par(las=1, mfrow=c(2,1), mar= c(2, 4, 2, 1) + 0.1)
 img <- image_graph(600, 480, res = 96)
 # START ------------------------------------------
 
@@ -509,7 +506,7 @@ plot(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,],
               "Min. Temp", GSOM_Longest$name))
 GSOM.lm = lm(TMIN~Date, GSOMsub)
 pred_dates <-data.frame(Date = GSOMsub$Date); 
-nrow(pred_dates); pred_dates
+
 #Predits the values with confidence interval 
 ci <- predict(GSOM.lm, newdata = pred_dates, 
               interval = 'confidence')
@@ -561,6 +558,7 @@ plot(TMAX~Date, CHCND[CHCND$Year<=i,], pch='.', col="grey80",
      main="Recorded Daily High Temperatures")
 points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], pch=20, 
        col="red", cex=.8 )
+print(nrow(pred_dates))#; pred_dates
 }
 
 # END -----------------------------------------------------
@@ -577,8 +575,8 @@ The file is saved in the main directory.
 <<write_img, eval=FALSE>>=
 GSOM_animation <- image_animate(img, fps = 1, loop=2, optimize = TRUE)
 #print(GSOM_animation)
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media")
-image_write(GSOM_animation, paste("gif/", fips$State, "_GSOM.gif", sep=""))
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/")
+image_write(GSOM_animation, paste("Climate_gifs/", fips$State, "_GSOM.gif", sep=""))
 @
 
 \subsection{KISS}
