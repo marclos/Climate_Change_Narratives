@@ -9,5 +9,4 @@ rmarkdown::render('Arizona.Rmd', output_file = '../../docs/Social_Media/Arizona.
 rmarkdown::render('Kansas.Rmd', output_file = '../../docs/Social_Media/Kansas.html')
 
 rmarkdown::render('Texas.Rmd', output_file = '../../docs/Social_Media/Texas.html')
-
 rmarkdown::render('Wisconsin.Rmd', output_file = '../../docs/Social_Media/Wisconsin.html')
