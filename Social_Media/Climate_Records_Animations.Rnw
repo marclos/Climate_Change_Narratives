@@ -12,6 +12,7 @@ library(magick)
 library(animation)
 library(xtable)
 library(lubridate)
+library(ggplot2)
 #library(pdftools)
 @
 
@@ -568,9 +569,9 @@ maxTMAX.length = aggregate(maxTMAX~Year, data=CHCND, length);
 maxTMAX.length$group <- "Record Highs"
 names(maxTMAX.length) <- c("Year", "Num", "Group")
 
-records = rbind(minTMIN.length, maxTMAX.length); records
+records = rbind(minTMIN.length, maxTMAX.length); # records
 
-library(ggplot2)
+
 ggplot( ) +
    geom_point(data = CHCND, aes(y=TMIN, x=YearDay), size=.05, color="gray") + 
    geom_bar(data = records, aes(x=Year, y=Num, fill=Group), stat="identity", position="identity") + 
