@@ -10,19 +10,25 @@ library(rnoaa)
 library(ncdf4)
 library(magick)
 library(animation)
+library(xtable)
+library(lubridate)
+#library(pdftools)
 @
 
 <<noaakey, echo=FALSE>>=
+
+# Could a key go bad?  5/9/22, the API stopped working.
+
 options(noaakey = "qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb")
 @
 
-\title{Obtaining Climate Records}
+\title{Communicating Climate Change with Weather Records}
 \author{Marc Los Huertos}
 
 \begin{document}
 \maketitle
 
-\section{Terrestrial Meteorological Data}
+\section{Evaluating Terrestrial Meteorological Data}
 
 \subsection{Selected History of Climate Science}
 
@@ -30,20 +36,23 @@ Geologists have known the climate has been changing over the Earth's history. Bu
 
 It's the last one that we'll spend time because the Earth's temperature are changing pretty dramatically over the last 100 years and the cause is no mystery -- the human activity that has released CO2 into the atmosphere. The two main sources of CO2 is from land use change, e.g. deforestration, and the burning of fossil fuels, e.g. coal, oil, and natural gas. 
 
-The first to propose the role of CO2 on the Earth's atmosphere was a XX scientiest Arrenheus, who figured out that CO2 absorbs infarred light. Moreover, he deduced that the Earth's temperature was actually warmer than it might otherwise be if CO2 was not part of the Earth's atmoshere. 
+The first to propose the role of CO2 on the Earth's atmosphere was a Swedish scientist Svante Arrhenius, who figured out that CO2 absorbs infarred light. Moreover, he deduced that the Earth's temperature was actually warmer than it might otherwise be if CO2 was not part of the Earth's atmoshere. 
 
 
-\section{NOAA Data Records}
+\subsection{NOAA Data Records}
 
 %ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/v3/
 
-\subsection{rNOAA Package and R}
+\subsubsection{rNOAA Package and R}
 
 R is an open source programming environment that has become one of the most popular tools for statiticians and data scientists. Capitalizing on the open source framework, a wide range of libraries or packages have been developed to faciliate data processing, analysis, and graphical displays. On such package is rNOAA developed to collect and display climate records stored on NOAA servers.
 
-\section{Temperature Trends by State}
 
-\subsection{State Temperature Records}
+Using the package requires the use of a key. To maintain the integrity of the key, it's best to avoid posting the key in a public repository and to encryp the key to ensure it's not abused. 
+
+\subsection{Selecting Weather Records by State}
+
+\subsubsection{State Temperature Records}
 
 There are numerous ways to analyze temperature records, where stations can be analyzed individually or records could be sampled and analyzed in spatially in grids. Each of these are valid approaches depending on the question to be addressed. 
 
@@ -114,14 +123,14 @@ GSOM_Recent =
    GSOM_Stations$data[GSOM_Stations$data$maxdate>='2021-11-01',]
 
 GSOM_Coverage = 
-   GSOM_Recent[GSOM_Recent$datacoverage > 0.95,]
+   GSOM_Recent[GSOM_Recent$datacoverage > 0.92,]
 GSOM_Sorted =  GSOM_Coverage[order(GSOM_Coverage$mindate),]
 #GSOM_Longest = 
  #  GSOM_Coverage[GSOM_Coverage$mindate == min(GSOM_Coverage$mindate),]
 GSOM_Longest = GSOM_Sorted[1,] #Pick longest
 # Second and Third for Comparisons
- GSOM_Longest = GSOM_Sorted[2,] 
-GSOM_Longest = GSOM_Sorted[3,]
+# GSOM_Longest = GSOM_Sorted[3,] 
+# GSOM_Longest = GSOM_Sorted[4,]
 @
 
 The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
@@ -173,35 +182,43 @@ The function relies on two inputs, the station id and the measured parameter -- 
 <<getGSOM, warning=FALSE>>=
 GSOM_TMAX <- get_GSOM(GSOM_Longest$id, 'TMAX')
 GSOM_TMIN <- get_GSOM(GSOM_Longest$id, 'TMIN')
+GSOM_PPT  <- get_GSOM(GSOM_Longest$id, 'PRCP')
 
 # Bind the dataframes in the list 
 # together into one large dataframe
 
 tbl_TMAX <- dplyr::bind_rows(GSOM_TMAX)
 tbl_TMIN <- dplyr::bind_rows(GSOM_TMIN)
+tbl_PPT <- dplyr::bind_rows(GSOM_PPT)
 
 class(tbl_TMAX) # [1] "tbl_df"  "tbl" "data.frame"
 dfTbl_TMAX = as.data.frame(tbl_TMAX)
 dfTbl_TMIN = as.data.frame(tbl_TMIN)
+dfTbl_PPT = as.data.frame(tbl_PPT)
+
 class(dfTbl_TMAX) # [1] "data.frame"
 dfTbl_TMAX$TMAX = dfTbl_TMAX$value*9/5+32
 dfTbl_TMIN$TMIN = dfTbl_TMIN$value*9/5+32
+dfTbl_PPT$PPT = dfTbl_PPT$value
 
 dfTbl_TMAX$Date = as.Date(dfTbl_TMAX$date)
 dfTbl_TMIN$Date = as.Date(dfTbl_TMIN$date)
+dfTbl_PPT$Date = as.Date(dfTbl_PPT$date)
 
 dfTbl_TMAX <- subset(dfTbl_TMAX, select=c(Date, station, TMAX))
 dfTbl_TMIN <- subset(dfTbl_TMIN, select=c(Date, TMIN))
+dfTbl_PPT <- subset(dfTbl_PPT, select=c(Date, PPT))
 
 dfTbl_TMAX[1,]
 
 GSOM <- merge(dfTbl_TMAX, dfTbl_TMIN, by="Date")
+GSOM <- merge(GSOM, dfTbl_PPT, by="Date")
 
 GSOM$Month = as.numeric(format(as.Date(GSOM$Date), format = "%m"))
 GSOM$Year = as.numeric(format(as.Date(GSOM$Date), format = "%Y"))
 @
 
-\subsection{Function to Evaluate Months}
+\subsubsection{Function to Evaluate Monthy Trends}
 
 Function to evaluate each month and determine if there is a trend. At somepoint, I'll have to the stats correcting for the autocorrelation. 
 
@@ -209,83 +226,179 @@ Function to evaluate each month and determine if there is a trend. At somepoint,
 # find most important month
 sumstats = NA
 for (m in 1:12){
-  TMAX.lm = lm(TMAX~Date, GSOM[GSOM$Month==m,])
   TMIN.lm = lm(TMIN~Date, GSOM[GSOM$Month==m,])
-sumstats = rbind(sumstats, data.frame(Month = m, 
-   TMIN_Slope = coef(TMIN.lm)[2], 
-   TMIN_r2 = summary(TMIN.lm)$r.squared, 
-   TMIN_p_value= anova(TMIN.lm)$'Pr(>F)'[1], 
-   TMAX_Slope = coef(TMAX.lm)[2], 
-   TMAX_r2 = summary(TMAX.lm)$r.squared, 
-   TMAX_p_value= anova(TMAX.lm)$'Pr(>F)'[1]))
+  TMAX.lm = lm(TMAX~Date, GSOM[GSOM$Month==m,])
+   PPT.lm  = lm(PPT~Date, GSOM[GSOM$Month==m,])
 
-}
+ sumstats = rbind(sumstats, 
+   data.frame(Month = m, Param="TMIN", Slope = coef(TMIN.lm)[2], 
+   r2 = summary(TMIN.lm)$r.squared, p_value= anova(TMIN.lm)$'Pr(>F)'[1]),
+   data.frame(Month = m, Param="TMAX", Slope = coef(TMAX.lm)[2], 
+   r2 = summary(TMAX.lm)$r.squared, p_value= anova(TMAX.lm)$'Pr(>F)'[1]),
+   data.frame(Month= m, Param="PPT", Slope = coef(PPT.lm)[2], 
+   r2 = summary(PPT.lm)$r.squared, p_value= anova(PPT.lm)$'Pr(>F)'[1]))
+
+} #end loop
+
 sumstats=data.frame(sumstats)[-1,]
-maxmonth = sumstats$Month[sumstats$TMIN_Slope == 
-                  max(sumstats$TMIN_Slope, na.rm=T)]
-maxmonth = sumstats$Month[sumstats$TMAX_Slope == 
-                  max(sumstats$TMAX_Slope, na.rm=T)]
+rownames(sumstats)<-NULL
+head(sumstats)
+## Determine Months with Biggest Slopes
+# I should probably look at all months for pos and neg slopes.
+
+#TMINmonth = sumstats$Month[sumstats$TMIN_Slope == max(sumstats$TMIN_Slope, na.rm=T)]
+#TMAXmonth = sumstats$Month[sumstats$TMAX_Slope == max(sumstats$TMAX_Slope, na.rm=T)]
+#PPTMINmonth = sumstats$Month[sumstats$PPT_Slope == min(sumstats$PPT_Slope, na.rm=T)]
+#PPTMAXmonth = sumstats$Month[sumstats$PPT_Slope == max(sumstats$PPT_Slope, na.rm=T)]
+
 head(sumstats)
 
-TMAX.pvalues <- subset(sumstats, TMAX_p_value <.05, 
-            select=c(Month, TMAX_p_value))
-TMAX.pvalues$Symbol = "*"
-TMAX.pvalues$Symbol[TMAX.pvalues$TMAX_p_value < 0.01] = "**"
-TMAX.pvalues$Symbol[TMAX.pvalues$TMAX_p_value < 0.001] = "***"
+# Select Months with Changes
+
+#TMIN = subset(sumstats, select=c(Month, TMIN_Slope, TMIN_r2, TMIN_p_value),  subset = Month==TMINmonth);  names(TMIN)=c("Month", "Slope", "r2", "p_value");  TMIN$param = "TMIN"
+
+#TMAX = subset(sumstats, select=c(Month, TMAX_Slope, TMAX_r2, TMAX_p_value), subset = Month==TMAXmonth); names(TMAX)=c("Month", "Slope", "r2", "p_value"); TMAX$param = "TMAX"
+
+#PPTMIN = subset(sumstats, select=c(Month, PPT_Slope, PPT_r2, PPT_p_value), subset = Month==PPTMINmonth); names(PPTMIN)=c("Month", "Slope", "r2", "p_value"); PPTMIN$param = "PPTMIN"
+
+#PPTMAX = subset(sumstats,  select=c(Month, PPT_Slope, PPT_r2, PPT_p_value), subset = Month==PPTMAXmonth); names(PPTMAX)=c("Month", "Slope", "r2", "p_value"); PPTMAX$param = "PPTMAX"
+
+#sumstats2 <- rbind(TMIN, TMAX, PPTMIN, PPTMAX)
+
+sumstats$Symbol = ""
+sumstats$Symbol[sumstats$p_value < 0.05] = "*"
+sumstats$Symbol[sumstats$p_value < 0.01] = "**"
+sumstats$Symbol[sumstats$p_value < 0.001] = "***"
+
+sumstats
+#TMAX.pvalues <- subset(sumstats, TMAX_p_value <.05, 
+#           select=c(Month, TMAX_p_value))
+#TMAX.pvalues$Symbol = "*"
+#TMAX.pvalues$Symbol[TMAX.pvalues$TMAX_p_value < 0.01] = "**"
+#TMAX.pvalues$Symbol[TMAX.pvalues$TMAX_p_value < 0.001] = "***"
 
 #TMAX.pvalues
 @
 
 Evaluate both TMAX and TMIN in GSOM by Year using MonthEvalStats() function. 
 <<EvaluationMonthlyTrends>>=
-MonthEvalStats <- function(GSOM) {
+MonthEvalStatsOLD <- function(GSOM) {
 sumstats = NA
-for (m in 1:12) {
-# m=2
-  TMAX.lm = lm(TMAX~Date, GSOM[GSOM$Month==m,])
+for (m in 1:12){
   TMIN.lm = lm(TMIN~Date, GSOM[GSOM$Month==m,])
-sumstats = rbind(sumstats, data.frame(Month = m, 
-         TMIN_Slope = coef(TMIN.lm)[2], 
-         TMIN_r2 = summary(TMIN.lm)$r.squared, 
-         TMIN_p_value= anova(TMIN.lm)$'Pr(>F)'[1], 
-         TMAX_Slope = coef(TMAX.lm)[2], 
-         TMAX_r2 = summary(TMAX.lm)$r.squared, 
-         TMAX_p_value= anova(TMAX.lm)$'Pr(>F)'[1]))
+  TMAX.lm = lm(TMAX~Date, GSOM[GSOM$Month==m,])
+   PPT.lm  = lm(PPT~Date, GSOM[GSOM$Month==m,])
+
+ sumstats = rbind(sumstats, 
+   data.frame(Month = m, Param="TMIN", Slope = coef(TMIN.lm)[2], 
+   r2 = summary(TMIN.lm)$r.squared, p_value= anova(TMIN.lm)$'Pr(>F)'[1]),
+   data.frame(Month = m, Param="TMAX", Slope = coef(TMAX.lm)[2], 
+   r2 = summary(TMAX.lm)$r.squared, p_value= anova(TMAX.lm)$'Pr(>F)'[1]),
+   data.frame(Month= m, Param="PPT", Slope = coef(PPT.lm)[2], 
+   r2 = summary(PPT.lm)$r.squared, p_value= anova(PPT.lm)$'Pr(>F)'[1]))
+
 }
 
 sumstats=data.frame(sumstats)[-1,]
 rownames(sumstats)<-NULL
-#sumstats <- subset(sumstats, TMAX_p_value <.05, 
-# select=c(Month, TMIN_Slope, TMIN_p_value, 
-# MAX_Slope, TMAX_p_value))
-sumstats$TMAX_Symbol <- sumstats$TMIN_Symbol <- ""
-sumstats$TMAX_Symbol[sumstats$TMAX_p_value < 0.05] = "*"
-sumstats$TMAX_Symbol[sumstats$TMAX_p_value < 0.01] = "**"
-sumstats$TMAX_Symbol[sumstats$TMAX_p_value < 0.001] = "***"
+
+sumstats$Symbol = ""
+sumstats$Symbol[sumstats$p_value < 0.05] = "*"
+sumstats$Symbol[sumstats$p_value < 0.01] = "**"
+sumstats$Symbol[sumstats$p_value < 0.001] = "***"
 sumstats[,c(7,9)]
 return(sumstats)
 }
 
+MonthEvalStats <- function(GSOM) {
+sumstats = NA
+for (m in 1:12){
+  TMIN.lm = lm(TMIN~Date, GSOM[GSOM$Month==m,])
+  TMAX.lm = lm(TMAX~Date, GSOM[GSOM$Month==m,])
+   PPT.lm  = lm(PPT~Date, GSOM[GSOM$Month==m,])
+
+ sumstats = rbind(sumstats, 
+   data.frame(Month = m, Param="TMIN", Slope = coef(TMIN.lm)[2], 
+   r2 = summary(TMIN.lm)$r.squared, p_value= anova(TMIN.lm)$'Pr(>F)'[1]),
+   data.frame(Month = m, Param="TMAX", Slope = coef(TMAX.lm)[2], 
+   r2 = summary(TMAX.lm)$r.squared, p_value= anova(TMAX.lm)$'Pr(>F)'[1]),
+   data.frame(Month= m, Param="PPT", Slope = coef(PPT.lm)[2], 
+   r2 = summary(PPT.lm)$r.squared, p_value= anova(PPT.lm)$'Pr(>F)'[1]))
+
+} #end loop
+
+sumstats=data.frame(sumstats)[-1,]
+rownames(sumstats)<-NULL
+head(sumstats)
+
+sumstats$Symbol = ""
+sumstats$Symbol[sumstats$p_value < 0.05] = "*"
+sumstats$Symbol[sumstats$p_value < 0.01] = "**"
+sumstats$Symbol[sumstats$p_value < 0.001] = "***"
+return(sumstats)
+}
+
 # test function
-# sumstats = MonthEvalStats(GSOM[500:4000,])
+sumstats = MonthEvalStats(GSOM[500:4000,])
 @
    
-   
-\subsubsection{Determine Months with Biggest Changes}
+\section{Communicating Long-term Weather Records}
+
+\subsection{Tables Temp Trends}
 
 Admittedly, determining the months with the biggest changes isn't a very good approach for hypothesize testing -- it's more like a fishing expedition, but as long as we understand the difference between an a priori hypothesis and an exploratory analysis, we should be okay if we make appropriate conclusions. 
 
-<<EvaluatingMonths>>=
-# Selecting Most Important Month (TMAX overwrites)
-sumstats = MonthEvalStats(GSOM)
+<<EvaluatingMonthDelta>>=
+# Selecting Most Important Monthly Changes (TMAX overwrites)
+#sumstats = MonthEvalStats(GSOM)
 
-maxmonth = sumstats$Month[sumstats$TMIN_Slope == 
-                            max(sumstats$TMIN_Slope, na.rm=T)]
-
-maxmonth = sumstats$Month[abs(sumstats$TMAX_Slope) == 
-                            max(abs(sumstats$TMAX_Slope), na.rm=T)]
+TMIN_Increase_month = with(sumstats[sumstats$Param=="TMIN",], 
+     Month[Slope==max(Slope, na.rm=T)])
+TMIN_Decrease_month = with(sumstats[sumstats$Param=="TMIN",], 
+     Month[Slope==min(Slope, na.rm=T)])
+TMAX_Increase_month = with(sumstats[sumstats$Param=="TMAX",], 
+     Month[Slope==max(Slope, na.rm=T)])
+TMAX_Decrease_month = with(sumstats[sumstats$Param=="TMAX",], 
+     Month[Slope==min(Slope, na.rm=T)])
+PPT_Increase_month = with(sumstats[sumstats$Param=="PPT",], 
+     Month[Slope==max(Slope, na.rm=T)])
+PPT_Decrease_month = with(sumstats[sumstats$Param=="PPT",], 
+     Month[Slope==min(Slope, na.rm=T)])
 @
-\subsection{Plot Month with Biggest Changes}
+\subsubsection{Month with Biggest Changes}
+
+Minimum temperature (TMIN) changes, as one way to avoid bias, I am looking at the upward or downward changes in minimum temperatures, even though we expect warmer temperatures, while the power of the tests is lower.  
+<<echo=FALSE, results='asis'>>=
+sumstats$Slope100 = sumstats$Slope*100
+TMIN.xtbl <- xtable(sumstats[sumstats$Param=="TMIN", c(1,7,4:6)], digits=c(0,0,4,2,4,3), caption="Caption TMIN")
+
+print(TMIN.xtbl, type="latex", comment=FALSE)
+
+@
+
+TMAX
+<<echo=FALSE, results='asis'>>=
+sumstats$Slope100 = sumstats$Slope*100
+TMAX.xtbl <- xtable(sumstats[sumstats$Param=="TMAX", c(1,7,4:6)], digits=c(0,0,4,2,4,3), caption="Caption TMAX")
+
+print(TMAX.xtbl, type="latex", comment=FALSE)
+@
+
+PPT changes are tricky to capture.
+
+<<echo=FALSE, results='asis'>>=
+sumstats$Slope100 = sumstats$Slope*100
+PPT.xtbl <- xtable(sumstats[sumstats$Param=="PPT", c(1,7,4:6)], digits=c(0,0,4,2,4,3), caption="Caption PPT")
+
+print(PPT.xtbl, type="latex", comment=FALSE)
+
+#tmp <- tempfile()
+#options(xtable.comment=FALSE)  ## removes the nasty comments
+#capture.output(PPT.xtbl, file=tmp)
+#rmarkdown::render(tmp, output_format="pdf_document", output_file="deleteme.pdf")
+#unlink(tmp)
+#pdftools::pdf_convert("deleteme.pdf", format="png")
+@
 
 \subsubsection{Function to report Probabilities}
 
@@ -293,7 +406,7 @@ maxmonth = sumstats$Month[abs(sumstats$TMAX_Slope) ==
 report_prob <-function(pvalue){
    if(pvalue > 0.05) return("> 0.05 (Not Significant)")
    if(pvalue < 0.05 & pvalue >= 0.001) return(
-      paste("=", round(pvalue, 3), "(Statistically Signficant)"))
+      paste("=", round(pvalue, 3), "(Statistically Significant)"))
    #if(pvalue < 0.01) print(round(pvalue, 4))
    if(pvalue < 0.001) return("< 0.001 (Statisically Significant)")
 }
@@ -321,9 +434,10 @@ report_prob2 <-function(lm){
 
 @
 
-\subsection{Extreme Temperture Events}
 
-\subsubsection{Functions to Collect and Clean CHCND}
+\subsection{Functions to Collect and Clean CHCND}
+
+CHCND have been bias corrected...
 
 <<CHCND_Download>>=
 GSOM_Longest$id
@@ -346,6 +460,8 @@ get_CHCND <- function(stid) {
 CHCND <- get_CHCND(stid); nrow(CHCND)
 #str(CHCND)
 
+
+
 CHCND$Month = as.numeric(format(as.Date(CHCND$Date), format = "%m"))
 CHCND$Month.name = factor(format(as.Date(CHCND$Date), format = "%b"),
          levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
@@ -363,36 +479,70 @@ CHCND$TMAX[complete.cases(CHCND$TMAX) &
 range(CHCND$TMAX, na.rm=T)
 
 CHCND$Year = as.numeric(format(as.Date(CHCND$Date), format = "%Y"))
-
+CHCND$YearDay = CHCND$Year + yday(CHCND$Date)/366
 #head(CHCND)
 @
 
+\subsection{Extreme Events}
+
+\subsubsection{Functions for Rainfall Trends}
+
+Rainfall trends are tough. Exteme events can occur in 24 hours or over long periods that might result in floods or droughts. Each region might have different patterns, so developing a consistent approach is tough.
+
+We can look for trends in monthly averages, number of days without rain (important in tropics), and/or extreme events based on daily or hourly data. 
+
+I don't know of a robust way to look at this for the entire globe. 
+
+<<<>>=
+
+
+@
+
+
+
 \subsection{Determine Record Setting Temperatures}
+
+In many cases, people seem to "feel" how temperature has been changing over time, and new records seem to capture the attention in the media. So, we'll create a updated record of maximum temperatures and display them. 
 
 <<extremetempplot, echo=FALSE, results='hide'>>=
 
 CHCND$mmdd <- format(CHCND$Date, "%m-%d")
 CHCND_Mean = mean(CHCND$TMAX, na.rm=T)
 
-CHCND$maxTMAX = NA
-for(i in 1:max(nrow(CHCND))){
+CHCND$maxTMAX <- CHCND$minTMIN <- NA
 
-#for(i in 1:10){
-#i=2
+for(i in 1:nrow(CHCND)){
    if(is.na(CHCND$TMAX[i])) next
-CHCND$maxTMAX[i] <- CHCND$TMAX[i]
-CHCNDmmdd <- CHCND$mmdd[i]
+   
+   CHCNDmmdd <- CHCND$mmdd[i] # Index Correct Day/Month to compare
+   CHCND$maxTMAX[i] <- CHCND$TMAX[i] # Assign value to maxTMAX
 
-if(CHCND$TMAX[i] < 
+   if(CHCND$TMAX[i] < 
       max(CHCND$TMAX[CHCND$mmdd==CHCNDmmdd], na.rm=T) ){ 
       CHCND$maxTMAX[i] <- NA} else
       {
       CHCND$maxTMAX[i] <- CHCND$TMAX[i]
       }
- }
+}
 
+
+for(i in 1:nrow(CHCND)){
+   if(is.na(CHCND$TMIN[i])) next
+   
+   CHCNDmmdd <- CHCND$mmdd[i] # Index Correct Day/Month to compare  
+   CHCND$minTMIN[i] <- CHCND$TMIN[i] # Assign value to mintMIN
+
+   if(CHCND$TMIN[i] > 
+      min(CHCND$TMIN[CHCND$mmdd==CHCNDmmdd], na.rm=T) ){ 
+      CHCND$minTMIN[i] <- NA} else
+      {
+      CHCND$minTMIN[i] <- CHCND$TMIN[i]
+      }
+ }
+head(CHCND)
 @
 
+Crating a graphic of the results...
 <<testplot_noeval, echo=FALSE, eval=FALSE>>=
 for(i in seq(min(CHCND$Year), max(CHCND$Year), by=2)){
  # i=min(CHCND$Year)
@@ -402,7 +552,45 @@ for(i in seq(min(CHCND$Year), max(CHCND$Year), by=2)){
 }
 @
 
-\subsection{Iterate TMAX Boxplots}
+\subsubsection{Number of Days with Records per year}
+
+This is a common way to communicate temperatures changes. I suspect we have a better sense of change when we notice "extreme" events...
+
+<<>>=
+names(CHCND)
+
+minTMIN.length = aggregate(minTMIN~Year, data=CHCND, length)
+minTMIN.length$group <- "Record Lows"
+names(minTMIN.length) <- c("Year", "Num", "Group")
+minTMIN.length$Num = -minTMIN.length$Num
+
+maxTMAX.length = aggregate(maxTMAX~Year, data=CHCND, length); 
+maxTMAX.length$group <- "Record Highs"
+names(maxTMAX.length) <- c("Year", "Num", "Group")
+
+records = rbind(minTMIN.length, maxTMAX.length); records
+
+library(ggplot2)
+ggplot( ) +
+   geom_point(data = CHCND, aes(y=TMIN, x=YearDay), size=.05, color="gray") + 
+   geom_bar(data = records, aes(x=Year, y=Num, fill=Group), stat="identity", position="identity") + 
+   xlim(min(CHCND$Year), max(CHCND$Year)-1) +
+   #ylab("Number of Extreme Temps") + # for the y axis label
+   scale_fill_manual("Legend", values = c("Record Highs" = "red", "Record Lows" = "blue")) +
+   geom_smooth(data = CHCND, aes(y=TMIN, x=YearDay), method = "lm", se = FALSE)
+   
+   
+#scale_y_continuous(
+    # Features of the first axis
+    # name = "Temperature (F °)",
+    # Add a second axis and specify its features
+    # sec.axis = sec_axis(~.*Num, name="Number of Extreme Temps")
+  #) 
+
+@
+
+
+\subsection{Iterate TMAX vs. Month Boxplots}
 
 <<boxplots, eval=FALSE, echo=FALSE>>=
 for(i in min(CHCND$Year+5):max(CHCND$Year)){
