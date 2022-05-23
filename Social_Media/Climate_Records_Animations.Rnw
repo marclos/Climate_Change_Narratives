@@ -180,6 +180,8 @@ get_GSOM2 <- function(stid){
 
 The function relies on two inputs, the station id and the measured parameter -- TMAX and TMIN in this case. After that, the data needs to be clean up quite a bit. 
 
+Furthermore, I have converted units to Farenheit, which is not my favorite, but important for US consumption.
+
 <<getGSOM, warning=FALSE>>=
 GSOM_TMAX <- get_GSOM(GSOM_Longest$id, 'TMAX')
 GSOM_TMIN <- get_GSOM(GSOM_Longest$id, 'TMIN')
@@ -342,8 +344,182 @@ return(sumstats)
 # test function
 sumstats = MonthEvalStats(GSOM[500:4000,])
 @
-   
+
+\subsubsection{Function to report Probabilities}
+
+<<report_prob_fun, results='hide'>>=
+report_prob <-function(pvalue){
+   if(pvalue > 0.05) return("> 0.05 (Not Significant)")
+   if(pvalue < 0.05 & pvalue >= 0.001) return(
+      paste("=", round(pvalue, 3), "(Statistically Significant)"))
+   #if(pvalue < 0.01) print(round(pvalue, 4))
+   if(pvalue < 0.001) return("< 0.001 (Statisically Significant)")
+}
+
+#test function
+report_prob(0.0032)
+
+report_prob2 <-function(lm){
+   # lm=GSOM.lm
+   if(anova(lm)$'Pr(>F)'[1] > 0.05){
+         return("p-value > 0.05 (Not Significant)")
+      }
+   if(anova(lm)$'Pr(>F)'[1] < 0.05 & 
+      anova(lm)$'Pr(>F)'[1] >= 0.001){
+         return(paste("Change ", round(coef(lm)[2]*356.25*100, 1), 
+         "/100 years, ", "p-value =", round(anova(lm)$'Pr(>F)'[1], 3), 
+         "(Statistically Significant)", sep=""))
+      }
+   if(anova(lm)$'Pr(>F)'[1] < 0.001) {
+         return(paste("Change ", round(coef(lm)[2]*325.25*100, 1), 
+         "/100 years, ", "p-value < 0.001 (Statistically Significant)", 
+         sep=""))
+   }
+}
+
+report_prob3 <-function(lm){
+   #lm=Drought.run.lm
+   temp = data.frame(change = NA, p_value=NA, note=NA)
+   if(anova(lm)$'Pr(>F)'[1] > 0.05){
+      temp[,1] <- "";
+      temp[,2] <- "p-value > 0.05";
+      temp[,3] <- "(Not Significant)"
+      return(temp)
+      }
+   if(anova(lm)$'Pr(>F)'[1] < 0.05 & 
+      anova(lm)$'Pr(>F)'[1] >= 0.001){
+      temp[,1] <- paste("Change: ", round(coef(lm)[2]*356.25*100, 1), "°F/100 years", sep=""); 
+      temp[,2] <- paste("p-value = ", round(anova(lm)$'Pr(>F)'[1], 3), sep="");
+      temp[,3] <- " (Statistically Significant)"
+      return(temp)
+      }
+   if(anova(lm)$'Pr(>F)'[1] < 0.001) {
+      temp[,1] <- paste("Change: ", round(coef(lm)[2]*356.25*100, 1), "°F/100 years", sep=""); 
+      temp[,2] <- "p-value < 0.001";
+      temp[,3] <- " (Statistically Significant)"
+      return(temp)
+   }
+}
+@
+
 \section{Communicating Long-term Weather Records}
+
+\subsection{Total Records and Post 1975 Records}
+
+<<>>=
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media")
+png(paste0("png//", fips$State, "-", stid, "-GSOMmonthly.png"), width = 480, height = 320, units = "px", pointsize = 12, bg = "white")
+par(las=1, mfrow=c(1,1))
+plot(TMAX~Date, GSOM, pch=20, cex=.5, col="grey", ylab="°F")
+GSOM.lm = lm(TMAX~Date, GSOM)
+pred_dates <-data.frame(Date = GSOM$Date); 
+nrow(pred_dates);# pred_dates
+#Predits the values with confidence interval 
+ci <- predict(GSOM.lm, newdata = pred_dates, 
+              interval = 'confidence')
+lines(pred_dates$Date, as.numeric(ci[,1]), col="gray50")
+
+# Post 1975
+GSOM.lm = lm(TMAX~Date, GSOM[GSOM$Year>1975,])
+pred_dates <-data.frame(Date = GSOM$Date[GSOM$Year>1975]); 
+nrow(pred_dates); #pred_dates
+#Predits the values with confidence interval 
+ci <- predict(GSOM.lm, newdata = pred_dates, 
+              interval = 'confidence')
+lines(pred_dates$Date, as.numeric(ci[,1]), col="red")
+lines(pred_dates$Date, as.numeric(ci[,2]), col="darkorange")
+lines(pred_dates$Date, ci[,3], col="darkorange")
+location_index = round(length(GSOM[GSOM$Year>1975,]$Date) * 0.99,0)
+text(pred_dates$Date[location_index], ci[location_index,3], 
+     paste(report_prob3(GSOM.lm))[2], pos=2, cex=1.0, col="red")
+#abline(coef(lm(TMAX~Date, GSOM)), col="black")
+#abline(coef(lm(TMAX~Date, GSOM[GSOM$Year>1975,])), col="red")
+dev.off()
+@
+
+The noise in the data suggest that there is no trend, but it's tricky because the seasonal variation dominates the source of varition. Is there a way to "filter" out the seasonal effect?
+
+\subsection{Filtering Seasonal Effect}
+
+Method 1 Filtering by Monthly Mean 
+
+<<>>=
+
+TMAX.Monthly.means = aggregate(TMAX~Month, GSOM, mean)
+names(TMAX.Monthly.means)=c("Month", "TMAXmean")
+GSOM.2 = merge(GSOM, TMAX.Monthly.means, by="Month")
+GSOM.2$TMAX.anom = GSOM.2$TMAX - GSOM.2$TMAXmean
+
+TMIN.Monthly.means = aggregate(TMIN~Month, GSOM, mean)
+names(TMIN.Monthly.means)=c("Month", "TMINmean")
+GSOM.2 = merge(GSOM.2, TMIN.Monthly.means, by="Month")
+GSOM.2$TMIN.anom = GSOM.2$TMIN - GSOM.2$TMINmean
+
+
+png(paste0("png//", fips$State, "-", stid, "-GSOM-anomoly.png"), width = 480, height = 320, units = "px", pointsize = 12, bg = "white")
+par(las=1, mfrow=c(1,1))
+par(las=1)
+plot(TMAX.anom~Date, GSOM.2, pch=20, cex=.5, col="grey", ylab="Max. Temp (anomaly) °F")
+GSOM.lm = lm(TMAX.anom~Date, GSOM.2)
+pred_dates <-data.frame(Date = GSOM.2$Date); 
+nrow(pred_dates); #pred_dates
+#Predits the values with confidence interval 
+ci <- predict(GSOM.lm, newdata = pred_dates, 
+              interval = 'confidence')
+lines(pred_dates$Date, as.numeric(ci[,1]), col="gray50")
+
+ymax=max(GSOM.2$TMAX.anom) - (max(GSOM.2$TMAX.anom)-min(GSOM.2$TMAX.anom))*.3
+ymax2 <- ymax - (max(GSOM.2$TMAX.anom)-min(GSOM.2$TMAX.anom))*.1
+
+location_index = round(length(GSOM.2[GSOM.2$Year>1975,]$Date) * 0.99,3)
+text(pred_dates$Date[location_index], ymax, 
+     paste(report_prob3(GSOM.lm))[1], pos=2, cex=.9)
+text(pred_dates$Date[location_index], ymax2, 
+     paste(report_prob3(GSOM.lm))[2], pos=2, cex=.9)
+
+# Post 1975
+GSOM.lm = lm(TMAX.anom~Date, GSOM.2[GSOM.2$Year>1975,])
+pred_dates <-data.frame(Date = GSOM.2$Date[GSOM.2$Year>1975]); 
+nrow(pred_dates); #pred_dates
+#Predits the values with confidence interval 
+ci <- predict(GSOM.lm, newdata = pred_dates, 
+              interval = 'confidence')
+lines(pred_dates$Date, as.numeric(ci[,1]), col="red")
+lines(pred_dates$Date, as.numeric(ci[,2]), col="darkorange")
+lines(pred_dates$Date, ci[,3], col="darkorange")
+
+ymax=max(GSOM.2$TMAX.anom) - (max(GSOM.2$TMAX.anom)-min(GSOM.2$TMAX.anom))*.7
+ymax2 <- ymax - (max(GSOM.2$TMAX.anom)-min(GSOM.2$TMAX.anom))*.1
+
+location_index = round(length(GSOM.2[GSOM.2$Year>1975,]$Date) * 0.99,0)
+text(pred_dates$Date[location_index], ymax, 
+     paste(report_prob3(GSOM.lm))[1], pos=2, cex=.9, col="red")
+text(pred_dates$Date[location_index], ymax2, 
+     paste(report_prob3(GSOM.lm))[2], pos=2, cex=.9, col="red")
+dev.off()
+@
+
+
+\begin{graphic}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", "Arizona-USC00028619-GSOM-anomoly.png")}
+\end{graphic}
+
+\subsubsection{Polynomial Filter}
+
+<<>>=
+# fit polynomial: x^2*b1 + x*b2 + ... + bn
+
+# create time series object
+#X = [i%365 for i in range(0, len(series))]
+# y = series.values
+
+# degree = 4
+#coef = polyfit(X, y, degree)
+# print('Coefficients: %s' % coef)
+# create curve
+
+@
+
 
 \subsection{Tables Temp Trends}
 
@@ -401,39 +577,7 @@ print(PPT.xtbl, type="latex", comment=FALSE)
 #pdftools::pdf_convert("deleteme.pdf", format="png")
 @
 
-\subsubsection{Function to report Probabilities}
 
-<<report_prob_fun, results='hide'>>=
-report_prob <-function(pvalue){
-   if(pvalue > 0.05) return("> 0.05 (Not Significant)")
-   if(pvalue < 0.05 & pvalue >= 0.001) return(
-      paste("=", round(pvalue, 3), "(Statistically Significant)"))
-   #if(pvalue < 0.01) print(round(pvalue, 4))
-   if(pvalue < 0.001) return("< 0.001 (Statisically Significant)")
-}
-
-#test function
-report_prob(0.0032)
-
-report_prob2 <-function(lm){
-   # lm=GSOM.lm
-   if(anova(lm)$'Pr(>F)'[1] > 0.05){
-         return("p-value > 0.05 (Not Significant)")
-      }
-   if(anova(lm)$'Pr(>F)'[1] < 0.05 & 
-      anova(lm)$'Pr(>F)'[1] >= 0.001){
-         return(paste("Change ", round(coef(lm)[2]*356.25*100, 1), 
-         "/100 years, ", "p-value =", round(anova(lm)$'Pr(>F)'[1], 3), 
-         "(Statistically Significant)", sep=""))
-      }
-   if(anova(lm)$'Pr(>F)'[1] < 0.001) {
-         return(paste("Change ", round(coef(lm)[2]*325.25*100, 1), 
-         "/100 years, ", "p-value < 0.001 (Statistically Significant)", 
-         sep=""))
-   }
-}
-
-@
 
 
 \subsection{Functions to Collect and Clean CHCND}
@@ -450,7 +594,7 @@ CHCND.https <- "https://www.ncei.noaa.gov/data/global-historical-climatology-net
 get_CHCND <- function(stid) {
    #stid = "USC00013511"
    import <- read.csv(paste(CHCND.https, stid, ".csv", sep=""))
-   selected = subset(import, select=c("DATE", "TMAX", "TMIN"))
+   selected = subset(import, select=c("DATE", "TMAX", "TMIN", "PRCP"))
    selected$TMAX = selected$TMAX/10*(9/5)+32
    selected$TMIN = selected$TMIN/10*(9/5)+32
    selected$Date = as.Date(selected$DATE)
@@ -481,7 +625,7 @@ range(CHCND$TMAX, na.rm=T)
 
 CHCND$Year = as.numeric(format(as.Date(CHCND$Date), format = "%Y"))
 CHCND$YearDay = CHCND$Year + yday(CHCND$Date)/366
-#head(CHCND)
+head(CHCND)
 @
 
 \subsection{Extreme Events}
@@ -495,10 +639,115 @@ We can look for trends in monthly averages, number of days without rain (importa
 I don't know of a robust way to look at this for the entire globe. 
 
 <<<>>=
+CHCND$Season = "Winter"
+CHCND$Season[CHCND$Month==4 | CHCND$Month==5 | CHCND$Month==6] = "Spring"
+CHCND$Season[CHCND$Month==7 | CHCND$Month==8 | CHCND$Month==9] = "Summer"
+CHCND$Season[CHCND$Month==10 | CHCND$Month==11 | CHCND$Month==12] = "Fall"
 
+
+PRCP.Total = aggregate(PRCP~Year, data=CHCND, sum, na.rm=T)
+PRCP.Season.Total = aggregate(PRCP~Season+Year, data=CHCND, sum, na.rm=T)
+@
+
+<<>>=
+ggplot( ) +
+   geom_point(data = CHCND, 
+      aes(y=PRCP, x=YearDay), size=.05, color="gray") + 
+   geom_bar(data = PRCP.Total, 
+      aes(x=Year, y=PRCP), stat="identity", 
+      position="identity") + 
+   xlim(min(CHCND$Year), max(CHCND$Year)-1) 
+   #ylab("Number of Extreme Temps") + # for the y axis label
 
 @
 
+<<>>=
+ggplot( ) +
+   geom_bar(data = PRCP.Season.Total, 
+      aes(x=Year, y=PRCP, fill=Season), stat="identity") + 
+         xlim(min(CHCND$Year), max(CHCND$Year)-1) +
+   #ylab("Number of Extreme Temps") + # for the y axis label
+   geom_smooth(data = PRCP.Total, 
+      aes(y=PRCP, x=Year), method = "lm", 
+      se = T, color= "black") 
+
+# + geom_smooth(data= PRCP.Season.Total, aes(x=Year, y = PRCP, color = Season, group=Season), se=F)
+@
+
+Days without rain...within a calendar year... bleed over between years isn't captured..
+
+<<>>=
+CHCND$PRCP.count = sequence(rle(CHCND$PRCP)$lengths)
+Drought.run.temp <- data.frame(Year = NA, lengths=NA, values=NA)
+for(i in min(CHCND$Year):max(CHCND$Year)){
+   # print(i)
+   run.length = rle(CHCND[CHCND$Year==i,]$PRCP)
+   run.length.df = data.frame(Year = rep(i, length(run.length$values)), 
+         lengths = run.length$lengths,
+         values = run.length$values)
+   
+   Drought.run.temp <- rbind(Drought.run.temp, 
+         run.length.df[run.length.df$values==0,])
+}
+Drought.run <- Drought.run.temp[-1,]
+str(Drought.run)
+names(Drought.run)
+
+# What is a drought 10 days, 20 days, 40 days?
+
+Drought.run.10 = aggregate(lengths~Year, 
+   data=Drought.run[Drought.run$lengths>=10,], sum)
+Drought.run.20 = aggregate(lengths~Year, 
+   data=Drought.run[Drought.run$lengths>=20,], sum)
+Drought.run.40 = aggregate(lengths~Year, 
+   data=Drought.run[Drought.run$lengths>=40,], sum)
+Drought.run.100 = aggregate(lengths~Year, 
+   data=Drought.run[Drought.run$lengths>=100,], sum)
+
+plot(lengths~Year, Drought.run.10, pch=20, cex=.5)
+points(lengths~Year, Drought.run.20, pch=20, col="blue", cex=.5)
+points(lengths~Year, Drought.run.40, pch=20, col="red", cex=.5)
+points(lengths~Year, Drought.run.100, pch=20, col="purple", cex=.5)
+
+abline(lm(lengths~Year, Drought.run.10))
+abline(lm(lengths~Year, Drought.run.20), col="blue")
+abline(lm(lengths~Year, Drought.run.40), col="red")
+abline(lm(lengths~Year, Drought.run.100), col="purple")
+summary(lm(lengths~Year, Drought.run.100))
+
+
+plot(lengths~Year, Drought.run[Drought.run$lengths>30,], pch=20)
+plot(lengths~Year, Drought.run[Drought.run$lengths>30,], pch=20)
+
+
+Drought.run.lm <- lm(lengths~Year, Drought.run[Drought.run$lengths>10,])
+summary(Drought.run.lm)
+text(min(Drought.run$Year, na.rm=T), max(Drought.run$lengths, na.rm=T), 
+     paste("Slope (x100) = ", round(coef(Drought.run.lm)[2]*100, 3)), pos=4)
+#plot(PRCP.count ~ Year, data=CHCND[CHCND$PRCP==0,])
+
+@
+
+Probability Distributions by decade...
+
+<<>>=
+
+floor_decade <- function(value){ 
+   return(value - value %% 10) }
+floor_decade(c(1883,1988))
+
+CHCND$Decade <- floor_decade(CHCND$Year)
+
+PRCP.Decade <- aggregate(PRCP~Month+Decade, data=CHCND, sum)
+head(PRCP.Decade)
+
+x <- PRCP.Decade$PRCP[PRCP.Decade$Decade==1900]
+df <- approxfun(density(x))
+plot(1:12, density(x))
+xnew <- c(0.45,1.84,2.3)
+points(xnew,df(xnew),col=2)
+
+@
 
 
 \subsection{Determine Record Setting Temperatures}
