@@ -219,6 +219,9 @@ GSOM <- merge(GSOM, dfTbl_PPT, by="Date")
 
 GSOM$Month = as.numeric(format(as.Date(GSOM$Date), format = "%m"))
 GSOM$Year = as.numeric(format(as.Date(GSOM$Date), format = "%Y"))
+GSOM$Decade = floor_decade(GSOM$Year)
+
+str(GSOM)
 @
 
 \subsubsection{Function to Evaluate Monthy Trends}
@@ -443,43 +446,47 @@ The noise in the data suggest that there is no trend, but it's tricky because th
 
 Method 1 Filtering by Monthly Mean 
 
-<<>>=
+<<GSOM_Anomaly>>=
 
-TMAX.Monthly.means = aggregate(TMAX~Month, GSOM, mean)
+TMAX.Monthly.means = aggregate(TMAX~Month, data=GSOM, mean)
 names(TMAX.Monthly.means)=c("Month", "TMAXmean")
-GSOM.2 = merge(GSOM, TMAX.Monthly.means, by="Month")
-GSOM.2$TMAX.anom = GSOM.2$TMAX - GSOM.2$TMAXmean
+GSOM2 = merge(GSOM, TMAX.Monthly.means, by="Month")
+GSOM2$TMAX.anom = GSOM2$TMAX - GSOM2$TMAXmean
 
 TMIN.Monthly.means = aggregate(TMIN~Month, GSOM, mean)
 names(TMIN.Monthly.means)=c("Month", "TMINmean")
-GSOM.2 = merge(GSOM.2, TMIN.Monthly.means, by="Month")
-GSOM.2$TMIN.anom = GSOM.2$TMIN - GSOM.2$TMINmean
+GSOM2 = merge(GSOM2, TMIN.Monthly.means, by="Month")
+GSOM2$TMIN.anom = GSOM2$TMIN - GSOM2$TMINmean
 
+# Sort by date
+GSOM2 <- GSOM2[order(GSOM2$Date),]
+@
 
+<<>>=
 png(paste0("png//", fips$State, "-", stid, "-GSOM-anomoly.png"), width = 480, height = 320, units = "px", pointsize = 12, bg = "white")
 par(las=1, mfrow=c(1,1))
 par(las=1)
-plot(TMAX.anom~Date, GSOM.2, pch=20, cex=.5, col="grey", ylab="Max. Temp (anomaly) °F")
-GSOM.lm = lm(TMAX.anom~Date, GSOM.2)
-pred_dates <-data.frame(Date = GSOM.2$Date); 
+plot(TMAX.anom~Date, GSOM2, pch=20, cex=.5, col="grey", ylab="Max. Temp (anomaly) °F", main=paste0(fips$State, " (", stid, ")", report_prob3(GSOM.lm)[3]))
+GSOM.lm = lm(TMAX.anom~Date, GSOM2)
+pred_dates <-data.frame(Date = GSOM2$Date); 
 nrow(pred_dates); #pred_dates
 #Predits the values with confidence interval 
 ci <- predict(GSOM.lm, newdata = pred_dates, 
               interval = 'confidence')
 lines(pred_dates$Date, as.numeric(ci[,1]), col="gray50")
 
-ymax=max(GSOM.2$TMAX.anom) - (max(GSOM.2$TMAX.anom)-min(GSOM.2$TMAX.anom))*.3
-ymax2 <- ymax - (max(GSOM.2$TMAX.anom)-min(GSOM.2$TMAX.anom))*.1
+ymax=max(GSOM2$TMAX.anom) - (max(GSOM2$TMAX.anom)-min(GSOM2$TMAX.anom))*.3
+ymax2 <- ymax - (max(GSOM2$TMAX.anom)-min(GSOM2$TMAX.anom))*.1
 
-location_index = round(length(GSOM.2[GSOM.2$Year>1975,]$Date) * 0.99,3)
+location_index = round(length(GSOM2[GSOM2$Year>1975,]$Date) * 0.99,3)
 text(pred_dates$Date[location_index], ymax, 
      paste(report_prob3(GSOM.lm))[1], pos=2, cex=.9)
 text(pred_dates$Date[location_index], ymax2, 
      paste(report_prob3(GSOM.lm))[2], pos=2, cex=.9)
 
 # Post 1975
-GSOM.lm = lm(TMAX.anom~Date, GSOM.2[GSOM.2$Year>1975,])
-pred_dates <-data.frame(Date = GSOM.2$Date[GSOM.2$Year>1975]); 
+GSOM.lm = lm(TMAX.anom~Date, GSOM2[GSOM2$Year>1975,])
+pred_dates <-data.frame(Date = GSOM2$Date[GSOM2$Year>1975]); 
 nrow(pred_dates); #pred_dates
 #Predits the values with confidence interval 
 ci <- predict(GSOM.lm, newdata = pred_dates, 
@@ -488,10 +495,10 @@ lines(pred_dates$Date, as.numeric(ci[,1]), col="red")
 lines(pred_dates$Date, as.numeric(ci[,2]), col="darkorange")
 lines(pred_dates$Date, ci[,3], col="darkorange")
 
-ymax=max(GSOM.2$TMAX.anom) - (max(GSOM.2$TMAX.anom)-min(GSOM.2$TMAX.anom))*.7
-ymax2 <- ymax - (max(GSOM.2$TMAX.anom)-min(GSOM.2$TMAX.anom))*.1
+ymax=max(GSOM2$TMAX.anom) - (max(GSOM2$TMAX.anom)-min(GSOM2$TMAX.anom))*.7
+ymax2 <- ymax - (max(GSOM2$TMAX.anom)-min(GSOM2$TMAX.anom))*.1
 
-location_index = round(length(GSOM.2[GSOM.2$Year>1975,]$Date) * 0.99,0)
+location_index = round(length(GSOM2[GSOM2$Year>1975,]$Date) * 0.99,0)
 text(pred_dates$Date[location_index], ymax, 
      paste(report_prob3(GSOM.lm))[1], pos=2, cex=.9, col="red")
 text(pred_dates$Date[location_index], ymax2, 
@@ -499,9 +506,13 @@ text(pred_dates$Date[location_index], ymax2,
 dev.off()
 @
 
+%"png//", fips$State, "-", stid, "-GSOM-anomoly.png"
 
+And to see what we created, see Figure~\ref{fig:GSOM-anomaly}.
 \begin{graphic}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", "Arizona-USC00028619-GSOM-anomoly.png")}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-GSOM-anomaly.png")}}
+\caption{The changing in monthly temperature data.}
+\label{fig:GSOM-anomaly}
 \end{graphic}
 
 \subsubsection{Polynomial Filter}
@@ -839,7 +850,6 @@ ggplot( ) +
 
 @
 
-
 \subsection{Iterate TMAX vs. Month Boxplots}
 
 <<boxplots, eval=FALSE, echo=FALSE>>=
@@ -859,7 +869,7 @@ text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, col="red", cex=2)
 }
 @
 
-\section{Plot Results}
+\section{Static Plot Results}
 
 \subsection{Static Plots}
 
@@ -874,7 +884,7 @@ png(paste0("png//", fips$State, "-", stid, "-GSOM.png"), width = 480, height = 4
 ylim_new=NA
 for(i in seq(min(GSOM$Year), max(GSOM$Year), by=2)) 
    {
-par(las=1, mfrow=c(4,1), mar= c(2, 4, 2, 1) + 0.1)
+par(las=1, mfrow=c(4,1), mar= c(4, 4, 2, 1) + 0.1)
    GSOMsub <- GSOM[GSOM$Month==maxmonth & GSOM$Year<=i,]
    if(nrow(GSOMsub)<10) next
 plot(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,], 
@@ -935,9 +945,140 @@ points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], pch=20,
 dev.off()
 @
 
-\subsection{Animation}
+
+\subsection{Temp \& Precipitation Probability}
+
+To highlight the patterns of change, it might be useful to analyze how the probability ditributuion might change -- we can use a normal probability distribion as a theoretical distribution (and we can check if this distribuion is approrpriate with a Chi-Square test), or we can use the data to create a emperical distribution, which is my favored approach.
+
+<<>>=
+TMAX.mean.anomaly.decade = aggregate(TMAX.anom ~ Decade, GSOM2, mean)
+TMAX.sd.anomaly.decade = aggregate(TMAX.anom ~ Decade, GSOM2, sd)
+
+names(TMAX.sd.anomaly.decade)=c("Decade", "TMAX.sd.anom")
+
+TMIN.mean.anomaly.decade = aggregate(TMIN.anom ~ Decade, GSOM2, mean)
+TMIN.sd.anomaly.decade = aggregate(TMIN.anom ~ Decade, GSOM2, sd)
+
+names(TMIN.sd.anomaly.decade)=c("Decade", "TMIN.sd.anom")
+
+TMAX.temp = merge(TMAX.mean.anomaly.decade, TMAX.sd.anomaly.decade, by="Decade")
+
+TMIN.temp = merge(TMIN.mean.anomaly.decade, TMIN.sd.anomaly.decade, by="Decade")
+
+GSOM.Monthly.Anom.mean.sd = merge(TMAX.temp, TMIN.temp, by="Decade")
+
+Anom.x = seq(min(GSOM2$TMAX.anom), max(GSOM2$TMAX.anom),by=.1)
+
+plot(Anom.x, dnorm(Anom.x, mean=GSOM.Monthly.Anom.mean.sd$TMAX.anom[1]), ty="l", col="blue", ylab="Density")
+lines(Anom.x, dnorm(Anom.x, mean=GSOM.Monthly.Anom.mean.sd$TMAX.anom[4]), col="green")
+lines(Anom.x, dnorm(Anom.x, mean=GSOM.Monthly.Anom.mean.sd$TMAX.anom[14]), col="red")
+
+library(densEstBayes)
+#hist(OldFaithful2011,col = "gold",main = "",probability = TRUE, xlab = "time interval between geyser eruptions (minutes)")
+
+#destSMFVB <- densEstBayes(OldFaithful2011,method = "SMFVB")
+
+#plot(destSMFVB,xlab = "time interval between geyser eruptions (minutes)", main = "method = \"SMFVB\" (semiparametric mean field variatiodestNUTS <- densEstBayes(OldFaithful2011, method = "NUTS")
+
+#plot(destNUTS,xlab = "time interval between geyser eruptions (minutes)", main = "method = \"NUTS\" (no-U-turn sampler)")
+
+@
+
+
+\section{Animated GIFs}
 
 So far, this creates a gif file, but I haven't been able get the gif in the pdf directly yet. I will need an additional package or create separate png that are combined. For now, we'll create a gif file to be used in separate documents.
+
+\subsection{Animated Probability Distributions}
+
+<<animate, results='hide', eval=TRUE>>=
+
+# Define an image_graph size
+img <- image_graph(600, 480, res = 96) 
+# START ------------------------------------------
+
+ylim_new=NA
+for(i in 1:length(unique(GSOM2$Decade))) 
+   {
+# i = 9
+decade=(unique(GSOM2$Decade))[order(unique(GSOM2$Decade))==i]
+
+GSOM2sub <- GSOM2[GSOM2$Decade==decade,]
+h.ramp <- rev(heat.colors(length(unique(GSOM2$Decade))+1))[-1]
+   
+# Determine Stats for PDFs
+TMAX.mean.anomaly.decade = aggregate(TMAX.anom ~ Decade, GSOM2sub, mean)
+TMAX.sd.anomaly.decade = aggregate(TMAX.anom ~ Decade, GSOM2sub, sd)
+names(TMAX.sd.anomaly.decade)=c("Decade", "TMAX.sd.anom")
+TMIN.mean.anomaly.decade = aggregate(TMIN.anom ~ Decade, GSOM2sub, mean)
+TMIN.sd.anomaly.decade = aggregate(TMIN.anom ~ Decade, GSOM2sub, sd)
+names(TMIN.sd.anomaly.decade)=c("Decade", "TMIN.sd.anom")
+
+TMAX.temp = merge(TMAX.mean.anomaly.decade, TMAX.sd.anomaly.decade, by="Decade")
+
+TMIN.temp = merge(TMIN.mean.anomaly.decade, TMIN.sd.anomaly.decade, by="Decade")
+
+GSOM.Monthly.Anom.mean.sd = merge(TMAX.temp, TMIN.temp, by="Decade")
+
+par(las=1, mfrow=c(1,2), mar= c(4, 4, 2, 1) + 0.1)
+
+Anom.x = seq(min(GSOM2$TMAX.anom), max(GSOM2$TMAX.anom), by=.1)
+plot(Anom.x, dnorm(Anom.x, mean=GSOM.Monthly.Anom.mean.sd$TMAX.anom[1], sd=GSOM.Monthly.Anom.mean.sd$TMAX.sd.anom[1]), ty="l", col=h.ramp[i], ylab="Density", xlab="TMAX Anomaly")
+abline(v=mean(GSOM2$TMAX.anom[GSOM2$Decade==min(GSOM$Decade)]))
+mtext(paste0(fips$State, " ", decade), side=3)
+
+Anom.x = seq(min(GSOM2$TMIN.anom), max(GSOM2$TMIN.anom), by=.1)
+plot(Anom.x, dnorm(Anom.x, mean=GSOM.Monthly.Anom.mean.sd$TMIN.anom[1], sd=GSOM.Monthly.Anom.mean.sd$TMIN.sd.anom[1]), ty="l", col=h.ramp[i], ylab="Density", xlab="TMIN Anomaly")
+abline(v=mean(GSOM2$TMIN.anom[GSOM2$Decade==min(GSOM$Decade)]))
+mtext(paste0(fips$State, " ", decade), side=3)
+}
+
+par(las=1, mfrow=c(1,2), mar= c(4, 4, 2, 1) + 0.1)
+TMAX.anomaly.decade = aggregate(TMAX.anom ~ Decade, GSOM2, FUN = function(x) c(mean = mean(x), sd = sd(x)))
+TMIN.anomaly.decade = aggregate(TMIN.anom ~ Decade, GSOM2, FUN = function(x) c(mean = mean(x), sd = sd(x)))
+
+
+Anom.x = seq(min(GSOM2$TMIN.anom), max(GSOM2$TMIN.anom), by=.1)
+plot(Anom.x, dnorm(Anom.x, mean=TMIN.anomaly.decade$TMIN.anom[[1,1]], sd=TMIN.anomaly.decade$TMIN.anom[[1,2]]), ty="l", col=h.ramp[1], ylab="Density", xlab="TMIN Anomaly")
+mtext(paste0(fips$State, " ", decade), side=3)
+for(i in 2:nrow(TMIN.anomaly.decade)){
+lines(Anom.x, dnorm(Anom.x, mean=TMIN.anomaly.decade$TMIN.anom[[i,1]], sd=TMIN.anomaly.decade$TMIN.anom[[i,2]]), col=h.ramp[i])
+}
+abline(v=mean(GSOM2$TMIN.anom[GSOM2$Decade==min(GSOM$Decade)]), col="blue")
+abline(v=mean(GSOM2$TMIN.anom[GSOM2$Decade==max(GSOM$Decade)]), col="red")
+
+Anom.x = seq(min(GSOM2$TMAX.anom), max(GSOM2$TMAX.anom), by=.1)
+plot(Anom.x, dnorm(Anom.x, mean=TMAX.anomaly.decade$TMAX.anom[[1,1]], sd=TMAX.anomaly.decade$TMAX.anom[[1,2]]), ty="l", col=h.ramp[1], ylab="Density", xlab="TMAX Anomaly")
+mtext(paste0(fips$State, " ", decade), side=3)
+for(i in 2:nrow(TMAX.anomaly.decade)){
+lines(Anom.x, dnorm(Anom.x, mean=TMAX.anomaly.decade$TMAX.anom[[i,1]], sd=TMAX.anomaly.decade$TMAX.anom[[i,2]]), col=h.ramp[i])
+}
+abline(v=mean(GSOM2$TMAX.anom[GSOM2$Decade==min(GSOM$Decade)]), col="blue")
+abline(v=mean(GSOM2$TMAX.anom[GSOM2$Decade==max(GSOM$Decade)]), col="red")
+
+
+# END -----------------------------------------------------
+dev.off()
+@
+
+
+The file is saved in the main directory. 
+
+<<print_img>>=
+#print(img)
+@
+
+<<write_img, eval=TRUE>>=
+GSOM_animation <- image_animate(img, fps = 1, loop=2, optimize = TRUE)
+#print(GSOM_animation)
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/")
+image_write(GSOM_animation, paste("Climate_gifs/", fips$State, "-", stid, "_GSOM-ePDF.gif", sep=""))
+@
+
+
+
+
+\subsection{4 Plots}
 
 <<animate, results='hide', eval=TRUE>>=
 
@@ -1029,7 +1170,14 @@ setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/")
 image_write(GSOM_animation, paste("Climate_gifs/", fips$State, "-", stid, "_GSOM.gif", sep=""))
 @
 
+
 \subsection{KISS}
+
+Keeping it simple is critical in communicating scientific information. In this section, I try to come up with a consistent message for every state and a simple graphic. 
+
+First, TMAX and TMIN -- TMAX trend, TMIN and TMAX histogram, plus PPT?
+
+
 
 <<KISS, eval=TRUE, echo=FALSE>>=
 setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media")
