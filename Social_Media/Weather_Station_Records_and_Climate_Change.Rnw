@@ -8,7 +8,8 @@
 
 <<echo=FALSE>>=
 opts_chunk$set(width=60, echo=FALSE, results='hide')
-@ 
+@
+
 
 <<echo=FALSE, warnings=FALSE, message=FALSE >>=
 start_time <- Sys.time()
@@ -26,6 +27,10 @@ library(lubridate)
 library(ggplot2)
 library(densEstBayes)
 #library(pdftools)
+
+png_public = "docs/Social_Media/png/"
+png_private = tba
+gif_public = "docs/Social_Media/Climate_gifs/"
 @
 
 <<noaakey, echo=FALSE>>=
@@ -383,7 +388,7 @@ head(CHCND)
 @
 \section{Data Analysis Processes}
 
-\subsection{Mapping the Location of Weather Station}
+\subsection{Map Weather Station Location}
 
 <<mapstation, message=FALSE>>=
 GSOM_Longest$name
@@ -403,7 +408,8 @@ ggmap(myMap) + geom_point(aes(x = lon, y = lat), data = station.df, alpha = .5, 
 
 #zoom = 11, scale = 2, maptype ='watercolor',
 
-png(paste0("png//", fips$State, "-", stid, "-MAP.png"), 
+map.png = paste0(fips$State, "-", stid, "-MAP.png")
+png(paste0(png_public, map.png), 
     width = 480, height = 480, units = "px", 
     pointsize = 12, bg = "white")
 
@@ -596,8 +602,11 @@ The greatest changes for Station \Sexpr{GSOM_Longest$id}
 Communicating climate change based on station records is tricky. The long-term record would on the surface to be the most robust, but several issues arise with a naive analytical approach -- my favorite!
 
 <<trend1975>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media")
-png(paste0("png//", fips$State, "-", stid, "-GSOMmonthly1975.png"), width = 480, height = 320, units = "px", pointsize = 12, bg = "white")
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/")
+
+GSOM_1975.png = paste0(fips$State, "-", stid, "-GSOM_1975.png")
+
+png(paste0(png_public, GSOM_1975.png), width = 480, height = 320, units = "px", pointsize = 12, bg = "white")
 par(las=1, mfrow=c(1,1))
 plot(TMAX~Date, GSOM, pch=20, cex=.5, col="grey", ylab="°F", main=paste0(fips$State, "-", stid))
 GSOM.lm = lm(TMAX~Date, GSOM)
@@ -662,7 +671,9 @@ GSOM2 <- GSOM2[order(GSOM2$Date),]
 @
 
 <<>>=
-png(paste0("png//", fips$State, "-", stid, "-GSOM-anomaly.png"), 
+GSOM_anomaly.png = paste0(fips$State, "-", stid, "-GSOM_anomaly1975.png")
+
+png(paste0(png_public, GSOM_anomaly.png), 
     width = 480, height = 320, units = "px",
     pointsize = 12, bg = "white")
 par(las=1, mfrow=c(1,1))
@@ -977,6 +988,8 @@ for(i in min(CHCND.noleap$Year):max(CHCND.noleap$Year)){
    } else {print(paste0("Process non-leap year ", i))}
 }
 
+dim(TMAX.mat.noleap)
+max(CHCND$Year)-min(CHCND$Year)
 TMAX.mat.noleap[,6]
 TMAX.mat.noleap[,7]
 
@@ -1073,7 +1086,7 @@ text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, col="red", cex=2)
 }
 @
 
-begin{figure}
+\begin{figure}
 \includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-GSOM.png")}}
 \caption{Climate can be analyzed using several types of lenses. In this case, we have analyzed show the months with the greatest changes. The first figure is monthly average of TMINs (daily low temperatures) with a best fit line. The second figure shows the monthly TMAX range and asterisks indicate singificant changes over the station record and the third figure is the trend for these TMAXs over time and includes the best fit line. The final figure shows the daily temperatures that have been the highest on record (in red). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
 \label{fig:GSOM}
@@ -1084,9 +1097,11 @@ begin{figure}
 To test the code, I have created graphics that can then be used in the animation process, i.e. try to create code that doesn't get too complicated and then fail! 
 
 <<static_template, eval=TRUE, echo=FALSE>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media")
-png(paste0("png//", fips$State, "-", stid, "-GSOM.png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
-#png(paste0("png//Rplot_", i, ".png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/")
+
+panel4.png = paste0(fips$State, "-", stid, "-4panel.png")
+              
+png(paste0(png_public, panel4.png), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 
 # START ----
 ylim_new=NA
@@ -1208,7 +1223,7 @@ dev.off()
 \begin{figure}
 \includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-GSOM.png")}}
 \caption{Climate can be analyzed using several types of lenses. In this case, we have analyzed show the months with the greatest changes. The first figure is monthly average of TMINs (daily low temperatures) with a best fit line. The second figure shows the monthly TMAX range and asterisks indicate singificant changes over the station record and the third figure is the trend for these TMAXs over time and includes the best fit line. The final figure shows the daily temperatures that have been the highest on record (in red). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
-\label{fig:GSOM}
+\label{fig:4panel}
 \end{figure}
 
 \subsection{KISS}
@@ -1690,10 +1705,16 @@ The file is saved in the main directory.
 \subsection{4 Weather Trend Plots}
 
 <<animate, results='hide', eval=TRUE>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/")
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/")
 
-if(!file.exists(paste0("Climate_gifs/", fips$State, "-", stid, "_GSOM-4plots.gif"))){
-   print("Creating animated GSOM-4plots.gif")
+gif_public = "docs/Social_Media/States/Climate_gifs/"
+panel4.anim = paste0(fips$State, "-", stid, "-4panel.gif")
+
+if(!file.exists(paste0(gif_path, panel4.anim))){
+   print("Creating animated 4panel.gif")  
+
+#if(!file.exists(paste0("Climate_gifs/", fips$State, "-", stid, "_GSOM-4plots.gif"))){
+
 
 img <- image_graph(600, 480, res = 96)
 # START ----
@@ -1810,7 +1831,9 @@ barplot(height = R1$TMIN, space=0, add = TRUE, axes = FALSE, col="blue")
 dev.off()
 
 GSOM_animation <- image_animate(img, fps = 1, loop=2, optimize = TRUE)
-image_write(GSOM_animation, paste0("Climate_gifs/", fips$State, "-", stid, "_GSOM-4plots.gif"))
+image_write(GSOM_animation, paste0(gif_path, panel4.anim)) 
+                                   
+# fips$State, "-", stid, "_GSOM-4plots.gif"))
 
 } else {
    print("Skipping animated GSOM-4plots chunk")}
@@ -2045,10 +2068,22 @@ TBD
 Developing a robust method to analyze weather stations is both time consuming and difficult to justify the outcome. In part because the data suggest that each station (region) requires different types of analysis, based on the expected patterns of temperature and rainfall. As climate scientists have known for decades, the terminology of global warming is not very useful. Not because scientists are trying to hide something or promote some biased agenda, but that even as warming of the global average is well documented, the impacts of climate change on each region is highly specific, requiring specificity in the analysis. 
 
 Hopefully, this little analysis has created some mechanism for others to appreciate this compexity. 
-<<endtime, echo=FALSE>>=
+
+<<endtime, echo=FALSE, warning=FALSE>>=
+
+# Create CSV with filenames for blog/
+
+dbase = data.frame(State = fips$State, Station = stid, 
+                   map.png = map.png, 
+           gif_public = gif_public, panel4.gif = panel4.anim,
+           png_public = png_public, panel4.png = panel4.png, 
+           GSOM_1975.png, GSOM_anomaly.png)
+
+write.csv(dbase, file = "docs/Social_Media/dbase.csv", append = TRUE)
 end_time <- Sys.time()
 totaltime = end_time - start_time
 @
 
 The document took \Sexpr{round(totaltime,1)} minutes to process and compile. My next goal will be to optimize the process and streamline the time to analyze. 
+
 \end{document}

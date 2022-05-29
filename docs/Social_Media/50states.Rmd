@@ -52,88 +52,116 @@ lines(loess~decimal.date, data=maunaloa, lwd=1.4, col="red")
 
 # Fifty States Project
 
-```{r}
+We ofen hear about the globe's rising temperatures without learning much about how weather records in our own region might be contriubuting to these climate change patterns. 
+
+In most cases, a station in a state supports the overall global pattern, but in some we see patterns that are ambiguous or even contractory.  
+
+```{r, echo=FALSE, results='hide'}
 file = "Weather_Station_Records_and_Climate_Change.pdf"
 
 sourcePath <- "../../Social_Media"
 destinationPath <- "States"
 #dataFiles <- dir(rawPath, "*.csv", ignore.case = TRUE, all.files = TRUE)
 
-file.copy(file.path(sourcePath, file), destinationPath, overwrite = FALSE)
+file.copy(file.path(sourcePath, file), destinationPath, overwrite = TRUE)
+
+dbase = read.csv("dbase.csv")
+
 ```
 
 
-## Approach...
+## Approach
+
+For this project, I downloaded the longest and most complete record for each state and developed a standard set of analysis procedures and share them below. 
+
+I have also been working to create short videos that will be shared on various forms of social media. 
 
 For additional description of the project methods and R code, see ([Weather Station Records and Communicating
-Climate Change](States/Weather_Station_Records_and_Communicating_Climate_Change.pdf))
+Climate Change](https://github.com/marclos/Climate_Change_Narratives/raw/master/docs/Social_Media/States/Weather_Station_Records_and_Climate_Change.pdf))
  
 
+# Basics in Analyzing Data
 
+## Correlation and Causation
 
-# Graphics and Animations
+## Statistical Considerations
 
-## CO2 Records
+## Animated CO2 Records
 
 Sometimes it's a bit easier to see how these patterns develop over time and relative to what we think of as "pre-industrial" concentrations, which forms a base-line. 
 
-```{r, co2animation, fig.margin = FALSE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in late 1950s, with a loess line (red). Note that the slope or the rate of change is also increasing.", fig.width=8, fig.height=5, cache=TRUE, echo=FALSE}
+```{r, prepare_img, eval=FALSE, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
 library(magick)
-#setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media")
-
 
 img <- image_graph(600, 340, res = 96)
 for(i in min(maunaloa$decimal.date):max(maunaloa$decimal.date)){
-#png(paste0("png//Rplot_", i, ".png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 par(las=1)
 plot(average~decimal.date, data=maunaloa[maunaloa$decimal.date<=i,], type="l", ylab=expression(CO[2]*~ "(ppm)"), xlab="Year", ylim=c(280, max(maunaloa[maunaloa$decimal.date<=i,4])), 
 main="Carbon Dioxide Concentration \n Mauna Loa, HI" )
-#abline(coef(lm(average~year, data=maunaloa)), col="red", lwd=2)
 abline(h=280, col="gray50", lty=2); text(1970, 285,  "Pre-Industrial Estimate", col="gray20")
 muanaloa.loess = loess(average~decimal.date, data=maunaloa, span = 0.75, degree = 2, parametric = FALSE, drop.square = FALSE, normalize = TRUE)
 maunaloa$loess <- predict(muanaloa.loess)
 lines(loess~decimal.date, data=maunaloa, lwd=1.4, col="red")
-# plot(average~decimal.date, data=maunaloa[maunaloa$decimal.date<=i,])
 }
 dev.off()
 
-CO2_animation <- image_animate(img, fps = 1, optimize = TRUE)
-print(CO2_animation)
+#CO2_animation <- 
+```
 
-#image_write(CO2_animation, "CO2.gif")
+Although an animated figured can serve to show changes, it can also be distracting or hard to follow. For example, below I have a pretty straight forward image demonstrating the CO2 changes in Mauna Loa. I think this works pretty well, but I suspect not everyone would agree.
+
+```{r, co2animation, fig.margin = FALSE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in late 1950s, with a loess line (red). Note that the slope or the rate of change is also increasing.", fig.width=8, fig.height=5, cache=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
+image_animate(img, fps = 2, loop=5, optimize = TRUE)
+
+#print(CO2_animation)
 ```
 
 
-## Fire and Air Quality 
+# States by Region
+
+## New England
+
+### Delaware
 
 
-## Old Attempts
-```{r animation, fig.margin = FALSE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in the 1950s, with a best fit line (red). Note that the slope or the rate of change is also increasing.", fig.width=8, fig.height=5, cache=TRUE, echo=FALSE, eval=FALSE}
-par(las=1)
-p <- ggplot(
-  maunaloa, 
-  aes(x = decimal.date, y=average)
-  ) +
-  geom_point(show.legend = FALSE, alpha = 0.2, color="blue", pch=20) +
-  scale_color_viridis_d() +
-  #geom_smooth(color="red") +
-  #scale_size(range = c(2, 12)) +
-  #scale_x_log10() +
-  labs(x = "Date", y = "Mauna Loa CO2 (ppm)")
-#p
-```
+## Mid-West and Prairie States
+
+### Kansas
+
+([Kansas 2022](States/Kansas.html))
 
 
-```{r}
-#p + transition_time(decimal.date) + labs(title = "Year: {frame_time}")
-```
+### Wisconson
 
-## States
+([Wisconson 2022](States/Wisconson.html))
+
+## The South
 
 ### Alabama
 
 ([Alabama 2022](States/Alabama.html))
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
+files = subset(dbase, subset=(State=="Alabama"))
+knitr::include_graphics(paste0("png/", files$panel4.png))
+
+```
 <!-- ![Global Summary of Monthly Means and CHCND](States/png/GSOM-Alabama.png) -->
+
+### Texas
+
+([Texas 2022](States/Texas.html))
+
+
+## Inter-Mountain West
+
+### Utah
+
+([Utah 2022](States/Utah.html))
+
+## West Coast
+
+## Alaska and Hawaii
 
 ### Alaska
 
@@ -146,47 +174,12 @@ p <- ggplot(
 
 <!-- ![Global Summary of Monthly Means and CHCND](png/GSOM-Arizona.png) -->
 
-### Kansas
-
-([Kansas 2022](States/Kansas.html))
-
-
-### Wisconson
-
-([Wisconson 2022](States/Wisconson.html))
-
-
-### Texas
-
-([Texas 2022](States/Texas.html))
-
-
-### Utah
-
-([Utah 2022](States/Utah.html))
 
 
 
-## Inter-Mountain Region
-
-
-## Economic Impacts on Agriculture
-
-
-## Hydrology and Farming Impacts
-
-
-## The South
-
-
-## New England
 
 
 
-## Urban Heat, Health, Environmental Justice
-
-
-## Tropical Areas in the USA
 
 
 ## Parallel issues in Europe and Asia
