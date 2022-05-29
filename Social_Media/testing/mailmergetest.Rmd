@@ -1,0 +1,38 @@
+---
+  title: "Covid Facts For You!"
+output: blastula::blastula_email
+params:
+  state: Illinois
+name: Scott
+signoff: A Fully Automated Process
+---
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(webdriver)
+library(tidyverse)
+library(data.table)
+
+#use built in constants state.abb and state.name to go from param$state to two letter code
+stateAbb<-state.abb[match(params$state,state.name)]
+
+#pull down data from covidtracking.com, select necessary columns, filter to desired state
+datafile<- fread("https://api.covidtracking.com/v1/states/daily.csv")%>%select(date,state,positiveIncrease)%>%mutate(date=as.Date(as.character(date),format='%Y%m%d',origin='1970-01-01'))%>%filter(state==stateAbb)%>%arrange(date)
+```
+
+Dear `r params$name`,
+
+As part of our ongoing efforts to keep public health top of mind throughout all operations in these interesting times, <span style="color: red;">the management</span> is sending you up to date positive test counts for `r params$state`.
+
+Please let us know if you have any questions.
+
+Best,
+
+`r params$signoff`
+
+```{r,echo=FALSE,fig.align="center"}
+ggplot(datafile,aes(x=date,y=positiveIncrease,color='red'))+geom_area(fill='red',alpha=.75)+
+  ggthemes::theme_tufte() + theme(legend.position = "none") + xlab('Date') + ylab('Newly Reported Positive Tests') + 
+  ggtitle(paste0("SARS-CoV-2 Positive Tests By Date in ",params$state))+
+  theme(plot.title = element_text(hjust = 0.5))+scale_y_continuous(labels = scales::comma)
+```

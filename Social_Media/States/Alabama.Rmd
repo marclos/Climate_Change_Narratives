@@ -8,16 +8,20 @@ output: ioslides_presentation
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 # https://marclos.github.io/Climate_Change_Narratives/Social_Media/
+
+# Select State 1
+
+MAP <- '../png/MAP-Alabama.png'
 ```
 
 ```{r, child=c('Intro.Rmd')}
 ```
 
 
-## Results
+## Weather Station Selected
 
 ```{r, echo=FALSE, out.width='70%'}
-   knitr::include_graphics('../png/MAP-Alabama.png')
+   knitr::include_graphics(MAP)
 ```
 
 ## Results
