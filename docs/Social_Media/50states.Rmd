@@ -65,7 +65,8 @@ destinationPath <- "States"
 
 file.copy(file.path(sourcePath, file), destinationPath, overwrite = TRUE)
 
-dbase = read.csv("dbase.csv")
+home = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/"
+dbase = read.csv("dbase.csv", row.names=NULL)
 
 ```
 
@@ -84,7 +85,11 @@ Climate Change](https://github.com/marclos/Climate_Change_Narratives/raw/master/
 
 ## Correlation and Causation
 
+One of the most important parts of science is critical thinking, which begins with trying to root out logical falacies. One that comes up alot is the falacy that ``correlation is causation''. In our case, many of the analysis included here are changes over time. Time in and of itself isn't the cause of temperature or precipitation changes. Thus, we need to keep in mind, climate changes are due to complex dynanmics in the Earth System, which include natural and anthropocentric drivers. 
+
 ## Statistical Considerations
+
+In many cases, I will report the probability associated with correlations. However, these statistics obscure one of the hardest concepts in statistics: we test the null hypothesis, which might be "no change". Thus, if the chances are low (< 5% change or 0.05 as a probability), we reject the null hypothesis and accept the altnernative, which in this case is "change". Frankly, statistics is a bit like walking in a door backwards. You stil get in, but the path is less straightforward.  
 
 ## Animated CO2 Records
 
@@ -128,36 +133,85 @@ image_animate(img, fps = 2, loop=5, optimize = TRUE)
 
 ### Kansas
 
-([Kansas 2022](States/Kansas.html))
+([Kansas 2022](States/Kansas.html))'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap="Station Location Map"}
+files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+knitr::include_graphics(paste0(home, files$png_public, files$Map))
+
+```
+
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
+knitr::include_graphics(paste0(home, files$png_public, files$GSOM_dnorm.png))
+
+```
 
 
 ### Wisconson
 
-([Wisconson 2022](States/Wisconson.html))
+([Wisconson 2022](States/Wisconson.html))'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap="Station Location Map"}
+files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+knitr::include_graphics(paste0(home, files$png_public, files$Map))
+
+```
+
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
+knitr::include_graphics(paste0(home, files$png_public, files$GSOM_dnorm.png))
+
+```
 
 ## The South
 
 ### Alabama
 
-([Alabama 2022](States/Alabama.html))
+([Alabama](States/Alabama.html))'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap="Station Location Map"}
+files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+knitr::include_graphics(paste0(home, files$png_public, files$Map))
+
+```
+
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
-files = subset(dbase, subset=(State=="Alabama"))
-knitr::include_graphics(paste0("png/", files$panel4.png))
+knitr::include_graphics(paste0(home, files$png_public, files$GSOM_dnorm.png))
 
 ```
 <!-- ![Global Summary of Monthly Means and CHCND](States/png/GSOM-Alabama.png) -->
 
 ### Texas
 
-([Texas 2022](States/Texas.html))
+([Texas 2022](States/Texas.html))'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap="Station Location Map"}
+files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+knitr::include_graphics(paste0(home, files$png_public, files$Map))
+
+```
+
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
+knitr::include_graphics(paste0(home, files$png_public, files$GSOM_dnorm.png))
+
+```
 
 
 ## Inter-Mountain West
 
 ### Utah
 
-([Utah 2022](States/Utah.html))
+([Utah 2022](States/Utah.html))'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap="Station Location Map"}
+files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+knitr::include_graphics(paste0(home, files$png_public, files$Map))
+
+```
+
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
+knitr::include_graphics(paste0(home, files$png_public, files$GSOM_dnorm.png))
+
+```
 
 ## West Coast
 
@@ -165,12 +219,35 @@ knitr::include_graphics(paste0("png/", files$panel4.png))
 
 ### Alaska
 
-([Alaska 2022](States/Alaska.html))
+([Alaska 2022](States/Alaska.html))'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap="Station Location Map"}
+files = tail(subset(dbase, subset=(State=="Alaska")), 1)
+knitr::include_graphics(paste0(files$png_public, files$Map))
+
+```
+
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
+knitr::include_graphics(paste0(files$png_public, files$GSOM_dnorm.png))
+
+```
 <!-- ![Global Summary of Monthly Means and CHCND](png/GSOM-Alaska.png) -->
 
 ### Arizona
 
 ([Arizona 2022](States/Arizona.html)) is perplexing -- the station with one of the longest records had a cooling trend. How can we explain this?
+ 
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap="Station Location Map"}
+files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+knitr::include_graphics(paste0(home, files$png_public, files$Map))
+
+```
+
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
+knitr::include_graphics(paste0(home, files$png_public, files$GSOM_dnorm.png))
+
+```
 
 <!-- ![Global Summary of Monthly Means and CHCND](png/GSOM-Arizona.png) -->
 

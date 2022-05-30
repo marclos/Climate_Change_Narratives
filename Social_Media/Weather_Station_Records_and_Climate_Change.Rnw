@@ -28,9 +28,10 @@ library(ggplot2)
 library(densEstBayes)
 #library(pdftools)
 
-png_public = "docs/Social_Media/png/"
-png_private = tba
-gif_public = "docs/Social_Media/Climate_gifs/"
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives")
+png_public = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/"
+png_private = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/States/png"
+gif_public = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/Climate_gifs/"
 @
 
 <<noaakey, echo=FALSE>>=
@@ -53,7 +54,7 @@ get_locationid <- function(FIPS){
 @
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(1); str(fips); 
+fips = get_locationid(3); str(fips); 
 @
 
 \title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
@@ -404,16 +405,16 @@ str(station.df)
 myMap <- get_map(location=station, zoom=7, scale =2, 
 source="stamen", maptype="terrain", messaging = FALSE, crop=FALSE)
 
-ggmap(myMap) + geom_point(aes(x = lon, y = lat), data = station.df, alpha = .5, color="darkred", size = 3) + geom_text(aes(x = lon, y = lat, label=Station),  data = station.df, alpha = .5, color="darkred", size = 3, hjust=.1, vjust=-1)
+#ggmap(myMap) + geom_point(aes(x = lon, y = lat), data = station.df, alpha = .5, color="darkred", size = 3) + geom_text(aes(x = lon, y = lat, label=Station),  data = station.df, alpha = .5, color="darkred", size = 3, hjust=.1, vjust=-1)
 
 #zoom = 11, scale = 2, maptype ='watercolor',
 
-map.png = paste0(fips$State, "-", stid, "-MAP.png")
+map.png = paste0(fips$State, "_", stid, "_MAP.png")
+
 png(paste0(png_public, map.png), 
     width = 480, height = 480, units = "px", 
     pointsize = 12, bg = "white")
-
-# For PNG?
+# For PNG
 ggmap(myMap)+
 geom_point(aes(x = lon, y = lat), data = station.df, 
    alpha = .5, color="darkred", size = 3) + 
@@ -422,6 +423,17 @@ geom_point(aes(x = lon, y = lat), data = station.df,
       size = 3, hjust=.1, vjust=-1)
 dev.off()
 @
+
+
+<<>>=
+getwd()
+@
+
+\begin{figure}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, map.png)}}
+\caption{Weather Station Location (\Sexpr{stid}). }
+\label{fig:Map}
+\end{figure}
 
 \subsection{Using a Linear Model Monthy Trends}
 
@@ -554,7 +566,8 @@ Table~\ref{tab:TMINtrends} summarizes the monthly trends for TMAX.
 sumstats$Slope100 = sumstats$Slope*100
 TMIN.xtbl <- xtable(sumstats[sumstats$Param=="TMIN", c(1,7,4:6)], digits=c(0,0,4,2,4,3), caption="TMIN Trends")
 
-print(TMIN.xtbl, type="latex", comment=FALSE, caption="Montly TMIN Trends", label = "tab:TMINtrends")
+print(TMIN.xtbl, type="latex", comment=FALSE)
+#, caption="Montly TMIN Trends", label = "tab:TMINtrends")
 
 @
 
@@ -564,7 +577,9 @@ Table~\ref{tab:TMAXtrends} summarizes the monthly trends for TMAX.
 sumstats$Slope100 = sumstats$Slope*100
 TMAX.xtbl <- xtable(sumstats[sumstats$Param=="TMAX", c(1,7,4:6)], digits=c(0,0,4,2,4,3), caption="TMAX Trends")
 
-print(TMAX.xtbl, type="latex", comment=FALSE, caption="TMAX Trends by Month", label = "tab:TMAXtrends")
+print(TMAX.xtbl)
+
+#, type="latex", comment=FALSE, caption="TMAX Trends by Month", label = "tab:TMAXtrends")
 @
 
 PPT changes are tricky to capture and I'll have to keep working on this (Table~\ref{tab:PPTtrends}).
@@ -572,7 +587,11 @@ PPT changes are tricky to capture and I'll have to keep working on this (Table~\
 <<echo=FALSE, results='asis'>>=
 PPT.xtbl <- xtable(sumstats[sumstats$Param=="PPT", c(1,7,4:6)], digits=c(0,0,4,2,4,3))
 
-print(PPT.xtbl, type="latex", caption="Precipitation Trends by Month", label = "tab:PPTtrends")
+print(PPT.xtbl, type="latex", label = "tab:PPTtrends")
+      
+#      caption="Precipitation Trends by Month")
+
+#
 
 #tmp <- tempfile()
 #options(xtable.comment=FALSE)  ## removes the nasty comments
@@ -602,9 +621,8 @@ The greatest changes for Station \Sexpr{GSOM_Longest$id}
 Communicating climate change based on station records is tricky. The long-term record would on the surface to be the most robust, but several issues arise with a naive analytical approach -- my favorite!
 
 <<trend1975>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/")
 
-GSOM_1975.png = paste0(fips$State, "-", stid, "-GSOM_1975.png")
+GSOM_1975.png = paste0(fips$State, "_", stid, "_GSOM_1975.png")
 
 png(paste0(png_public, GSOM_1975.png), width = 480, height = 320, units = "px", pointsize = 12, bg = "white")
 par(las=1, mfrow=c(1,1))
@@ -638,7 +656,7 @@ dev.off()
 The noise in the data may suggests that no trend is present (Figure~\ref{fig:GSOM-1975trend}). It's tricky because the seasonal variation dominates the source of varition. In other words the intra-annual variation exceeds the inter-annual variation, making signal detection very difficult. Is there a way to "filter" out the seasonal effect? Yes, let's see how that works next. 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-GSOMmonthly1975.png")}}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, GSOM_1975.png)}}
 \caption{The climate trends from full record and post 1975 data. These data have a high level of variability due to seasonality effects that have not been filtered out.}
 \label{fig:GSOM-1975trend}
 \end{figure}
@@ -648,7 +666,7 @@ The noise in the data may suggests that no trend is present (Figure~\ref{fig:GSO
 
 There are several ways to filter out seasonal effects. The easiest way is subtract the mean value for each date, but that's tricky because every four years there is an extra day in Februrary -- although there are ways to deal with this, a more straight forward way is to use mean monthly values to capture the seasonality for each month. With 12 months, this is a pretty good approach because there is pretty good resolution. 
 
-\subsubsection{Method 1 Filtering by Monthly Mean} 
+\subsubsection{Method 1: Filtering by Monthly Mean} 
 
 <<GSOM_Anomaly>>=
 TMAX.Monthly.means = aggregate(TMAX~Month, data=GSOM, mean)
@@ -671,16 +689,16 @@ GSOM2 <- GSOM2[order(GSOM2$Date),]
 @
 
 <<>>=
-GSOM_anomaly.png = paste0(fips$State, "-", stid, "-GSOM_anomaly1975.png")
+GSOM_anomaly_1975.png = paste0(fips$State, "_", stid, "_GSOM_anomaly_1975.png")
 
-png(paste0(png_public, GSOM_anomaly.png), 
+png(paste0(png_public, GSOM_anomaly_1975.png), 
     width = 480, height = 320, units = "px",
     pointsize = 12, bg = "white")
 par(las=1, mfrow=c(1,1))
-par(las=1)
+
 plot(TMAX.anom~Date, GSOM2, pch=20, cex=.5, 
      col="grey", ylab="Max. Temp (anomaly) °F",
-     main=paste0("Seasonally Filtered", fips$State, " (", stid, ")",
+     main=paste0("Seasonally Filtered -- ", fips$State, " (", stid, ") ",
          report_prob3(GSOM.lm)[3]))
 GSOM.lm = lm(TMAX.anom~Date, GSOM2)
 pred_dates <-data.frame(Date = GSOM2$Date); 
@@ -721,12 +739,10 @@ text(pred_dates$Date[location_index], ymax2,
 dev.off()
 @
 
-%"png//", fips$State, "-", stid, "-GSOM-anomoly.png"
-
 And to see what we created, see Figure~\ref{fig:GSOM-anomaly}.
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-GSOM-anomaly.png")}}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, GSOM_anomaly_1975.png)}}
 \caption{The changing in monthly temperature data.}
 \label{fig:GSOM-anomaly}
 \end{figure}
@@ -782,7 +798,7 @@ ggplot( ) +
 
 \subsubsection{Drought}
 
-Days without rain...within a calendar year... bleed over between years isn't captured..
+Days without rain...within a calendar year... bleed over between years isn't captured.. This is screwed up, Drought.run needs work.
 
 <<>>=
 CHCND$PRCP.count = sequence(rle(CHCND$PRCP)$lengths)
@@ -809,8 +825,11 @@ Drought.run.20 = aggregate(lengths~Year,
    data=Drought.run[Drought.run$lengths>=20,], sum)
 Drought.run.40 = aggregate(lengths~Year, 
    data=Drought.run[Drought.run$lengths>=40,], sum)
-Drought.run.100 = aggregate(lengths~Year, 
+
+if(Drought.run$lengths>100) {
+   Drought.run.100 = aggregate(lengths~Year, 
    data=Drought.run[Drought.run$lengths>=100,], sum)
+}
 
 plot(lengths~Year, Drought.run.10, pch=20, cex=.5)
 points(lengths~Year, Drought.run.20, pch=20, col="blue", cex=.5)
@@ -860,7 +879,7 @@ CHCND$Score <- floor_score(CHCND$Year)
 
 In many cases, people seem to "feel" how temperature has been changing over time, and new records seem to capture the attention in the media. So, we'll create a updated record of maximum temperatures and display them. 
 
-<<extremetempplot, echo=FALSE, results='hide', eval=FALSE>>=
+<<extremetempplot, echo=FALSE, results='hide', eval=TRUE>>=
 CHCND_Mean = mean(CHCND$TMAX, na.rm=T)
 CHCND$maxTMAX <- CHCND$minTMIN <- NA
 
@@ -895,14 +914,6 @@ for(i in 1:nrow(CHCND)){
 head(CHCND)
 @
 
-<<testplot_noeval, echo=FALSE, eval=FALSE>>=
-for(i in seq(min(CHCND$Year), max(CHCND$Year), by=2)){
- # i=min(CHCND$Year)
-   plot(TMAX~Date, CHCND[CHCND$Year<=i,], pch='.', col="grey80")
-   points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], 
-          pch=20, col="red", cex=.8 )
-}
-@
 
 
 This is a common way to communicate temperatures changes. I suspect we have a better sense of change when we notice "extreme" events...
@@ -954,8 +965,8 @@ Create the matrix
 library(lubridate)
 str(CHCND)
 
-TMAX.mat.noleap <- matrix(NA, nrow=366, ncol=max(CHCND$Year) - min(CHCND$Year))
-TMIN.mat <- matrix(NA, nrow=366, ncol=max(CHCND$Year) - min(CHCND$Year))
+TMAX.mat.noleap <- matrix(NA, nrow=366, ncol=max(CHCND$Year) - min(CHCND$Year)+1)
+TMIN.mat <- matrix(NA, nrow=366, ncol=max(CHCND$Year) - min(CHCND$Year)+1)
 #TMAX.mat.leap <- matrix(NA, nrow=1, ncol=max(CHCND$Year) - min(CHCND$Year))
 
 # Dumb Method, fraction of year might be better...
@@ -989,18 +1000,21 @@ for(i in min(CHCND.noleap$Year):max(CHCND.noleap$Year)){
 }
 
 dim(TMAX.mat.noleap)
-max(CHCND$Year)-min(CHCND$Year)
-TMAX.mat.noleap[,6]
-TMAX.mat.noleap[,7]
 
-TMAX.mat.noleap[60:61,120:134]
-TMIN.mat[60:61,120:134]
+max(CHCND$yday[CHCND$Year==max(CHCND$Year)])
+
+subset(CHCND, select=c(Date, yday, Year, TMAX), 
+       subset=(Year >= max(CHCND$Year)-1 & yday<=max(CHCND$yday[CHCND$Year<=max(CHCND$Year)]) & yday>=135))
+
+TMAX.mat.noleap[140:144,134:135]
+
 @
 
 
 <<recordtemploop>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/")
-png(paste0("Social_Media//png//", fips$State, "-", stid, "-CHCND_Records.png"), width = 480, height = 280, units = "px", pointsize = 12, bg = "white")
+records.png = paste0(fips$State, "_", stid, "_CHCND_Temp_Records.png")
+
+png(paste0(png_public, records.png), width = 480, height = 280, units = "px", pointsize = 12, bg = "white")
 
 results<-NULL
 decades <- years[years/10 == floor(years/10)]
@@ -1060,7 +1074,7 @@ dev.off()
 
 The patterns of record temperatures often shows increasing number of new high temperature records  and fewer record low temperatures more recently, but as usual, it depends on the location (Figure~\ref{fig:Records}).
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-CHCND_Records.png")}}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, records.png)}}
 \caption{Daily temperatures that have been the highest on record (in red) and lowest on record (in blue). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
 \label{fig:Records}
 \end{figure}
@@ -1086,20 +1100,13 @@ text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, col="red", cex=2)
 }
 @
 
-\begin{figure}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-GSOM.png")}}
-\caption{Climate can be analyzed using several types of lenses. In this case, we have analyzed show the months with the greatest changes. The first figure is monthly average of TMINs (daily low temperatures) with a best fit line. The second figure shows the monthly TMAX range and asterisks indicate singificant changes over the station record and the third figure is the trend for these TMAXs over time and includes the best fit line. The final figure shows the daily temperatures that have been the highest on record (in red). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
-\label{fig:GSOM}
-\end{figure}
 
 \subsection{Four Plots Compelling Figures}
 
 To test the code, I have created graphics that can then be used in the animation process, i.e. try to create code that doesn't get too complicated and then fail! 
 
 <<static_template, eval=TRUE, echo=FALSE>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/")
-
-panel4.png = paste0(fips$State, "-", stid, "-4panel.png")
+panel4.png = paste0(fips$State, "_", stid, "_4panel.png")
               
 png(paste0(png_public, panel4.png), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 
@@ -1221,8 +1228,8 @@ dev.off()
 @
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-GSOM.png")}}
-\caption{Climate can be analyzed using several types of lenses. In this case, we have analyzed show the months with the greatest changes. The first figure is monthly average of TMINs (daily low temperatures) with a best fit line. The second figure shows the monthly TMAX range and asterisks indicate singificant changes over the station record and the third figure is the trend for these TMAXs over time and includes the best fit line. The final figure shows the daily temperatures that have been the highest on record (in red). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, panel4.png)}}
+\caption{Climate can be analyzed using several types of lenses. In this case, we have analyzed show the months with the greatest changes. The first figure is monthly average of TMINs (daily low temperatures) with a best fit line. The second figure shows the monthly TMAX range and asterisks indicate singificant changes over the station record and the third figure is the trend for these TMAXs over time and includes the best fit line. The final figure shows the daily temperatures that have been the highest on record (in red) and the lowest minimum temperatures (in blue). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
 \label{fig:4panel}
 \end{figure}
 
@@ -1288,9 +1295,10 @@ summary(fit)
 Let's create a figure that simplifies the narrative, if we can!
 
 <<KISS, eval=TRUE, echo=FALSE>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media")
-png(paste0("png//", fips$State, "-", stid, "-KISS.png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
-#png(paste0("png//Rplot_", i, ".png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
+
+KISS.png <- paste0(fips$State, "_", stid, "_KISS.png")
+
+png(paste0(png_public, KISS.png), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 
 ylim_new=NA
 for(i in seq(min(GSOM$Year), max(GSOM$Year), by=2)) 
@@ -1358,12 +1366,10 @@ dev.off()
 @
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-KISS.png")}}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, KISS.png)}}
 \caption{Keep it simple stupid!}
 \label{fig:GSOM-KISS}
 \end{figure}
-
-
 
 \subsection{Temp \& Precipitation Probability}
 
@@ -1389,12 +1395,12 @@ TMIN.anomaly.list = aggregate(TMIN.anom ~ Score, GSOM2,
 PPT.anomaly.list = aggregate(PPT.anom ~ Score, GSOM2, 
    FUN = function(x) c(mean = mean(x), sd = sd(x)))
 
+GSOM_dnorm.png <- paste0(fips$State, "_", stid, "_GSOM_dnorm.png")
 
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media")
-png(paste0("png//", fips$State, "-", stid, "-GSOM-normalPDF.png"), 
-    width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
+png(paste0(png_public, GSOM_dnorm.png), 
+    width = 480, height = 300, units = "px", pointsize = 12, bg = "white")
 # TMIN
-par(mfrow=c(2,2), las=1)
+par(mfrow=c(1, 3), las=1)
 Anom.x = seq(min(GSOM2$TMIN.anom), max(GSOM2$TMIN.anom),by=.1)
 Anom.y = max(dnorm(Anom.x,
    mean=TMIN.anomaly.list$TMIN.anom[1,1],
@@ -1474,9 +1480,9 @@ dev.off()
 This figure is pretty effective, but still needs work. 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-GSOM-normalPDF.png")}}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, GSOM_dnorm.png)}}
 \caption{The changing in monthly temperature data, assuming a normal probability distribution.}
-\label{fig:GSOM-normalPDF}
+\label{fig:GSOM_dnorm}
 \end{figure}
 
 \subsection{Using library densEstBayes}
@@ -1505,12 +1511,12 @@ These values suggest that there is good reason \Sexpr{text} the normal probabili
 Next we use a function to estimate the probability distribution using a markof chain the creates an estimated probability distribution. This doesn't always work when the distribution is not even and their only 10 years of data per slot. I suspect, I should make this by every 20 years. Plus that will go way faster and I think the data visualization will be more robust. 
 
 <<estDensity, warning=FALSE, results='hide'>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media")
+GSOM_estPDF = paste0(fips$State, "_", stid, "_GSOM_estPDF.png")
 
-if(!file.exists(paste0("png//", fips$State, "-", stid, "-GSOM-estDensity.png"))){
+if(!file.exists(paste0(png_public, GSOM_estPDF))){
    print("Creating estimated density distribution")
 
-png(paste0("png//", fips$State, "-", stid, "-GSOM-estDensity.png"), 
+png(paste0(png_public, GSOM_estPDF), 
     width = 480, height = 320, units = "px", pointsize = 12, bg = "white")
 
 # Split Screen TMAX Legend TMIN
@@ -1596,9 +1602,9 @@ dev.off()
 The process to create these figures is very time consuming, so in general, I need to come up with an if then statement to avoid creating these everytime!
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/png/", fips$State, "-", stid, "-GSOM-estDensity.png")}}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, GSOM_estPDF)}}
 \caption{The changing in monthly temperature data.}
-\label{fig:GSOM-estDensity}
+\label{fig:GSOM_estPDF}
 \end{figure}
 
 \section{Animated GIFs}
@@ -1608,10 +1614,11 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
 \subsection{Probability Distributions}
 
 <<animated_normalPDFs, results='hide', eval=TRUE>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/")
-if(!file.exists(paste0("Climate_gifs/", 
-   fips$State, "-", stid, "_GSOM-normalPDF.gif"))){
-   print("Creating animated normal probability ")
+
+GSOM_dnorm.gif = paste0(fips$State, "_", stid, "_GSOM_dnorm.gif")
+
+if(!file.exists(paste0(gif_public, GSOM_dnorm.gif))){
+   print("Creating animated normal probability")
    
 # Define an image_graph size
 img <- image_graph(600, 480, res = 96)
@@ -1690,9 +1697,8 @@ dev.off()
 
 GSOM_animation <- image_animate(img, fps = 1, loop=2, optimize = TRUE)
 #print(GSOM_animation)
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/")
-image_write(GSOM_animation, paste("Climate_gifs/", 
-   fips$State, "-", stid, "_GSOM-normalPDF.gif", sep=""))
+
+image_write(GSOM_animation, paste0(gif_public, GSOM_dnorm.gif))
 
 } else {
    print("Skipping animated normal distribution chunk")}
@@ -1705,16 +1711,10 @@ The file is saved in the main directory.
 \subsection{4 Weather Trend Plots}
 
 <<animate, results='hide', eval=TRUE>>=
-setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/")
+panel4.gif = paste0(fips$State, "_", stid, "_4panel.gif")
 
-gif_public = "docs/Social_Media/States/Climate_gifs/"
-panel4.anim = paste0(fips$State, "-", stid, "-4panel.gif")
-
-if(!file.exists(paste0(gif_path, panel4.anim))){
+if(!file.exists(paste0(gif_public, panel4.gif))){
    print("Creating animated 4panel.gif")  
-
-#if(!file.exists(paste0("Climate_gifs/", fips$State, "-", stid, "_GSOM-4plots.gif"))){
-
 
 img <- image_graph(600, 480, res = 96)
 # START ----
@@ -1777,16 +1777,15 @@ text(pred_dates$Date[location_index], ci[location_index,3],
 # Record High Temperatures
 # START
    j = which(years %in% i)  
-   if(sum(!is.na(TMAX.mat.noleap[,j]))==366){
+   if(sum(is.na(TMAX.mat.noleap[,j]))==366) next
 TMAX1 = apply(TMAX.mat.noleap[,1:j], 1, function (x) which.max(x)); 
 is.na(TMAX1) <- lengths(TMAX1) == 0
 TMAX1 <- unlist(TMAX1)
 TMAX1 <- count(TMAX1)
-str(TMAX1)
+#str(TMAX1)
 names(TMAX1)=c("Year", "TMAX")
 TMAX_na = data.frame(Year=1:j)
 TMAX <- merge(TMAX_na, TMAX1, all.x=TRUE, by="Year")
-   }
 
 if(sum(is.na(TMIN.mat[,j]))==366) next
    # Select Minimum and Change to Negative Value
@@ -1816,7 +1815,7 @@ xlabs = index.year
 
 yrange = range(c(R1$TMIN, R1$TMAX), na.rm=T)
 ytics = floor(seq(yrange[1], yrange[2], length.out=tic.no))
-ylabs = as.character(ytics)
+ylabs = as.character(abs(ytics))
 
 par(las=1, xpd=TRUE)
 plot(c(1,nrow(R1)), c(yrange[1], yrange[2]), ty="n", xaxt='n', yaxt='n', xlab="Year", ylab="No. of Record Temps", main="Record Highs and Lows")
@@ -1831,12 +1830,10 @@ barplot(height = R1$TMIN, space=0, add = TRUE, axes = FALSE, col="blue")
 dev.off()
 
 GSOM_animation <- image_animate(img, fps = 1, loop=2, optimize = TRUE)
-image_write(GSOM_animation, paste0(gif_path, panel4.anim)) 
-                                   
-# fips$State, "-", stid, "_GSOM-4plots.gif"))
+image_write(GSOM_animation, paste0(gif_public, panel4.gif)) 
 
 } else {
-   print("Skipping animated GSOM-4plots chunk")}
+   print("Skipping animated GSOM_4plots chunk")}
 
 @
 
@@ -1844,74 +1841,6 @@ image_write(GSOM_animation, paste0(gif_path, panel4.anim))
 The file is saved in the main directory. 
 
 
-\section{OLD Stuff}
-<<eval=FALSE, echo=FALSE>>=
-library(magick)
-#setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/gif")
-
-#par(las=1, mfrow=c(2,1), mar= c(2, 4, 2, 1) + 0.1)
-img <- image_graph(600, 480, res = 96)
-
-for(i in min(GSOM$Year+5):max(GSOM$Year)) {
-#png(paste0("png//Rplot_", i, ".png"), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
-   GSOMsub <- GSOM[GSOM$Year<=i,]
-par(las=1, mfrow=c(2,1), mar= c(2, 4, 2, 1) + 0.1)
-plot(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,], col='gray50', pch=20, xlab="")
-GSOM.lm = lm(TMIN~Date, GSOMsub[GSOMsub$Month==maxmonth,]) 
-abline(coef(GSOM.lm), col='red')
-#summary(GSOM.lm); anova(GSOM.lm)$'Pr(>F)'[1]
-plot(TMAX~Date, GSOMsub[GSOMsub$Month==maxmonth,], col='gray50', pch=20, xlab="")
-GSOM.lm = lm(TMAX~Date, GSOMsub[GSOMsub$Month==maxmonth,]) 
-abline(coef(GSOM.lm), col='red')
-#summary(GSOM.lm); 
-text(i, coef(GSOM.lm)[2]*i+coef(GSOM.lm)[1], paste("p-value", round(anova(GSOM.lm)$'Pr(>F)'[1], 4)))
-}
-
-dev.off()
-@
-
-<<eval=FALSE, echo=FALSE>>=
-GSOM_animation <- image_animate(img, fps = 1, optimize = TRUE)
-print(GSOM_animation)
-
-image_write(GSOM_animation, "GSOM.gif")
-@
-
-\section{ Other attempts...}
-
-<<eval=FALSE>>=
-
-ncdc_locs(locationcategoryid='CITY', sortfield='name', 
-          sortorder='desc')
-
-# ncdc_locs(locationcategoryid='CITY', 
-#  locationid='FIPS:01', sortfield='name', sortorder='desc')
-
-#ncdc_datasets(locationcategoryid='CITY', 
-#   locationid='FIPS:01', sortfield='name', sortorder='desc')
-
-
-out <- ncdc(datasetid='NORMAL_DLY', stationid='GHCND:USW00014895', 
-            datatypeid='dly-tmax-normal', startdate = '2010-05-01', 
-            enddate = '2010-05-10')
-@
-
-<<eval=FALSE, echo=FALSE>>=
-with_units <- ncdc(datasetid='GHCND', stationid='GHCND:USW00014895', 
-                   datatypeid='PRCP', startdate = '2010-05-01', 
-                   enddate = '2010-10-31', limit=500, add_units = TRUE)
-head( with_units$data )
-@
-<<>>=
-with_units <- ncdc(datasetid='GHCND', stationid='GHCND:USW00014895', 
-                   datatypeid='TMAX', startdate = '2010-05-01', 
-                   enddate = '2010-10-31', limit=500, add_units = TRUE)
-head( with_units$data )
-@
-
-<<eval=FALSE, echo=FALSE>>=
-ncdc_plot(with_units, breaks="45 days")
-@
 \subsection{Evaluating Records}
 
 TBD
@@ -2074,12 +2003,25 @@ Hopefully, this little analysis has created some mechanism for others to appreci
 # Create CSV with filenames for blog/
 
 dbase = data.frame(State = fips$State, Station = stid, 
-                   map.png = map.png, 
-           gif_public = gif_public, panel4.gif = panel4.anim,
-           png_public = png_public, panel4.png = panel4.png, 
-           GSOM_1975.png, GSOM_anomaly.png)
+   gif_public = gif_public, png_public = png_public, 
+   Map.png = map.png, 
+   GSOM_1975.png = GSOM_1975.png, 
+   GSOM_1975_anomaly.png = GSOM_anomaly_1975.png,
+   Records.png = records.png, 
+   panel4.png.png = panel4.png,
+   GSOM_dnorm.png = GSOM_dnorm.png,
+   KISS.png = KISS.png,
+   GSOM_estPDF.png = GSOM_estPDF.png,
+   panel4.gif = panel4.gif,
+   GSOM_dnorm.gif = GSOM_dnorm.gif
+)
 
-write.csv(dbase, file = "docs/Social_Media/dbase.csv", append = TRUE)
+write.table(dbase, file = "docs/Social_Media/dbase.csv", 
+            append = TRUE, quote = TRUE, sep = ",",
+            eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+            col.names = TRUE, qmethod = c("escape", "double"),
+            fileEncoding = "")
+
 end_time <- Sys.time()
 totaltime = end_time - start_time
 @
