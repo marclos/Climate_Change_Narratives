@@ -210,10 +210,24 @@ knitr::include_graphics(paste0(home, files$png_public, files$Map))
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
 knitr::include_graphics(paste0(home, files$png_public, files$GSOM_dnorm.png))
-
 ```
 
 ## West Coast
+
+### California
+
+[California 2020](States/California)'s temperatures are changing dramatically and radically!
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap="Station Location Map"}
+files = tail(subset(dbase, subset=(State=="California")), 1)
+knitr::include_graphics(paste0(files$png_public, files$Map))
+
+```
+
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Full Temerature Record"}
+knitr::include_graphics(paste0(files$png_public, files$GSOM_dnorm.png))
+```
+
 
 ## Alaska and Hawaii
 

@@ -54,7 +54,7 @@ get_locationid <- function(FIPS){
 @
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(3); str(fips); 
+fips = get_locationid(2); str(fips); 
 @
 
 \title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
@@ -336,6 +336,7 @@ CHCND have been bias corrected...
 <<CHCND_Download>>=
 GSOM_Longest$id
 
+#= "GHCND:USW00026617"
 stid = substr(GSOM_Longest$id, 7, 17)
 
 CHCND.https <- "https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/"
@@ -1400,7 +1401,7 @@ GSOM_dnorm.png <- paste0(fips$State, "_", stid, "_GSOM_dnorm.png")
 png(paste0(png_public, GSOM_dnorm.png), 
     width = 480, height = 300, units = "px", pointsize = 12, bg = "white")
 # TMIN
-par(mfrow=c(1, 3), las=1)
+par(mfrow=c(1, 3), las=1, mar = c(5, 4, 4, 0.2) + 0.1, xpd=TRUE)
 Anom.x = seq(min(GSOM2$TMIN.anom), max(GSOM2$TMIN.anom),by=.1)
 Anom.y = max(dnorm(Anom.x,
    mean=TMIN.anomaly.list$TMIN.anom[1,1],
@@ -1421,10 +1422,10 @@ lines(Anom.x, dnorm(Anom.x,
 abline(v=TMIN.anomaly.list$TMIN.anom[i,1], col=h.ramp[i], lwd=2)
 Delta = TMIN.anomaly.list$TMIN.anom[i,1] - TMIN.anomaly.list$TMIN.anom[1,1]
 
-text(TMIN.anomaly.list$TMIN.anom[i,1], Anom.y*.9, 
-   paste0("Change ", round(Delta, 1), "°F"), pos=4)
+text(TMIN.anomaly.list$TMIN.anom[i,1], Anom.y*.95, 
+   paste0("Change ", round(Delta, 1), "°F"), pos=4, cex=.9)
 
-mtext(paste0(fips$State, " (", GSOM_Longest$name, ")"), side=3, line=2)
+
 
 # TMAX
 Anom.x = seq(min(GSOM2$TMAX.anom), max(GSOM2$TMAX.anom),by=.1)
@@ -1447,8 +1448,10 @@ lines(Anom.x, dnorm(Anom.x,
 abline(v=TMAX.anomaly.list$TMAX.anom[i,1], col=h.ramp[i], lwd=2)
 Delta = TMAX.anomaly.list$TMAX.anom[i,1] - TMAX.anomaly.list$TMAX.anom[1,1]
 
-text(TMAX.anomaly.list$TMAX.anom[i,1], Anom.y*.9, 
-   paste0("Change ", round(Delta, 1), "°F"), pos=4)
+text(TMAX.anomaly.list$TMAX.anom[i,1], Anom.y*.96, 
+   paste0("Change ", round(Delta, 1), "°F"), pos=4, cex=0.9)
+
+mtext(paste0(fips$State, " (", GSOM_Longest$name, ")"), side=3, line=2)
 
 # PPT
 Anom.x = seq(min(GSOM2$PPT.anom), max(GSOM2$PPT.anom),by=.1)
@@ -1471,8 +1474,8 @@ lines(Anom.x, dnorm(Anom.x,
 abline(v=PPT.anomaly.list$PPT.anom[i,1], col=h.ramp[i], lwd=2)
 Delta = PPT.anomaly.list$PPT.anom[i,1] - PPT.anomaly.list$PPT.anom[1,1]
 
-text(PPT.anomaly.list$PPT.anom[i,1], Anom.y*.9,
-   paste0("Change ", round(Delta, 1), " inches"), pos=4)
+text(PPT.anomaly.list$PPT.anom[i,1], Anom.y*.96,
+   paste0("Change ", round(Delta, 1), " inches"), pos=4, cex=0.9)
 
 dev.off()
 @
