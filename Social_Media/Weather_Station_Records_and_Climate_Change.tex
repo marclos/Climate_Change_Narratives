@@ -1,4 +1,65 @@
-\documentclass{article}
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\makeatletter
+\@ifundefined{AddToHook}{}{\AddToHook{package/xcolor/after}{\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}}}
+\makeatother
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\makeatletter
+\@ifundefined{AddToHook}{}{\AddToHook{package/xcolor/after}{
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+}}
+\makeatother
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 \usepackage{hyperref}
 %\usepackage{expl3}
 %\usepackage{l3regex}
@@ -17,10 +78,10 @@
 
 
 
-\title{Weather Station Records and Communicating Climate Change--California}
+\title{Weather Station Records and Communicating Climate Change--Idaho}
 %\subtitle{test}
 \author{Marc Los Huertos}
-
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \maketitle
@@ -93,11 +154,11 @@ First, we subset the data for stations that actively collecting data. Then we'll
 
 The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
 
-    elevation    mindate    maxdate latitude                    name
-170      11.6 1877-08-01 2022-04-01  38.5552 SACRAMENTO 5 ESE, CA US
-    datacoverage                id elevationUnit longitude
-170       0.9972 GHCND:USW00023271        METERS -121.4183
-[1] 1877
+   elevation    mindate    maxdate latitude            name datacoverage
+67     548.3 1892-07-01 2022-04-01  48.9994 PORTHILL, ID US       0.9525
+                  id elevationUnit longitude
+67 GHCND:USC00107264        METERS -116.4991
+[1] 1892
 
 
 \section{Gathering Weather Record Datasets}
@@ -131,28 +192,7 @@ Furthermore, I have converted units to Farenheit, which is not my favorite, but 
 
 \subsection{GSOM: Retreive and Clean Data}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date.default(dfTbl\_TMIN\$date): do not know how to convert 'dfTbl\_TMIN\$date' to class "{}Date"{}}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in x[j]: invalid subscript type 'list'}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in fix.by(by.y, y): 'by' must specify a uniquely valid column}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in merge(GSOM, dfTbl\_PPT, by = "{}Date"{}): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(GSOM\$Date): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(GSOM\$Date): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in floor\_decade(GSOM\$Year): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in floor\_score(GSOM\$Year): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in str(GSOM): object 'GSOM' not found}}\end{kframe}
-\end{knitrout}
 
 \subsection{CHCND: Retreive and Clean Data}
 
@@ -169,8 +209,8 @@ CHCND have been bias corrected...
 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/California_USW00023271_MAP.png}
-\caption{Weather Station Location (USW00023271). }
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Idaho_USC00107264_MAP.png}
+\caption{Weather Station Location (USC00107264). }
 \label{fig:Map}
 \end{figure}
 
@@ -182,83 +222,102 @@ I used a linear model (\texttt{lm()}) to evaluate the long term trend for each e
 
 Evaluate both TMAX and TMIN in GSOM by Year using MonthEvalStats() function. 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'GSOM' not found}}\end{kframe}
-\end{knitrout}
 
 
 \subsubsection{Trends in Tabular Formats}
 
 Admittedly, determining the months with the biggest changes isn't a very good approach for hypothesize testing -- it's more like a fishing expedition, but as long as we understand the difference between an a priori hypothesis and an exploratory analysis, we should be okay if we make appropriate conclusions. 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in with(sumstats[sumstats\$Param == "{}TMIN"{}, ], Month[Slope == max(Slope, : object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in with(sumstats[sumstats\$Param == "{}TMIN"{}, ], Month[Slope == min(Slope, : object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in with(sumstats[sumstats\$Param == "{}TMAX"{}, ], Month[Slope == max(Slope, : object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in with(sumstats[sumstats\$Param == "{}TMAX"{}, ], Month[Slope == min(Slope, : object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in with(sumstats[sumstats\$Param == "{}PPT"{}, ], Month[Slope == max(Slope, : object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in with(sumstats[sumstats\$Param == "{}PPT"{}, ], Month[Slope == min(Slope, : object 'sumstats' not found}}\end{kframe}
-\end{knitrout}
 
 For this section, we'll look to see what months had the greatest changes for both TMIN and TMAX. By looking at significant slopes in whatever direction, we might learn if warming is really the dominiant pattern. 
 
 Table~\ref{tab:TMINtrends} summarizes the monthly trends for TMAX.
 
-\begin{kframe}
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrl}
+  \hline
+ & Month & Slope100 & r2 & p\_value & Symbol \\ 
+  \hline
+1 & 1 & 0.0277 & 0.13 & 0.0021 & ** \\ 
+  4 & 2 & 0.0026 & 0.00 & 0.6723 &  \\ 
+  7 & 3 & 0.0101 & 0.06 & 0.0265 & * \\ 
+  10 & 4 & 0.0045 & 0.04 & 0.0937 &  \\ 
+  13 & 5 & 0.0123 & 0.24 & 0.0000 & *** \\ 
+  16 & 6 & 0.0124 & 0.23 & 0.0000 & *** \\ 
+  19 & 7 & 0.0088 & 0.12 & 0.0023 & ** \\ 
+  22 & 8 & 0.0120 & 0.19 & 0.0001 & *** \\ 
+  25 & 9 & 0.0057 & 0.04 & 0.0956 &  \\ 
+  28 & 10 & -0.0061 & 0.04 & 0.0954 &  \\ 
+  31 & 11 & 0.0063 & 0.02 & 0.2752 &  \\ 
+  34 & 12 & -0.0019 & 0.00 & 0.7744 &  \\ 
+   \hline
+\end{tabular}
+\caption{TMIN Trends} 
+\end{table}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in xtable(sumstats[sumstats\$Param == "{}TMIN"{}, c(1, 7, 4:6)], digits = c(0, : object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in print(TMIN.xtbl, type = "{}latex"{}, comment = FALSE): object 'TMIN.xtbl' not found}}\end{kframe}
 
 Table~\ref{tab:TMAXtrends} summarizes the monthly trends for TMAX.
 
-\begin{kframe}
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Tue May 31 04:20:38 2022
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrl}
+  \hline
+ & Month & Slope100 & r2 & p\_value & Symbol \\ 
+  \hline
+2 & 1 & 0.0175 & 0.10 & 0.0079 & ** \\ 
+  5 & 2 & -0.0010 & 0.00 & 0.8213 &  \\ 
+  8 & 3 & 0.0103 & 0.06 & 0.0323 & * \\ 
+  11 & 4 & -0.0037 & 0.01 & 0.3908 &  \\ 
+  14 & 5 & 0.0009 & 0.00 & 0.8438 &  \\ 
+  17 & 6 & 0.0066 & 0.02 & 0.2002 &  \\ 
+  20 & 7 & 0.0019 & 0.00 & 0.7176 &  \\ 
+  23 & 8 & 0.0111 & 0.06 & 0.0415 & * \\ 
+  26 & 9 & 0.0019 & 0.00 & 0.7500 &  \\ 
+  29 & 10 & -0.0021 & 0.00 & 0.6177 &  \\ 
+  32 & 11 & 0.0050 & 0.02 & 0.2757 &  \\ 
+  35 & 12 & -0.0041 & 0.01 & 0.3914 &  \\ 
+   \hline
+\end{tabular}
+\caption{TMAX Trends} 
+\end{table}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in xtable(sumstats[sumstats\$Param == "{}TMAX"{}, c(1, 7, 4:6)], digits = c(0, : object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in print(TMAX.xtbl): object 'TMAX.xtbl' not found}}\end{kframe}
 
 PPT changes are tricky to capture and I'll have to keep working on this (Table~\ref{tab:PPTtrends}).
 
-\begin{kframe}
+% latex table generated in R 3.6.0 by xtable 1.8-4 package
+% Tue May 31 04:20:38 2022
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrl}
+  \hline
+ & Month & Slope100 & r2 & p\_value & Symbol \\ 
+  \hline
+3 & 1 & -0.0343 & 0.01 & 0.3910 &  \\ 
+  6 & 2 & -0.0055 & 0.00 & 0.8614 &  \\ 
+  9 & 3 & 0.0405 & 0.03 & 0.1245 &  \\ 
+  12 & 4 & 0.0492 & 0.07 & 0.0247 & * \\ 
+  15 & 5 & 0.0254 & 0.01 & 0.5086 &  \\ 
+  18 & 6 & -0.0090 & 0.00 & 0.7867 &  \\ 
+  21 & 7 & 0.0364 & 0.03 & 0.1457 &  \\ 
+  24 & 8 & -0.0203 & 0.01 & 0.5089 &  \\ 
+  27 & 9 & -0.0214 & 0.01 & 0.4668 &  \\ 
+  30 & 10 & -0.0579 & 0.03 & 0.1314 &  \\ 
+  33 & 11 & 0.0451 & 0.01 & 0.3697 &  \\ 
+  36 & 12 & -0.0092 & 0.00 & 0.7976 &  \\ 
+   \hline
+\end{tabular}
+\end{table}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in xtable(sumstats[sumstats\$Param == "{}PPT"{}, c(1, 7, 4:6)], digits = c(0, : object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in print(PPT.xtbl, type = "{}latex"{}, label = "{}tab:PPTtrends"{}): object 'PPT.xtbl' not found}}\end{kframe}
 
 \subsubsection{Defining TMAXmonth and TMINmonth}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in subset(sumstats, select = Month, subset = abs(Slope) == TMINSlopeMax): object 'sumstats' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in subset(sumstats, select = Month, subset = abs(Slope) == TMAXSlopeMax): object 'sumstats' not found}}\end{kframe}
-\end{knitrout}
-The greatest changes for Station GHCND:USW00023271
+The greatest changes for Station GHCND:USC00107264
 
 \section{Communicating Long-term Weather Records}
 
@@ -266,45 +325,12 @@ The greatest changes for Station GHCND:USW00023271
 
 Communicating climate change based on station records is tricky. The long-term record would on the surface to be the most robust, but several issues arise with a naive analytical approach -- my favorite!
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(TMAX \textasciitilde{} Date, GSOM, pch = 20, cex = 0.5, col = "{}grey"{}, ylab = "{}°F"{}, : object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(Date = GSOM\$Date): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(pred\_dates): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in predict(GSOM.lm, newdata = pred\_dates, interval = "{}confidence"{}): object 'GSOM.lm' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(pred\_dates\$Date, as.numeric(ci[, 1]), col = "{}gray50"{}): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(Date = GSOM\$Date[GSOM\$Year > 1975]): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(pred\_dates): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in predict(GSOM.lm, newdata = pred\_dates, interval = "{}confidence"{}): object 'GSOM.lm' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(pred\_dates\$Date, as.numeric(ci[, 1]), col = "{}red"{}): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(pred\_dates\$Date, as.numeric(ci[, 2]), col = "{}darkorange"{}): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(pred\_dates\$Date, ci[, 3], col = "{}darkorange"{}): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(pred\_dates\$Date[location\_index], ci[location\_index, 3], : object 'pred\_dates' not found}}\end{kframe}
-\end{knitrout}
 
 The noise in the data may suggests that no trend is present (Figure~\ref{fig:GSOM-1975trend}). It's tricky because the seasonal variation dominates the source of varition. In other words the intra-annual variation exceeds the inter-annual variation, making signal detection very difficult. Is there a way to "filter" out the seasonal effect? Yes, let's see how that works next. 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/California_USW00023271_GSOM_1975.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Idaho_USC00107264_GSOM_1975.png}
 \caption{The climate trends from full record and post 1975 data. These data have a high level of variability due to seasonality effects that have not been filtered out.}
 \label{fig:GSOM-1975trend}
 \end{figure}
@@ -316,92 +342,14 @@ There are several ways to filter out seasonal effects. The easiest way is subtra
 
 \subsubsection{Method 1: Filtering by Monthly Mean} 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, parent.frame()): object 'GSOM' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(TMAX.Monthly.means) = c("{}Month"{}, "{}TMAXmean"{}): object 'TMAX.Monthly.means' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in merge(GSOM, TMAX.Monthly.means, by = "{}Month"{}): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, parent.frame()): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(TMIN.Monthly.means) = c("{}Month"{}, "{}TMINmean"{}): object 'TMIN.Monthly.means' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in merge(GSOM2, TMIN.Monthly.means, by = "{}Month"{}): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, parent.frame()): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(PPT.Monthly.means) = c("{}Month"{}, "{}PPTmean"{}): object 'PPT.Monthly.means' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in merge(GSOM2, PPT.Monthly.means, by = "{}Month"{}): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'GSOM2' not found}}\end{kframe}
-\end{knitrout}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(TMAX.anom \textasciitilde{} Date, GSOM2, pch = 20, cex = 0.5, col = "{}grey"{}, : object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(Date = GSOM2\$Date): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(pred\_dates): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in predict(GSOM.lm, newdata = pred\_dates, interval = "{}confidence"{}): object 'GSOM.lm' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(pred\_dates\$Date, as.numeric(ci[, 1]), col = "{}gray50"{}): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'ymax' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(pred\_dates\$Date[location\_index], ymax, paste(report\_prob3(GSOM.lm))[1], : object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(pred\_dates\$Date[location\_index], ymax2, paste(report\_prob3(GSOM.lm))[2], : object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(Date = GSOM2\$Date[GSOM2\$Year > 1975]): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(pred\_dates): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in predict(GSOM.lm, newdata = pred\_dates, interval = "{}confidence"{}): object 'GSOM.lm' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(pred\_dates\$Date, as.numeric(ci[, 1]), col = "{}red"{}): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(pred\_dates\$Date, as.numeric(ci[, 2]), col = "{}darkorange"{}): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lines(pred\_dates\$Date, ci[, 3], col = "{}darkorange"{}): object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'ymax' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(pred\_dates\$Date[location\_index], ymax, paste(report\_prob3(GSOM.lm))[1], : object 'pred\_dates' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(pred\_dates\$Date[location\_index], ymax2, paste(report\_prob3(GSOM.lm))[2], : object 'pred\_dates' not found}}\end{kframe}
-\end{knitrout}
 
 And to see what we created, see Figure~\ref{fig:GSOM-anomaly}.
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/California_USW00023271_GSOM_anomaly_1975.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Idaho_USC00107264_GSOM_anomaly_1975.png}
 \caption{The changing in monthly temperature data.}
 \label{fig:GSOM-anomaly}
 \end{figure}
@@ -508,7 +456,7 @@ Create the matrix
 
 The patterns of record temperatures often shows increasing number of new high temperature records  and fewer record low temperatures more recently, but as usual, it depends on the location (Figure~\ref{fig:Records}).
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/California_USW00023271_CHCND_Temp_Records.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Idaho_USC00107264_CHCND_Temp_Records.png}
 \caption{Daily temperatures that have been the highest on record (in red) and lowest on record (in blue). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
 \label{fig:Records}
 \end{figure}
@@ -524,15 +472,10 @@ Evaluating the changes in TMAX and Monthly temperatures might be useful, but for
 
 To test the code, I have created graphics that can then be used in the animation process, i.e. try to create code that doesn't get too complicated and then fail! 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(GSOM\$Year), max(GSOM\$Year), by = 2): object 'GSOM' not found}}\end{kframe}
-\end{knitrout}
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/California_USW00023271_4panel.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Idaho_USC00107264_4panel.png}
 \caption{Climate can be analyzed using several types of lenses. In this case, we have analyzed show the months with the greatest changes. The first figure is monthly average of TMINs (daily low temperatures) with a best fit line. The second figure shows the monthly TMAX range and asterisks indicate singificant changes over the station record and the third figure is the trend for these TMAXs over time and includes the best fit line. The final figure shows the daily temperatures that have been the highest on record (in red) and the lowest minimum temperatures (in blue). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
 \label{fig:4panel}
 \end{figure}
@@ -550,15 +493,10 @@ https://cran.r-project.org/web/packages/mcp/readme/README.html
 
 Let's create a figure that simplifies the narrative, if we can!
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(GSOM\$Year), max(GSOM\$Year), by = 2): object 'GSOM' not found}}\end{kframe}
-\end{knitrout}
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/California_USW00023271_KISS.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Idaho_USC00107264_KISS.png}
 \caption{Keep it simple stupid!}
 \label{fig:GSOM-KISS}
 \end{figure}
@@ -569,75 +507,12 @@ To highlight the patterns of change, it might be useful to analyze how the proba
 
 I started with decade bins, but used 20 years bins (scores) to simplify the graphics while keeping a pretty good temporal resolution.
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in unique(GSOM2\$Score): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in unique(GSOM2\$Score): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, parent.frame()): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, parent.frame()): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, parent.frame()): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(GSOM2\$TMIN.anom), max(GSOM2\$TMIN.anom), by = 0.1): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in dnorm(Anom.x, mean = TMIN.anomaly.list\$TMIN.anom[1, 1], sd = TMIN.anomaly.list\$TMIN.anom[1, : object 'Anom.x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(Anom.x, dnorm(Anom.x, mean = TMIN.anomaly.list\$TMIN.anom[1, : object 'Anom.x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'TMIN.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(TMIN.anomaly.list): object 'TMIN.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'TMIN.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'TMIN.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(TMIN.anomaly.list\$TMIN.anom[i, 1], Anom.y * 0.9, paste0("{}Change "{}, : object 'TMIN.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mtext(paste0(fips\$State, "{} ("{}, GSOM\_Longest\$name, "{})"{}), side = 3, : plot.new has not been called yet}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(GSOM2\$TMAX.anom), max(GSOM2\$TMAX.anom), by = 0.1): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in dnorm(Anom.x, mean = TMAX.anomaly.list\$TMAX.anom[1, 1], sd = TMAX.anomaly.list\$TMAX.anom[1, : object 'Anom.x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(Anom.x, dnorm(Anom.x, mean = TMAX.anomaly.list\$TMAX.anom[1, : object 'Anom.x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'TMAX.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(TMAX.anomaly.list): object 'TMAX.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'TMAX.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'TMAX.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(TMAX.anomaly.list\$TMAX.anom[i, 1], Anom.y * 0.9, paste0("{}Change "{}, : object 'TMAX.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(GSOM2\$PPT.anom), max(GSOM2\$PPT.anom), by = 0.1): object 'GSOM2' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in dnorm(Anom.x, mean = PPT.anomaly.list\$PPT.anom[1, 1], sd = PPT.anomaly.list\$PPT.anom[1, : object 'Anom.x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(Anom.x, dnorm(Anom.x, mean = PPT.anomaly.list\$PPT.anom[1, : object 'Anom.x' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'PPT.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(PPT.anomaly.list): object 'PPT.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): object 'PPT.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'PPT.anomaly.list' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in text(PPT.anomaly.list\$PPT.anom[i, 1], Anom.y * 0.9, paste0("{}Change "{}, : object 'PPT.anomaly.list' not found}}\end{kframe}
-\end{knitrout}
 
 This figure is pretty effective, but still needs work. 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/California_USW00023271_GSOM_dnorm.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Idaho_USC00107264_GSOM_dnorm.png}
 \caption{The changing in monthly temperature data, assuming a normal probability distribution.}
 \label{fig:GSOM_dnorm}
 \end{figure}
@@ -647,21 +522,98 @@ This figure is pretty effective, but still needs work.
 Now, I used a screen split to look at the distribution of the temperate anomolies. First, we look at a simple histogram of the entire dataset. 
 
 \begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-17-1} 
+\end{knitrout}
+
+The data center around zero, as expected, but are these normally distributed? 
+
+For TMAX there is a 0 probability that the distribution is the same as the normal distribution. For TMIN there is a 0 probability that the distribution is the same as the normal distribution. For PPT is a 0 probability that the distribution is the same as the normal distribution.
+
+
+
+These values suggest that there is good reason to avoid  the normal probability distribution. 
+
+Next we use a function to estimate the probability distribution using a markof chain the creates an estimated probability distribution. This doesn't always work when the distribution is not even and their only 10 years of data per slot. I suspect, I should make this by every 20 years. Plus that will go way faster and I think the data visualization will be more robust. 
+
+
+
+The process to create these figures is very time consuming, so in general, I need to come up with an if then statement to avoid creating these everytime!
+
+\begin{figure}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Idaho_USC00107264_GSOM_estPDF.png}
+\caption{The changing in monthly temperature data.}
+\label{fig:GSOM_estPDF}
+\end{figure}
+
+\section{Animated GIFs}
+
+So far, this creates a gif file, but I haven't been able get the gif in the pdf directly yet. I will need an additional package or create separate png that are combined. For now, we'll create a gif file to be used in separate documents.
+
+\subsection{Probability Distributions}
+
+
+
+
+The file is saved in the main directory. 
+
+
+\subsection{4 Weather Trend Plots}
+
+
+
+
+The file is saved in the main directory. 
+
+
+\subsection{Evaluating Records}
+
+TBD
+
+\subsection{Export Options}
+
+TBD
+
+\section{Sea Surface Temperature Data -- SURP PROJECT WAITING TO HAPPEN}
+
+In contrast to terrestrial data, sea surface temperature (SST) is quite difficult to obtain and process. There are numerous tools to access the data, but they often require knowledge of complex software tools that are not easy to set up or programming experience with python or others.
+
+\url{https://climexp.knmi.nl/select.cgi?id=someone@somewhere&field=ersstv5}
+
+There are, however, a few tools build for R users that seem to accomplish all that we need. 
+
+\url{https://rda.ucar.edu/index.html?hash=data_user&action=register}
+
+\url{https://rda.ucar.edu/datasets/ds277.9/}
+
+Alternatively, we can download flat ascII tables of gridded data:
+
+\url{https://www1.ncdc.noaa.gov/pub/data/cmb/ersst/v5/ascii/}
+
+
+
+
+\section{Satellite Data}
+
+TBD
+
+\section{Ice-Core Data}
+
+TBD
+
+\section{Conclusions}
+
+Developing a robust method to analyze weather stations is both time consuming and difficult to justify the outcome. In part because the data suggest that each station (region) requires different types of analysis, based on the expected patterns of temperature and rainfall. As climate scientists have known for decades, the terminology of global warming is not very useful. Not because scientists are trying to hide something or promote some biased agenda, but that even as warming of the global average is well documented, the impacts of climate change on each region is highly specific, requiring specificity in the analysis. 
+
+Hopefully, this little analysis has created some mechanism for others to appreciate this compexity. 
+
+\begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in hist(GSOM2\$TMIN.anom, col = "{}gold"{}, main = "{}"{}, probability = TRUE, : object 'GSOM2' not found}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, ifelse(append, "{}a"{}, "{}w"{})): cannot open the connection}}\end{kframe}
 \end{knitrout}
 
+The document took 4.8 minutes to process and compile. My next goal will be to optimize the process and streamline the time to analyze. 
 
-
-
-
-
-
-
-
-
-
-
-
+\end{document}

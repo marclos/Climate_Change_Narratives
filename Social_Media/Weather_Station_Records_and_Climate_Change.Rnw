@@ -54,7 +54,7 @@ get_locationid <- function(FIPS){
 @
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(2); str(fips); 
+fips = get_locationid(14); str(fips); 
 @
 
 \title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
@@ -149,6 +149,12 @@ GSOM_Longest = GSOM_Sorted[1,] #Pick longest
 # Second and Third for Comparisons
 # GSOM_Longest = GSOM_Sorted[2,] 
 # GSOM_Longest = GSOM_Sorted[3,]
+
+# Change Case of Station Name -- Complicated!
+#v2 <- gsub("[sty]", "", paste(letters, collapse="")) 
+#chartr(v2, toupper(v2), GSOM_Longest$name)
+#sub('\\b([a-z])([0-9])', '\\L\\1\\2', GSOM_Longest$name, perl=TRUE)
+#[1] "JAStADMMNIsyNDK" "LAUKsNDTUsAINS" 
 @
 
 The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
@@ -323,6 +329,10 @@ GSOM$Month = as.numeric(format(as.Date(GSOM$Date), format = "%m"))
 GSOM$Year = as.numeric(format(as.Date(GSOM$Date), format = "%Y"))
 GSOM$Decade = floor_decade(GSOM$Year)
 GSOM$Score = floor_score(GSOM$Year)
+
+# Getting Rid of Outliers over 150 degress and below -50
+GSOM$TMAX[GSOM$TMAX>150]
+GSOM$TMIN[GSOM$TMAX< -50] 
 
 #seq(min(GSOM$Year))
 
@@ -1004,10 +1014,9 @@ dim(TMAX.mat.noleap)
 
 max(CHCND$yday[CHCND$Year==max(CHCND$Year)])
 
-subset(CHCND, select=c(Date, yday, Year, TMAX), 
-       subset=(Year >= max(CHCND$Year)-1 & yday<=max(CHCND$yday[CHCND$Year<=max(CHCND$Year)]) & yday>=135))
+# subset(CHCND, select=c(Date, yday, Year, TMAX), subset=(Year >= max(CHCND$Year)-1 & yday<=max(CHCND$yday[CHCND$Year<=max(CHCND$Year)]) & yday>=135))
 
-TMAX.mat.noleap[140:144,134:135]
+# TMAX.mat.noleap[140:144,134:135]
 
 @
 
@@ -1115,7 +1124,7 @@ png(paste0(png_public, panel4.png), width = 480, height = 480, units = "px", poi
 ylim_new=NA
 for(i in seq(min(GSOM$Year), max(GSOM$Year), by=2)) 
    {
-par(las=1, mfrow=c(4,1), mar= c(4, 4, 2, 1) + 0.1)
+par(las=1, mfrow=c(4,1), mar= c(3, 4, 2, 1) + 0.1)
 # TMINmonthMax
    GSOMsub <- GSOM[GSOM$Month==TMINmonthMax & GSOM$Year<=i,]
    if(nrow(GSOMsub)<10) next
@@ -1139,7 +1148,7 @@ text(pred_dates$Date[location_index], ci[location_index,3],
 # Box Plot of TMAX by Month
 CHCNDsub = subset(CHCND, CHCND$Year<=i, 
       select=c(Month, Month.name, TMAX, TMIN))
-boxplot(TMAX ~ Month.name, data=CHCNDsub, main="")
+boxplot(TMAX ~ Month.name, data=CHCNDsub, main="", xlab="")
 symbol.y = (par()$yaxp[2])-diff(par()$yaxp[1:2])*.99
 #symbol.y = (par()$yaxp[2])
 text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, 
@@ -1153,8 +1162,8 @@ mtext("(NOTE: Red astrisks correspond to signficant changes)",
 GSOMsub <- GSOM[GSOM$Month==TMAXmonthMax & GSOM$Year<=i,]
 ylim = range(GSOMsub$TMAX)
 #if(!is.na(ylim_new)) ylim[2]=ylim_new
-plot(TMAX~Date, GSOMsub, col='gray70', pch=20, xlab="",
-     ylim=ylim,
+plot(TMAX~Date, GSOMsub, col='gray70', pch=20,
+     ylim=ylim, xlab="",
      main=paste("Mean", format(GSOMsub$Date,"%B")[1], 
                 "Max. Temp", GSOM_Longest$name))
 GSOM.lm = lm(TMAX~Date, GSOMsub) 
@@ -1169,12 +1178,6 @@ text(pred_dates$Date[location_index], ci[location_index,3],
      paste(report_prob2(GSOM.lm)), pos=2, cex=1.5)
 }
 # Record High Temperatures
-
-#plot(TMAX~Date, CHCND[CHCND$Year<=i,], pch='.', col="grey80", main="Recorded Daily High Temperatures")
-#points(maxTMAX~Date, data=CHCND[CHCND$Year<=i,], pch=20, col="red", cex=.8 )
-#ggplot( ) + geom_bar(data = records, aes(x=Year, y=Num, fill=Group),  stat="identity", position="identity") + xlim(min(CHCND$Year), max(CHCND$Year)-1) + ylab("Number of Extreme Temps") +
-# for the y axis label scale_fill_manual
-#("Legend", values = c("Record Highs" = "red", "Record Lows" = "blue"))
 # START LOOP
    j = which(years %in% i)  
    if(sum(is.na(TMAX.mat.noleap[,j]))==366) next
@@ -1218,12 +1221,13 @@ ytics = floor(seq(yrange[1], yrange[2], length.out=tic.no))
 ylabs = as.character(abs(ytics))
 
 par(las=1, xpd=TRUE)
-plot(c(1,nrow(R1)), c(yrange[1], yrange[2]), ty="n", xaxt='n', yaxt='n', xlab="Year", ylab="No. of Record Temps", main="Record Highs and Lows")
+plot(c(1,nrow(R1)), c(yrange[1], yrange[2]), ty="n", xaxt='n', yaxt='n', ylab="No. of Record Temps", xlab="", main="Record Highs and Lows")
 axis(2,at=ytics, labels=ylabs)
 axis(1,at=xtics, labels=xlabs)
 barplot(height = R1$TMAX, space=0, add = TRUE, axes = FALSE, col="red")
 barplot(height = R1$TMIN, space=0, add = TRUE, axes = FALSE, col="blue")
 # END LOOP
+
 # STOP ----
 dev.off()
 @
@@ -1246,7 +1250,6 @@ https://cran.r-project.org/web/packages/mcp/readme/README.html
 <<eval=FALSE>>=
 
 dyn.load('/opt/jags/4.3.1/lib/libjags.so.4')
-dyn.load('/opt/jags/3.6/lib/libjags.so.4')
 library(mcp)
 
 # Define the model
@@ -1258,12 +1261,8 @@ model = list(
 
 # Get example data and fit it
 ex = mcp_example("demo")
-fit = mcp(model, data = ex$data)
+fit = mcp(model, data = ex$data) 
 
-
-dyn.load('/opt/jags/4.3.1/lib/libjags.so.4')
-library(mcp)
-# library(rlang)
 
 # Simulate
 set.seed(42)  # I always use 42; no fiddling
@@ -1401,7 +1400,7 @@ GSOM_dnorm.png <- paste0(fips$State, "_", stid, "_GSOM_dnorm.png")
 png(paste0(png_public, GSOM_dnorm.png), 
     width = 480, height = 300, units = "px", pointsize = 12, bg = "white")
 # TMIN
-par(mfrow=c(1, 3), las=1, mar = c(5, 4, 4, 0.2) + 0.1, xpd=TRUE)
+par(mfrow=c(1, 3), las=1, mar = c(5, 4, 4, 0.2) + 0.1, xpd=FALSE)
 Anom.x = seq(min(GSOM2$TMIN.anom), max(GSOM2$TMIN.anom),by=.1)
 Anom.y = max(dnorm(Anom.x,
    mean=TMIN.anomaly.list$TMIN.anom[1,1],
@@ -1423,7 +1422,7 @@ abline(v=TMIN.anomaly.list$TMIN.anom[i,1], col=h.ramp[i], lwd=2)
 Delta = TMIN.anomaly.list$TMIN.anom[i,1] - TMIN.anomaly.list$TMIN.anom[1,1]
 
 text(TMIN.anomaly.list$TMIN.anom[i,1], Anom.y*.95, 
-   paste0("Change ", round(Delta, 1), "°F"), pos=4, cex=.9)
+   paste0("Change ", round(Delta, 1), "°F"), pos=3, cex=.9)
 
 
 
@@ -1449,7 +1448,7 @@ abline(v=TMAX.anomaly.list$TMAX.anom[i,1], col=h.ramp[i], lwd=2)
 Delta = TMAX.anomaly.list$TMAX.anom[i,1] - TMAX.anomaly.list$TMAX.anom[1,1]
 
 text(TMAX.anomaly.list$TMAX.anom[i,1], Anom.y*.96, 
-   paste0("Change ", round(Delta, 1), "°F"), pos=4, cex=0.9)
+   paste0("Change ", round(Delta, 1), "°F"), pos=3, cex=0.9)
 
 mtext(paste0(fips$State, " (", GSOM_Longest$name, ")"), side=3, line=2)
 
@@ -1475,7 +1474,7 @@ abline(v=PPT.anomaly.list$PPT.anom[i,1], col=h.ramp[i], lwd=2)
 Delta = PPT.anomaly.list$PPT.anom[i,1] - PPT.anomaly.list$PPT.anom[1,1]
 
 text(PPT.anomaly.list$PPT.anom[i,1], Anom.y*.96,
-   paste0("Change ", round(Delta, 1), " inches"), pos=4, cex=0.9)
+   paste0("Change ", round(Delta, 1), " inches"), pos=3, cex=0.9)
 
 dev.off()
 @
@@ -1514,12 +1513,12 @@ These values suggest that there is good reason \Sexpr{text} the normal probabili
 Next we use a function to estimate the probability distribution using a markof chain the creates an estimated probability distribution. This doesn't always work when the distribution is not even and their only 10 years of data per slot. I suspect, I should make this by every 20 years. Plus that will go way faster and I think the data visualization will be more robust. 
 
 <<estDensity, warning=FALSE, results='hide'>>=
-GSOM_estPDF = paste0(fips$State, "_", stid, "_GSOM_estPDF.png")
+GSOM_estPDF.png = paste0(fips$State, "_", stid, "_GSOM_estPDF.png")
 
-if(!file.exists(paste0(png_public, GSOM_estPDF))){
+if(!file.exists(paste0(png_public, GSOM_estPDF.png))){
    print("Creating estimated density distribution")
 
-png(paste0(png_public, GSOM_estPDF), 
+png(paste0(png_public, GSOM_estPDF.png), 
     width = 480, height = 320, units = "px", pointsize = 12, bg = "white")
 
 # Split Screen TMAX Legend TMIN
@@ -1605,7 +1604,7 @@ dev.off()
 The process to create these figures is very time consuming, so in general, I need to come up with an if then statement to avoid creating these everytime!
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, GSOM_estPDF)}}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_public, GSOM_estPDF.png)}}
 \caption{The changing in monthly temperature data.}
 \label{fig:GSOM_estPDF}
 \end{figure}
@@ -1724,7 +1723,7 @@ img <- image_graph(600, 480, res = 96)
 ylim_new=NA
 for(i in seq(min(GSOM$Year), max(GSOM$Year), by=2)) 
    {
-par(las=1, mfrow=c(4,1), mar= c(4, 4, 2, 1) + 0.1)
+par(las=1, mfrow=c(4,1), mar= c(3, 4, 2, 1) + 0.1)
 # TMINmonthMax
    GSOMsub <- GSOM[GSOM$Month==TMINmonthMax & GSOM$Year<=i,]
    if(nrow(GSOMsub)<10) next
@@ -1748,7 +1747,7 @@ text(pred_dates$Date[location_index], ci[location_index,3],
 # Box Plot of TMAX by Month
 CHCNDsub = subset(CHCND, CHCND$Year<=i, 
       select=c(Month, Month.name, TMAX, TMIN))
-boxplot(TMAX ~ Month.name, data=CHCNDsub, main="")
+boxplot(TMAX ~ Month.name, data=CHCNDsub, xlab="", main="")
 symbol.y = (par()$yaxp[2])-diff(par()$yaxp[1:2])*.99
 #symbol.y = (par()$yaxp[2])
 text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, 
@@ -1762,8 +1761,8 @@ mtext("(NOTE: Red astrisks correspond to signficant changes)",
 GSOMsub <- GSOM[GSOM$Month==TMAXmonthMax & GSOM$Year<=i,]
 ylim = range(GSOMsub$TMAX)
 #if(!is.na(ylim_new)) ylim[2]=ylim_new
-plot(TMAX~Date, GSOMsub, col='gray70', pch=20, xlab="",
-     ylim=ylim,
+plot(TMAX~Date, GSOMsub, col='gray70', pch=20,
+     ylim=ylim, xlab="",
      main=paste("Mean", format(GSOMsub$Date,"%B")[1], 
                 "Max. Temp", GSOM_Longest$name))
 GSOM.lm = lm(TMAX~Date, GSOMsub) 
@@ -1821,7 +1820,7 @@ ytics = floor(seq(yrange[1], yrange[2], length.out=tic.no))
 ylabs = as.character(abs(ytics))
 
 par(las=1, xpd=TRUE)
-plot(c(1,nrow(R1)), c(yrange[1], yrange[2]), ty="n", xaxt='n', yaxt='n', xlab="Year", ylab="No. of Record Temps", main="Record Highs and Lows")
+plot(c(1,nrow(R1)), c(yrange[1], yrange[2]), ty="n", xaxt='n', yaxt='n', ylab="No. of Record Temps", xlab="", main="Record Highs and Lows")
 axis(2,at=ytics, labels=ylabs)
 axis(1,at=xtics, labels=xlabs)
 barplot(height = R1$TMAX, space=0, add = TRUE, axes = FALSE, col="red")
@@ -2004,8 +2003,10 @@ Hopefully, this little analysis has created some mechanism for others to appreci
 <<endtime, echo=FALSE, warning=FALSE>>=
 
 # Create CSV with filenames for blog/
+paste0(GSOM_Longest$name, " (ID:", GSOM_Longest$id, ")")
 
-dbase = data.frame(State = fips$State, Station = stid, 
+dbase = data.frame(State = fips$State, 
+   Station = paste0(GSOM_Longest$name, " (ID:", GSOM_Longest$id, ")"), 
    gif_public = gif_public, png_public = png_public, 
    Map.png = map.png, 
    GSOM_1975.png = GSOM_1975.png, 
@@ -2022,7 +2023,7 @@ dbase = data.frame(State = fips$State, Station = stid,
 write.table(dbase, file = "docs/Social_Media/dbase.csv", 
             append = TRUE, quote = TRUE, sep = ",",
             eol = "\n", na = "NA", dec = ".", row.names = TRUE,
-            col.names = TRUE, qmethod = c("escape", "double"),
+            col.names = FALSE, qmethod = c("escape", "double"),
             fileEncoding = "")
 
 end_time <- Sys.time()
