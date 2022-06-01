@@ -54,7 +54,7 @@ get_locationid <- function(FIPS){
 @
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(14); str(fips); 
+fips = get_locationid(25); str(fips); 
 @
 
 \title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
@@ -2027,7 +2027,7 @@ write.table(dbase, file = "docs/Social_Media/dbase.csv",
             fileEncoding = "")
 
 end_time <- Sys.time()
-totaltime = end_time - start_time
+(totaltime = end_time - start_time)
 @
 
 The document took \Sexpr{round(totaltime,1)} minutes to process and compile. My next goal will be to optimize the process and streamline the time to analyze. 
