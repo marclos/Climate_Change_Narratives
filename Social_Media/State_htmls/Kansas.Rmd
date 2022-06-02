@@ -1,35 +1,40 @@
 ---
-title: "Weather Station Trends: Kansas"
+title: "Fifty States Project"
+subtitle: "Weather Trends: Kansas"
 author: "nor_soCal"
 date: "3/23/2022"
-output: ioslides_presentation
+output:
+  ioslides_presentation:
+    logo: child_pages/logo.png
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-# https://marclos.github.io/Climate_Change_Narratives/Social_Media/
+```{r, child=c('child_pages/Setup.Rmd')}
 ```
 
-```{r, child=c('Intro.Rmd')}
+```{r}
+# Select State 1
+files = tail(subset(dbase, subset=(State=="Kansas")), 1)
 ```
 
-## Results
-
-```{r, echo=FALSE, out.width='70%'}
-   knitr::include_graphics('../png/MAP-Kansas.png')
+```{r, child=c('child_pages/Intro.Rmd')}
 ```
 
-## Results
-
-```{r, echo=FALSE, out.width='60%'}
-   knitr::include_graphics('../png/KISS-Kansas.png')
+```{r, child=c('child_pages/SelectedStation.Rmd')}
 ```
 
- <font size="2">[Link to Gif](https://marclos.github.io/Climate_Change_Narratives/Social_Media/gif/Kansas_GSOM.gif)</font>
- 
-## Impacts
- 
-```{r, child=c('Kansas_X_Impacts.Rmd')}
+```{r, child=c('child_pages/TrendMonth.Rmd')}
+```
+
+```{r, child=c('child_pages/RecordTemps.Rmd')}
+```
+
+```{r, child=c('child_pages/AnomalyTrends.Rmd')}
+```
+
+```{r, child=c('Kansas_Impacts_Mitigation.Rmd')}
+```
+
+```{r, child=c('NextSteps.Rmd')}
 ```
 
 

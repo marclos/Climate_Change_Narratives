@@ -1,18 +1,14 @@
 ---
-title: "Weather Station Trends: California"
+title: "Fifty States Project"
+subtitle: "Weather Trends: California"
 author: "nor_soCal"
 date: "3/23/2022"
 output:
   ioslides_presentation:
-    logo: logo.png
+    logo: child_pages/logo.png
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-# https://marclos.github.io/Climate_Change_Narratives/Social_Media/
-
-home = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/"
-dbase = read.csv(paste0(home, "docs/FiftyStates/dbase.csv"), row.names=NULL)
+```{r, child=c('child_pages/Setup.Rmd')}
 ```
 
 ```{r}
@@ -20,38 +16,23 @@ dbase = read.csv(paste0(home, "docs/FiftyStates/dbase.csv"), row.names=NULL)
 files = tail(subset(dbase, subset=(State=="California")), 1)
 ```
 
-```{r, child=c('Intro.Rmd')}
+```{r, child=c('child_pages/Intro.Rmd')}
 ```
 
-
-
-## Weather Station Selected
-
-```{r, echo=FALSE, out.width='50%'}
-knitr::include_graphics(paste0(files$png_private, files$Map.png))
+```{r, child=c('child_pages/SelectedStation.Rmd')}
 ```
 
-## Months with Largest Changes
-
-```{r, echo=FALSE, out.width='60%'}
-   knitr::include_graphics(paste0(files$png_private, files$KISS.png))
+```{r, child=c('child_pages/TrendMonth.Rmd')}
 ```
 
-## Record Temperatures
-
-```{r, echo=FALSE, out.width='90%'}
-   knitr::include_graphics(paste0(files$png_private, files$Records.png))
+```{r, child=c('child_pages/RecordTemps.Rmd')}
 ```
 
-## Maximum Temperature Anomalies
-
-```{r, echo=FALSE, out.width='90%'}
-   knitr::include_graphics(paste0(files$png_private, files$GSOM_1975_anomaly.png))
+```{r, child=c('child_pages/AnomalyTrends.Rmd')}
 ```
 
 ```{r, child=c('California_Impacts_Mitigation.Rmd')}
 ```
-
 
 ```{r, child=c('NextSteps.Rmd')}
 ```

@@ -56,7 +56,7 @@ get_locationid <- function(FIPS){
 @
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(49); str(fips); 
+fips = get_locationid(5); str(fips); 
 @
 
 \title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
@@ -154,6 +154,13 @@ GSOM_Longest = GSOM_Sorted[1,] #Pick longest
 
 # Exceptions
 
+# CA
+
+# TMAX is missing
+
+# Iowa (same as Illonoi)
+
+
 # Pennsylvania
 
 # South Dakota
@@ -174,6 +181,8 @@ The record selected has the following metadata associated with it, which will be
 GSOM_Longest
 
 (startyear=as.numeric(format(as.Date(GSOM_Longest$mindate), 
+         format = "%Y")))
+(endyear=as.numeric(format(as.Date(GSOM_Longest$maxdate), 
          format = "%Y")))
 
 @
@@ -1376,7 +1385,7 @@ text(pred_dates$Date[location_index], ci[location_index,3],
 ylim = range(GSOMsub$TMAX)
 GSOMsub <- GSOM[GSOM$Month==TMAXmonthMax & GSOM$Year<=i,]
 plot(TMAX~Date, GSOMsub, col='gray70', pch=20, xlab="",
-     ylim=ylim,
+    # ylim=ylim,
      main=paste("Mean", format(GSOMsub$Date,"%B")[1], 
                 "Max. Temp", GSOM_Longest$name))
 GSOM.lm = lm(TMAX~Date, GSOMsub) 
@@ -2033,10 +2042,11 @@ Hopefully, this little analysis has created some mechanism for others to appreci
 <<endtime, echo=FALSE, warning=FALSE>>=
 
 # Create CSV with filenames for blog/
-paste0(GSOM_Longest$name, " (ID:", GSOM_Longest$id, ")")
+paste0(GSOM_Longest$name, " (ID: ", GSOM_Longest$id, ")")
 
 dbase = data.frame(State = fips$State, 
    Station_ID = paste0(GSOM_Longest$name, " (ID: ", GSOM_Longest$id, ")"), 
+   Startyear = startyear, Endyear = endyear, 
    gif_private = gif_private, png_private = png_private, 
    Map.png = map.png, 
    GSOM_1975.png = GSOM_1975.png, 
@@ -2050,7 +2060,7 @@ dbase = data.frame(State = fips$State,
    GSOM_dnorm.gif = GSOM_dnorm.gif
 )
 
-write.table(dbase, file = "docs/FiftyStates/dbase.csv", 
+write.table(dbase, file = "Social_Media/State_htmls/dbase.csv", 
             append = TRUE, quote = TRUE, sep = ",",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = FALSE, qmethod = c("escape", "double"),

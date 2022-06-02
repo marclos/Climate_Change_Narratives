@@ -1,5 +1,5 @@
 ---
-title: "50 States Project"
+title: "50+ States Project"
 author: "Marc Los Huertos"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
@@ -62,7 +62,7 @@ There are more ways to analyze climate patterns than there are people in the wor
 
 Thus, while our individual weather stations provide indepedent sources of data that are combine to help us understand climate change, individual stations may or may not be consistent with the global pattern or expectation. For example in some regions, the signal (evidence) for climate change might be ambiguous and in other regions it might be easily detected. Learning to zoom in and telescope out is an important skill promoted by this project.
 
-# Fifty States Project
+# Fifty+ States Project
 
 We ofen hear about the globe's rising temperatures without learning much about how weather records in our own region might be contriubuting to these climate change patterns. 
 
@@ -82,7 +82,7 @@ dataFiles <- dir(sourcePath, "*.html", ignore.case = TRUE, all.files = TRUE)
 file.copy(file.path(sourcePath, dataFiles), destinationPath, overwrite = FALSE)
 
 home = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/"
-dbase = read.csv("dbase.csv", row.names=NULL)
+dbase = read.csv(paste0(home, "Social_Media/State_htmls/dbase.csv"))
 
 ```
 
@@ -792,7 +792,7 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Nevada
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+```{r, label="Nevada", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 # ID=29
 files = tail(subset(dbase, subset=(State=="Nevada")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
@@ -825,8 +825,9 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### California
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+```{r, label="California", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="California")), 1)
+# ID = 5
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
@@ -884,6 +885,23 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ```
 
+
+### Guam
+
+```{r, label="Guam", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Guam")), 1)
+knitr::include_graphics(paste0(files$png_private, files$Map))
+
+```
+
+[Guam](State_htmls/Guam.html)'s climate records do not suggest a strong change, but we'll need to do a more detailed analysis to better appreciate the patterns.
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
+knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
+
+```
+
+
 ### Hawaii
 
 ```{r, label="Hawaii", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
@@ -898,6 +916,22 @@ knitr::include_graphics(paste0(files$png_private, files$Map))
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ```
+
+### Puerto Rico
+
+```{r, label="PuertoRico", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Puerto Rico")), 1)
+knitr::include_graphics(paste0(files$png_private, files$Map))
+
+```
+
+[Puerto Rico](State_htmls/Puerto_Rico.html)'s climate records do not suggest a strong change, but we'll need to do a more detailed analysis to better appreciate the patterns.
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
+knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
+
+```
+
 
 
 ## Parallel issues in Europe and Asia
