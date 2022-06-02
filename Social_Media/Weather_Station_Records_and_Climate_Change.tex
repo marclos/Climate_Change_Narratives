@@ -16,8 +16,7 @@
 
 
 
-
-\title{Weather Station Records and Communicating Climate Change--Mississippi}
+\title{Weather Station Records and Communicating Climate Change--Washington}
 %\subtitle{test}
 \author{Marc Los Huertos}
 
@@ -93,11 +92,11 @@ First, we subset the data for stations that actively collecting data. Then we'll
 
 The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
 
-   elevation    mindate    maxdate latitude            name datacoverage
-47     143.3 1892-12-01 2022-03-01 34.24861 PONTOTOC, MS US       0.9569
-                  id elevationUnit longitude
-47 GHCND:USC00227106        METERS  -88.9975
-[1] 1892
+  elevation    mindate    maxdate latitude                                 name
+5     717.7 1889-08-01 2022-05-01 47.62168 SPOKANE INTERNATIONAL AIRPORT, WA US
+  datacoverage                id elevationUnit longitude
+5       0.9988 GHCND:USW00024157        METERS  -117.528
+[1] 1889
 
 
 \section{Gathering Weather Record Datasets}
@@ -124,7 +123,7 @@ The function relies on two inputs, the station id and the measured parameter -- 
 
 Furthermore, I have converted units to Farenheit, which is not my favorite, but important for US consumption.
 
-\subsubsection{Functions to Report Probabilities}
+\subsection{Functions to Report Probabilities}
 
 
 
@@ -177,8 +176,8 @@ CHCND have been bias corrected...
 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Mississippi_USC00227106_MAP.png}
-\caption{Weather Station Location (USC00227106). }
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Washington_USW00024157_MAP.png}
+\caption{Weather Station Location (USW00024157). }
 \label{fig:Map}
 \end{figure}
 
@@ -266,7 +265,7 @@ PPT changes are tricky to capture and I'll have to keep working on this (Table~\
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in subset(sumstats, select = Month, subset = abs(Slope) == TMAXSlopeMax): object 'sumstats' not found}}\end{kframe}
 \end{knitrout}
-The greatest changes for Station GHCND:USC00227106
+The greatest changes for Station GHCND:USW00024157
 
 \section{Communicating Long-term Weather Records}
 
@@ -312,7 +311,7 @@ Communicating climate change based on station records is tricky. The long-term r
 The noise in the data may suggests that no trend is present (Figure~\ref{fig:GSOM-1975trend}). It's tricky because the seasonal variation dominates the source of varition. In other words the intra-annual variation exceeds the inter-annual variation, making signal detection very difficult. Is there a way to "filter" out the seasonal effect? Yes, let's see how that works next. 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Mississippi_USC00227106_GSOM_1975.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Washington_USW00024157_GSOM_1975.png}
 \caption{The climate trends from full record and post 1975 data. These data have a high level of variability due to seasonality effects that have not been filtered out.}
 \label{fig:GSOM-1975trend}
 \end{figure}
@@ -409,7 +408,7 @@ There are several ways to filter out seasonal effects. The easiest way is subtra
 And to see what we created, see Figure~\ref{fig:GSOM-anomaly}.
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Mississippi_USC00227106_GSOM_anomaly_1975.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Washington_USW00024157_GSOM_anomaly_1975.png}
 \caption{The changing in monthly temperature data.}
 \label{fig:GSOM-anomaly}
 \end{figure}
@@ -455,7 +454,7 @@ Rainfall totals by season might be a useful way to think about changes, because 
 
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# `geom\_smooth()` using formula 'y \textasciitilde{} x'}}\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
 \end{knitrout}
 
 \subsubsection{Drought}
@@ -471,13 +470,13 @@ Days without rain...within a calendar year... bleed over between years isn't cap
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in if (Drought.run\$lengths > 100) \{: missing value where TRUE/FALSE needed}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, eframe): object 'Drought.run.100' not found}}\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-11-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
 \begin{kframe}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'Drought.run.100' not found}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'Drought.run.100' not found}}\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-11-2} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-2} 
 \end{knitrout}
 
 Rainfall Probability Distributions by decade... to be developed.
@@ -512,18 +511,11 @@ Create the matrix
 \end{knitrout}
 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): no loop for break/next, jumping to top level}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): no loop for break/next, jumping to top level}}\end{kframe}
-\end{knitrout}
 
 The patterns of record temperatures often shows increasing number of new high temperature records  and fewer record low temperatures more recently, but as usual, it depends on the location (Figure~\ref{fig:Records}).
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Mississippi_USC00227106_CHCND_Temp_Records.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Washington_USW00024157_CHCND_Temp_Records.png}
 \caption{Daily temperatures that have been the highest on record (in red) and lowest on record (in blue). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
 \label{fig:Records}
 \end{figure}
@@ -543,15 +535,11 @@ To test the code, I have created graphics that can then be used in the animation
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(GSOM\$Year), max(GSOM\$Year), by = 2): object 'GSOM' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): no loop for break/next, jumping to top level}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): no loop for break/next, jumping to top level}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(GSOM\$Year), max(GSOM\$Year), by = 2): object 'GSOM' not found}}\end{kframe}
 \end{knitrout}
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Mississippi_USC00227106_4panel.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Washington_USW00024157_4panel.png}
 \caption{Climate can be analyzed using several types of lenses. In this case, we have analyzed show the months with the greatest changes. The first figure is monthly average of TMINs (daily low temperatures) with a best fit line. The second figure shows the monthly TMAX range and asterisks indicate singificant changes over the station record and the third figure is the trend for these TMAXs over time and includes the best fit line. The final figure shows the daily temperatures that have been the highest on record (in red) and the lowest minimum temperatures (in blue). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
 \label{fig:4panel}
 \end{figure}
@@ -577,7 +565,7 @@ Let's create a figure that simplifies the narrative, if we can!
 \end{knitrout}
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Mississippi_USC00227106_KISS.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Washington_USW00024157_KISS.png}
 \caption{Keep it simple stupid!}
 \label{fig:GSOM-KISS}
 \end{figure}
@@ -656,7 +644,7 @@ I started with decade bins, but used 20 years bins (scores) to simplify the grap
 This figure is pretty effective, but still needs work. 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/States/png/Mississippi_USC00227106_GSOM_dnorm.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Washington_USW00024157_GSOM_dnorm.png}
 \caption{The changing in monthly temperature data, assuming a normal probability distribution.}
 \label{fig:GSOM_dnorm}
 \end{figure}

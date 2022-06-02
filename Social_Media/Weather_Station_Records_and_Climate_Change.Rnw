@@ -5,7 +5,6 @@
 %\usepackage[version=4]{mhchem}
 % \usepackage{animate}
 
-
 <<echo=FALSE>>=
 opts_chunk$set(width=60, echo=FALSE, results='hide')
 @
@@ -30,10 +29,9 @@ library(densEstBayes)
 
 setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives")
 png_public = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/FiftyStates/State_htmls/png/"
-png_private = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State/png"
+png_private = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/"
 
-gif_private = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/Social_Media/State/Climate_gi
-fs/"
+gif_private = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/Climate_gifs/"
 
 
 @
@@ -58,7 +56,7 @@ get_locationid <- function(FIPS){
 @
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(25); str(fips); 
+fips = get_locationid(49); str(fips); 
 @
 
 \title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
@@ -154,6 +152,15 @@ GSOM_Longest = GSOM_Sorted[1,] #Pick longest
 # GSOM_Longest = GSOM_Sorted[2,] 
 # GSOM_Longest = GSOM_Sorted[3,]
 
+# Exceptions
+
+# Pennsylvania
+
+# South Dakota
+
+# Tennessee #2
+
+
 # Change Case of Station Name -- Complicated!
 #v2 <- gsub("[sty]", "", paste(letters, collapse="")) 
 #chartr(v2, toupper(v2), GSOM_Longest$name)
@@ -232,7 +239,7 @@ The function relies on two inputs, the station id and the measured parameter -- 
 
 Furthermore, I have converted units to Farenheit, which is not my favorite, but important for US consumption.
 
-\subsubsection{Functions to Report Probabilities}
+\subsection{Functions to Report Probabilities}
 
 <<report_prob_fun, results='hide'>>=
 report_prob <-function(pvalue){
@@ -440,7 +447,7 @@ dev.off()
 @
 
 
-<<>>=
+<<show_workingdirectory>>=
 getwd()
 @
 
@@ -1267,6 +1274,7 @@ model = list(
 ex = mcp_example("demo")
 fit = mcp(model, data = ex$data) 
 
+summary(fit)
 
 # Simulate
 set.seed(42)  # I always use 42; no fiddling
@@ -1292,8 +1300,26 @@ model = list(
   ~ 0 + time + ar(1)
 )
 ex = mcp_example("ar")
+
+ex$data$time; 
 fit = mcp(model, ex$data)
 summary(fit)
+
+plot(fit) + plot_pars(fit, pars = c("cp_1"), type = "dens_overlay")
+
+ex$data$time;  
+fit = mcp(model, ex$data)
+summary(fit)
+
+GSOM$TMAX
+test.df = data.frame(TMAX = GSOM$TMAX , time=1:1523)
+model2 = list(
+  price ~ 1 + ar(2),
+  ~ 0 + time + ar(1)
+)
+fit2 = mcp(model2, test.df)
+plot(fit2) + plot_pars(fit2, pars = c("cp_1"), type = "dens_overlay")
+
 @
 
 Let's create a figure that simplifies the narrative, if we can!
@@ -2010,7 +2036,7 @@ Hopefully, this little analysis has created some mechanism for others to appreci
 paste0(GSOM_Longest$name, " (ID:", GSOM_Longest$id, ")")
 
 dbase = data.frame(State = fips$State, 
-   Station_ID = paste0(GSOM_Longest$name, " (ID:", GSOM_Longest$id, ")"), 
+   Station_ID = paste0(GSOM_Longest$name, " (ID: ", GSOM_Longest$id, ")"), 
    gif_private = gif_private, png_private = png_private, 
    Map.png = map.png, 
    GSOM_1975.png = GSOM_1975.png, 
@@ -2024,7 +2050,7 @@ dbase = data.frame(State = fips$State,
    GSOM_dnorm.gif = GSOM_dnorm.gif
 )
 
-write.table(dbase, file = "docs/Social_Media/dbase.csv", 
+write.table(dbase, file = "docs/FiftyStates/dbase.csv", 
             append = TRUE, quote = TRUE, sep = ",",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
             col.names = FALSE, qmethod = c("escape", "double"),

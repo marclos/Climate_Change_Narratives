@@ -1,0 +1,60 @@
+---
+title: "Weather Station Trends: South Dakota"
+author: "nor_soCal"
+date: "3/23/2022"
+output:
+  ioslides_presentation:
+    logo: logo.png
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+# https://marclos.github.io/Climate_Change_Narratives/Social_Media/
+
+home = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/"
+dbase = read.csv(paste0(home, "docs/FiftyStates/dbase.csv"), row.names=NULL)
+```
+
+```{r}
+# Select State 1
+files = tail(subset(dbase, subset=(State=="South Dakota")), 1)
+```
+
+```{r, child=c('Intro.Rmd')}
+```
+
+
+## Weather Station Selected
+
+```{r, echo=FALSE, out.width='70%'}
+knitr::include_graphics(paste0(files$png_private, files$Map.png))
+```
+
+## Results 1
+
+Trend: Cooling January min temperatures and no maximum trends.
+
+```{r, echo=FALSE, out.width='50%'}
+   knitr::include_graphics(paste0(files$png_private, files$KISS.png))
+```
+
+## Results 2
+
+```{r, echo=FALSE, out.width='100%'}
+   knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
+```
+
+## Result 3
+
+```{r, echo=FALSE, out.width='60%'}
+   knitr::include_graphics(paste0(files$png_private, files$GSOM_1975_anomaly.png))
+```
+
+```{r, child=c('South Dakota_Impacts_Mitigation.Rmd')}
+```
+
+```{r, child=c('NextSteps.Rmd')}
+```
+
+
+

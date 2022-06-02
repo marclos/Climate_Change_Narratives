@@ -26,9 +26,11 @@ options(htmltools.dir.version = FALSE)
 ```
 # Introduction
 
-## Weather Records and Climate Trends
+## CO$_2$ Emissions and Climate Change
 
-Human activities are driving climate change. And the impacts are being felt throughout the world --- and in spite of or because of climate activists are organizing around the issue. 
+Human activities are driving climate change. While some debate about the severity and relative contribution of human activities, the evidence that humans are driving global warming is extremely compelling and is directly linked to CO$_2$ emmissions. Moreover, the planet's CO$_2$ emissions continue to increase, which means the warming will continue unless we can otherwise reduce the drivers of warming.
+
+While the USA emits about 14% of the globes total CO$_2$ emissions, the second most important emitter, few in the US appreciate the uneven nature of climate change in terms of temperature. 
 
 ```{r maunaloa, echo=FALSE}
 address <- "ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt"
@@ -50,11 +52,21 @@ maunaloa$loess <- predict(muanaloa.loess)
 lines(loess~decimal.date, data=maunaloa, lwd=1.4, col="red")
 ```
 
+## Weather Records and Climate Trends
+
+Thankfully, the US has a robust network of weather stations and we can use this to evaluate how climate change might be impacting local weather patterns. Moreover, by looking at specific stations in the context of regional patterns, we can begin to see how various processes produce uneven and counter intuitive climate responses.
+
+## A Word of Warning
+
+There are more ways to analyze climate patterns than there are people in the world. As a pastor once said to me, "we don't base our theology on one verse in the Bible", so we don't base our understanding of climate change on one dataset or analysis approach. 
+
+Thus, while our individual weather stations provide indepedent sources of data that are combine to help us understand climate change, individual stations may or may not be consistent with the global pattern or expectation. For example in some regions, the signal (evidence) for climate change might be ambiguous and in other regions it might be easily detected. Learning to zoom in and telescope out is an important skill promoted by this project.
+
 # Fifty States Project
 
 We ofen hear about the globe's rising temperatures without learning much about how weather records in our own region might be contriubuting to these climate change patterns. 
 
-In most cases, a station in a state supports the overall global pattern, but in some we see patterns that are ambiguous or even contractory.  
+In most cases, a station in a state supports the overall global pattern, but in some we see patterns that are ambiguous or even contractory. For this project, we analyze the records for a weather station in each state. 
 
 ```{r, echo=FALSE, results='hide'}
 file = "Weather_Station_Records_and_Climate_Change.pdf"
@@ -63,7 +75,6 @@ sourcePath <- "../../Social_Media"
 destinationPath <- "State_htmls"
 
 file.copy(file.path(sourcePath, file), destinationPath, overwrite = TRUE)
-
 
 sourcePath <- "../../Social_Media/State_htmls"
 destinationPath <- "State_htmls"
@@ -75,7 +86,6 @@ dbase = read.csv("dbase.csv", row.names=NULL)
 
 ```
 
-
 ## Approach
 
 For this project, I downloaded the longest and most complete record for each state and developed a standard set of analysis procedures and share them below. 
@@ -83,7 +93,7 @@ For this project, I downloaded the longest and most complete record for each sta
 I have also been working to create short videos that will be shared on various forms of social media. 
 
 For additional description of the project methods and R code, see ([Weather Station Records and Communicating
-Climate Change](https://github.com/marclos/Climate_Change_Narratives/raw/master/docs/Social_Media/States/Weather_Station_Records_and_Climate_Change.pdf))
+Climate Change](https://github.com/marclos/Climate_Change_Narratives/raw/master/docs/Social_Media/State_htmls/Weather_Station_Records_and_Climate_Change.pdf))
  
 
 ## Basics in Analyzing Data
@@ -120,7 +130,7 @@ dev.off()
 #CO2_animation <- 
 ```
 
-Although an animated figured can serve to show changes, it can also be distracting or hard to follow. For example, below I have a pretty straight forward image demonstrating the CO2 changes in Mauna Loa. I think this works pretty well, but I suspect not everyone would agree.
+Although an animated figured can serve to show changes, it can also be distracting or hard to follow. For example, below I have a pretty straight forward image demonstrating the CO$_2$ changes in Mauna Loa. I think this works pretty well, but I suspect not everyone would agree.
 
 ```{r, co2animation, fig.margin = FALSE, fig.cap = "Observed CO~2~ concentrations (black) have been steadily increasing since we have begun measuring them in late 1950s, with a loess line (red). Note that the slope or the rate of change is also increasing.", fig.width=8, fig.height=5, cache=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 image_animate(img, fps = 2, loop=5, optimize = TRUE)
@@ -136,13 +146,13 @@ One take home lesson that is critical is that the patterns of the past may not l
 
 ### Connecticut
 
-```{r, label="Connecticut", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Connecticut", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 # FIPS = 7
 files = tail(subset(dbase, subset=(State=="Connecticut")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[Connecticut](States/Connecticut.html))'s record is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Connecticut](State_htmls/Connecticut.html)) has experienced a dramatic increase in tempteratures in the last few decades, between 2-4 degress if the patterns continue in this decade.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -150,13 +160,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Delaware
 
-```{r, label="Delaware", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Delaware", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 ## ID = 8
 files = tail(subset(dbase, subset=(State=="Delaware")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[Delaware](States/Delaware.html)'s record is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+Similar to Connecticut, [Delaware](State_htmls/Delaware.html)'s record suggest an dramatic increase in minimum temperatures in the last couple of decades, however, the maximum temperatures do not seem to show any obvious pattern of change. Thus, we need to look in more detail into the regional context to better understand this pattern. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -164,13 +174,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Maine
 
-```{r, label="Maine", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Maine", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Maine")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Maine (2022)](States/Maine.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Maine (2022)](State_htmls/Maine.html) has experienced dramatically warmer minumum and maximum temperatures in the last few decades. As one of the most northern states, we should note that climate models suggest that the higher latitude (i.e.the poles) will experience the greatest temperature changes.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -179,13 +189,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Massachusetts
 
-```{r, label="Massachusetts", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Massachusetts", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Massachusetts")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Massachusetts (2022)](States/Massachusetts.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Massachusetts (2022)](State_htmls/Massachusetts.html)'s record seems unambiguous, the temperatures have been warming dramatically. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -194,13 +204,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### New Hampshire
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Connecticut")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="New Hampshire")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[New Hampshire (2022)](States/New Hampshire.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[New Hampshire (2022)](State_htmls/New Hampshire.html)'s might be the most pronounced in New England the temperature increases with as much as 5 degrees. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -209,13 +219,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Rhode Island
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Connecticut")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Rhode Island")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Rhode Island (2022)](States/Rhode Island.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Rhode Island (2022)](State_htmls/Rhode Island.html)'s record... TBD
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -224,13 +234,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Vermont
 
-```{r, label="Vermont", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Connecticut")), 1)
+```{r, label="Vermont", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Vermont")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Vermont (2022)](States/Vermont.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Vermont (2022)](State_htmls/Vermont.html) will be TBD
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -243,13 +253,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 ### Kentucky
 
 
-```{r, label="Kentucky", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Kentucky", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 # ID 18
 files = tail(subset(dbase, subset=(State=="Kentucky")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[Kentucky](States/Kentucky.html)'s temperature changes do not seem to follow the expected warming trends. In fact, this figure suggests that some cooling has occurred. As noted throughout this text, we need to be sure 1) that the records is accurate and 2) to contextulize the changes at this location with others in the region. When we found consistent data between stations in a region, we might be in a better position to determine the overall patterns. Finally, we need to better understand the dynamics of weather in the region to see if we can have a more rubost understanding of climate change. 
+[Kentucky](State_htmls/Kentucky.html)'s temperature changes do not seem to follow the expected warming trends. In fact, this figure suggests that some cooling has occurred. As noted throughout this text, we need to be sure 1) that the records is accurate and 2) to contextulize the changes at this location with others in the region. When we found consistent data between stations in a region, we might be in a better position to determine the overall patterns. Finally, we need to better understand the dynamics of weather in the region to see if we can have a more rubost understanding of climate change. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -260,12 +270,12 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 ### West Virginia
 
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Georgia")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="West Virginia")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[West Virginia](States/West Virginia.html)'s temperature changes do not seem to follow the expected warming trends. In fact, this figure suggests that some cooling has occurred. As noted throughout this text, we need to be sure 1) that the records is accurate and 2) to contextulize the changes at this location with others in the region. When we found consistent data between stations in a region, we might be in a better position to determine the overall patterns. Finally, we need to better understand the dynamics of weather in the region to see if we can have a more rubost understanding of climate change. 
+[West Virginia](State_htmls/West Virginia.html)'s temperature changes do not seem ...
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -275,28 +285,45 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 ### Tennessee
 
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Georgia")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+# ID = 43
+files = tail(subset(dbase, subset=(State=="Tennessee")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[Tennessee](States/Tennessee.html)'s temperature changes do not seem to follow the expected warming trends. In fact, this figure suggests that some cooling has occurred. As noted throughout this text, we need to be sure 1) that the records is accurate and 2) to contextulize the changes at this location with others in the region. When we found consistent data between stations in a region, we might be in a better position to determine the overall patterns. Finally, we need to better understand the dynamics of weather in the region to see if we can have a more rubost understanding of climate change. 
+Like other states west of the Appalachian Mountains, temperature changes in [Tennessee](State_htmls/Tennessee.html) are not obvious. While this crude analyze suggest that the temperature has slightly increased, we should look at other data to understand the processes influencing this region with more detail. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 ```
 
 
-## Atlantic Coastal Plain and Applatians
+## Atlantic Coastal Plain & Peidmont States plus and New York
+
+### New York 
+
+```{r, label="New York", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+#id =33
+files = tail(subset(dbase, subset=(State=="New York")), 1)
+knitr::include_graphics(paste0(files$png_private, files$Map))
+
+```
+
+[New York](State_htmls/New York.html)'s demonstrate a profound temperature change and with a further analysis we'll be able to appreciate the pattern better.
+
+```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
+knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
+
+```
 
 ### Georgia
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Georgia")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[Georgia](States/Georgia.html)'s temperature changes do not seem to follow the expected warming trends. In fact, this figure suggests that some cooling has occurred. As noted throughout this text, we need to be sure 1) that the records is accurate and 2) to contextulize the changes at this location with others in the region. When we found consistent data between stations in a region, we might be in a better position to determine the overall patterns. Finally, we need to better understand the dynamics of weather in the region to see if we can have a more rubost understanding of climate change. 
+[Georgia](State_htmls/Georgia.html)'s temperature changes do not seem to follow the expected warming trends. In fact, this figure suggests that some cooling has occurred. As noted throughout this text, we need to be sure 1) that the records is accurate and 2) to contextulize the changes at this location with others in the region. When we found consistent data between stations in a region, we might be in a better position to determine the overall patterns. Finally, we need to better understand the dynamics of weather in the region to see if we can have a more rubost understanding of climate change. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -304,13 +331,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### New Jersey
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="New Jersey")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[New Jersey (2022)](States/New Jersey.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[New Jersey (2022)](State_htmls/New Jersey.html)'s climate has changed dramtically, especially the minimum temperatures. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -319,14 +346,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### North Carolina
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="North Carolina")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Kansas (2022)](States/Kansas.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
-
+[North Carolina (2022)](State_htmls/North Carolina.html)'s station is in the  TBD...
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
@@ -334,14 +360,14 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Maryland
 
-```{r, label="Maryland", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Maryland", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 # ID: ?
 files = tail(subset(dbase, subset=(State=="Maryland")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Maryland (2022)](States/Maryland.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Maryland (2022)](State_htmls/Maryland.html)'s tbd
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -350,13 +376,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Washington DC
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 ## ID = 9
 files = tail(subset(dbase, subset=(State=="District of Columbia")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[District of Columbia](States/District of Columbia.html)'s record is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location.
+[District of Columbia](State_htmls/District of Columbia.html)'s record is TBD
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -364,66 +390,60 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Pennsylvania
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Pennsylvania")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Kansas (2022)](States/Kansas.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Pennsylvania (2022)](State_htmls/Pennsylvania.html)'s tbd
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ```
-
-
 
 ### South Carolina
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="South Carolina")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Kansas (2022)](States/Kansas.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[South Carolina (2022)](State_htmls/South Carolina.html)'s tbd
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ```
-
-
 
 ## Midwest 
 
 ### Arkansas
 
-```{r, label="Arkansas", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Arkansas", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 # ID: 4
 files = tail(subset(dbase, subset=(State=="Arkansas")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Arkansas](States/Arkansas.html)'s climate is extremely disturbing, where Tombstone's data point to a recent rapid change in temperatures. 
+[Arkansas](State_htmls/Arkansas.html)'s climate record is ambiguous at best. Cooling maximum temperatures and warming minimum temperatures. Like all our stations, the record deserves further evaluations to determine what has been happening in the region. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 ```
 
-
-
 ### Illinois
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Illinois")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Illinois (2021)](States/Illinois.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Illinois (2021)](State_htmls/Illinois.html)'s record is ambiguous and deserves follow work. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -432,30 +452,29 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Indiana
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Indiana")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Indiana (2022)](States/Indiana.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Indiana (2022)](State_htmls/Indiana.html)'s record does not seem to demonstrate an obvious pattern, thus deserves additional analyses. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ```
 
-
 ### Iowa
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 #ID =
 files = tail(subset(dbase, subset=(State=="Iowa")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Iowa (2022)](States/Iowa.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Iowa (2022)](State_htmls/Iowa.html)'s weather records suggest an ambiguous result and deserves additional follow up. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -464,13 +483,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Michigan
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Michigan")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Michigan (2022)](States/Michigan.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Michigan (2022)](State_htmls/Michigan.html)'s record suggests a pretty dramatic increase in temperatures, especially in the daily minimums and worth a deeper dive. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -479,30 +498,28 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Minnesota
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Minnesota")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Minnesota (2022)](States/Minnesota.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+Similar to Michigan, [Minnesota (2022)](State_htmls/Minnesota.html)'s climate record suggests a dramatic increase in temperatures, especially in the daily minimums and worth a deeper dive.  
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ```
 
-
-
 ### Ohio
 
-```{r, label="Ohio", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, label="Ohio", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Ohio")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Ohio (2022)](States/Ohio.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Ohio (2022)](State_htmls/Ohio.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -511,15 +528,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Wisconson
 
-
-
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Wisconson")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Wisconson 2022](States/Wisconson.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location.
+[Wisconson 2022](State_htmls/Wisconson.html)'s tbd...
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -531,13 +546,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Colorado
 
-```{r, label="Colorado", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Colorado", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Colorado")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Colorado](States/Colorado.html)'s climate is extremely disturbing, where Tombstone's data point to a recent rapid change in temperatures. 
+[Colorado](State_htmls/Colorado.html)'s record in the Front Range region suggest little change in the temperature record, but additional analysis are needed to shed light on the actual patterns of change.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -545,13 +560,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Kansas
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Kansas")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Kansas (2022)](States/Kansas.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Kansas (2022)](State_htmls/Kansas.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -560,13 +575,14 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Montana
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+# ID: 27
+files = tail(subset(dbase, subset=(State=="Montana")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Montana (2022)](States/Montana.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Montana (2022)](State_htmls/Montana.html)'s record suggests a strong warming signal, which seems to be particularly pronounced in the maximum temperatures.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -575,13 +591,14 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Nebraska
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+# ID: 28
+files = tail(subset(dbase, subset=(State=="Nebraska")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Nebraska (2022)](States/Nebraska.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Nebraska (2022)](State_htmls/Nebraska.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -590,13 +607,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### North Dakota
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="North Dakota")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[North Dakota (2022)](States/North Dakota.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[North Dakota (2022)](State_htmls/North Dakota.html) TBD
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -605,13 +622,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Oklahoma
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Oklahoma")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Oklahoma (2022)](States/Oklahoma.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Oklahoma (2022)](State_htmls/Oklahoma.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -620,13 +637,14 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### South Dakota
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+# ID = 42
+files = tail(subset(dbase, subset=(State=="South Dakota")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[South Dakota (2022)](States/South Dakota.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[South Dakota (2022)](State_htmls/South_Dakota.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -635,13 +653,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Wyoming
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Wyoming")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Wyoming (2022)](States/Wyoming.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Wyoming (2022)](State_htmls/Wyoming.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -653,13 +671,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 ### Alabama
 
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Alabama")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-([Alabama](States/Alabama.html))'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+([Alabama](State_htmls/Alabama.html))'s record is ambiguous, but further analysis might help us better understand how the climate is changing in the region. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -669,44 +687,43 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Florida
 
-```{r, label="Florida", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Florida", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Florida")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[Florida](States/Florida.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location.
+[Florida](State_htmls/Florida.html)'s weather is complex becuase of the influence of the Gulf of Mexico and how the tropical climate extends into the southern tip of the state. Nevertheless, we see a clear, dramatic increse in temperatures. With some additional analysese, we might be able to further understand what's going on. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ```
 
-
 ### Louisiana
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 # ID 19
 files = tail(subset(dbase, subset=(State=="Louisiana")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Louisiana (2022)](States/Louisiana.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Louisiana (2022)](State_htmls/Louisiana.html)'s record is a bit ambiguious, where minimum temperatures might be warming and maximum temeratures do not look like they have changed much. It will be interested to see if we can glean patterns with additional analyses.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ```
 
-### Mississppi
+### Mississippi
 
-```{r, label="Mississippi", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, label="Mississippi", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Mississippi")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Mississppi (2022)](States/Mississppi.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Mississippi (2022)](State_htmls/Mississippi.html)'s TBD
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -715,12 +732,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Texas
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+# ID 44
+files = tail(subset(dbase, subset=(State=="Texas")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[Texas](States/Texas.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location.
+[Texas](State_htmls/Texas.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -732,14 +750,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Arizona
  
-```{r, label="Arizona", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Arizona", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Arizona")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Arizona](States/Arizona.html)'s climate is extremely disturbing, where Tombstone's data point to a recent rapid change in temperatures. 
-
+[Arizona](State_htmls/Arizona.html)'s climate is extremely disturbing, where Tombstone's data point to a recent rapid change in temperatures. 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 ```
@@ -747,12 +764,12 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Idaho
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Idaho")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 ```
 
-[Idaho](States/Idaho.html)'s record indicates dramatic warming the last century. While the state has relatively mild summer temperatures, these changes have important implications for forest fires which are highly senstive to heat.
+[Idaho](State_htmls/Idaho.html)'s record indicates dramatic warming the last century. While the state has relatively mild summer temperatures, these changes have important implications for forest fires which are highly senstive to heat.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -760,13 +777,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### New Mexico
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="New Mexico")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[New Mexico (2022)](States/New Mexico.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[New Mexico (2022)](State_htmls/New Mexico.html)'s record is ambiguous, but it's not surprising, the state has a lot of topographic variation, so a more detailed analysis might help us with the patterns at the state.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -775,13 +792,14 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Nevada
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+# ID=29
+files = tail(subset(dbase, subset=(State=="Nevada")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Nevada](States/Nevada.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Nevada](State_htmls/Nevada.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -790,13 +808,14 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Utah
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+# ID = 45
+files = tail(subset(dbase, subset=(State=="Utah")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Utah](States/Utah.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Utah](State_htmls/Utah.html)'s record is a bit surprising. While there has been a long-term trend, the recent trend suggests some cooling. It's likely this cooling is a short-term trend, but the pattnern suggests the importance to further analyze the specific processes that are influencing the weather in this region. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -806,26 +825,26 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### California
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="California")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[California](States/California)'s temperatures are changing dramatically and radically! The Sacramento station's temperatures are rising fast that will impact water supplies and agriculture productivity. 
+[California](State_htmls/California)'s temperatures are changing dramatically and radically! The Sacramento station's temperatures are rising fast that will impact water supplies and agriculture productivity. 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 ```
 ### Oregon
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
-files = tail(subset(dbase, subset=(State=="Alabama")), 1)
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+files = tail(subset(dbase, subset=(State=="Oregon")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Oregon (2022)](States/Oregon.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Oregon (2022)](State_htmls/Oregon.html)'s tbd
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -834,13 +853,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Washington
 
-```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Alabama")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Washington (2022)](States/Washington.html)'s recorid is ambigous and possibly even contradictory and demonstrates the counter intuitive results at one location. 
+[Washington (2022)](State_htmls/Washington.html)'s tbd
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -852,13 +871,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Alaska
 
-```{r, label="Alaska", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Alaska", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Alaska")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Alaska](States/Alaska.html) demonstrates one of the patterns observed by climate scientists: The poles experience more warming than many other parts of the world.
+[Alaska](State_htmls/Alaska.html) demonstrates one of the patterns observed by climate scientists: The poles experience more warming than many other parts of the world.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
@@ -867,13 +886,13 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 
 ### Hawaii
 
-```{r, label="Hawaii", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID:", files$Station_ID, ")")}
+```{r, label="Hawaii", fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
 files = tail(subset(dbase, subset=(State=="Hawaii")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 
 ```
 
-[Hawaii](States/Hawaii.html) demonstrates one of the patterns observed by climate scientists: The poles experience more warming than many other parts of the world.
+[Hawaii](State_htmls/Hawaii.html)'s climate records do not suggest a strong change, but we'll need to do a more detailed analysis to better appreciate the patterns.
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center", fig.cap="Temperature and Precipitation distribution by 20-year periods. Overlap between curves demonstrates high variability. When red line is to the right of the blue line it suggests warming. NOTE: This is a crude analysis, see link for more information."}
 knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
