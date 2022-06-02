@@ -56,7 +56,8 @@ get_locationid <- function(FIPS){
 @
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(5); str(fips); 
+fips = get_locationid(9); str(fips); 
+
 @
 
 \title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
@@ -167,7 +168,35 @@ GSOM_Longest = GSOM_Sorted[1,] #Pick longest
 
 # Tennessee #2
 
+#Puerto Rico
+# Puerto Rico
+PR = 0
+if(PR == 1){
+fips$State = "Puerto Rico"
+fips$id = "FIPS:PR"
 
+GSOM_Selected = ncdc_stations(datasetid="GSOM", 
+                             stationid = "GHCND:RQC00665097", 
+                             datatypeid = c("TMAX", "TMIN"))
+
+"Doing Puerto Rico" 
+GSOM_Longest = GSOM_Selected$data
+
+}
+
+GQ = 0
+if(GQ== 1){
+fips$State = "Guam"
+fips$id = "FIPS:GQ"
+
+GSOM_Selected = ncdc_stations(datasetid="GSOM", 
+                             stationid = "GHCND:GQW00041415", 
+                             datatypeid = c("TMAX", "TMIN"))
+
+GSOM_Longest = GSOM_Selected$data
+}
+
+str(GSOM_Longest)
 # Change Case of Station Name -- Complicated!
 #v2 <- gsub("[sty]", "", paste(letters, collapse="")) 
 #chartr(v2, toupper(v2), GSOM_Longest$name)
