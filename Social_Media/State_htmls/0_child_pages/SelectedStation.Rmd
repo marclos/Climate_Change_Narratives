@@ -1,0 +1,15 @@
+## Weather Station Selected
+
+<div class="columns-2">
+  - <font size="5">Station ID `r files$Station`</font>
+  
+  - <font size="5">Records begin: `r files$Startyear`</font>
+  
+  - <font size="5">Records end: `r files$Endyear`</font> 
+  
+  - <font size="5"><div class="red2">Not necessarily representative of the state or similar to other stations in `r files$State`!</div></font>
+  
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics(paste0(files$png_private, files$Map.png))
+```
+</div>

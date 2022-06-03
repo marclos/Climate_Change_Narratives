@@ -56,7 +56,7 @@ get_locationid <- function(FIPS){
 @
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(9); str(fips); 
+fips = get_locationid(2); str(fips); 
 
 @
 
@@ -133,9 +133,11 @@ The function queries the NOAA website and retrieves state codes, ``FIPS:XX''. Ea
 
 With the state ids, we can evaluate the metadata for all the weather stations, which will work to get the longest records, using \texttt{ncdc\_stations()}. 
 
-First, we subset the data for stations that actively collecting data. Then we'll sort to the active stations to find the one with the longest records. We will use these stations for our analysis.
+First, we subset the data for stations that actively collecting data. Then we'll sort to the active stations to find the one with the longest records. We will use these stations for our analysis. 
 
-<<selectstation>>=   
+There were some records that didn't have robust TMAX/TMIN records, so there are some states that I had to manually select an alternative stations. 
+
+<<selectstation, echo=TRUE>>=   
 GSOM_Stations <- ncdc_stations(datasetid='GSOM', 
                datatypeid = c("TMAX", "TMIN"),
                locationid=fips$id, limit=1000, 
@@ -154,19 +156,26 @@ GSOM_Longest = GSOM_Sorted[1,] #Pick longest
 # GSOM_Longest = GSOM_Sorted[3,]
 
 # Exceptions
-
-# CA
-
-# TMAX is missing
-
-# Iowa (same as Illonoi)
-
+# Iowa (same as Illonois)
+if(fips$State=="Iowa"){
+   print("Manual Override for Penn")
+   GSOM_Longest = GSOM_Sorted[2,] 
+}
 
 # Pennsylvania
+if(fips$State=="Pennsylvania"){
+   print("Manual Override for Penn")
+   GSOM_Longest = GSOM_Sorted[2,] 
+}
 
 # South Dakota
 
-# Tennessee #2
+# Tennessee 
+if(fips$State=="Tennessee"){
+   print("Manual Override for Tennessee")
+   GSOM_Longest = GSOM_Sorted[2,] 
+}
+
 
 #Puerto Rico
 # Puerto Rico
@@ -178,7 +187,6 @@ fips$id = "FIPS:PR"
 GSOM_Selected = ncdc_stations(datasetid="GSOM", 
                              stationid = "GHCND:RQC00665097", 
                              datatypeid = c("TMAX", "TMIN"))
-
 "Doing Puerto Rico" 
 GSOM_Longest = GSOM_Selected$data
 

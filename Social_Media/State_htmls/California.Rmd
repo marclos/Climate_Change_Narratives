@@ -31,7 +31,7 @@ files = tail(subset(dbase, subset=(State=="California")), 1)
 ```{r, child=c('child_pages/AnomalyTrends.Rmd')}
 ```
 
-```{r, child=c('California_Impacts_Mitigation.Rmd')}
+```{r, child=c('0_impacts/California_Impacts_Mitigation.Rmd')}
 ```
 
 ```{r, child=c('NextSteps.Rmd')}
