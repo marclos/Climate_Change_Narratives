@@ -209,7 +209,10 @@ str(GSOM_Longest)
 #v2 <- gsub("[sty]", "", paste(letters, collapse="")) 
 #chartr(v2, toupper(v2), GSOM_Longest$name)
 #sub('\\b([a-z])([0-9])', '\\L\\1\\2', GSOM_Longest$name, perl=TRUE)
-#[1] "JAStADMMNIsyNDK" "LAUKsNDTUsAINS" 
+#[1] "JAStADMMNIsyNDK" "LAUKsNDTUsAINS"
+
+# Caution this might be a problem!
+fips$State2 <- sub(" ", "_", fips$State)
 @
 
 The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
@@ -477,7 +480,7 @@ source="stamen", maptype="terrain", messaging = FALSE, crop=FALSE)
 
 #zoom = 11, scale = 2, maptype ='watercolor',
 
-map.png = paste0(fips$State, "_", stid, "_MAP.png")
+map.png = paste0(fips$State2, "_", stid, "_MAP.png")
 
 png(paste0(png_private, map.png), 
     width = 480, height = 480, units = "px", 
@@ -690,11 +693,11 @@ Communicating climate change based on station records is tricky. The long-term r
 
 <<trend1975>>=
 
-GSOM_1975.png = paste0(fips$State, "_", stid, "_GSOM_1975.png")
+GSOM_1975.png = paste0(fips$State2, "_", stid, "_GSOM_1975.png")
 
 png(paste0(png_private, GSOM_1975.png), width = 480, height = 320, units = "px", pointsize = 12, bg = "white")
 par(las=1, mfrow=c(1,1))
-plot(TMAX~Date, GSOM, pch=20, cex=.5, col="grey", ylab="°F", main=paste0(fips$State, "-", stid))
+plot(TMAX~Date, GSOM, pch=20, cex=.5, col="grey", ylab="°F", main=paste0(fips$State2, "-", stid))
 GSOM.lm = lm(TMAX~Date, GSOM)
 pred_dates <-data.frame(Date = GSOM$Date); 
 nrow(pred_dates);# pred_dates
@@ -757,7 +760,7 @@ GSOM2 <- GSOM2[order(GSOM2$Date),]
 @
 
 <<>>=
-GSOM_anomaly_1975.png = paste0(fips$State, "_", stid, "_GSOM_anomaly_1975.png")
+GSOM_anomaly_1975.png = paste0(fips$State2, "_", stid, "_GSOM_anomaly_1975.png")
 
 png(paste0(png_private, GSOM_anomaly_1975.png), 
     width = 480, height = 320, units = "px",
@@ -1079,7 +1082,7 @@ max(CHCND$yday[CHCND$Year==max(CHCND$Year)])
 
 
 <<recordtemploop>>=
-records.png = paste0(fips$State, "_", stid, "_CHCND_Temp_Records.png")
+records.png = paste0(fips$State2, "_", stid, "_CHCND_Temp_Records.png")
 
 png(paste0(png_private, records.png), width = 480, height = 280, units = "px", pointsize = 12, bg = "white")
 
@@ -1173,7 +1176,7 @@ text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, col="red", cex=2)
 To test the code, I have created graphics that can then be used in the animation process, i.e. try to create code that doesn't get too complicated and then fail! 
 
 <<static_template, eval=TRUE, echo=FALSE>>=
-panel4.png = paste0(fips$State, "_", stid, "_4panel.png")
+panel4.png = paste0(fips$State2, "_", stid, "_4panel.png")
               
 png(paste0(png_private, panel4.png), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 
@@ -1372,7 +1375,7 @@ Let's create a figure that simplifies the narrative, if we can!
 
 <<KISS, eval=TRUE, echo=FALSE>>=
 
-KISS.png <- paste0(fips$State, "_", stid, "_KISS.png")
+KISS.png <- paste0(fips$State2, "_", stid, "_KISS.png")
 
 png(paste0(png_private, KISS.png), width = 480, height = 480, units = "px", pointsize = 12, bg = "white")
 
@@ -1471,7 +1474,7 @@ TMIN.anomaly.list = aggregate(TMIN.anom ~ Score, GSOM2,
 PPT.anomaly.list = aggregate(PPT.anom ~ Score, GSOM2, 
    FUN = function(x) c(mean = mean(x), sd = sd(x)))
 
-GSOM_dnorm.png <- paste0(fips$State, "_", stid, "_GSOM_dnorm.png")
+GSOM_dnorm.png <- paste0(fips$State2, "_", stid, "_GSOM_dnorm.png")
 
 png(paste0(png_private, GSOM_dnorm.png), 
     width = 480, height = 300, units = "px", pointsize = 12, bg = "white")
@@ -1589,7 +1592,7 @@ These values suggest that there is good reason \Sexpr{text} the normal probabili
 Next we use a function to estimate the probability distribution using a markof chain the creates an estimated probability distribution. This doesn't always work when the distribution is not even and their only 10 years of data per slot. I suspect, I should make this by every 20 years. Plus that will go way faster and I think the data visualization will be more robust. 
 
 <<estDensity, warning=FALSE, results='hide'>>=
-GSOM_estPDF.png = paste0(fips$State, "_", stid, "_GSOM_estPDF.png")
+GSOM_estPDF.png = paste0(fips$State2, "_", stid, "_GSOM_estPDF.png")
 
 if(!file.exists(paste0(png_private, GSOM_estPDF.png))){
    print("Creating estimated density distribution")
@@ -1693,7 +1696,7 @@ So far, this creates a gif file, but I haven't been able get the gif in the pdf 
 
 <<animated_normalPDFs, results='hide', eval=TRUE>>=
 
-GSOM_dnorm.gif = paste0(fips$State, "_", stid, "_GSOM_dnorm.gif")
+GSOM_dnorm.gif = paste0(fips$State2, "_", stid, "_GSOM_dnorm.gif")
 
 if(!file.exists(paste0(gif_private, GSOM_dnorm.gif))){
    print("Creating animated normal probability")
@@ -1789,7 +1792,7 @@ The file is saved in the main directory.
 \subsection{4 Weather Trend Plots}
 
 <<animate, results='hide', eval=TRUE>>=
-panel4.gif = paste0(fips$State, "_", stid, "_4panel.gif")
+panel4.gif = paste0(fips$State2, "_", stid, "_4panel.gif")
 
 if(!file.exists(paste0(gif_private, panel4.gif))){
    print("Creating animated 4panel.gif")  

@@ -5,10 +5,10 @@ author: "nor_soCal"
 date: "3/23/2022"
 output:
   ioslides_presentation:
-    logo: child_pages/logo.png
+    logo: 0_child_pages/logo.png
 ---
 
-```{r, child=c('child_pages/Setup.Rmd')}
+```{r, child=c('0_child_pages/Setup.Rmd')}
 ```
 
 ```{r}
@@ -16,25 +16,25 @@ output:
 files = tail(subset(dbase, subset=(State=="Florida")), 1)
 ```
 
-```{r, child=c('child_pages/Intro.Rmd')}
+```{r, child=c('0_child_pages/Intro.Rmd')}
 ```
 
-```{r, child=c('child_pages/SelectedStation.Rmd')}
+```{r, child=c('0_child_pages/SelectedStation.Rmd')}
 ```
 
-```{r, child=c('child_pages/TrendMonth.Rmd')}
+```{r, child=c('0_child_pages/TrendMonth.Rmd')}
 ```
 
-```{r, child=c('child_pages/RecordTemps.Rmd')}
+```{r, child=c('0_child_pages/RecordTemps.Rmd')}
 ```
 
-```{r, child=c('child_pages/AnomalyTrends.Rmd')}
+```{r, child=c('0_child_pages/AnomalyTrends.Rmd')}
 ```
 
-```{r, child=c('impacts/Florida_Impacts_Mitigation.Rmd')}
+```{r, child=c('0_impacts/Florida_Impacts_Mitigation.Rmd')}
 ```
 
-```{r, child=c('NextSteps.Rmd')}
+```{r, child=c('0_child_pages/NextSteps.Rmd')}
 ```
 
 

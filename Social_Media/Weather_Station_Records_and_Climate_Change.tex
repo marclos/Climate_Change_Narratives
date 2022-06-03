@@ -77,7 +77,7 @@
 
 
 
-\title{Weather Station Records and Communicating Climate Change--South Dakota}
+\title{Weather Station Records and Communicating Climate Change--Alaska}
 %\subtitle{test}
 \author{Marc Los Huertos}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -147,17 +147,99 @@ The function queries the NOAA website and retrieves state codes, ``FIPS:XX''. Ea
 
 With the state ids, we can evaluate the metadata for all the weather stations, which will work to get the longest records, using \texttt{ncdc\_stations()}. 
 
-First, we subset the data for stations that actively collecting data. Then we'll sort to the active stations to find the one with the longest records. We will use these stations for our analysis.
+First, we subset the data for stations that actively collecting data. Then we'll sort to the active stations to find the one with the longest records. We will use these stations for our analysis. 
+
+There were some records that didn't have robust TMAX/TMIN records, so there are some states that I had to manually select an alternative stations. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{GSOM_Stations} \hlkwb{<-} \hlkwd{ncdc_stations}\hlstd{(}\hlkwc{datasetid}\hlstd{=}\hlstr{'GSOM'}\hlstd{,}
+               \hlkwc{datatypeid} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"TMAX"}\hlstd{,} \hlstr{"TMIN"}\hlstd{),}
+               \hlkwc{locationid}\hlstd{=fips}\hlopt{$}\hlstd{id,} \hlkwc{limit}\hlstd{=}\hlnum{1000}\hlstd{,}
+               \hlkwc{sortfield} \hlstd{=} \hlstr{'maxdate'}\hlstd{,} \hlkwc{sortorder}\hlstd{=}\hlstr{'desc'}\hlstd{)}
+
+\hlstd{GSOM_Recent} \hlkwb{=}
+   \hlstd{GSOM_Stations}\hlopt{$}\hlstd{data[GSOM_Stations}\hlopt{$}\hlstd{data}\hlopt{$}\hlstd{maxdate}\hlopt{>=}\hlstr{'2021-11-01'}\hlstd{,]}
+
+\hlstd{GSOM_Coverage} \hlkwb{=}
+   \hlstd{GSOM_Recent[GSOM_Recent}\hlopt{$}\hlstd{datacoverage} \hlopt{>} \hlnum{0.92}\hlstd{,]}
+\hlstd{GSOM_Sorted} \hlkwb{=}  \hlstd{GSOM_Coverage[}\hlkwd{order}\hlstd{(GSOM_Coverage}\hlopt{$}\hlstd{mindate),]}
+
+\hlstd{GSOM_Longest} \hlkwb{=} \hlstd{GSOM_Sorted[}\hlnum{1}\hlstd{,]} \hlcom{#Pick longest}
+\hlcom{# Second and Third for Comparisons}
+\hlcom{# GSOM_Longest = GSOM_Sorted[2,] }
+\hlcom{# GSOM_Longest = GSOM_Sorted[3,]}
+
+\hlcom{# Exceptions}
+\hlcom{# Iowa (same as Illonois)}
+\hlkwa{if}\hlstd{(fips}\hlopt{$}\hlstd{State}\hlopt{==}\hlstr{"Iowa"}\hlstd{)\{}
+   \hlkwd{print}\hlstd{(}\hlstr{"Manual Override for Penn"}\hlstd{)}
+   \hlstd{GSOM_Longest} \hlkwb{=} \hlstd{GSOM_Sorted[}\hlnum{2}\hlstd{,]}
+\hlstd{\}}
+
+\hlcom{# Pennsylvania}
+\hlkwa{if}\hlstd{(fips}\hlopt{$}\hlstd{State}\hlopt{==}\hlstr{"Pennsylvania"}\hlstd{)\{}
+   \hlkwd{print}\hlstd{(}\hlstr{"Manual Override for Penn"}\hlstd{)}
+   \hlstd{GSOM_Longest} \hlkwb{=} \hlstd{GSOM_Sorted[}\hlnum{2}\hlstd{,]}
+\hlstd{\}}
+
+\hlcom{# South Dakota}
+
+\hlcom{# Tennessee }
+\hlkwa{if}\hlstd{(fips}\hlopt{$}\hlstd{State}\hlopt{==}\hlstr{"Tennessee"}\hlstd{)\{}
+   \hlkwd{print}\hlstd{(}\hlstr{"Manual Override for Tennessee"}\hlstd{)}
+   \hlstd{GSOM_Longest} \hlkwb{=} \hlstd{GSOM_Sorted[}\hlnum{2}\hlstd{,]}
+\hlstd{\}}
 
 
+\hlcom{#Puerto Rico}
+\hlcom{# Puerto Rico}
+\hlstd{PR} \hlkwb{=} \hlnum{0}
+\hlkwa{if}\hlstd{(PR} \hlopt{==} \hlnum{1}\hlstd{)\{}
+\hlstd{fips}\hlopt{$}\hlstd{State} \hlkwb{=} \hlstr{"Puerto Rico"}
+\hlstd{fips}\hlopt{$}\hlstd{id} \hlkwb{=} \hlstr{"FIPS:PR"}
+
+\hlstd{GSOM_Selected} \hlkwb{=} \hlkwd{ncdc_stations}\hlstd{(}\hlkwc{datasetid}\hlstd{=}\hlstr{"GSOM"}\hlstd{,}
+                             \hlkwc{stationid} \hlstd{=} \hlstr{"GHCND:RQC00665097"}\hlstd{,}
+                             \hlkwc{datatypeid} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"TMAX"}\hlstd{,} \hlstr{"TMIN"}\hlstd{))}
+\hlstr{"Doing Puerto Rico"}
+\hlstd{GSOM_Longest} \hlkwb{=} \hlstd{GSOM_Selected}\hlopt{$}\hlstd{data}
+
+\hlstd{\}}
+
+\hlstd{GQ} \hlkwb{=} \hlnum{0}
+\hlkwa{if}\hlstd{(GQ}\hlopt{==} \hlnum{1}\hlstd{)\{}
+\hlstd{fips}\hlopt{$}\hlstd{State} \hlkwb{=} \hlstr{"Guam"}
+\hlstd{fips}\hlopt{$}\hlstd{id} \hlkwb{=} \hlstr{"FIPS:GQ"}
+
+\hlstd{GSOM_Selected} \hlkwb{=} \hlkwd{ncdc_stations}\hlstd{(}\hlkwc{datasetid}\hlstd{=}\hlstr{"GSOM"}\hlstd{,}
+                             \hlkwc{stationid} \hlstd{=} \hlstr{"GHCND:GQW00041415"}\hlstd{,}
+                             \hlkwc{datatypeid} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"TMAX"}\hlstd{,} \hlstr{"TMIN"}\hlstd{))}
+
+\hlstd{GSOM_Longest} \hlkwb{=} \hlstd{GSOM_Selected}\hlopt{$}\hlstd{data}
+\hlstd{\}}
+
+\hlkwd{str}\hlstd{(GSOM_Longest)}
+\hlcom{# Change Case of Station Name -- Complicated!}
+\hlcom{#v2 <- gsub("[sty]", "", paste(letters, collapse="")) }
+\hlcom{#chartr(v2, toupper(v2), GSOM_Longest$name)}
+\hlcom{#sub('\textbackslash{}\textbackslash{}b([a-z])([0-9])', '\textbackslash{}\textbackslash{}L\textbackslash{}\textbackslash{}1\textbackslash{}\textbackslash{}2', GSOM_Longest$name, perl=TRUE)}
+\hlcom{#[1] "JAStADMMNIsyNDK" "LAUKsNDTUsAINS"}
+
+\hlcom{# Caution this might be a problem!}
+\hlstd{fips}\hlopt{$}\hlstd{State2} \hlkwb{<-} \hlkwd{sub}\hlstd{(}\hlstr{" "}\hlstd{,} \hlstr{"_"}\hlstd{, fips}\hlopt{$}\hlstd{State)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
 
-   elevation    mindate    maxdate latitude                          name
-11     390.7 1881-07-01 2022-05-01 44.37916 HURON REGIONAL AIRPORT, SD US
-   datacoverage                id elevationUnit longitude
-11       0.9994 GHCND:USW00014936        METERS -98.22275
-[1] 1881
+   elevation    mindate    maxdate latitude                name datacoverage
+10       5.4 1900-08-01 2022-05-01 64.51112 NOME AIRPORT, AK US       0.9439
+                  id elevationUnit longitude
+10 GHCND:USW00026617        METERS   -165.44
+[1] 1900
 [1] 2022
 
 
@@ -209,8 +291,8 @@ CHCND have been bias corrected...
 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/South Dakota_USW00014936_MAP.png}
-\caption{Weather Station Location (USW00014936). }
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Alaska_USW00026617_MAP.png}
+\caption{Weather Station Location (USW00026617). }
 \label{fig:Map}
 \end{figure}
 
@@ -241,18 +323,18 @@ Table~\ref{tab:TMINtrends} summarizes the monthly trends for TMAX.
   \hline
  & Month & Slope100 & r2 & p\_value & Symbol \\ 
   \hline
-1 & 1 & 0.0160 & 0.05 & 0.0246 & * \\ 
-  4 & 2 & 0.0011 & 0.00 & 0.8862 &  \\ 
-  7 & 3 & 0.0072 & 0.02 & 0.1508 &  \\ 
-  10 & 4 & -0.0026 & 0.01 & 0.4055 &  \\ 
-  13 & 5 & 0.0019 & 0.00 & 0.5795 &  \\ 
-  16 & 6 & 0.0030 & 0.01 & 0.2882 &  \\ 
-  19 & 7 & 0.0004 & 0.00 & 0.8765 &  \\ 
-  22 & 8 & -0.0013 & 0.00 & 0.6031 &  \\ 
-  25 & 9 & 0.0035 & 0.01 & 0.2566 &  \\ 
-  28 & 10 & -0.0047 & 0.02 & 0.1583 &  \\ 
-  31 & 11 & 0.0025 & 0.00 & 0.5224 &  \\ 
-  34 & 12 & 0.0019 & 0.00 & 0.7360 &  \\ 
+1 & 1 & 0.0028 & 0.00 & 0.8577 &  \\ 
+  4 & 2 & 0.0362 & 0.07 & 0.0266 & * \\ 
+  7 & 3 & 0.0227 & 0.04 & 0.0859 &  \\ 
+  10 & 4 & 0.0378 & 0.15 & 0.0009 & *** \\ 
+  13 & 5 & 0.0132 & 0.05 & 0.0544 &  \\ 
+  16 & 6 & 0.0179 & 0.23 & 0.0000 & *** \\ 
+  19 & 7 & 0.0129 & 0.17 & 0.0004 & *** \\ 
+  22 & 8 & 0.0041 & 0.01 & 0.3270 &  \\ 
+  25 & 9 & 0.0088 & 0.04 & 0.1045 &  \\ 
+  28 & 10 & 0.0235 & 0.14 & 0.0017 & ** \\ 
+  31 & 11 & 0.0124 & 0.02 & 0.2630 &  \\ 
+  34 & 12 & 0.0367 & 0.11 & 0.0054 & ** \\ 
    \hline
 \end{tabular}
 \caption{TMIN Trends} 
@@ -262,25 +344,25 @@ Table~\ref{tab:TMINtrends} summarizes the monthly trends for TMAX.
 Table~\ref{tab:TMAXtrends} summarizes the monthly trends for TMAX.
 
 % latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Jun  2 18:20:40 2022
+% Fri Jun  3 00:43:21 2022
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrrl}
   \hline
  & Month & Slope100 & r2 & p\_value & Symbol \\ 
   \hline
-2 & 1 & 0.0106 & 0.02 & 0.1382 &  \\ 
-  5 & 2 & 0.0011 & 0.00 & 0.8843 &  \\ 
-  8 & 3 & 0.0123 & 0.04 & 0.0625 &  \\ 
-  11 & 4 & 0.0007 & 0.00 & 0.8838 &  \\ 
-  14 & 5 & -0.0004 & 0.00 & 0.9305 &  \\ 
-  17 & 6 & 0.0057 & 0.02 & 0.1458 &  \\ 
-  20 & 7 & -0.0064 & 0.03 & 0.1020 &  \\ 
-  23 & 8 & -0.0068 & 0.04 & 0.0406 & * \\ 
-  26 & 9 & 0.0038 & 0.01 & 0.3256 &  \\ 
-  29 & 10 & -0.0081 & 0.03 & 0.0742 &  \\ 
-  32 & 11 & 0.0059 & 0.01 & 0.2716 &  \\ 
-  35 & 12 & 0.0018 & 0.00 & 0.7688 &  \\ 
+2 & 1 & -0.0007 & 0.00 & 0.9552 &  \\ 
+  5 & 2 & 0.0297 & 0.07 & 0.0224 & * \\ 
+  8 & 3 & 0.0082 & 0.01 & 0.4024 &  \\ 
+  11 & 4 & 0.0235 & 0.12 & 0.0039 & ** \\ 
+  14 & 5 & 0.0160 & 0.05 & 0.0670 &  \\ 
+  17 & 6 & 0.0165 & 0.11 & 0.0049 & ** \\ 
+  20 & 7 & 0.0075 & 0.03 & 0.1806 &  \\ 
+  23 & 8 & 0.0050 & 0.02 & 0.2931 &  \\ 
+  26 & 9 & 0.0062 & 0.03 & 0.1663 &  \\ 
+  29 & 10 & 0.0187 & 0.17 & 0.0003 & *** \\ 
+  32 & 11 & 0.0105 & 0.02 & 0.1941 &  \\ 
+  35 & 12 & 0.0317 & 0.11 & 0.0054 & ** \\ 
    \hline
 \end{tabular}
 \caption{TMAX Trends} 
@@ -290,25 +372,25 @@ Table~\ref{tab:TMAXtrends} summarizes the monthly trends for TMAX.
 PPT changes are tricky to capture and I'll have to keep working on this (Table~\ref{tab:PPTtrends}).
 
 % latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Thu Jun  2 18:20:40 2022
+% Fri Jun  3 00:43:21 2022
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrrl}
   \hline
  & Month & Slope100 & r2 & p\_value & Symbol \\ 
   \hline
-3 & 1 & 0.0028 & 0.00 & 0.8081 &  \\ 
-  6 & 2 & 0.0173 & 0.02 & 0.1965 &  \\ 
-  9 & 3 & 0.0317 & 0.02 & 0.1936 &  \\ 
-  12 & 4 & 0.0427 & 0.01 & 0.2370 &  \\ 
-  15 & 5 & 0.0782 & 0.04 & 0.0616 &  \\ 
-  18 & 6 & 0.0457 & 0.01 & 0.3471 &  \\ 
-  21 & 7 & 0.0743 & 0.04 & 0.0466 & * \\ 
-  24 & 8 & 0.0521 & 0.03 & 0.1158 &  \\ 
-  27 & 9 & 0.0921 & 0.08 & 0.0034 & ** \\ 
-  30 & 10 & 0.0769 & 0.05 & 0.0221 & * \\ 
-  33 & 11 & 0.0193 & 0.01 & 0.2840 &  \\ 
-  36 & 12 & 0.0177 & 0.03 & 0.1090 &  \\ 
+3 & 1 & 0.0024 & 0.00 & 0.9166 &  \\ 
+  6 & 2 & 0.0719 & 0.13 & 0.0024 & ** \\ 
+  9 & 3 & 0.0290 & 0.02 & 0.2098 &  \\ 
+  12 & 4 & 0.0207 & 0.01 & 0.3633 &  \\ 
+  15 & 5 & 0.0413 & 0.04 & 0.1049 &  \\ 
+  18 & 6 & -0.0082 & 0.00 & 0.8175 &  \\ 
+  21 & 7 & 0.0858 & 0.03 & 0.1258 &  \\ 
+  24 & 8 & -0.0153 & 0.00 & 0.8207 &  \\ 
+  27 & 9 & -0.0412 & 0.01 & 0.4903 &  \\ 
+  30 & 10 & 0.0910 & 0.07 & 0.0238 & * \\ 
+  33 & 11 & 0.0592 & 0.04 & 0.0853 &  \\ 
+  36 & 12 & 0.0989 & 0.21 & 0.0001 & *** \\ 
    \hline
 \end{tabular}
 \end{table}
@@ -317,7 +399,7 @@ PPT changes are tricky to capture and I'll have to keep working on this (Table~\
 \subsubsection{Defining TMAXmonth and TMINmonth}
 
 
-The greatest changes for Station GHCND:USW00014936
+The greatest changes for Station GHCND:USW00026617
 
 \section{Communicating Long-term Weather Records}
 
@@ -330,7 +412,7 @@ Communicating climate change based on station records is tricky. The long-term r
 The noise in the data may suggests that no trend is present (Figure~\ref{fig:GSOM-1975trend}). It's tricky because the seasonal variation dominates the source of varition. In other words the intra-annual variation exceeds the inter-annual variation, making signal detection very difficult. Is there a way to "filter" out the seasonal effect? Yes, let's see how that works next. 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/South Dakota_USW00014936_GSOM_1975.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Alaska_USW00026617_GSOM_1975.png}
 \caption{The climate trends from full record and post 1975 data. These data have a high level of variability due to seasonality effects that have not been filtered out.}
 \label{fig:GSOM-1975trend}
 \end{figure}
@@ -349,7 +431,7 @@ There are several ways to filter out seasonal effects. The easiest way is subtra
 And to see what we created, see Figure~\ref{fig:GSOM-anomaly}.
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/South Dakota_USW00014936_GSOM_anomaly_1975.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Alaska_USW00026617_GSOM_anomaly_1975.png}
 \caption{The changing in monthly temperature data.}
 \label{fig:GSOM-anomaly}
 \end{figure}
@@ -456,7 +538,7 @@ Create the matrix
 
 The patterns of record temperatures often shows increasing number of new high temperature records  and fewer record low temperatures more recently, but as usual, it depends on the location (Figure~\ref{fig:Records}).
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/South Dakota_USW00014936_CHCND_Temp_Records.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Alaska_USW00026617_CHCND_Temp_Records.png}
 \caption{Daily temperatures that have been the highest on record (in red) and lowest on record (in blue). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
 \label{fig:Records}
 \end{figure}
@@ -475,7 +557,7 @@ To test the code, I have created graphics that can then be used in the animation
 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/South Dakota_USW00014936_4panel.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Alaska_USW00026617_4panel.png}
 \caption{Climate can be analyzed using several types of lenses. In this case, we have analyzed show the months with the greatest changes. The first figure is monthly average of TMINs (daily low temperatures) with a best fit line. The second figure shows the monthly TMAX range and asterisks indicate singificant changes over the station record and the third figure is the trend for these TMAXs over time and includes the best fit line. The final figure shows the daily temperatures that have been the highest on record (in red) and the lowest minimum temperatures (in blue). In some cases, climate change has created more records in the recent decades, while other stations seem don't show that trend.}
 \label{fig:4panel}
 \end{figure}
@@ -496,7 +578,7 @@ Let's create a figure that simplifies the narrative, if we can!
 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/South Dakota_USW00014936_KISS.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Alaska_USW00026617_KISS.png}
 \caption{Keep it simple stupid!}
 \label{fig:GSOM-KISS}
 \end{figure}
@@ -512,7 +594,7 @@ I started with decade bins, but used 20 years bins (scores) to simplify the grap
 This figure is pretty effective, but still needs work. 
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/South Dakota_USW00014936_GSOM_dnorm.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Alaska_USW00026617_GSOM_dnorm.png}
 \caption{The changing in monthly temperature data, assuming a normal probability distribution.}
 \label{fig:GSOM_dnorm}
 \end{figure}
@@ -541,7 +623,7 @@ Next we use a function to estimate the probability distribution using a markof c
 The process to create these figures is very time consuming, so in general, I need to come up with an if then statement to avoid creating these everytime!
 
 \begin{figure}
-\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/South Dakota_USW00014936_GSOM_estPDF.png}
+\includegraphics[width=1.00\textwidth]{/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/png/Alaska_USW00026617_GSOM_estPDF.png}
 \caption{The changing in monthly temperature data.}
 \label{fig:GSOM_estPDF}
 \end{figure}
@@ -614,6 +696,6 @@ Hopefully, this little analysis has created some mechanism for others to appreci
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, ifelse(append, "{}a"{}, "{}w"{})): cannot open the connection}}\end{kframe}
 \end{knitrout}
 
-The document took 9.2 minutes to process and compile. My next goal will be to optimize the process and streamline the time to analyze. 
+The document took 4.6 minutes to process and compile. My next goal will be to optimize the process and streamline the time to analyze. 
 
 \end{document}
