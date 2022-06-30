@@ -56,6 +56,9 @@ lines(loess~decimal.date, data=maunaloa, lwd=1.4, col="red")
 
 Thankfully, the US has a robust network of weather stations and we can use this to evaluate how climate change might be impacting local weather patterns. Moreover, by looking at specific stations in the context of regional patterns, we can begin to see how various processes produce uneven and counter intuitive climate responses.
 
+<iframe src="https://createaclickablemap.com/map.php?&id=110949&maplocation=false&online=true" width="900" height="525" style="border: none;"></iframe>
+<script>if (window.addEventListener){ window.addEventListener("message", function(event) { if(event.data.length >= 22) { if( event.data.substr(0, 22) == "__MM-LOCATION.REDIRECT") location = event.data.substr(22); } }, false); } else if (window.attachEvent){ window.attachEvent("message", function(event) { if( event.data.length >= 22) { if ( event.data.substr(0, 22) == "__MM-LOCATION.REDIRECT") location = event.data.substr(22); } }, false); } </script>
+
 ## A Word of Warning
 
 There are more ways to analyze climate patterns than there are people in the world. As a pastor once said to me, "we don't base our theology on one verse in the Bible", so we don't base our understanding of climate change on one dataset or analysis approach. 
@@ -141,6 +144,18 @@ image_animate(img, fps = 2, loop=5, optimize = TRUE)
 One take home lesson that is critical is that the patterns of the past may not lead to useful predictions into the future. A site that has not shown evidence of climate change in the past might stay the same or reach a tipping point where we might detect dramatic changes. We often rely on modeling the climate system to make predictions, which is well beyond my project here.
 
 # States by Region
+
+
+https://www.createaclickablemap.com/
+
+library(leaflet)
+library(dplyr)
+my_map <- leaflet() %>%
+        addTiles() %>%
+        addMarkers(lat = usstates_loc$lat,
+                   lng = usstates_loc$lon,
+                   popup = usstates_loc$Capital)
+my_map
 
 ## New England
 
@@ -532,6 +547,7 @@ knitr::include_graphics(paste0(files$png_private, files$GSOM_dnorm.png))
 ### Wisconson
 
 ```{r, fig.margin=TRUE, echo=FALSE, fig.cap=paste0("Station Map (ID: ", files$Station_ID, ")")}
+# ID = 
 files = tail(subset(dbase, subset=(State=="Wisconson")), 1)
 knitr::include_graphics(paste0(files$png_private, files$Map))
 

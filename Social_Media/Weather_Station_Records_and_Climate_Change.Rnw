@@ -55,8 +55,9 @@ get_locationid <- function(FIPS){
 
 @
 
+
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(2); str(fips); 
+fips = get_locationid(18); str(fips); 
 
 @
 
@@ -155,10 +156,17 @@ GSOM_Longest = GSOM_Sorted[1,] #Pick longest
 # GSOM_Longest = GSOM_Sorted[2,] 
 # GSOM_Longest = GSOM_Sorted[3,]
 
-# Exceptions
+# Exceptions Overrride by changing GSOM_Sorted[#,]
+# Iowa (same as Hawaii)
+if(fips$State=="Hawaii"){
+   print("Manual Override for Hawaii")
+   GSOM_Longest = GSOM_Sorted[1,] 
+}
+
+
 # Iowa (same as Illonois)
-if(fips$State=="Iowa"){
-   print("Manual Override for Penn")
+if(fips$State=="Iowa" | fips$State=="Illinois"){
+   print("Manual Override for Iowa/Illinois")
    GSOM_Longest = GSOM_Sorted[2,] 
 }
 
@@ -335,13 +343,13 @@ report_prob3 <-function(lm){
          round(coef(lm)[2]*356.25*100, 1), "°F/100 years", sep=""); 
       temp[,2] <- paste("p-value = ", 
          round(anova(lm)$'Pr(>F)'[1], 3), sep="");
-      temp[,3] <- " (Statistically Significant)"
+      temp[,3] <- " (Statistically Sig.)"
       return(temp)
       }
    if(anova(lm)$'Pr(>F)'[1] < 0.001) {
       temp[,1] <- paste("Change: ", round(coef(lm)[2]*356.25*100, 1), "°F/100 years", sep=""); 
       temp[,2] <- "p-value < 0.001";
-      temp[,3] <- " (Statistically Significant)"
+      temp[,3] <- " (Statistically Sig)"
       return(temp)
    }
 }
@@ -452,7 +460,7 @@ range(CHCND$TMAX, na.rm=T)
 spread = sd(CHCND$TMAX, na.rm=T)*4
 TMAX_mean = mean(CHCND$TMAX, na.rm=T)
 
-#CHCND$TMAX[complete.cases(CHCND$TMAX) & CHCND$TMAX > TMAX_mean+spread] <-NA
+CHCND$TMAX[complete.cases(CHCND$TMAX) & CHCND$TMAX > TMAX_mean+spread] <-NA
 #CHCND$TMAX[complete.cases(CHCND$TMAX) & CHCND$TMAX < TMAX_mean-spread] <-NA
 range(CHCND$TMAX, na.rm=T)
 
@@ -473,8 +481,11 @@ station.df <- data.frame(lon = GSOM_Longest$longitude,
                          Station = GSOM_Longest$name); 
 str(station.df)
 
+AIzaSyDYUc3ExxqFTOHtyxyr6-IRPUjJOoTPMHA
+
 myMap <- get_map(location=station, zoom=7, scale =2, 
-source="stamen", maptype="terrain", messaging = FALSE, crop=FALSE)
+source="stamen", maptype="terrain", messaging = TRUE, crop=FALSE,
+api="AIzaSyDYUc3ExxqFTOHtyxyr6-IRPUjJOoTPMHA")
 
 #ggmap(myMap) + geom_point(aes(x = lon, y = lat), data = station.df, alpha = .5, color="darkred", size = 3) + geom_text(aes(x = lon, y = lat, label=Station),  data = station.df, alpha = .5, color="darkred", size = 3, hjust=.1, vjust=-1)
 
@@ -510,7 +521,7 @@ getwd()
 
 I used a linear model (\texttt{lm()}) to evaluate the long term trend for each each month to determine which, if any, have long-term trends. At somepoint, I'll have to the stats correcting for the autocorrelation using a autoregressive model.  
 
-<<Monthly_summarystats, eval=FALSE, echo=FALSE>>=
+<<Monthly_summarystats, eval=TRUE, echo=FALSE>>=
 # find most important month
 sumstats = NA
 for (m in 1:12){
@@ -767,11 +778,13 @@ png(paste0(png_private, GSOM_anomaly_1975.png),
     pointsize = 12, bg = "white")
 par(las=1, mfrow=c(1,1))
 
+GSOM.lm = lm(TMAX.anom~Date, GSOM2)
+
 plot(TMAX.anom~Date, GSOM2, pch=20, cex=.5, 
      col="grey", ylab="Max. Temp (anomaly) °F",
      main=paste0("Seasonally Filtered -- ", fips$State, " (", stid, ") ",
          report_prob3(GSOM.lm)[3]))
-GSOM.lm = lm(TMAX.anom~Date, GSOM2)
+
 pred_dates <-data.frame(Date = GSOM2$Date); 
 nrow(pred_dates); #pred_dates
 #Predits the values with confidence interval 
@@ -1153,20 +1166,20 @@ The patterns of record temperatures often shows increasing number of new high te
 
 Evaluating the changes in TMAX and Monthly temperatures might be useful, but for now, I think it's hard to see the patterns. 
 
-<<boxplots, eval=FALSE, echo=FALSE>>=
+<<boxplots, eval=FALSE, echo=FALSE, results='hide'>>=
 for(i in min(CHCND$Year+5):max(CHCND$Year)){
   # i=1930
 CHCNDsub = subset(CHCND, CHCND$Year<=i, 
                   select=c(Month, Month.name, TMAX, TMIN))
 
-boxplot(TMAX ~ Month.name, data=CHCNDsub, 
-        main=paste("Maximum Daily Temperatures", min(CHCND$Year), "-",
+boxplot(TMAX ~ Month.name, data=CHCNDsub, xlab="",
+        main=paste("Maximum Daily Temp.", min(CHCND$Year), "-",
                    i, GSOM_Longest$name),
    sub="(NOTE: Red astrisks with signfic. changes)")
 
 symbol.y = (par()$yaxp[2])-diff(par()$yaxp[1:2])*.99
 #symbol.y = (par()$yaxp[2])
-text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, col="red", cex=2)
+with(sumstats[sumstats$Param=="TMAX",], text(Month, symbol.y, Symbol, col="red", cex=1))
 }
 @
 
@@ -1184,7 +1197,7 @@ png(paste0(png_private, panel4.png), width = 480, height = 480, units = "px", po
 ylim_new=NA
 for(i in seq(min(GSOM$Year), max(GSOM$Year), by=2)) 
    {
-par(las=1, mfrow=c(4,1), mar= c(3, 4, 2, 1) + 0.1)
+par(las=1, mfrow=c(4,1), mar= c(2, 4, 2, 1) + 0.1)
 # TMINmonthMax
    GSOMsub <- GSOM[GSOM$Month==TMINmonthMax & GSOM$Year<=i,]
    if(nrow(GSOMsub)<10) next
@@ -1195,6 +1208,7 @@ plot(TMIN~Date, GSOMsub[GSOMsub$Month==TMINmonthMax,],
 GSOM.lm = lm(TMIN~Date, GSOMsub)
 pred_dates <-data.frame(Date = GSOMsub$Date); 
 nrow(pred_dates); pred_dates
+
 #Predits the values with confidence interval 
 ci <- predict(GSOM.lm, newdata = pred_dates, 
               interval = 'confidence')
@@ -1211,9 +1225,8 @@ CHCNDsub = subset(CHCND, CHCND$Year<=i,
 boxplot(TMAX ~ Month.name, data=CHCNDsub, main="", xlab="")
 symbol.y = (par()$yaxp[2])-diff(par()$yaxp[1:2])*.99
 #symbol.y = (par()$yaxp[2])
-text(sumstats$Month, symbol.y, sumstats$TMAX_Symbol, 
-     col="red", cex=2)
-mtext(paste("Maximum Daily Temperatures", min(CHCND$Year), 
+with(sumstats[sumstats$Param=="TMAX",], text(Month, symbol.y, Symbol, col="red", cex=1))
+mtext(paste("Maximum Daily Temp.", min(CHCND$Year), 
       "-", i, GSOM_Longest$name), line=1)
 mtext("(NOTE: Red astrisks correspond to signficant changes)", 
       line=0, cex=.7)
@@ -1579,12 +1592,16 @@ hist(GSOM2$TMIN.anom, col = "gold",
 
 The data center around zero, as expected, but are these normally distributed? 
 
-For TMAX there is a \Sexpr{round(shapiro.test(GSOM2$TMAX.anom)$p.value, 3)} probability that the distribution is the same as the normal distribution. For TMIN there is a \Sexpr{round(shapiro.test(GSOM2$TMIN.anom)$p.value, 3)} probability that the distribution is the same as the normal distribution. For PPT is a \Sexpr{round(shapiro.test(GSOM2$PPT.anom)$p.value, 4)} probability that the distribution is the same as the normal distribution.
+%For TMAX there is a \Sexpr{round(shapiro.test(GSOM2$TMAX.anom)$p.value, 7)} probability that the distribution is the same as the normal distribution. For TMIN there is a \Sexpr{round(shapiro.test(GSOM2$TMIN.anom)$p.value, 7)} probability that the distribution is the same as the normal distribution. For PPT is a \Sexpr{round(shapiro.test(GSOM2$PPT.anom)$p.value, 7)} probability that the distribution is the same as the normal distribution.
 
 <<>>=
 if(shapiro.test(GSOM2$TMAX.anom)$p.value<.05 | 
    shapiro.test(GSOM2$TMIN.anom)$p.value<.05 | 
-   shapiro.test(GSOM2$PPT.anom)$p.value<.05) text="to avoid " else text="to use"
+   shapiro.test(GSOM2$PPT.anom)$p.value<.05){
+   text= "to avoid "
+   } else {
+   text="to use"
+      }
 @
 
 These values suggest that there is good reason \Sexpr{text} the normal probability distribution. 
@@ -1802,7 +1819,7 @@ img <- image_graph(600, 480, res = 96)
 ylim_new=NA
 for(i in seq(min(GSOM$Year), max(GSOM$Year), by=2)) 
    {
-par(las=1, mfrow=c(4,1), mar= c(3, 4, 2, 1) + 0.1)
+par(las=1, mfrow=c(4,1), mar= c(2, 4, 2, 1) + 0.1)
 # TMINmonthMax
    GSOMsub <- GSOM[GSOM$Month==TMINmonthMax & GSOM$Year<=i,]
    if(nrow(GSOMsub)<10) next
@@ -2092,7 +2109,7 @@ dbase = data.frame(State = fips$State,
    GSOM_1975.png = GSOM_1975.png, 
    GSOM_1975_anomaly.png = GSOM_anomaly_1975.png,
    Records.png = records.png, 
-   panel4.png.png = panel4.png,
+   panel4.png = panel4.png,
    GSOM_dnorm.png = GSOM_dnorm.png,
    KISS.png = KISS.png,
    GSOM_estPDF.png = GSOM_estPDF.png,
@@ -2100,14 +2117,16 @@ dbase = data.frame(State = fips$State,
    GSOM_dnorm.gif = GSOM_dnorm.gif
 )
 
-write.table(dbase, file = "Social_Media/State_htmls/dbase.csv", 
+# print(dbase)
+write.table(dbase, file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/dbase.csv", 
             append = TRUE, quote = TRUE, sep = ",",
             eol = "\n", na = "NA", dec = ".", row.names = FALSE,
-            col.names = FALSE, qmethod = c("escape", "double"),
-            fileEncoding = "")
+            col.names = FALSE, #qmethod = c("escape", "double"),
+            )
 
 end_time <- Sys.time()
 (totaltime = end_time - start_time)
+rm(dbase)
 @
 
 The document took \Sexpr{round(totaltime,1)} minutes to process and compile. My next goal will be to optimize the process and streamline the time to analyze. 
