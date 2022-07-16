@@ -57,7 +57,7 @@ get_locationid <- function(FIPS){
 
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(25); str(fips); 
+fips = get_locationid(38); str(fips); 
 
 @
 
@@ -157,25 +157,35 @@ GSOM_Longest = GSOM_Sorted[1,] #Pick longest
 # GSOM_Longest = GSOM_Sorted[3,]
 
 # Exceptions Overrride by changing GSOM_Sorted[#,]
+
+# California NAPA
+#if(fips$State=="California"){
+#   print("Manual Override for Napa, CA")
+#   GSOM_Longest = GSOM_Sorted[GSOM_Sorted$id=="GHCND:USC00046074",] 
+#}
+
+
 # Iowa (same as Hawaii)
 if(fips$State=="Hawaii"){
    print("Manual Override for Hawaii")
    GSOM_Longest = GSOM_Sorted[1,] 
 }
 
-
-# Iowa (same as Illonois)
-if(fips$State=="Iowa" | fips$State=="Illinois"){
+# Select Second Record
+# Iowa, Illinois, Misssippi, Pennslyvania
+if(fips$State=="Iowa" | 
+   fips$State=="Illinois" | 
+   fips$State=="Mississippi" |
+   fips$State=="Pennsylvania"){
    print("Manual Override for Iowa/Illinois")
    GSOM_Longest = GSOM_Sorted[2,] 
 }
 
-# Pennsylvania
-if(fips$State=="Pennsylvania"){
-   print("Manual Override for Penn")
-   GSOM_Longest = GSOM_Sorted[2,] 
+# 4th Record Oklahoma
+if(fips$State=="Oklahoma"){
+   print("Manual Override for Oklahoma")
+   GSOM_Longest = GSOM_Sorted[6,] 
 }
-
 # South Dakota
 
 # Tennessee 
