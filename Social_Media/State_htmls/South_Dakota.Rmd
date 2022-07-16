@@ -2,13 +2,14 @@
 title: "Fifty States Project"
 subtitle: "Weather Trends: South Dakota"
 author: "nor_soCal"
-date: "3/23/2022"
+date: "7/18/2022"
 output:
   ioslides_presentation:
-    logo: child_pages/logo.png
+    logo: 0_child_pages/logo2.png
+    css: 0_child_pages/styles.css
 ---
 
-```{r, child=c('child_pages/Setup.Rmd')}
+```{r, child=c('0_child_pages/Setup.Rmd')}
 ```
 
 ```{r}
@@ -16,25 +17,25 @@ output:
 files = tail(subset(dbase, subset=(State=="South Dakota")), 1)
 ```
 
-```{r, child=c('child_pages/Intro.Rmd')}
+```{r, child=c('0_child_pages/Intro.Rmd')}
 ```
 
-```{r, child=c('child_pages/SelectedStation.Rmd')}
+```{r, child=c('0_child_pages/SelectedStation.Rmd')}
 ```
 
-```{r, child=c('child_pages/TrendMonth.Rmd')}
+```{r, child=c('0_child_pages/TrendMonth.Rmd')}
 ```
 
-```{r, child=c('child_pages/RecordTemps.Rmd')}
+```{r, child=c('0_child_pages/RecordTemps.Rmd')}
 ```
 
-```{r, child=c('child_pages/AnomalyTrends.Rmd')}
+```{r, child=c('0_child_pages/AnomalyTrends.Rmd')}
 ```
 
-```{r, child=c('South_Dakota_Impacts_Mitigation.Rmd')}
+```{r, child=c('0_impacts/South_Dakota_Impacts_Mitigation.Rmd')}
 ```
 
-```{r, child=c('NextSteps.Rmd')}
+```{r, child=c('0_child_pages/NextSteps.Rmd')}
 ```
 
 
