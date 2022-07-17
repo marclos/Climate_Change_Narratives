@@ -57,10 +57,10 @@ get_locationid <- function(FIPS){
 
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(43); str(fips); 
+fips = get_locationid(50); str(fips); 
 
 @
-
+6
 \title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
 %\subtitle{test}
 \author{Marc Los Huertos}
@@ -172,12 +172,14 @@ if(fips$State=="Hawaii"){
 }
 
 # Select Second Record
-# Iowa, Illinois, Misssippi, Pennslyvania
+# Iowa, Illinois, Misssippi, Pennslyvania, Virginia, Vermont
 if(fips$State=="Iowa" | 
    fips$State=="Illinois" | 
    fips$State=="Mississippi" |
-   fips$State=="Pennsylvania"){
-   print("Manual Override for Iowa/Illinois")
+   fips$State=="Pennsylvania" |
+   fits$State=="Virginia" |
+   fits$State=="Vermon"){
+   print("Manual Override for IA/IL/MA/PA/VA/VT")
    GSOM_Longest = GSOM_Sorted[2,] 
 }
 
