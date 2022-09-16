@@ -2,7 +2,7 @@
 title: "Fifty States Project"
 subtitle: "Weather Trends: Virginia"
 author: "nor_soCal"
-date: 6/23/2022
+date: 7/18/2022
 output:
   ioslides_presentation:
     logo: 0_child_pages/logo2.png
@@ -32,7 +32,7 @@ files = tail(subset(dbase, subset=(State=="Virginia")), 1)
 ```{r, child=c('0_child_pages/AnomalyTrends.Rmd')}
 ```
 
-```{r, child=c('0_impacts/Texas_Impacts_Mitigation.Rmd')}
+```{r, child=c('0_impacts/Virginia_Impacts_Mitigation.Rmd')}
 ```
 
 ```{r, child=c('0_child_pages/NextSteps.Rmd')}

@@ -14,7 +14,7 @@ output:
 
 ```{r}
 # Select State 1
-files = tail(subset(dbase, subset=(State=="Texas")), 1)
+files = tail(subset(dbase, subset=(State=="Vermont")), 1)
 ```
 
 ```{r, child=c('0_child_pages/Intro.Rmd')}
@@ -32,7 +32,7 @@ files = tail(subset(dbase, subset=(State=="Texas")), 1)
 ```{r, child=c('0_child_pages/AnomalyTrends.Rmd')}
 ```
 
-```{r, child=c('0_impacts/Texas_Impacts_Mitigation.Rmd')}
+```{r, child=c('0_impacts/Vermont_Impacts_Mitigation.Rmd')}
 ```
 
 ```{r, child=c('0_child_pages/NextSteps.Rmd')}

@@ -57,10 +57,9 @@ get_locationid <- function(FIPS){
 
 
 <<selectedstate, echo=FALSE>>=
-fips = get_locationid(50); str(fips); 
+fips = get_locationid(5); str(fips); 
 
 @
-6
 \title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
 %\subtitle{test}
 \author{Marc Los Huertos}
@@ -147,8 +146,14 @@ GSOM_Stations <- ncdc_stations(datasetid='GSOM',
 GSOM_Recent = 
    GSOM_Stations$data[GSOM_Stations$data$maxdate>='2021-11-01',]
 
+GSOM_Map = subset(GSOM_Recent, subset=c(latitude< 34 & latitude > 33.6 & longitude < -117.3 & longitude > -118))
+
+plot(latitude ~longitude, data=GSOM_Map)
+points(-117.6024, 33.8977, col="red")
+text(latitude ~longitude, data=GSOM_Map, GSOM_Map$name)
+
 GSOM_Coverage = 
-   GSOM_Recent[GSOM_Recent$datacoverage > 0.92,]
+   GSOM_Recent[GSOM_Recent$datacoverage > 0.87,]
 GSOM_Sorted =  GSOM_Coverage[order(GSOM_Coverage$mindate),]
 
 GSOM_Longest = GSOM_Sorted[1,] #Pick longest
@@ -158,11 +163,13 @@ GSOM_Longest = GSOM_Sorted[1,] #Pick longest
 
 # Exceptions Overrride by changing GSOM_Sorted[#,]
 
-# California NAPA
-#if(fips$State=="California"){
-#   print("Manual Override for Napa, CA")
+# California NAPA/Chino
+if(fips$State=="California"){
+   print("Manual Override for Napa/Chino/Elsinor, CA")
 #   GSOM_Longest = GSOM_Sorted[GSOM_Sorted$id=="GHCND:USC00046074",] 
-#}
+#   GSOM_Longest = GSOM_Sorted[GSOM_Sorted$id=="GHCND:USW00003179",]
+   GSOM_Longest = GSOM_Sorted[GSOM_Sorted$id=="GHCND:USC00042805",]
+}
 
 
 # Iowa (same as Hawaii)
@@ -177,8 +184,9 @@ if(fips$State=="Iowa" |
    fips$State=="Illinois" | 
    fips$State=="Mississippi" |
    fips$State=="Pennsylvania" |
-   fits$State=="Virginia" |
-   fits$State=="Vermon"){
+   fips$State=="Virginia" |
+   fips$State=="Vermont"  |
+   fips$State=="West Virginia"){
    print("Manual Override for IA/IL/MA/PA/VA/VT")
    GSOM_Longest = GSOM_Sorted[2,] 
 }
@@ -207,9 +215,8 @@ fips$id = "FIPS:PR"
 GSOM_Selected = ncdc_stations(datasetid="GSOM", 
                              stationid = "GHCND:RQC00665097", 
                              datatypeid = c("TMAX", "TMIN"))
-"Doing Puerto Rico" 
+"Doing Puerto Rico"
 GSOM_Longest = GSOM_Selected$data
-
 }
 
 GQ = 0

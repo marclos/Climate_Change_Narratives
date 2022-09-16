@@ -1,0 +1,638 @@
+\documentclass{article}
+\usepackage{hyperref}
+%\usepackage{expl3}
+%\usepackage{l3regex}
+%\usepackage[version=4]{mhchem}
+% \usepackage{animate}
+
+<<echo=FALSE>>=
+opts_chunk$set(width=60, echo=FALSE, results='hide')
+@
+
+\title{Station Records and Communicating Climate Change}
+%\subtitle{test}
+\author{Marc Los Huertos}
+
+\begin{document}
+
+\maketitle
+
+<<echo=FALSE, warnings=FALSE, message=FALSE >>=
+start_time <- Sys.time()
+
+library(tidyverse)
+library(plyr)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(ggplot2)
+library(xtable)
+
+library(rnoaa)
+library(ncdf4)
+library(magick)
+library(animation)
+
+library(rgdal)
+library(ggrepel)
+library(grid)
+library(raster)
+library(ggmap)
+library(maptools)
+library(RgoogleMaps)
+
+library(densEstBayes)
+#library(pdftools)
+
+setwd("/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_Stations/")
+png_public = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/docs/FiftyStates/State_htmls/png/"
+png_private = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_Stations/0_png/"
+
+gif_private = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/Climate_gifs/"
+
+
+@
+
+    2.1.1 METADATA FORMAT (.inv file)
+
+       Variable          Columns      Type
+       --------          -------      ----
+
+       ID                 1-11        Integer
+       LATITUDE          13-20        Real
+       LONGITUDE         22-30        Real
+       STNELEV           32-37        Real
+       NAME              39-68        Character
+       
+<<r read_Stations, echo=FALSE>>=
+Stations = read.table("ghcnm.v4.0.1.20220716/ghcnm.tavg.v4.0.1.20220716.qcu.inv", fill = TRUE)
+
+names(Stations)= c("ID", "Latitude", "Longitude", "Elevation", "Name")
+@
+
+
+          ID                 1-11        Integer
+          YEAR              12-15        Integer
+          ELEMENT           16-19        Character
+          VALUE1            20-24        Integer
+          DMFLAG1           25-25        Character
+          QCFLAG1           26-26        Character
+          DSFLAG1           27-27        Character
+            .                 .             .
+            .                 .             .
+            .                 .             .
+          VALUE12          108-112       Integer
+          DMFLAG12         113-113       Character
+          QCFLAG12         114-114       Character
+          DSFLAG12         115-115       Character
+<<r read_ghcnm, cache=TRUE>>=
+ghcnm.dat = "ghcnm.v4.0.1.20220716/ghcnm.tavg.v4.0.1.20220716.qcu.dat"
+
+ghcnm = read.fwf(ghcnm.dat, widths = c(11, 4, 4, rep(c(5, 1, 1, 1), 12)), fill=TRUE)
+#Error in scan(file = file, what = what, sep = sep, quote = quote, dec = dec,  : 
+#  line 91083 did not have 51 elements
+
+@
+
+
+
+\subsection{Clean Up Data}
+
+<<>>=
+names(ghcnm)= c("ID", "Year", "Element", 
+               "Jan", "DMFLAGJan", "QCFLAGJan", "DSFLAGJan",
+               "Feb", "DMFLAGFeb", "QCFLAGFeb", "DSFLAGFeb",
+               "Mar", "DMFLAGMar", "QCFLAGMar", "DSFLAGMar", 
+               "Apr", "DMFLAGApr", "QCFLAGApr", "DSFLAGApr", 
+               "May", "DMFLAGMay", "QCFLAGMay", "DSFLAGMay", 
+               "Jun", "DMFLAGJun", "QCFLAGJun", "DSFLAGJun", 
+               "Jul", "DMFLAGJul", "QCFLAGJul", "DSFLAGJul", 
+               "Aug", "DMFLAGAug", "QCFLAGAug", "DSFLAGAug", 
+               "Sep", "DMFLAGSep", "QCFLAGSep", "DSFLAGSep", 
+               "Oct", "DMFLAGOct", "QCFLAGOct", "DSFLAGOct",
+               "Nov", "DMFLAGNov", "QCFLAGNov", "DSFLAGNov", 
+               "Dec", "DMFLAGDec", "QCFLAGDec", "DSFLAGDec"
+                )
+
+ghcnm2 <- subset(ghcnm, select=c(ID, Year, Jan, Feb, Mar, Apr, 
+                                 May, Jun, Jul, Aug, Sep, Oct, Nov, Dec), 
+                 subset=Element=="TAVG")
+
+
+                 
+#turn columns into rows (pivot_longer
+monthly = pivot_longer(data=ghcnm2, cols=Jan:Dec, names_to = "Month", values_to="TAVG")
+
+# Tranform and Remove Missing
+monthly$TAVG[monthly$TAVG==-9999] <- NA
+monthly$TAVG <- monthly$TAVG/100
+
+monthly$Country = substring(monthly$ID, 1, 2)
+
+# Evaluation Temp Flags
+str(ghcnm); ghcnm[ID=="LH000026529",]
+plot(Jan/100 ~ Year, ghcnm[ID=="LH000026529",])
+
+hist(ghcnm[ghcnm$ID=="LH000026529",]$Jan/100)
+hist(ghcnm2[ghcnm2$ID=="LH000026529",]$Jan/100)
+
+ghcnm[ghcnm$ID=="LH000026529",]$QCFLAGJan
+hist(monthly$TAVG[monthly$ID=="LH000026529"])
+
+plot(TAVG ~ Year, monthly[monthly$ID=="LH000026529",])
+
+table(ghcnm['DMFLAGJan'])
+table(c(ghcnm$DMFLAGJan, ghcnm$DMFLAGFeb ), useNA = "ifany")
+names(ghcnm)
+ghcnm %>% count(DMFLAGFeb)
+
+#aggregate(QCF ~ Station, data=ghcnm, FUN=)
+ghcnm2[ghcnm2$Jan < -50,]
+
+@
+
+
+\subsection{Station Names with States}
+
+<<>>=
+ghcnm.dat = "ghcnm.v4.0.1.20220716/ghcnm.tavg.v4.0.1.20220716.qcu.dat"
+
+ghcnm = read.fwf(ghcnm.dat, widths = c(11, 4, 4, rep(c(5, 1, 1, 1), 12)), fill=TRUE)
+@
+
+
+\subsection{Read Station, Country Data}
+
+Reading the `ghcnm-countries.txt' file in allows us to easily select stations by country as an initial analysis. In addition, I added the regions to combine countries and states to create maps. 
+<<r read_countries>>=
+countries <- read.fwf("https://www.ncei.noaa.gov/pub/data/ghcn/v4/ghcnm-countries.txt", widths=c(3, 60))
+names(countries)=c("code", "full_name")
+countries$code = as.character(trimws(countries$code))
+@
+
+\subsection{Define Regions}
+<<>>=
+# Define Regions
+countries$region = NA
+CAmerica.sel = c("BH", "HO", "ES", "GT", "NU", "CS", "PM")
+NAmerica.sel = c("CA", "US", "MX", "SB", "JN") #Saint Pierre and Miquelon
+SAmerica.sel = c("AR", "BL", "BR", "CI", "CO", "EC", "FK", "FG", "GY", "NS", "PA", "PE", "UY", "VE") #Argentina, Bolivia, Brazil, Chile, Colombia, Ecuador, Guyana, Paraguay, Peru, Suriname, Uruguay, and Venezuela; two dependent territories: the Falkland Islands and South Georgia and the South Sandwich Islands;[note 7] and one internal territory: French Guiana.
+Carribean.sel = c("AC", "BB", "BD", "BF", "BH", "CJ", "CU", "DR", "DO", "GJ", "HA", "JM", "SC", "TD", "GP", "RQ", "NT", ) #Antigua and Barbuda, Burmuda, Haiti, Bahamas, Jamaica, Barbados, Saint Lucia, Cuba	Saint Kitts and Nevis, Dominica	Saint Vincent and the Grenadines, Dominican Rep., Trinidad and Tobago, Grenada	
+
+EastAsia.sel = c("JA", "CH", "TW", "KN", "KS", "HK", "SN" ) # Mongolia, N Korea, S. Korea
+SEAsia.sel = c("BX", "BM", "CB", "ID", "LA", "MY", "PP", "TH", "RP" ) # Brunei, Burma (Myanmar), Cambodia, Timor-Leste, Indonesia, Laos, Malaysia, Philippines, Singapore, Thailand, Vietnam
+SAsia.sel = c("AF", "BG", "CE", "IN", "IO", "NP", "PK", "MV") #Afghanistan, Bangladesh, Bhutan, India, Maldives, Nepal, Pakistan, and Sri Lanka
+WAsia.sel = c("AM", "AJ", "YM", "GG", "IR", "IZ", "KG", "KZ") #Armenia, Azerbaijan, Georgia, Bahrain, Iraq, Jordan, Kuwait, Lebanon, Oman, State of Palestine, Qatar, Saudi Arabia, Syrian Arab Republic, United Arab Emirates and Yemen  IRAN? Kygrzstan
+MiddleEast.sel = c("BA", "AE", "JO", "KU", "IS", "LE", "MU", "QA", "SA", "SY") #Algeria, Bahrain, Jordan, Kuwait, Lebanon, Morocco, Oman, Qatar, Saudi Arabia, and the United Arab Emirates
+
+RussiaCAsia.sel = c("RS")
+
+NAfrica.sel =c("AG", "EG", "MO", "SU",  "TS") #  Algeria, Egypt, Libya, Morocco, Sudan, Tunisia, Western Sahara
+WAfrica.sel = c("BN", "NG", "UV", "CM", "CV", "GA", "GH", "GV", "PU", "IV", "LI", "ML", "NI", "SG", "SL", "TO") #Niger NG Benin, Burkina Faso, Cameroon, Cape Verde, The Gambia, Ghana, Guinea, Guinea-Bissau, Ivory Coast, Liberia, Mali, Mauritania, Niger, Nigeria, Senegal, Sierra Leone, and Togo as well as Saint Helena, Ascension and Tristan da Cunha.
+EAfrica.sel = c("BY", "CN","DJ", "ER", "ET", "KE", "MZ", "MI", "MP", "RW", "SO", "TZ", "ZI", "EU", "JU", "SE", "RE" ) #  British Indian Ocean Territory, Burundi, Comoros, Djibouti, Eritrea, Ethiopia, French Southern Territories, Kenya, Madagascar, Malawi, Mauritius, Mayotte, Mozambique, Réunion, Rwanda, Seychelles, Somalia, South Sudan, Uganda, United Republic of Tanzania, Zambia, Zimbabwe, , Juan De Nova Island
+MAfrica.sel = c("AO", "CM", "CT", "CD", "CF", "CG", "EK", "GB") #  Angola, Cameroon, Central African Republic, Chad, Congo, Democratic Republic of the Congo, Equatorial Guinea, Gabon, Sao Tome and Principe
+SAfrica.sel = c("BC", "LT", "SF", "WA", "SH") # Botswana, Eswatini, Lesotho, Namibia, South Africa
+
+
+NEurope.sel = c("DA", "EI", "EN", "FI", "GL", "IC", "LG", "LH", "LT", "NO", "UK", "SW", "IM", "GK",	"JE") # Denmark, Estonia Finland, Iceland, Ireland, Latvia, Lithuania, Norway, Sweden, United Kingdom
+EEurope.sel = c("BO", "BU", "EZ", "HU", "PL") # Belarus, Bulgaria, the Czech Republic, Hungary, Moldova, Poland, Romania, Slovakia, Ukraine and the western part of the Russian Federation 
+SEurope.sel = c("CY", "GI", "GR", "IT", "PO", "SP") # Cyprus, Greece., Holy See., Italy., Malta, Portugal, San Marino, Spain.
+CEurope.sel = c() #
+SEEurope.sel = c("AL", "BK", "HR", "LO", "TU", "RI", "RO", "SI") # Albania, Bosnia and Herzegovina, Bulgaria, Cyprus (Geographically located in Asia, though most often considered a part of Southeastern Europe), Croatia (can variously be included in Southeastern[37] or Central Europe)[38], Greece (Sometimes grouped in Southern Europe with countries like Italy, Spain and Portugal), Moldova (usually grouped with the non-Baltic post-Soviet states but sometimes considered part of Southeastern Europe)[44], Montenegro, North Macedonia, Romania (can variously be included in Southeastern[39] or Central Europe)[40], Serbia (mostly placed in Southeastern but sometimes in Central Europe)[41], Slovenia (most often placed in Central Europe but sometimes in Southeast Europe)[42], Turkey (East Thrace, the portion west of the Turkish Straits), Partially recognized states:, Kosovo
+WEurope.sel = c("AU", "BE", "FR", "GM", "NL") # Germany, France, Netherlands, Belgium, Austria, Switzerland, Luxembourg, Monaco, Liechtenstein
+
+AustralP.sel = c("AS", "NZ", "KI", "KT", "NF", ) # Austrailia
+Oceana.sel = c("AQ", "BP", "CK", "CG", "CQ", "CW", "FJ", "FM", "FP", "GQ", "WQ", "WS", "TL", "KR", "NH", "JQ", "PS", "RM", "RN", 	"NR", "PC") # American Samoa
+Antarctic.sel = c("AY", "FS")
+
+@ 
+
+Create Regions
+
+Using manually defined regions, we add a new variable to the dataframe with the regions defined. 
+
+The next step is to regions in the USA.
+
+<<>>=
+
+#% temp = filter(temp, ID %in% ID.sel$ID)
+
+
+# Testing the selection 
+# countries %>% filter(code %in% CAmerica.sel)
+
+countries$region[countries$code %in% Antarctic.sel] = "Anarctica"
+
+countries$region[countries$code %in% Carribean.sel] = "Carribean"
+
+countries$region[countries$code %in% CAmerica.sel] = "Central America"
+countries$region[countries$code %in% NAmerica.sel] = "North America"
+countries$region[countries$code %in% SAmerica.sel] = "South America"
+
+countries$region[countries$code %in% EastAsia.sel] = "East Asia"
+countries$region[countries$code %in% SEAsia.sel] = "Southeast Asia"
+countries$region[countries$code %in% SAsia.sel] = "South Asia"
+countries$region[countries$code %in% WAsia.sel] = "Western Asia"
+
+countries$region[countries$code %in% RussiaCAsia.sel] = "Russia and Central Asia"
+
+countries$region[countries$code %in% NAfrica.sel] = "North Africa"
+countries$region[countries$code %in% EAfrica.sel] = "East Africa"
+countries$region[countries$code %in% WAfrica.sel] = "West Africa"
+countries$region[countries$code %in% MAfrica.sel] = "Middle Africa"
+countries$region[countries$code %in% SAfrica.sel] = "Southern Africa"
+countries$region[countries$code %in% MiddleEast.sel] = "Middle East"
+
+
+countries$region[countries$code %in% EEurope.sel] = "Eastern Europe"
+countries$region[countries$code %in% NEurope.sel] = "Northern Europe"
+countries$region[countries$code %in% WEurope.sel] = "Western Europe"
+countries$region[countries$code %in% SEurope.sel] = "Southern Europe"
+countries$region[countries$code %in% SEEurope.sel] = "South East Europe"
+
+countries$region[countries$code %in% AustralP.sel] = "Austral Pacific"
+countries$region[countries$code %in% Oceana.sel] = "Oceana"
+
+# Problem Cases
+countries=countries[-c(125, 196, 225),] #Countries that have some problem with their record, eg. ST, VC, 
+head(countries)
+@
+
+
+\subsection{Cycle thru Countries}
+
+My goal for this section is to identify all the stations in the country, deteremine if there is a tread and then place symbols on a country map that document where signficant temperature trends exists. 
+
+The map that includes some table information would be useful. Since the number of stations that don't have records during the reference period, we loss a majority of the stations. I need to figure out how others deal with this. 
+
+<<r country_loop>>=
+
+S = nrow(countries)
+Station.Results <- vector("list", S) # create an empty list for stations for each country
+MX = 147
+USA = 219
+for(i in 1:S){
+#for(i in CentralAmerica){   
+countrycode <- countries$code[i]
+map.location=countries$full_name[i]
+#if(countrycode=="CS") map.location="Costa Rica"
+#if(countrycode=="HO") map.location="Honduras"
+#if(countrycode=="ES") map.location="El Salvador" #ES El Salvador62
+#if(countrycode=="PM") map.location="Panama" #PM Panama 170
+#if(countrycode=="NU") map.location="Nicaragua" # NU Nicaragua 163
+#if(countrycode=="GT") map.location="Guatemala" # GT Guatemala 86
+#if(countrycode=="MX") map.location="Mexico" # MX Mexico 148
+#if(countrycode=="BH") map.location="Belize" # BH Belize 21
+#if(countrycode="LQ") next
+print(countrycode); print(map.location)
+
+head(monthly)
+temp = monthly[monthly$Country==countrycode,]
+legend.off=0
+
+# Evaluate Station Characteristics and Remove Short Records
+ID.Year.min <- aggregate(Year ~ ID, data=temp, FUN=min); names(ID.Year.min)=c("ID", "YearMin")
+ID.Year.max <- aggregate(Year ~ ID, data=temp, FUN=max); names(ID.Year.max)=c("ID", "YearMax")
+ID.Year = merge(ID.Year.min, ID.Year.max, by="ID"); print(ID.Year)
+names(ID.Year)
+
+if(nrow(ID.Year) > 19 & nrow(ID.Year) < 49){
+   #ID.Year[rank(-ID.Year$YearMax)<10 & rank(ID.Year$YearMin),]
+   ID.sel <- subset(ID.Year, subset=(rank(-ID.Year$YearMax)<20 & YearMin < 1961))
+}
+if(nrow(ID.Year) >= 49){
+ID.sel <- ID.Year[ID.Year$YearMax >= 2021,] # Select "Current" Stations
+par(mfrow=c(2,1))
+hist(ID.sel$YearMin)
+if(nrow(ID.sel[ID.sel$YearMin<=1910,])) {
+   ID.sel <- ID.sel[ID.sel$YearMin<=1910,] # Select pre-1910
+   } else {
+   ID.sel <- ID.sel[rank(ID.sel$YearMin)<1000,] # Order by Oldest
+}
+
+hist(ID.sel$YearMin)
+par(mfrow=c(1,1))
+legend.off = 1
+}
+
+if(nrow(ID.Year)<= 19){
+   ID.sel <- ID.Year
+}
+
+temp = filter(temp, ID %in% ID.sel$ID)
+stations.sel = unique(temp$ID)
+
+
+# Reference Temperatures 1961-1990.
+
+# Select Stations with Enough Records
+reference.df =   temp[(temp$Year>=1961 & temp$Year < 1991),]
+if(nrow(reference.df) == 0) next
+record.check = aggregate(TAVG ~ ID + Month, data=reference.df,
+     FUN=length); names(record.check) =c("ID", "Month", "N")
+record.check[order(record.check$N),]
+record.mean = aggregate(N ~ ID, data=record.check, FUN=mean)
+station.reliable = record.mean$ID[record.mean$N>25]; station.reliable
+reference.df <- reference.df %>% filter(ID %in% station.reliable)
+nrow(reference.df)
+if(min(temp$Year, na.rm=T) < 1970 & nrow(reference.df) >0 ){
+   reference.mean = aggregate(TAVG ~ Month + ID, reference.df, FUN=mean, na.rm=T); names(reference.mean)= c("Month", "ID", "Ref")
+   temp2 = merge(temp, reference.mean, by=c("ID", "Month"))
+   temp2$Anomaly <- temp2$TAVG - temp2$Ref
+} else {
+   temp2 = temp
+   temp2$Ref <- temp2$Anomaly <- NA
+}
+
+
+month.convert = data.frame(Month.num=1:12, Month=unique(temp$Month))
+temp2 = merge(temp2, month.convert, by="Month")
+
+temp2$Date = temp2$Year + temp2$Month.num/13
+temp2 <- temp2[order( temp2$ID,temp2$Date),]
+
+ID = as.character(unique(temp2$ID)); length(ID)
+results = NULL
+
+N = length(ID)
+
+P1 <- vector("list", N) # create an empty list into which values are to be filled
+
+for(j in 1:N){
+   temp3 = temp2[temp2$ID==ID[j],]
+   head(temp3)
+   if(sum(!is.na(temp3$Anomaly)) > 5){
+   lm = lm(Anomaly ~ Date, temp3)       
+   loess.df <- loess(Anomaly ~ Date, temp3, span=.25)
+   predict.df = predict(loess.df, 
+           data.frame(Date = seq(min(temp3$Year), max(temp3$Year), 1)), 
+           se = FALSE)   
+   #plot(Anomaly ~ Date, temp3, pch=20, cex=.5, col="grey50")
+   #abline(lm, col="red") 
+   #lines(seq(min(temp3$Year), max(temp3$Year), 1), as.numeric(predict.df),  col="green")
+   Delta100 = as.numeric(coef(lm)[2])*100
+   P = anova(lm)$'Pr(>F)'[1]
+   } else {
+   predict.df = NA
+   Delta100 = NA
+   P = NA
+   }
+   P1[[j]] <- data.frame(Station = ID[j], 
+                         Date = seq(min(temp3$Year), max(temp3$Year), 1),
+                         Fitted = as.numeric(predict.df))
+   
+   R1=data.frame(Country = countrycode, 
+                 ID = ID[j],
+                 Name = as.character(Stations$Name[Stations$ID==ID[j]]),
+                 Start = min(temp3$Year),
+                 End = max(temp3$Year),
+                 Percent = round((nrow(temp3)-sum(is.na(temp3$TAVG)))/nrow(temp3), 3)*100,
+                 Latitude = Stations$Latitude[Stations$ID==ID[j]],
+                 Longitude = Stations$Longitude[Stations$ID==ID[j]],
+                 Delta100 = Delta100,
+                 P = P)
+   results = rbind(results, R1)
+   } # end of stations within country loop
+
+# Process All Stations
+predictions <- do.call(rbind, P1)
+
+if(sum(!is.na(predictions$Fitted)) > 5){
+mean.pred <- aggregate(Fitted ~ Date, data=predictions, FUN=mean)
+
+stations.png=paste0(countrycode, "_stations.png");
+
+png(paste0(png_private, stations.png), 
+    width = 600, height = 300, units = "px", 
+    pointsize = 12, bg = "white")
+
+if(legend.off==0){
+print(
+   ggplot(data=predictions) +
+      annotate("rect", xmin = 1961, xmax = 1990, 
+         ymin = min(predictions$Fitted, na.rm=T), ymax = max(predictions$Fitted, na.rm=T), 
+         alpha = .1,fill = "blue") +
+   geom_line(aes(x=Date, y=Fitted, group=Station, color=Station), show.legend = TRUE) +  
+   geom_smooth(data=mean.pred, aes(x=Date, y=Fitted), method=loess) +
+   ggtitle(paste0("Temperature Trends for ", map.location)) + ylab("Temp. Anomaly")
+   )
+} # end of if legend.off = 0
+if(legend.off==1){
+print(
+   ggplot(data=predictions) +
+      annotate("rect", xmin = 1961, xmax = 1990, 
+         ymin = min(predictions$Fitted, na.rm=T), ymax = max(predictions$Fitted, na.rm=T), 
+         alpha = .1,fill = "blue") +
+      geom_line(aes(x=Date, y=Fitted, group=Station, color=Station), show.legend = FALSE) +
+   geom_smooth(data=mean.pred, aes(x=Date, y=Fitted), method=loess) +
+   ggtitle(paste0("Temperature Trends for ", map.location)) + ylab("Temp. Anomaly")
+   )
+} # end of if legend.off = 1
+
+dev.off()
+}
+
+results2 = results
+rownames(results2) = NULL; results2
+
+lat = results2$Latitude
+lon = results2$Longitude
+
+#bb = qbbox(lat, lon); bb
+#bb2 = c(bb$lonR[1], bb$latR[1], bb$lonR[2], bb$latR[2]); bb2
+
+results2
+
+if(sum(!is.na(results2$Delta100)) > 0){ # If Delta100 values exists
+results2$cuts <- cut(results2$Delta100, 
+         breaks=c(-10, -2, -1, -.5, .5, 1, 2, 20))
+results2$trend <- cut(results2$Delta100, 
+         breaks=c(-10, -2, -1, -.5, .5, 1, 2, 20), 
+         labels=c("Extreme cooling", "Moderate cooling", "Slight cooling",
+                  "Minimal change", "Slight warming", "Moderate warming",
+                  "Extreme warming")); 
+
+results2$trend[is.na(results2$Delta)] <- "Un-determined"
+
+#labels <- results$ID
+results2$color[results2$trend=="Extreme warming"] = "darkred"
+results2$color[results2$trend=="Moderate warming"] = "red"
+results2$color[results2$trend=="Slight warming"] = "orange"
+results2$color[results2$trend=="Minimal change"] = "white"
+results2$color[results2$trend=="Slight cooling"] = "lightblue"
+results2$color[results2$trend=="Moderate cooling"] = "blue"
+results2$color[results2$trend=="Extreme cooling"] = "darkblue"
+results2$color[is.na(results2$trend)] = "gray"
+} else {
+   results2$trend <- "Un-determined"
+   results2$color <- "gray"
+}
+
+results2 = results2[order(results2$End),]
+
+#results2 = subset(results2, subset=(End >=2010))
+
+Station.Results[[i]] <- data.frame(
+                 Country = results2$Country,
+                 station=results2$ID,
+                 lat=results2$Latitude,
+                 lon=results2$Longitude,
+                 delta100 = results2$Delta100,
+                 trend=results2$trend,
+                 color=results2$color)
+
+} #End of Country Loop
+
+Results3 <- do.call(rbind, Station.Results)
+
+
+@
+
+Prepare for Region/Country Trends
+<<>>=
+
+station.trends = merge(Results3, countries, by.x="Country", by.y="code")
+
+station.trends[order(station.trends$delta100),]
+
+region.trends$color[is.na(region.trends$delta100)] = "gray"
+
+station.trends$trend <- with(station.trends, reorder(trend, delta100, mean, na.rm=T))
+
+station.trends$color <- with(station.trends, reorder(color, delta100, mean, na.rm=T))
+
+str(station.trends)
+@
+
+\section{Regional Results}
+
+\subsection{Regional Graphics Function}
+
+<<>>=
+region=c("Central America")
+region=c("Australia", "New Zealand")
+region=c("Mexico")
+df = station.trends
+
+map_region <- function(region_fun, zoom_fun){
+   #region_fun =c("North America"); zoom_fun = 3
+   map.png=paste0(region_fun, "_map.png")
+   region.geo = geocode(region_fun)
+   region.trends = subset(station.trends, 
+                          subset=(region %in% region_fun))
+   region.geo=tibble(lon = mean(region.trends$lon, na.rm=T), lat=mean(region.trends$lat, na.rm=T))
+map.data <- get_map(location = region.geo, zoom = zoom_fun,
+         maptype = 'terrain', messaging = TRUE, crop=FALSE, 
+         api="AIzaSyDYUc3ExxqFTOHtyxyr6-IRPUjJOoTPMHA") 
+
+png(paste0(png_private, map.png), 
+    width = 480, height = 480, units = "px", 
+    pointsize = 14, bg = "white")
+
+
+print({
+   ggmap(map.data) + 
+   geom_point(data = region.trends , aes(x = lon, y = lat, fill=trend), 
+      alpha = 0.5, pch = 21, size = 2) +
+      labs(x = 'Longitude', y = 'Latitude') +
+      #scale_color_identity() +
+      scale_fill_manual(values = levels(region.trends$color), breaks= levels(region.trends$trend), labels=levels(region.trends$trend), name="Trend (p < 0.05)")
+
+})
+dev.off()
+      
+}
+   
+@
+
+\subsection{Regional Displays}
+
+The defined regions are: 
+
+<<>>=
+xtable(countries)
+@
+
+
+<<>>=
+map_region("Central America", 5)
+map_region("North America", 3)
+map_region("South America", 3)
+map_region("Carribean", 4)
+
+map_region("Western Europe", 5)
+map_region("Eastern Europe", 4)
+map_region("Southern Europe", 4)
+map_region("Southeast Europe", 3)
+
+map_region("East Asia", 3)
+map_region("South Asia", 4)
+map_region("Middle East", 5)
+
+map_region("Southeast Asia", 4)
+map_region("Western Asia", 3)
+
+map_region("Russian and West Asia", 3)
+
+map_region("Austral Pacific", 3)
+map_region("Oceana", 4) # lon/lat problem
+map_region("Anarctica", 1)
+
+map_region("North Africa", 4)
+map_region("East Africa",  4)
+map_region("West Africa", 4)
+map_region("Middle Africa", 4)
+map_region("Southern Africa", 4)
+
+@
+
+\begin{figure}
+\includegraphics[width=1.00\textwidth]{\Sexpr{paste0(png_private, map.png)}}
+\caption{.aaaa}
+\label{fig:Records}
+\end{figure}
+
+\section{Conclusions}
+
+Developing a robust method to analyze weather stations is both time consuming and difficult to justify the outcome. In part because the data suggest that each station (region) requires different types of analysis, based on the expected patterns of temperature and rainfall. As climate scientists have known for decades, the terminology of global warming is not very useful. Not because scientists are trying to hide something or promote some biased agenda, but that even as warming of the global average is well documented, the impacts of climate change on each region is highly specific, requiring specificity in the analysis. 
+
+Hopefully, this little analysis has created some mechanism for others to appreciate this compexity. 
+
+<<endtime, echo=FALSE, warning=FALSE, eval=FALSE>>=
+
+# Create CSV with filenames for blog/
+paste0(GSOM_Longest$name, " (ID: ", GSOM_Longest$id, ")")
+
+dbase = data.frame(State = fips$State, 
+   Station_ID = paste0(GSOM_Longest$name, " (ID: ", GSOM_Longest$id, ")"), 
+   Startyear = startyear, Endyear = endyear, 
+   gif_private = gif_private, png_private = png_private, 
+   Map.png = map.png, 
+   GSOM_1975.png = GSOM_1975.png, 
+   GSOM_1975_anomaly.png = GSOM_anomaly_1975.png,
+   Records.png = records.png, 
+   panel4.png = panel4.png,
+   GSOM_dnorm.png = GSOM_dnorm.png,
+   KISS.png = KISS.png,
+   GSOM_estPDF.png = GSOM_estPDF.png,
+   panel4.gif = panel4.gif,
+   GSOM_dnorm.gif = GSOM_dnorm.gif
+)
+
+# print(dbase)
+write.table(dbase, file = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Social_Media/State_htmls/dbase.csv", 
+            append = TRUE, quote = TRUE, sep = ",",
+            eol = "\n", na = "NA", dec = ".", row.names = FALSE,
+            col.names = FALSE, #qmethod = c("escape", "double"),
+            )
+@
+
+<<>>=
+end_time <- Sys.time()
+(totaltime = end_time - start_time)
+#rm(dbase)
+@
+
+The document took \Sexpr{round(totaltime,1)} minutes to process and compile. My next goal will be to optimize the process and streamline the time to analyze. 
+
+\end{document}
