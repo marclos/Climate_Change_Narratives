@@ -1,0 +1,254 @@
+---
+title: "Climate Negotiation Update"
+author: "UNFCCC secretariat"
+date: "2022-11-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r getgoogledata, echo=FALSE, results='hide', message=FALSE}
+# climate negotiation simulation
+
+## Get googlesheet from survey
+#Install the required package
+#install.packages('googlesheets4')
+#Load the required library 
+library(googlesheets4)
+library(dplyr)
+library(lubridate)
+library(xtable)
+library(kableExtra)
+#gs4_auth(options(gargle_verbosity = "debug"))
+
+gs4_deauth()
+import <- read_sheet("https://docs.google.com/spreadsheets/d/1pazIs994LwzfG5BSb_2wC8aGsM3GwDg_uc5ecO9Od0Y/edit?usp=sharing")
+str(import)
+
+df <- import
+```
+
+```{r cleanup, echo=FALSE, results='hide', warning=FALSE}
+names(df)=c("Timestamp", "Country", "Peak.Yr", "Reduction.Yr", "Reduction.Rate",
+            "Deforestation", "Afforestation", "Mitigation", "Billion")
+df$Block = NA
+
+### Select Most Recent Submission
+df <- df %>%
+group_by(Country) %>%
+filter(Timestamp == max(Timestamp)) %>%
+ungroup()
+
+
+### Define Negotiations Blocks
+df$Block[df$Country == "USA"] <- "USA"
+df$Block[df$Country == "European Union"] <- "EU"
+        
+df$Block[df$Country == "Japan" | df$Country == "Russia"] <- "Other Developed"
+
+df$Block[df$Country == "China"] = "China"
+df$Block[df$Country == "India"] = "India"
+
+df$Block[df$Country == "Ghana" | df$Country == "Philippines" |
+           df$Country == "Rwanda" | df$Country == "Venezuela" |
+           df$Country == "Nigeria"] <- "Developing"
+
+head(df)
+
+
+
+df$Billion[df$Mitigation=="Withdrawing"] <- df$Billion *-1
+
+
+a <- max(df$Timestamp)
+a.country <- df$Country[df$Timestamp==a]
+
+#"2017-01-01 03:01:02 GMT"
+
+```
+  
+## News
+
+### AKP 
+
+KYOTO, Japan -- AKP Students are unable to reach agreements to reduce climate projections below 2.5 degrees. 
+
+Professor Marc Los Huertos is optimistic that Monday's negotiations will yield concrete results, "it takes some time for representatives to get their footing and begin demanding concrete results".
+
+Based on previous negotations, we hope he is right, when the world is depending on negotiators to continue to strive for a 1.5 degree goal.
+
+### European Union
+
+The EU has threatened to walk out of the talks because many states have resisted any efforts to reduce emissions. 
+
+### Japan
+
+On the 7th , Mitsubishi Heavy Industries held an event on the theme of carbon-free materials. In addition to the company, the World Steel Association, Holcim (Switzerland), a building material manufacturer, and Primetals Technologies (UK), an engineering company, held a panel discussion in which people in charge of sustainability and green steel participated. Need for compatibility between the utilization of hydrogen and carbon dioxide ( CO2 ) capture, effective use, and storage ( CCUS ), the differences between European and U.S. policy approaches regarding sustainability and the ideal state, Middle East and North Africa ( MENA ) A discussion was held on the growth potential of the region.
+
+Japan has asked major greenhouse gas emitters, including China and India, for more cooperation in global efforts to combat climate change.
+
+### Nigeria
+
+Ministers from 10 African countries, including Nigeria, have endorsed a new Africa Sustainable Commodities Initiative Declaration, a single set of principles for the responsible production of agricultural commodities in Africa.
+
+President Muhammadu Buhari has said Nigeria lacks funding to urgently finance its energy transition and climate action agenda due to debt distress in the country.
+
+The president, who was represented by the Minister of Environment, Mohammed Abdullahi, disclosed this while addressing the high-level segment of the 27th edition of the United Nations Climate Change Conference (COP27) in Egypt on Tuesday.
+
+
+### Ghana
+
+SHARM el-SHEIKH, Egypt (AP) — By their very nature, U.N. climate negotiations are filled with scientific and diplomatic jargon.
+
+So, when 10-year-old Nakeeyat Dramani Sam spoke during a plenary session Friday with hundreds of delegates, her soft voice and direct message cut through the dryness, a reminder to negotiators and everybody listening that decisions made at climate talks can have a direct impact on people.
+
+Talking about suffering in Ghana due to flooding, she held up a sign that said, “Payment Overdue.”
+
+“I put a simple question on the table,” she said. “When can you pay us back? Because payment is overdue.”
+
+The Member of Parliament for the Tamale North Constituency, Alhassan Suhuyini, has alleged that Ghana made well over $1.3 billion from climate change negotiations in the last six years.
+
+As one of Ghana’s delegates to the Conference of Parties (COP27) negotiations in Sharm el-Sheikh, Egypt, he lauded the preparations and organization of the Ghana Negotiation Team.
+
+
+He however questioned the viability and evidence of the monies Ghana has earned from such conferences and negotiations in the past years.
+
+“With these monies, shouldn’t we be seeing more projects?”
+
+Speaking on The Big Issue on Citi FM/Citi TV, Mr. Suhuyini called on African countries that receive monies that are meant for climate mitigation to be used for the right courses and be accountable to the donor countries.
+
+He also criticized President Akufo-Addo’s proposal to richer nations to swap African nations’ debts for climate interventions when Ghana and other climate-vulnerable countries do not have major climate adaptative projects to show for the monies received so far.
+
+### Philippines
+
+MANILA, Philippines – The Philippine delegation arrived in Egypt for the 27th Conference of the Parties (COP27) of the United Nations (UN) Framework Convention on Climate Change with one thing in mind: demand developed parties to pay up for the climate impacts they caused.
+
+With nations deeply divided over some sticking points, the conference itself has been extended a day.
+
+As one of the countries that bear the brunt of climate impacts, the Philippines delegation’s priorities and positions during COP27 included expanding the definition of loss and damage, pushing for climate finance, and calling for rich countries’ transparency on funds. 
+
+The Philippines’ 29-person delegation included Department of Environment and Natural Resources (DENR) Secretary Maria Antonio Yulo-Loyzaga and Climate Change Commission Vice Chairperson Robert Borje. 
+
+MANILA, Philippines – As the 2022 United Nations (UN) Climate Change Conference enters crunch time, representatives of Philippine civil society and social movements at COP27 expressed their disappointment over the “status and conduct” of the government’s delegation in Sharm El Sheikh, Egypt.
+
+The 29-member delegation headed into the more tense second week of climate negotiations without its leaders, Environment Secretary Maria Antonia Yulo-Loyzaga and Secretary Robert Borje, Climate Change Commission (CCC) vice chairperson and executive director.
+
+### Russia
+
+Russia’s war in Ukraine is casting a long shadow on the debates and negotiations at the United Nations climate change conference, known as COP27, happening now in Sharm el-Sheikh, Egypt. Russia has been using its participation at the forum to leverage its commitments on reducing carbon emission in exchange for Western sanctions relief imposed after its invasion of Ukraine this year.
+
+From soaring global energy and food prices to frightening geopolitical tensions, the war is on the minds of world leaders and diplomats attending the annual climate negotiations forum, which started last week and ends on Nov. 18. Dozens of world leaders, including Ukrainian President Volodymyr Zelensky and British Prime Minister Rishi Sunak, have brought up in their three-minute speeches the Feb. 24 invasion by Russia against Ukraine and what it means for climate policy. President Joe Biden of the United States spoke about the war on Nov. 11, when he flew in for the conference en route to Asia. Russia’s war on Ukraine, he said, “only enhances the urgency of the need to transition the world off this dependency on fossil fuels.”
+
+### USA
+
+US climate envoy John Kerry has tested positive for COVID-19 at the United Nations climate talks in Egypt, where negotiators were desperately trying to break a deadlock over loss and damage funding for developing countries battered by weather disasters.
+
+Kerry’s illness has added worries to the negotiations, which were scheduled to end on Friday but have been continuing with no clear end in sight.
+
+Loss and damage remains the main sticking point between rich and poor nations, particularly the issue of how to compensate countries that have already been ravaged by climate-driven floods, droughts, mega-storms and wildfires.
+
+Negotiations, at least those in public, hit a lull by Friday evening as press conferences and plenaries were postponed or cancelled. Diplomats said they hoped for late-night progress as they changed airline reservations for talks going into extended overtime on Saturday.
+
+### Venezuela
+
+It is unclear whether Cop27 will have any real impact on efforts to halt climate change but one leader is likely to return from the international summit feeling that the trip to Egypt was well worth it: the Venezuelan president, Nicolás Maduro.
+
+After years of being frozen out of international relations the Latin American dictator used Cop27 to clearly – if controversially – demonstrate that he is back on the international stage.
+
+During the conference, the South American strongman was seen with a string of influential international figures, including the US special presidential envoy for climate, John Kerry, the French president, Emmanuel Macron, and Portugal’s prime minister, António Costa.
+
+The US state department spokesman, Ned Price, played down the significance of Maduro’s “very much unplanned interaction” with Kerry. The former secretary of state “was caught by surprise” at Cop27, Price said.
+
+A general view of residential houses in a village that residents say is controlled by the guerrillas near the Colombian border outside of Puerto Ayacucho, Amazonas, Venezuela December 1, 2020. Picture taken December 1, 2020. REUTERS/Sarah Kinosian
+Indigenous leader who defended the Amazon shot dead in Venezuela
+Read more
+But the presence of Maduro – who has one of Latin America’s worst environmental and human rights records – made leaders at the summit visibly uncomfortable and puzzled analysts.
+
+“My immediate reaction was ‘What on earth is one of the world’s worst climate offenders doing at a summit meant to address the climate crisis?’” said Geoff Ramsey, director for Venezuela at the Washington Office on Latin America, a DC-based thinktank.
+
+Maduro had been an international pariah since his 2018 re-election amid widespread allegations of fraud, which prompted a global effort to remove him from power.
+
+---
+
+Latin American presidents and environment ministers have used the United Nations’ COP27 climate change conference to call for greater regional alignment on climate policy, as a joint declaration set out unified positions for the region.
+
+In most UN settings, on trade or human rights, for example, the region’s 33 nations coordinate negotiations – or at least attempt to – as a single bloc, the Latin American and Caribbean Group (GRULAC). But the region has long been fragmented on climate change, which has robbed it of the power to speak from a majority. In the opening days of the COP27 summit in Egypt, there have been signs of change.
+
+
+Read more: What is COP27? This year’s crucial climate talks, explained
+On Wednesday, the Community of Latin American and Caribbean States (CELAC), a bloc that brings together all the countries of the region, except Brazil, presented a joint declaration detailing shared aims for the summit and climate action in general. The document stresses the need for financing and to strengthen the role of GRULAC in climate negotiations.
+
+## Negotiation Changes
+
+This report is based on the most recent entry submitted by the `r a.country` (`r a`).
+
+```{r processing, echo=FALSE, results='hide'}
+
+## Process Data (averages?)
+
+### Select Most Recent Timestamp
+names(df)
+
+Block.means = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Peak.Yr", "Reduction.Yr", "Reduction.Rate", "Deforestation", "Afforestation"),
+               ~round(mean(., na.rm=T),0)) %>% as.data.frame()
+
+
+names(df)
+Block.mitigation = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Billion"), ~round(sum(., na.rm=T), 0)) %>% as.data.frame()
+
+Block.Results <- merge(Block.means, Block.mitigation)
+Block.Results
+
+mitigation <- df %>% 
+  group_by(Mitigation) %>% 
+  summarise_at(c("Billion"), sum, na.rm=T)
+
+
+## Create Table
+### C-Road Order
+index = c(6, 3, 5, 1, 4, 2)
+
+Block.Results$Index = index
+Block.Results
+
+str(Block.Results)
+
+
+
+## Link to Climate Negotiation?
+```
+
+## Negotiation Results
+
+Based on the submissions, the commitments are as as follows:
+
+```{r results, echo=FALSE, results='asis'}
+knitr::kable(Block.Results[index,][,-8], align = "lccrrrc", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(Block.Results[index,][,-8]), include.rownames=FALSE, type = "html")
+```
+
+## Projected Temperature Change
+
+Based on our current commitments, we are looking at a 2.6 degree temperature change by the year 2100. 
+
+Please use [this link to see the most up-to-date scenario](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=515-6r&g1=86)
+
+[Link to Scenario based on 11/20/22 Commitments](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
+
+## Mitigation Funds -- Totals
+
+The UNFCCC has estimated a need of 200 billion USD to fund the mitigation fund, and probably requiring continuous updating and the need grows.
+
+
+```{r mitigation, echo=FALSE, results='asis'}
+knitr::kable(mitigation, align = "lr", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(mitigation), include.rownames=FALSE, type = "html")
+```
