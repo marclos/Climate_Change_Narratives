@@ -2,75 +2,21 @@
 title: "Climate Negotiation Update"
 author: "UNFCCC secretariat"
 date: "2022-11-19"
-output: html_document
-knit: (function(inputFile, encoding){
-  rmarkdown::render(inputFile, encoding = encoding,
-  output_dir = "../docs", output_format = "all") })
+output:   
+  pdf_document: default
+  html_document:
+    keep_md: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r getgoogledata, echo=FALSE, results='hide', message=FALSE}
-# climate negotiation simulation
-
-## Get googlesheet from survey
-#Install the required package
-#install.packages('googlesheets4')
-#Load the required library 
-library(googlesheets4)
-library(dplyr)
-library(lubridate)
-library(xtable)
-library(kableExtra)
-#gs4_auth(options(gargle_verbosity = "debug"))
-
-gs4_deauth()
-import <- read_sheet("https://docs.google.com/spreadsheets/d/1pazIs994LwzfG5BSb_2wC8aGsM3GwDg_uc5ecO9Od0Y/edit?usp=sharing")
-str(import)
-
-df <- import
-```
-
-```{r cleanup, echo=FALSE, results='hide', warning=FALSE}
-names(df)=c("Timestamp", "Country", "Peak.Yr", "Reduction.Yr", "Reduction.Rate",
-            "Deforestation", "Afforestation", "Mitigation", "Billion")
-df$Block = NA
-
-### Select Most Recent Submission
-df <- df %>%
-group_by(Country) %>%
-filter(Timestamp == max(Timestamp)) %>%
-ungroup()
 
 
-### Define Negotiations Blocks
-df$Block[df$Country == "USA"] <- "USA"
-df$Block[df$Country == "European Union"] <- "EU"
-        
-df$Block[df$Country == "Japan" | df$Country == "Russia"] <- "Other Developed"
-
-df$Block[df$Country == "China"] = "China"
-df$Block[df$Country == "India"] = "India"
-
-df$Block[df$Country == "Ghana" | df$Country == "Philippines" |
-           df$Country == "Rwanda" | df$Country == "Venezuela" |
-           df$Country == "Nigeria"] <- "Developing"
-
-head(df)
-
-
-
-df$Billion[df$Mitigation=="Withdrawing"] <- df$Billion *-1
-
-
-a <- max(df$Timestamp)
-a.country <- df$Country[df$Timestamp==a]
-
-#"2017-01-01 03:01:02 GMT"
 
 ```
+## Warning in !is.null(rmarkdown::metadata$output) && rmarkdown::metadata$output
+## %in% : 'length(x) = 2 > 1' in coercion to 'logical(1)'
+```
+
+
   
 ## News
 
@@ -153,72 +99,83 @@ Now the US and EU want to expand the number of countries that contribute - and C
 
 ## Negotiation Changes
 
-This report is based on the most recent entry submitted by the `r a.country` (`r a`).
-
-```{r processing, echo=FALSE, results='hide'}
-
-## Process Data (averages?)
-
-### Select Most Recent Timestamp
-names(df)
-
-Block.means = df %>% 
-  group_by(Block) %>% 
-  summarise_at(c("Peak.Yr", "Reduction.Yr", "Reduction.Rate", "Deforestation", "Afforestation"),
-               ~round(mean(., na.rm=T),0)) %>% as.data.frame()
+This report is based on the most recent entry submitted by the USA (2022-11-20 13:19:02).
 
 
-names(df)
-Block.mitigation = df %>% 
-  group_by(Block) %>% 
-  summarise_at(c("Billion"), ~round(sum(., na.rm=T), 0)) %>% as.data.frame()
-
-
-Block.Results <- merge(Block.means, Block.mitigation)
-Block.Results
-
-## Normalize based on number of developing countries and population %
-df$Country[df$Block=="Developing"]
-df$Population <- NA
-df$Population[df$Block=="Developing"] <- c(3.2, 210, 111, 13.2, 28)
-# df$NormalizingPop <- 67000/df$Population 
-df$BillionNormalized <- df$Billion
-df$BillionNormalized[df$Block=="Developing"] <- 152/5 * df$Billion[df$Block=="Developing"]
-
-mitigation <- df %>% 
-  group_by(Mitigation) %>% 
-  summarise_at(c("BillionNormalized"), sum, na.rm=T)
-
-total = data.frame(Mitigation="Total", BillionNormalized=sum(mitigation$BillionNormalized))
-if(total$BillionNormalized <0) total$Mitigation="Deficit"
-
-mitigation = rbind(mitigation, total)
-
-names(mitigation) = c("Mitigation Transfers", "Funds")
-
-## Link to Climate Negotiation?
-
-
-## Create Table
-### C-Road Order
-index = c(6, 3, 5, 1, 4, 2)
-
-Block.Results$Index = index
-Block.Results
-
-str(Block.Results)
-```
 
 ## Negotiation Results
 
 Based on the submissions, the commitments are as as follows:
 
-```{r results, echo=FALSE, results='asis'}
-
-knitr::kable(Block.Results[index,][,-8], align = "lccrrrc", row.names = FALSE) %>%
-  kable_styling(full_width = F)
-#print(xtable(Block.Results[index,][,-8]), include.rownames=FALSE, type = "html")
-```
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Block </th>
+   <th style="text-align:center;"> Peak.Yr </th>
+   <th style="text-align:center;"> Reduction.Yr </th>
+   <th style="text-align:right;"> Reduction.Rate </th>
+   <th style="text-align:right;"> Deforestation </th>
+   <th style="text-align:right;"> Afforestation </th>
+   <th style="text-align:center;"> Billion </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> USA </td>
+   <td style="text-align:center;"> 2022 </td>
+   <td style="text-align:center;"> 2022 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:center;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> EU </td>
+   <td style="text-align:center;"> 2022 </td>
+   <td style="text-align:center;"> 2022 </td>
+   <td style="text-align:right;"> 7 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:center;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Other Developed </td>
+   <td style="text-align:center;"> 2030 </td>
+   <td style="text-align:center;"> 2035 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:center;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> China </td>
+   <td style="text-align:center;"> 2035 </td>
+   <td style="text-align:center;"> 2040 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:center;"> 5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> India </td>
+   <td style="text-align:center;"> 2040 </td>
+   <td style="text-align:center;"> 2050 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:center;"> -10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Developing </td>
+   <td style="text-align:center;"> 2051 </td>
+   <td style="text-align:center;"> 2062 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:center;"> -17 </td>
+  </tr>
+</tbody>
+</table>
 
 ## Projected Temperature Change
 
@@ -233,8 +190,25 @@ Please use [this link to see the most up-to-date scenario](https://c-roads.clima
 The UNFCCC has estimated a need of 200 billion USD to fund the mitigation fund, and probably requiring continuous updating and the need grows. Currently, we have a 'normalized demand' well over 2x that amount. Seems like developed countries should give more, but developing countries should give up more. 
 
 
-```{r mitigation, echo=FALSE, results='asis'}
-knitr::kable(mitigation, align = "lr", row.names = FALSE) %>%
-  kable_styling(full_width = F)
-#print(xtable(mitigation), include.rownames=FALSE, type = "html")
-```
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Mitigation Transfers </th>
+   <th style="text-align:right;"> Funds </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Contributing </td>
+   <td style="text-align:right;"> 16.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Withdrawing </td>
+   <td style="text-align:right;"> -526.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Deficit </td>
+   <td style="text-align:right;"> -510.8 </td>
+  </tr>
+</tbody>
+</table>
