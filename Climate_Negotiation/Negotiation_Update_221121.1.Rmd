@@ -1,0 +1,264 @@
+---
+title: "Climate Negotiation Update"
+author: "UNFCCC secretariat"
+date: "`r format(Sys.time(), '%H:%M %z  %d %b, %Y')`"
+output: html_document
+knit: (function(inputFile, encoding){
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../docs", output_format = "all") })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r getgoogledata, echo=FALSE, results='hide', message=FALSE}
+# climate negotiation simulation
+
+## Get googlesheet from survey
+#Install the required package
+#install.packages('googlesheets4')
+#Load the required library 
+library(googlesheets4)
+library(dplyr)
+library(lubridate)
+library(xtable)
+library(kableExtra)
+#gs4_auth(options(gargle_verbosity = "debug"))
+
+gs4_deauth()
+import <- read_sheet("https://docs.google.com/spreadsheets/d/1pazIs994LwzfG5BSb_2wC8aGsM3GwDg_uc5ecO9Od0Y/edit?usp=sharing")
+str(import)
+
+df <- import
+```
+
+```{r cleanup, echo=FALSE, results='hide', warning=FALSE}
+names(df)=c("Timestamp", "Country", "Peak.Yr", "Reduction.Yr", "Reduction.Rate",
+            "Deforestation", "Afforestation", "Mitigation", "Billion")
+df$Block = NA
+
+### Select Most Recent Submission
+df <- df %>%
+group_by(Country) %>%
+filter(Timestamp == max(Timestamp)) %>%
+ungroup()
+
+
+### Define Negotiations Blocks
+df$Block[df$Country == "USA"] <- "USA"
+df$Block[df$Country == "European Union"] <- "EU"
+        
+df$Block[df$Country == "Japan" | df$Country == "Russia"] <- "Other Developed"
+
+df$Block[df$Country == "China"] = "China"
+df$Block[df$Country == "India"] = "India"
+
+df$Block[df$Country == "Ghana" | df$Country == "Philippines" |
+           df$Country == "Rwanda" | df$Country == "Venezuela" |
+           df$Country == "Nigeria"] <- "Developing"
+
+
+df$Billion[df$Mitigation=="Withdrawing"] <- df$Billion[df$Mitigation=="Withdrawing"] *-1
+
+
+a <- max(df$Timestamp)
+a.country <- df$Country[df$Timestamp==a]
+
+#"2017-01-01 03:01:02 GMT"
+
+```
+  
+# Climate in the News
+
+## AKP 
+
+KYOTO, Japan -- AKP Students continue to make progress, pushing the timeline for Peak emissions earlier and earlier, i.e. that is for developing countries. Nigeria made strong commitment to reduce carbon emissions sooner, but not at the rate of other countries, pushing the annual reduction rate from 3% to 4%. However, the two changes seemed to balance each other and the scenario continues to predict a 2.4 C degree increase by 2100.
+
+In spite of the good news, progress remains frozen because 'Other Developed' countries remain peripheral to the process. However, even with some additional changes, it's unlikely that team will get below 2.2 degrees before midnight on Monday.
+
+## China 
+
+China and the US have decided to resume climate talks, seen as crucial to managing climate change, after they collapsed following tensions over Taiwan last August. But China's climate challenges are growing, with the US and global leaders increasing pressure for it to cough up its fair share of climate reparation, on top of already high costs associated with meeting its own climate goals.
+
+UN chief Antonio Guterres has called for a "climate solidarity pact" between developed and emerging economies at the Cop 27 UN climate conference in Sharm el-Sheikh, Egypt over 6-18 November, with increasing calls for China to play its part. The inclusion of loss and damage in this year's summit was a milestone. The concept advocates rich countries, which have failed to deliver on $100bn promised annually for climate mitigation and adaptation, pay for the effects of climate change that cannot be avoided by mitigation, adaption or other measures.
+
+But developing countries are at odds on the issue, with differing views from the world's two biggest emitters China and the US threatening to derail their broader climate goals.
+
+It is unclear if China will pay into any loss and damage fund given its struggling economy, even though the US thinks it should. But the US is softening its resistance to pay developing countries.
+
+But China may struggle to meet its own climate goals. US climate envoy John Kerry has accused China of not doing enough to curb carbon dioxide (CO2) and other greenhouse gas emissions, even though it has deployed renewables and electric vehicles at a fast pace.
+
+To reach net zero emissions by 2060, China needs a staggering $14 trillion-17 trillion in additional investments for green infrastructure and technology in the power and transport sectors alone, with $2.1 trillion needed in the next decade to meet its nationally determined contribution (NDC) targets, according to a report by the World Bank last month.
+
+"Given the immense price tag, public investments won't be sufficient to meet these needs, so China needs policy and regulatory reforms to spur the private sector and fully tap the potential for investment and innovation," it said. China's renewable targets will also need to be 1,700GW by 2030 compared with 1,200GW in its current NDC, it said.
+
+Despite emitting more than a third of global CO2 emissions last year, China is designated as a developing country by the World Trade Organisation.
+
+China emits over 10bn t/yr of CO2 but only has carbon capture, utilisation and storage (CCUS) to cut just 3mn t/yr of CO2, according to figures from the ministry of ecology and environment. Its CO2 emissions reached 11.9bn t last year, according to the IEA. To meet its climate pledges China needs 20mn-408mn t of CCUS capacity by 2030, 600mn t-1.45bn t by 2050 and 1bn-1.82bn t by 2060, according to a report co-authored by the ministry last year. The IEA estimates global CCUS costs to be anywhere from $15/t to as much as 120/t, depending on the CO2 source.
+
+Carbon commitment
+But despite this China's climate envoy Xie Zhenhua has reiterated the country's commitment to carbon neutrality, stressing this target is before rather than in 2060. China has announced a new methane plan to tackle methane leaks in oil and gas, agriculture and waste, although it omitted mentioning the coal mining sector where emissions of an estimated 24mn t/yr is the single largest source of methane emissions from fossil fuels globally.
+
+The US is part of the Global Methane Pledge, China is not. Washington has pledged new funding but China has not, despite growing concerns on rising methane emissions.
+
+As China and the US resume climate talks, they may move forward together on future pledges to curb methane emissions. But for now the two countries are taking separate steps to tackling climate change, which could potentially pit themselves against each other on who should be financially responsible for climate loss and damage.
+
+## EU
+
+Europe’s dirtiest secret - one deterring it from seriously and rapidly tackling the climate emergency - is not being addressed this week at Cop27, the United Nations climate change conference hosted by Egypt.
+
+Mention of the Energy Charter Treaty would expose how far western states, the biggest greenhouse gas polluters, are from being in a position to cut carbon emissions in half by 2030. Failure to do so sets the world on course for catastrophic global warming above 1.5C.
+
+Whatever grand declarations they issue as the summit in Sharm el-Sheikh concludes this week, the reality is that European states effectively tied their hands for the foreseeable future by ratifying the energy treaty back in the 1990s. They have landed themselves with a massive financial burden if they try to cut emissions.
+
+The treaty’s stipulations help to explain why, despite years of climate pledges, the latest research shows fossil fuel emissions are set to hit a record high by the end of this year
+
+Europe would rather not admit it has made itself the prisoner of transnational energy corporations. The firms can hold member states to ransom for compensation, frustrating European efforts to significantly change energy policies for at least the next two decades.
+
+The treaty’s stipulations help to explain why, despite years of climate pledges, the latest research shows fossil fuel emissions are set to hit a record high by the end of this year.
+
+Antonio Guterres, the UN’s secretary-general, told world leaders at Cop27: “We are on a highway to climate hell with our foot on the accelerator. Our planet is fast approaching tipping points that will make climate chaos irreversible.” 
+
+The Energy Charter Treaty is one of the main drivers propelling Europe down that highway.
+
+Further dissuading Europe from publicly addressing problems with the energy treaty is the fact that it would highlight tensions over energy policy with Russia that are at the root of the current Ukraine war.
+
+It might even provide a crucial piece of the puzzle in trying to understand who was behind the sabotage of the two Nord Stream pipelines supplying Russian gas directly to Germany - and why. The pipelines were blown up by an unknown party or parties in October.
+
+Instead, there continues to be a conspiracy of silence over the energy treaty and its effects. The failure to push for its abolition at Cop27 will undermine any declarations of progress on addressing the climate crisis.
+
+## USA
+
+Earlier this week, world leaders, activists, and civil society representatives began a marathon summit in the Egyptian resort city of Sharm El-Sheikh to discuss ways and means to save the planet. 
+
+But with tens of thousands of Egyptians, including the brilliant writer Alaa Abd el-Fattah, held as political prisoners in Egypt since 2013, the human rights record of the host nation has inevitably stolen the limelight.
+
+The UN Climate Change Conference, or Cop27, was doomed from the start.
+
+The Egyptian government is known for stifling dissent, arresting and torturing activists, harassing and surveilling environmental groups, censoring news and information, and outlawing street protests. It is a cesspool of crony capitalism, dictatorship and rights violations.
+
+But while Egypt is no preserve of human dignity and should never have been awarded the opportunity to host Cop27, it is also just the face of the farce.
+
+'Highway to climate hell'
+In his opening address at Cop27, UN Secretary General Antonio Guterres described the planet as "fast approaching tipping points that will make climate chaos irreversible".
+
+"We are on a highway to climate hell with our foot on the accelerator," Guterres told heads of state from nations around the world. Amid raging conflicts around the globe, the issue of climate change cannot be sidelined, he added: "Many of today's conflicts are linked with growing climate chaos." 
+
+
+But there was a glaring omission in Guterres's speech. While he urged countries in the Global North to make good on funding to help low-income nations mitigate and adapt to the climate emergency, he made no mention of the oversized contribution of the world's militaries, in particular the US military, to climate change - nor did he encourage the world's militaries to scale back on their carbon emissions.
+
+It is estimated that the world's armed forces account for around five percent of the world's carbon emissions every year. The US military, with close to 800 bases in 80 countries, is the chief perpetrator. 
+
+# Negotiation Updates
+
+## Recent Climate Commitment
+
+This report is based on the most recent entry submitted by the `r a.country` (`r a`).
+
+```{r processing, echo=FALSE, results='hide'}
+
+## Process Data (averages?)
+
+### Select Most Recent Timestamp
+names(df)
+
+Block.means = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Peak.Yr", "Reduction.Yr", "Reduction.Rate", "Deforestation", "Afforestation"),
+               ~round(mean(., na.rm=T),0)) %>% as.data.frame()
+
+
+names(df)
+Block.mitigation = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Billion"), ~round(sum(., na.rm=T), 0)) %>% as.data.frame()
+
+
+Block.Results <- merge(Block.means, Block.mitigation)
+Block.Results
+
+## Normalize based on number of developing countries and population %
+df$Country[df$Block=="Developing"]
+df$Population <- NA
+df$Population[df$Block=="Developing"] <- c(3.2, 210, 111, 13.2, 28)
+# df$NormalizingPop <- 67000/df$Population 
+df$BillionNormalized <- df$Billion
+df$BillionNormalized[df$Block=="Developing"] <- 152/5 * df$Billion[df$Block=="Developing"]
+
+mitigation <- df %>% 
+  group_by(Mitigation) %>% 
+  summarise_at(c("BillionNormalized"), sum, na.rm=T)
+
+total = data.frame(Mitigation="Total", BillionNormalized=sum(mitigation$BillionNormalized))
+if(total$BillionNormalized <0) total$Mitigation="Deficit"
+
+mitigation = rbind(mitigation, total)
+
+names(mitigation) = c("Mitigation Transfers", "Funds")
+
+## Link to Climate Negotiation?
+
+
+## Create Table
+### C-Road Order
+index = c(6, 3, 5, 1, 4, 2)
+
+Block.Results$Index = index
+Block.Results
+
+str(Block.Results)
+```
+
+## Negotiation Results
+
+Based on the submissions, the commitments are as as follows:
+
+```{r results, echo=FALSE, results='asis'}
+
+knitr::kable(Block.Results[index,][,-8], align = "lccrrrc", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(Block.Results[index,][,-8]), include.rownames=FALSE, type = "html")
+```
+
+These have values have been used to update the C-Roads Projections. 
+
+## Projected Temperature Change
+
+Based on our current commitments, we are looking at a 2.4 degree temperature change by the year 2100. The potential impacts for this remain extremely worrisome and states need to do more. 
+
+[2.4 degree Projection -- Nigeria Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=515-6r&g1=86)
+
+
+### Previous Results
+
+[2.4 degree Projection -- Ghana Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2037&pc651=2043&pc652=5&pc653=19&pc654=7&g0=515-6r&g1=86)
+
+
+[2.5 degree Projection -- Philippines Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2039&pc651=2049&pc652=3&pc653=21&pc654=9&g0=515-6r&g1=86)
+
+
+[2.6 degree Projection USA Commitment Update](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
+
+### Previous Results
+
+[Link to Scenario based on 11/20/22 Commitments](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
+
+## Mitigation Funds -- Totals
+
+The UNFCCC has estimated a need of 200 billion USD to fund the mitigation fund, and probably requiring continuous updating and the need grows. 
+
+In addition to this, a new fund, "Losses and Damages", is needing funding. At this point, we are combining the two funds, which are normalized (we have 5 developing countries and their demand is being mulitiplied by 152/5 (152 developing countries/5 represented)).
+
+The Philippines is asking for 1 Trillion USD! While it is true they are facing massive impacts, the Developed Countries should get a lot for their money!
+
+The developed countries need to do more to address these massive economic impacts being faced in developing countries. 
+
+But developing countries should give up more of their reliance on fossil fuels. India and China should be setting as role models.
+
+
+```{r mitigation, echo=FALSE, results='asis'}
+knitr::kable(mitigation, align = "lr", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(mitigation), include.rownames=FALSE, type = "html")
+```
