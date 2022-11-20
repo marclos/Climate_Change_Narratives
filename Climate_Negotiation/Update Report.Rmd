@@ -35,6 +35,13 @@ names(df)=c("Timestamp", "Country", "Peak.Yr", "Reduction.Yr", "Reduction.Rate",
             "Deforestation", "Afforestation", "Mitigation", "Billion")
 df$Block = NA
 
+### Select Most Recent Submission
+df <- df %>%
+group_by(Country) %>%
+filter(Timestamp == max(Timestamp)) %>%
+ungroup()
+
+
 ### Define Negotiations Blocks
 df$Block[df$Country == "USA"] <- "USA"
 df$Block[df$Country == "European Union"] <- "EU"
@@ -49,6 +56,8 @@ df$Block[df$Country == "Ghana" | df$Country == "Philippines" |
            df$Country == "Nigeria"] <- "Developing"
 
 head(df)
+
+
 
 df$Billion[df$Mitigation=="Withdrawing"] <- df$Billion *-1
 
@@ -217,8 +226,16 @@ knitr::kable(Block.Results[index,][,-8], align = "lccrrrc", col.names = NULL) %>
 #print(xtable(Block.Results[index,][,-8]), include.rownames=FALSE, type = "html")
 ```
 
+## Projected Temperature Change
+
+Based on our current commitments, we are looking at a 2.6 degree temperature change by the year 2100. 
+
+Please use [this link to see the most up-to-date scenario](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
 
 ## Mitigation Funds -- Totals
+
+The UNFCCC has estimated a need of 200 billion USD to fund the mitigation fund, and probably requiring continuous updating and the need grows.
+
 
 ```{r mitigation, echo=FALSE, results='asis'}
 knitr::kable(mitigation, align = "lr", col.names = NULL) %>%
