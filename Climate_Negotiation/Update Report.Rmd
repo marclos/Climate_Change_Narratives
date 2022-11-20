@@ -31,6 +31,8 @@ df <- import
 ```
 
 ```{r cleanup, echo=FALSE, results='hide', warning=FALSE}
+df <- import
+
 names(df)=c("Timestamp", "Country", "Peak.Yr", "Reduction.Yr", "Reduction.Rate",
             "Deforestation", "Afforestation", "Mitigation", "Billion")
 df$Block = NA
@@ -55,7 +57,7 @@ df$Block[df$Country == "Ghana" | df$Country == "Philippines" |
            df$Country == "Rwanda" | df$Country == "Venezuela" |
            df$Country == "Nigeria"] <- "Developing"
 
-head(df)
+df
 
 
 

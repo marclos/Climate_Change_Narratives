@@ -1,7 +1,7 @@
 ---
 title: "Climate Negotiation Update"
 author: "UNFCCC secretariat"
-date: "2022-11-19"
+date: "`r format(Sys.time(), '%H:%M %z  %d %b, %Y')`"
 output: html_document
 knit: (function(inputFile, encoding){
   rmarkdown::render(inputFile, encoding = encoding,
@@ -58,11 +58,8 @@ df$Block[df$Country == "Ghana" | df$Country == "Philippines" |
            df$Country == "Rwanda" | df$Country == "Venezuela" |
            df$Country == "Nigeria"] <- "Developing"
 
-head(df)
 
-
-
-df$Billion[df$Mitigation=="Withdrawing"] <- df$Billion *-1
+df$Billion[df$Mitigation=="Withdrawing"] <- df$Billion[df$Mitigation=="Withdrawing"] *-1
 
 
 a <- max(df$Timestamp)
@@ -72,15 +69,15 @@ a.country <- df$Country[df$Timestamp==a]
 
 ```
   
-## News
+# Climate in the News
 
-### AKP 
+## AKP 
 
 KYOTO, Japan -- AKP Students are unable to reach agreements to reduce climate projections below 2.5 degrees. 
 
 Professor Marc Los Huertos is optimistic that Monday's negotiations will yield concrete results, "it takes some time for representatives to get their footing and begin demanding concrete results".
 
-Based on previous negotations, we hope he is right, when the world is depending on negotiators to continue to strive for a 1.5 degree goal.
+Based on previous negotiations, we hope he is right, when the world is depending on negotiators to continue to strive for a 1.5 degree goal.
 
 ### Sticking Points
 
@@ -97,7 +94,7 @@ The Egyptian hosts are trying to broker an agreement among almost 200 countries 
 
 These are the major areas of disagreement:
 
-1 - "Loss and damage"
+#### 1 - "Loss and damage"
 
 The biggest sticking point by far here is the need for a new fund to help countries deal with the immediate impacts of climate change.
 
@@ -113,7 +110,7 @@ Rich countries have resisted this discussion over financing for 30 years, fearin
 
 But the impacts of flooding in Pakistan, Nigeria and elsewhere in recent years have tipped the balance - here in Egypt the issue of the losses and damages due to rising temperatures finally made it onto the negotiating agenda.
 
-2 - Phasing out all fossil fuels
+#### 2 - Phasing out all fossil fuels
 
 The final discussions at COP26 in Glasgow last year almost fell apart on the issue of coal.
 
@@ -127,7 +124,7 @@ They settled on "phasing down" rather than "phasing out".
 
 Here, India and a number of other countries wanted to expand this phrase to include oil and gas.
 
-3 - Keeping 1.5C alive
+#### 3 - Keeping 1.5C alive
 
 This was the mantra of the UK Presidency of COP26, and after Glasgow the concept was on life support, according to Alok Sharma, the minister in charge of the talks.
 
@@ -137,7 +134,7 @@ A rise of 1.5C is viewed by scientists as the threshold to very dangerous levels
 
 "But we must ensure that commitment is evident in the COP27 outcome."
 
-4 - US & China
+#### 4 - US & China
 
 While the recent meeting between Presidents Biden and Xi Jinping has seen some thawing of relations between the world's two biggest emitters, the lack of concrete areas of co-operation between them is hampering the UN climate process.
 
@@ -151,7 +148,9 @@ Now the US and EU want to expand the number of countries that contribute - and C
 
 "If China and the US can come to terms, a whole new solution space opens up for the rest of the world."
 
-## Negotiation Changes
+# Negotiation Updates
+
+## Recent Climate Commitment
 
 This report is based on the most recent entry submitted by the `r a.country` (`r a`).
 
@@ -220,17 +219,29 @@ knitr::kable(Block.Results[index,][,-8], align = "lccrrrc", row.names = FALSE) %
 #print(xtable(Block.Results[index,][,-8]), include.rownames=FALSE, type = "html")
 ```
 
+These have values have been used to update the C-Roads Projections. 
+
 ## Projected Temperature Change
 
-Based on our current commitments, we are looking at a 2.6 degree temperature change by the year 2100. 
+Based on our current commitments, we are looking at a 2.5 degree temperature change by the year 2100. The potential impacts for this remain extremely worrisome and states need to do more. 
 
-Please use [this link to see the most up-to-date scenario](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2047&pc651=2057&pc652=3&pc653=21&pc654=9)
+Please use [this link to see the most up-to-date scenario](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2039&pc651=2049&pc652=3&pc653=21&pc654=9&g0=515-6r&g1=86)
+
+### Previous Results
 
 [Link to Scenario based on 11/20/22 Commitments](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
 
 ## Mitigation Funds -- Totals
 
-The UNFCCC has estimated a need of 200 billion USD to fund the mitigation fund, and probably requiring continuous updating and the need grows. Currently, we have a 'normalized demand' well over 2x that amount. Seems like developed countries should give more, but developing countries should give up more. 
+The UNFCCC has estimated a need of 200 billion USD to fund the mitigation fund, and probably requiring continuous updating and the need grows. 
+
+In addition to this, a new fund, "Losses and Damages", is needing funding. At this point, we are combining the two funds, which are normalized (we have 5 developing countries and their demand is being mulitiplied by 152/5 (152 developing countries/5 represented)).
+
+The Philippines is asking for 1 Trillion USD! While it is true they are facing massive impacts, the Developed Countries should get a lot for their money!
+
+The developed countries need to do more to address these massive economic impacts being faced in developing countries. 
+
+But developing countries should give up more of their reliance on fossil fuels. India and China should be setting as role models.
 
 
 ```{r mitigation, echo=FALSE, results='asis'}
