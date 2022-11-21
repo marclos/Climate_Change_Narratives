@@ -1,0 +1,209 @@
+---
+title: "Climate Negotiation Update"
+author: "UNFCCC secretariat"
+date: "`r format(Sys.time(), '%H:%M %z  %d %b, %Y')`"
+output: html_document
+knit: (function(inputFile, encoding){
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../docs", output_format = "all") })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r getgoogledata, echo=FALSE, results='hide', message=FALSE}
+# climate negotiation simulation
+
+## Get googlesheet from survey
+#Install the required package
+#install.packages('googlesheets4')
+#Load the required library 
+library(googlesheets4)
+library(dplyr)
+library(lubridate)
+library(xtable)
+library(kableExtra)
+#gs4_auth(options(gargle_verbosity = "debug"))
+
+gs4_deauth()
+import <- read_sheet("https://docs.google.com/spreadsheets/d/1pazIs994LwzfG5BSb_2wC8aGsM3GwDg_uc5ecO9Od0Y/edit?usp=sharing")
+str(import)
+
+df <- import
+```
+
+```{r cleanup, echo=FALSE, results='hide', warning=FALSE}
+names(df)=c("Timestamp", "Country", "Peak.Yr", "Reduction.Yr", "Reduction.Rate",
+            "Deforestation", "Afforestation", "Mitigation", "Billion")
+df$Block = NA
+
+### Select Most Recent Submission
+df <- df %>%
+group_by(Country) %>%
+filter(Timestamp == max(Timestamp)) %>%
+ungroup()
+
+
+### Define Negotiations Blocks
+df$Block[df$Country == "USA"] <- "USA"
+df$Block[df$Country == "European Union"] <- "EU"
+        
+df$Block[df$Country == "Japan" | df$Country == "Russia"] <- "Other Developed"
+
+df$Block[df$Country == "China"] = "China"
+df$Block[df$Country == "India"] = "India"
+
+df$Block[df$Country == "Ghana" | df$Country == "Philippines" |
+           df$Country == "Rwanda" | df$Country == "Venezuela" |
+           df$Country == "Nigeria"] <- "Developing"
+
+
+df$Billion[df$Mitigation=="Withdrawing"] <- df$Billion[df$Mitigation=="Withdrawing"] *-1
+
+
+a <- max(df$Timestamp)
+a.country <- df$Country[df$Timestamp==a]
+
+#"2017-01-01 03:01:02 GMT"
+
+```
+  
+# Climate in the News
+
+## AKP 
+
+KYOTO, Japan -- India does an about change and sets a 9% annual reduction rate. This brings the projections down to an estimated warming of 2.3 degrees C. Asked about this Professor Los Huertos says "India faces numerous climate risks, but also is a major contributor. It will be interested to see if China and Japan step up to greet this commitment with their own."
+
+In addition, Russia makes a new commitment, setting peak emissions as 2022 and to begin reducing their annual emission by 2% in 2030 with new restrictions on deforestation. 
+
+## Reuters Claims Success
+
+SHARM EL-SHEIKH, Egypt, Nov 20 (Reuters) - Countries closed this year's U.N. climate summit on Sunday with a hard-fought deal to create a fund to help poor countries being battered by climate disasters, even as many lamented its lack of ambition in tackling the emissions causing them.
+
+The deal was widely lauded as a triumph for responding to the devastating impact that global warming is already having on vulnerable countries. But many countries said they felt pressured to give up on tougher commitments for limiting global warming to 1.5 degrees Celsius in order for the landmark deal on the loss and damage fund to go through.
+
+Delegates - worn out after intense, overnight negotiations - made no objections as Egypt’s COP27 President Sameh Shoukry rattled through the final agenda items and gavelled the deal through.
+
+Despite having no agreement for a stronger commitment to the 1.5 C goal set in the 2015 Paris Agreement, "we went with what the agreement was here because we want to stand with the most vulnerable," Germany's climate secretary Jennifer Morgan, visibly shaken, told Reuters.
+
+
+# Negotiation Updates
+
+## Recent Climate Commitment
+
+This report is based on the most recent entry submitted by the `r a.country` (`r a`).
+
+```{r processing, echo=FALSE, results='hide'}
+
+## Process Data (averages?)
+
+### Select Most Recent Timestamp
+names(df)
+
+Block.means = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Peak.Yr", "Reduction.Yr", "Reduction.Rate", "Deforestation", "Afforestation"),
+               ~round(mean(., na.rm=T),0)) %>% as.data.frame()
+
+
+names(df)
+Block.mitigation = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Billion"), ~round(sum(., na.rm=T), 0)) %>% as.data.frame()
+
+
+Block.Results <- merge(Block.means, Block.mitigation)
+Block.Results
+
+## Normalize based on number of developing countries and population %
+df$Country[df$Block=="Developing"]
+df$Population <- NA
+df$Population[df$Block=="Developing"] <- c(3.2, 210, 111, 13.2, 28)
+# df$NormalizingPop <- 67000/df$Population 
+df$BillionNormalized <- df$Billion
+df$BillionNormalized[df$Block=="Developing"] <- 152/5 * df$Billion[df$Block=="Developing"]
+
+mitigation <- df %>% 
+  group_by(Mitigation) %>% 
+  summarise_at(c("BillionNormalized"), sum, na.rm=T)
+
+total = data.frame(Mitigation="Total", BillionNormalized=sum(mitigation$BillionNormalized))
+if(total$BillionNormalized <0) total$Mitigation="Deficit"
+
+mitigation = rbind(mitigation, total)
+
+names(mitigation) = c("Mitigation Transfers", "Funds")
+
+## Link to Climate Negotiation?
+
+
+## Create Table
+### C-Road Order
+index = c(6, 3, 5, 1, 4, 2)
+
+Block.Results$Index = index
+Block.Results
+
+str(Block.Results)
+```
+
+## Negotiation Results
+
+Based on the submissions, the commitments are as as follows:
+
+```{r results, echo=FALSE, results='asis'}
+
+knitr::kable(Block.Results[index,][,-8], align = "lccrrrc", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(Block.Results[index,][,-8]), include.rownames=FALSE, type = "html")
+```
+
+These have values have been used to update the C-Roads Projections. 
+
+## Projected Temperature Change
+
+Based on our current commitments, we are looking at a 2.3 degree temperature change by the year 2100. The potential impacts for this remain extremely worrisome and states need to do more. 
+
+[2.3 degree Projection -- Russia & India Commitment Update 2x ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2026&pc621=2032&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=9&pc643=40&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=515-6r&g1=140&g1-type=2&g1-lat=23.3544&g1-lon=91.0301&g1-zm=6&g1-yr=2100&g1-ss=4)
+
+
+### Previous Results
+
+[2.4 degree Projection -- India Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=4&pc643=40&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=502-6r&g1=140&g1-type=2&g1-lat=23.3544&g1-lon=91.0301&g1-zm=6&g1-yr=2100&g1-ss=4)
+
+[2.4 degree Projection -- Nigeria Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=515-6r&g1=86)
+
+
+
+
+[2.4 degree Projection -- Ghana Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2037&pc651=2043&pc652=5&pc653=19&pc654=7&g0=515-6r&g1=86)
+
+
+[2.5 degree Projection -- Philippines Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2039&pc651=2049&pc652=3&pc653=21&pc654=9&g0=515-6r&g1=86)
+
+
+[2.6 degree Projection USA Commitment Update](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
+
+### Previous Results
+
+[Link to Scenario based on 11/20/22 Commitments](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
+
+## Mitigation Funds -- Totals
+
+The UNFCCC has estimated a need of 200 billion USD to fund the mitigation fund, and probably requiring continuous updating and the need grows. 
+
+In addition to this, a new fund, "Losses and Damages", is needing funding. At this point, we are combining the two funds, which are normalized (we have 5 developing countries and their demand is being mulitiplied by 152/5 (152 developing countries/5 represented)).
+
+The Philippines is asking for 1 Trillion USD! While it is true they are facing massive impacts, the Developed Countries should get a lot for their money!
+
+The developed countries need to do more to address these massive economic impacts being faced in developing countries. 
+
+But developing countries should give up more of their reliance on fossil fuels. India and China should be setting as role models.
+
+
+```{r mitigation, echo=FALSE, results='asis'}
+knitr::kable(mitigation, align = "lr", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(mitigation), include.rownames=FALSE, type = "html")
+```

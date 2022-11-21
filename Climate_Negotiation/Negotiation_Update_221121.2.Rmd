@@ -1,0 +1,278 @@
+---
+title: "Climate Negotiation Update"
+author: "UNFCCC secretariat"
+date: "`r format(Sys.time(), '%H:%M %z  %d %b, %Y')`"
+output: html_document
+knit: (function(inputFile, encoding){
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../docs", output_format = "all") })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r getgoogledata, echo=FALSE, results='hide', message=FALSE}
+# climate negotiation simulation
+
+## Get googlesheet from survey
+#Install the required package
+#install.packages('googlesheets4')
+#Load the required library 
+library(googlesheets4)
+library(dplyr)
+library(lubridate)
+library(xtable)
+library(kableExtra)
+#gs4_auth(options(gargle_verbosity = "debug"))
+
+gs4_deauth()
+import <- read_sheet("https://docs.google.com/spreadsheets/d/1pazIs994LwzfG5BSb_2wC8aGsM3GwDg_uc5ecO9Od0Y/edit?usp=sharing")
+str(import)
+
+df <- import
+```
+
+```{r cleanup, echo=FALSE, results='hide', warning=FALSE}
+names(df)=c("Timestamp", "Country", "Peak.Yr", "Reduction.Yr", "Reduction.Rate",
+            "Deforestation", "Afforestation", "Mitigation", "Billion")
+df$Block = NA
+
+### Select Most Recent Submission
+df <- df %>%
+group_by(Country) %>%
+filter(Timestamp == max(Timestamp)) %>%
+ungroup()
+
+
+### Define Negotiations Blocks
+df$Block[df$Country == "USA"] <- "USA"
+df$Block[df$Country == "European Union"] <- "EU"
+        
+df$Block[df$Country == "Japan" | df$Country == "Russia"] <- "Other Developed"
+
+df$Block[df$Country == "China"] = "China"
+df$Block[df$Country == "India"] = "India"
+
+df$Block[df$Country == "Ghana" | df$Country == "Philippines" |
+           df$Country == "Rwanda" | df$Country == "Venezuela" |
+           df$Country == "Nigeria"] <- "Developing"
+
+
+df$Billion[df$Mitigation=="Withdrawing"] <- df$Billion[df$Mitigation=="Withdrawing"] *-1
+
+
+a <- max(df$Timestamp)
+a.country <- df$Country[df$Timestamp==a]
+
+#"2017-01-01 03:01:02 GMT"
+
+```
+  
+# Climate in the News
+
+## AKP 
+
+KYOTO, Japan -- As the negotiations continue over the night, India made their financial demands public -- 1 Trillion USD to pay mitigation costs and "Losses and Damages". As a concession, the country agreed to increase the reduction rate from 4% to 3%. The net result? The planet is still looking at a 2.4 degree temperature increase. 
+
+The impacts on sea-level rise are going to be  catastrophically destructive and India may have taken that into account in their negotiations, especially after the devastating flooding that has occurred in Bangladesh in the past year (See map in Scenario Prediction).
+
+The mitigation fund gap is now a major sticking point. Developed world are still unable to address this issue. It will be interesting to see if there are any offers before the 4:40 session. 
+
+## Loophole for Coal
+
+For many countries, the last hours of the negotiation represent a real step backwards in the fight against rising temperatures.
+
+While the loss and damage text represented a big win, the overall cover decision is being seen as a missed opportunity in the fight against climate change.
+
+The man who ran the COP26 negotiations in Glasgow put it bluntly.
+
+"Emissions peaking before 2025, as the science tells us is necessary. Not in this text," said Alok Sharma.
+
+"Clear follow-through on the phase down of coal. Not in this text."
+
+As well as all these limitations there was also a sharp U-turn on the language around fossil fuels.
+
+The text now includes a reference to "low emission and renewable energy".
+
+This is being seen as a significant loophole that could allow for the development of further gas resources, as gas produces less emissions than coal.
+
+## The 1.5C Milestone
+
+There's a fifty-fifty chance over the next five years that we'll go over this important marker of temperature increases, compared to pre-industrial times. We're likely to pass it permanently by 2031.
+
+But at COP27, the EU and other developed countries were willing to die on the hill of strengthening the promise to keep 1.5C alive.
+
+Their efforts were ultimately in vain as the cover text failed to include a reference to the phasing out of all fossil fuels, seen as a necessary advance on last year's decision to phase down the use of coal.
+
+"I wish we got fossil fuel phase out," said Kathy Jetnil-Kijiner, the Climate Envoy of the Marshall Islands, who along with other island states fear annihilation if temperatures rise above 1.5C.
+
+"The current text is not enough. But we've shown with the loss and damage fund that we can do the impossible. So we know we can come back next year and get rid of fossil fuels once and for all."
+
+There's a deep sense of solidarity by the richer nations with the island states on this issue of keeping below 1.5C
+
+Faith in the threshold has also become a key differential between the US, EU and other richer countries and China, which is markedly less concerned about the goal.
+
+While the world will undoubtedly be a better place the closer we stay to the 1.5C guiderail, belief in the ideal is also a political and economic bridge to the developing world.
+
+So even as the science and the COP process falter on 1.5C, expect the diplomatic attachment to grow stronger in the coming years.
+
+## Fossil Fuel Lobby
+
+One key takeaway from COP27 was the presence and power of fossil fuel - be they delegates or countries.
+
+Attendees connected to the oil and gas industry were everywhere. Some 636 were part of country delegations and trade teams.
+
+The crammed pavilions felt at times like a fossil fuel trade fair. This influence was clearly reflected in the final text.
+
+Demands from India and others for all fossil fuels to be phased down didn't survive, despite the backing of the EU and many other countries rich and poor.
+
+Many African countries were also keen to use the COP as a platform to promote new oil and gas initiatives in their countries.
+
+"The fact that the outcome only talks about 'phase-down of unabated coal power' is a disaster for Africa and for the climate," said Babawale Obayanju, from Friends of the Earth Africa.
+
+"We don't need more gas extraction in Africa, devastating our communities for the benefit of rich countries and corporations. What we needed from COP27 was agreement to a rapid, equitable phase out of all fossil fuels."
+
+That battle will resume at COP28 in Dubai.
+
+## Democracy really matters for the climate
+
+Brazil's president-elect (centre), pictured at the conference on Thursday
+The undoubted darling of the COP was Brazil's president-elect Luiz Ignacio Lula Da Silva.
+
+Just as he did in Copenhagen in 2009, Lula electrified the conference with his promise of zero deforestation by 2030.
+
+More than his commitment to the Amazon, Lula restored people's faith in the power of the ballot box to solve the climate problem.
+
+So too, in his un-showy way did President Biden. The retention of the Senate by the Democrats most likely ensures that his Inflation Reduction Act will not be overturned or watered down.
+
+At a stroke it puts the United States' carbon cutting goal for 2030 within reach.
+
+The affirmation that democracy is an effective weapon against climate change was also demonstrated in the actions of the host country.
+
+With security and surveillance everywhere, the conference took place in an atmosphere best described as barely restrained intolerance.
+
+As well as the ongoing troubles over human rights, the Egyptian hosts paid scant attention to basic functional needs of a conference such as food, drink and decent wifi.
+
+When push came to shove, there was a distinct lack of empathy from negotiators for the presidency. This really mattered in the final showdown.
+
+COP27 could have been a major advance against climate change. That it ultimately didn't hit that mark is at least partly down to the hosts.
+
+
+# Negotiation Updates
+
+## Recent Climate Commitment
+
+This report is based on the most recent entry submitted by the `r a.country` (`r a`).
+
+```{r processing, echo=FALSE, results='hide'}
+
+## Process Data (averages?)
+
+### Select Most Recent Timestamp
+names(df)
+
+Block.means = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Peak.Yr", "Reduction.Yr", "Reduction.Rate", "Deforestation", "Afforestation"),
+               ~round(mean(., na.rm=T),0)) %>% as.data.frame()
+
+
+names(df)
+Block.mitigation = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Billion"), ~round(sum(., na.rm=T), 0)) %>% as.data.frame()
+
+
+Block.Results <- merge(Block.means, Block.mitigation)
+Block.Results
+
+## Normalize based on number of developing countries and population %
+df$Country[df$Block=="Developing"]
+df$Population <- NA
+df$Population[df$Block=="Developing"] <- c(3.2, 210, 111, 13.2, 28)
+# df$NormalizingPop <- 67000/df$Population 
+df$BillionNormalized <- df$Billion
+df$BillionNormalized[df$Block=="Developing"] <- 152/5 * df$Billion[df$Block=="Developing"]
+
+mitigation <- df %>% 
+  group_by(Mitigation) %>% 
+  summarise_at(c("BillionNormalized"), sum, na.rm=T)
+
+total = data.frame(Mitigation="Total", BillionNormalized=sum(mitigation$BillionNormalized))
+if(total$BillionNormalized <0) total$Mitigation="Deficit"
+
+mitigation = rbind(mitigation, total)
+
+names(mitigation) = c("Mitigation Transfers", "Funds")
+
+## Link to Climate Negotiation?
+
+
+## Create Table
+### C-Road Order
+index = c(6, 3, 5, 1, 4, 2)
+
+Block.Results$Index = index
+Block.Results
+
+str(Block.Results)
+```
+
+## Negotiation Results
+
+Based on the submissions, the commitments are as as follows:
+
+```{r results, echo=FALSE, results='asis'}
+
+knitr::kable(Block.Results[index,][,-8], align = "lccrrrc", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(Block.Results[index,][,-8]), include.rownames=FALSE, type = "html")
+```
+
+These have values have been used to update the C-Roads Projections. 
+
+## Projected Temperature Change
+
+Based on our current commitments, we are looking at a 2.4 degree temperature change by the year 2100. The potential impacts for this remain extremely worrisome and states need to do more. 
+
+[2.4 degree Projection -- India Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=4&pc643=40&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=502-6r&g1=140&g1-type=2&g1-lat=23.3544&g1-lon=91.0301&g1-zm=6&g1-yr=2100&g1-ss=4)
+
+
+### Previous Results
+
+[2.4 degree Projection -- Nigeria Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=515-6r&g1=86)
+
+
+
+
+[2.4 degree Projection -- Ghana Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2037&pc651=2043&pc652=5&pc653=19&pc654=7&g0=515-6r&g1=86)
+
+
+[2.5 degree Projection -- Philippines Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2039&pc651=2049&pc652=3&pc653=21&pc654=9&g0=515-6r&g1=86)
+
+
+[2.6 degree Projection USA Commitment Update](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
+
+### Previous Results
+
+[Link to Scenario based on 11/20/22 Commitments](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
+
+## Mitigation Funds -- Totals
+
+The UNFCCC has estimated a need of 200 billion USD to fund the mitigation fund, and probably requiring continuous updating and the need grows. 
+
+In addition to this, a new fund, "Losses and Damages", is needing funding. At this point, we are combining the two funds, which are normalized (we have 5 developing countries and their demand is being mulitiplied by 152/5 (152 developing countries/5 represented)).
+
+The Philippines is asking for 1 Trillion USD! While it is true they are facing massive impacts, the Developed Countries should get a lot for their money!
+
+The developed countries need to do more to address these massive economic impacts being faced in developing countries. 
+
+But developing countries should give up more of their reliance on fossil fuels. India and China should be setting as role models.
+
+
+```{r mitigation, echo=FALSE, results='asis'}
+knitr::kable(mitigation, align = "lr", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(mitigation), include.rownames=FALSE, type = "html")
+```
