@@ -1,0 +1,247 @@
+---
+title: "Climate Negotiation Update"
+author: "UNFCCC secretariat"
+date: "`r format(Sys.time(), '%H:%M %z  %d %b, %Y')`"
+output: html_document
+knit: (function(inputFile, encoding){
+  rmarkdown::render(inputFile, encoding = encoding,
+  output_dir = "../docs", output_format = "all") })
+header-includes:
+  - \usepackage{comment}
+params:
+  on.going: FALSE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r getgoogledata, echo=FALSE, results='hide', message=FALSE}
+# climate negotiation simulation
+
+## Get googlesheet from survey
+#Install the required package
+#install.packages('googlesheets4')
+#Load the required library 
+library(googlesheets4)
+library(dplyr)
+library(lubridate)
+library(xtable)
+library(kableExtra)
+#gs4_auth(options(gargle_verbosity = "debug"))
+
+gs4_deauth()
+import <- read_sheet("https://docs.google.com/spreadsheets/d/1pazIs994LwzfG5BSb_2wC8aGsM3GwDg_uc5ecO9Od0Y/edit?usp=sharing")
+str(import)
+
+df <- import
+```
+
+```{r cleanup, echo=FALSE, results='hide', warning=FALSE}
+names(df)=c("Timestamp", "Country", "Peak.Yr", "Reduction.Yr", "Reduction.Rate",
+            "Deforestation", "Afforestation", "Mitigation", "Billion")
+df$Block = NA
+
+### Select Most Recent Submission
+df <- df %>%
+group_by(Country) %>%
+filter(Timestamp == max(Timestamp)) %>%
+ungroup()
+
+
+### Define Negotiations Blocks
+df$Block[df$Country == "USA"] <- "USA"
+df$Block[df$Country == "European Union"] <- "EU"
+        
+df$Block[df$Country == "Japan" | df$Country == "Russia"] <- "Other Developed"
+
+df$Block[df$Country == "China"] = "China"
+df$Block[df$Country == "India"] = "India"
+
+df$Block[df$Country == "Ghana" | df$Country == "Philippines" |
+           df$Country == "Rwanda" | df$Country == "Venezuela" |
+           df$Country == "Nigeria"] <- "Developing"
+
+
+df$Billion[df$Mitigation=="Withdrawing"] <- df$Billion[df$Mitigation=="Withdrawing"] *-1
+
+
+a <- max(df$Timestamp)
+a.country <- df$Country[df$Timestamp==a]
+
+#"2017-01-01 03:01:02 GMT"
+
+```
+  
+# Climate in the News
+
+## AKP Negotiation News
+
+KYOTO, Japan -- In an after hours negotiation, the USA and Venezuela set aside their political differences and negotiated a strong set of milestones to limit global warming to 2.0 degrees C. However, in separate negotiations, the Mitigation and "Losses and Damages" funds remained unreconciled by an order of magnitude.
+
+No doubt these negotiations will remain a sticking point for COP28 and beyond. 
+
+# Negotiation Updates
+
+## Recent Climate Commitment
+
+`r if(!params$on.going){"The negotiations have ended and this is the Final Update."}`
+
+`r if(!params$on.going) {"\\begin{comment}"}`
+
+This report is based on the most recent entry submitted by the `r a.country` (`r a`).
+
+`r if(!params$on.going) {"\\end{comment}"}`
+
+```{r processing, echo=FALSE, results='hide'}
+
+## Process Data (averages?)
+
+### Select Most Recent Timestamp
+names(df)
+
+Block.means = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Peak.Yr", "Reduction.Yr", "Reduction.Rate", "Deforestation", "Afforestation"),
+               ~round(mean(., na.rm=T),0)) %>% as.data.frame()
+
+
+names(df)
+Block.mitigation = df %>% 
+  group_by(Block) %>% 
+  summarise_at(c("Billion"), ~round(sum(., na.rm=T), 0)) %>% as.data.frame()
+
+
+Block.Results <- merge(Block.means, Block.mitigation)
+Block.Results
+
+## Normalize based on number of developing countries and population %
+df$Country[df$Block=="Developing"]
+df$Population <- NA
+df$Population[df$Block=="Developing"] <- c(3.2, 210, 111, 13.2, 28)
+# df$NormalizingPop <- 67000/df$Population 
+df$BillionNormalized <- df$Billion
+df$BillionNormalized[df$Block=="Developing"] <- 152/5 * df$Billion[df$Block=="Developing"]
+
+mitigation <- df %>% 
+  group_by(Mitigation) %>% 
+  summarise_at(c("BillionNormalized"), sum, na.rm=T)
+
+if(!params$on.going) mitigation$BillionNormalized = c(200, -800)
+
+total = data.frame(Mitigation="Total", BillionNormalized=sum(mitigation$BillionNormalized))
+if(total$BillionNormalized <0) total$Mitigation="Deficit"
+
+
+
+mitigation = rbind(mitigation, total)
+
+names(mitigation) = c("Mitigation Transfers", "Funds")
+
+## Link to Climate Negotiation?
+
+
+## Create Table
+### C-Road Order
+index = c(6, 3, 5, 1, 4, 2)
+
+Block.Results$Index = index
+Block.Results
+
+str(Block.Results)
+```
+
+## Negotiation Results
+
+`r if(params$on.going){"Based on the submissions, the commitments are as as follows:"}`
+
+
+```{r results, echo=FALSE, results='asis', include=params$on.going}
+knitr::kable(Block.Results[index,][,-8], align = "lccrrrc", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(Block.Results[index,][,-8]), include.rownames=FALSE, type = "html")
+```
+
+These have values have been used to update the C-Roads Projections. 
+
+## C-Roads URL Codings
+
+```{r, echo=FALSE, results='hide'}
+#convert results to html scenario
+# some observations
+#   missing variables are zeros
+#   version number v=22.11
+#  first 6 rows are numbered 600--604, 610--614..., 650...654
+# next two gnerate graphics, where g0 is the first graphics, with the following options:
+# g0=c(510-6r (); 515-6r (), 501-6r (net emissions by 6 regions);
+# g1=c(86 (), 140 (map), 143(), 88(co2), etc)
+# mapping g1-type=c(2)
+# mapping g1-lat=dd; g1-log=dd
+# zooming g1-zm=c(6); 
+# g1-year-2100
+# g1-ss4
+str(Block.Results)
+bmat =as.matrix(Block.Results[index,][,-c(1, 7, 8)], nrow=6, byrow=TRUE)
+USA = paste0("pc600=", bmat[1,1], "&pc601=", bmat[1,2], "&pc602=", bmat[1,3], "&pc603=", bmat[1,4], "&pc604=", bmat[1,5] ) 
+EU  = paste0("pc610=", bmat[2,1], "&pc611=", bmat[2,2], "&pc612=", bmat[2,3], "&pc613=", bmat[2,4], "&pc614=", bmat[2,5] )
+ODC = paste0("pc620=", bmat[3,1], "&pc621=", bmat[3,2], "&pc622=", bmat[3,3], "&pc623=", bmat[3,4], "&pc624=", bmat[3,5] )
+CH =  paste0("pc630=", bmat[4,1], "&pc631=", bmat[4,2], "&pc632=", bmat[4,3], "&pc633=", bmat[4,4], "&pc634=", bmat[4,5] )
+IN =  paste0("pc640=", bmat[5,1], "&pc641=", bmat[5,2], "&pc642=", bmat[5,3], "&pc643=", bmat[5,4], "&pc634=", bmat[5,5] )
+DC =  paste0("pc650=", bmat[6,1], "&pc651=", bmat[6,2], "&pc652=", bmat[6,3], "&pc653=", bmat[6,4], "&pc654=", bmat[6,5] )
+
+paste0("https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&", USA, "&", EU, "&", ODC, "&", CH, "&", IN, "&", DC)
+
+
+scenario = "https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2024&pc612=5&pc613=12&pc620=2025&pc621=2032&pc622=4&pc623=18&pc630=2025&pc631=2035&pc632=4&pc633=10&pc634=10&pc640=2025&pc641=2035&pc642=9&pc643=40&pc650=2025&pc651=2033&pc652=4&pc653=45&pc654=4&g0=501-6r&g1=88"
+
+```
+
+## Projected Temperature Change
+
+Based on our current commitments, we are looking at a temperature change well above the 1.5 degree target by the year 2100. The potential impacts for this remain extremely worrisome and states need to do more. 
+
+
+[2.0 degree Projection -- Final Scenario ](`r scenario`)
+
+
+
+### Previous Results
+
+[2.2 degree Projection -- Venezuela's Commitment ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2024&pc612=5&pc613=12&pc620=2026&pc621=2032&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=9&pc643=40&pc644=10&pc650=2022&pc651=2022&pc652=4&pc653=29&pc654=4&g0=510-6r&g1=143)
+
+[2.3 degree Projection -- EU Revised Commitment ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2024&pc612=5&pc613=12&pc620=2026&pc621=2032&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=9&pc643=40&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=515-6r&g1=86)
+
+[2.3 degree Projection -- Russia  & India Commitment Update 2x ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2026&pc621=2032&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=9&pc643=40&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=515-6r&g1=140&g1-type=2&g1-lat=23.3544&g1-lon=91.0301&g1-zm=6&g1-yr=2100&g1-ss=4)
+
+[2.4 degree Projection -- India Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=4&pc643=40&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=502-6r&g1=140&g1-type=2&g1-lat=23.3544&g1-lon=91.0301&g1-zm=6&g1-yr=2100&g1-ss=4)
+
+[2.4 degree Projection -- Nigeria Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2032&pc651=2039&pc652=4&pc653=15&pc654=3&g0=515-6r&g1=86)
+
+
+
+
+[2.4 degree Projection -- Ghana Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2037&pc651=2043&pc652=5&pc653=19&pc654=7&g0=515-6r&g1=86)
+
+
+[2.5 degree Projection -- Philippines Commitment Update ](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2039&pc651=2049&pc652=3&pc653=21&pc654=9&g0=515-6r&g1=86)
+
+
+[2.6 degree Projection USA Commitment Update](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
+
+### Previous Results
+
+[Link to Scenario based on 11/20/22 Commitments](https://c-roads.climateinteractive.org/scenario.html?v=22.11.0&pc600=2022&pc601=2022&pc602=5&pc603=13&pc604=1&pc610=2022&pc611=2022&pc612=7&pc620=2030&pc621=2035&pc622=2&pc630=2035&pc631=2040&pc632=2&pc633=10&pc634=10&pc640=2040&pc641=2050&pc642=3&pc643=10&pc644=10&pc650=2051&pc651=2062&pc652=3&pc653=6&pc654=6&g0=501-6r&g1=86)
+
+## Mitigation Funds -- Totals
+
+The UNFCCC has estimated a need of 200 billion USD to fund the mitigation fund, and probably requiring continuous updating and the need grows. 
+In addition to this, a new fund, "Losses and Damages", is needing funding. At this point, we are combining the two funds, which are normalized (we have 5 developing countries and their demand is being mulitiplied by 152/5 (152 developing countries/5 represented)).
+
+Based on the long-term "history" of fossil fuels, newly developed countries believe they should not be penalized for the carbon emitted by countries with longer fossil fuel use histories, such as Western Europe, USA, and Japan. But how these rules are decided remains controversial. 
+
+
+```{r mitigation, echo=FALSE, results='asis'}
+knitr::kable(mitigation, align = "lr", row.names = FALSE) %>%
+  kable_styling(full_width = F)
+#print(xtable(mitigation), include.rownames=FALSE, type = "html")
+```
