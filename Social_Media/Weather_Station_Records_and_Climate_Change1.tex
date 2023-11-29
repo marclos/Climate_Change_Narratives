@@ -12,8 +12,6 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library(ncdf4): there is no package called 'ncdf4'}}
-
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library(densEstBayes): there is no package called 'densEstBayes'}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in setwd("{}/home/CAMPUS/mwl04747/github/Climate\_Change\_Narratives"{}): cannot change working directory}}\end{kframe}
@@ -214,9 +212,9 @@ There were some records that didn't have robust TMAX/TMIN records, so there are 
 The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
 
     elevation    mindate    maxdate latitude            name datacoverage
-568     386.5 1897-04-01 2023-09-01   33.686 ELSINORE, CA US       0.8801
+582     386.5 1897-04-01 2023-09-01   33.686 ELSINORE, CA US       0.8801
                    id elevationUnit longitude
-568 GHCND:USC00042805        METERS -117.3458
+582 GHCND:USC00042805        METERS -117.3458
 [1] 1897
 [1] 2023
 
@@ -260,9 +258,13 @@ Furthermore, I have converted units to Farenheit, which is not my favorite, but 
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: Service Unavailable (HTTP 503)}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: Service Unavailable (HTTP 503)}}
+
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in list2(...): object 'GSOM\_TMAX' not found}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in list2(...): object 'GSOM\_TMIN' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in list2(...): object 'GSOM\_PPT' not found}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'tbl\_TMAX' not found}}
 
@@ -270,19 +272,27 @@ Furthermore, I have converted units to Farenheit, which is not my favorite, but 
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.data.frame(tbl\_TMIN): object 'tbl\_TMIN' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.data.frame(tbl\_PPT): object 'tbl\_PPT' not found}}
+
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'dfTbl\_TMAX' not found}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'dfTbl\_TMAX' not found}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'dfTbl\_TMIN' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'dfTbl\_PPT' not found}}
+
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(dfTbl\_TMAX\$date): object 'dfTbl\_TMAX' not found}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(dfTbl\_TMIN\$date): object 'dfTbl\_TMIN' not found}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(dfTbl\_PPT\$date): object 'dfTbl\_PPT' not found}}
+
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in subset(dfTbl\_TMAX, select = c(Date, station, TMAX)): object 'dfTbl\_TMAX' not found}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in subset(dfTbl\_TMIN, select = c(Date, TMIN)): object 'dfTbl\_TMIN' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in subset(dfTbl\_PPT, select = c(Date, PPT)): object 'dfTbl\_PPT' not found}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'dfTbl\_TMAX' not found}}
 
@@ -309,7 +319,58 @@ Furthermore, I have converted units to Farenheit, which is not my favorite, but 
 
 CHCND have been bias corrected...
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in file(file, "{}rt"{}): cannot open URL 'https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/USC00042805.csv': HTTP status was '404 Not Found'}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection to 'https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/USC00042805.csv'}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(CHCND): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in str(CHCND): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in year(CHCND\$Date): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(start\_date, end\_date, by = 1): object 'start\_date' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(Date = dates, Year = year(dates), yday = yday(dates)): object 'dates' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in str(continuous\_dates): object 'continuous\_dates' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'merge': object 'continuous\_dates' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in format(CHCND\$Date, "{}\%m-\%d"{}): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(CHCND\$Date): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in as.Date(CHCND\$Date): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in CHCND\$Season = "{}Winter"{}: object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in CHCND\$Season[CHCND\$Month == 4 | CHCND\$Month == 5 | CHCND\$Month == : object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in CHCND\$Season[CHCND\$Month == 7 | CHCND\$Month == 8 | CHCND\$Month == : object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in CHCND\$Season[CHCND\$Month == 10 | CHCND\$Month == 11 | CHCND\$Month == : object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(x): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mean(CHCND\$TMAX, na.rm = T): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in CHCND\$TMAX[complete.cases(CHCND\$TMAX) \& CHCND\$TMAX > TMAX\_mean + : object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in head(CHCND): object 'CHCND' not found}}\end{kframe}
+\end{knitrout}
 \section{Data Analysis Processes}
 
 \subsection{Map Weather Station Location}
@@ -601,7 +662,14 @@ We can look for trends in monthly averages, number of days without rain (importa
 
 I don't know of a robust way to look at this for the entire globe. 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, parent.frame()): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, parent.frame()): object 'CHCND' not found}}\end{kframe}
+\end{knitrout}
 
 Rainfall totals by season might be a useful way to think about changes, because the rainfall is often seasonal, I wonder if we can see pattners by season. 
 
@@ -609,8 +677,7 @@ Rainfall totals by season might be a useful way to think about changes, because 
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# `geom\_smooth()` using formula 'y \textasciitilde{} x'}}\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in fortify(data): object 'PRCP.Season.Total' not found}}\end{kframe}
 \end{knitrout}
 
 \subsubsection{Drought}
@@ -621,29 +688,98 @@ Days without rain...within a calendar year... bleed over between years isn't cap
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in if (Drought.run\$lengths > 100) \{: the condition has length > 1}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in rle(CHCND\$PRCP): object 'CHCND' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, eframe): object 'Drought.run.100' not found}}\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
-\begin{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in aggregate.data.frame(lhs, mf[-1L], FUN = FUN, ...): no rows to aggregate}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in aggregate.data.frame(lhs, mf[-1L], FUN = FUN, ...): no rows to aggregate}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in aggregate.data.frame(lhs, mf[-1L], FUN = FUN, ...): no rows to aggregate}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in if (Drought.run\$lengths > 100) \{: argument is of length zero}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'y' in selecting a method for function 'plot': object 'Drought.run.10' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, eframe): object 'Drought.run.20' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, eframe): object 'Drought.run.40' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(m\$data, eframe): object 'Drought.run.100' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'Drought.run.10' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'Drought.run.20' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'Drought.run.40' not found}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in is.data.frame(data): object 'Drought.run.100' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'Drought.run.100' not found}}\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-2} 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'Drought.run.100' not found}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in min(x): no non-missing arguments to min; returning Inf}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in max(x): no non-missing arguments to max; returning -Inf}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in min(x): no non-missing arguments to min; returning Inf}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in max(x): no non-missing arguments to max; returning -Inf}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot.window(...): need finite 'xlim' values}}\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
+\begin{kframe}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in min(x): no non-missing arguments to min; returning Inf}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in min(x): no non-missing arguments to max; returning -Inf}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in min(x): no non-missing arguments to min; returning Inf}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in max(x): no non-missing arguments to max; returning -Inf}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot.window(...): need finite 'xlim' values}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...): 0 (non-NA) cases}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'Drought.run.lm' not found}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in min(Drought.run\$Year, na.rm = T): no non-missing arguments to min; returning Inf}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in max(Drought.run\$lengths, na.rm = T): no non-missing arguments to max; returning -Inf}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in coef(Drought.run.lm): object 'Drought.run.lm' not found}}\end{kframe}
 \end{knitrout}
 
 Rainfall Probability Distributions by decade... to be developed.
 
 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in floor\_score(CHCND\$Year): object 'CHCND' not found}}\end{kframe}
+\end{knitrout}
 
 \subsection{Record Setting Temperature Records}
 
 In many cases, people seem to "feel" how temperature has been changing over time, and new records seem to capture the attention in the media. So, we'll create a updated record of maximum temperatures and display them. 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in mean(CHCND\$TMAX, na.rm = T): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in CHCND\$minTMIN <- NA: object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(CHCND): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(CHCND): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in head(CHCND): object 'CHCND' not found}}\end{kframe}
+\end{knitrout}
 
 
 
@@ -661,7 +797,29 @@ Create the matrix
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in TMAX.mat.noleap[j, year.seq\$Col[year.seq\$Year == i]] <- CHCND.noleap\$TMAX[CHCND.noleap\$Year == : replacement has length zero}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in str(CHCND): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in matrix(NA, nrow = 366, ncol = max(CHCND\$Year) - min(CHCND\$Year) + : object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in matrix(NA, nrow = 366, ncol = max(CHCND\$Year) - min(CHCND\$Year) + : object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in subset(CHCND, select = c(Date, Year, yday, TMAX, TMIN, PRCP), : object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND.noleap' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in subset(CHCND, select = c(Date, Year, yday, TMAX, TMIN, PRCP), : object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND.noleap' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(CHCND\$Year), max(CHCND\$Year), by = 1): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(CHCND\$Year), max(CHCND\$Year)): object 'CHCND' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND.noleap' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'TMAX.mat.noleap' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND' not found}}\end{kframe}
 \end{knitrout}
 
 
@@ -669,15 +827,77 @@ Create the matrix
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot.new(): could not open file '/home/CAMPUS/mwl04747/github/Climate\_Change\_Narratives/Social\_Media/State\_htmls/png/California\_USC00042805\_CHCND\_Temp\_Records.png'}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in years/10: non-numeric argument to binary operator}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(2, at = ytics, labels = ylabs): plot.new has not been called yet}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'CHCND' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(1, at = xtics, labels = xlabs): plot.new has not been called yet}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in years \%in\% i: object 'i' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in rect(y1, x1, y2, x2, ...): plot.new has not been called yet}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'TMAX.mat.noleap' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in rect(y1, x1, y2, x2, ...): plot.new has not been called yet}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in apply(TMAX.mat.noleap[, 1:j], 1, function(x) which.max(x)): object 'TMAX.mat.noleap' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lengths(TMAX1): object 'TMAX1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in unlist(TMAX1): object 'TMAX1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in count(TMAX1): object 'TMAX1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(TMAX1) = c("{}Year"{}, "{}TMAX"{}): object 'TMAX1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(Year = 1:j): object 'j' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'merge': object 'TMAX\_na' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'TMIN.mat' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in apply(TMIN.mat[, 1:j], 1, function(x) which.min(x)): object 'TMIN.mat' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lengths(TMIN1): object 'TMIN1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in unlist(TMIN1): object 'TMIN1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in count(TMIN1): object 'TMIN1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(TMIN1) = c("{}Year"{}, "{}TMIN"{}): object 'TMIN1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(Year = 1:j): object 'j' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'merge': object 'TMIN\_na' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'merge': object 'TMAX' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'j' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(R1): object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(R1): object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in row\_numb \%in\% c(1): object 'row\_numb' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'row.sel' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'row.sel' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'index.year' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(yrange[1], yrange[2], length.out = tic.no): object 'yrange' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'ytics' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(2, at = ytics, labels = ylabs): object 'ytics' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(1, at = xtics, labels = xlabs): object 'xtics' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in barplot(height = R1\$TMAX, space = 0, add = TRUE, axes = FALSE, : object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in barplot(height = R1\$TMIN, space = 0, add = TRUE, axes = FALSE, : object 'R1' not found}}\end{kframe}
 \end{knitrout}
 
 The patterns of record temperatures often shows increasing number of new high temperature records  and fewer record low temperatures more recently, but as usual, it depends on the location (Figure~\ref{fig:Records}).
@@ -704,15 +924,73 @@ To test the code, I have created graphics that can then be used in the animation
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(min(GSOM\$Year), max(GSOM\$Year), by = 2): object 'GSOM' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot.new(): could not open file '/home/CAMPUS/mwl04747/github/Climate\_Change\_Narratives/Social\_Media/State\_htmls/png/California\_USC00042805\_4panel.png'}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in years \%in\% i: object 'i' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(2, at = ytics, labels = ylabs): plot.new has not been called yet}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'TMAX.mat.noleap' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(1, at = xtics, labels = xlabs): plot.new has not been called yet}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in apply(TMAX.mat.noleap[, 1:j], 1, function(x) which.max(x)): object 'TMAX.mat.noleap' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in rect(y1, x1, y2, x2, ...): plot.new has not been called yet}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lengths(TMAX1): object 'TMAX1' not found}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in rect(y1, x1, y2, x2, ...): plot.new has not been called yet}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in unlist(TMAX1): object 'TMAX1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in count(TMAX1): object 'TMAX1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(TMAX1) = c("{}Year"{}, "{}TMAX"{}): object 'TMAX1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(Year = 1:j): object 'j' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'merge': object 'TMAX\_na' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'TMIN.mat' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in apply(TMIN.mat[, 1:j], 1, function(x) which.min(x)): object 'TMIN.mat' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in lengths(TMIN1): object 'TMIN1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in unlist(TMIN1): object 'TMIN1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in count(TMIN1): object 'TMIN1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in names(TMIN1) = c("{}Year"{}, "{}TMIN"{}): object 'TMIN1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(Year = 1:j): object 'j' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'merge': object 'TMIN\_na' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'merge': object 'TMAX' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'j' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(R1): object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in nrow(R1): object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in row\_numb \%in\% c(1): object 'row\_numb' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'row.sel' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'row.sel' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'index.year' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in seq(yrange[1], yrange[2], length.out = tic.no): object 'yrange' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'ytics' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(2, at = ytics, labels = ylabs): object 'ytics' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in axis(1, at = xtics, labels = xlabs): object 'xtics' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in barplot(height = R1\$TMAX, space = 0, add = TRUE, axes = FALSE, : object 'R1' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in barplot(height = R1\$TMIN, space = 0, add = TRUE, axes = FALSE, : object 'R1' not found}}\end{kframe}
 \end{knitrout}
 
 \begin{figure}
