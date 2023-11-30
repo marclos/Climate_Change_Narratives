@@ -2,7 +2,7 @@
 \usepackage{hyperref}
 %\usepackage{expl3}
 %\usepackage{l3regex}
-%\usepackage[version=4]{mhchem}
+\usepackage[version=4]{mhchem}
 % \usepackage{animate}
 
 <<echo=FALSE>>=
@@ -35,10 +35,12 @@ gif_private = "/home/mwl04747/Climate_Change_Narratives/Social_Media/State_htmls
 @
 
 <<noaakey, echo=FALSE>>=
-
 # Could a key go bad?  5/9/22, the API stopped working.
-
 options(noaakey = "qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb")
+
+# version 2 API (11/29/23)
+options(noaakey = "qZqZPeprQLtooYJMiFzCEqqaNMdGJRgb")
+
 @
 
 <<ncdc_stations, results='hide'>>=
@@ -58,7 +60,7 @@ get_locationid <- function(FIPS){
 fips = get_locationid(5); str(fips); 
 
 @
-\title{Weather Station Records and Communicating Climate Change--\Sexpr{fips$State}}
+\title{US Weather Station Records and Reliability} %--\Sexpr{fips$State}
 %\subtitle{test}
 \author{Marc Los Huertos}
 
@@ -106,23 +108,28 @@ I will use these data to select for a station with a long record for each state 
 
 R is an open source programming environment that has become one of the most popular tools for statiticians and data scientists. Capitalizing on the open source framework, a wide range of libraries or packages have been developed to faciliate data processing, analysis, and graphical displays. On such package is rNOAA developed to collect and display climate records stored on NOAA servers.
 
-Using the package requires the use of a key. To maintain the integrity of the key, it's best to avoid posting the key in a public repository and to encryp the key to ensure it's not abused. 
+Using the package requires the use of n API key. To maintain the integrity of the key, it's best to avoid posting the key in a public repository and to encryp the key to ensure it's not abused. 
 
 \subsection{Selecting Weather Records by State}
 
 There are numerous ways to analyze temperature records, where stations can be analyzed individually or records could be sampled and analyzed in spatially in grids. Each of these are valid approaches depending on the question to be addressed. 
 
-In this case the question is ``Based on the longest state meterological record, is there a temperature trend?"
+Here are the questions we will address: 
+
+\begin{itemize}
+  \item What stations have the longest meterological records in the USA?
+  \item Can we determine the reliability of these stations?
+  \item Finally, is there a temperature trend?
 
 \subsubsection{Identify List of State IDs (FIPS)}
 
-Using the rNOAA library in R, we can queary NOAA's database to identify station codes (FIPS) by state. With the states and some territories, there are 55 FIPS for US weather stations. 
+Using the rNOAA library in R, we can query NOAA's database to identify station codes (FIPS) by state. With the states and some territories, there are 55 FIPS for US weather stations. Althogh these include the District of Columbia, they do not include US Territories, sich as Guam, Puerto Rico, Marshall Islands, etc. We'll have to use a different search code for these.
 
 rNOAA has a simple function to list for each of the states and the weather stations in each. I use ncdc\_locs() functions to select each state and ncdc\_station() to obtain the station ids with the longest records. 
 
 <<listofstates, results='hide'>>=
 # List of States (alpha beta)
-ncdc_locs(locationcategoryid='ST', limit=55)
+ncdc_locs(locationcategoryid='ST', limit=60)
 @
 
 The function queries the NOAA website and retrieves state codes, ``FIPS:XX''. Each state has a number of weather stations,\footnote{Project Idea: It would be nice to make a map of how concentrated the stations spatially.} some with a long record, some with a short record, and some with numerous interruptions. Our goal is to select a long record with few missing data. 
