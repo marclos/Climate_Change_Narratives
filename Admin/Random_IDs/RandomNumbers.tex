@@ -1,4 +1,4 @@
-\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -52,7 +52,7 @@
 
 
 \title{Random Numbers for Student Submissions}
-\author{Marc Los Huertos \& Charlotte Chang}
+\author{Marc Los Huertos}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
@@ -61,6 +61,8 @@
 
 \section*{Generating Random Numbers}
 
+\subsection*{Geneating 5 digit random numbers}
+
 We have generated five digit random numbers for everyone. Using the function \texttt{sample()}, we created a vector of values that are then coerced into a matrix with 5 columns and the number of rows equal to the number of students enrolled in the course. 
 
 Before calling the \texttt{sample()} function, we set the ``seed''. As it turns out R does generates psuedo-random numbers. Using the computer clock, R selects pre-defined random numbers in a table based on time when the line is run by R. By setting the seed, we geneate the same set of random numbers each time the function is called. This is useful because I don't want to create new numbers everytime I run the code -- then we would all be confused about who has what number!
@@ -68,8 +70,13 @@ Before calling the \texttt{sample()} function, we set the ``seed''. As it turns 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlcom{# set the seed of psuedo-random numbers}
 \hlkwd{set.seed}\hlstd{(}\hlnum{444}\hlstd{)}
-\hlstd{rnumbers} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{sample}\hlstd{(}\hlnum{10000}\hlopt{:}\hlnum{99999}\hlstd{,} \hlnum{5}\hlopt{*} \hlstd{enrollment),}
+
+\hlcom{# create a metrix of random numbers without replacement with 5 }
+\hlcom{# columns and the number of rows equal to the number of students }
+\hlcom{# enrolled in the course.}
+\hlstd{rnumbers} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{sample}\hlstd{(}\hlnum{10000}\hlopt{:}\hlnum{99999}\hlstd{,} \hlnum{5}\hlopt{*} \hlstd{enrollment,} \hlkwc{replace}\hlstd{=} \hlnum{FALSE}\hlstd{),}
           \hlkwc{nrow}\hlstd{=enrollment,} \hlkwc{ncol}\hlstd{=}\hlnum{5}\hlstd{,} \hlkwc{byrow}\hlstd{=T)}
 \end{alltt}
 \end{kframe}
@@ -77,34 +84,42 @@ Before calling the \texttt{sample()} function, we set the ``seed''. As it turns 
 
 Then, we combined the random numbers with our roster, so each of you have been assigned 5 of these random numbers. 
 
-% latex table generated in R 3.6.0 by xtable 1.8-4 package
-% Wed Aug 26 22:24:38 2020
+% latex table generated in R 4.2.1 by xtable 1.8-4 package
+% Tue Jan 16 00:27:47 2024
 \begin{table}[ht]
 \centering
-\caption{Random Numbers for EA30, Fall 2020} 
+\caption{Random Numbers for EA30, Spring 2024} 
 \label{tbl:numbers}
 \scalebox{1}{
 \begin{tabular}{rllrrrrr}
   \hline
- & First & Last & 1 & 2 & 3 & 4 & 5 \\ 
+ & Last & First & 1 & 2 & 3 & 4 & 5 \\ 
   \hline
-1 & Nikodem & Bisaga & 87666 & 33952 & 47801 & 79207 & 28554 \\ 
-  2 & Anna & Burns & 96640 & 24942 & 68525 & 68925 & 27531 \\ 
-  3 & Emma & Duggleby & 94361 & 23574 & 84998 & 63102 & 51050 \\ 
-  4 & Isabel & Evans & 40809 & 38211 & 80470 & 17400 & 31569 \\ 
-  5 & Jacob & Greene & 97517 & 53220 & 19033 & 39146 & 86197 \\ 
-  6 & Owen & Hoffsten & 56149 & 22237 & 83891 & 11895 & 49719 \\ 
-  7 & Claire & LeBlanc & 21072 & 87336 & 54360 & 40258 & 71214 \\ 
-  8 & Christina & Marsh & 19890 & 41571 & 37499 & 33528 & 52355 \\ 
-  9 & Olivia & McGrath & 88963 & 92675 & 99102 & 47528 & 69615 \\ 
-  10 & Sarah & Meilinger & 96643 & 72042 & 82173 & 41086 & 28402 \\ 
-  11 & Tramy & Nguyen & 40740 & 11786 & 99315 & 62792 & 84947 \\ 
-  12 & Vivianna & Plancarte & 87609 & 36621 & 45393 & 30799 & 70696 \\ 
-  13 & Lila & Rubin & 32008 & 89012 & 14844 & 60318 & 42626 \\ 
-  14 & Katy & Swiere & 13344 & 54998 & 63009 & 63285 & 16638 \\ 
-  15 & Eleanor & Tahbaz & 60081 & 64750 & 96416 & 64231 & 50597 \\ 
-  16 & Melia & Waring & 96481 & 65057 & 96129 & 33563 & 17048 \\ 
-  17 & Bryan & Williams & 74858 & 12717 & 86090 & 33087 & 88600 \\ 
+1 & Abate & Julia & 87666 & 33952 & 47801 & 79207 & 28554 \\ 
+  2 & Ball & Hadley & 96640 & 24942 & 68525 & 68925 & 27531 \\ 
+  3 & Basil-Porter & Derek & 94361 & 23574 & 84998 & 63102 & 51050 \\ 
+  4 & Carmona Cornejo & Alicia & 40809 & 38211 & 80470 & 17400 & 31569 \\ 
+  5 & Chen & Kai & 97517 & 53220 & 19033 & 39146 & 86197 \\ 
+  6 & Coyne & Carolyn & 56149 & 22237 & 83891 & 11895 & 49719 \\ 
+  7 & Eichberg & Ella & 21072 & 87336 & 54360 & 40258 & 71214 \\ 
+  8 & Fiero & Annabel & 19890 & 41571 & 37499 & 33528 & 52355 \\ 
+  9 & Fourli & Thalia & 88963 & 92675 & 99102 & 47528 & 69615 \\ 
+  10 & Frank & Willa & 96643 & 72042 & 82173 & 41086 & 28402 \\ 
+  11 & Greer & Isabella & 40740 & 11786 & 99315 & 62792 & 84947 \\ 
+  12 & Howes & Tinto & 87609 & 36621 & 45393 & 30799 & 70696 \\ 
+  13 & Hughes & Hannah & 32008 & 89012 & 14844 & 60318 & 42626 \\ 
+  14 & Huxol & Camille & 13344 & 54998 & 63009 & 63285 & 16638 \\ 
+  15 & Johnson & Hadley & 60081 & 64750 & 96416 & 64231 & 50597 \\ 
+  16 & Lehrich & Willow & 96481 & 65057 & 96129 & 33563 & 17048 \\ 
+  17 & Nonaka & Xander & 74858 & 12717 & 86090 & 33087 & 88600 \\ 
+  18 & Pan & Mulan & 28711 & 58427 & 82560 & 47426 & 19346 \\ 
+  19 & Patrick & William & 99835 & 38324 & 35352 & 71568 & 58872 \\ 
+  20 & Sanchez & Sofia & 15296 & 59432 & 27794 & 25432 & 42030 \\ 
+  21 & Shaikh & Wali & 80296 & 96053 & 48469 & 45950 & 95191 \\ 
+  22 & Stanton & Shelby & 96779 & 80361 & 36920 & 69743 & 22553 \\ 
+  23 & Toussaint-Farrell & Zumaya & 89431 & 70913 & 59031 & 70972 & 87975 \\ 
+  24 & Wu & Anna & 34665 & 73983 & 74397 & 53087 & 15154 \\ 
+  25 & Yee & Miranda & 77980 & 87449 & 69167 & 81268 & 98862 \\ 
    \hline
 \end{tabular}
 }

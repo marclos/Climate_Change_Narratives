@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+
+% Define block styles
+\tikzset{
+decision/.style={
+    diamond,
+    fill=yellow,
+    draw,
+    text width=4em,
+    text badly centered,
+    inner sep=0pt
+},
+block/.style={
+    rectangle,
+    fill=cyan,
+    draw,
+    text width=10em,
+    text centered,
+    rounded corners
+},
+cloud/.style={
+    draw,
+    ellipse,
+    minimum height=2em
+},
+descr/.style={
+    fill=blue,
+    inner sep=2.5pt
+},
+connector/.style={
+    -latex,
+    font=\scriptsize
+},
+rectangle connector/.style={
+    connector,
+    to path={(\tikztostart) -- ++(#1,0pt) \tikztonodes |- (\tikztotarget) },
+    pos=0.5
+},
+rectangle connector/.default=-2cm,
+straight connector/.style={
+    connector,
+    to path=--(\tikztotarget) \tikztonodes
+}
+}
+
+\begin{document}
+
+\begin{tikzpicture}[>=stealth, node distance=2cm, 
+    every node/.style={rectangle, draw, text width=3.5cm, align=center, minimum height=1.5cm, fill=white}]
+
+    % Nodes
+    \node (start) {Start};
+    \node (download) [below=of start, fill=blue!20] {Download Data};
+    \node (clean) [below=of download, fill=green!20] {Clean Data};
+    \node (map) [below=of clean, fill=orange!20] {Make a Map};
+    \node (analyze) [below=of map, fill=red!20] {Analyze Data \\ with Linear Model};
+    \node (end) [below=of analyze] {End};
+
+    % Arrows
+    \draw[->] (start) -- (download);
+    \draw[->] (download) -- (clean);
+    \draw[->] (clean) -- (map);
+    \draw[->] (map) -- (analyze);
+    \draw[->] (analyze) -- (end);
+
+\end{tikzpicture}
+
+\end{document}

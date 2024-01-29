@@ -2,7 +2,7 @@
 
 
 \title{Random Numbers for Student Submissions}
-\author{Marc Los Huertos \& Charlotte Chang}
+\author{Marc Los Huertos}
 
 \begin{document}
 
@@ -10,27 +10,37 @@
 <<echo=FALSE>>=
 library(xtable)
 filename = "/home/CAMPUS/mwl04747/github/Climate_Change_Narratives/Admin/Random_IDs/EA30F20_Roster.csv"
+filename = "/home/mwl04747/Climate_Change_Narratives/Admin/Random_IDs/ClassList24.xls.csv"
 import = read.csv(filename)
 enrollment = nrow(import)
+import = subset(import, select=c("Name", "First", "Last", "College", "email"))
 @
 
 \section*{Generating Random Numbers}
+
+\subsection*{Geneating 5 digit random numbers}
 
 We have generated five digit random numbers for everyone. Using the function \texttt{sample()}, we created a vector of values that are then coerced into a matrix with 5 columns and the number of rows equal to the number of students enrolled in the course. 
 
 Before calling the \texttt{sample()} function, we set the ``seed''. As it turns out R does generates psuedo-random numbers. Using the computer clock, R selects pre-defined random numbers in a table based on time when the line is run by R. By setting the seed, we geneate the same set of random numbers each time the function is called. This is useful because I don't want to create new numbers everytime I run the code -- then we would all be confused about who has what number!
 
 <<echo=T>>=
+# set the seed of psuedo-random numbers
 set.seed(444) 
-rnumbers = matrix(sample(10000:99999, 5* enrollment), 
+
+# create a metrix of random numbers without replacement with 5 
+# columns and the number of rows equal to the number of students 
+# enrolled in the course.
+rnumbers = matrix(sample(10000:99999, 5* enrollment, replace= FALSE), 
           nrow=enrollment, ncol=5, byrow=T)
+
 @
 
 Then, we combined the random numbers with our roster, so each of you have been assigned 5 of these random numbers. 
 
 <<echo=F, results='asis'>>=
 enrolled <- cbind(import, rnumbers)
-print(xtable(enrolled[,c(3, 2, 5:9)], caption='Random Numbers for EA30, Fall 2020', label='tbl:numbers'), scalebox=1.0, caption.placement = "top")
+print(xtable(enrolled[,c(3, 2, 6:10)], caption='Random Numbers for EA30, Spring 2024', label='tbl:numbers'), scalebox=1.0, caption.placement = "top")
 @
 
 \section*{How to use your random numbers}

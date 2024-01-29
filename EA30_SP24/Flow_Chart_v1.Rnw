@@ -1,0 +1,77 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{matrix,shapes,arrows,positioning,chains}
+
+\begin{document}
+
+% Define block styles
+\tikzset{
+decision/.style={
+    diamond,
+    fill=yellow,
+    draw,
+    text width=4em,
+    text badly centered,
+    inner sep=0pt
+},
+block/.style={
+    rectangle,
+    draw,
+    text width=10em,
+    text centered,
+    rounded corners
+},
+cloud/.style={
+    draw,
+    ellipse,
+    minimum height=2em
+},
+descr/.style={
+    fill=blue,
+    inner sep=2.5pt
+},
+connector/.style={
+    -latex,
+    font=\scriptsize
+},
+rectangle connector/.style={
+    connector,
+    to path={(\tikztostart) -- ++(#1,0pt) \tikztonodes |- (\tikztotarget) },
+    pos=0.5
+},
+rectangle connector/.default=-2cm,
+straight connector/.style={
+    connector,
+    to path=--(\tikztotarget) \tikztonodes
+}
+}
+
+\begin{tikzpicture}
+\matrix (m)[matrix of nodes, column  sep=2cm,row  sep=8mm, align=center, nodes={rectangle,draw, anchor=center} ]{
+    |[block]| {Question: What are the temperature trends in the USA}              &  \\
+    |[block]| {Evaluate Each State Separately}   &    \\
+    |[decision]| {Select Data Source -- GHCNd}  &      \\
+    |[block]| {Criteria for Station Selection}    &    \\
+    |[decision]| {Select Stations Active in 2022}  &   |[block]| {Stop}     \\
+    |[block]| {Assume that $a=e$ the optimilalty cretierin given by}    &    
+    |[decision]| {Locally optimal}                                           \\
+    |[decision]| {Locally optimal}  & |[block]| {Assume that $a=k$ the optimilalty cretierin given by}   \\
+    |[block]| {Assume that $a=f$ the optimilalty cretierin given by}    &   
+                |[decision]| {Locally optimal}    \\
+};
+\path [>=latex,->] (m-1-1) edge (m-2-1);
+\path [>=latex,->] (m-2-1) edge (m-3-1);
+\path [>=latex,->] (m-3-1) edge (m-4-1);
+\path [>=latex,->] (m-4-1) edge (m-5-1);
+\path [>=latex,->] (m-5-1) edge (m-6-1);
+\path [>=latex,->] (m-6-1) edge (m-7-1);
+\path [>=latex,->] (m-7-1) edge (m-8-1);
+\path [>=latex,->] (m-8-1) edge (m-8-2);
+\path [>=latex,->] (m-8-2) edge (m-7-2);
+\path [>=latex,->] (m-7-2) edge (m-6-2);
+\path [>=latex,->] (m-6-2) edge (m-5-2);
+
+\end{tikzpicture}
+
+\end{document}
