@@ -57,7 +57,12 @@
 \begin{document}
 
 \maketitle
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'xtable' was built under R version 4.2.2}}\end{kframe}
+\end{knitrout}
 
 \section*{Generating Random Numbers}
 
@@ -85,7 +90,7 @@ Before calling the \texttt{sample()} function, we set the ``seed''. As it turns 
 Then, we combined the random numbers with our roster, so each of you have been assigned 5 of these random numbers. 
 
 % latex table generated in R 4.2.1 by xtable 1.8-4 package
-% Tue Jan 16 00:27:47 2024
+% Tue Mar 26 09:19:00 2024
 \begin{table}[ht]
 \centering
 \caption{Random Numbers for EA30, Spring 2024} 
@@ -133,5 +138,16 @@ For selected assignments, please avoid putting your name on the submission and i
 \section*{Some Probability Questions}
 
 Question: What are the chances that two or more people might have the same random number?  Answering this is something taught in a probability course, which provides a foundation for all statistics.
+
+\newpage
+\section*{Sorted for Marc}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{write.csv}\hlstd{(enrolled,} \hlkwc{file}\hlstd{=}\hlstr{"/home/mwl04747/Climate_Change_Narratives/Admin/Random_IDs/EA30F24_Roster_Random.csv"}\hlstd{,} \hlkwc{row.names}\hlstd{=}\hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 \end{document}
