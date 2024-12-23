@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage{graphicx}
 \usepackage{hyperref}
 %\usepackage{expl3}
 %\usepackage{l3regex}
@@ -215,9 +216,9 @@ There were some records that didn't have robust TMAX/TMIN records, so there are 
 The record selected has the following metadata associated with it, which will be used for nameing, labeling, and mapping. 
 
     elevation    mindate    maxdate latitude            name datacoverage
-590     386.5 1897-04-01 2023-11-01   33.686 ELSINORE, CA US       0.8803
+580     386.5 1897-04-01 2023-11-01   33.686 ELSINORE, CA US       0.8803
                    id elevationUnit longitude
-590 GHCND:USC00042805        METERS -117.3458
+580 GHCND:USC00042805        METERS -117.3458
 [1] 1897
 [1] 2023
 
@@ -263,7 +264,7 @@ Furthermore, I have converted units to Farenheit, which is not my favorite, but 
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: Service Unavailable (HTTP 503)}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: Service Unavailable (HTTP 503)}}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in curl::curl\_fetch\_memory(x\$url\$url, handle = x\$url\$handle): Timeout was reached: [www.ncdc.noaa.gov] Operation timed out after 10000 milliseconds with 0 out of 0 bytes received}}
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: Service Unavailable (HTTP 503)}}
 
