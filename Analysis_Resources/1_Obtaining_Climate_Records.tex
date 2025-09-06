@@ -1,4 +1,4 @@
-\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -144,9 +144,15 @@ Here's a URL for a tutorial: \url{https://ropensci.org/tutorials/rnoaa_tutorial.
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(plyr)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'plyr' was built under R version 4.2.2}}\begin{alltt}
 \hlkwd{library}\hlstd{(rnoaa)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The rnoaa package will soon be retired and archived because the underlying APIs have changed dramatically. The package currently works but does not pull the most recent data in all cases. A noaaWeather package is planned as a replacement but the functions will not be interchangeable.}}\end{kframe}
 \end{knitrout}
 
 
